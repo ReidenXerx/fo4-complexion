@@ -232,6 +232,11 @@ def describe(base):
     return base['note']
 
 
+def built_roots(args):
+    """Where the built bodies are looked for: every --built folder, then Data."""
+    return list(args.built or []) + [args.data]
+
+
 def fmt(v):
     """A float both LooksMenu (atof) and the Papyrus compiler read: fixed point,
     never exponent notation, no trailing zeros."""
@@ -423,6 +428,9 @@ def write_papyrus(path, picker):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('--data', type=pathlib.Path, default=DEFAULT_DATA)
+    ap.add_argument('--built', type=pathlib.Path, action='append', default=None,
+                    help='a folder BodySlide built into (repeatable), searched before Data for '
+                         'the body meshes -- to check a rebuild before it is deployed')
     ap.add_argument('--write', action='store_true',
                     help='write the BodyGen files, the MCM menu and the picker script')
     ap.add_argument('--out', type=pathlib.Path, default=None,
@@ -437,8 +445,15 @@ def main():
     ap.add_argument('--report', type=pathlib.Path, default=None, help='also write a JSON report')
     args = ap.parse_args()
 
-    assets = args.data / 'Meshes/Actors/Character/CharacterAssets'
-    tris = {g: base_body.read_tri(assets / f'{b}.tri') for g, b in BODIES.items()}
+    roots = built_roots(args)
+    tris = {}
+    for g, b in BODIES.items():
+        tri = base_body.locate(roots, f'Meshes/Actors/Character/CharacterAssets/{b}.tri')
+        if tri is None:
+            raise SystemExit(f'no {b}.tri in {", ".join(map(str, roots))} -- build the body with '
+                             f'"Build Morphs" ticked')
+        print(f'{b}: {tri.parent}')
+        tris[g] = base_body.read_tri(tri)
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
     presets = read_presets(args.data / 'Tools/BodySlide/SliderPresets')
 
@@ -457,7 +472,7 @@ def main():
     print('base bodies, measured against BodySlide\'s reference meshes:')
     for g, body in BODIES.items():
         own = [p for p in presets if p['gender'] == g and p['kind'] != 'empty']
-        base[g] = base_body.measure(args.data, body, own)
+        base[g] = base_body.measure(args.data, body, own, roots)
         print(f'  {g:6} {describe(base[g])}')
     baked, unready = {}, []
     for g in BODIES:

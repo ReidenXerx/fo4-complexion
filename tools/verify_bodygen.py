@@ -251,9 +251,18 @@ def check_picker(args, templates, player, problems):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('--data', type=pathlib.Path, default=sg.DEFAULT_DATA)
+    ap.add_argument('--built', type=pathlib.Path, action='append', default=None,
+                    help='a folder BodySlide built into (repeatable), searched before Data')
     ap.add_argument('--dir', type=pathlib.Path,
                     default=sg.ROOT / 'data/F4SE/Plugins/F4EE/BodyGen/Loose')
     args = ap.parse_args()
+    roots = sg.built_roots(args)
+    body_file = {b: base_body.locate(roots, f'Meshes/Actors/Character/CharacterAssets/{b}.nif')
+                 for b in sg.BODIES.values()}
+    for b, f in body_file.items():
+        if f is None or not f.with_suffix('.tri').exists():
+            raise SystemExit(f'no {b}.nif + .tri in {", ".join(map(str, roots))}')
+        print(f'{b}: {f.parent}')
 
     problems = []
     templates = parse_templates(args.dir / 'Silhouette_templates.ini', problems)
@@ -293,8 +302,7 @@ def main():
             print(f'{g} player: {options[0]} (line {n})')
 
     # ---- every pooled template must be fixed-valued and carry its own marker
-    assets = args.data / 'Meshes/Actors/Character/CharacterAssets'
-    tris = {g: base_body.read_tri(assets / f'{b}.tri') for g, b in sg.BODIES.items()}
+    tris = {g: base_body.read_tri(body_file[b].with_suffix('.tri')) for g, b in sg.BODIES.items()}
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
     for g in pool:
         for t in pool[g]:
@@ -315,14 +323,14 @@ def main():
     worst = {}
     for g, body in sg.BODIES.items():
         own = [p for p in presets if p['gender'] == g and p['kind'] != 'empty']
-        base = base_body.measure(args.data, body, own)
+        base = base_body.measure(args.data, body, own, roots)
         print(f'\n{g}: {sg.describe(base)}')
         if base['set'] is None:
             problems.append(f'{g}: base body cannot be measured, so nothing can be verified')
             continue
         ref_all = base_body.read_shapes(args.data / 'Tools/BodySlide/ShapeData'
                                         / base['set']['data_folder'] / base['set']['source_file'])
-        built_all = base_body.read_shapes(assets / f'{body}.nif')
+        built_all = base_body.read_shapes(body_file[body])
         shapes = [n for n in built_all if n in ref_all and n in tris[g]]
         rows = []
         for t in pool[g]:

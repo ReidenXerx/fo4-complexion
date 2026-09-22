@@ -49,6 +49,18 @@ ZEROED_RMS = 0.01
 BODY_OUTPUT = r'meshes\actors\character\characterassets'
 
 
+def locate(roots, rel):
+    """The first of `roots` holding `rel`, else None. BodySlide can write its
+    builds outside Data (Config.xml OutputDataPath -- on the machine this was
+    written on, D:\\F4Output\\Bodyslides\\woman and \\man, copied into a Vortex mod
+    by hand), so a build can be measured before it is ever deployed."""
+    for root in roots:
+        p = pathlib.Path(root) / rel
+        if p.exists():
+            return p
+    return None
+
+
 def norm_path(p):
     return (p or '').strip().replace('/', '\\').lower().rstrip('\\')
 
@@ -202,7 +214,7 @@ def most_average(pool, tri_shape, candidates):
     return best
 
 
-def measure(data, body, presets):
+def measure(data, body, presets, built_roots=None):
     """Which slider set and preset built Meshes/.../<body>.nif.
 
     -> {'status': 'zeroed' | 'preset' | 'unknown' | 'unmeasurable',
@@ -210,13 +222,16 @@ def measure(data, body, presets):
         'unexplained': share 0..1 or None, 'baked': {slider: value} or None,
         'note': str}
     'baked' is what every NPC template has to be measured against; it is None
-    when that cannot be established.
+    when that cannot be established. `built_roots` are searched in order for the
+    built mesh (default: Data); the reference and the presets always come from
+    Data's Tools/BodySlide.
     """
     bodyslide = data / 'Tools/BodySlide'
-    assets = data / 'Meshes/Actors/Character/CharacterAssets'
+    rel = f'Meshes/Actors/Character/CharacterAssets/{body}'
     output = f'{BODY_OUTPUT}\\{body.lower()}'
-    nif, tri_path = assets / f'{body}.nif', assets / f'{body}.tri'
-    if not nif.exists() or not tri_path.exists():
+    nif = locate(built_roots or [data], rel + '.nif')
+    tri_path = nif.with_suffix('.tri') if nif else None
+    if not nif or not tri_path.exists():
         return {'status': 'unmeasurable', 'set': None, 'preset': None, 'unexplained': None,
                 'baked': None, 'note': f'{body}.nif or {body}.tri is missing'}
 

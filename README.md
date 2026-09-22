@@ -52,7 +52,12 @@ python tools/silhouette_gen.py                 # measure and report, write nothi
 python tools/silhouette_gen.py --write         # write the BodyGen files, the MCM menu, the script source
 powershell scripts/build-papyrus.ps1           # compile the character picker
 python tools/verify_bodygen.py                 # prove the written files do what they claim
+python tools/audit_builds.py                   # which bodies AND outfits are zeroed, and which are not
 ```
+
+All three read the built meshes from Data by default. If BodySlide builds somewhere else (its
+`OutputDataPath`), pass `--built <folder>` (repeatable) to check a rebuild **before** it is
+deployed.
 
 Install the `data/` folder as a mod, with `build/papyrus/Silhouette/Player.pex` as
 `Scripts/Silhouette/Player.pex`. **Run the generator again whenever you add presets or rebuild a body
