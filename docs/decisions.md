@@ -36,30 +36,28 @@ coincident names is excluded by the family rule.
 - **Still owed**: an in-game look at partial-fit NPCs, with screenshots to the owner, before this is
   called settled. Switch: `--no-partial`.
 
-## S-5 — Templates are written relative to the measured base body
+## S-5 — Base bodies are built zeroed; the tool measures and says so
 
-Decided by the agent, 2026-09-23; see the poll in the session log for owner confirmation.
+**Owner decision, 2026-09-23 (poll): "I'll rebuild zeroed."** The standard BodyGen setup: FemaleBody
+and MaleBody (and the outfits) are built with zeroed sliders, and templates hold **absolute** preset
+values.
 
-**Evidence.** BodyGen adds morphs on top of the mesh on disk. `tools/base_body.py` fits the built
-`.nif` against BodySlide's reference mesh using the `.tri` diffs, and on this machine identifies the
-baked presets exactly: FemaleBody = "CBBE Chubby" on CBBE Body Physics (0.005% of the displacement
-unexplained), MaleBody = "BT - Average" on BodyTalk4 (0.015%). Uncompensated, every NPC would be off
-its preset by RMS 0.97 units (female, up to 3.5) and 0.69 (male). LooksMenu applies
-`vertex += diff × value` with no clamp and parses values with `atof`, so a template of
-`target − baked` lands every NPC on its preset: all 65 verified within 0.031 units, which is half a
-half-float step of the installed mesh.
+**Why it had to be asked.** BodyGen adds morphs on top of the mesh on disk. `tools/base_body.py` fits
+the built `.nif` against BodySlide's reference mesh using the `.tri` diffs, and on this machine found
+the bases were NOT zeroed: FemaleBody = "CBBE Chubby" on CBBE Body Physics (0.005% of the
+displacement unexplained), MaleBody = "BT - Average" on BodyTalk4 (0.015%). Every NPC would have been
+off its preset by RMS 0.97 units (female, up to 3.5) and 0.69 (male). Nothing on disk said so.
 
-**What it buys.** No rebuild. The player and every NPC Silhouette does not touch keep exactly the
-body they have today; the usual BodyGen requirement "build your body with Zeroed Sliders" is gone.
+**What the tool does about it.** It measures the base on every run. A base that is not zeroed gets a
+loud warning naming the exact BodySlide body and zeroed preset to rebuild with, and
+`verify_bodygen.py` fails in one line per body until the rebuild is done.
 
-**What it costs.** The files are tied to the current build. Rebuild a body with another preset and
-the generator must be run again — and NPCs already rolled in an existing save keep values computed
-against the old base until Phase 2 re-derives them from their marker (S-6). The alternative, requiring
-a zeroed base, has the mirror-image hazard (a non-zero rebuild breaks every NPC) and forces the
-player's look to be re-made in LooksMenu. `--no-compensate` writes absolute values.
-
-If the base cannot be identified (a hand-moved slider never saved as a preset), the generator says
-so loudly and writes absolute values rather than guess.
+**The alternative, kept as an option.** `--compensate` writes every template as `target − baked`.
+LooksMenu applies `vertex += diff × value` with no clamp and parses values with `atof`, so this is
+exact: all 65 bodies verified within 0.031 units (half a half-float step). It was offered and not
+chosen because it ties the files to the current build — rebuild with another preset and NPCs already
+met in a save stay off until they are re-derived — and a zeroed base is what every other BodyGen tool
+expects. It stays for installs that cannot be rebuilt.
 
 ## S-6 — Every template carries a marker morph named after itself
 
@@ -71,16 +69,43 @@ roll of the baked preset itself. The marker (`Silhouette_<Preset>@1`) is a morph
 never moves a vertex, makes every roll permanent, and records which preset the NPC got. Phase 2's
 `GetPresetAssignedToActor` reads it back, including for NPCs rolled in Phase 1.
 
-## S-7 — The player is never given a body
+## S-7 — The player is never randomised: an average body by default, a picker in MCM
 
-Agent decision, 2026-09-23. `All|...|HumanRace` includes the Player record, and a player without
-LooksMenu body sliders has no stored morphs, so BodyGen would randomise them on the next load.
-`Fallout4.esm|7` gets a template that sets nothing — here the re-roll is the point: it evaluates to
-nothing every time, so the player is never touched. OBody NG leaves the player alone too (by event
-timing rather than by rule). Choosing a body for the player is the picker's job (Phase 2).
+**Owner request, 2026-09-23**, replacing an earlier agent decision that left the player untouched:
+*"make for player picker from installed presets applicable to him via MCM menu and by default use
+average body for both sex of player."*
+
+`All|...|HumanRace` includes the Player record (`Fallout4.esm` `0x7`), so without a rule of their own
+a player with no LooksMenu body sliders would be randomised on the next load. `Fallout4.esm|7|Female`
+and `|Male` each name ONE template: the **most average** preset (S-10). LooksMenu itself skips a
+character that already has body sliders, so an existing LooksMenu look is never overwritten by this.
+
+MCM > Silhouette > Your character: a dropdown per sex of every preset that fits (zeroed ones
+included, as OBody's menu shows presets blacklisted from random distribution), and buttons *Apply to
+my character*, *Back to the default* (`BodyGen.RegenerateMorphs` — BodyGen's own answer, so there is
+one source of truth) and *Which body do I have?* (reads the marker back with `BodyGen.GetMorphs`).
 
 ## S-8 — Zeroed presets stay out of random distribution
 
 Parity with OBody NG's shipped config (`blacklistedPresetsFromRandomDistribution`: "Zeroed Sliders",
 "HIMBO Zero for OBody", …). Decided by **values** rather than names, so FO4's "CBBE Zeroed Sliders"
 and "BT - Zero" are caught without a list.
+
+## S-9 — The player picker needs no plugin
+
+Agent decision, 2026-09-23. MCM buttons can call a **global** Papyrus function
+(`"type": "CallGlobalFunction"`) — the shape Rapport's "Show recent narration" already uses in this
+install — and dropdowns store an index in a `ModSettingInt`. So `Silhouette:Player` is a script with
+global functions and nothing else; there is no quest, no alias and no `.esp`. The preset values are
+generated into it, by the same function that writes the BodyGen templates, and `verify_bodygen.py`
+checks the two agree preset by preset. The cost: the menu is as fresh as the last generator run, like
+the templates. Phase 2 can make both live.
+
+## S-10 — "Average" is measured, in vertex space
+
+Agent decision, 2026-09-23. The average body is the full-fit preset whose built body lies closest,
+RMS over the vertices, to the **mean body** of the random pool — the pool's medoid. For men that is
+"BT - Average", the preset its author named average: the check that the definition means what the
+word means. For women, whose collection has no preset called average, it is "xy - Type 3DCG
+(Blessed)(2)(a)" (0.467 units from the mean body). "CBBE Vanilla" was 48th of 58, so "vanilla" and
+"average" are not the same thing here. Partial fits are not candidates until S-4 is settled in game.

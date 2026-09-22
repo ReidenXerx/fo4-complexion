@@ -19,35 +19,48 @@ It **measures your install** instead of assuming it.
 - **What your base body already has baked in.** BodyGen adds on top of the mesh on disk, so if you
   built your body with anything but Zeroed Sliders, every NPC preset stacks on it. Silhouette fits
   your built body against BodySlide's reference mesh and names the preset it was built from — exactly
-  ("CBBE Chubby", 0.005% unexplained) — then writes every template relative to it. **You do not need to
-  rebuild anything**, and your own character keeps the body it has.
+  ("CBBE Chubby", 0.005% unexplained) — and tells you which zeroed preset to rebuild with. If you
+  cannot rebuild, `--compensate` writes every template relative to what is baked instead, and every
+  NPC still lands exactly on its preset.
 - **What it wrote.** `tools/verify_bodygen.py` reads the files the way LooksMenu reads them and
   builds every body they can produce: each lands within 0.031 units of its preset.
 
-It also never randomises the player, never re-rolls an NPC you have already met, and leaves zeroed
-presets out of the random pool as OBody does.
+It never re-rolls an NPC you have already met, and leaves zeroed presets out of the random pool as
+OBody does.
+
+## Your character
+
+Never randomised. A character with no LooksMenu body sliders gets the **most average** of your
+presets — measured: the one whose body is closest to the mean of them all ("BT - Average" for men,
+which is reassuring). **MCM > Silhouette** lists every preset that fits your character's body:
+choose one and press *Apply to my character*; *Back to the default* and *Which body do I have?* are
+next to it. No plugin is involved — the menu calls a small script LooksMenu drives.
 
 ## Requirements
 
 - Fallout 4 with F4SE and **LooksMenu**, BodyGen enabled in `Data/F4SE/Plugins/f4ee.ini`
   (`[BodyMorph] bEnable=1`, `bEnableBodyGen=1` — the default).
-- **BodySlide**, with your body built with **Build Morphs** ticked (that writes the `.tri`).
+- **BodySlide**, with your body — and your outfits — built from a **zeroed** preset ("CBBE Zeroed
+  Sliders", "BT - Zero") with **Build Morphs** ticked. The generator checks and tells you if not.
+- **MCM** (Mod Configuration Menu) for the character picker.
 - Python 3 to run the generator (standard library only).
 
 ## Use
 
 ```
 python tools/silhouette_gen.py                 # measure and report, write nothing
-python tools/silhouette_gen.py --write         # write data/F4SE/Plugins/F4EE/BodyGen/Loose/*.ini
+python tools/silhouette_gen.py --write         # write the BodyGen files, the MCM menu, the script source
+powershell scripts/build-papyrus.ps1           # compile the character picker
 python tools/verify_bodygen.py                 # prove the written files do what they claim
 ```
 
-Install the `data/` folder as a mod. **Run the generator again whenever you add presets or rebuild a
-body in BodySlide.**
+Install the `data/` folder as a mod, with `build/papyrus/Silhouette/Player.pex` as
+`Scripts/Silhouette/Player.pex`. **Run the generator again whenever you add presets or rebuild a body
+in BodySlide.**
 
-Options: `--no-partial` hands out only presets that fit fully; `--no-compensate` writes absolute
-values (they stack on whatever the base has baked in); `--data` points at another `Data` folder;
-`--report file.json` writes the full classification.
+Options: `--no-partial` hands out only presets that fit fully; `--compensate` writes templates
+relative to a base that is not zeroed; `--data` points at another `Data` folder; `--report file.json`
+writes the full classification.
 
 ## How it decides
 

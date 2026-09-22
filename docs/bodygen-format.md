@@ -106,6 +106,27 @@ morph with a non-zero effective value: `vertex += diff * value` (`TriShape*Verte
 - Setting a value of 0 erases that key.
 - The `.tri` is found from the mesh path; a `BSDynamicTriShape` (heads) cannot be morphed.
 
+## The Papyrus API
+
+LooksMenu registers these on the script `BodyGen` (`PapyrusBodyGen.cpp`, `RegisterFuncs`); the
+`.pex` ships inside `LooksMenu - Main.ba2`, so a build needs an import stub (`papyrus-stubs/BodyGen.psc`
+here is declared argument for argument from the registrations):
+
+```
+SetMorph(Actor, Bool isFemale, String morph, Keyword, Float value)
+Float GetMorph(Actor, Bool isFemale, String morph, Keyword)
+String[] GetMorphs(Actor, Bool isFemale)          ; every morph name the actor holds
+Keyword[] GetKeywords(Actor, Bool isFemale, String morph)
+RemoveMorphsByName(Actor, Bool, String) / RemoveMorphsByKeyword(Actor, Bool, Keyword)
+RemoveAllMorphs(Actor, Bool isFemale)
+RegenerateMorphs(Actor, Bool update)              ; clear, run BodyGen again, apply if update
+UpdateMorphs(Actor)                               ; re-apply stored morphs to the 3D
+ClearAll()
+Bool SetSkinOverride(Actor, String id) / Bool RemoveSkinOverride(Actor)
+```
+
+`None` as the keyword writes the same key BodyGen and LooksMenu's own body editor use.
+
 ## How BodySlide produced what BodyGen moves
 
 From BodySlide's source (ousnius/BodySlide-and-Outfit-Studio):

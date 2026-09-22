@@ -15,8 +15,8 @@ Silhouette writes — see [bodygen-format.md](bodygen-format.md) for the exact s
 | Female/male pools from every BodySlide preset | Every preset **measured** against the installed `.tri`: presets that cannot move this body are left out; partial fits count only for the declared family | **1 — done** |
 | Preset kept for the save (co-save `ActorRegistry`) | LooksMenu stores the rolled morphs in its co-save. A marker morph named after the template makes every roll permanent — without it an all-zero roll re-rolls on each load | **1 — done** |
 | Renaming/removing a preset never breaks a save (`PresetNameIndexMap`) | Stored values do not depend on preset files. The marker records the preset *name*, so Phase 2 can re-derive an NPC's values after a preset is edited | 1 (values) / **2** (re-derive) |
-| — (Skyrim bodies are built zeroed by convention) | **The base body is measured**: the baked preset is identified exactly and templates are written relative to it, so no rebuild is needed | **1 — done** |
-| Player not randomised (event timing; no explicit rule) | Explicit: `Fallout4.esm\|7` gets a template that sets nothing | **1 — done** |
+| — (Skyrim bodies are built zeroed by convention) | **The base body is measured** on every run: a baked-in preset is named exactly, with the BodySlide body + zeroed preset to rebuild with (S-5). `--compensate` writes relative templates for installs that cannot be rebuilt | **1 — done** |
+| Player not randomised (event timing; no explicit rule) | Explicit: `Fallout4.esm\|7\|Female` / `\|Male` name one template each — the most average preset (S-7, S-10) | **1 — done** |
 
 ## Rules, in OBody's priority order
 
@@ -38,12 +38,15 @@ OBody resolves faction → npcFormID → npc name → npcPlugin → race → ran
 
 ## In-game picker (OBody menu)
 
-Choose a preset for the targeted NPC or the player, preview, apply, reset. Needs run time: **Phase 2**.
-LooksMenu's own Papyrus `BodyGen` script (inside `LooksMenu - Main.ba2`) registers `SetMorph`,
-`GetMorph`, `RemoveMorphsByName`, `RemoveMorphsByKeyword`, `RemoveAllMorphs`, `RegenerateMorphs`,
-`UpdateMorphs` and `ClearAll` (`PapyrusBodyGen.cpp`), so a Papyrus-only picker is possible; the plugin
-gives a real UI. **Nothing there lists an actor's morph names** — from Papyrus, reading the marker
-means asking `GetMorph` for each preset name in turn.
+**For the player: done without a plugin** (S-7, S-9). MCM > Silhouette lists every preset that fits
+the character's body per sex; *Apply*, *Back to the default* and *Which body do I have?* are
+`CallGlobalFunction` buttons on the generated `Silhouette:Player` script, which drives LooksMenu's
+Papyrus `BodyGen` (`SetMorph`, `GetMorph`, `GetMorphs`, `GetKeywords`, `RemoveMorphsByName`,
+`RemoveMorphsByKeyword`, `RemoveAllMorphs`, `RegenerateMorphs`, `UpdateMorphs`, `ClearAll` —
+`PapyrusBodyGen.cpp`). `GetMorphs` lists an actor's morph names, so the marker can be read back.
+
+**For NPCs** (target an NPC, preview, apply, reset): Phase 2 — it needs a way to aim at an NPC and a
+live preview, which is plugin work.
 
 ## ORefit, nipple and genital variety
 

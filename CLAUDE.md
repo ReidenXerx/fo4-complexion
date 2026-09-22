@@ -21,12 +21,15 @@ keeps the base; `All|Female` with no race matches almost nothing; keyed morph va
 *max*, not sum. `docs/bodygen-format.md` has them with function names. Add to it; do not guess.
 
 **2. Never assume the base body is zeroed — measure it.** BodyGen stacks on the mesh on disk.
-`tools/base_body.py` identifies the baked preset exactly; templates are `target − baked`. If the base
-cannot be identified, say so loudly and write absolute values; never guess a compensation.
+`tools/base_body.py` identifies a baked preset exactly. The owner's setup is zeroed bases with
+absolute templates (S-5); a base that is not zeroed must produce a loud warning and a failing
+`verify_bodygen.py`, never silence. `--compensate` (`target − baked`) exists for installs that cannot
+be rebuilt; never guess a compensation for a base that matches no preset.
 
 **3. Every template carries its own marker morph** (`Silhouette_<Preset>@1`). Without it, a roll
-that sets nothing re-rolls on every load. The player guard (`Fallout4.esm|7`) is the one template
-that must set nothing.
+that sets nothing re-rolls on every load. The player is never randomised: `Fallout4.esm|7|Female` /
+`|Male` name exactly one template each, and the MCM picker's script applies the same values as the
+templates (the verifier checks both).
 
 **4. A preset's `set` attribute is not what the preset is for.** It is whichever slider set was
 open when it was saved. `<Group>` is the authored family.
