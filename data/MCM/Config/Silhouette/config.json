@@ -1,0 +1,142 @@
+{
+  "modName": "Silhouette",
+  "displayName": "Silhouette",
+  "minMcmVersion": 1,
+  "pages": [
+    {
+      "pageDisplayName": "Your character",
+      "content": [
+        {
+          "type": "text",
+          "text": "Every NPC gets one of your BodySlide presets the first time you meet them. Your own character gets the most average of them unless you choose one here."
+        },
+        {
+          "type": "section",
+          "text": "Your character"
+        },
+        {
+          "type": "dropdown",
+          "id": "iFemale:Player",
+          "text": "If your character is female",
+          "help": "59 presets that fit your female body. Nothing changes until you press \"Apply to my character\".",
+          "valueOptions": {
+            "sourceType": "ModSettingInt",
+            "options": [
+              "ALSL Body 1.0",
+              "CBBE Athletic",
+              "CBBE Chubby",
+              "CBBE Curvy",
+              "CBBE Petite",
+              "CBBE Slim",
+              "CBBE Vanilla",
+              "CBBE Zeroed Sliders",
+              "Imitation - Dream Girl",
+              "Imitation - UNP #1",
+              "Imitation - UNP #2",
+              "Imitation - UNP Skinny",
+              "Josie CBBE Body 2 (Bustier Nude)",
+              "Josie CBBE Body 2 (Nude)",
+              "Josie+3DBoobs",
+              "OxtonCBBEBody+V6",
+              "PLP",
+              "PLP V2",
+              "PNBody Ver.fe",
+              "Rebecca Rose TWB (Nude)",
+              "rose2",
+              "SevenBase",
+              "SevenBase Lower",
+              "SevenBase Slim",
+              "SevenBase Upper",
+              "That Gym Booty 2.0",
+              "The Rocket Bomb Body CBBE",
+              "The Rocket Bomb Body CBBE Extra",
+              "The Rocket Bomb Body CBBE Extra Extra",
+              "The Rocket Bomb Body CBBE Extra Extra Extra",
+              "The Rocket Bomb Body CBBE Small",
+              "The Rocket Bomb Body CBBE Smaller",
+              "The Rocket Bomb Body CBBE Smallest",
+              "The Rocket Bomb Body TWB",
+              "The Rocket Bomb Body TWB Extra",
+              "The Rocket Bomb Body TWB Extra Extra",
+              "The Rocket Bomb Body TWB Extra Extra Extra",
+              "The Rocket Bomb Body TWB Small",
+              "The Rocket Bomb Body TWB Smaller",
+              "The Rocket Bomb Body TWB Smallest",
+              "TWB",
+              "Wasteland Curves (Nude) - TWB Bodyslide Preset.xml",
+              "wtaw body",
+              "wtaw body nude",
+              "xy - Type 3DCG (Blessed)(1)(a)",
+              "xy - Type 3DCG (Blessed)(1)(a)(Bigger)",
+              "xy - Type 3DCG (Blessed)(1)(b)",
+              "xy - Type 3DCG (Blessed)(2)(a)",
+              "xy - Type 3DCG (Blessed)(2)(b)",
+              "xy - Type 3DCG (Blessed)(2)(Bigger)",
+              "xy - Type 3DCG (Blessed)(2)(d)",
+              "xy - Type 3DCG (Blessed)(2)(e)",
+              "xy - Type 3DCG (Blessed)(2)(e)(v2)",
+              "xy - Type 3DCG (Blessed)(2)(e)(v2)(test2)",
+              "xy - Type 3DCG (Blessed)(2)(e)(v3)",
+              "xy - Type 3DCG (Pawg)(1)",
+              "xy - Type 3DCG (Pawg)(1.5)",
+              "xy - Type 3DCG (Pawg)(2)",
+              "xy - Type 3DCG (Pawg)(2)(e)"
+            ]
+          }
+        },
+        {
+          "type": "dropdown",
+          "id": "iMale:Player",
+          "text": "If your character is male",
+          "help": "8 presets that fit your male body. Nothing changes until you press \"Apply to my character\".",
+          "valueOptions": {
+            "sourceType": "ModSettingInt",
+            "options": [
+              "BT - Average",
+              "BT - Bodybuilder",
+              "BT - Chubby",
+              "BT - Muscular",
+              "BT - Swimmer",
+              "BT - Thin",
+              "BT - Zero",
+              "Sirius Male preset"
+            ]
+          }
+        },
+        {
+          "type": "button",
+          "text": "Apply to my character",
+          "help": "Gives your character the preset chosen above for their sex. It REPLACES their body sliders, including any you set in LooksMenu yourself. Close the menu to see it.",
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "Silhouette:Player",
+            "function": "ApplyChosen",
+            "params": []
+          }
+        },
+        {
+          "type": "button",
+          "text": "Back to the default",
+          "help": "The most average body of your presets: xy - Type 3DCG (Blessed)(2)(a) / BT - Average.",
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "Silhouette:Player",
+            "function": "ApplyDefault",
+            "params": []
+          }
+        },
+        {
+          "type": "button",
+          "text": "Which body do I have?",
+          "help": "Names the preset your character has now.",
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "Silhouette:Player",
+            "function": "ShowCurrent",
+            "params": []
+          }
+        }
+      ]
+    }
+  ]
+}

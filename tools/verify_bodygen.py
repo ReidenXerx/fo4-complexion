@@ -152,6 +152,102 @@ def error(a, b):
     return max(d), math.sqrt(sum(x * x for x in d) / len(d))
 
 
+def parse_picker_script(path):
+    """{gender: {'markers': [...], 'names': [...], 'apply': {index: {morph: value}}}}
+    read back out of the generated Silhouette:Player source."""
+    import re
+    out = {'female': {'markers': [], 'names': [], 'apply': {}},
+           'male': {'markers': [], 'names': [], 'apply': {}}}
+    current, branch = None, None
+    for line in path.read_text(encoding='utf-8').splitlines():
+        s = line.strip()
+        if s.startswith('String[] Function') or s.startswith('String Function Apply'):
+            m = re.match(r'String\[\] Function (Female|Male)(Markers|Names)\(', s)
+            if m:
+                current = (m.group(1).lower(), m.group(2).lower())
+                continue
+            m = re.match(r'String Function Apply(Female|Male)\(', s)
+            current = (m.group(1).lower(), 'apply') if m else None
+            branch = None
+            continue
+        if s == 'EndFunction':
+            current = None
+            continue
+        if not current:
+            continue
+        g, kind = current
+        if kind in ('markers', 'names'):
+            m = re.match(r'a\.Add\("(.*)", 1\)$', s)
+            if m:
+                out[g][kind].append(m.group(1))
+        else:
+            m = re.match(r'(?:If|ElseIf) index == (\d+)$', s)
+            if m:
+                branch = int(m.group(1))
+                out[g]['apply'][branch] = {}
+                continue
+            m = re.match(r'BodyGen\.SetMorph\(a, (True|False), "(.*)", None, (\S+)\)$', s)
+            if m and branch is not None:
+                out[g]['apply'][branch][m.group(2)] = float(m.group(3))
+    return out
+
+
+def check_picker(args, templates, player, problems):
+    import json
+    mcm = args.dir.parent.parent.parent.parent.parent / 'MCM/Config/Silhouette'
+    psc = sg.ROOT / 'papyrus/Silhouette/Player.psc'
+    if not (mcm / 'config.json').exists() or not psc.exists():
+        problems.append(f'picker files missing ({mcm}\\config.json or {psc})')
+        return
+    config = json.loads((mcm / 'config.json').read_text(encoding='utf-8'))
+    options, buttons = {}, []
+    for page in config['pages']:
+        for c in page['content']:
+            if c.get('type') == 'dropdown':
+                options[c['id']] = c['valueOptions']['options']
+            if c.get('type') == 'button':
+                buttons.append(c['action'])
+    defaults = {}
+    for line in (mcm / 'settings.ini').read_text(encoding='utf-8').splitlines():
+        if '=' in line and not line.startswith(';'):
+            k, v = line.split('=', 1)
+            defaults[f'{k.strip()}:Player'] = int(v)
+    script = parse_picker_script(psc)
+    for g, sid in (('female', 'iFemale:Player'), ('male', 'iMale:Player')):
+        s = script[g]
+        if options.get(sid) != s['names']:
+            problems.append(f'MCM {sid} lists {len(options.get(sid, []))} presets, the script {len(s["names"])} '
+                            f'-- the menu would apply a different preset than it shows')
+        if len(s['markers']) != len(s['names']) or sorted(s['apply']) != list(range(len(s['names']))):
+            problems.append(f'{g} picker script: markers, names and branches do not line up')
+            continue
+        d = defaults.get(sid)
+        if d is None or not 0 <= d < len(s['names']):
+            problems.append(f'MCM default {sid}={d} is not an entry of the menu')
+        elif g in player:
+            t = [x for grp in player[g][1] for x in grp][0]
+            if s['markers'][d] != t:
+                problems.append(f'MCM default {sid} is {s["markers"][d]!r}, BodyGen gives the player {t!r}')
+        agree = 0
+        for i, marker in enumerate(s['markers']):
+            if s['apply'][i].get(marker) != 1.0:
+                problems.append(f'picker {g} #{i} {s["names"][i]!r}: sets no marker, so it would re-roll')
+            if marker in templates:
+                want = fixed_values(templates[marker])
+                got = s['apply'][i]
+                if want is None or set(want) != set(got) or any(
+                        abs(want[k] - got[k]) > 1e-6 for k in want):
+                    problems.append(f'picker {g} {s["names"][i]!r} applies different values than '
+                                    f'its BodyGen template {marker}')
+                else:
+                    agree += 1
+        print(f'{g} picker: {len(s["names"])} presets in the menu; {agree} match their BodyGen '
+              f'template exactly; default {s["names"][d] if d is not None else "?"!r}')
+    for a in buttons:
+        if a.get('type') != 'CallGlobalFunction' or a.get('script') != 'Silhouette:Player':
+            problems.append(f'MCM button calls {a} -- not a Silhouette:Player global')
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('--data', type=pathlib.Path, default=sg.DEFAULT_DATA)
@@ -164,25 +260,37 @@ def main():
     rules = parse_morphs(args.dir / 'Silhouette_morphs.ini', templates, problems)
     print(f'{len(templates)} templates parse, {len(rules)} rules')
 
-    # ---- which templates each gender's pool holds, and the player guard
+    # ---- which templates each gender's pool holds, and what the player gets.
+    # LooksMenu lets a later line overwrite an earlier one per NPC, so the player's
+    # table entry is whatever the LAST line naming them says.
     pool = {'female': [], 'male': []}
-    guard_ok = False
+    player = {}
     for form, groups, n in rules:
         head = form[0].lower()
         if head.startswith('all') and len(form) >= 3:
             gender = form[1].lower()
             if gender in pool:
                 pool[gender] += [t for g in groups for t in g]
-        elif form[0].lower() == 'fallout4.esm' and form[1] == '7':
-            for g in groups:
-                for t in g:
-                    vals = fixed_values(templates[t])
-                    if vals is None or any(vals.values()):
-                        problems.append(f'morphs line {n}: the player guard {t!r} sets something')
-                    else:
-                        guard_ok = True
-    if not guard_ok:
-        problems.append('no player guard: a player with no LooksMenu body sliders gets randomised')
+                player[gender] = (n, groups)          # the All line includes the player
+        elif head == 'fallout4.esm' and form[1] == '7':
+            gender = form[2].lower() if len(form) > 2 else None
+            for g in ([gender] if gender in ('female', 'male') else ['female', 'male']):
+                player[g] = (n, groups)
+    for g in ('female', 'male'):
+        if g not in player:
+            continue
+        n, groups = player[g]
+        options = [t for grp in groups for t in grp]
+        if len(groups) != 1 or len(options) != 1:
+            problems.append(f'morphs line {n}: a {g} player is RANDOMISED among {len(options)} templates')
+            continue
+        vals = fixed_values(templates[options[0]])
+        if vals is None:
+            problems.append(f'morphs line {n}: the {g} player template is not fixed-valued')
+        elif any(vals.values()) and vals.get(options[0]) != 1.0:
+            problems.append(f'morphs line {n}: the {g} player template has no marker and would re-roll')
+        else:
+            print(f'{g} player: {options[0]} (line {n})')
 
     # ---- every pooled template must be fixed-valued and carry its own marker
     assets = args.data / 'Meshes/Actors/Character/CharacterAssets'
@@ -243,11 +351,22 @@ def main():
         if rows:
             worst[g] = rows[0]
             bad = [r for r in rows if r[1] > MAX_ERROR or r[0] > RMS_ERROR]
+            # Every body off by exactly the uncompensated error means one cause, not
+            # 58: absolute files on a base that still has a preset baked in.
+            if base['status'] == 'preset' and bad and all(abs(r[0] - r[2]) < 1e-3 for r in bad):
+                problems.append(f'{g}: all {len(bad)} bodies land rms {bad[0][0]:.3f} off because {body} '
+                                f'still has "{base["preset"]}" baked in and these files are absolute. '
+                                f'Rebuild {body} zeroed (the generator prints how), then verify again.')
+                bad = []
             for r in bad:
                 problems.append(f'{r[4]}: lands {r[1]:.3f} units (rms {r[0]:.4f}) off its preset')
             print(f'  {len(rows)} bodies built; worst lands {rows[0][1]:.4f} units off (rms {rows[0][0]:.4f}); '
                   f'uncompensated, the average NPC would be off by rms '
                   f'{sum(r[2] for r in rows) / len(rows):.3f}')
+
+    # ---- the player picker: the MCM menu, its defaults and the generated script
+    # must agree with each other and with the templates above.
+    check_picker(args, templates, player, problems)
 
     print()
     if problems:

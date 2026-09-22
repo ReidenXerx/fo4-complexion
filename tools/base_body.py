@@ -169,6 +169,39 @@ def _predict(values, tri_shape):
     return pred
 
 
+def most_average(pool, tri_shape, candidates):
+    """The candidate whose body is closest to the MEAN body of the pool.
+
+    Every preset's body is reference + D.v (D = the .tri diffs), so the pool's
+    mean body is reference + D.mean(v), and the reference cancels: this compares
+    displacements only, RMS over the vertices. Measured on the machine this was
+    written on: for men it picks "BT - Average", which is what its author named
+    it -- the check that the definition means what "average" means. For women,
+    among full fits, "xy - Type 3DCG (Blessed)(2)(a)".
+
+    pool, candidates: [(name, {morph: value})]. -> (name, rms) or None.
+    """
+    if not pool or not candidates:
+        return None
+    morphs = {m for _n, v in pool for m in v}
+    mean = {m: sum(v.get(m, 0.0) for _n, v in pool) / len(pool) for m in morphs}
+    mean_d = _predict(mean, tri_shape)
+    # RMS over every vertex any slider can move; the rest never differ.
+    touched = len(set().union(*(offs.keys() for offs in tri_shape.values()))) or 1
+    best = None
+    for name, values in candidates:
+        d = _predict(values, tri_shape)
+        ss = 0.0
+        for i in set(d) | set(mean_d):
+            a = d.get(i, (0.0, 0.0, 0.0))
+            b = mean_d.get(i, (0.0, 0.0, 0.0))
+            ss += (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2
+        rms = (ss / touched) ** 0.5
+        if best is None or rms < best[1]:
+            best = (name, rms)
+    return best
+
+
 def measure(data, body, presets):
     """Which slider set and preset built Meshes/.../<body>.nif.
 
