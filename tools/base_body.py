@@ -1,0 +1,243 @@
+"""What is baked into the installed base body -- measured, not assumed.
+
+BodyGen morphs are added ON TOP of the mesh on disk. BodySlide builds that mesh as
+
+    built = reference + sum(value_i * diff_i)
+
+over the sliders of whatever preset was selected, so a body built from anything
+but zeroed sliders makes every NPC preset stack on top of it. BodySlide keeps no
+record of which preset that was, and "build your body with Zeroed Sliders" is a
+requirement BodyGen users are simply told to remember.
+
+It can be measured instead. The reference mesh is in ShapeData, the built mesh is
+in Meshes, and the .tri written by "Build Morphs" holds every diff_i at 100% --
+BodySlideApp::WriteMorphTRI applies each slider at 1.0 into an empty vector, so
+the .tri does not depend on the preset. Every preset on disk therefore predicts
+a displacement, and the one that leaves nothing unexplained is the one that was
+built. Measured on the machine this was written on:
+
+    FemaleBody.nif  = CBBE Body Physics + "CBBE Chubby"   (0.005% unexplained)
+    MaleBody.nif    = BodyTalk4 (Nude)  + "BT - Average"  (0.015% unexplained)
+
+The unexplained part is the half-float rounding of the built mesh. The next-best
+candidates leave 29% and 91%; there is no near miss to confuse with a match.
+
+How BodySlide turns a preset into slider values, from its own source:
+
+- SliderPresets.cpp LoadPresetFile: size="big" sets the big value, "both" sets
+  both, "small" sets only the small one, and a SetSlider with no size is ignored.
+  Files are gathered recursively and the FIRST preset with a given name wins.
+- BodySlideApp.cpp BuildBodies: a slider the preset does not name is built at the
+  slider set's `default`, NOT at 0. BodyTalk 4 has 26 sliders that default to
+  100. Then `invert="true"` turns v into 1 - v, default included.
+- Zap, UV and clamp sliders never reach the .tri, so BodyGen cannot express them.
+"""
+import pathlib
+import re
+import struct
+import xml.etree.ElementTree as ET
+
+from nif_geometry import read_shapes
+
+# Share of the displacement a preset may leave unexplained and still be THE preset
+# the body was built from. Measured matches leave 0.005% and 0.015%; the closest
+# wrong answer seen leaves 3.7% (the right preset on the wrong reference mesh).
+MATCH = 0.005
+# Below this RMS vertex offset the built mesh IS the reference: every slider at 0.
+ZEROED_RMS = 0.01
+
+BODY_OUTPUT = r'meshes\actors\character\characterassets'
+
+
+def norm_path(p):
+    return (p or '').strip().replace('/', '\\').lower().rstrip('\\')
+
+
+def truthy(v):
+    return (v or '').strip().lower() == 'true'
+
+
+def read_slider_sets(bodyslide):
+    """Every SliderSet in every .osp: where it builds from, where it builds to,
+    and each slider's default, inversion and kind."""
+    sets = []
+    for osp in sorted((bodyslide / 'SliderSets').glob('*.osp')):
+        try:
+            root = ET.parse(osp).getroot()
+        except ET.ParseError:
+            continue
+        for s in root.iter('SliderSet'):
+            of = s.find('OutputFile')
+            sliders = {}
+            for sl in s.findall('Slider'):
+                # Newer BodySlide writes `default`; sets that generate weights
+                # write `small` and `big` instead (SliderSet.cpp WriteSliderSet).
+                raw = sl.get('big', sl.get('default', '0'))
+                try:
+                    default = float(raw) / 100.0
+                except ValueError:
+                    default = 0.0
+                sliders[sl.get('name')] = {
+                    'default': default,
+                    'invert': truthy(sl.get('invert')),
+                    'morph': not (truthy(sl.get('zap')) or truthy(sl.get('uv'))
+                                  or truthy(sl.get('clamp'))),
+                }
+            sets.append({
+                'name': s.get('name'),
+                'osp': osp.name,
+                'data_folder': s.findtext('DataFolder') or '',
+                'source_file': s.findtext('SourceFile') or '',
+                'output': norm_path((s.findtext('OutputPath') or '') + '\\'
+                                    + ((of.text or '') if of is not None else '')),
+                'sliders': sliders,
+            })
+    return sets
+
+
+def build_choice(bodyslide, output):
+    """The slider set the user picked for this output in BodySlide, if recorded."""
+    f = bodyslide / 'BuildSelection.xml'
+    if not f.exists():
+        return None
+    try:
+        root = ET.parse(f).getroot()
+    except ET.ParseError:
+        return None
+    for oc in root.iter('OutputChoice'):
+        if norm_path(oc.get('path')) == output:
+            return oc.get('choice')
+    return None
+
+
+def read_tri(path):
+    """{shape: {morph: {vertex index: (dx, dy, dz)}}}, multiplier applied.
+
+        char[4] "PIRT", uint16 shapes, then per shape: uint8 len + name,
+        uint16 morphs, and per morph: uint8 len + name, float multiplier,
+        uint16 vertex count, then per vertex uint16 index + int16 x, y, z.
+    """
+    b = pathlib.Path(path).read_bytes()
+    if b[:4] != b'PIRT':
+        raise ValueError(f'{path}: not a BodySlide .tri (starts {b[:4]!r})')
+    o = 4
+    (shapes,) = struct.unpack_from('<H', b, o); o += 2
+    out = {}
+    for _ in range(shapes):
+        n = b[o]; o += 1
+        shape = b[o:o + n].decode('latin1'); o += n
+        (morphs,) = struct.unpack_from('<H', b, o); o += 2
+        out[shape] = {}
+        for _ in range(morphs):
+            n = b[o]; o += 1
+            name = b[o:o + n].decode('latin1'); o += n
+            (mult,) = struct.unpack_from('<f', b, o); o += 4
+            (verts,) = struct.unpack_from('<H', b, o); o += 2
+            offs = {}
+            for _ in range(verts):
+                i, x, y, z = struct.unpack_from('<H3h', b, o); o += 8
+                offs[i] = (x * mult, y * mult, z * mult)
+            out[shape][name] = offs
+    return out
+
+
+def resolve(preset, slider_set):
+    """The value each MORPH slider of this set is built at for this preset, 0..1:
+    the preset's big value, else the set's default, then inverted if flagged."""
+    out = {}
+    for name, sl in slider_set['sliders'].items():
+        if not sl['morph']:
+            continue
+        v = preset['sliders'].get(name, sl['default'])
+        if sl['invert']:
+            v = 1.0 - v
+        out[name] = v
+    return out
+
+
+def _predict(values, tri_shape):
+    pred = {}
+    for name, w in values.items():
+        if w == 0:
+            continue
+        offs = tri_shape.get(name)
+        if not offs:
+            continue
+        for i, (x, y, z) in offs.items():
+            px, py, pz = pred.get(i, (0.0, 0.0, 0.0))
+            pred[i] = (px + w * x, py + w * y, pz + w * z)
+    return pred
+
+
+def measure(data, body, presets):
+    """Which slider set and preset built Meshes/.../<body>.nif.
+
+    -> {'status': 'zeroed' | 'preset' | 'unknown' | 'unmeasurable',
+        'set': slider set dict or None, 'preset': name or None,
+        'unexplained': share 0..1 or None, 'baked': {slider: value} or None,
+        'note': str}
+    'baked' is what every NPC template has to be measured against; it is None
+    when that cannot be established.
+    """
+    bodyslide = data / 'Tools/BodySlide'
+    assets = data / 'Meshes/Actors/Character/CharacterAssets'
+    output = f'{BODY_OUTPUT}\\{body.lower()}'
+    nif, tri_path = assets / f'{body}.nif', assets / f'{body}.tri'
+    if not nif.exists() or not tri_path.exists():
+        return {'status': 'unmeasurable', 'set': None, 'preset': None, 'unexplained': None,
+                'baked': None, 'note': f'{body}.nif or {body}.tri is missing'}
+
+    built = read_shapes(nif)
+    tri = read_tri(tri_path)
+    sets = [s for s in read_slider_sets(bodyslide) if s['output'] == output]
+    chosen = build_choice(bodyslide, output)
+    sets.sort(key=lambda s: s['name'] != chosen)       # BodySlide's own choice first
+
+    best = None
+    for ss in sets:
+        ref_path = bodyslide / 'ShapeData' / ss['data_folder'] / ss['source_file']
+        if not ref_path.exists():
+            continue
+        try:
+            ref = read_shapes(ref_path)
+        except ValueError:
+            continue
+        shapes = [n for n in built if n in ref and n in tri and len(built[n]) == len(ref[n])]
+        if not shapes:
+            continue
+        disp = {n: [(a[0] - r[0], a[1] - r[1], a[2] - r[2]) for a, r in zip(built[n], ref[n])]
+                for n in shapes}
+        total = sum(x * x + y * y + z * z for n in shapes for x, y, z in disp[n])
+        count = sum(len(disp[n]) for n in shapes)
+        if (total / count) ** 0.5 < ZEROED_RMS:
+            return {'status': 'zeroed', 'set': ss, 'preset': None, 'unexplained': 0.0,
+                    'baked': {}, 'note': f'{body} is the bare {ss["name"]} reference mesh'}
+
+        candidates = [(p['name'], resolve(p, ss)) for p in presets]
+        candidates.append(('(slider set defaults, no preset)',
+                           resolve({'sliders': {}}, ss)))
+        for name, values in candidates:
+            resid = 0.0
+            for n in shapes:
+                pred = _predict(values, tri[n])
+                for i, (x, y, z) in enumerate(disp[n]):
+                    px, py, pz = pred.get(i, (0.0, 0.0, 0.0))
+                    resid += (x - px) ** 2 + (y - py) ** 2 + (z - pz) ** 2
+            share = resid / total
+            if best is None or share < best[0]:
+                best = (share, ss, name, values)
+
+    if best is None:
+        return {'status': 'unmeasurable', 'set': None, 'preset': None, 'unexplained': None,
+                'baked': None,
+                'note': f'no BodySlide reference mesh on disk matches {body}.nif'}
+    share, ss, name, values = best
+    if share <= MATCH:
+        return {'status': 'preset', 'set': ss, 'preset': name, 'unexplained': share,
+                'baked': values,
+                'note': f'{body} was built from "{name}" on {ss["name"]}'}
+    return {'status': 'unknown', 'set': ss, 'preset': name, 'unexplained': share,
+            'baked': None,
+            'note': (f'{body} matches no preset on disk: the closest, "{name}", leaves '
+                     f'{100 * share:.1f}% of its shape unexplained. It was probably built '
+                     f'with sliders moved by hand and never saved as a preset.')}
