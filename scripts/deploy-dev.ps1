@@ -15,9 +15,11 @@
     data\...                               tools\silhouette_gen.py --write, tools\make_esp.py
 
   Refused before anything is copied: files the plugin's parser would refuse, a
-  compiled player.pex of another generator run, and files the verifier fails
+  compiled player.pex of another generator run, files the verifier fails
   (tools\verify_bodygen.py -- it reads the built bodies in Data, so a body rebuilt
-  since the generator ran fails here too).
+  since the generator ran fails here too), a Silhouette.esp without the refit
+  keyword (tools\make_esp.py --check: LooksMenu would move every refit value into
+  her own body for good), and a committed manifest edited or deleted (git).
 
   The whole staged tree is replaced (manifests excepted, which are only ever
   added): a file an older build shipped and this one does not would otherwise
@@ -75,6 +77,22 @@ $python = (Get-Command python -ErrorAction SilentlyContinue).Source
 if (-not $python) { throw "No python: the verifier (tools\verify_bodygen.py) must pass before a deploy." }
 & $python (Join-Path $root 'tools\verify_bodygen.py') --dir $data --psc (Join-Path $root 'papyrus\Silhouette\Player.psc') | Select-Object -Last 3
 if ($LASTEXITCODE) { throw "tools\verify_bodygen.py fails these files - see its output; regenerate if a body was rebuilt." }
+# The refit keyword (0x803) must be in the esp that lands. LooksMenu resolves a keyed morph by the
+# plugin's NAME only: a Silhouette.esp without that form turns every refit value into her own body at
+# the next load, for good (wave 3 L5-H1) -- an older build's esp restaged is exactly that.
+& $python (Join-Path $root 'tools\make_esp.py') --check (Join-Path $data 'Silhouette.esp')
+if ($LASTEXITCODE) { throw "data\Silhouette.esp must not be staged - see the line above." }
+# The manifests are history: each says what the bodies of one build are, and saves keep those bodies.
+# A committed one edited or deleted misnames bodies no regeneration can repair; a new one is only added.
+$git = (Get-Command git -ErrorAction SilentlyContinue).Source
+if (-not $git) { throw "No git: the committed manifests cannot be checked before a deploy." }
+# Modified or deleted only: a new manifest, staged or not yet, is how a new build is meant to arrive.
+& $git -C $root diff --quiet --diff-filter=MD HEAD -- 'data/F4SE/Plugins/Silhouette/manifests'
+switch ($LASTEXITCODE) {
+    0 { }
+    1 { throw "A committed manifest was edited or deleted (git diff HEAD -- data/F4SE/Plugins/Silhouette/manifests). Restore it: manifests are only ever added." }
+    default { throw "git could not compare the manifests with the last commit (exit $LASTEXITCODE)." }
+}
 
 New-Item -ItemType Directory -Force -Path $Staging | Out-Null
 foreach ($old in @('F4SE\Plugins\F4EE', 'MCM', 'Scripts')) {

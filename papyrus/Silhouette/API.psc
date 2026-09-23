@@ -50,10 +50,21 @@ Bool Function Loaded() Global
 	Return Silhouette:DLL.ProtocolVersion() == Protocol()
 EndFunction
 
-; The plugin is loaded, its catalog matches the BodyGen files, and the bridge exists:
-; a change asked for now is carried out.
+; LooksMenu (its F4SE plugin registers as "F4EE"): the only door to the morph store.
+Bool Function LooksMenuLoaded() Global
+	Return F4SE.GetPluginVersion("F4EE") > 0
+EndFunction
+
+; MCM, by the name it registers with F4SE ("F4MCM", as f4se.log shows it) -- not its
+; file name. "MCM" is asked too, for a build that ever registers under it.
+Bool Function McmInstalled() Global
+	Return F4SE.GetPluginVersion("F4MCM") > 0 || F4SE.GetPluginVersion("MCM") > 0
+EndFunction
+
+; The plugin is loaded, its catalog matches the BodyGen files, LooksMenu is there and
+; the bridge exists: a change asked for now is carried out.
 Bool Function IsReady() Global
-	Return Loaded() && Silhouette:DLL.IsReady() && Bridge() != None
+	Return Loaded() && LooksMenuLoaded() && Silhouette:DLL.IsReady() && Bridge() != None
 EndFunction
 
 ; Why the last refusal here said no -- the last of ANY caller's: read it right after
@@ -64,6 +75,9 @@ String Function LastError() Global
 	EndIf
 	If !Loaded()
 		Return "Silhouette.dll is from another release than its scripts"
+	EndIf
+	If !LooksMenuLoaded()
+		Return "LooksMenu is not loaded: no body can be shaped"
 	EndIf
 	If Bridge() == None
 		Return "Silhouette.esp is not enabled: nothing would carry a change out"
@@ -80,6 +94,10 @@ Function ShowStatus() Global
 	String esp = " Silhouette.esp is enabled."
 	If !Game.IsPluginInstalled("Silhouette.esp")
 		esp = " Silhouette.esp is NOT enabled: without it nothing carries the plugin's decisions out."
+	EndIf
+	If !LooksMenuLoaded()
+		Debug.MessageBox("Silhouette: LooksMenu is not loaded, so no body can be shaped: its BodyGen gives every body, and it is the only way to change one." + esp)
+		Return
 	EndIf
 	If F4SE.GetPluginVersion("Silhouette") <= 0
 		Debug.MessageBox("Silhouette: Silhouette.dll is not loaded. BodyGen still gives everyone a body; the rules by name and faction, ORefit, the NPC picker and the API are off." + esp)
@@ -167,8 +185,10 @@ Bool Function ApplyPresetByName(Actor akActor, String asPreset) Global
 	Return AssignPresetToActor(akActor, asPreset)
 EndFunction
 
-; A new body, as if met for the first time: BodyGen rolls, the rules get their say,
-; other mods' keyed morphs stay. Waits while AAF has them in a scene.
+; A new body, as if met for the first time: BodyGen rolls, the rules get their say --
+; a rule with several presets draws again, and lands on another of them -- and other
+; mods' keyed morphs stay. Waits while AAF has them in a scene; a save before it is
+; carried out does not lose it.
 Bool Function GenActor(Actor akActor) Global
 	If !akActor || !IsReady()
 		Return False
@@ -208,7 +228,7 @@ Function SetORefit(Bool abEnabled) Global
 	If !Loaded()
 		Return
 	EndIf
-	If F4SE.GetPluginVersion("MCM") > 0
+	If McmInstalled()
 		MCM.SetModSettingBool("Silhouette", "bORefit:General", abEnabled)
 	EndIf
 	Silhouette:DLL.SetORefit(abEnabled)
@@ -252,7 +272,7 @@ Function SetNippleRand(Bool abEnabled) Global
 	If !Loaded()
 		Return
 	EndIf
-	If F4SE.GetPluginVersion("MCM") > 0
+	If McmInstalled()
 		MCM.SetModSettingBool("Silhouette", "bNippleRand:General", abEnabled)
 	EndIf
 	Silhouette:DLL.SetNippleRand(abEnabled)
@@ -263,7 +283,7 @@ Function SetGenitalRand(Bool abEnabled) Global
 	If !Loaded()
 		Return
 	EndIf
-	If F4SE.GetPluginVersion("MCM") > 0
+	If McmInstalled()
 		MCM.SetModSettingBool("Silhouette", "bGenitalRand:General", abEnabled)
 	EndIf
 	Silhouette:DLL.SetGenitalRand(abEnabled)

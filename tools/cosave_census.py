@@ -26,6 +26,18 @@ SAVES = pathlib.Path.home() / 'Documents/My Games/Fallout4/Saves'
 MANIFESTS = [pathlib.Path(r'D:\GOGGames\Fallout 4 GOTY\Data\F4SE\Plugins\Silhouette\manifests'),
              pathlib.Path(__file__).resolve().parent.parent / 'data/F4SE/Plugins/Silhouette/manifests']
 
+# Silhouette's own names that are not a body's marker (src/Catalog.cpp KindOf, compared as the plugin
+# does, ASCII case folded): the refit marker lives under the refit keyword (S-40), the choice marker
+# beside a picked or API-given body (S-51), and the blacklist marker keeps a body bare (S-23).
+REFIT_MARKER, CHOICE_MARKER, BLACKLIST_MARKER = 'silhouette_refit', 'silhouette_chosen', 'silhouette_blacklisted'
+
+
+def kind_of(name):
+    n = name.lower()
+    if n in (REFIT_MARKER, CHOICE_MARKER, BLACKLIST_MARKER):
+        return n
+    return 'body' if len(name) > len('Silhouette_') and n.startswith('silhouette_') else None
+
 
 def fourcc(v):
     return struct.pack('>I', v).decode('latin1')
@@ -107,21 +119,44 @@ def main():
     bodies, _ = looksmenu_bodies(plugins['F4EE'])
     known = manifests()
     rows, per_preset, other = [], collections.Counter(), 0
+    blacklisted, writing, baked_refit = [], [], []
     for (sex, fid), morphs in sorted(bodies.items()):
-        marks = [(n, keys.get(0, 0.0)) for n, keys in morphs.items()
-                 if n.startswith('Silhouette_') and keys.get(0, 0.0) > 0]
+        # Her own layer only (key 0): a marker under another keyword is not her body's.
+        own = {n: keys.get(0, 0.0) for n, keys in morphs.items() if keys.get(0, 0.0) > 0}
+        if any(kind_of(n) == REFIT_MARKER for n in own):
+            # The refit marker belongs under the refit keyword. In her own layer it means LooksMenu loaded a
+            # Silhouette.esp without that keyword and moved every refit value into her body (wave 3 L5-H1).
+            baked_refit.append(fid)
+        if any(kind_of(n) == BLACKLIST_MARKER for n in own):
+            blacklisted.append(fid)
+        marks = [(n, v) for n, v in own.items() if kind_of(n) == 'body']
         if not marks:
-            other += 1
+            other += 0 if fid in blacklisted else 1
             rows.append((fid, sex, None, None, len(morphs)))
             continue
-        name, stamp = marks[0]
-        m = known.get(int(stamp))
+        name, value = marks[0]
+        if value < 1.0:
+            # S-58: a body marker below 1 is "pending" -- the body was being written when the game saved,
+            # and the next probe gives it again. A stamp is never below 1.
+            writing.append(fid)
+            per_preset[f'{name} (being written, S-58)'] += 1
+            rows.append((fid, sex, f'{name} (being written)', None, len(morphs)))
+            continue
+        stamp = int(round(value))
+        m = known.get(stamp)
         preset = m['templates'].get(name, {}).get('preset') if m else None
         per_preset[preset or name] += 1
-        rows.append((fid, sex, preset or name, int(stamp), len(morphs)))
+        rows.append((fid, sex, preset or name, stamp, len(morphs)))
     print(f'{path.name}  ({path.stat().st_size} bytes): {len(bodies)} actors hold LooksMenu body morphs')
     print(f'  Silhouette bodies: {sum(per_preset.values())} in {len(per_preset)} presets; '
-          f'other body sliders: {other}')
+          f'blacklisted (kept bare): {len(blacklisted)}; other body sliders: {other}')
+    if writing:
+        print(f'  being written when the game saved (S-58, given again when met): {len(writing)} -- '
+              + ', '.join(f'{f:08X}' for f in writing[:8]) + (' ...' if len(writing) > 8 else ''))
+    if baked_refit:
+        print(f'  !! {len(baked_refit)} actor(s) hold Silhouette_Refit in their OWN layer: a Silhouette.esp without the '
+              f'refit keyword was loaded, and LooksMenu moved their refit values into their bodies for good -- '
+              + ', '.join(f'{f:08X}' for f in baked_refit[:8]) + (' ...' if len(baked_refit) > 8 else ''))
     stamps = collections.Counter(r[3] for r in rows if r[3])
     for st, n in stamps.items():
         print(f'  stamp {st}: {n} actor(s) -- manifest {"found" if st in known else "MISSING"}')

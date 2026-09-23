@@ -73,6 +73,18 @@ import rules
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DEFAULT_DATA = pathlib.Path(r'D:\GOGGames\Fallout 4 GOTY\Data')
+MANIFESTS = pathlib.Path('F4SE/Plugins/Silhouette/manifests')    # below a mod folder / data root
+
+
+def reconfigure_output():
+    """A name the console's code page cannot hold must not end the run: piped into another program
+    (deploy-dev.ps1 and make-release.ps1 read the verifier's last lines), stdout is cp1252 here, and one
+    Cyrillic preset name crashed a legitimate build (L4 F6). Such a character prints as an escape."""
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(errors='backslashreplace')
+        except (AttributeError, ValueError):
+            pass
 
 FULL_FIT = 0.95      # this share of a preset's sliders must exist on the body
 PARTIAL_FIT = 0.50   # below this a preset does too little to be worth handing out
@@ -122,7 +134,7 @@ def genital_shapes():
     ranges = json.loads(GENITAL_SHAPES_FILE.read_text(encoding='utf-8')).get('ranges', {})
     out = {}
     for morph, (low, high) in ranges.items():
-        if morph in STATE_MORPHS:
+        if is_state(morph):
             raise SystemExit(f'{GENITAL_SHAPES_FILE.name}: {morph} is a runtime state (S-16), not a shape')
         out[morph] = (float(low), float(high))
     return out
@@ -144,8 +156,44 @@ VARIETY_GROUPS = ('nipples', 'genitals')
 # penis bones and fo4-anatomy's collision is sized to BodyTalk's current shaft, so a wider or longer one
 # clips; two installed male presets set Penis Width. AnusBack stays a preset's own business.
 SHAFT_MORPHS = tuple(m for m in NEVER_VARIED if m != 'AnusBack')
+# S-62: sliders fo4-anatomy's body build owns and sets. Their default is baked into the base body a
+# zeroed build produces, and a runtime value (fo4-anatomy's, under its own keyword) ADDS to it -- so
+# Silhouette never writes one, never measures a body by one, and its own layer's value stays 0.
+ANATOMY_OWNED = ('AnatomyOpening',)
 # Never written into a template, the player's picker, the catalog or a refit set.
-NEVER_IN_BODY = STATE_MORPHS + SHAFT_MORPHS
+NEVER_IN_BODY = STATE_MORPHS + SHAFT_MORPHS + ANATOMY_OWNED
+
+# LooksMenu and the plugin read morph names in any case ("erection" is Erection to them): every
+# comparison with these lists folds the case (L4 F8).
+_STATES_FOLDED = {m.casefold() for m in STATE_MORPHS}
+_NEVER_VARIED_FOLDED = {m.casefold() for m in NEVER_VARIED}
+_ANATOMY_FOLDED = {m.casefold() for m in ANATOMY_OWNED}
+_NEVER_IN_BODY_FOLDED = {m.casefold() for m in NEVER_IN_BODY}
+
+
+def is_state(morph):
+    return morph.casefold() in _STATES_FOLDED
+
+
+def never_varied(morph):
+    return morph.casefold() in _NEVER_VARIED_FOLDED
+
+
+def anatomy_owned(morph):
+    return morph.casefold() in _ANATOMY_FOLDED
+
+
+def never_in_body(morph):
+    return morph.casefold() in _NEVER_IN_BODY_FOLDED
+
+
+def why_never(morph):
+    """Why a morph is never part of a body, in one clause."""
+    if is_state(morph):
+        return 'a state other mods drive at runtime (S-16)'
+    if anatomy_owned(morph):
+        return 'fo4-anatomy\'s build slider, its default baked into the base (S-62)'
+    return 'the shaft, never part of a body (S-29)'
 
 # S-45: the templates the player and the character-creation dummies are given -- the default preset's
 # values and marker, none of the ranges.
@@ -167,7 +215,7 @@ def variety_ranges():
                 if group not in VARIETY_GROUPS:
                     raise SystemExit(f'{VARIETY_FILE.name}: group {group!r} is not one of {VARIETY_GROUPS}')
                 for morph, (low, high) in ranges.items():
-                    if morph in STATE_MORPHS:
+                    if is_state(morph):
                         raise SystemExit(f'{VARIETY_FILE.name}: {morph} is a runtime state (S-16), not a shape')
                     if morph in out[g]:
                         raise SystemExit(f'{morph} is in both {GENITAL_SHAPES_FILE.name} and {VARIETY_FILE.name}: '
@@ -175,8 +223,10 @@ def variety_ranges():
                     out[g][morph] = (float(low), float(high), group)
     for g, ranges in out.items():
         for morph, (low, high, _group) in ranges.items():
-            if morph in NEVER_VARIED:
+            if never_varied(morph):
                 raise SystemExit(f'{morph} is never rolled (S-17, S-21): take it out of the range files')
+            if anatomy_owned(morph):
+                raise SystemExit(f'{morph} is {why_never(morph)}: never rolled -- take it out of the range files')
             if not (math.isfinite(low) and math.isfinite(high) and low < high):
                 raise SystemExit(f'{morph}: range {low}..{high} rolls nothing -- low must be below high')
     return out
@@ -300,18 +350,77 @@ def plain_marker(name):
     return f'Silhouette_{safe}' if safe else ''
 
 
-def assign_markers(presets):
-    """Each preset's marker, which is also its template's name. Two presets that come out the same
-    in any case ("Body 1" and "Body-1"), a name with nothing left of it ("Тело"), and one that lands
-    on a name Silhouette reserves each get the first 6 hex digits of their name's hash as well:
-    LooksMenu and the plugin read names case-insensitively, so each must stand for one thing."""
-    reserved = {catalog.ifold(n) for n in (PLAYER_GUARD, *PLAYER_TEMPLATE.values(), *catalog.RESERVED_MARKERS)}
-    counts = collections.Counter(catalog.ifold(plain_marker(p['name'])) for p in presets)
+def manifest_history(folder):
+    """{preset name, casefolded: Counter(marker: manifests recording it)} -- what every manifest in the
+    folder says each preset's marker was. Refuses a manifest it cannot read: without it the markers of
+    that build could not be kept (assign_markers)."""
+    names = collections.defaultdict(collections.Counter)
+    folder = pathlib.Path(folder) if folder else None
+    if not folder or not folder.is_dir():
+        return names
+    for f in sorted(folder.glob('*.json')):
+        try:
+            doc = json.loads(f.read_text(encoding='utf-8-sig'))
+            templates = doc['templates']
+            for marker, entry in templates.items():
+                names[str(entry['preset']).casefold()][marker] += 1
+        except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
+            raise SystemExit(f'{f}: not a manifest this tool can read ({exc!r}) -- restore it (git), since it '
+                             f'says what the bodies of its build are')
+    return names
+
+
+def assign_markers(presets, history=None):
+    """Each preset's marker, which is also its template's name.
+
+    A preset keeps the marker a manifest already records for it (history, manifest_history() of the
+    folder the build is written to). A body's marker is read through its own build's manifest by the
+    plugin, but Silhouette:Player (Census, Refresh, "Which body") and the regeneration window's heal
+    read the CURRENT build's markers whatever the stamp -- so a marker must go on meaning the preset it
+    always meant, and a newcomer never takes one history gives another name (L4 F2). Were one marker
+    recorded for two presets still on disk, it stays with the one most manifests name.
+
+    A preset with no history gets the plain marker, unless it comes out the same in any case as another
+    newcomer's ("Body 1" and "Body-1"), holds nothing plain ("Тело"), lands on a name Silhouette
+    reserves or on a marker history gives someone else: then the first 6 hex digits of its name's hash
+    as well. LooksMenu and the plugin read names case-insensitively, so each must stand for one thing."""
+    history = history or {}
+    fold = catalog.ifold
+    reserved = {fold(n) for n in (PLAYER_GUARD, *PLAYER_TEMPLATE.values(), *catalog.RESERVED_MARKERS)}
+    current = {p['name'].casefold() for p in presets}
+    owners = collections.defaultdict(collections.Counter)      # fold(marker) -> {name: manifests}
+    for name, markers in history.items():
+        for m, n in markers.items():
+            owners[fold(m)][name] += n
+    # A marker two presets still on disk were given: the one most manifests name keeps it.
+    claimant = {k: max(sorted(c for c in names if c in current), key=lambda c: names[c], default=None)
+                for k, names in owners.items()}
+    taken = {}
+    fresh = []
     for p in presets:
+        name = p['name'].casefold()
+        got = history.get(name, {})
+        # The plain spelling first, then the one most manifests hold.
+        for m in sorted(got, key=lambda m: (m != plain_marker(p['name']), -got[m], m)):
+            if fold(m) not in reserved and claimant.get(fold(m)) == name and fold(m) not in taken:
+                p['marker'] = m
+                taken[fold(m)] = name
+                break
+        else:
+            fresh.append(p)
+    counts = collections.Counter(fold(plain_marker(p['name'])) for p in fresh)
+    for p in fresh:
+        name = p['name'].casefold()
         m = plain_marker(p['name'])
-        if not m or counts[catalog.ifold(m)] > 1 or catalog.ifold(m) in reserved:
-            m = f'{m or "Silhouette"}_{hashlib.sha1(p["name"].encode("utf-8")).hexdigest()[:6]}'
+        k = fold(m)
+        if not m or counts[k] > 1 or k in reserved or k in taken or set(owners.get(k, {})) - {name}:
+            digest = hashlib.sha1(p['name'].encode('utf-8')).hexdigest()
+            for width in range(6, 41, 2):
+                m = f'{plain_marker(p["name"]) or "Silhouette"}_{digest[:width]}'
+                if fold(m) not in taken and not set(owners.get(fold(m), {})) - {name}:
+                    break
         p['marker'] = m
+        taken[fold(m)] = name
 
 
 def template_name(preset):
@@ -339,7 +448,28 @@ def template_text(name, values, stamp, ranges=()):
             + [f'{name}@{stamp}'])
 
 
+def judge_base(b):
+    """A measured base (base_body.measure), judged for Silhouette. S-62: a base whose baked values are ALL
+    never part of a body -- fo4-anatomy's build slider at its set default -- is zeroed for Silhouette:
+    nothing of Silhouette's is baked in, absolute files land every body exactly, and nothing needs
+    rebuilding. What the build itself baked in stays visible as 'owned' (describe() prints it)."""
+    b = dict(b, owned={})
+    if b['status'] != 'preset' or not b.get('baked'):
+        return b
+    live = {m: v for m, v in b['baked'].items() if abs(v) >= 5e-5}
+    # The build's own values stay in the base whatever the mode: morph_values() neither sets nor
+    # compensates a never-in-body morph, so the body a preset means includes them (verify_bodygen).
+    b['owned'] = {m: v for m, v in live.items() if never_in_body(m)}
+    if live and len(b['owned']) == len(live):
+        b.update(status='zeroed', baked={})
+    return b
+
+
 def describe(base):
+    if base['status'] == 'zeroed' and base.get('owned'):
+        return (f'{base["note"]}  ({100 * (base["unexplained"] or 0):.3f}% unexplained) -- nothing of Silhouette\'s '
+                f'baked in: ' + ', '.join(f'{m} {fmt(v)}' for m, v in sorted(base['owned'].items()))
+                + f' is the build\'s own ({why_never(next(iter(base["owned"])))})')
     if base['status'] == 'zeroed':
         return f'{base["note"]} -- nothing baked in'
     if base['status'] == 'preset':
@@ -390,12 +520,12 @@ def morph_values(name, target, baked, morphs_on_body, preset_name):
         if BODYGEN_SEPARATORS.search(morph):
             print(f'  skipped morph {morph!r} in {preset_name!r}: its name holds a BodyGen separator')
             continue
-        if morph in NEVER_IN_BODY:
-            # neither set nor compensated: the base's own state or shaft is not ours to change either
-            if abs(target.get(morph, 0.0)) >= 5e-5:
-                why = ('a state other mods drive at runtime (S-16)' if morph in STATE_MORPHS
-                       else 'the shaft, never part of a body (S-29)')
-                print(f'  left out {morph!r} in {preset_name!r}: {why}')
+        if never_in_body(morph):
+            # neither set nor compensated: the base's own state, shaft or fo4-anatomy's build value is not
+            # ours to change either. An anatomy-owned slider sits at its set default in every preset that
+            # does not name it, so it is reported once with the base (main), not preset by preset.
+            if abs(target.get(morph, 0.0)) >= 5e-5 and not anatomy_owned(morph):
+                print(f'  left out {morph!r} in {preset_name!r}: {why_never(morph)}')
             continue
         # Exactly the number the template file will carry: the plugin's bodies, the picker, the
         # manifest and the catalog then all say the same thing to the last digit.
@@ -495,9 +625,10 @@ def write_mcm(folder, picker, default_index, average, build):
                'without it the preset\'s values alone are written.', 'Refresh'),
         button('Give the people around me new bodies',
                'Everyone nearby (never your character) rolls a new body, as if met for the first '
-               'time, and the rules by name and faction get their say. With Silhouette.dll, body '
-               'morphs other mods keep under their own keyword are kept; without it they are cleared '
-               'too. Cannot be undone.',
+               'time, and the rules by name and faction get their say: someone a rule covers draws '
+               'again from its presets. With Silhouette.dll, body morphs other mods keep under their '
+               'own keyword are kept, and anyone in an AAF scene gets theirs when the scene ends; '
+               'without it those morphs are cleared too. Cannot be undone.',
                'Reroll'),
         {'type': 'section', 'text': 'Regeneration window'},
         {'type': 'text', 'text': 'LooksMenu only shapes people who hold no body morphs at all, so '
@@ -540,8 +671,10 @@ def write_mcm(folder, picker, default_index, average, build):
                       'Close the menu to see it.', 'MenuApply'),
         bridge_button('Back to random',
                       'They roll a new body, as if met for the first time: the rules get their say again. '
-                      'Body morphs other mods keep under their own keyword (AAF, pregnancy) are kept. In '
-                      'the middle of an AAF scene the roll waits for the scene to end.',
+                      'Someone a rule by name or faction covers draws again from that rule\'s presets -- a '
+                      'different one whenever the rule lists more than one -- and keeps the new draw. Body '
+                      'morphs other mods keep under their own keyword (AAF, pregnancy) are kept. In the '
+                      'middle of an AAF scene the roll waits for the scene to end.',
                       'MenuRandom'),
         bridge_button('Which body do they have?', 'The preset their body carries, and who chose it.',
                       'MenuWhich'),
@@ -557,19 +690,23 @@ def write_mcm(folder, picker, default_index, average, build):
     settings = [
         {'type': 'section', 'text': 'While they are dressed'},
         {'type': 'switcher', 'id': 'bORefit:General', 'text': 'ORefit',
-         'help': 'A clothed shape while someone is dressed: breasts held together and lifted, and '
-                 'nipples flattened under heavy clothes -- armour, jackets, coats, told by the item\'s '
-                 'name. It only ever raises a slider, so a body that is already fuller keeps its own, and '
-                 'the moment they undress they are exactly their own body again. Your character is never '
-                 'refit, nor anyone in power armour. Removing Silhouette.esp takes every clothed shape off '
-                 'by itself, and without a working Silhouette.dll the shapes left on people are taken off '
-                 'as you meet them.' + needs,
+         'help': 'A clothed shape while someone is dressed: breasts held together and lifted, and under '
+                 'heavy clothes -- armour, jackets, coats, told by the item\'s name -- the nipple sliders '
+                 'flattened. That flattening only shows on outfits whose meshes carry the nipple sliders '
+                 '(mod outfits built with them in BodySlide); vanilla outfits carry none, so on them it '
+                 'changes nothing you can see. It only ever raises a slider, so a body that is already '
+                 'fuller keeps its own, and the moment they undress they are exactly their own body again. '
+                 'Your character is never refit, nor anyone in power armour. Removing Silhouette.esp takes '
+                 'every clothed shape off by itself, and without a working Silhouette.dll the shapes left '
+                 'on people are taken off as you meet them.' + needs,
          'valueOptions': {'sourceType': 'ModSettingBool'}},
         {'type': 'section', 'text': 'Variety in the bodies Silhouette gives'},
         {'type': 'text', 'text': 'BodyGen rolls every NPC their own nipples (and genital shape for women, '
                                  'ball size for men) from the generated files, always. These two decide '
-                                 'the same for bodies Silhouette itself gives: the rules, the picker, '
-                                 'other mods.'},
+                                 'the same for bodies Silhouette itself gives -- the rules, the picker, '
+                                 'other mods -- and for the touch-up of bodies it gave before: whether the '
+                                 'variety such a body is missing gets added. Taking a runtime state or the '
+                                 'shaft out of a body happens either way.'},
         {'type': 'switcher', 'id': 'bNippleRand:General', 'text': 'Nipple variety',
          'help': 'Each person their own nipple size, areola and tip.', 'valueOptions': {'sourceType': 'ModSettingBool'}},
         {'type': 'switcher', 'id': 'bGenitalRand:General', 'text': 'Genital variety',
@@ -1004,7 +1141,9 @@ def refit_sets(refit_presets, base, baked, morphs_of):
     Only presets that fit the installed body as a body preset must (a Fusion Girl refit on a CBBE
     body moves nothing it means to), and only the sliders a refit preset SETS: resolved against its
     slider set, every slider it leaves alone comes out at the set's default -- a Male-Refit naming
-    only BTChest would otherwise hold 25 floors, BTBallSize at 1.0 among them (L4 F4)."""
+    only BTChest would otherwise hold 25 floors, BTBallSize at 1.0 among them (L4 F4). The same goes
+    for what a compensated base has baked in: a slider the refit preset never sets is no floor of its,
+    however the base holds it (wave 3 L4 F5 -- a baked Butt made Female-Refit raise Butt)."""
     out = []
     for p in refit_presets:
         g = p['gender']
@@ -1014,8 +1153,9 @@ def refit_sets(refit_presets, base, baked, morphs_of):
             print(f'  refit preset {p["name"]!r} does not fit the installed {g} body ({p.get("band")}) -- left out')
             continue
         target = {k: v for k, v in target_values(p, base[g]).items() if k in morphs_of[g] and k in p['sliders']}
+        own_baked = {k: v for k, v in baked[g].items() if k in target}
         out.append({'name': p['name'], 'sex': g,
-                    'values': morph_values(template_name(p), target, baked[g], morphs_of[g], p['name'])})
+                    'values': morph_values(template_name(p), target, own_baked, morphs_of[g], p['name'])})
     return out
 
 
@@ -1023,14 +1163,11 @@ def is_zeroed(target):
     """A preset that puts nothing on the body: no value it would WRITE -- a state or the shaft it sets
     is never written (S-16, S-29) -- reaches the body, measured absolutely (L4 F5, F6)."""
     return not any(abs(v) >= 5e-5 for m, v in target.items()
-                   if m not in NEVER_IN_BODY and not BODYGEN_SEPARATORS.search(m))
+                   if not never_in_body(m) and not BODYGEN_SEPARATORS.search(m))
 
 
-def write_manifest(folder, stamp, build, mode, base, pools, extra, picker, player):
-    """F4SE/Plugins/Silhouette/manifests/<stamp>.json: what every marker of this
-    generation means -- the exact preset name (the marker only keeps a sanitised
-    one), its file, and the values written. Never deleted: an NPC rolled by this
-    generation carries this stamp for the rest of that save."""
+def manifest_templates(pools, extra, picker):
+    """{marker: {preset, gender, file, values}}: every body this generation can give, by its marker."""
     templates = {}
     for g in ('female', 'male'):
         for name, values, p in pools[g]:
@@ -1042,12 +1179,36 @@ def write_manifest(folder, stamp, build, mode, base, pools, extra, picker, playe
         for e in picker[g]:
             templates.setdefault(e['marker'], {'preset': e['display'], 'gender': g,
                                                'values': dict(e['values'])})
+    return templates
+
+
+def same_bodies(manifest, templates):
+    """A manifest names exactly these bodies: each marker the same preset, sex and values (its descriptions
+    -- the bases, a preset's file -- aside)."""
+    def bodies(t):
+        return {m: (e.get('preset'), e.get('gender'), e.get('values')) for m, e in t.items()}
+    return bodies(manifest.get('templates', {})) == bodies(templates)
+
+
+def write_manifest(folder, stamp, build, mode, base, pools, extra, picker, player):
+    """F4SE/Plugins/Silhouette/manifests/<stamp>.json: what every marker of this
+    generation means -- the exact preset name (the marker only keeps a sanitised
+    one), its file, and the values written. Never deleted: an NPC rolled by this
+    generation carries this stamp for the rest of that save.
+
+    Never rewritten either (deploy-dev.ps1 refuses a committed one edited): this build generated
+    again leaves its manifest as it was -- main() has checked before writing anything that it
+    names the same bodies, whatever its descriptions (the bases, a preset's file) say today.
+    -> whether the file was written."""
+    path = folder / f'{stamp}.json'
+    if path.exists():
+        return False
     doc = {'format': MANIFEST_FORMAT, 'stamp': stamp, 'build': build, 'mode': mode,
            'bases': {g: describe(base[g]) for g in ('female', 'male')},
-           'player': player, 'templates': templates}
+           'player': player, 'templates': manifest_templates(pools, extra, picker)}
     folder.mkdir(parents=True, exist_ok=True)
-    (folder / f'{stamp}.json').write_text(json.dumps(doc, indent=1, sort_keys=True) + '\n',
-                                           encoding='utf-8')
+    path.write_text(json.dumps(doc, indent=1, sort_keys=True) + '\n', encoding='utf-8')
+    return True
 
 
 MANIFEST_FORMAT = 1
@@ -1095,6 +1256,7 @@ def main():
                          'that is NOT zeroed (default: absolute, for a zeroed base - S-5)')
     ap.add_argument('--report', type=pathlib.Path, default=None, help='also write a JSON report')
     args = ap.parse_args()
+    reconfigure_output()
 
     roots = built_roots(args)
     tris = {}
@@ -1107,7 +1269,9 @@ def main():
         tris[g] = base_body.read_tri(tri)
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
     presets = read_presets(args.data / 'Tools/BodySlide/SliderPresets')
-    assign_markers(presets)
+    # The folder the manifests go to: every marker it records stays its preset's (L4 F2).
+    root = args.out or (ROOT / 'data')
+    assign_markers(presets, manifest_history(root / MANIFESTS))
 
     for p in presets:
         p.update(classify(p, morphs_of['female'], morphs_of['male']))
@@ -1124,8 +1288,12 @@ def main():
     print('base bodies, measured against BodySlide\'s reference meshes:')
     for g, body in BODIES.items():
         own = [p for p in presets if p['gender'] == g and p['kind'] != 'empty']
-        base[g] = base_body.measure(args.data, body, own, roots)
+        base[g] = judge_base(base_body.measure(args.data, body, own, roots))
         print(f'  {g:6} {describe(base[g])}')
+    # S-62: a slider fo4-anatomy's build owns is left out of every body, the ones a preset sets too.
+    naming = sorted(p['name'] for p in presets if any(anatomy_owned(s) for s in p['sliders']))
+    if naming:
+        print(f'  presets that set {"/".join(ANATOMY_OWNED)}, left out of their bodies (S-62): {", ".join(naming)}')
     baked, unready = {}, []
     for g in BODIES:
         b = base[g]
@@ -1256,7 +1424,7 @@ def main():
     for key, g in (('factionFemale', 'female'), ('factionMale', 'male')):
         for _edid, wanted in cfg.get(key, {}).items():
             resolve_presets(wanted, g)
-    distribute = cfg.get('distributeRaces') or ['HumanRace']
+    distribute = rules.distribute_races(cfg)
     print(f'\nrules: {len(rule_lines)} line(s), {len(extra)} extra template(s); random distribution '
           f'races: {", ".join(distribute)}')
     for r in report:
@@ -1348,17 +1516,21 @@ def main():
     if not args.write:
         print('\n(measure only - pass --write to produce the BodyGen files)')
     else:
-        root = args.out or (ROOT / 'data')
         # The stamp is 24 bits of the build's hash, and a body's marker carries only the stamp: two
         # builds sharing one could never be told apart, and this run would overwrite the other's
         # manifest -- the only thing that says what its bodies are.
-        taken = root / 'F4SE/Plugins/Silhouette/manifests' / f'{stamp}.json'
+        taken = root / MANIFESTS / f'{stamp}.json'
         if taken.exists():
-            other = json.loads(taken.read_text(encoding='utf-8')).get('build')
+            recorded = json.loads(taken.read_text(encoding='utf-8-sig'))
+            other = recorded.get('build')
             if other != build:
                 raise SystemExit(f'build {build} has marker stamp {stamp}, and so has build {other} ({taken}): bodies of '
                                  f'the two could not be told apart. Change anything in the presets or the ranges '
                                  f'(a new build hash), then run this again.')
+            # This build again: its manifest stays as it was (write_manifest), so it must name these bodies.
+            if not same_bodies(recorded, manifest_templates(pools, extra, picker)):
+                raise SystemExit(f'{taken} records build {build} with other bodies than this run gives: a manifest is '
+                                 f'never rewritten -- find out why before anything is written')
         out = root / 'F4SE/Plugins/F4EE/BodyGen/Loose'
         tfile = out / 'Silhouette_templates.ini'
         mfile = out / 'Silhouette_morphs.ini'
@@ -1480,14 +1652,22 @@ def main():
         mfile.write_bytes(mbytes)
         print(f'\nwrote {tfile}\nwrote {mfile}')
 
-        cfg_file = root / 'F4SE/Plugins/Silhouette' / rules.CONFIG_NAME
-        if not cfg_file.exists():
-            rules.write_default(cfg_file)
-            print(f'wrote {cfg_file} (every OBody key, empty)')
+        # The config ships beside what it produced (owner, 2026-09-24): a folder without one gets the
+        # config this run read -- or, with none, every key at its default. A config there is never
+        # written into: it is the user's.
+        out_cfg = root / 'F4SE/Plugins/Silhouette' / rules.CONFIG_NAME
+        if not out_cfg.exists():
+            if cfg_file.exists():
+                out_cfg.parent.mkdir(parents=True, exist_ok=True)
+                out_cfg.write_bytes(cfg_file.read_bytes())
+                print(f'wrote {out_cfg} (the config this run read, {cfg_file})')
+            else:
+                rules.write_default(out_cfg)
+                print(f'wrote {out_cfg} (every key, at its default)')
         write_mcm(root / 'MCM/Config' / MOD, picker, default_index, average, build)
         write_papyrus(args.psc, picker, default_index, stamp, build)
-        write_manifest(root / 'F4SE/Plugins/Silhouette/manifests', stamp, build, mode, base, pools,
-                       extra, picker, {g: {'template': chosen[g], 'preset': average.get(g, '')} for g in BODIES})
+        wrote_manifest = write_manifest(root / MANIFESTS, stamp, build, mode, base, pools, extra, picker,
+                                        {g: {'template': chosen[g], 'preset': average.get(g, '')} for g in BODIES})
         catalog.write(root / 'F4SE/Plugins/Silhouette/catalog.json', cat)
         for line in cat_report:
             print(f'  {line}')
@@ -1495,7 +1675,8 @@ def main():
               f'{len(cat["rules"]["npcName"])} name rule(s), {len(cat["rules"]["faction"])} faction rule(s), '
               f'{len(cat["orefit"]["sets"])} refit set(s), rules {rules_id})')
         print(f'wrote {root / "MCM/Config" / MOD}\\config.json + settings.ini')
-        print(f'wrote {root / "F4SE/Plugins/Silhouette/manifests"}\\{stamp}.json')
+        print(f'wrote {root / MANIFESTS}\\{stamp}.json' if wrote_manifest else
+              f'kept {root / MANIFESTS}\\{stamp}.json as it was: it already records this build, body for body')
         print(f'wrote {args.psc}  (compile: scripts/build-papyrus.ps1)')
 
     if args.report:

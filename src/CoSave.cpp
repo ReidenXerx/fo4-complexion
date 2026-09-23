@@ -7,10 +7,13 @@ namespace SH::CoSave
 	namespace
 	{
 		constexpr std::uint32_t kPluginID = 'SLHT';
+		// The one record Silhouette writes, in every version: a later version appends fields inside its
+		// items (each carries its length) rather than adding records or bumping the version. A record of
+		// another type is skipped here and not written back.
 		constexpr std::uint32_t kRecords = 'REC1';
 
 		// Records a newer Silhouette wrote, which this one cannot read: kept exactly and written back, so
-		// going back to the newer version finds them. Only touched by the co-save callbacks.
+		// going back to the newer version finds them. Only touched by the co-save callbacks and Revert.
 		struct Newer
 		{
 			std::uint32_t          version{ 0 };
@@ -18,18 +21,17 @@ namespace SH::CoSave
 		};
 		std::optional<Newer> g_newer;
 
-		// A created reference (0xFF) is kept only while it is still an actor of the same NPC: the game
-		// hands a deleted one's id to whoever is created next. A placed one always exists in its plugin,
-		// even while its cell is out of memory and the form map does not hold it -- and a load drops it
-		// anyway when its plugin is gone.
-		// Runs under the director's lock: reads the game only, never the director.
-		bool Keep(std::uint32_t a_ref, std::uint32_t a_base)
+		// Registry's rule (KeepInCoSave), with the game's answer for a created reference. Runs under the
+		// director's lock: reads the game only, never the director.
+		bool Keep(std::uint32_t a_ref, std::uint32_t a_base, bool a_intent)
 		{
-			if ((a_ref >> 24) != 0xFF) {
-				return true;
+			std::optional<std::uint32_t> live;
+			if (!a_intent && (a_ref >> 24) == 0xFF) {
+				if (auto* actor = Game::ActorFor(a_ref)) {
+					live = Game::BaseOf(actor);
+				}
 			}
-			auto* actor = Game::ActorFor(a_ref);
-			return actor && (a_base == 0 || a_base == Game::BaseOf(actor));
+			return KeepInCoSave(a_ref, a_base, a_intent, live);
 		}
 
 		void OnSave(const F4SE::SerializationInterface* a_intfc)
@@ -93,9 +95,14 @@ namespace SH::CoSave
 
 		void OnRevert(const F4SE::SerializationInterface*)
 		{
-			g_newer.reset();
-			Game::TheDirector().RevertRecords();
+			Revert();
 		}
+	}
+
+	void Revert()
+	{
+		g_newer.reset();
+		Game::TheDirector().RevertRecords();
 	}
 
 	bool Register(const F4SE::SerializationInterface* a_intfc)

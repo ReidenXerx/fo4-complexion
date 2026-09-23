@@ -51,6 +51,20 @@ $python = (Get-Command python -ErrorAction SilentlyContinue).Source
 if (-not $python) { throw "No python: the verifier (tools\verify_bodygen.py) must pass before a release." }
 & $python (Join-Path $root 'tools\verify_bodygen.py') --dir $data --psc (Join-Path $root 'papyrus\Silhouette\Player.psc') | Select-Object -Last 3
 if ($LASTEXITCODE) { throw "tools\verify_bodygen.py fails these files - see its output." }
+# Never pack a Silhouette.esp without the refit keyword (0x803): LooksMenu resolves a keyed morph by the
+# plugin's NAME only, so such an esp turns every refit value into her own body for good (wave 3 L5-H1).
+& $python (Join-Path $root 'tools\make_esp.py') --check (Join-Path $data 'Silhouette.esp')
+if ($LASTEXITCODE) { throw "data\Silhouette.esp must not be packed - see the line above." }
+# ...nor a committed manifest edited or deleted: it is what the bodies of its build are, in every save.
+$git = (Get-Command git -ErrorAction SilentlyContinue).Source
+if (-not $git) { throw "No git: the committed manifests cannot be checked before a release." }
+# Modified or deleted only: a new manifest, staged or not yet, is how a new build is meant to arrive.
+& $git -C $root diff --quiet --diff-filter=MD HEAD -- 'data/F4SE/Plugins/Silhouette/manifests'
+switch ($LASTEXITCODE) {
+    0 { }
+    1 { throw "A committed manifest was edited or deleted (git diff HEAD -- data/F4SE/Plugins/Silhouette/manifests). Restore it: manifests are only ever added." }
+    default { throw "git could not compare the manifests with the last commit (exit $LASTEXITCODE)." }
+}
 
 if (Test-Path $out) { Remove-Item -Recurse -Force $out }
 if (Test-Path $zip) { Remove-Item -Force $zip }

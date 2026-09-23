@@ -20,7 +20,7 @@ Int Function ProtocolVersion() Global Native  ; what RunOrder must do; the bridg
 Int Function Stamp() Global Native            ; the build's marker stamp, 0 without a catalog
 String Function Build() Global Native
 Function Configure(Bool abORefit, Bool abNipples, Bool abGenitals) Global Native
-Int Function Pending() Global Native          ; orders waiting or in flight
+Int Function Pending() Global Native          ; orders that can go out now, or in flight
 Function Log(String asLine) Global Native     ; into Silhouette.log
 
 ; Main thread: turns what the event sinks saw (actors loading, dressing) into
@@ -29,7 +29,9 @@ Function Pump() Global Native
 
 ; ---- orders (protocol 3): exactly this, in this order ----------------------
 ; NextOrder -> OrderActor: no actor in memory -> OrderGone, stop.
-; -> (Regenerates: busy in another mod's scene -> OrderDefer, stop; else regenerate)
+; -> (OrderKind 5, a touch-up, while busy in another mod's scene -> OrderDefer, stop)
+; -> (Regenerates: busy -> OrderDefer, stop; else read the keyed values, then OrderActor
+;    and busy again -> gone: stop / busy: OrderDefer, stop; else regenerate)
 ; -> (Probes: NoteName each morph; MarkerKind 1 or 3 -> NoteMarker of the unkeyed
 ;    value, 2 -> NoteMarker of the refit keyword's value) -> (ReadsAll: NoteLayer)
 ; -> OrderReadCount / OrderReadMorph / NoteRead, stopping once OrderReadsDone
@@ -85,7 +87,7 @@ Bool Function PickerReady() Global Native
 Bool Function CanShape(Int aiActor) Global Native                 ; main thread
 String Function NameOf(Int aiActor) Global Native                 ; main thread
 String Function AssignedPreset(Int aiActor) Global Native
-String Function PresetForMarker(String asMarker, Float afStamp) Global Native
+String Function PresetForMarker(String asMarker, Float afStamp) Global Native  ; the marker's value; below 1 = being written (S-58)
 Int Function PresetCount(Bool abFemale) Global Native
 String Function PresetName(Bool abFemale, Int aiIndex) Global Native
 ; Main thread. Each answers "" when it accepted the request, or why it did not.

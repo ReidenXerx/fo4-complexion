@@ -57,8 +57,10 @@ namespace SH
 		ActorFacts    facts;
 		bool          eligible{ true };  // false: the player, the character-creation dummies
 		bool          clothed{ false };
-		bool          heavy{ false };    // S-48
-		std::string   outfitSet;         // the refit set the worn outfit brings, "" for none
+		bool          heavy{ false };      // S-48
+		std::string   heavyBy;             // the item that made them heavy, for "Which body"
+		bool          powerArmor{ false };  // power armour on the biped: getting in and out is not undressing
+		std::string   outfitSet;           // the refit set the worn outfit brings, "" for none
 	};
 
 	enum class EventKind : std::int32_t
@@ -77,6 +79,7 @@ namespace SH
 		std::string   preset;
 		bool          flag{ false };
 		std::uint32_t announce{ 0 };  // kGenerated: the body it announces, recorded when the bridge raised it
+		bool          done{ false };  // the bridge raised it (EventDone)
 	};
 
 	enum class OrderKind : std::int32_t
@@ -183,10 +186,14 @@ namespace SH
 		// --- requests (API, MCM, picker); each writes the intent at once (S-43) ---
 		bool RequestPreset(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_preset, Source a_source, Lane a_lane,
 			std::string& a_why);
+		// Back to random: BodyGen rolls again and the rules get their say -- a rule with several presets
+		// draws again, somewhere new (S-60). Owed until it lands, across a save too (S-59).
 		bool RequestRegenerate(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, Lane a_lane, std::string& a_why);
+		// Bare now, a new body at the next load (S-53); owed until it lands, across a save too (S-59).
 		bool RequestReset(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, Lane a_lane, std::string& a_why);
 		// The body they have, again, with this build's values and their own variety: their record's
 		// preset, or the one their marker names (a_markerPreset, from a probe) for a body BodyGen gave.
+		// Refused while they are picked (the preview is not their body) or a roll or reset is owed.
 		bool RequestReapply(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_markerPreset, Lane a_lane,
 			std::string& a_why);
 		// The regeneration window (S-15): a roll for someone other mods marked first -- refused for anyone
@@ -216,9 +223,12 @@ namespace SH
 		void                       Done(std::uint32_t a_order, bool a_ok);
 		// The actor is not in memory: the work waits for the next sighting.
 		void Gone(std::uint32_t a_order);
-		// Another mod has them busy (an AAF scene): the work goes to the back and is not handed out again
-		// for kDeferWait -- the bridge's drain ends instead of spinning on it until the scene is over.
-		void                      Defer(std::uint32_t a_order);
+		// Another mod has them busy (an AAF scene): that order goes to the back and is not handed out again
+		// for kDeferWait -- the bridge's drain ends instead of spinning on it until the scene is over. Only
+		// that kind of work waits: a refit coming off, a probe, the picker still go out.
+		void Defer(std::uint32_t a_order);
+		// Orders the bridge can be handed now, and those in flight: work waiting out a deferral, or for an
+		// actor out of memory, does not make the bridge poll faster.
 		[[nodiscard]] std::size_t Pending() const;
 
 		using Clock = std::function<std::chrono::steady_clock::time_point()>;
@@ -259,6 +269,8 @@ namespace SH
 	private:
 		struct Work
 		{
+			using Time = std::chrono::steady_clock::time_point;
+
 			Lane                       lane{ Lane::kBackground };
 			bool                       snapshot{ false };
 			std::optional<BodyRequest> body;
@@ -266,9 +278,17 @@ namespace SH
 			bool                       refit{ false };
 			bool                       probe{ false };
 			bool                       parked{ false };  // the actor was not in memory: waits for a sighting
-			std::chrono::steady_clock::time_point notBefore{};  // deferred: not handed out before this
+			Time                       bodyNotBefore{};   // a deferred body change: not handed out before this
+			Time                       touchNotBefore{};  // a deferred touch-up, the same
 
 			[[nodiscard]] bool Empty() const { return !snapshot && !body && !touch && !refit && !probe; }
+
+			// Something here can be handed out now. A touch-up waits for a body on its way: the body it
+			// would touch is about to be replaced.
+			[[nodiscard]] bool Due(Time a_now) const
+			{
+				return snapshot || (body && bodyNotBefore <= a_now) || (touch && !body && touchNotBefore <= a_now) || refit || probe;
+			}
 		};
 
 		struct Session
@@ -280,14 +300,17 @@ namespace SH
 			std::uint32_t base{ 0 };
 			bool          clothed{ false };
 			bool          heavy{ false };
+			std::string   heavyBy;
 			std::string   outfitSet;
 			ActorFacts    facts;
 			Verdict       verdict;
 
 			// What this session knows of LooksMenu's layers (S-43).
 			bool                     probed{ false };
+			bool                     settled{ false };  // AfterProbe has acted on it: a snapshot can probe someone not seen yet
 			std::string              marker;  // the body marker, "" for none
 			std::uint32_t            stamp{ 0 };
+			bool                     pendingBody{ false };  // the marker still says "pending": a save cut the body short (S-58)
 			bool                     hasBody{ false };
 			int                      refit{ -1 };  // -1 unknown, 0 none, -2 unfinished, else the refit marker's value
 			Source                   choice{ Source::kNone };  // what the choice marker says (S-51)
@@ -346,8 +369,12 @@ namespace SH
 		[[nodiscard]] BodyRequest RestoreOf(const Morphs& a_snapshot, bool a_female) const;
 		void                      AfterProbe(std::uint32_t a_ref, Session& a_session);
 		void                      RebuildChoice(std::uint32_t a_ref, Session& a_session);
+		[[nodiscard]] bool        Claimed(std::uint32_t a_ref, const Session& a_session) const;
 		void                      FollowReset(std::uint32_t a_ref, Session& a_session);
+		void                      FollowRoll(std::uint32_t a_ref, Session& a_session);
+		void                      FinishPendingBody(std::uint32_t a_ref, Session& a_session);
 		void                      DecideBody(std::uint32_t a_ref, Session& a_session);
+		void                      Redraw(std::uint32_t a_ref, Session& a_session);
 		void                      OnProbed(std::uint32_t a_ref, const Order& a_order);
 		void                      Reconcile(std::uint32_t a_ref, Session& a_session);
 		void                      AnnounceBody(std::uint32_t a_ref, const Session& a_session);

@@ -166,7 +166,7 @@
         {
           "type": "button",
           "text": "Give the people around me new bodies",
-          "help": "Everyone nearby (never your character) rolls a new body, as if met for the first time, and the rules by name and faction get their say. With Silhouette.dll, body morphs other mods keep under their own keyword are kept; without it they are cleared too. Cannot be undone.",
+          "help": "Everyone nearby (never your character) rolls a new body, as if met for the first time, and the rules by name and faction get their say: someone a rule covers draws again from its presets. With Silhouette.dll, body morphs other mods keep under their own keyword are kept, and anyone in an AAF scene gets theirs when the scene ends; without it those morphs are cleared too. Cannot be undone.",
           "action": {
             "type": "CallGlobalFunction",
             "script": "Silhouette:Player",
@@ -321,7 +321,7 @@
         {
           "type": "button",
           "text": "Back to random",
-          "help": "They roll a new body, as if met for the first time: the rules get their say again. Body morphs other mods keep under their own keyword (AAF, pregnancy) are kept. In the middle of an AAF scene the roll waits for the scene to end.",
+          "help": "They roll a new body, as if met for the first time: the rules get their say again. Someone a rule by name or faction covers draws again from that rule's presets -- a different one whenever the rule lists more than one -- and keeps the new draw. Body morphs other mods keep under their own keyword (AAF, pregnancy) are kept. In the middle of an AAF scene the roll waits for the scene to end.",
           "action": {
             "type": "CallFunction",
             "form": "Silhouette.esp|802",
@@ -391,7 +391,7 @@
           "type": "switcher",
           "id": "bORefit:General",
           "text": "ORefit",
-          "help": "A clothed shape while someone is dressed: breasts held together and lifted, and nipples flattened under heavy clothes -- armour, jackets, coats, told by the item's name. It only ever raises a slider, so a body that is already fuller keeps its own, and the moment they undress they are exactly their own body again. Your character is never refit, nor anyone in power armour. Removing Silhouette.esp takes every clothed shape off by itself, and without a working Silhouette.dll the shapes left on people are taken off as you meet them. Needs Silhouette.dll and Silhouette.esp.",
+          "help": "A clothed shape while someone is dressed: breasts held together and lifted, and under heavy clothes -- armour, jackets, coats, told by the item's name -- the nipple sliders flattened. That flattening only shows on outfits whose meshes carry the nipple sliders (mod outfits built with them in BodySlide); vanilla outfits carry none, so on them it changes nothing you can see. It only ever raises a slider, so a body that is already fuller keeps its own, and the moment they undress they are exactly their own body again. Your character is never refit, nor anyone in power armour. Removing Silhouette.esp takes every clothed shape off by itself, and without a working Silhouette.dll the shapes left on people are taken off as you meet them. Needs Silhouette.dll and Silhouette.esp.",
           "valueOptions": {
             "sourceType": "ModSettingBool"
           }
@@ -402,7 +402,7 @@
         },
         {
           "type": "text",
-          "text": "BodyGen rolls every NPC their own nipples (and genital shape for women, ball size for men) from the generated files, always. These two decide the same for bodies Silhouette itself gives: the rules, the picker, other mods."
+          "text": "BodyGen rolls every NPC their own nipples (and genital shape for women, ball size for men) from the generated files, always. These two decide the same for bodies Silhouette itself gives -- the rules, the picker, other mods -- and for the touch-up of bodies it gave before: whether the variety such a body is missing gets added. Taking a runtime state or the shaft out of a body happens either way."
         },
         {
           "type": "switcher",

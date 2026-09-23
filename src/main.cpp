@@ -50,11 +50,12 @@ namespace
 			SH::Game::TheDirector().ForgetWorld();
 			break;
 		case F4SE::MessagingInterface::kNewGame:
-			// A new game from the main menu sends no kPreLoadGame, and has no records to keep. The
-			// watchdog is not armed: character creation runs a long while before the bridge's quest.
+			// A new game from the main menu sends no kPreLoadGame, and has no records to keep -- nor the
+			// ones a newer Silhouette left in the last save loaded. The watchdog is not armed: character
+			// creation runs a long while before the bridge's quest.
 			SH::Game::ForgetInbox();
 			SH::Game::TheDirector().ForgetWorld();
-			SH::Game::TheDirector().RevertRecords();
+			SH::CoSave::Revert();
 			SH::Sinks::Attach();
 			break;
 		case F4SE::MessagingInterface::kPostLoadGame:

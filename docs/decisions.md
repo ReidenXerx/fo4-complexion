@@ -222,6 +222,15 @@ BodyGen can roll them.
 - AnusBack stays out of the random variety for now. It moves the anal ring ~0.85 back toward ZeX's
   anus bones, so it is an alignment control for fo4-anatomy's anus decision, not a taste.
 
+**Kept by the owner, 2026-09-24, after fo4-anatomy measured it** ("i think lets keep it as it is and i
+will test in game and maybe in future we return to it"). fo4-anatomy built each range's edge the way
+LooksMenu applies it and ran its fit check (the game's colliders and weights, six paths each): nothing
+breaks -- clipping depth stays ~1.5 as on the all-zero body, stretch within the approved maximum. What
+grows is how much of a bigger vulva a shaft passes through in contact, against the 31% the owner approved
+before: VaginaSize +0.35 39%, VaginaInnie +0.40 33%, every edge at once 44% (the rest at or below 28%;
+VaginaSize -0.35 16%). The measured alternative, if the in-game test calls for it: VaginaSize
+-0.35..+0.15 and VaginaInnie 0..0.30, which keeps every woman at or under 31% (35% at every edge).
+
 ## S-18 — Phase 2: the plugin decides, a Papyrus bridge applies, BodyGen keeps distributing
 
 Owner poll, 2026-09-23: production-ready means **full v1 with the F4SE plugin**. Agent decisions on
@@ -321,6 +330,11 @@ the one the game shows until a script renames the reference.
 
 ## S-24 — The API and events are OBody's, in Papyrus
 
+**Amended by the third microscope wave: MCM is found by the name it registers with F4SE, "F4MCM" (f4se.log
+shows `mcm.dll (00000001 F4MCM 01020000)`), not by its file name. Wave 2 asked for "MCM", which never
+answers, so no MCM switch reached the plugin and the API's setters never wrote MCM's settings. The bridge
+and `Silhouette:API.McmInstalled` ask for both names.**
+
 Agent decision, 2026-09-23. `Silhouette:API` offers global functions named as in OBodyNative. The
 bridge raises the events as custom events that any script can register for: OnActorGenerated,
 OnActorNaked, OnActorRemovingClothes and OnORefitChanged. The plugin never raises an event itself
@@ -358,7 +372,19 @@ are OBody's keys too, by form id, name or plugin. The player is never refit.
 leaving needs no step at all -- removing Silhouette.esp removes every refit.** **Amended by S-53: with
 another mod's keyed morph on them LooksMenu keeps their map and never runs BodyGen, so the plugin remembers
 a reset and rolls them a body itself at the next load. And by S-54: without a working Silhouette.dll the
-bridge takes refits off the people around the player.**
+bridge takes refits off the people around the player. And by S-59 and S-60: a Reset or Back to random asked
+for and saved before it ran is carried out after the load; Back to random under a rule draws from the rule
+again.**
+
+**Amended by the third microscope wave (rolling back).** Removing Silhouette.esp outright is safe: LooksMenu
+drops keyed values whose plugin is not loaded. Loading a Silhouette.esp WITHOUT the refit keyword over one
+that had it is not: LooksMenu's MorphValueMap::Load checks only that the plugin NAME is loaded, then files a
+value whose keyword FORM is missing under key 0 -- her own body. Every refit on anyone (NipBGone under heavy
+clothes, PushUp, the refit marker) becomes her body for good. So a rollback never restages an older build's
+esp (Phase 1's has no 0x803): it removes Silhouette entirely, or keeps the new Silhouette.esp and its scripts
+and removes only Silhouette.dll (S-54 then sweeps the refits off). `scripts/deploy-dev.ps1` and
+`scripts/make-release.ps1` refuse a Silhouette.esp that lacks KYWD 0x803. The same holds for any mod that
+keeps a keyed layer (fo4-anatomy's 0x801 was told).
 
 Agent decision, 2026-09-23, from LooksMenu's source. Reset removes Silhouette's (unkeyed) layer: the NPC
 is bare now, and LooksMenu drops emptied entries when it loads a save (MorphValueMap::Load skips them),
@@ -411,8 +437,9 @@ intentional difference u named)".
 - Refit on replaces Silhouette's keyword layer with the set's floors and a refit marker; refit off removes
   the layer. Both are safe to repeat and to interrupt. Nothing about a refit is kept in the co-save: the
   marker in LooksMenu's own data says whether one is on.
-- Removing Silhouette.esp removes every refit: LooksMenu drops keyed values whose keyword no longer
-  resolves when it loads a save.
+- Removing Silhouette.esp removes every refit: LooksMenu drops keyed values whose plugin is not loaded
+  when it loads a save. (Third microscope wave: only removing it. A Silhouette.esp that is loaded but lacks
+  the keyword turns every refit into her own body -- see S-27's amendment.)
 - The cost: a refit cannot lower anything. No cap on breast sag, no easing of the seat, and a
   "<Preset>-Refit" preset raises its sliders only. OBody's other refit rules (S-20's slots and order of
   sets, S-26's refit presets and outfits by name) stand.
@@ -478,7 +505,10 @@ non-persistent NPC whose morphs LooksMenu drops at load, a reroll that goes arou
 marker, the heals its build needs and the ranges switched on -- so a later build's heal or new range still
 reaches a body touched before, and a body that needed nothing is remembered too (a value the player takes
 off afterwards is not put back). Presence is read from her own layer: another mod's keyed value of a variety
-slider is not hers. A body Silhouette gives or rolls counts as touched when it lands.**
+slider is not hers. A body Silhouette gives or rolls counts as touched when it lands.** **Amended by the
+third microscope wave: a touch-up waits while AAF has her in a scene (S-56), and a body given again -- a new
+build's values for a choice, a rule's body put back -- keeps the variety she has, the variety a picked body
+was picked with included.**
 
 Owner poll, 2026-09-23 ("i aggree with recommended, but force regen on 24h function ofc will override
 it"). The first time the plugin sees a Silhouette body that lacks a variety slider the current build rolls
@@ -500,6 +530,11 @@ included (Back to random rolling the same preset, a Reapply); a body about to be
 announcement counts as made only once the bridge has raised it (EventDone), so one a save cut off is made
 again after the load. A listener compiled against the decompiled base sources registers the mangled name,
 "silhouette:bridge_OnActorGenerated"; one compiled against the Creation Kit's own sources, the plain one.**
+**Amended by the third microscope wave: a roll the rules replace at once (Back to random under a rule, a
+blacklisted NPC rolled) announces only the body she ends with; the body after a Reset is announced even when
+it is the same preset as before; an announcement handed to the bridge and not raised yet is not made twice;
+and at most 64 are raised a poll without losing the 65th. While an NPC is being picked nothing about her body
+is announced -- the body on her may be a preview; Keep announces the one she keeps.**
 
 Agent decision, 2026-09-23. The bridge sends its custom events under the names the compiler gives them,
 "silhouette:bridge_<Event>": sent under the bare name, no listener ever receives them (the vanilla scripts
@@ -521,6 +556,12 @@ and previews keep their own variety. Any decision made elsewhere (a rule, anothe
 ends a picking and anything it left to restore. A created reference's id handed to someone new drops the
 picking (S-57).
 
+**Amended by the third microscope wave.** A Refresh or a Reapply refuses an NPC being picked, or one whose
+picking a save left unfinished: the body on them is a preview, and given again it would become theirs. The
+order pickings arrived in is saved, so the cap drops the oldest after a load too. Picking someone nothing
+had probed yet is the session's probe: what a probe settles (a choice rebuilt, a body announced) is settled
+at their first sighting.
+
 ## S-48 — Heavy is told by the item's name (supersedes S-42's mechanism)
 
 Owner poll, 2026-09-23, after the second microscope wave measured S-42 misfiring: NipBGone shows only where
@@ -541,6 +582,18 @@ worse than visible nipples where they shouldnt".
   frame is not refit, and climbing in and out is not dressing.
 - Each item is decided once; a heavy or listed one says why in Silhouette.log.
 
+**Amended by the owner, 2026-09-24 ("Add words + fix lists", third microscope wave).** Measured on the
+owner's load order (1,426 dressing items, 809 plugins): 290 heavy by the words above, 56 misses. The
+defaults gain overcoat, greatcoat, longcoat, raincoat, dreadcoat, battlecoat, duster, chestplate, plate,
+carapace, kevlar and torso -- 52 more items heavy, none wrongly by its name; nothing is dropped. The shipped
+config names three Eli_Armour_Compendium.esp armours built as shirts light (10028B, 10483F, 100288) and its
+Institute Courser Uniform heavy (100014). Two limits stand: names are read as the game shows them, so on a
+localized Fallout4.esm (German, French, Russian ...) no vanilla item's name holds an English word -- add your
+language's words to `heavyWords`; and a refit flattens nipples only on a garment whose mesh carries the refit
+sliders -- no vanilla or DLC outfit does, mod outfits built with them do (Mercenary, Clothing Of The
+Commonwealth). The power armour rule now also covers the events: climbing into a frame raises no
+OnActorNaked or OnActorRemovingClothes, and a piece put down is not clothing coming off.
+
 ## S-49 — Arousal is held flat under heavy clothes
 
 Owner poll, 2026-09-23: "Hold it flat (Recommended)". NipBGone is a floor, and LooksMenu shows the MAXIMUM
@@ -558,6 +611,11 @@ no refit is on. A build whose floors changed gives another value, so a woman who
 again the next time she is seen. Other mods read it from LooksMenu, or through `Silhouette:API.IsHeavilyDressed`
 and `Silhouette:API.IsORefitApplied`, which read it there.
 
+**Amended by the third microscope wave: a refit that is already right is not written again.** Dressed heavy
+and back before the bridge came, she was refit anyway: the layer cleared, the marker pending, the floors
+written, the body updated (a visible jolt) and OnORefitChanged raised for nothing -- and a reader like the
+anatomy mod, checking every 3 seconds, could land on the pending 0.25 and let nipples through the armour.
+
 ## S-51 — A choice is mirrored into LooksMenu
 
 Owner poll, 2026-09-23: "Mirror into LooksMenu (Recommended)". F4SE keeps no co-save chunk of a plugin that
@@ -565,6 +623,11 @@ is not loaded, so one save made without Silhouette.dll lost every choice, and th
 bodies back. A body the picker or another mod chose carries `Silhouette_Chosen` beside it in its own layer
 (3: picked, 4: another mod) -- a morph no body has. When the co-save has no record, the probe rebuilds the
 choice from it; a choice recorded without the marker (given before this) gets it.
+
+**Amended by the third microscope wave.** A Refresh or Reapply that finds the marker on a body nothing is
+recorded for keeps it beside the body it gives again, and records the choice again -- before, a Reapply ahead
+of the first probe erased the only trace of it. A choice whose preset is gone from the build loses its marker
+and the rules decide: it was rebuilt from the marker and dropped again every session.
 
 ## S-52 — A rule's draw is kept while the rule lists it
 
@@ -580,6 +643,13 @@ the plugin remembers it. At the next load: when LooksMenu dropped their emptied 
 body and the reset is over; when another mod's keyed morph kept the map (BodyGen never runs for a stored
 map), the plugin rolls them a body itself, the other mod's morphs kept. The regeneration window leaves a
 reset NPC alone.
+
+**Amended by the third microscope wave.** A reset that has not landed yet is owed across a save (S-59). One
+case stays as it is, by choice: a reset saved and then loaded WITHOUT Silhouette.dll, on someone another
+mod's keyed morph keeps in LooksMenu's map, stays bare -- BodyGen never runs for a stored map, and without
+the plugin only the regeneration window could roll them, inside its 24 hours. Loading with the plugin again
+gives them their body at the next load. Mirroring the reset into LooksMenu itself would have cost more than
+it saves: a marker in the map means BodyGen never gives that person a body again.
 
 ## S-54 — Without a working Silhouette.dll, refits are swept off
 
@@ -606,6 +676,13 @@ erection would have stayed for good. Found while fixing it: an order handed stra
 the bridge's drain spinning for the whole scene. A new decision replaces the one waiting and is tried at
 once.
 
+**Amended by the third microscope wave.** Only the kind of work that was deferred waits: a roll put off by a
+scene held back everything else for that actor, so a woman undressed in the scene kept her refit (and the
+anatomy mod held her arousal flat) until it ended. A refit coming off, a probe and the picker now go out
+meanwhile. Touch-ups wait out a scene too, and the roll is asked again right before it is made (a scene can
+start while its keyed values are read). The bridge polls faster only for work it can be handed now; the
+half-minute summary says what is held back by a scene and what waits for people out of memory.
+
 ## S-57 — A created reference's id handed to someone new
 
 Agent decision, 2026-09-23. The game gives a deleted created (0xFF) reference's id to whoever is created
@@ -613,3 +690,67 @@ next, and LooksMenu can keep the old morphs on it. Everything that came with the
 the record and a saved picking are dropped, and a choice marker is taken off -- never rebuilt into a choice
 that would pin the body against the rules. The body itself stays. The co-save writes a created reference's
 record only while the id is still an actor of the same NPC.
+
+**Amended by the third microscope wave.** Only its bookkeeping (what was announced or touched, a rule's
+plain draw): a record that holds intent -- a choice, a roll or reset owed (S-59), a rule drawn again (S-60)
+-- and every saved picking are written whatever the game says of the reference at the save. A created NPC
+whose cell is unloaded is not in memory, and is not gone: dropping them lost a picked settler's choice, and
+then nothing flagged the stranger who got the id later, whose body the old marker pinned. The next sighting
+sorts it out, as above. Intent grows only with what the player and other mods do.
+
+## S-58 — A body being written says so
+
+Agent decision, 2026-09-24, from the third microscope wave. A body order clears her own layer and writes
+20 to 55 values, a frame each; a save in that second kept half a body with no marker. A Refresh or Reapply
+of a body BodyGen gave had nothing recorded to put it back, so she kept the half body for good -- and with
+another mod's keyed morph on her, LooksMenu never ran BodyGen for her again. Now the body's marker is written
+first, with 0.25 ("pending"), and last with the build stamp, as S-50 does for refits. A probe that finds a
+pending marker gives that preset again, whole, keeping the variety that made it in; a body with intent behind
+it is put back by S-43 as before. What is left is the one call between the clear and the first write. The
+marker reads as the preset in "Which body" ("being written"), and the no-plugin paths, which only ask whether
+a marker holds a value, read it as the preset too.
+
+## S-59 — What was asked for is owed until it lands
+
+Agent decision, 2026-09-24, from the third microscope wave. Back to random and the regeneration window's
+hand-off lived only in the session's queue, and a Reset counted as done as soon as it was asked: a save before
+the bridge got to them lost the roll -- the marker then rebuilt the old choice -- and a reset left the old body
+on them as if BodyGen had given it. The co-save now records a roll owed (a new source) and a reset not landed
+yet (its stamp 0 until it lands); the next probe carries either out, and a landed one is owed no more. An
+older plugin reads the new source as nobody's choice. The regeneration window hands a person over once, only
+when the plugin accepts; a refusal is asked again at its next scan, and anyone with a body of their own is not
+read again.
+
+## S-60 — Back to random draws the rule again
+
+Owner poll, 2026-09-24: "Re-draw the rule (Recommended)". Under a name or faction rule, S-52 kept the
+preset a person drew for good, so Back to random rolled BodyGen and the rule put the same preset straight back
+-- 16 raiders pressed 6 times each came back to their preset every time. Now each press mixes a salt, kept in
+her record, into the rule's draw, and lands on another of the rule's presets than the body she has (a rule with
+one preset has nothing to draw). S-52 keeps the new draw from then on, across saves. Salt 0 is exactly the draw
+by id, so nobody's body changes until they are pressed. OBody's GenActor draws again the same way.
+
+## S-61 — The rules file ships with every key, and a race list cannot be empty
+
+Owner poll, 2026-09-24. On where the rules live: "lets ship this config with default values in mod package".
+`Silhouette_presetDistributionConfig.json` stays in the package and stays the file the generator reads: it
+lists every key with its value written out -- `distributeRaces` ["HumanRace"], the heavy words, empty lists
+and maps -- with the owner's tuning in it (S-48's amendment). The plugin never reads it: it reads what the
+generator compiled from it (catalog.json, S-19), so an edit takes effect only after running the generator
+and installing its output. On an empty race list: "yes i agree recommended but default value should be human
+race so user should deliberately break feature by deleting it from there". An empty `distributeRaces` meant
+["HumanRace"] without a word; now the generator refuses it and says what the list is for. A missing key is
+still the default.
+
+## S-62 — fo4-anatomy's build slider is never part of a body
+
+Agent decision, 2026-09-24, at fo4-anatomy's request. fo4-anatomy's body added `AnatomyOpening`, a slider it
+sets in its own build: the opening's shape is baked into the built base, and any value LooksMenu applies at
+run time ADDS to it. The generator reads a preset's values as BodySlide applies them -- a preset that does not
+name a slider gets the set's default -- so with a default of 50% every template would have written 0.5 on top
+of the baked 0.5 (every female body up to 0.22 units off: the verifier refused it before anything shipped),
+and "Anatomy Zero" stopped reading as zeroed. It joins the states (S-16) and the shaft (S-29) as never part of
+a body: never written into a template, the picker, the catalog or a refit set, never counted in "zeroed" or
+"average", and a base whose only baked values are such sliders counts as zeroed. Its runtime value stays 0:
+the body as built. fo4-anatomy also moved the 50% into its base mesh and made the slider an extra with
+default 0, so nothing that honours defaults can double it; this entry is the second guard.

@@ -81,7 +81,7 @@ namespace SH
 				r.base = Get<std::uint32_t>();
 				const auto source = Get<std::uint8_t>();
 				// A source a later version added means nothing here: the body stays, nobody's choice.
-				r.source = source <= static_cast<std::uint8_t>(Source::kReset) ? static_cast<Source>(source) : Source::kNone;
+				r.source = source <= static_cast<std::uint8_t>(Source::kRoll) ? static_cast<Source>(source) : Source::kNone;
 				r.stamp = Get<std::uint32_t>();
 				r.announced = Get<std::uint32_t>();
 				r.touched = Get<std::uint32_t>();
@@ -107,6 +107,9 @@ namespace SH
 
 			[[nodiscard]] bool AtEnd() const { return _at == _in.size(); }
 
+			// Bytes left in the item being read: a field a later version appended is there or not.
+			[[nodiscard]] std::size_t Left() const { return _end - _at; }
+
 		private:
 			std::span<const std::byte> _in;
 			std::size_t                _at{ 0 };
@@ -131,8 +134,18 @@ namespace SH
 			return "blacklisted"sv;
 		case Source::kReset:
 			return "reset"sv;
+		case Source::kRoll:
+			return "a roll owed"sv;
 		}
 		return "?"sv;
+	}
+
+	bool KeepInCoSave(std::uint32_t a_ref, std::uint32_t a_base, bool a_intent, std::optional<std::uint32_t> a_liveBase)
+	{
+		if (a_intent || (a_ref >> 24) != 0xFF) {
+			return true;
+		}
+		return a_liveBase && (a_base == 0 || a_base == *a_liveBase);
 	}
 
 	Record* Registry::Find(std::uint32_t a_ref)
@@ -173,7 +186,7 @@ namespace SH
 	{
 		std::vector<std::pair<std::uint32_t, const Record*>> kept;
 		for (const auto& [ref, record] : _records) {
-			if (!record.Empty() && (!a_keep || a_keep(ref, record.base))) {
+			if (!record.Empty() && (!a_keep || a_keep(ref, record.base, record.Intent()))) {
 				kept.emplace_back(ref, &record);
 			}
 		}
@@ -185,12 +198,13 @@ namespace SH
 		for (const auto& [ref, r] : kept) {
 			Writer item;
 			item.Rec(ref, *r);
+			item.Put(r->salt);
 			w.Put(static_cast<std::uint16_t>(item.Size()));
 			w.Bytes(item.Take());
 		}
 		std::vector<const PickerSave*> saves;
 		for (const auto& [ref, save] : pickings) {
-			if (!a_keep || a_keep(ref, save.base)) {
+			if (!a_keep || a_keep(ref, save.base, true)) {
 				saves.push_back(&save);
 			}
 		}
@@ -209,6 +223,12 @@ namespace SH
 			item.Put(static_cast<std::uint8_t>(save->before ? 1 : 0));
 			if (save->before) {
 				item.Rec(save->ref, *save->before);
+			}
+			// Appended after the fields version 2 began with: the arrival order the cap goes by, then the
+			// salt of the record the picking would put back.
+			item.Put(save->seq);
+			if (save->before) {
+				item.Put(save->before->salt);
 			}
 			w.Put(static_cast<std::uint32_t>(item.Size()));
 			w.Bytes(item.Take());
@@ -237,6 +257,9 @@ namespace SH
 				const auto length = r.Get<std::uint16_t>();
 				r.Item(length, [&] {
 					auto [saved, rec] = r.Rec();
+					if (r.Left() >= sizeof(std::uint32_t)) {
+						rec.salt = r.Get<std::uint32_t>();
+					}
 					const auto ref = resolve(saved);
 					if (ref == 0) {
 						return;  // the reference is gone (its plugin was removed)
@@ -247,7 +270,8 @@ namespace SH
 					loaded[ref] = std::move(rec);
 				});
 			}
-			const auto pickingCount = r.Get<std::uint32_t>();
+			const auto    pickingCount = r.Get<std::uint32_t>();
+			std::uint32_t lastSeq = 0;
 			for (std::uint32_t i = 0; i < pickingCount; ++i) {
 				const auto length = r.Get<std::uint32_t>();
 				r.Item(length, [&] {
@@ -269,8 +293,13 @@ namespace SH
 						}
 						p.before = std::move(rec);
 					}
+					// Written by a build that knew the arrival order: kept. Before it, the file's order.
+					p.seq = r.Left() >= sizeof(std::uint32_t) ? r.Get<std::uint32_t>() : i + 1;
+					if (p.before && r.Left() >= sizeof(std::uint32_t)) {
+						p.before->salt = r.Get<std::uint32_t>();
+					}
 					if (p.ref != 0) {
-						p.seq = i + 1;
+						lastSeq = std::max(lastSeq, p.seq);
 						saves[p.ref] = std::move(p);
 					}
 				});
@@ -280,7 +309,7 @@ namespace SH
 			}
 			_records = std::move(loaded);
 			pickings = std::move(saves);
-			_seq = pickingCount;
+			_seq = std::max(lastSeq, pickingCount);
 			return Loaded::kOk;
 		} catch (const std::exception& e) {
 			a_error = e.what();

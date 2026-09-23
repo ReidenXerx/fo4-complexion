@@ -22,14 +22,15 @@ namespace SH
 
 		// One of several presets, always the same one for the same person: OBody draws at random and
 		// keeps the draw in its registry; this draws from the reference id, so the draw needs no
-		// memory to be the same next time -- the co-save still records it (S-25).
-		std::string Pick(const std::vector<std::string>& a_presets, std::uint32_t a_seed)
+		// memory to be the same next time -- the co-save still records it (S-25). Back to random draws
+		// again (S-60): the salt its presses left moves the draw, and salt 0 is exactly the draw by id.
+		std::string Pick(const std::vector<std::string>& a_presets, std::uint32_t a_seed, std::uint32_t a_salt)
 		{
 			if (a_presets.empty()) {
 				return {};
 			}
 			// splitmix32-style mix, so neighbouring ids do not all land on the same entry
-			std::uint32_t x = a_seed + 0x9E3779B9u;
+			std::uint32_t x = a_seed + 0x9E3779B9u * (a_salt + 1);
 			x = (x ^ (x >> 16)) * 0x85EBCA6Bu;
 			x = (x ^ (x >> 13)) * 0xC2B2AE35u;
 			x ^= x >> 16;
@@ -76,7 +77,7 @@ namespace SH
 		if (!a_actor.baseName.empty()) {
 			for (const auto& rule : a_catalog.nameRules) {
 				if (rule.female == a_actor.female && IEquals(rule.name, a_actor.baseName)) {
-					auto preset = Pick(rule.presets, a_actor.seed);
+					auto preset = Pick(rule.presets, a_actor.seed, a_actor.salt);
 					return { Tier::kName, preset, rule.presets, std::format("npc rule \"{}\" -> {}", rule.name, preset) };
 				}
 			}
@@ -93,7 +94,7 @@ namespace SH
 		// 4. faction -- the first rule, in the config's order, whose faction the NPC record carries.
 		for (const auto& rule : a_catalog.factionRules) {
 			if (rule.female == a_actor.female && Listed(a_actor.factions, rule.faction)) {
-				auto preset = Pick(rule.presets, a_actor.seed);
+				auto preset = Pick(rule.presets, a_actor.seed, a_actor.salt);
 				return { Tier::kFaction, preset, rule.presets, std::format("faction {} -> {}", rule.editorID, preset) };
 			}
 		}

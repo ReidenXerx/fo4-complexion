@@ -10,15 +10,17 @@ Scriptname Silhouette:Adopter extends Quest
  those keyed morphs are put back afterwards.
 
  Left alone: anyone with an unkeyed value (a Silhouette body, or sliders set by
- hand in LooksMenu), anyone AAF has busy or locked, and anyone already processed.
- After 24 in-game hours the window closes itself.
+ hand in LooksMenu; looked at once), anyone AAF has busy or locked, and anyone
+ already processed. After 24 in-game hours the window closes itself.
 
  With Silhouette.dll ready, a person is handed to it (Silhouette:DLL.RequestAdopt):
- the plugin rolls them the same way, knows it did, and says no for anyone whose body
- is somebody's choice, who was reset (S-53), or who is being picked. Without it this
- script rolls them itself, and also heals Silhouette bodies an older build gave with
- a runtime state or a shaft value in them (decisions S-16, S-29) -- the plugin's
- touch-up does that for everyone it sees.}
+ the plugin rolls them the same way, records that it owes the roll (a save before
+ it lands does not lose it, S-59), and says no for anyone whose body is somebody's
+ choice, who was reset (S-53), or who is being picked -- those are asked again at
+ the next scan, until they have a body. Without it this script rolls them itself,
+ and also heals Silhouette bodies an older build gave with a runtime state or a
+ shaft value in them (decisions S-16, S-29) -- the plugin's touch-up does that for
+ everyone it sees.}
 
 ; Every argument is passed explicitly: the decompiled base sources carry no defaults.
 
@@ -35,6 +37,7 @@ Int adopted = 0
 Int healed = 0
 Keyword busyKeyword
 Keyword lockedKeyword
+Bool looksMenu = False     ; LooksMenu's F4SE plugin ("F4EE"): without it no BodyGen call is made
 ; Real time the running scan began, -1 when none runs. A scan waits a frame for every
 ; LooksMenu call, and the next timer can fire while one is still going.
 Float scanStarted = -1.0
@@ -61,6 +64,7 @@ Function LookUpAAF()
 		busyKeyword = Game.GetFormFromFile(AAFActorBusy, "AAF.esm") as Keyword
 		lockedKeyword = Game.GetFormFromFile(AAFActorLocked, "AAF.esm") as Keyword
 	EndIf
+	looksMenu = F4SE.GetPluginVersion("F4EE") > 0
 EndFunction
 
 Function OpenWindow()
@@ -112,6 +116,9 @@ Event OnTimer(Int aiTimerID)
 EndEvent
 
 Function Scan()
+	If !looksMenu
+		Return    ; every BodyGen call would fail and fill the log
+	EndIf
 	FormList seen = Game.GetFormFromFile(0x801, "Silhouette.esp") as FormList
 	FormList looked = Game.GetFormFromFile(0x804, "Silhouette.esp") as FormList
 	Actor[] people = Silhouette:Player.Nearby()
@@ -140,8 +147,13 @@ Function Scan()
 						Heal(a, female, morphs, states, maleMarkers, looked)
 					EndIf
 				EndIf
-				If !isSeen && Eligible(a, female, morphs)
-					Adopt(a, female, seen, plugin)
+				If !isSeen
+					Int kind = Kind(a, female, morphs)
+					If kind == 1
+						Adopt(a, female, seen, plugin)
+					ElseIf kind == 2 && seen
+						seen.AddForm(a)    ; a body of their own: never the window's, not read again
+					EndIf
 				EndIf
 			EndIf
 		EndIf
@@ -208,18 +220,20 @@ Function Heal(Actor a, Bool female, String[] morphs, String[] states, String[] m
 	EndIf
 EndFunction
 
-; Holds body morphs, every one of them under another mod's keyword, and at least one
-; of those with a value: an emptied name is listed until the next load, and someone
-; with nothing stored at all is LooksMenu's own BodyGen's to give a body.
-Bool Function Eligible(Actor a, Bool female, String[] morphs)
+; 1: holds body morphs, every one of them under another mod's keyword, and at least
+; one of those with a value -- the window's to roll. 2: an unkeyed value, a body of
+; their own (a Silhouette body, or sliders set by hand). 0: nothing to go on yet: an
+; emptied name is listed until the next load, and someone with nothing stored at all
+; is LooksMenu's own BodyGen's to give a body.
+Int Function Kind(Actor a, Bool female, String[] morphs)
 	If !morphs || morphs.Length == 0
-		Return False
+		Return 0
 	EndIf
 	Bool keyed = False
 	Int i = 0
 	While i < morphs.Length
 		If BodyGen.GetMorph(a, female, morphs[i], None) != 0.0
-			Return False    ; an unkeyed value: a Silhouette body, or sliders set by hand
+			Return 2
 		EndIf
 		If !keyed
 			Keyword[] kws = BodyGen.GetKeywords(a, female, morphs[i])
@@ -235,24 +249,29 @@ Bool Function Eligible(Actor a, Bool female, String[] morphs)
 		EndIf
 		i += 1
 	EndWhile
-	Return keyed
+	If keyed
+		Return 1
+	EndIf
+	Return 0
 EndFunction
 
 ; Remember every keyed value, let BodyGen roll the actor, put the values back. With
 ; the plugin ready, it does exactly that through its bridge, the rules by name and
-; faction get their say, and it says no for anyone it has a reason to leave alone --
-; they are its to decide, and are not asked about again.
+; faction get their say, and it says no for anyone it has a reason to leave alone.
+; Only an accepted hand-off is not asked about again: the plugin owes that roll and
+; keeps it across a save (S-59); a refusal (a change on its way, a picking) is asked
+; again at the next scan -- once they have a body of their own, Kind says so.
 Function Adopt(Actor a, Bool female, FormList seen, Bool abPlugin)
 	If abPlugin
 		String why = Silhouette:DLL.RequestAdopt(a.GetFormID())
-		If seen
-			seen.AddForm(a)
-		EndIf
 		If why == ""
+			If seen
+				seen.AddForm(a)
+			EndIf
 			adopted += 1
 			Debug.Trace("Silhouette adopter: " + a.GetFormID() + " handed to Silhouette.dll to be rolled", 0)
 		Else
-			Debug.Trace("Silhouette adopter: " + a.GetFormID() + " left to Silhouette.dll: " + why, 0)
+			Debug.Trace("Silhouette adopter: " + a.GetFormID() + " left to Silhouette.dll for now: " + why, 0)
 		EndIf
 		Return
 	EndIf

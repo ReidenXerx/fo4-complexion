@@ -18,7 +18,7 @@ EndFunction
 ; S-16) and the shaft (S-29). Without Silhouette.dll the regeneration window takes them
 ; out of bodies an older build gave; with it, the plugin does.
 String[] Function StateMorphs() Global
-    String[] out = new String[19]
+    String[] out = new String[20]
     out[0] = "Erection"
     out[1] = "Erection Up"
     out[2] = "Erection Down"
@@ -38,6 +38,7 @@ String[] Function StateMorphs() Global
     out[16] = "BTUrethraCurve"
     out[17] = "BTSmoothPenisErect"
     out[18] = "BTSmoothPenisFlaccid"
+    out[19] = "AnatomyOpening"
     Return out
 EndFunction
 

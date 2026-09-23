@@ -46,7 +46,12 @@ namespace SH::Papyrus
 
 		Str Version(std::monostate) { return Str{ SH_VERSION_STRING }; }
 
-		std::int32_t ProtocolVersion(std::monostate) { return kProtocol; }
+		// The bridge asks at every load: the watchdog then knows it is there, even if it never polls.
+		std::int32_t ProtocolVersion(std::monostate)
+		{
+			Game::NoteAsked();
+			return kProtocol;
+		}
 
 		std::int32_t Stamp(std::monostate)
 		{
@@ -199,13 +204,16 @@ namespace SH::Papyrus
 
 		Str AssignedPreset(std::monostate, std::int32_t a_actor) { return Str{ D().AssignedPreset(Ref(a_actor)) }; }
 
+		// a_value: the marker's value, the build stamp -- or below 1 while the body is being written (S-58),
+		// and then read against this build.
 		Str PresetForMarker(std::monostate, Str a_marker, float a_value)
 		{
 			const auto c = D().CatalogPtr();
 			if (!c || !(a_value > 0.0F) || a_value >= 16777216.0F) {
 				return Str{};
 			}
-			return Str{ c->PresetForMarker(a_marker.c_str(), static_cast<std::uint32_t>(std::lround(a_value))).value_or(std::string{}) };
+			const auto stamp = a_value < 1.0F ? c->stamp : static_cast<std::uint32_t>(std::lround(a_value));
+			return Str{ c->PresetForMarker(a_marker.c_str(), stamp).value_or(std::string{}) };
 		}
 
 		std::int32_t PresetCount(std::monostate, bool a_female)

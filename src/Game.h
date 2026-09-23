@@ -41,8 +41,12 @@ namespace SH::Game
 	// The director's log lines, into ours.
 	void FlushLog();
 
-	// A load is starting: what was queued belongs to the save being left.
+	// A load or a new game is starting, on the main thread: what was queued, and what was decided about
+	// items, belongs to the save being left.
 	void ForgetInbox();
+
+	// The bridge asked for the protocol (its Connect): it is there, whether or not it then polls.
+	void NoteAsked();
 
 	// A save finished loading (or a new game started): the bridge should poll within a minute. A
 	// thread of ours says so in the log once when it does not -- the one symptom of a missing or

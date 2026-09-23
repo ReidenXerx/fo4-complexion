@@ -153,3 +153,27 @@ def resolve(data, plugins_txt, record_type, wanted, report):
     for edid in sorted(set(wanted) - set(found)):
         report.append(f'rules: no {record_type} with editor id {edid!r} in the load order - that rule is skipped')
     return found
+
+
+def find_inactive(data, plugins_txt, record_type, wanted):
+    """{editor id: plugin} for wanted ids that a plugin in Data defines while it is NOT in the load order
+    (disabled in plugins.txt, or never enabled) -- so a refusal can say "enable X" instead of "check the
+    spelling". Only asked after resolve() missed, so the slower scan of every file runs only then."""
+    active = {p.lower() for p in load_order(data, plugins_txt)}
+    by_fold = {}
+    for w in set(wanted):
+        by_fold.setdefault(_fold(w), []).append(w)
+    found = {}
+    if not by_fold:
+        return found
+    for path in sorted(pathlib.Path(data).iterdir(), key=lambda p: p.name.lower()):
+        if path.suffix.lower() not in ('.esm', '.esp', '.esl') or path.name.lower() in active or not path.is_file():
+            continue
+        try:
+            ids = editor_ids(path, record_type)
+        except (OSError, ValueError, zlib.error, struct.error):
+            continue
+        for edid in ids:
+            for w in by_fold.get(_fold(edid), ()):
+                found.setdefault(w, path.name)
+    return found

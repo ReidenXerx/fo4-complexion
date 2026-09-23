@@ -6,4 +6,8 @@
 namespace SH::CoSave
 {
 	bool Register(const F4SE::SerializationInterface* a_intfc);
+
+	// Nothing of the save being left may reach the next one: the director's records, and the records a
+	// newer Silhouette wrote that this one keeps to write back. F4SE's revert, and a new game.
+	void Revert();
 }

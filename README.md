@@ -53,19 +53,23 @@ LooksMenu, a moment after they are made (LooksMenu is reached through Papyrus, a
 Without the DLL, everything above keeps working.
 
 - **Rules by name and faction, and a name blacklist** — OBody's keys and OBody's priority, in
-  `F4SE/Plugins/Silhouette/Silhouette_presetDistributionConfig.json`. A name is the NPC record's, as
-  OBody reads it. BodyGen carries every rule it can (form ids, plugins, races); the plugin applies the
-  rest. Someone a rule gave one of several presets keeps it while the rule still lists it.
+  `F4SE/Plugins/Silhouette/Silhouette_presetDistributionConfig.json`, which lists every key with its
+  default. The plugin reads what the generator compiles from it, not the file: after editing it, run the
+  generator and install what it writes. A name is the NPC record's, as OBody reads it. BodyGen carries
+  every rule it can (form ids, plugins, races); the plugin applies the rest. Someone a rule gave one of
+  several presets keeps it while the rule still lists it; *Back to random* draws from the rule again.
 - **ORefit** — while someone is dressed: breasts held together and lifted, and nipples flattened under
   heavy clothes -- armour, jackets, coats, told by the item's name (`heavyWords` in the config; items can
-  be named heavy or light too). It only ever raises a slider, under a keyword of its own: the moment they
-  undress they are exactly their own body. Removing `Silhouette.esp` takes every clothed shape off by
-  itself, and without a working DLL the bridge takes them off the people around you. Nobody in power
-  armour is refit. `<Preset>-Refit` BodySlide presets and OBody's outfit lists work as in OBody.
+  be named heavy or light too). The flattening shows only on outfits whose meshes carry the refit sliders
+  (mod outfits built with them; no vanilla outfit does). It only ever raises a slider, under a keyword of
+  its own: the moment they undress they are exactly their own body. Removing `Silhouette.esp` takes every
+  clothed shape off by itself, and without a working DLL the bridge takes them off the people around you.
+  Nobody in power armour is refit. `<Preset>-Refit` BodySlide presets and OBody's outfit lists work as in
+  OBody.
 - **The NPC picker** — MCM hotkeys: aim, *Pick*, *Next*/*Previous* to try every preset on them live,
   *Keep* or *Cancel*. The MCM page *The NPC in your sights* gives a preset, a new random body, or names
-  the one they have. A choice is kept like a rule's, and marked in LooksMenu so a save made without the
-  DLL loses nothing.
+  the one they have. A choice is kept like a rule's, and marked in LooksMenu, so a save made without the
+  DLL keeps it (MCM's *Refresh* pressed without the DLL gives the body again without the mark).
 - **Touch-up** — bodies an older build gave get the nipple and genital variety they lack, and lose any
   shaft slider (never part of a body); a value you take off afterwards stays off.
 - **API** — `Silhouette:API`, OBody NG's function names (`GetPresetAssignedToActor`,
@@ -75,13 +79,16 @@ Without the DLL, everything above keeps working.
 
 Requirements, in addition: Fallout 4 **1.10.163** with F4SE 0.6.23 (the plugin refuses other
 runtimes), the **Microsoft Visual C++ 2015-2022 Redistributable 14.40 or newer** (x64), `Silhouette.esp`
-enabled (light, no load-order slot), MCM for the picker. Build: `scripts/build-plugin.ps1` (the DLL, 280+
+enabled (light, no load-order slot), MCM for the picker. Build: `scripts/build-plugin.ps1` (the DLL, 360+
 offline tests, and the plugin's own parser run on the generated files), `scripts/build-papyrus.ps1`, then
 `scripts/deploy-dev.ps1` with the game closed. MCM > Silhouette > *How is Silhouette doing?* says what is
 loaded and what is missing; the plugin logs to `Documents\My Games\Fallout4\F4SE\Silhouette.log`.
 
 Removing it: disable `Silhouette.esp` and remove the files. Bodies stay as they are (they are
-LooksMenu's); every clothed shape goes with the esp.
+LooksMenu's); every clothed shape goes with the esp. **Never go back by installing an older
+`Silhouette.esp`**: one without the refit keyword makes LooksMenu keep every clothed shape as the body
+itself, for good. Remove Silhouette entirely instead, or remove only `Silhouette.dll` (the bridge then
+takes the clothed shapes off).
 
 ## Requirements
 
@@ -107,8 +114,9 @@ All three read the built meshes from Data by default. If BodySlide builds somewh
 deployed.
 
 Install the `data/` folder as a mod, with `build/papyrus/Silhouette/Player.pex` as
-`Scripts/Silhouette/Player.pex`. **Run the generator again whenever you add presets or rebuild a body
-in BodySlide.**
+`Scripts/Silhouette/Player.pex`. **Run the generator again whenever you add presets, rebuild a body
+in BodySlide, or edit `Silhouette_presetDistributionConfig.json`** -- the game never reads that file
+itself, only what the generator makes of it.
 
 Options: `--no-partial` hands out only presets that fit fully; `--compensate` writes templates
 relative to a base that is not zeroed; `--data` points at another `Data` folder; `--report file.json`

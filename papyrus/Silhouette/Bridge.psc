@@ -24,8 +24,10 @@ CustomEvent OnActorNaked            ; akArgs: [0] Actor
 CustomEvent OnActorRemovingClothes  ; akArgs: [0] Actor
 CustomEvent OnORefitChanged         ; akArgs: [0] Actor, [1] Bool applied
 
-; ONE timer id. Rapport's poll died for good at the exact call that started a
-; timer with a second id; a single id is the only kind this engine has kept.
+; One timer id is all this needs. Papyrus never runs two OnTimer handlers of one
+; script at once, so a handler that stalls holds up every timer of the script:
+; nothing that waits on the game (a drain, one frame per BodyGen call) runs on the
+; timer's stack -- it runs on its own, through CallFunctionNoWait.
 Int Property kPollTimer = 1 AutoReadOnly
 Float Property PollSeconds = 1.0 AutoReadOnly
 ; While work waits the poll comes round faster: the picker's orders are the player
@@ -67,7 +69,8 @@ Bool _sweeping = false    ; no usable plugin: refits left behind are taken off (
 Keyword _refitKeyword
 Keyword _aafBusy
 Keyword _aafLocked
-Actor[] _swept
+; Form ids, not actors: an Actor held in a script variable is kept in memory with it.
+Int[] _swept
 
 ;---------------------------------------------------------------------------
 ; Startup: on quest start and on every load. This script's variables live in the
@@ -88,9 +91,8 @@ Function Connect()
 	_polls = 0
 	_plugin = False
 	_sweeping = False
-	_swept = new Actor[0]
-	; Cancel first: Papyrus cannot say whether a timer runs, and two polls at once
-	; is how Rapport's bridge first went wrong.
+	_swept = new Int[0]
+	; Cancel first: a timer started before the save may still be counting down.
 	CancelTimer(kPollTimer)
 	_refitKeyword = Game.GetFormFromFile(RefitKeywordID, "Silhouette.esp") as Keyword
 	_aafBusy = None
@@ -100,8 +102,9 @@ Function Connect()
 		_aafLocked = Game.GetFormFromFile(AAFActorLocked, "AAF.esm") as Keyword
 	EndIf
 	; Checked once per load: calling into a missing plugin's script fills the log on
-	; every call.
-	_mcm = F4SE.GetPluginVersion("MCM") > 0
+	; every call. By the names the plugins register with F4SE (f4se.log), not their
+	; file names: MCM is "F4MCM", LooksMenu "F4EE".
+	_mcm = F4SE.GetPluginVersion("F4MCM") > 0 || F4SE.GetPluginVersion("MCM") > 0
 	_looksMenu = F4SE.GetPluginVersion("F4EE") > 0
 	If !_looksMenu
 		Debug.Trace("Silhouette bridge: LooksMenu is not loaded - no body can be shaped", 0)
@@ -243,6 +246,11 @@ Function RunOrder(Int aiOrder)
 	EndIf
 	Bool female = Silhouette:DLL.OrderFemale(aiOrder)
 
+	If Silhouette:DLL.OrderKind(aiOrder) == 5 && Busy(a)
+		; A touch-up can wait: it would change her shapes in the middle of the scene.
+		Silhouette:DLL.OrderDefer(aiOrder)
+		Return
+	EndIf
 	If Silhouette:DLL.OrderRegenerates(aiOrder)
 		If Busy(a)
 			; A roll keeps every keyed value it finds, and in a scene those are the
@@ -250,7 +258,9 @@ Function RunOrder(Int aiOrder)
 			Silhouette:DLL.OrderDefer(aiOrder)
 			Return
 		EndIf
-		Regenerate(a, female)
+		If !Regenerate(aiOrder, who, a, female)
+			Return
+		EndIf
 	EndIf
 
 	Bool probe = Silhouette:DLL.OrderProbes(aiOrder)
@@ -344,8 +354,10 @@ EndFunction
 
 ; BodyGen rolls them again. RegenerateMorphs clears EVERY key, so the keyed values
 ; (other mods', and the refit) are remembered first and put back after -- the first
-; 128 of them: a Papyrus array holds no more.
-Function Regenerate(Actor a, Bool female)
+; 128 of them: a Papyrus array holds no more. Reading them takes a frame a value, so
+; a scene can start meanwhile, or a load forget the order: both are asked again right
+; before the roll. False: nothing was rolled, and the order is deferred or gone.
+Bool Function Regenerate(Int aiOrder, Int aiWho, Actor a, Bool female)
 	String[] morphs = BodyGen.GetMorphs(a, female)
 	String[] names = new String[0]
 	Keyword[] keys = new Keyword[0]
@@ -373,22 +385,32 @@ Function Regenerate(Actor a, Bool female)
 		EndIf
 		i += 1
 	EndWhile
+	If Silhouette:DLL.OrderActor(aiOrder) != aiWho
+		Return False
+	EndIf
+	If Busy(a)
+		Silhouette:DLL.OrderDefer(aiOrder)
+		Return False
+	EndIf
 	BodyGen.RegenerateMorphs(a, False)
 	Int j = 0
 	While j < names.Length
 		BodyGen.SetMorph(a, female, names[j], keys[j], values[j])
 		j += 1
 	EndWhile
+	Return True
 EndFunction
 
 ; The names are sent as the compiler would have mangled them: against the decompiled
 ; base sources SendCustomEvent takes a plain string, and a listener's registration
 ; asks for "<script>_<event>" (S-46). Each raised event is told back to the plugin:
-; one handed out but not raised before a save is made again after the load.
+; one handed out but not raised before a save is made again after the load. At most
+; 64 a poll, and the next one is only taken while there is room to raise it: one
+; taken and not raised would be lost until the actor is next probed.
 Function RaiseEvents()
 	Int e = Silhouette:DLL.NextEvent()
 	Int raised = 0
-	While e != 0 && raised < 64
+	While e != 0
 		Int kind = Silhouette:DLL.EventKind(e)
 		Actor a = Game.GetForm(Silhouette:DLL.EventActor(e)) as Actor
 		If a
@@ -415,7 +437,11 @@ Function RaiseEvents()
 			Silhouette:DLL.EventDone(e)
 		EndIf
 		raised += 1
-		e = Silhouette:DLL.NextEvent()
+		If raised < 64
+			e = Silhouette:DLL.NextEvent()
+		Else
+			e = 0
+		EndIf
 	EndWhile
 EndFunction
 
@@ -440,11 +466,11 @@ Function Sweep()
 	Int i = 0
 	While i < people.Length
 		Actor a = people[i]
-		If a && _swept.Find(a, 0) < 0
+		If a && _swept.Find(a.GetFormID(), 0) < 0
 			If _swept.Length >= 128
-				_swept = new Actor[0]
+				_swept = new Int[0]
 			EndIf
-			_swept.Add(a, 1)
+			_swept.Add(a.GetFormID(), 1)
 			Bool female = a.GetLeveledActorBase().GetSex() == 1
 			If BodyGen.GetMorph(a, female, RefitMarker, _refitKeyword) > 0.0
 				BodyGen.RemoveMorphsByKeyword(a, female, _refitKeyword)
@@ -464,6 +490,10 @@ EndFunction
 ;---------------------------------------------------------------------------
 
 Bool Function Ready()
+	If !_looksMenu
+		Debug.Notification("Silhouette: LooksMenu is not loaded, so no body can be shaped.")
+		Return False
+	EndIf
 	If !_plugin
 		Debug.Notification("Silhouette: Silhouette.dll is not loaded, or is from another release.")
 		Return False
@@ -536,6 +566,10 @@ Int Function MenuTarget()
 EndFunction
 
 Bool Function MenuReady()
+	If !_looksMenu
+		Debug.MessageBox("Silhouette: LooksMenu is not loaded, so no body can be shaped: its BodyGen is what gives every body.")
+		Return False
+	EndIf
 	If !_plugin
 		Debug.MessageBox("Silhouette: Silhouette.dll is not loaded (or is from another release), so NPCs cannot be shaped one by one. BodyGen still gives everyone a body.")
 		Return False
@@ -587,7 +621,12 @@ Function MenuRandom()
 		Return
 	EndIf
 	Act()
-	Debug.MessageBox(Silhouette:DLL.NameOf(target) + " gets a new body, rolled as if met for the first time; other mods' body morphs are kept. Close the menu to see it.")
+	String see = " Close the menu to see it."
+	Actor a = Game.GetForm(target) as Actor
+	If a && Busy(a)
+		see = " Another mod has them in a scene: the new body comes when it ends."
+	EndIf
+	Debug.MessageBox(Silhouette:DLL.NameOf(target) + " gets a new body, rolled as if met for the first time (a rule that covers them draws again); other mods' body morphs are kept." + see)
 EndFunction
 
 Function MenuWhich()
@@ -620,7 +659,11 @@ String Function BodyOf(Actor a)
 					Return "kept bare by the blacklist"
 				EndIf
 				String preset = Silhouette:DLL.PresetForMarker(morphs[i], v)
-				If preset != ""
+				If preset != "" && v < 1.0
+					; The marker says "pending" (S-58): being written now, or cut short by a
+					; save and given again at the next probe.
+					Return preset + " (being written)"
+				ElseIf preset != ""
 					Return preset
 				EndIf
 				Return "a marker this install cannot name (" + morphs[i] + ")"

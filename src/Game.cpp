@@ -57,6 +57,7 @@ namespace SH::Game
 		std::atomic<std::int64_t>  g_lastAimedMs{ 0 };
 		std::atomic<std::int64_t>  g_loadedMs{ 0 };  // when the last load finished, 0 before any
 		std::atomic<std::int64_t>  g_pumpedMs{ 0 };  // the bridge's last poll
+		std::atomic<std::int64_t>  g_askedMs{ 0 };   // the bridge's last protocol check (Connect)
 		std::atomic<bool>          g_watching{ false };
 		std::int64_t               g_summaryMs{ 0 };  // main thread: the last summary line
 
@@ -208,6 +209,8 @@ namespace SH::Game
 		{
 			bool        clothed{ false };
 			bool        heavy{ false };
+			std::string heavyBy;  // the first heavy item's name
+			bool        powerArmor{ false };
 			std::string outfitSet;
 			bool        removing{ false };  // the event's item comes off a body, chest or pelvis slot
 		};
@@ -290,11 +293,18 @@ namespace SH::Game
 			const auto skin = [&](RE::TESObjectARMO* a_item) { return std::ranges::find(skins, a_item) != skins.end(); };
 			std::unordered_set<RE::TESObjectARMO*> checked;
 			for (auto* item : bySlot) {
-				if (!item || skin(item) || !checked.insert(item).second || !Dresses(a_catalog, item)) {
+				if (!item || skin(item) || !checked.insert(item).second) {
+					continue;
+				}
+				worn.powerArmor = worn.powerArmor || PowerArmor(item);
+				if (!Dresses(a_catalog, item)) {
 					continue;
 				}
 				worn.clothed = true;
-				worn.heavy = worn.heavy || Heavy(a_catalog, item);
+				if (!worn.heavy && Heavy(a_catalog, item)) {
+					worn.heavy = true;
+					worn.heavyBy = NameOfForm(item);
+				}
 			}
 			if (worn.clothed) {
 				for (const int slot : a_catalog.clothedSlots) {
@@ -309,8 +319,8 @@ namespace SH::Game
 				}
 			}
 			// OBody raises OnActorRemovingClothes for whatever leaves the body, chest or pelvis slots,
-			// whatever ORefit's own lists say about it.
-			worn.removing = changing && !a_equipping && !skin(changing) && (SlotsOf(changing) & g_resolved.clothedMask) != 0;
+			// whatever ORefit's own lists say about it -- but a power armour piece put down is not clothing.
+			worn.removing = changing && !a_equipping && !skin(changing) && (SlotsOf(changing) & g_resolved.clothedMask) != 0 && !PowerArmor(changing);
 			return worn;
 		}
 
@@ -351,6 +361,8 @@ namespace SH::Game
 			const auto worn = ReadWorn(a_actor, a_catalog, s.facts.female, a_changing, a_equipping);
 			s.clothed = worn.clothed;
 			s.heavy = worn.heavy;
+			s.heavyBy = worn.heavyBy;
+			s.powerArmor = worn.powerArmor;
 			s.outfitSet = worn.outfitSet;
 			if (a_removing) {
 				*a_removing = worn.removing;
@@ -375,9 +387,19 @@ namespace SH::Game
 				auto loaded = g_loadedMs.load();
 				if (loaded != 0 && g_pumpedMs.load() < loaded && NowMs() - loaded > kSilentBridgeMs) {
 					// Once per load -- and not over a newer load's stamp, set while this one was being checked.
+					// The bridge only sweeps when this plugin cannot be used (S-54): say why, not "check the esp".
 					if (g_loadedMs.compare_exchange_strong(loaded, 0)) {
-						logger::warn("the bridge has not polled in the minute since the save loaded. If that goes on, check that Silhouette.esp is "
-									 "enabled and its scripts are installed: until it polls, nobody is shaped one by one (BodyGen still gives bodies)");
+						if (!g_director.Ready()) {
+							logger::warn("nobody is shaped one by one this session - {}. The bridge only takes refits off (BodyGen still gives bodies)",
+								g_director.Status());
+						} else if (g_askedMs.load() >= loaded) {
+							logger::warn("the bridge checked in but does not poll: its scripts are from another release than Silhouette.dll. Install "
+										 "one release's files together; until then nobody is shaped one by one (BodyGen still gives bodies)");
+						} else {
+							logger::warn("the bridge has not polled in the minute since the save loaded. If that goes on, check that Silhouette.esp "
+										 "is enabled, its scripts are installed and LooksMenu is loaded: until it polls, nobody is shaped one by one "
+										 "(BodyGen still gives bodies)");
+						}
 					}
 				}
 			}
@@ -438,6 +460,13 @@ namespace SH::Game
 			auto        parsed = m ? ParseManifest(*m, merror) : std::nullopt;
 			if (!parsed) {
 				logger::warn("manifest {}: {}", path.filename().string(), merror);
+				continue;
+			}
+			// A build's manifest is <stamp>.json: one under another name (copied, renamed by hand) would
+			// replace the real one's meaning for every body of that build.
+			if (path.stem().string() != std::to_string(parsed->first)) {
+				logger::warn("manifest {} says it is build stamp {}: not read (a manifest is named for its stamp)", path.filename().string(),
+					parsed->first);
 				continue;
 			}
 			catalog->AddManifest(parsed->first, std::move(parsed->second));
@@ -504,13 +533,23 @@ namespace SH::Game
 
 	void ForgetInbox()
 	{
-		std::scoped_lock l{ g_inbox.lock };
-		g_inbox.loaded.clear();
-		g_inbox.equips.clear();
-		g_inbox.dropped = 0;
-		g_inbox.warned = false;
+		{
+			std::scoped_lock l{ g_inbox.lock };
+			g_inbox.loaded.clear();
+			g_inbox.equips.clear();
+			g_inbox.dropped = 0;
+			g_inbox.warned = false;
+		}
 		g_crosshair.store(0);
 		g_lastAimed.store(0);
+		// Main thread (a load or a new game starting): an item created in the save being left (0xFF)
+		// has an id the next save gives to something else.
+		g_resolved.heavyOf.clear();
+	}
+
+	void NoteAsked()
+	{
+		g_askedMs.store(NowMs());
 	}
 
 	void NoteGameLoaded()

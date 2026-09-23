@@ -99,6 +99,11 @@ baked, what is a runtime state (S-16) or the shaft (S-29). The plugin does not r
   to know when NOT to override) and what only the runtime can do (names, factions, name blacklists);
 - ORefit: the clothed slots, OBody's outfit lists, the refit sets as floors, and what counts as heavy.
 
+The rules come from `F4SE/Plugins/Silhouette/Silhouette_presetDistributionConfig.json`, which ships with
+every key written out at its default (S-61) and the owner's tuning; the plugin never reads it. Edit it,
+run the generator, and install what it writes: the change is in the catalog and the BodyGen lines, not in
+the file. An empty `distributeRaces` is refused -- the default is ["HumanRace"].
+
 Both BodyGen files and the catalog carry the same build, stamp and **rules hash**; the plugin refuses
 a set whose three disagree (S-19). `manifests/<stamp>.json` (S-12) stays the record of what each build
 wrote, and the plugin reads them to name the preset behind any marker, including markers an older
@@ -114,10 +119,13 @@ every change to her body with nothing to keep in step, and undressing removes th
 her own body again. A refit cannot lower anything — that is the price. Nothing about a refit is kept in
 the co-save: a refit marker under the same keyword says which set is on (S-50: a whole number naming the
 set and its floors, ODD under light clothes and EVEN under heavy ones), and 0.25 while one is being
-written, so a probe knows. A build with new floors reaches a woman who never undresses. Removing
-Silhouette.esp removes every refit, because LooksMenu drops values whose keyword no longer resolves; a
-missing or mismatched Silhouette.dll, or a refused catalog, makes the bridge sweep refits off the people
-around the player instead (S-54).
+written, so a probe knows. A build with new floors reaches a woman who never undresses; a refit already
+right is not written again. Removing Silhouette.esp outright removes every refit, because LooksMenu drops
+the values of a plugin that is not loaded; a missing or mismatched Silhouette.dll, or a refused catalog,
+makes the bridge sweep refits off the people around the player instead (S-54). Loading an OLDER
+Silhouette.esp, without the keyword, is the one way to lose this: LooksMenu checks only that the plugin's
+name is loaded and files each value whose keyword form is missing under her own body -- every refit
+becomes a body for good (S-27). The deploy and release scripts refuse such an esp; never roll back to one.
 
 Clothed, as OBody decides it and in Fallout 4's slots: something in **BODY (33)**, **[U] Torso (36)**
 or **[A] Torso (41)** that is not blacklisted, or any force-refit item (OBody's keys in
@@ -127,11 +135,18 @@ BreastsTogether at least 0.3 and PushUp at least 0.2).
 
 **Heavy** clothes also flatten the nipples (NipBGone 1). Heavy is told by the item's NAME (S-48): the
 config's lists first (`heavyOutfitsFormID`, `heavyOutfits`, `lightOutfitsFormID`, `lightOutfits`), then a
-whole word or phrase of `heavyWords` -- armor, armour, armored, armoured, chest piece, chestpiece,
-breastplate, cuirass, jacket, coat, trenchcoat, parka by default. Anything else is light: a chest flattened
-under a shirt is worse than a nipple showing through a coat. Silhouette.log names each heavy or listed item
-once, with its reason. A mod that raises nipples (fo4-anatomy's arousal) holds them flat while the refit
-marker is even (S-49): `Silhouette:API.IsHeavilyDressed`, or the marker read from LooksMenu directly.
+whole word or phrase of `heavyWords` -- by default armor, armour, armored, armoured, chest piece,
+chestpiece, breastplate, chestplate, plate, cuirass, carapace, kevlar, torso, jacket, coat, trenchcoat,
+overcoat, greatcoat, longcoat, raincoat, dreadcoat, battlecoat, duster, parka. Anything else is light: a
+chest flattened under a shirt is worse than a nipple showing through a coat. Silhouette.log names each
+heavy or listed item once, with its reason, and "Which body" names the item. A mod that raises nipples
+(fo4-anatomy's arousal) holds them flat while the refit marker is even (S-49):
+`Silhouette:API.IsHeavilyDressed`, or the marker read from LooksMenu directly.
+
+What the flattening shows depends on the garment: NipBGone moves a nipple only where the outfit's own
+mesh carries the slider. No vanilla or DLC garment does; mod outfits built with the refit sliders do
+(Mercenary's jackets, Clothing Of The Commonwealth's coats). Names are read as the game shows them, so on
+a localized Fallout4.esm no vanilla item is heavy until `heavyWords` holds that language's words.
 
 Refit: every clothed woman of a distributed race who HAS a body — a Silhouette body, another BodyGen
 mod's, a custom follower's, a hand-edited one — except anyone blacklisted, anyone reset this session,
@@ -181,7 +196,8 @@ every tier it can name; the plugin sees an NPC load and acts only where a NAME o
 winner: it assigns that preset (the bridge replaces BodyGen's roll), or, for a name blacklist, leaves
 the NPC bare with a stored blacklist marker so BodyGen never rolls them again. Names are the NPC
 record's, as OBody reads them, so a rename at runtime changes nothing. A rule with several presets draws
-one per person, and a met NPC keeps that draw while the rule still lists it (S-52). Race and faction
+one per person, and a met NPC keeps that draw while the rule still lists it (S-52); Back to random draws
+from the rule again, onto another of its presets, and that draw is kept from then on (S-60). Race and faction
 editor ids are found in the load order when the generator runs, in any case; a race no plugin defines
 is refused there, since a rule naming it would match nobody.
 
@@ -210,14 +226,19 @@ given on request, and an announcement a save cut off is made again after the loa
 - A DLL and scripts of different releases: the bridge stays off, says so, and sweeps refits off.
 - A catalog missing, or of another run than the BodyGen files: the plugin refuses to act on rules and
   ORefit and says so in its log, at load in a notification, and in the MCM's status; refits are swept.
-- LooksMenu missing: nothing can be shaped; the bridge stays off and says so once.
-- Silhouette.esp missing or disabled: nothing polls; the plugin's log says so a minute after the load.
-  An older Silhouette.esp without the refit keyword: ORefit stays off rather than writing into the body.
+- LooksMenu missing: nothing can be shaped; the bridge stays off and says so once, and the API and MCM
+  name LooksMenu as the reason.
+- Silhouette.esp missing or disabled: nothing polls; the plugin's log says so a minute after the load --
+  naming a refused catalog, or scripts of another release, when that is the reason instead.
+  An older Silhouette.esp without the refit keyword: ORefit stays off rather than writing into the body --
+  but the refits a save already holds become bodies (S-27): never load one.
 - Every order the bridge cannot complete is reported back, never dropped silently; an actor out of
-  memory keeps their order until they are seen again, and one AAF has busy waits for the scene to end
-  (S-56). A load forgets the orders of the save being left, and the next session's probes repair what
-  they had half done.
+  memory keeps their order until they are seen again, and a roll or touch-up for someone AAF has busy
+  waits for the scene to end, while the rest of their work goes on (S-56). A load forgets the orders of
+  the save being left; what was asked for is still owed (S-59), and a body a save cut short is given
+  again whole (S-58).
 - Silhouette.log says every half minute what the bridge did (probes, bodies, refits, touch-ups, failures)
-  and what still waits, lane by lane, while there is any of it.
+  and what still waits, lane by lane, while there is any of it -- with what a scene holds back and what
+  waits for people out of memory.
 - A save written by a newer Silhouette: its records are kept unchanged and written back into every save,
   and this version remembers nothing new until the newer one is installed again.

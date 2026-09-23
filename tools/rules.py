@@ -68,16 +68,20 @@ DEFAULT = {
     'refitOutfitPresetsFemale': {}, 'refitOutfitPresetsMale': {},
     # Silhouette's additions. Which races take part in random distribution: OBody
     # distributes to every NPC race; in Fallout 4 only races that wear the human body
-    # should, and the base game has one.
+    # should, and the base game has one. Never empty (owner, 2026-09-24): the shipped
+    # config lists HumanRace, and a list emptied by hand is refused, not read as the default.
     'distributeRaces': ['HumanRace'],
     # What counts as heavy clothes, which flatten the nipples under ORefit (S-48): an item
     # whose NAME holds one of these words or phrases, as a whole word, in any case --
-    # plainly armour, or a jacket or coat over the chest. Anything the name does not say
-    # is light: nipples flattened where they should show are worse than nipples showing
-    # where they should not (owner, 2026-09-23). Single items named heavy or light by form
-    # id ({plugin: [ids]}) or by exact name win over the words.
-    'heavyWords': ['armor', 'armour', 'armored', 'armoured', 'chest piece', 'chestpiece', 'breastplate',
-                   'cuirass', 'jacket', 'coat', 'trenchcoat', 'parka'],
+    # plainly armour, a plate over the chest, or a jacket or coat. Anything the name does
+    # not say is light: nipples flattened where they should show are worse than nipples
+    # showing where they should not (owner, 2026-09-23). Single items named heavy or light
+    # by form id ({plugin: [ids]}) or by exact name win over the words. The plates and the
+    # longer coats came from measuring 1,426 dressing items (wave 3, owner 2026-09-24).
+    'heavyWords': ['armor', 'armour', 'armored', 'armoured', 'cuirass', 'kevlar', 'carapace', 'torso',
+                   'chest piece', 'chestpiece', 'chestplate', 'breastplate', 'plate',
+                   'jacket', 'coat', 'overcoat', 'greatcoat', 'battlecoat', 'dreadcoat', 'longcoat',
+                   'raincoat', 'trenchcoat', 'duster', 'parka'],
     'heavyOutfitsFormID': {}, 'heavyOutfits': [],
     'lightOutfitsFormID': {}, 'lightOutfits': [],
 }
@@ -85,6 +89,25 @@ DEFAULT = {
 # The player (Fallout4.esm 0x7) and the two character-creation dummies (0xA7D34, 0xA7D35): their
 # own lines come last in Silhouette_morphs.ini, so a rule naming them never reaches them (S-45).
 PLAYER_FORMS = {'000007', '0A7D34', '0A7D35'}
+
+
+def is_player_form(plugin, fid):
+    """The player or a character-creation dummy, as form_key() writes the id: no rule reaches them,
+    so neither the BodyGen lines nor the catalog may claim one does (S-45)."""
+    return str(plugin).lower() == 'fallout4.esm' and fid in PLAYER_FORMS
+
+
+EMPTY_RACES = ('distributeRaces is empty: no race would get a random body. The default is ["HumanRace"] -- '
+               'put it back, or list the races (by editor id) that wear the human body')
+
+
+def distribute_races(cfg):
+    """The races random distribution gives a body to. Never empty: an emptied list is refused, not
+    read as the default (owner, 2026-09-24); a config without the key has DEFAULT's."""
+    races = cfg.get('distributeRaces', DEFAULT['distributeRaces'])
+    if not races:
+        raise SystemExit(f'config: {EMPTY_RACES}')
+    return list(races)
 
 # The shape every key must have. A value of the wrong shape is refused with its key named: the
 # plugin refuses a catalog that does not parse, and a race list written as a string would give
@@ -169,6 +192,8 @@ def validate(cfg, source):
             for w in v:
                 if not has_word(w):
                     bad(key, f'words or phrases ({w!r} holds no letter or digit)')
+        if key == 'distributeRaces' and not v:
+            raise SystemExit(f'{source}: {EMPTY_RACES}')
 
 
 def load(config_path, include_dirs, report):
@@ -266,7 +291,7 @@ def compile_lines(cfg, resolve_presets, data, report):
     reporting the ones that do not.
     """
     lines, needed = [], set()
-    distribute = cfg.get('distributeRaces') or ['HumanRace']
+    distribute = distribute_races(cfg)
 
     def plugin_ok(plugin):
         if plugin.lower().startswith('all'):
@@ -320,7 +345,7 @@ def compile_lines(cfg, resolve_presets, data, report):
             if fid is None:
                 report.append(f'rules: npcFormID {plugin} {key!r} is not a FormID, skipped')
                 continue
-            if plugin.lower() == 'fallout4.esm' and fid in PLAYER_FORMS:
+            if is_player_form(plugin, fid):
                 report.append(f'rules: npcFormID {plugin} {key!r} is the player or a character-creation dummy: '
                               f'their own lines come last and are never randomised (S-45), so this rule never '
                               f'reaches them -- pick the player\'s body in MCM instead')
@@ -338,7 +363,7 @@ def compile_lines(cfg, resolve_presets, data, report):
             if fid is None:
                 report.append(f'rules: blacklistedNpcsFormID {plugin} {key!r} is not a FormID, skipped')
                 continue
-            if plugin.lower() == 'fallout4.esm' and fid in PLAYER_FORMS:
+            if is_player_form(plugin, fid):
                 report.append(f'rules: blacklistedNpcsFormID {plugin} {key!r} is the player or a character-creation '
                               f'dummy: their own lines come last (S-45), so this blacklist never reaches them')
                 continue
@@ -353,6 +378,9 @@ UNSHAPED = 'Silhouette_Unshaped'
 
 
 def write_default(path):
-    """The shipped config: every key present and empty, as OBody ships its own."""
+    """A config with every key present and its default value written out -- the rules empty, the
+    heavy words and distributeRaces ["HumanRace"] spelled in full -- so a user sees each option and
+    what it holds without reading this file (owner, 2026-09-24). Only ever written where there is
+    no config yet: the generator never writes into a config it reads."""
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(DEFAULT, indent=2) + '\n', encoding='utf-8')

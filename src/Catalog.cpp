@@ -374,8 +374,9 @@ namespace SH
 	{
 		try {
 			Catalog c;
+			// Read whole, never through an int: 2^32+1 would wrap to 1 and pass.
 			const auto& schema = At(a_doc, "schema", "catalog");
-			if (!schema.is_number_integer() || schema.get<int>() != 1) {
+			if (!schema.is_number_integer() || Unsigned(schema, "catalog.schema") != 1) {
 				throw Bad("catalog: schema must be 1 (this plugin reads format 1 only)");
 			}
 			c.schema = 1;
@@ -496,10 +497,11 @@ namespace SH
 
 			const auto& orefit = At(a_doc, "orefit", "catalog");
 			for (const auto& s : List(At(orefit, "slots", "orefit"), "orefit.slots")) {
-				if (!s.is_number_integer() || s.get<int>() < 30 || s.get<int>() > 61) {
+				const auto slot = Unsigned(s, "orefit.slots");  // whole: 2^32+33 would wrap to 33 through an int
+				if (slot < 30 || slot > 61) {
 					throw Bad("orefit.slots: biped slots are 30..61");
 				}
-				c.clothedSlots.push_back(s.get<int>());
+				c.clothedSlots.push_back(static_cast<int>(slot));
 			}
 			c.outfitBlacklist = Refs(At(orefit, "blacklist", "orefit"), "orefit.blacklist");
 			c.outfitBlacklistNames = Strings(At(orefit, "blacklistNames", "orefit"), "orefit.blacklistNames");

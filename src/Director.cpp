@@ -8,6 +8,7 @@ namespace SH
 		constexpr std::size_t kMaxLog = 512;
 		constexpr float       kRefitPending = 0.25F;  // the refit marker while a refit is being written
 		constexpr int         kRefitUnfinished = -2;  // what a probe makes of a pending marker
+		constexpr float       kBodyPending = 0.25F;   // a body marker while its body is being written (S-58)
 
 		bool Distributed(const Catalog& a_catalog, const ActorFacts& a_facts)
 		{
@@ -229,10 +230,14 @@ namespace SH
 		a_session.base = a_sighting.base;
 		a_session.clothed = a_sighting.clothed;
 		a_session.heavy = a_sighting.heavy;
+		a_session.heavyBy = a_sighting.heavyBy;
 		a_session.outfitSet = a_sighting.outfitSet;
 		a_session.facts = a_sighting.facts;
-		a_session.eligible = a_sighting.eligible && Distributed(*_catalog, a_sighting.facts);
-		a_session.verdict = Decide(*_catalog, a_sighting.facts);
+		if (const auto* rec = _registry.Find(ref)) {
+			a_session.facts.salt = rec->salt;  // the rules draw as Back to random last left them (S-60)
+		}
+		a_session.eligible = a_sighting.eligible && Distributed(*_catalog, a_session.facts);
+		a_session.verdict = Decide(*_catalog, a_session.facts);
 		a_session.blacklisted = a_session.verdict.blacklisted;
 	}
 
@@ -278,6 +283,10 @@ namespace SH
 			WorkFor(ref, Lane::kBackground).probe = true;
 			return;
 		}
+		if (!session.settled) {
+			AfterProbe(ref, session);  // the picker's snapshot read them before they were seen
+			return;
+		}
 		DecideBody(ref, session);
 		ReconcileRefit(ref);
 	}
@@ -298,14 +307,20 @@ namespace SH
 			LeaveAlone(ref, session);
 			return;
 		}
-		if (a_removedClothing) {
+		// Climbing into power armour takes the outfit off and getting out puts the pieces down: neither is
+		// undressing, and a mod listening for these would be fooled by both.
+		if (a_removedClothing && !a_sighting.powerArmor) {
 			Push(EventKind::kRemovingClothes, ref);
 		}
-		if (knew && was && !session.clothed) {
+		if (knew && was && !session.clothed && !a_sighting.powerArmor) {
 			Push(EventKind::kNaked, ref);
 		}
 		if (!session.probed) {
 			WorkFor(ref, Lane::kNormal).probe = true;  // first contact while dressing: the refit follows the probe
+			return;
+		}
+		if (!session.settled) {
+			AfterProbe(ref, session);  // the picker's snapshot read them before they were seen
 			return;
 		}
 		ReconcileRefit(ref);
@@ -381,13 +396,22 @@ namespace SH
 			ReconcileRefit(a_ref);
 			return;
 		}
+		a_session.settled = true;
 		RebuildChoice(a_ref, a_session);
 		FollowReset(a_ref, a_session);
+		FollowRoll(a_ref, a_session);
 		DecideBody(a_ref, a_session);
 		Reconcile(a_ref, a_session);
+		FinishPendingBody(a_ref, a_session);
 		AnnounceBody(a_ref, a_session);
 		CheckTouch(a_ref, a_session);
 		ReconcileRefit(a_ref);
+	}
+
+	// A change to their body is on its way, or the player is choosing it: nothing else starts one.
+	bool Director::Claimed(std::uint32_t a_ref, const Session& a_session) const
+	{
+		return BodyPending(a_ref) || _picker.ref == a_ref || _registry.pickings.contains(a_ref) || a_session.restoring;
 	}
 
 	// S-51: a picked or API-given body carries a marker saying so, beside its own. A save made while the
@@ -417,6 +441,14 @@ namespace SH
 		if (!rec || rec->source != Source::kReset || a_session.reset) {
 			return;
 		}
+		if (rec->stamp == 0) {
+			// S-59: asked for, and a save came before the bridge carried it out -- it is carried out now.
+			if (!Claimed(a_ref, a_session)) {
+				Log(std::format("{:08X}: a reset asked for before the save - carried out now", a_ref));
+				QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kReset }, Lane::kNormal);
+			}
+			return;
+		}
 		if (a_session.hasBody) {
 			Log(std::format("{:08X}: reset earlier; BodyGen has given them a body", a_ref));
 			Intend(a_ref, a_session, Source::kNone, {});
@@ -428,6 +460,37 @@ namespace SH
 		}
 	}
 
+	// S-59: a roll asked for -- Back to random, or the regeneration window's hand-off -- that a save came
+	// before. The work was the session's and is gone; the record says it is owed.
+	void Director::FollowRoll(std::uint32_t a_ref, Session& a_session)
+	{
+		const auto* rec = _registry.Find(a_ref);
+		if (!rec || rec->source != Source::kRoll || Claimed(a_ref, a_session)) {
+			return;
+		}
+		Log(std::format("{:08X}: a new body asked for before the save - rolled now", a_ref));
+		QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, Lane::kNormal);
+	}
+
+	// S-58: a body a save cut short while it was being written. Its marker went first, as "pending", so
+	// the preset is known: it is given again, whole, keeping whatever variety made it in. A body with
+	// intent behind it has had that done already (Reconcile); this is the one BodyGen gave, which a
+	// Refresh or Reapply was writing again.
+	void Director::FinishPendingBody(std::uint32_t a_ref, Session& a_session)
+	{
+		if (!a_session.pendingBody || !a_session.eligible || Claimed(a_ref, a_session)) {
+			return;
+		}
+		const auto  preset = _catalog->PresetForMarker(a_session.marker, _catalog->stamp).value_or(std::string{});
+		const auto* p = preset.empty() ? nullptr : _catalog->Find(preset, a_session.female);
+		if (!p) {
+			Log(std::format("{:08X}: half a body of {} (a save cut it short) that this build cannot name - left as it is", a_ref, a_session.marker));
+			return;
+		}
+		Log(std::format("{:08X}: half a body of {} (a save cut it short) - given again, whole", a_ref, p->name));
+		QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = p->name, .keepVariety = true }, Lane::kNormal);
+	}
+
 	void Director::DecideBody(std::uint32_t a_ref, Session& a_session)
 	{
 		if (!a_session.eligible || !a_session.probed || _picker.ref == a_ref || BodyPending(a_ref) || a_session.restoring) {
@@ -436,25 +499,36 @@ namespace SH
 		const auto& c = *_catalog;
 		auto*       rec = _registry.Find(a_ref);
 
-		// A choice somebody made stays made; a new build gives it this build's values.
+		// A choice somebody made stays made; a new build gives it this build's values, and the variety
+		// the body already has (a picked body carries the variety it was picked with).
 		if (rec && Chosen(rec->source)) {
-			if (rec->stamp != c.stamp) {
-				if (const auto* p = c.Find(rec->preset, a_session.female)) {
-					Log(std::format("{:08X}: {} ({}) again, with build {}'s values", a_ref, p->name, SourceName(rec->source), c.build));
-					rec->stamp = c.stamp;
-					rec->preset = p->name;
-					QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = p->name, .choice = rec->source }, Lane::kNormal);
-				} else {
-					Log(std::format("{:08X}: {} ({}) is not in build {}; their body stays as it is", a_ref, rec->preset, SourceName(rec->source), c.build));
-					rec->source = Source::kNone;
-					rec->preset.clear();
-					_registry.Prune(a_ref);
-				}
+			if (rec->stamp == c.stamp) {
+				return;
 			}
-			return;
+			if (const auto* p = c.Find(rec->preset, a_session.female)) {
+				Log(std::format("{:08X}: {} ({}) again, with build {}'s values", a_ref, p->name, SourceName(rec->source), c.build));
+				rec->stamp = c.stamp;
+				rec->preset = p->name;
+				QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = p->name, .keepVariety = true, .choice = rec->source },
+					Lane::kNormal);
+				return;
+			}
+			// The preset is gone from this build. The body stays, and so would the choice marker beside
+			// it -- rebuilding the record from it every session only to drop it again: it comes off, and
+			// the rules decide as for anyone else.
+			Log(std::format("{:08X}: {} ({}) is not in build {}; their body stays, the rules decide from now on", a_ref, rec->preset,
+				SourceName(rec->source), c.build));
+			rec->source = Source::kNone;
+			rec->preset.clear();
+			_registry.Prune(a_ref);
+			rec = _registry.Find(a_ref);
+			if (Chosen(a_session.choice)) {
+				a_session.marked = true;
+				QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kMark, .choice = Source::kNone }, Lane::kNormal);
+			}
 		}
-		if (rec && rec->source == Source::kReset) {
-			return;
+		if (rec && (rec->source == Source::kReset || rec->source == Source::kRoll)) {
+			return;  // a new body is owed: it decides, and the rules have their say when it lands
 		}
 
 		const auto& v = a_session.verdict;
@@ -540,6 +614,7 @@ namespace SH
 			}
 		}
 		const bool bodyMarker = !s.marker.empty() && !IEquals(s.marker, kBlacklistMarker) && s.stamp != 0;
+		s.pendingBody = !s.marker.empty() && !IEquals(s.marker, kBlacklistMarker) && a_order.markerValue > 0.0F && a_order.markerValue < 0.9F;
 		s.hasBody = bodyMarker || !s.own.empty();
 	}
 
@@ -583,7 +658,9 @@ namespace SH
 			if (rec->stamp != _catalog->stamp) {
 				_registry.Get(a_ref).stamp = _catalog->stamp;
 			}
-			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = p->name, .choice = choice }, Lane::kNormal);
+			// Whatever variety is still on them stays: a body half written, or picked with the variety
+			// it had, is not rolled anew for having been given again.
+			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = p->name, .keepVariety = true, .choice = choice }, Lane::kNormal);
 			return;
 		}
 		// The body is right. A choice with no marker beside it (given before S-51, or the marker lost) gets one.
@@ -595,8 +672,8 @@ namespace SH
 
 	void Director::AnnounceBody(std::uint32_t a_ref, const Session& a_session)
 	{
-		if (!a_session.eligible) {
-			return;
+		if (!a_session.eligible || _picker.ref == a_ref || _registry.pickings.contains(a_ref)) {
+			return;  // while picked, the body on them may be a preview: Keep announces the one they keep
 		}
 		// A body about to be replaced is not announced: its replacement is, when it lands. Only a marker
 		// written beside it leaves the body as it is.
@@ -707,7 +784,7 @@ namespace SH
 	{
 		auto& w = WorkFor(a_ref, a_lane);
 		w.body = std::move(a_body);  // the latest decision wins
-		w.notBefore = {};            // and is tried at once, not after the one it replaced was deferred
+		w.bodyNotBefore = {};        // and is tried at once, not after the one it replaced was deferred
 	}
 
 	void Director::Requeue(Order& a_order, bool a_park)
@@ -788,11 +865,47 @@ namespace SH
 			}
 			Retire(a_ref);
 			session.reset = false;
-			Intend(a_ref, session, Source::kNone, {});
+			Redraw(a_ref, session);
+			// Owed until it lands (S-59): a save before the bridge gets to it does not lose it.
+			Intend(a_ref, session, Source::kRoll, {});
 			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, a_lane);
 			Unpark(a_ref);
 			return true;
 		});
+	}
+
+	// S-60: under a rule with several presets, Back to random draws from the rule again, and lands
+	// somewhere new -- a draw that came back to the preset they have would look like nothing happened.
+	// The count of presses is the salt the draw is mixed with, kept in the record.
+	void Director::Redraw(std::uint32_t a_ref, Session& a_session)
+	{
+		const auto& v = a_session.verdict;
+		if (!a_session.known || (v.tier != Tier::kName && v.tier != Tier::kFaction) || v.options.size() < 2) {
+			return;
+		}
+		const auto source = v.tier == Tier::kName ? Source::kNameRule : Source::kFactionRule;
+		auto&      rec = _registry.Get(a_ref);
+		// "Somewhere new" is measured against the body on them: the one the player is looking at.
+		auto now = PresetNamedBy(a_session.marker, a_session.stamp);
+		if (now.empty()) {
+			now = rec.source == source && !rec.preset.empty() ? rec.preset : v.preset;
+		}
+		auto        facts = a_session.facts;
+		std::string drawn;
+		for (int i = 0; i < 64; ++i) {
+			facts.salt = facts.salt + 1 == 0 ? 1 : facts.salt + 1;
+			drawn = Decide(*_catalog, facts).preset;
+			if (!IEquals(drawn, now)) {
+				break;
+			}
+		}
+		if (rec.base == 0) {
+			rec.base = a_session.base;
+		}
+		rec.salt = facts.salt;
+		a_session.facts.salt = facts.salt;
+		a_session.verdict = Decide(*_catalog, a_session.facts);
+		Log(std::format("{:08X} \"{}\": the rule draws again - {} instead of {}", a_ref, a_session.facts.baseName, drawn, now));
 	}
 
 	bool Director::RequestReset(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, Lane a_lane, std::string& a_why)
@@ -806,6 +919,12 @@ namespace SH
 			}
 			Retire(a_ref);
 			Intend(a_ref, session, Source::kReset, {});
+			// Owed until it lands (S-59): stamp 0 says so. And the next body is new, whatever preset it is:
+			// announced, and touched up, as any other.
+			auto& rec = _registry.Get(a_ref);
+			rec.stamp = 0;
+			rec.announced = 0;
+			rec.touched = 0;
 			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kReset }, a_lane);
 			Unpark(a_ref);
 			return true;
@@ -817,8 +936,17 @@ namespace SH
 	{
 		std::scoped_lock l{ _lock };
 		return WithCatalog(_catalog, _status, a_why, [&] {
+			if (_picker.ref == a_ref || _registry.pickings.contains(a_ref)) {
+				// The body on them is a preview: given again it would become theirs.
+				a_why = "they are being picked: Keep or Cancel first";
+				return false;
+			}
 			const auto* rec = _registry.Find(a_ref);
-			const bool  ours = rec && !rec->preset.empty() && rec->source != Source::kNameBlacklist && rec->source != Source::kReset;
+			if (rec && (rec->source == Source::kRoll || rec->source == Source::kReset)) {
+				a_why = rec->source == Source::kRoll ? "a new body is already on its way" : "they were reset: a new body comes at the next load";
+				return false;
+			}
+			const bool ours = rec && !rec->preset.empty() && rec->source != Source::kNameBlacklist && rec->source != Source::kReset;
 			const auto  source = ours ? rec->source : Source::kNone;
 			const auto* p = _catalog->Find(ours ? std::string_view{ rec->preset } : a_markerPreset, a_female);
 			if (!ours && a_markerPreset.empty()) {
@@ -852,7 +980,20 @@ namespace SH
 		std::scoped_lock l{ _lock };
 		return WithCatalog(_catalog, _status, a_why, [&] {
 			if (const auto* rec = _registry.Find(a_ref); rec && (rec->source != Source::kNone || !rec->preset.empty())) {
-				a_why = std::format("their body is {}'s to decide", SourceName(rec->source));
+				switch (rec->source) {
+				case Source::kRoll:
+					a_why = "a new body is already on its way";
+					break;
+				case Source::kReset:
+					a_why = "they were reset: a new body comes at the next load";
+					break;
+				case Source::kNameBlacklist:
+					a_why = "they are blacklisted by name: kept bare";
+					break;
+				default:
+					a_why = std::format("their body is decided ({}: {})", SourceName(rec->source), rec->preset);
+					break;
+				}
 				return false;
 			}
 			const auto s = _sessions.find(a_ref);
@@ -865,6 +1006,9 @@ namespace SH
 				session.female = a_female;
 				session.base = a_base;
 			}
+			// Owed until it lands (S-59): the Adopter does not ask about them again, so a save before the
+			// bridge gets to it must not lose it.
+			Intend(a_ref, session, Source::kRoll, {});
 			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, Lane::kBackground);
 			Unpark(a_ref);
 			return true;
@@ -893,7 +1037,7 @@ namespace SH
 					continue;
 				}
 				const auto lane = static_cast<int>(wit->second.lane);
-				if (!_busy.contains(ref) && lane < bestLane && wit->second.notBefore <= now) {
+				if (!_busy.contains(ref) && lane < bestLane && wit->second.Due(now)) {
 					best = static_cast<std::ptrdiff_t>(i);
 					bestLane = lane;
 					if (bestLane == static_cast<int>(Lane::kUrgent)) {
@@ -913,13 +1057,15 @@ namespace SH
 			o.ref = ref;
 			o.female = session.female;
 			o.lane = w.lane;
+			// The work was chosen for having something due; that is what goes out, in this order. A body
+			// or touch-up waiting out a deferral holds nothing else back (a refit coming off, a probe).
 			bool made = true;
 			if (w.snapshot) {
 				w.snapshot = false;
 				o.kind = OrderKind::kSnapshot;
 				o.probe = true;
 				o.readAll = true;
-			} else if (w.body) {
+			} else if (w.body && w.bodyNotBefore <= now) {
 				o.kind = OrderKind::kBody;
 				o.body = std::move(*w.body);
 				w.body.reset();
@@ -929,17 +1075,23 @@ namespace SH
 				} else if (o.body.keepVariety) {
 					o.readAll = true;
 				}
-			} else if (w.touch) {
+			} else if (w.touch && !w.body && w.touchNotBefore <= now) {
 				w.touch = false;
 				o.kind = OrderKind::kTouch;
 			} else if (w.refit) {
 				w.refit = false;
 				const auto want = WantRefit(session);
 				if (want.set) {
-					o.kind = OrderKind::kRefit;
-					o.refitOn = true;
-					o.heavy = want.heavy;
-					o.refitSet = want.set->name;
+					if (session.refit == static_cast<int>(RefitMarker(*want.set, want.heavy))) {
+						// Already right: they changed and changed back before the bridge came. Written
+						// again it would jolt the body and tell other mods of a change that did not happen.
+						made = false;
+					} else {
+						o.kind = OrderKind::kRefit;
+						o.refitOn = true;
+						o.heavy = want.heavy;
+						o.refitSet = want.set->name;
+					}
 				} else if (session.refit != 0) {  // on, unfinished, or unknown: coming off is safe to repeat
 					o.kind = OrderKind::kRefit;
 					o.refitOn = false;
@@ -1146,10 +1298,27 @@ namespace SH
 					}
 					const bool keeping = o->body.keepVariety || !o->body.keepFrom.empty();
 					auto       body = BodyFor(c, *p, o->ref, _settings.variety, keeping ? &keep : nullptr);
+					if (o->body.keepVariety && !Chosen(o->body.choice)) {
+						// A choice marker on a body nothing is recorded for: the co-save lost the choice (a
+						// save made without the plugin), LooksMenu kept it (S-51). Given again, it stays --
+						// unless the id came to someone new with it (S-57).
+						const auto* rec = _registry.Find(o->ref);
+						const auto  s = _sessions.find(o->ref);
+						if (!(rec && rec->source != Source::kNone) && !(s != _sessions.end() && s->second.stranger)) {
+							for (const auto& [m, v] : o->layer) {
+								if (KindOf(m) == MarkerKind::kChoice && Chosen(ChoiceOf(v))) {
+									o->body.choice = ChoiceOf(v);
+								}
+							}
+						}
+					}
 					if (Chosen(o->body.choice)) {
 						// Beside the body, before its marker: the marker last is what tells a whole body.
 						body.insert(body.end() - 1, { std::string{ kChoiceMarker }, static_cast<float>(o->body.choice) });
 					}
+					// The marker also goes FIRST, as "pending" (S-58): a save that cuts the body short leaves
+					// it saying which preset was being written, and the next probe gives that preset again.
+					body.insert(body.begin(), { p->marker, kBodyPending });
 					o->clearUnkeyed = true;
 					unkeyed(body);
 					o->update = true;
@@ -1310,29 +1479,37 @@ namespace SH
 			AfterProbe(o.ref, session);
 			break;
 		case OrderKind::kSnapshot:
-			++_counts.snapshots;
-			OnProbed(o.ref, o);
-			if (_picker.ref == o.ref && !_picker.snapped) {
-				_picker.snapped = true;
-				_picker.current = PresetNamedBy(session.marker, session.stamp);
-				_picker.index = -1;
-				for (std::size_t i = 0; i < _picker.presets.size(); ++i) {
-					if (IEquals(_picker.presets[i], _picker.current)) {
-						_picker.index = static_cast<std::int32_t>(i);
+			{
+				++_counts.snapshots;
+				const bool first = !session.probed;
+				OnProbed(o.ref, o);
+				if (first) {
+					// Picked before anything probed them: this is the session's probe, and what a probe
+					// settles is settled now -- or at their first sighting, if they were not seen yet.
+					AfterProbe(o.ref, session);
+				}
+				if (_picker.ref == o.ref && !_picker.snapped) {
+					_picker.snapped = true;
+					_picker.current = PresetNamedBy(session.marker, session.stamp);
+					_picker.index = -1;
+					for (std::size_t i = 0; i < _picker.presets.size(); ++i) {
+						if (IEquals(_picker.presets[i], _picker.current)) {
+							_picker.index = static_cast<std::int32_t>(i);
+						}
 					}
+					PickerSave save;
+					save.ref = o.ref;
+					save.base = _picker.base;
+					save.female = _picker.female;
+					save.snapshot = o.layer;
+					if (const auto* rec = _registry.Find(o.ref)) {
+						save.before = *rec;
+					}
+					_registry.Keep(std::move(save));
 				}
-				PickerSave save;
-				save.ref = o.ref;
-				save.base = _picker.base;
-				save.female = _picker.female;
-				save.snapshot = o.layer;
-				if (const auto* rec = _registry.Find(o.ref)) {
-					save.before = *rec;
-				}
-				_registry.Keep(std::move(save));
+				ReconcileRefit(o.ref);
+				break;
 			}
-			ReconcileRefit(o.ref);
-			break;
 		case OrderKind::kBody:
 			++_counts.bodies;
 			FinishBody(o);
@@ -1347,6 +1524,10 @@ namespace SH
 				rec.touched = o.touchKey;
 				if (!o.writes.empty()) {
 					Log(std::format("{:08X}: {} slider(s) healed or topped up on {}", o.ref, o.writes.size(), PresetNamedBy(session.marker, session.stamp)));
+				}
+				if (session.deferNoted) {
+					session.deferNoted = false;
+					Log(std::format("{:08X}: the change that waited for another mod is done", o.ref));
 				}
 				break;
 			}
@@ -1405,16 +1586,38 @@ namespace SH
 			s.deferNoted = true;
 			Log(std::format("{:08X}: another mod has them busy - the change waits", o.ref));
 		}
-		o.lane = Lane::kBackground;
-		const auto ref = o.ref;
-		Requeue(o, false);
-		WorkFor(ref, Lane::kBackground).notBefore = _clock() + kDeferWait;
+		// Only this kind of work waits: a refit coming off while she undresses in the scene must not.
+		const auto until = _clock() + kDeferWait;
+		auto&      w = WorkFor(o.ref, Lane::kBackground);
+		switch (o.kind) {
+		case OrderKind::kBody:
+			if (!w.body) {  // a newer decision already waiting is tried at once, not after this one's wait
+				w.body = std::move(o.body);
+				w.bodyNotBefore = until;
+			}
+			break;
+		case OrderKind::kTouch:
+			w.touch = true;
+			w.touchNotBefore = until;
+			break;
+		default:
+			o.lane = Lane::kBackground;
+			Requeue(o, false);
+			break;
+		}
 	}
 
 	std::size_t Director::Pending() const
 	{
 		std::scoped_lock l{ _lock };
-		return _queue.size() + _inflight.size();
+		const auto       now = _clock();
+		std::size_t      due = 0;
+		for (const auto ref : _queue) {
+			if (const auto w = _work.find(ref); w != _work.end() && w->second.Due(now)) {
+				++due;
+			}
+		}
+		return due + _inflight.size();
 	}
 
 	void Director::SetClock(Clock a_clock)
@@ -1429,6 +1632,11 @@ namespace SH
 		const auto  ref = a_order.ref;
 		auto&       s = _sessions[ref];
 		s.probed = s.probed || a_order.probe;
+		s.pendingBody = false;
+		if (s.deferNoted && a_order.body.what != BodyRequest::What::kMark) {
+			s.deferNoted = false;
+			Log(std::format("{:08X}: the change that waited for another mod is done", ref));
+		}
 		switch (a_order.body.what) {
 		case BodyRequest::What::kPreset:
 			{
@@ -1462,6 +1670,11 @@ namespace SH
 						rec.base = s.base;
 					}
 					rec.touched = TouchKey(c, p->marker, c.stamp, a_order.female, _settings.variety);
+					if (Chosen(s.choice) && rec.source == Source::kNone && rec.preset.empty()) {
+						// A choice the co-save had lost came back with the body (Prepare): recorded again.
+						Intend(ref, s, s.choice, p->name);
+						Log(std::format("{:08X}: {} ({}) rebuilt from the choice LooksMenu keeps beside the body", ref, p->name, SourceName(s.choice)));
+					}
 				}
 				break;
 			}
@@ -1513,11 +1726,14 @@ namespace SH
 			{
 				OnProbed(ref, a_order);
 				s.reset = false;
-				if (const auto* rec = _registry.Find(ref); rec && rec->source == Source::kReset) {
-					Intend(ref, s, Source::kNone, {});
+				if (const auto* rec = _registry.Find(ref); rec && (rec->source == Source::kReset || rec->source == Source::kRoll)) {
+					Intend(ref, s, Source::kNone, {});  // the roll owed has landed (S-59)
 				}
-				// Announced like every body given on request (S-46), whether or not this session has seen them yet.
-				if (const auto preset = PresetNamedBy(s.marker, s.stamp); !preset.empty()) {
+				// Generated as if new: the rules get their say first -- a body they replace at once is not
+				// the one to announce; its replacement is, when it lands.
+				DecideBody(ref, s);
+				if (const auto preset = PresetNamedBy(s.marker, s.stamp); !preset.empty() && !BodyPending(ref)) {
+					// Announced like every body given on request (S-46), whether or not this session has seen them yet.
 					Push(EventKind::kGenerated, ref, preset, false, BodyHash(s.marker, s.stamp));
 					auto& rec = _registry.Get(ref);
 					if (rec.base == 0) {
@@ -1525,7 +1741,6 @@ namespace SH
 					}
 					rec.touched = TouchKey(c, s.marker, s.stamp, a_order.female, _settings.variety);
 				}
-				DecideBody(ref, s);  // generated as if new: the rules get their say again
 				break;
 			}
 		case BodyRequest::What::kReset:
@@ -1537,6 +1752,9 @@ namespace SH
 			s.choice = Source::kNone;
 			s.names.clear();
 			s.own.clear();
+			if (auto* rec = _registry.Find(ref); rec && rec->source == Source::kReset) {
+				rec->stamp = c.stamp;  // landed: what the next load does with them is S-53's (S-59)
+			}
 			break;
 		case BodyRequest::What::kMark:
 			s.choice = a_order.body.choice;
@@ -1564,9 +1782,10 @@ namespace SH
 
 	void Director::Push(EventKind a_kind, std::uint32_t a_ref, std::string a_preset, bool a_flag, std::uint32_t a_announce)
 	{
+		const auto same = [&](const Event& e) { return e.kind == a_kind && e.ref == a_ref && e.announce == a_announce; };
 		if (a_kind == EventKind::kGenerated && a_announce != 0 &&
-			std::ranges::any_of(_events, [&](const Event& e) { return e.kind == a_kind && e.ref == a_ref && e.announce == a_announce; })) {
-			return;  // already on its way
+			(std::ranges::any_of(_events, same) || std::ranges::any_of(_taken, [&](const Event& e) { return !e.done && same(e); }))) {
+			return;  // already on its way: waiting, or handed to the bridge and not raised yet
 		}
 		if (_events.size() >= kMaxEvents) {
 			_events.pop_front();
@@ -1608,9 +1827,13 @@ namespace SH
 	void Director::EventDone(std::uint32_t a_event)
 	{
 		std::scoped_lock l{ _lock };
-		for (const auto& e : _taken) {
-			if (e.id != a_event || e.kind != EventKind::kGenerated || e.announce == 0) {
+		for (auto& e : _taken) {
+			if (e.id != a_event) {
 				continue;
+			}
+			e.done = true;
+			if (e.kind != EventKind::kGenerated || e.announce == 0) {
+				return;
 			}
 			auto& rec = _registry.Get(e.ref);
 			if (rec.base == 0) {
@@ -1834,7 +2057,9 @@ namespace SH
 		if (rec && rec->source == Source::kNameBlacklist) {
 			out = "blacklisted by name: kept bare";
 		} else if (rec && rec->source == Source::kReset) {
-			out = "reset: a new body at the next load";
+			out = rec->stamp == 0 ? "reset: bare in a moment, a new body at the next load" : "reset: a new body at the next load";
+		} else if (rec && rec->source == Source::kRoll) {
+			out = "a new body is on its way";
 		} else if (rec && !rec->preset.empty()) {
 			out = std::format("chosen: {} ({})", rec->preset, SourceName(rec->source));
 		} else {
@@ -1842,8 +2067,10 @@ namespace SH
 		}
 		if (const auto it = _sessions.find(a_ref); it != _sessions.end()) {
 			const auto& s = it->second;
-			if (s.refit > 0) {
-				out += s.refit % 2 == 0 ? "; dressed heavily, refit on" : "; dressed, refit on";
+			if (s.refit > 0 && s.refit % 2 == 0) {
+				out += s.heavyBy.empty() ? "; dressed heavily, refit on" : std::format("; dressed heavily ({}), refit on", s.heavyBy);
+			} else if (s.refit > 0) {
+				out += "; dressed, refit on";
 			} else if (s.refit == kRefitUnfinished) {
 				out += "; a refit half written";
 			} else if (s.refit == 0 && s.clothed) {
@@ -1904,21 +2131,34 @@ namespace SH
 	std::string Director::TakeSummary()
 	{
 		std::scoped_lock l{ _lock };
-		const auto       waiting = _queue.size() + _inflight.size();
+		const auto       now = _clock();
+		std::size_t      lanes[3]{};
+		std::size_t      held = 0;
+		for (const auto ref : _queue) {
+			if (const auto w = _work.find(ref); w != _work.end() && !w->second.Empty()) {
+				if (w->second.Due(now)) {
+					++lanes[static_cast<int>(w->second.lane)];
+				} else {
+					++held;
+				}
+			}
+		}
+		const auto parked = static_cast<std::size_t>(std::ranges::count_if(_work, [](const auto& p) { return p.second.parked && !p.second.Empty(); }));
+		const auto waiting = lanes[0] + lanes[1] + lanes[2] + _inflight.size();
 		if (!_counts.Any() && waiting == 0) {
-			return {};
+			return {};  // nothing done, nothing to do now: work held back or out of reach is said when something happens
 		}
 		const auto& n = _counts;
 		auto line = std::format("bridge: {} probe(s), {} body order(s), {} refit(s), {} touch-up(s), {} snapshot(s); {} failed, {} out of reach, {} deferred; {} waiting",
 			n.probes, n.bodies, n.refits, n.touches, n.snapshots, n.failed, n.gone, n.deferred, waiting);
-		std::size_t lanes[3]{};
-		for (const auto ref : _queue) {
-			if (const auto w = _work.find(ref); w != _work.end()) {
-				++lanes[static_cast<int>(w->second.lane)];
-			}
-		}
 		if (waiting != 0) {
 			line += std::format(" ({} {}, {} {}, {} {})", lanes[0], LaneName(Lane::kUrgent), lanes[1], LaneName(Lane::kNormal), lanes[2], LaneName(Lane::kBackground));
+		}
+		if (held != 0) {
+			line += std::format("; {} held while another mod has them busy", held);
+		}
+		if (parked != 0) {
+			line += std::format("; {} for people out of memory, done when they are seen again", parked);
 		}
 		_counts = {};
 		return line;

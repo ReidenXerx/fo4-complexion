@@ -16,6 +16,7 @@ import math
 import os
 import pathlib
 import string
+import struct
 
 import plugin_forms
 import rules
@@ -61,7 +62,7 @@ def resolve_races(cfg, data, report):
     """Every race editor id the rules name, found in the load order -- or the run is refused. A race
     no plugin defines matches nobody: a typo in distributeRaces would give no NPC a body, and every
     check would still pass. Matched in any case, as the game and LooksMenu match them."""
-    wanted = set(cfg.get('distributeRaces') or ['HumanRace'])
+    wanted = set(rules.distribute_races(cfg))
     for key in ('blacklistedRacesFemale', 'blacklistedRacesMale'):
         wanted.update(cfg.get(key, []))
     for key in ('raceFemale', 'raceMale'):
@@ -70,8 +71,13 @@ def resolve_races(cfg, data, report):
     found = plugin_forms.resolve(data, plugins_txt(), 'RACE', wanted, missing)
     unknown = sorted(w for w in wanted if w not in found)
     if unknown:
-        raise SystemExit(f'rules: no race with the editor id {", ".join(map(repr, unknown))} in the load order -- '
-                         f'a rule naming it would match nobody. Check the spelling (HumanRace, GhoulRace, ...)')
+        # A race a disabled plugin defines is not a typo: say which plugin, not "check the spelling".
+        inactive = plugin_forms.find_inactive(data, plugins_txt(), 'RACE', unknown)
+        why = [f'{w!r} is defined by {inactive[w]}, which is not active in your load order (plugins.txt) -- '
+               f'enable it, or take the race out of the rules' if w in inactive else
+               f'{w!r}: no plugin in Data defines a race of that editor id -- check the spelling '
+               f'(HumanRace, GhoulRace, ...)' for w in unknown]
+        raise SystemExit('rules: a race the rules name matches nobody in the load order:\n  ' + '\n  '.join(why))
     report.extend(m for m in missing if 'could not read' in m)
 
 
@@ -121,6 +127,12 @@ def build(*, stamp, build_id, mode, presets, player, states, never_in_body, vari
             return None
         return {'plugin': plugin, 'id': int(fid, 16)}
 
+    def npc_ref(plugin, key, what):
+        # The BodyGen tiers the plugin leaves alone: the lines skip the player and the character-creation
+        # dummies (S-45, rules.compile_lines reports it), so the catalog must not claim a line reaches them.
+        r = ref(plugin, key, what)
+        return None if r is None or rules.is_player_form(plugin, f'{r["id"]:06X}') else r
+
     # ---- rules: the tiers BodyGen carries (so the plugin leaves them alone) and the
     # ones only the runtime can see (S-23)
     npc_form = {'female': [], 'male': []}
@@ -128,7 +140,7 @@ def build(*, stamp, build_id, mode, presets, player, states, never_in_body, vari
         if not bodygen_plugin(plugin, 'npcFormID'):
             continue
         for key, wanted in forms.items():
-            r = ref(plugin, key, 'npcFormID')
+            r = npc_ref(plugin, key, 'npcFormID')
             if r:
                 for s in sexes_of(wanted):
                     npc_form[s].append(r)
@@ -137,7 +149,7 @@ def build(*, stamp, build_id, mode, presets, player, states, never_in_body, vari
         if not bodygen_plugin(plugin, 'blacklistedNpcsFormID'):
             continue
         for key in keys:
-            r = ref(plugin, key, 'blacklistedNpcsFormID')
+            r = npc_ref(plugin, key, 'blacklistedNpcsFormID')
             if r:
                 blacklisted_form.append(r)
     blacklisted_plugins = {s: [p for p in cfg.get(key, []) if bodygen_plugin(p, key)]
@@ -183,8 +195,11 @@ def build(*, stamp, build_id, mode, presets, player, states, never_in_body, vari
     builtin = [(m, round(v - female_baked.get(m, 0.0), 6), h) for m, v, h in BUILTIN_FEMALE if m in female_body]
     lower = [m for m, v, _h in builtin if v <= 0]
     if lower:
+        # The floor that would land the body on the built-in shape is 0 or below, and a refit only
+        # raises (S-40): a body whose own value sits below the base's is not raised there.
         report.append(f'catalog: the base body already has {", ".join(lower)} at or above the built-in clothed '
-                      f'shape: no floor needed there')
+                      f'shape, so the floor there would be 0 or below, which a refit cannot hold (S-40): a body '
+                      f'below the base\'s own value keeps it while dressed')
     builtin = [(m, v, h) for m, v, h in builtin if v > 0]
     missing = [m for m, _v, _h in BUILTIN_FEMALE if m not in female_body]
     if missing:
@@ -200,9 +215,9 @@ def build(*, stamp, build_id, mode, presets, player, states, never_in_body, vari
         floors = [{'morph': m, 'value': round(v, 6), 'heavyOnly': False} for m, v in p['values'] if v > 0]
         lower = [m for m, v in p['values'] if v <= 0]
         if lower:
-            report.append(f'catalog: refit preset {p["name"]!r}: {len(lower)} slider(s) at or below the body\'s zero '
-                          f'cannot be floors (a refit only raises, S-40) - left out: {", ".join(lower[:6])}'
-                          f'{" ..." if len(lower) > 6 else ""}')
+            report.append(f'catalog: refit preset {p["name"]!r}: {len(lower)} of its own slider(s) would sit at or '
+                          f'below the body\'s own layer zero, and a refit only raises (S-40) - left out: '
+                          f'{", ".join(lower[:6])}{" ..." if len(lower) > 6 else ""}')
         if not floors:
             report.append(f'catalog: refit preset {p["name"]!r} raises nothing on this body - left out, so the next '
                           f'set in line applies')
@@ -231,7 +246,7 @@ def build(*, stamp, build_id, mode, presets, player, states, never_in_body, vari
         'variety': {s: [{'morph': m, 'low': lo, 'high': hi, 'group': grp} for m, lo, hi, grp in variety.get(s, [])]
                     for s in ('female', 'male')},
         'rules': {
-            'races': list(cfg.get('distributeRaces') or ['HumanRace']),
+            'races': rules.distribute_races(cfg),
             'npcFormID': npc_form,
             'blacklistedNpcsFormID': blacklisted_form,
             'blacklistedPlugins': blacklisted_plugins,
@@ -268,15 +283,74 @@ def rules_hash(doc, morph_lines):
     return hashlib.sha1(text.encode('utf-8')).hexdigest()[:12]
 
 
+def f32(v):
+    """v as the float32 the plugin keeps (static_cast<float>): inf when it does not fit one."""
+    try:
+        return struct.unpack('<f', struct.pack('<f', v))[0]
+    except (OverflowError, struct.error, TypeError):
+        return math.inf
+
+
+# Every key the plugin's parser reads, per object. The parser ignores an unknown key outside the
+# per-sex objects -- a field the generator added and the plugin never reads -- so check() refuses it.
+SEXES = ('female', 'male')
+TOP_KEYS = ('schema', 'build', 'stamp', 'mode', 'rulesHash', 'states', 'neverInBody', 'presets', 'player',
+            'variety', 'rules', 'orefit')
+PRESET_KEYS = ('name', 'sex', 'marker', 'values', 'random', 'menu', 'zeroed', 'fit', 'family')
+VARIETY_KEYS = ('morph', 'low', 'high', 'group')
+RULE_KEYS = ('races', 'npcFormID', 'blacklistedNpcsFormID', 'blacklistedPlugins', 'blacklistedRaces', 'npcName',
+             'blacklistedNpcNames', 'faction')
+OREFIT_KEYS = ('slots', 'blacklist', 'blacklistNames', 'blacklistPlugins', 'force', 'forceNames', 'outfits', 'sets',
+               'heavy', 'light')
+KIND_NAMES = {str: 'a string', bool: 'true or false', int: 'an integer', float: 'a number', list: 'a list',
+              dict: 'an object'}
+
+
 def check(doc):
-    """What the plugin's parser (src/Catalog.cpp ParseCatalog) refuses, refused here first -- and a
-    little more: what it would accept but could never mean (a range of one value)."""
+    """What the plugin's parser (src/Catalog.cpp ParseCatalog) refuses, refused here first, key for key --
+    and a little more: what it would accept but could never mean (a range or a floor that one float32
+    cannot tell from nothing, a key it would silently ignore). Every refusal is a SystemExit naming the
+    place, never a crash: tools/verify_bodygen.py reports it as a problem of the file on disk."""
     def fail(msg):
         raise SystemExit(f'catalog: {msg}')
 
     def need(v, kind, where):
-        if not isinstance(v, kind) or isinstance(v, bool) and kind is not bool:
-            fail(f'{where}: expected {kind.__name__}, got {type(v).__name__}')
+        kinds = kind if isinstance(kind, tuple) else (kind,)
+        if not isinstance(v, kinds) or (isinstance(v, bool) and bool not in kinds):
+            what = 'a number' if set(kinds) == {int, float} else ' or '.join(KIND_NAMES.get(k, k.__name__) for k in kinds)
+            fail(f'{where}: expected {what}, got {type(v).__name__}')
+        return v
+
+    def at(obj, key, where):
+        need(obj, dict, where)
+        if key not in obj:
+            fail(f'{where}: missing "{key}"')
+        return obj[key]
+
+    def only(obj, keys, where):
+        need(obj, dict, where)
+        extra = sorted(str(k) for k in obj if k not in keys)
+        if extra:
+            fail(f'{where}: unknown key {extra[0]!r} (the plugin reads {", ".join(keys)})')
+        return obj
+
+    def per_sex(obj, where):
+        only(obj, SEXES, where)
+        for s in SEXES:
+            at(obj, s, where)
+        return obj
+
+    def number(v, where):
+        # Num(): a JSON number (an integer too), finite as a double AND as the float32 the plugin keeps.
+        need(v, (int, float), where)
+        f = f32(v)
+        if not math.isfinite(f):
+            fail(f'{where}: {v!r} is not a finite float32')
+        return f
+
+    def sex_of(v, where):
+        if v not in SEXES:
+            fail(f'{where}: sex must be "female" or "male", not {v!r}')
         return v
 
     def strings(v, where):
@@ -284,23 +358,31 @@ def check(doc):
             need(x, str, where)
         return v
 
+    def ref(r, where):
+        need(r, dict, where)
+        if not need(at(r, 'plugin', where), str, f'{where}.plugin'):
+            fail(f'{where}: an empty plugin name')
+        i = at(r, 'id', where)
+        if type(i) is not int or i < 0:
+            fail(f'{where}: id {i!r} must be a non-negative integer')
+        if i > 0xFFFFFF:
+            fail(f'{where}: id {i:X} carries a load-order byte')
+        return r
+
     def ref_list(v, where):
         for r in need(v, list, where):
-            if not need(r.get('plugin'), str, where):
-                fail(f'{where}: an empty plugin name')
-            i = need(r.get('id'), int, where)
-            if not 0 <= i <= 0xFFFFFF:
-                fail(f'{where}: id {i:X} carries a load-order byte')
+            only(r, ('plugin', 'id'), where)
+            ref(r, where)
         return v
 
     # Everywhere: text the plugin can read back (JSON is UTF-8; a lone surrogate is refused whole), and
-    # numbers finite as the float the plugin keeps (it refuses 1e39 and NaN).
+    # numbers finite as the float the plugin keeps (it refuses 1e39, 10**40 and NaN).
     def walk(v, where):
         if isinstance(v, str):
             if not rules.encodable(v):
                 fail(f'{where}: {v!r} is not valid Unicode')
-        elif isinstance(v, float):
-            if not math.isfinite(v) or abs(v) > FLOAT32_MAX:
+        elif isinstance(v, (int, float)) and not isinstance(v, bool):
+            if isinstance(v, float) and not math.isfinite(v) or abs(v) > FLOAT32_MAX:
                 fail(f'{where}: {v!r} is not a finite float32')
         elif isinstance(v, dict):
             for k, x in v.items():
@@ -311,105 +393,140 @@ def check(doc):
                 walk(x, where)
 
     walk(doc, 'catalog')
-    if doc.get('schema') != SCHEMA:
-        fail(f'schema must be {SCHEMA}')
-    if not (0 < need(doc.get('stamp'), int, 'stamp') < 1 << 24):
-        fail(f'stamp {doc["stamp"]} does not fit a float32 exactly')
+    only(doc, TOP_KEYS, 'catalog')
+    schema = at(doc, 'schema', 'catalog')
+    if type(schema) is not int or schema != SCHEMA:
+        fail(f'schema must be the integer {SCHEMA}, not {schema!r}')
+    stamp = at(doc, 'stamp', 'catalog')
+    if type(stamp) is not int or not 0 < stamp < 1 << 24:
+        fail(f'stamp {stamp!r} must be an integer 1 .. 2^24-1 (a marker holds it as a float32, exactly)')
     for k in ('build', 'mode', 'rulesHash'):
-        need(doc.get(k), str, k)
+        need(at(doc, k, 'catalog'), str, k)
     if not doc['rulesHash']:
         fail('rulesHash is empty')
-    never = {s: {ifold(m) for m in strings(doc['neverInBody'][s], 'neverInBody')} for s in ('female', 'male')}
-    for s in ('female', 'male'):
-        for m in strings(doc['states'][s], 'states'):
+    never = {s: {ifold(m) for m in strings(at(per_sex(at(doc, 'neverInBody', 'catalog'), 'neverInBody'), s,
+                                              'neverInBody'), f'neverInBody.{s}')} for s in SEXES}
+    states = per_sex(at(doc, 'states', 'catalog'), 'states')
+    for s in SEXES:
+        for m in strings(states[s], f'states.{s}'):
             if ifold(m) not in never[s]:
                 fail(f'the runtime state {m!r} is missing from neverInBody (S-16)')
     seen, markers = set(), set()
-    for p in need(doc['presets'], list, 'presets'):
+    for p in need(at(doc, 'presets', 'catalog'), list, 'presets'):
+        need(p, dict, 'presets')
         where = f'preset {p.get("name")!r}'
-        need(p.get('name'), str, where)
-        if p.get('sex') not in ('female', 'male'):
-            fail(f'{where}: sex must be "female" or "male"')
-        marker = need(p.get('marker'), str, where)
+        only(p, PRESET_KEYS, where)
+        name = need(at(p, 'name', where), str, f'{where}.name')
+        sex = sex_of(at(p, 'sex', where), where)
+        marker = need(at(p, 'marker', where), str, where)
         if len(marker) <= len(MARKER_PREFIX) or ifold(marker[:len(MARKER_PREFIX)]) != ifold(MARKER_PREFIX) \
                 or ifold(marker) in {ifold(r) for r in RESERVED_MARKERS}:
             fail(f'{where}: marker {marker!r} is not a body marker ("{MARKER_PREFIX}...", not a reserved one)')
         if ifold(marker) in markers:
             fail(f'{where}: marker {marker!r} is used by another preset too')
         markers.add(ifold(marker))
-        for m, v in need(p.get('values'), dict, where).items():
-            if ifold(m) in never[p['sex']]:
+        for m, v in need(at(p, 'values', where), dict, f'{where}.values').items():
+            if ifold(m) in never[sex]:
                 fail(f'{where}: {m!r} is never part of a body (S-16, S-29)')
-            need(v, (int, float), where)
+            number(v, f'{where}.values.{m}')
         for k in ('random', 'menu', 'zeroed'):
-            need(p.get(k), bool, where)
+            need(at(p, k, where), bool, f'{where}.{k}')
+        for k in ('fit', 'family'):
+            need(at(p, k, where), str, f'{where}.{k}')
         # The engine's string pool keeps one spelling per name, whatever the case (L3 F12): two
         # names that differ only in case are one preset to the plugin.
-        key = (p['sex'], ifold(p['name']))
+        key = (sex, ifold(name))
         if key in seen:
-            fail(f'{where} listed twice for {p["sex"]} (names are compared in any case)')
+            fail(f'{where} listed twice for {sex} (names are compared in any case)')
         seen.add(key)
-    for s, name in doc['player'].items():
-        if (s, ifold(name)) not in seen:
+    player = only(at(doc, 'player', 'catalog'), SEXES, 'player')
+    for s, name in player.items():
+        if (s, ifold(need(name, str, f'player.{s}'))) not in seen:
             fail(f'the {s} player default {name!r} is not a preset of this build')
-    for s in ('female', 'male'):
+    variety = per_sex(at(doc, 'variety', 'catalog'), 'variety')
+    for s in SEXES:
         names = set()
-        for v in need(doc['variety'][s], list, 'variety'):
-            if not v['low'] < v['high']:
-                fail(f'variety {v["morph"]!r}: the range {v["low"]}..{v["high"]} rolls nothing (low must be below high)')
-            if v['group'] not in ('nipples', 'genitals'):
-                fail(f'variety {v["morph"]!r}: group {v["group"]!r}')
-            if ifold(v['morph']) in never[s]:
-                fail(f'variety {v["morph"]!r} is never part of a body, so never rolled (S-16, S-29)')
-            if ifold(v['morph']) in names:
-                fail(f'variety {v["morph"]!r} listed twice for {s}')
-            names.add(ifold(v['morph']))
-    r = doc['rules']
-    strings(r['races'], 'rules.races')
-    for s in ('female', 'male'):
-        ref_list(r['npcFormID'][s], 'rules.npcFormID')
-        strings(r['blacklistedPlugins'][s], 'rules.blacklistedPlugins')
-        strings(r['blacklistedRaces'][s], 'rules.blacklistedRaces')
-    ref_list(r['blacklistedNpcsFormID'], 'rules.blacklistedNpcsFormID')
-    strings(r['blacklistedNpcNames'], 'rules.blacklistedNpcNames')
-    for rule in r['npcName'] + r['faction']:
-        for n in strings(rule['presets'], 'rule presets'):
-            if (rule['sex'], ifold(n)) not in seen:
-                fail(f'a rule names {n!r}, not a {rule["sex"]} preset of this build')
-    ref_list(r['faction'], 'rules.faction')
-    o = doc['orefit']
-    for slot in need(o['slots'], list, 'orefit.slots'):
-        if not isinstance(slot, int) or not 30 <= slot <= 61:
+        for v in need(variety[s], list, f'variety.{s}'):
+            only(v, VARIETY_KEYS, 'variety')
+            morph = need(at(v, 'morph', 'variety'), str, 'variety.morph')
+            where = f'variety {morph!r}'
+            low, high = number(at(v, 'low', where), f'{where}.low'), number(at(v, 'high', where), f'{where}.high')
+            group = need(at(v, 'group', where), str, f'{where}.group')
+            if not low < high:
+                fail(f'{where}: the range {v["low"]}..{v["high"]} rolls nothing (low must be below high, as the '
+                     f'float32 the plugin keeps)')
+            if group not in ('nipples', 'genitals'):
+                fail(f'{where}: group {group!r}')
+            if ifold(morph) in never[s]:
+                fail(f'{where} is never part of a body, so never rolled (S-16, S-29)')
+            if ifold(morph) in names:
+                fail(f'{where} listed twice for {s}')
+            names.add(ifold(morph))
+    r = only(at(doc, 'rules', 'catalog'), RULE_KEYS, 'rules')
+    if not strings(at(r, 'races', 'rules'), 'rules.races'):
+        fail('rules.races is empty: no race would be shaped (distributeRaces)')
+    for key in ('npcFormID', 'blacklistedPlugins', 'blacklistedRaces'):
+        per_sex(at(r, key, 'rules'), f'rules.{key}')
+        for s in SEXES:
+            (ref_list if key == 'npcFormID' else strings)(r[key][s], f'rules.{key}.{s}')
+    ref_list(at(r, 'blacklistedNpcsFormID', 'rules'), 'rules.blacklistedNpcsFormID')
+    strings(at(r, 'blacklistedNpcNames', 'rules'), 'rules.blacklistedNpcNames')
+    for rule in need(at(r, 'npcName', 'rules'), list, 'rules.npcName'):
+        only(rule, ('name', 'sex', 'presets'), 'rules.npcName')
+        where = f'rules.npcName {need(at(rule, "name", "rules.npcName"), str, "rules.npcName.name")!r}'
+        sex = sex_of(at(rule, 'sex', where), where)
+        for n in strings(at(rule, 'presets', where), where):
+            if (sex, ifold(n)) not in seen:
+                fail(f'{where} names {n!r}, not a {sex} preset of this build')
+    for rule in need(at(r, 'faction', 'rules'), list, 'rules.faction'):
+        only(rule, ('plugin', 'id', 'editorID', 'sex', 'presets'), 'rules.faction')
+        ref(rule, 'rules.faction')
+        where = f'rules.faction {need(at(rule, "editorID", "rules.faction"), str, "rules.faction.editorID")!r}'
+        sex = sex_of(at(rule, 'sex', where), where)
+        for n in strings(at(rule, 'presets', where), where):
+            if (sex, ifold(n)) not in seen:
+                fail(f'{where} names {n!r}, not a {sex} preset of this build')
+    o = only(at(doc, 'orefit', 'catalog'), OREFIT_KEYS, 'orefit')
+    for slot in need(at(o, 'slots', 'orefit'), list, 'orefit.slots'):
+        if type(slot) is not int or not 30 <= slot <= 61:
             fail(f'orefit.slots: {slot!r} is not a biped slot 30..61')
     for k in ('blacklist', 'force'):
-        ref_list(o[k], f'orefit.{k}')
+        ref_list(at(o, k, 'orefit'), f'orefit.{k}')
     for k in ('blacklistNames', 'blacklistPlugins', 'forceNames'):
-        strings(o[k], f'orefit.{k}')
+        strings(at(o, k, 'orefit'), f'orefit.{k}')
     set_keys = set()
-    for st in need(o['sets'], list, 'orefit.sets'):
-        where = f'refit set {st.get("name")!r}'
-        key = (st['sex'], ifold(need(st.get('name'), str, where)))
+    for st in need(at(o, 'sets', 'orefit'), list, 'orefit.sets'):
+        only(st, ('name', 'sex', 'floors'), 'orefit.sets')
+        where = f'refit set {need(at(st, "name", "orefit.sets"), str, "orefit.sets.name")!r}'
+        key = (sex_of(at(st, 'sex', where), where), ifold(st['name']))
         if key in set_keys:
             fail(f'{where} listed twice for {st["sex"]}')
         set_keys.add(key)
-        for f in need(st.get('floors'), list, where):
-            m = need(f.get('morph'), str, where)
+        for f in need(at(st, 'floors', where), list, where):
+            only(f, ('morph', 'value', 'heavyOnly'), where)
+            m = need(at(f, 'morph', where), str, where)
             if not m or ifold(m) == ifold(REFIT_MARKER) or (len(m) > len(MARKER_PREFIX) and ifold(m[:len(MARKER_PREFIX)]) == ifold(MARKER_PREFIX)):
                 fail(f'{where}: {m!r} is not a body slider')
             if ifold(m) in never[st['sex']]:
                 fail(f'{where}: {m!r} is never part of a body (S-16, S-29)')
-            if not need(f.get('value'), (int, float), where) > 0:
-                fail(f'{where}: {m!r} at {f["value"]}: a floor must be above 0, a refit only raises (S-40)')
-            need(f.get('heavyOnly'), bool, where)
-    for ot in o['outfits']:
-        if (ot['sex'], ifold(ot['set'])) not in set_keys:
-            fail(f'orefit.outfits {ot["name"]!r}: refit set {ot["set"]!r} is not in this catalog')
-    for w in strings(o['heavy']['words'], 'orefit.heavy.words'):
+            # Compared as the float32 the plugin keeps: 1e-50 is 0 there, and a refit only raises (S-40).
+            if not number(at(f, 'value', where), where) > 0:
+                fail(f'{where}: {m!r} at {f["value"]}: a floor must be above 0 as a float32, a refit only raises (S-40)')
+            need(at(f, 'heavyOnly', where), bool, where)
+    for ot in need(at(o, 'outfits', 'orefit'), list, 'orefit.outfits'):
+        only(ot, ('name', 'sex', 'set'), 'orefit.outfits')
+        where = f'orefit.outfits {need(at(ot, "name", "orefit.outfits"), str, "orefit.outfits.name")!r}'
+        sex = sex_of(at(ot, 'sex', where), where)
+        if (sex, ifold(need(at(ot, 'set', where), str, where))) not in set_keys:
+            fail(f'{where}: refit set {ot["set"]!r} is not in this catalog')
+    heavy = only(at(o, 'heavy', 'orefit'), ('words', 'items', 'names'), 'orefit.heavy')
+    for w in strings(at(heavy, 'words', 'orefit.heavy'), 'orefit.heavy.words'):
         if not rules.has_word(w):
             fail(f'orefit.heavy.words: {w!r} holds no word (S-48)')
-    for k in ('heavy', 'light'):
-        ref_list(o[k]['items'], f'orefit.{k}.items')
-        strings(o[k]['names'], f'orefit.{k}.names')
+    light = only(at(o, 'light', 'orefit'), ('items', 'names'), 'orefit.light')
+    for k, v in (('heavy', heavy), ('light', light)):
+        ref_list(at(v, 'items', f'orefit.{k}'), f'orefit.{k}.items')
+        strings(at(v, 'names', f'orefit.{k}'), f'orefit.{k}.names')
 
 
 def write(path, doc):

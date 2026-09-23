@@ -16,6 +16,7 @@ namespace SH
 		std::string          race;          // the race's editor id
 		std::vector<FormRef> factions;      // the NPC record's own factions, as OBody reads them
 		std::uint32_t        seed{ 0 };     // the reference's id: a rule with several presets picks the same one every time
+		std::uint32_t        salt{ 0 };     // Back to random's presses (S-60): each draws again; 0 = the draw by id alone
 	};
 
 	enum class Tier
