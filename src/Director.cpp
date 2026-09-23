@@ -1038,6 +1038,40 @@ namespace SH
 		return _picker.ref != 0 && _picker.snapped;
 	}
 
+	// ------------------------------------------------------------------ uninstalling
+
+	std::vector<std::uint32_t> Director::RefitRefs() const
+	{
+		std::scoped_lock           l{ _lock };
+		std::vector<std::uint32_t> out;
+		for (const auto& [ref, rec] : _registry.All()) {
+			if (rec.refitApplied) {
+				out.push_back(ref);
+			}
+		}
+		std::ranges::sort(out);
+		return out;
+	}
+
+	void Director::RefitOff(std::uint32_t a_ref, bool a_female, std::uint32_t a_base)
+	{
+		std::scoped_lock l{ _lock };
+		if (!_catalog) {
+			return;
+		}
+		auto& session = _sessions[a_ref];
+		if (!session.known) {
+			// Not seen this session, so nothing says what they wear; with ORefit off that does not
+			// matter, and "known, not dressed" is what makes the refit come off.
+			session.known = true;
+			session.eligible = true;
+			session.female = a_female;
+			session.base = a_base;
+			session.clothed = false;
+		}
+		ReconcileRefit(a_ref);
+	}
+
 	// ------------------------------------------------------------------ queries
 
 	std::string Director::AssignedPreset(std::uint32_t a_ref) const

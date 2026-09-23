@@ -24,7 +24,8 @@ namespace SH
 			kBlacklist,   // bare, with the blacklist marker (S-23)
 			kRestore,     // the picker's Cancel: exactly the unkeyed layer they had
 			kRegenerate,  // BodyGen rolls again, keyed layers kept
-			kReset,       // the unkeyed layer removed: bare until BodyGen rolls them at their next load
+			kReset,       // the unkeyed layer removed: bare now; once a save is loaded LooksMenu has
+			              // dropped the emptied entries and BodyGen rolls them again
 		};
 
 		What                  what{ What::kPreset };
@@ -170,6 +171,13 @@ namespace SH
 		std::string PickerCancel();
 		[[nodiscard]] std::uint32_t PickerTarget() const;
 		[[nodiscard]] bool          PickerReady() const;  // the snapshot is in: Next can start
+
+		// --- uninstalling ---
+		// Everyone the records say carries a refit, loaded or not.
+		[[nodiscard]] std::vector<std::uint32_t> RefitRefs() const;
+		// Their naked values back, whether or not they were seen this session (ORefit must be off,
+		// or anyone seen dressed is refit again).
+		void RefitOff(std::uint32_t a_ref, bool a_female, std::uint32_t a_base);
 
 		// --- queries ---
 		[[nodiscard]] std::string AssignedPreset(std::uint32_t a_ref) const;

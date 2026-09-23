@@ -67,6 +67,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 import base_body
+import catalog
 import rules
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -123,6 +124,49 @@ def genital_shapes():
         if morph in STATE_MORPHS:
             raise SystemExit(f'{GENITAL_SHAPES_FILE.name}: {morph} is a runtime state (S-16), not a shape')
         out[morph] = (float(low), float(high))
+    return out
+
+
+# Nipple and ball variety (S-21): {sex: {group: {morph: [low, high]}}} from tools/variety.json, rolled per NPC
+# the same way. variety_ranges() is the ONE loader for both range files.
+VARIETY_FILE = pathlib.Path(__file__).resolve().parent / 'variety.json'
+
+# Never rolled, whatever a range file says. AnusBack is an alignment control (S-17); the shaft's length,
+# width and tip decide where fo4-anatomy's collision sits (S-21, owner: "wouldn't it harm alignment of
+# penis-hole-mouth?" -- it would).
+NEVER_VARIED = ('AnusBack', 'Penis Length', 'Penis Width', 'TipShape', 'BTPenisLengthErectv2',
+                'BTPenisLengthFlaccid', 'BTPenisWidthv2', 'BTPenisTipShapeRounded', 'BTShaftRootSize',
+                'BTUrethraCurve', 'BTSmoothPenisErect', 'BTSmoothPenisFlaccid')
+VARIETY_GROUPS = ('nipples', 'genitals')
+
+
+def variety_ranges():
+    """{'female': {morph: (low, high, group)}, 'male': {...}}: every range BodyGen rolls per NPC --
+    S-17's genital shapes (genital_shapes.json, women) and S-21's nipples and balls (variety.json).
+    Refuses a runtime state (S-16), a morph that is never varied, a morph BOTH files name, and a
+    range whose low is above its high."""
+    out = {'female': {}, 'male': {}}
+    for morph, (low, high) in genital_shapes().items():
+        out['female'][morph] = (low, high, 'genitals')
+    if VARIETY_FILE.exists():
+        doc = json.loads(VARIETY_FILE.read_text(encoding='utf-8'))
+        for g in ('female', 'male'):
+            for group, ranges in doc.get(g, {}).items():
+                if group not in VARIETY_GROUPS:
+                    raise SystemExit(f'{VARIETY_FILE.name}: group {group!r} is not one of {VARIETY_GROUPS}')
+                for morph, (low, high) in ranges.items():
+                    if morph in STATE_MORPHS:
+                        raise SystemExit(f'{VARIETY_FILE.name}: {morph} is a runtime state (S-16), not a shape')
+                    if morph in out[g]:
+                        raise SystemExit(f'{morph} is in both {GENITAL_SHAPES_FILE.name} and {VARIETY_FILE.name}: '
+                                         f'one file must own each range')
+                    out[g][morph] = (float(low), float(high), group)
+    for g, ranges in out.items():
+        for morph, (low, high, _group) in ranges.items():
+            if morph in NEVER_VARIED:
+                raise SystemExit(f'{morph} is never rolled (S-17, S-21): take it out of the range files')
+            if low > high:
+                raise SystemExit(f'{morph}: range {low}..{high} has low above high')
     return out
 
 
@@ -323,6 +367,22 @@ def setting_id(g, entries):
     return f'i{g.capitalize()}_{list_hash(entries)}'
 
 
+BRIDGE_FORM = 'Silhouette.esp|802'   # tools/make_esp.py: the quest that runs Silhouette:Bridge
+
+# The NPC picker's hotkeys (S-22): MCM keybind id -> (what it does, Silhouette:Bridge function).
+HOTKEYS = (
+    ('pick', 'Pick the NPC in your sights', 'PickerPick'),
+    ('next', 'Try the next preset on them', 'PickerNext'),
+    ('previous', 'Try the previous preset on them', 'PickerPrevious'),
+    ('keep', 'Keep the preset they are trying on', 'PickerKeep'),
+    ('cancel', 'Put back the body they had', 'PickerCancel'),
+)
+
+
+def npc_setting_id(g, entries):
+    return f'iNpc{g.capitalize()}_{list_hash(entries)}'
+
+
 def write_mcm(folder, picker, default_index, average, build):
     """MCM/Config/Silhouette: a dropdown per sex and buttons that call global
     functions of Silhouette:Player -- so no plugin is needed. The dropdown shape
@@ -384,14 +444,91 @@ def write_mcm(folder, picker, default_index, average, build):
                'Starts another 24 in-game hours of giving bodies to people other mods marked first. '
                'People it already handled are not handled twice.', 'OpenRegenerationWindow'),
     ]
+    def bridge_button(text, help_, function):
+        return {'type': 'button', 'text': text, 'help': help_,
+                'action': {'type': 'CallFunction', 'form': BRIDGE_FORM, 'function': function, 'params': []}}
+
+    needs = ' Needs Silhouette.dll and Silhouette.esp.'
+    npcs = [
+        {'type': 'text', 'text': 'Aim at someone, then open this menu -- or Pick them with the hotkey below '
+                                 'and open it any time. Anyone you give a preset keeps it: the rules by name '
+                                 'and faction no longer change them.' + needs},
+        {'type': 'section', 'text': 'Their body'},
+    ]
+    for g, label in (('female', 'If they are female'), ('male', 'If they are male')):
+        if not picker[g]:
+            continue
+        npcs.append({
+            'type': 'dropdown', 'id': f'{npc_setting_id(g, picker[g])}:Picker', 'text': label,
+            'help': f'{len(picker[g])} presets that fit a {g} body. Nothing changes until you press '
+                    f'"Give them this preset".',
+            'valueOptions': {'sourceType': 'ModSettingInt', 'options': [e['display'] for e in picker[g]]},
+        })
+    npcs += [
+        bridge_button('Give them this preset',
+                      'The preset chosen above for their sex, on the NPC you picked -- or, with nobody '
+                      'picked, the last NPC you aimed at in the half minute before opening the menu. Their '
+                      'own nipple and genital variety comes with it. Close the menu to see it.', 'MenuApply'),
+        bridge_button('Back to random',
+                      'They roll a new body, as if met for the first time: the rules get their say again. '
+                      'Body morphs other mods keep under their own keyword (AAF, pregnancy) are kept.',
+                      'MenuRandom'),
+        bridge_button('Which body do they have?', 'The preset their body carries, and who chose it.',
+                      'MenuWhich'),
+        {'type': 'section', 'text': 'Hotkeys: try presets on them in the world'},
+        {'type': 'text', 'text': 'Pick someone, then Next and Previous put each preset on them in turn '
+                                 '(about a second each, LooksMenu is reached through Papyrus). Keep '
+                                 'makes it theirs; Cancel puts back exactly what they had.'},
+    ]
+    npcs += [{'type': 'hotkey', 'id': kid, 'text': text, 'help': text + '.' + needs}
+             for kid, text, _fn in HOTKEYS]
+
+    settings = [
+        {'type': 'section', 'text': 'While they are dressed'},
+        {'type': 'switcher', 'id': 'bORefit:General', 'text': 'ORefit',
+         'help': 'A clothed shape while someone wears clothes -- breasts together and lifted, nipples '
+                 'flattened -- and their own body back the moment they undress, exactly as it was. '
+                 'Your character is never refit.' + needs,
+         'valueOptions': {'sourceType': 'ModSettingBool'}},
+        {'type': 'section', 'text': 'Variety in the bodies Silhouette gives'},
+        {'type': 'text', 'text': 'BodyGen rolls every NPC their own nipples (and genital shape for women, '
+                                 'ball size for men) from the generated files, always. These two decide '
+                                 'the same for bodies Silhouette itself gives: the rules, the picker, '
+                                 'other mods.'},
+        {'type': 'switcher', 'id': 'bNippleRand:General', 'text': 'Nipple variety',
+         'help': 'Each person their own nipple size, areola and tip.', 'valueOptions': {'sourceType': 'ModSettingBool'}},
+        {'type': 'switcher', 'id': 'bGenitalRand:General', 'text': 'Genital variety',
+         'help': 'Each woman her own genital shape, each man his own ball size. Never the shaft.',
+         'valueOptions': {'sourceType': 'ModSettingBool'}},
+        {'type': 'section', 'text': 'Silhouette'},
+        bridge_button('How is Silhouette doing?', 'Which build is loaded, what it is listening to, '
+                      'and how much work is waiting.', 'MenuStatus'),
+        bridge_button('Take ORefit off everyone (before uninstalling)',
+                      'Switch ORefit off above first. Everyone this save remembers with a clothed shape '
+                      'gets their own body values back -- the people in memory now at once, the rest '
+                      'when you next see them. Then save, and Silhouette can be removed.',
+                      'MenuRefitOffEverywhere'),
+    ]
+
     config = {'modName': MOD, 'displayName': MOD, 'minMcmVersion': 1,
-              'pages': [{'pageDisplayName': 'Bodies', 'content': content}]}
+              'pages': [{'pageDisplayName': 'Bodies', 'content': content},
+                        {'pageDisplayName': 'The NPC in your sights', 'content': npcs},
+                        {'pageDisplayName': 'Settings', 'content': settings}]}
     folder.mkdir(parents=True, exist_ok=True)
     (folder / 'config.json').write_text(json.dumps(config, indent=2) + '\n', encoding='utf-8')
+    keybinds = {'modName': MOD, 'keybinds': [
+        {'id': kid, 'desc': f'Silhouette: {text[0].lower()}{text[1:]}',
+         'action': {'type': 'CallFunction', 'form': BRIDGE_FORM, 'function': fn, 'params': []}}
+        for kid, text, fn in HOTKEYS]}
+    (folder / 'keybinds.json').write_text(json.dumps(keybinds, indent=2) + '\n', encoding='utf-8')
     ini = ['; GENERATED by tools/silhouette_gen.py. The defaults are the most average preset.',
            '[Player]', f'sBuild={build}']
     ini += [f'{setting_id(g, picker[g])}={default_index.get(g, 0)}' for g in ('female', 'male')
             if picker[g]]
+    ini += ['[Picker]']
+    ini += [f'{npc_setting_id(g, picker[g])}={default_index.get(g, 0)}' for g in ('female', 'male')
+            if picker[g]]
+    ini += ['[General]', 'bORefit=1', 'bNippleRand=1', 'bGenitalRand=1']
     (folder / 'settings.ini').write_text('\n'.join(ini) + '\n', encoding='utf-8')
 
 
@@ -415,6 +552,7 @@ def write_papyrus(path, picker, default_index, stamp, build):
                              f'(a Papyrus array limit). Hold some back with '
                              f'blacklistedPresetsShowInOBodyMenu=false.')
     ids = {g: setting_id(g, picker[g]) for g in ('female', 'male')}
+    npc_ids = {g: npc_setting_id(g, picker[g]) for g in ('female', 'male')}
     L = [
         'Scriptname Silhouette:Player Hidden',
         '{GENERATED by tools/silhouette_gen.py from your BodySlide presets. Do not edit:',
@@ -442,6 +580,27 @@ def write_papyrus(path, picker, default_index, stamp, build):
         '',
         'Bool Function IsFemale(Actor akActor) Global',
         '    Return akActor.GetLeveledActorBase().GetSex() == 1',
+        'EndFunction',
+        '',
+        '; The preset chosen on the NPC page (Silhouette:Bridge.MenuApply), "" for a choice',
+        '; this build of the menu does not have.',
+        'String Function NpcChoice(Bool female) Global',
+        '    If !MCM.IsInstalled()',
+        '        Return ""',
+        '    EndIf',
+        '    Int index = -1',
+        '    If female',
+        f'        index = MCM.GetModSettingInt("{MOD}", "{npc_ids["female"]}:Picker")',
+        '    Else',
+        f'        index = MCM.GetModSettingInt("{MOD}", "{npc_ids["male"]}:Picker")',
+        '    EndIf',
+        '    If index < 0 || index >= Count(female)',
+        '        Return ""',
+        '    EndIf',
+        '    If female',
+        '        Return FemaleNames()[index]',
+        '    EndIf',
+        '    Return MaleNames()[index]',
         'EndFunction',
         '',
         'Int Function Count(Bool female) Global',
@@ -637,6 +796,8 @@ def write_papyrus(path, picker, default_index, stamp, build):
         'EndFunction',
         '',
         '; Everyone nearby keeps the preset Silhouette gave them, with its values from this build.',
+        '; With Silhouette.dll the plugin gives it again, their own variety included (S-17, S-21);',
+        '; without it the preset alone is written, and the rolled variety is lost.',
         'Function Refresh() Global',
         '    Actor[] people = Nearby()',
         '    String[] fm = FemaleMarkers()',
@@ -657,8 +818,14 @@ def write_papyrus(path, picker, default_index, stamp, build):
         '            preset = PresetOf(a, False, mm, mn)',
         '            index = mn.Find(preset, 0)',
         '        EndIf',
-        '        If index >= 0 && Give(a, female, index) != ""',
-        '            done += 1',
+        '        If index >= 0',
+        '            If F4SE.GetPluginVersion("Silhouette") > 0',
+        '                If Silhouette:API.ReapplyActorMorphs(a)',
+        '                    done += 1',
+        '                EndIf',
+        '            ElseIf Give(a, female, index) != ""',
+        '                done += 1',
+        '            EndIf',
         '        EndIf',
         '        i += 1',
         '    EndWhile',
@@ -698,6 +865,55 @@ def write_papyrus(path, picker, default_index, stamp, build):
     path.write_text('\n'.join(L) + '\n', encoding='utf-8')
 
 
+def catalog_presets(pools, extra, picker):
+    """Every preset the plugin can give, as catalog.build() wants them: the pickers' lists
+    first and in their order (the NPC hotkeys walk it), then the rest of the random pool,
+    then the presets only the rules name."""
+    out, seen = [], set()
+
+    def add(sex, p, marker, values, menu):
+        key = (sex, p['name'])
+        if key in seen:
+            return
+        seen.add(key)
+        out.append({'name': p['name'], 'sex': sex, 'marker': marker, 'values': list(values),
+                    'random': any(n == marker for n, _v, _p in pools[sex]), 'menu': menu,
+                    'fit': p.get('band', 'full'), 'family': (p.get('families') or [''])[0]})
+
+    by_display = {}
+    for g in ('female', 'male'):
+        for _n, _v, p in pools[g]:
+            by_display[(g, p['name'])] = p
+        for _n, (_v, p) in extra.items():
+            by_display[(p['gender'], p['name'])] = p
+    for g in ('female', 'male'):
+        for e in picker[g]:
+            p = by_display.get((g, e['display']), {'name': e['display'], 'band': e['band'],
+                                                   'families': e.get('families', [])})
+            add(g, p, e['marker'], e['values'], True)
+    for g in ('female', 'male'):
+        for name, values, p in pools[g]:
+            add(g, p, name, values, False)
+    for name, (values, p) in sorted(extra.items()):
+        add(p['gender'], p, name, values, False)
+    return out
+
+
+def refit_sets(refit_presets, base, baked, morphs_of):
+    """OBody's refit presets ("<Preset>-Refit", "Female-Refit", "Male-Refit"), as the values
+    the unkeyed layer takes while dressed -- written the way the templates are, so a refit
+    and a body mean the same thing by the same number."""
+    out = []
+    for p in refit_presets:
+        g = p['gender']
+        if g not in morphs_of:
+            continue
+        target = {k: v for k, v in target_values(p, base[g]).items() if k in morphs_of[g]}
+        out.append({'name': p['name'], 'sex': g,
+                    'values': morph_values(template_name(p), target, baked[g], morphs_of[g], p['name'])})
+    return out
+
+
 def write_manifest(folder, stamp, build, mode, base, pools, extra, picker, player):
     """F4SE/Plugins/Silhouette/manifests/<stamp>.json: what every marker of this
     generation means -- the exact preset name (the marker only keeps a sanitised
@@ -725,11 +941,13 @@ def write_manifest(folder, stamp, build, mode, base, pools, extra, picker, playe
 MANIFEST_FORMAT = 1
 
 
-def generation(mode, pools, extra, picker):
-    """(stamp, build). The build is a hash of everything the files say -- mode and
-    every template's values; the stamp is its first 24 bits as an integer, exact
-    in the float32 LooksMenu stores (every integer below 2^24 is)."""
-    parts = {'format': MANIFEST_FORMAT, 'mode': mode, 't': {}}
+def generation(mode, pools, extra, picker, variety):
+    """(stamp, build). The build is a hash of everything the files say -- mode, every
+    template's values, and the ranges every template of a sex rolls (S-17, S-21); the
+    stamp is its first 24 bits as an integer, exact in the float32 LooksMenu stores
+    (every integer below 2^24 is)."""
+    parts = {'format': MANIFEST_FORMAT, 'mode': mode, 't': {},
+             'r': {g: [[m, lo, hi] for m, (lo, hi) in variety.get(g, [])] for g in ('female', 'male')}}
     for g in ('female', 'male'):
         for name, values, _p in pools[g]:
             parts['t'][name] = values
@@ -836,6 +1054,9 @@ def main():
         if p['kind'] == 'clothed-variant':
             buckets['clothed-variant'].append(p)
             continue
+        if catalog.is_refit(p['name']):
+            buckets['refit'].append(p)       # OBody's clothed shapes: ORefit's, never a body (S-20)
+            continue
         g = p['gender']
         b = p['band']
         buckets[f'{g}-{b}'].append(p)
@@ -857,7 +1078,7 @@ def main():
 
     order = ['female-full', 'female-partial', 'female-other-family', 'female-none',
              'male-full', 'male-partial', 'male-other-family', 'male-none',
-             'clothed-variant', 'empty']
+             'clothed-variant', 'refit', 'empty']
     for key in order:
         rows = buckets.get(key, [])
         if not rows:
@@ -934,7 +1155,7 @@ def main():
     for g in BODIES:
         entries = []
         for p in presets:
-            if p['gender'] != g or p['kind'] != 'body':
+            if p['gender'] != g or p['kind'] != 'body' or catalog.is_refit(p['name']):
                 continue
             if not (p['band'] == 'full' or (p['band'] == 'partial' and not args.no_partial)):
                 continue
@@ -943,6 +1164,7 @@ def main():
             target = {k: v for k, v in target_values(p, base[g]).items() if k in morphs_of[g]}
             name = template_name(p)
             entries.append({'display': p['name'], 'marker': name, 'band': p['band'], 'target': target,
+                            'families': p['families'],
                             'values': morph_values(name, target, baked[g], morphs_of[g], p['name'])})
         entries.sort(key=lambda e: e['display'].casefold())
         picker[g] = entries
@@ -960,8 +1182,14 @@ def main():
         else:
             print(f'{g}: no full-fit preset to be the player default -- the player keeps the base body')
 
+    # What BodyGen rolls per NPC (S-17, S-21): only morphs the body carries get a range, since a range
+    # on a morph the .tri lacks moves nothing. Part of what the files say, so part of the build.
+    ranges = variety_ranges()
+    variety = {g: sorted((m, (lo, hi)) for m, (lo, hi, _grp) in ranges[g].items() if m in morphs_of[g])
+               for g in BODIES}
+
     mode = 'compensated' if any(baked[g] for g in BODIES) else 'absolute'
-    stamp, build = generation(mode, pools, extra, picker)
+    stamp, build = generation(mode, pools, extra, picker, variety)
     print(f'\nbuild {build}, marker stamp {stamp} ({mode})')
 
     if not args.write:
@@ -1005,12 +1233,21 @@ def main():
               f'{PLAYER_GUARD}={PLAYER_GUARD}@0',
               '#']
         shapes = genital_shapes()
-        variety = {g: sorted((m, r) for m, r in shapes.items() if m in morphs_of[g]) if g == 'female' else []
-                   for g in BODIES}
         if shapes:
+            on_body = {m for m, _r in variety['female']}
             t.append(f'# Genital shape variety (S-17), rolled per woman: '
                      f'{", ".join(f"{m} {lo}..{hi}" for m, (lo, hi) in sorted(shapes.items()))}'
-                     f'{"" if variety["female"] else "  -- NONE on this female body (morphs missing)"}')
+                     f'{"" if on_body & set(shapes) else "  -- NONE on this female body (morphs missing)"}')
+            t.append('#')
+        for g, who in (('female', 'woman'), ('male', 'man')):
+            rolled = [(m, lo, hi, grp) for m, (lo, hi, grp) in sorted(ranges[g].items())
+                      if not (g == 'female' and m in shapes)]
+            if not rolled:
+                continue
+            missing = [m for m, _lo, _hi, _grp in rolled if m not in morphs_of[g]]
+            t.append(f'# Nipple{" and ball" if any(grp == "genitals" for *_x, grp in rolled) else ""} variety (S-21), '
+                     f'rolled per {who}: {", ".join(f"{m} {fmt(lo)}..{fmt(hi)}" for m, lo, hi, _grp in rolled)}'
+                     f'{"  -- NOT on this body, so not rolled: " + ", ".join(missing) if missing else ""}')
             t.append('#')
         for g in BODIES:
             t.append(f'# --- {g} ---')
@@ -1070,6 +1307,22 @@ def main():
         write_papyrus(args.psc, picker, default_index, stamp, build)
         write_manifest(root / 'F4SE/Plugins/Silhouette/manifests', stamp, build, mode, base, pools,
                        extra, picker, chosen)
+        cat_report = []
+        cat = catalog.build(
+            stamp=stamp, build_id=build, mode=mode,
+            presets=catalog_presets(pools, extra, picker),
+            player={g: average[g] for g in BODIES if g in average},
+            states={g: [m for m in STATE_MORPHS if m in morphs_of[g]] for g in BODIES},
+            variety={g: [(m, lo, hi, ranges[g][m][2]) for m, (lo, hi) in variety[g]] for g in BODIES},
+            cfg=cfg, data=args.data,
+            refit_presets=refit_sets(buckets.get('refit', []), base, baked, morphs_of),
+            report=cat_report)
+        catalog.write(root / 'F4SE/Plugins/Silhouette/catalog.json', cat)
+        for line in cat_report:
+            print(f'  {line}')
+        print(f'wrote {root / "F4SE/Plugins/Silhouette"}\\catalog.json ({len(cat["presets"])} presets, '
+              f'{len(cat["rules"]["npcName"])} name rule(s), {len(cat["rules"]["faction"])} faction rule(s), '
+              f'{len(cat["orefit"]["sets"])} refit set(s))')
         print(f'wrote {root / "MCM/Config" / MOD}\\config.json + settings.ini')
         print(f'wrote {root / "F4SE/Plugins/Silhouette/manifests"}\\{stamp}.json')
         print(f'wrote {args.psc}  (compile: scripts/build-papyrus.ps1)')

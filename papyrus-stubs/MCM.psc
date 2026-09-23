@@ -5,4 +5,6 @@ Scriptname MCM Native Hidden
 
 Bool Function IsInstalled() Native Global
 Int Function GetModSettingInt(String asModName, String asSetting) Native Global
+Bool Function GetModSettingBool(String asModName, String asSetting) Native Global
 String Function GetModSettingString(String asModName, String asSetting) Native Global
+Function SetModSettingBool(String asModName, String asSettingName, Bool abValue) Native Global

@@ -25,8 +25,8 @@ What BodyGen can express, and so what is compiled today: npcFormID, npcPlugin*,
 race*, and every FormID/plugin/race blacklist. `npc` and `blacklistedNpcs` match
 a DISPLAY NAME and `faction*` a faction, neither of which a morphs.ini line can
 name; base-game names are localised into string tables inside Fallout4 -
-Interface.ba2. Those keys are read, validated and reported as pending until the
-Phase 2 plugin resolves them at run time.
+Interface.ba2. Those keys go into catalog.json instead (tools/catalog.py), and Silhouette.dll
+applies them at run time (decision S-23).
 
 A blacklist is a line whose only template sets nothing. That is safe here only
 because it is the ONLY option on its line: an NPC with no stored morphs is
@@ -45,7 +45,8 @@ KEYS_LISTS = ('blacklistedNpcs', 'blacklistedNpcsPluginFemale', 'blacklistedNpcs
               'blacklistedPresetsFromRandomDistribution', 'distributeRaces')
 KEYS_PENDING = ('npc', 'blacklistedNpcs', 'factionFemale', 'factionMale')
 KEYS_PHASE2 = ('blacklistedOutfitsFromORefitFormID', 'blacklistedOutfitsFromORefit',
-               'blacklistedOutfitsFromORefitPlugin', 'outfitsForceRefitFormID', 'outfitsForceRefit')
+               'blacklistedOutfitsFromORefitPlugin', 'outfitsForceRefitFormID', 'outfitsForceRefit',
+               'refitOutfitPresetsFemale', 'refitOutfitPresetsMale')
 # OBody only lets includes carry these (JSONParser: obody_includes).
 INCLUDE_KEYS = ('npc', 'npcFormID', 'npcPluginFemale', 'npcPluginMale')
 
@@ -58,6 +59,12 @@ DEFAULT = {
     'blacklistedRacesFemale': [], 'blacklistedRacesMale': [],
     'blacklistedPresetsFromRandomDistribution': [],
     'blacklistedPresetsShowInOBodyMenu': True,
+    # ORefit (S-20), OBody's keys: outfits that never refit, outfits that always do, and
+    # outfits that bring their own refit preset (a BodySlide preset named "<X>-Refit").
+    'blacklistedOutfitsFromORefitFormID': {}, 'blacklistedOutfitsFromORefit': [],
+    'blacklistedOutfitsFromORefitPlugin': [],
+    'outfitsForceRefitFormID': {}, 'outfitsForceRefit': [],
+    'refitOutfitPresetsFemale': {}, 'refitOutfitPresetsMale': {},
     # Silhouette's one addition: which races take part in random distribution.
     # OBody distributes to every NPC race; in Fallout 4 only races that wear the
     # human body should, and the base game has one.
@@ -103,10 +110,10 @@ def load(config_path, include_dirs, report):
     for k in KEYS_PENDING:
         if cfg.get(k):
             report.append(f'config: {k} has {len(cfg[k])} entr{"y" if len(cfg[k]) == 1 else "ies"} -- '
-                          f'matching by name/faction needs the Phase 2 plugin; not applied yet')
+                          f'matched by name/faction at run time by Silhouette.dll (catalog.json)')
     for k in KEYS_PHASE2:
         if cfg.get(k):
-            report.append(f'config: {k} is ORefit (Phase 2); not applied yet')
+            report.append(f'config: {k} is ORefit, applied at run time by Silhouette.dll (catalog.json)')
     return cfg
 
 

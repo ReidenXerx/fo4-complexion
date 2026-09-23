@@ -674,6 +674,23 @@ namespace
 		after.Seen(See(0x400, "Somebody", false));
 		(void)Drain(after, g);
 		Check(g.layers[0x400] == naked, "after a load, undressed: the snapshot from the save puts the naked body back");
+
+		// Uninstalling: ORefit off, then everyone the save remembers refit gets their naked body --
+		// here someone this session has not seen at all.
+		SH::Director fresh;
+		fresh.SetCatalog(Cat(BaseCatalog()));
+		g.layers[0x600] = naked;
+		d.Seen(See(0x600, "Somebody", true));
+		(void)Drain(d, g);
+		Check(fresh.LoadRecords(d.SaveRecords(nullptr), SH::Registry::kVersion, [](std::uint32_t id) { return id; }, error), "records load");
+		fresh.Configure({ .orefit = false });
+		const auto refit = fresh.RefitRefs();
+		Check(std::ranges::find(refit, 0x600u) != refit.end(), "the records know who carries a refit");
+		for (const auto ref : refit) {
+			fresh.RefitOff(ref, true, 0x00012345);
+		}
+		(void)Drain(fresh, g);
+		Check(g.layers[0x600] == naked && fresh.RefitRefs().empty(), "taken off everyone: exactly their naked bodies, nobody left refit");
 	}
 
 	void TestDirectorPicker()

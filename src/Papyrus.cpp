@@ -7,7 +7,7 @@ namespace SH::Papyrus
 {
 	namespace
 	{
-		constexpr auto kScript = "Silhouette:Native"sv;
+		constexpr auto kScript = "Silhouette:Plugin"sv;
 
 		using Str = RE::BSFixedString;
 
@@ -342,6 +342,21 @@ namespace SH::Papyrus
 
 		Str NameOf(std::monostate, std::int32_t a_actor) { return Str{ Game::NameOf(Game::ActorFor(Ref(a_actor))) }; }
 
+		// Everyone the save remembers with a refit on and who is in memory now; the rest come off
+		// when they are next seen, as long as ORefit stays off.
+		std::int32_t RefitOffEverywhere(std::monostate)
+		{
+			std::int32_t n = 0;
+			for (const auto ref : D().RefitRefs()) {
+				if (auto* actor = Game::ActorFor(ref)) {
+					D().RefitOff(ref, Game::IsFemale(actor), Game::BaseOf(actor));
+					++n;
+				}
+			}
+			logger::info("ORefit taken off {} actor(s) in memory", n);
+			return n;
+		}
+
 		// Binds a_fn. a_fast: callable from tasklets, so a call costs no frame -- set on our own
 		// function object before binding rather than through the VM's SetCallableFromTasklets, a
 		// virtual this plugin has never been seen to call on this runtime. Only functions that touch
@@ -429,6 +444,7 @@ namespace SH::Papyrus
 		Bind(a_vm, "RequestReset"sv, RequestReset, main);
 		Bind(a_vm, "RequestReapply"sv, RequestReapply, main);
 		Bind(a_vm, "NameOf"sv, NameOf, main);
+		Bind(a_vm, "RefitOffEverywhere"sv, RefitOffEverywhere, main);
 
 		logger::info("papyrus: {} bound", kScript);
 		return true;

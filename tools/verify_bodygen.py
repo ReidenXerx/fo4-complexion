@@ -156,18 +156,20 @@ def same_values(a, b):
 
 def fixed_values(sets):
     """The morph values of a template that has one set of one-choice, fixed-value
-    selectors -- the only shape Silhouette writes for a BODY. The genital shape
-    ranges (S-17) are set aside: they are rolled per woman on purpose, and the body
-    the template describes is everything else."""
+    selectors -- the only shape Silhouette writes for a BODY. The variety ranges
+    (S-17 genital shapes, S-21 nipples and balls) are set aside ONLY when they are
+    exactly a range one of the two files gives: they are rolled per NPC on purpose,
+    and the body the template describes is everything else. Any other range still
+    makes the template something Silhouette does not write."""
     if len(sets) != 1:
         return None
-    variety = sg.genital_shapes()
+    allowed = {(m, lo, hi) for ranges in sg.variety_ranges().values() for m, (lo, hi, _grp) in ranges.items()}
     out = {}
     for selector in sets[0]:
         if len(selector) != 1:
             return None
         morph, low, high = selector[0]
-        if morph in variety and (low, high) == variety[morph]:
+        if (morph, low, high) in allowed:
             continue
         if low != high:
             return None
@@ -240,21 +242,27 @@ def check_picker(args, templates, player, problems, stamp):
         problems.append(f'picker files missing ({mcm}\\config.json or {psc})')
         return
     config = json.loads((mcm / 'config.json').read_text(encoding='utf-8'))
-    options, buttons = {}, []
+    options, buttons, hotkeys = {}, [], []
     for page in config['pages']:
         for c in page['content']:
             if c.get('type') == 'dropdown':
                 options[c['id']] = c['valueOptions']['options']
             if c.get('type') == 'button':
                 buttons.append(c['action'])
-    defaults, menu_build = {}, None
+            if c.get('type') == 'hotkey':
+                hotkeys.append(c['id'])
+    # MCM ids are "<key>:<section>", as settings.ini is laid out
+    defaults, menu_build, section = {}, None, None
     for line in (mcm / 'settings.ini').read_text(encoding='utf-8').splitlines():
-        if '=' in line and not line.startswith(';'):
+        line = line.strip()
+        if line.startswith('[') and line.endswith(']'):
+            section = line[1:-1]
+        elif '=' in line and not line.startswith(';'):
             k, v = line.split('=', 1)
             if k.strip() == 'sBuild':
                 menu_build = v.strip()
             else:
-                defaults[f'{k.strip()}:Player'] = int(v)
+                defaults[f'{k.strip()}:{section}'] = int(v)
     import re as _re
     text = psc.read_text(encoding='utf-8')
     m = _re.search(r'String Function Build\(\) Global\s+Return "([^"]*)"', text)
@@ -269,6 +277,7 @@ def check_picker(args, templates, player, problems, stamp):
     script = parse_picker_script(psc)
     for g in ('female', 'male'):
         sid = next((k for k in options if k.startswith(f'i{g.capitalize()}_')), f'i{g.capitalize()}_?:Player')
+        # (the NPC page's dropdowns, iNpc<Sex>_..., are checked below)
         s = script[g]
         if options.get(sid) != s['names']:
             problems.append(f'MCM {sid} lists {len(options.get(sid, []))} presets, the script {len(s["names"])} '
@@ -299,9 +308,51 @@ def check_picker(args, templates, player, problems, stamp):
                     agree += 1
         print(f'{g} picker: {len(s["names"])} presets in the menu; {agree} match their BodyGen '
               f'template exactly; default {s["names"][d] if d is not None else "?"!r}')
+    # Every button and hotkey calls something that exists, with no arguments: a global of the
+    # generated Silhouette:Player, or a method of Silhouette:Bridge on Silhouette.esp's 0x802.
+    globals_ = set(_re.findall(r'^Function (\w+)\(\) Global$', text, _re.M))
+    bridge_src = (sg.ROOT / 'papyrus/Silhouette/Bridge.psc').read_text(encoding='utf-8')
+    methods = set(_re.findall(r'^Function (\w+)\(\)\s*$', bridge_src, _re.M))
+
+    def callable_(a):
+        if a.get('params'):
+            return False
+        if a.get('type') == 'CallGlobalFunction' and a.get('script') == 'Silhouette:Player':
+            return a.get('function') in globals_
+        if a.get('type') == 'CallFunction' and a.get('form') == sg.BRIDGE_FORM:
+            return a.get('function') in methods
+        return False
+
     for a in buttons:
-        if a.get('type') != 'CallGlobalFunction' or a.get('script') != 'Silhouette:Player':
-            problems.append(f'MCM button calls {a} -- not a Silhouette:Player global')
+        if not callable_(a):
+            problems.append(f'MCM button calls {a} -- neither a Silhouette:Player global nor a '
+                            f'Silhouette:Bridge method on {sg.BRIDGE_FORM}')
+    keyfile = mcm / 'keybinds.json'
+    keybinds = json.loads(keyfile.read_text(encoding='utf-8'))['keybinds'] if keyfile.exists() else []
+    bound = {k['id']: k['action'] for k in keybinds}
+    for h in hotkeys:
+        if h not in bound:
+            problems.append(f'MCM hotkey {h!r} has no keybind in keybinds.json: pressing it would do nothing')
+    for kid, a in bound.items():
+        if not callable_(a):
+            problems.append(f'keybind {kid!r} calls {a} -- not a Silhouette:Bridge method on {sg.BRIDGE_FORM}')
+
+    # The NPC page offers exactly the player's lists, and NpcChoice reads the same ids.
+    for g in ('female', 'male'):
+        nid = next((k for k in options if k.startswith(f'iNpc{g.capitalize()}_')), None)
+        if nid is None:
+            continue
+        if options[nid] != script[g]['names']:
+            problems.append(f'MCM {nid} lists other presets than the player picker: NpcChoice would give '
+                            f'a different preset than the menu shows')
+        d = defaults.get(nid)
+        if d is None or not 0 <= d < len(script[g]['names']):
+            problems.append(f'MCM default {nid}={d} is not an entry of the menu')
+        if f'"{nid}")' not in text:
+            problems.append(f'Silhouette:Player.NpcChoice does not read {nid}')
+    for key in ('bORefit:General', 'bNippleRand:General', 'bGenitalRand:General'):
+        if key not in defaults:
+            problems.append(f'settings.ini has no default for {key}: MCM would read it as off')
 
 
 def main():
@@ -310,7 +361,9 @@ def main():
     ap.add_argument('--built', type=pathlib.Path, action='append', default=None,
                     help='a folder BodySlide built into (repeatable), searched before Data')
     ap.add_argument('--dir', type=pathlib.Path,
-                    default=sg.ROOT / 'data/F4SE/Plugins/F4EE/BodyGen/Loose')
+                    default=sg.ROOT / 'data/F4SE/Plugins/F4EE/BodyGen/Loose',
+                    help='the folder holding Silhouette_templates.ini -- or a mod folder / Data '
+                         'folder above it, where F4SE/Plugins/F4EE/BodyGen/Loose is looked for')
     ap.add_argument('--psc', type=pathlib.Path, default=sg.ROOT / 'papyrus/Silhouette/Player.psc',
                     help='the generated picker script source to check against the menu')
     args = ap.parse_args()
@@ -321,6 +374,16 @@ def main():
         if f is None or not f.with_suffix('.tri').exists():
             raise SystemExit(f'no {b}.nif + .tri in {", ".join(map(str, roots))}')
         print(f'{b}: {f.parent}')
+
+    # A mod folder or Data given instead of the BodyGen folder itself (the first plumbing pass
+    # crashed on exactly that): look below it before giving up with a sentence, not a traceback.
+    if not (args.dir / 'Silhouette_templates.ini').exists():
+        below = args.dir / 'F4SE/Plugins/F4EE/BodyGen/Loose'
+        if (below / 'Silhouette_templates.ini').exists():
+            args.dir = below
+        else:
+            raise SystemExit(f'no Silhouette_templates.ini in {args.dir} or in {below}')
+    print(f'checking {args.dir}')
 
     problems = []
     templates = parse_templates(args.dir / 'Silhouette_templates.ini', problems)

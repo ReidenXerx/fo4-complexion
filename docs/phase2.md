@@ -31,7 +31,7 @@ LooksMenu BodyGen ──(on NPC load)──▶ random body + marker, stored in L
         │ BodyGen.SetMorph / GetMorphs / RemoveMorphsByKeyword / UpdateMorphs   (Papyrus only)
         │
 Silhouette:Bridge  (Papyrus, on Silhouette.esp's quest, ONE timer)
-        │   polls:   Silhouette:Native.NextOrders()      reports: ActorProbed(), OrderDone()
+        │   polls:   Silhouette:Plugin.NextOrder()       reports: NoteMarker/NoteRead, OrderDone()
         ▼
 Silhouette.dll  (F4SE, CommonLibF4 OG)
     Catalog   catalog.json + manifests/<stamp>.json, written by silhouette_gen.py

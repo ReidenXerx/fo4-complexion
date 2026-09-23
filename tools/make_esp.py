@@ -1,7 +1,10 @@
-"""Generate Silhouette.esp: one quest with one script, and one empty form list.
+"""Generate Silhouette.esp: two quests, one script each, and one empty form list.
 
-It exists only for the regeneration window (decision S-15), which needs a script
-that runs on its own; everything else in Silhouette works without a plugin.
+0x800 runs the regeneration window (decision S-15), Silhouette:Adopter. 0x802 runs
+Silhouette:Bridge (S-18): the hands of Silhouette.dll -- rules by name and faction,
+ORefit, the NPC picker, the API's events. Each quest has one script, so MCM's
+CallFunction and Game.GetFormFromFile(...) as <script> can never pick the wrong one.
+Random distribution itself needs no plugin at all: that is LooksMenu's BodyGen.
 
 The shape is copied from fo4-chemistry's make_esp.py, itself read out of a real
 working record: AAF.esm's AAF_MainQuest carries a VMAD whose QUST form, with no
@@ -10,7 +13,7 @@ script, no properties. Its DNAM (start game enabled, priority 100) is AAF's too.
 Chemistry.esp, built this way, runs in the owner's game.
 
 Flagged LIGHT (TES4 flag 0x200): it takes no load-order slot. Light plugins may
-only use object ids 0x800-0xFFF, and these two are 0x800 and 0x801.
+only use object ids 0x800-0xFFF, and these are 0x800, 0x801 and 0x802.
 
     python tools/make_esp.py data/Silhouette.esp
 """
@@ -20,11 +23,14 @@ import sys
 SCRIPT_NAME = 'Silhouette:Adopter'
 QUEST_EDID = 'SilhouetteAdopterQuest'
 SEEN_EDID = 'SilhouetteAdopterSeen'
+BRIDGE_SCRIPT = 'Silhouette:Bridge'
+BRIDGE_EDID = 'SilhouetteBridgeQuest'
 AUTHOR = 'Silhouette'
 MASTER = 'Fallout4.esm'
 
 QUEST_FORMID = 0x01000800      # Silhouette:Adopter reads the list back as 0x801 of
 SEEN_FORMID = 0x01000801       # Silhouette.esp, and MCM's button the quest as 0x800
+BRIDGE_FORMID = 0x01000802     # MCM's hotkeys and NPC page call the bridge as 0x802
 TES4_LIGHT = 0x200
 
 
@@ -54,21 +60,25 @@ def group(label, records_blob):
             + struct.pack('<I', 0) + struct.pack('<IHH', 0, 0, 0) + records_blob)
 
 
-def build():
+def quest_fields(edid, script):
     vmad = struct.pack('<hhH', 6, 2, 1)        # version, object format, script count
-    vmad += wstring(SCRIPT_NAME)
+    vmad += wstring(script)
     vmad += struct.pack('<B', 0)               # status: local
     vmad += struct.pack('<H', 0)               # no properties
     dnam = bytes.fromhex('110064670000000000000000')   # AAF_MainQuest's: start game enabled
+    quest = field('EDID', zstring(edid)) + field('VMAD', vmad) + field('DNAM', dnam)
+    return quest + field('NEXT', b'')          # alias section marker, empty
 
-    quest = field('EDID', zstring(QUEST_EDID)) + field('VMAD', vmad) + field('DNAM', dnam)
-    quest += field('NEXT', b'')                # alias section marker, empty
+
+def build():
+    adopter = quest_fields(QUEST_EDID, SCRIPT_NAME)
+    bridge = quest_fields(BRIDGE_EDID, BRIDGE_SCRIPT)
     seen = field('EDID', zstring(SEEN_EDID))   # filled at run time: FormList.AddForm persists
 
-    body = group('QUST', record('QUST', QUEST_FORMID, quest))
+    body = group('QUST', record('QUST', QUEST_FORMID, adopter) + record('QUST', BRIDGE_FORMID, bridge))
     body += group('FLST', record('FLST', SEEN_FORMID, seen))
 
-    hedr = struct.pack('<fiI', 1.0, 4, SEEN_FORMID + 1)   # version, records+groups, next id
+    hedr = struct.pack('<fiI', 1.0, 5, BRIDGE_FORMID + 1)   # version, records+groups, next id
     header = field('HEDR', hedr) + field('CNAM', zstring(AUTHOR))
     header += field('MAST', zstring(MASTER)) + field('DATA', struct.pack('<Q', 0))
     return record('TES4', 0, header, flags=TES4_LIGHT) + body
@@ -82,7 +92,8 @@ def main():
     with open(sys.argv[1], 'wb') as fh:
         fh.write(blob)
     print(f'wrote {sys.argv[1]} ({len(blob)} bytes): light; quest {QUEST_EDID} {QUEST_FORMID:08X} '
-          f'running {SCRIPT_NAME}; form list {SEEN_EDID} {SEEN_FORMID:08X}; master {MASTER}')
+          f'running {SCRIPT_NAME}; quest {BRIDGE_EDID} {BRIDGE_FORMID:08X} running {BRIDGE_SCRIPT}; '
+          f'form list {SEEN_EDID} {SEEN_FORMID:08X}; master {MASTER}')
     return 0
 
 

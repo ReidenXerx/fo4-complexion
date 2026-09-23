@@ -272,6 +272,19 @@ opens them with nothing inside. Same mechanism as S-17: `Morph@low:high` entries
 from `tools/variety.json`. One loader reads both range files, refuses runtime states (S-16), and
 FAILS if both files name the same morph. AnusBack is never randomised (S-17).
 
+Addendum, 2026-09-23 (the ranges, agent's choice within the poll): `tools/variety.json` rolls, for
+women, NippleSize -0.2..0.5, NippleAreola -0.2..0.5, NippleTip 0..0.35, NippleLength 0..0.25; for men,
+BTNippleSize 0..0.5, BTNippleWidth -0.2..0.3, BTNippleTipSize 0..0.35, BTBallSize 0.1..0.7,
+BTBallAsymmetry 0..0.4. Measured per unit of slider on the deployed bodies: the worst local stretch is
+1.1x to 1.9x for each of them except NippleLength (3.6x, hence the narrowest range); each range spans
+what the installed presets themselves use, without their extremes. Left to the presets: nipple
+placement and breast-point shape, which are a preset's design; `Balls`, the big size control; NipBGone,
+which is ORefit's. Ranges stay ABSOLUTE per sex, as S-17's are, so a range replaces the preset's own
+value for that morph (OBody's nipple randomisation does the same under its key) and the verifier can
+still check every range exactly. The build hash now covers the ranges: files that roll differently are
+a different build. The loader refuses the shaft by name (`Penis Length`, `Penis Width`, `TipShape` and
+the BT penis sliders) and AnusBack.
+
 ## S-22 — The NPC picker is hotkeys and an MCM page
 
 Owner poll, 2026-09-23. Aim at an NPC and press Pick: they become the target. Next and Previous
@@ -301,3 +314,35 @@ Agent decision, 2026-09-23. It keeps a record per reference: the preset it assig
 that chose it (name rule, faction rule, picker, API), the stamp, whether ORefit is on, and ORefit's
 snapshot. Form ids are resolved through F4SE, so load-order changes are followed. A new game
 starts empty.
+
+## S-26 — ORefit's sets: a built-in one, and OBody's refit presets
+
+Agent decision, 2026-09-23. `builtin:female`, for CBBE: BreastsTogether at least 0.3, BreastGravity2 at
+most 0.2, PushUp at least 0.2, NipBGone 1 with NippleLength, NipplePerkiness, NipplePerk2 and NippleTip
+at 0, Butt and AppleCheeks 0.05 less. Floors, ceilings and small steps, so a modest body changes little.
+There is no male set. OBody's refit presets -- a BodySlide preset named "<Preset>-Refit",
+"Female-Refit" or "Male-Refit" -- are compiled into sets (every slider they carry, as `set`), are never
+handed out as bodies, and outfits name theirs by the outfit's in-game name
+(`refitOutfitPresetsFemale/Male`, OBody's keys). Outfits that never refit and outfits that always do
+are OBody's keys too, by form id, name or plugin. The player is never refit.
+
+## S-27 — Reset, Back to random, and leaving
+
+Agent decision, 2026-09-23, from LooksMenu's source. Reset removes Silhouette's (unkeyed) layer: the NPC
+is bare now, and LooksMenu drops emptied entries when it loads a save (MorphValueMap::Load skips them),
+so BodyGen gives them a body again after the next load. Back to random (GenActor) runs BodyGen at once
+through RegenerateMorphs, which clears every key, so the bridge keeps other mods' keyed values and puts
+them back -- the regeneration window's way. For uninstalling, MCM > Silhouette > Settings takes ORefit
+off everyone the save remembers with a refit on: the people in memory at once, the rest when next seen,
+as long as ORefit stays off. BodyGen bodies need nothing: they are LooksMenu's data.
+
+## S-28 — The bridge's protocol is fixed, and tested where it is decided
+
+Agent decision, 2026-09-23. The plugin builds each order when the bridge asks for it, from the state at
+that moment, one order per actor at a time, the latest decision winning while it waits. The bridge does
+exactly: regenerate, probe, read, Prepare, clear, write, update, Done -- nothing else -- and the offline
+tests run the same steps against a fake LooksMenu layer, so what a body ends up holding is tested, not
+only the orders. The native script is `Silhouette:Plugin` (Papyrus reserves `Native`). Functions that
+touch only the plugin's own state are callable from tasklets (no frame each); anything that reads an
+actor runs on the main thread, where the game changes it. Actors travel as form ids.
+

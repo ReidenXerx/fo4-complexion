@@ -1,6 +1,6 @@
 #pragma once
 
-// Silhouette:Native -- the functions the bridge and Silhouette:API call. The plugin never calls into
+// Silhouette:Plugin -- the functions the bridge and Silhouette:API call. The plugin never calls into
 // the VM (S-18); everything goes this way round.
 
 namespace SH::Papyrus
