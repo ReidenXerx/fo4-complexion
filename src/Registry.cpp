@@ -23,6 +23,17 @@ namespace SH
 				_out.insert(_out.end(), p, p + size);
 			}
 
+			void Rec(std::uint32_t a_ref, const Record& a_r)
+			{
+				Put(a_ref);
+				Put(a_r.base);
+				Put(static_cast<std::uint8_t>(a_r.source));
+				Put(a_r.stamp);
+				Put(a_r.announced);
+				Put(a_r.touched);
+				Str(a_r.preset);
+			}
+
 			[[nodiscard]] std::vector<std::byte> Take() { return std::move(_out); }
 
 		private:
@@ -59,14 +70,29 @@ namespace SH
 				return text;
 			}
 
+			std::pair<std::uint32_t, Record> Rec()
+			{
+				const auto saved = Get<std::uint32_t>();
+				Record     r;
+				r.base = Get<std::uint32_t>();
+				const auto source = Get<std::uint8_t>();
+				if (source > static_cast<std::uint8_t>(Source::kNameBlacklist)) {
+					throw std::runtime_error(std::format("record {:08X}: unknown source {}", saved, source));
+				}
+				r.source = static_cast<Source>(source);
+				r.stamp = Get<std::uint32_t>();
+				r.announced = Get<std::uint32_t>();
+				r.touched = Get<std::uint32_t>();
+				r.preset = Str();
+				return { saved, std::move(r) };
+			}
+
 			[[nodiscard]] bool AtEnd() const { return _at == _in.size(); }
 
 		private:
 			std::span<const std::byte> _in;
 			std::size_t                _at{ 0 };
 		};
-
-		constexpr std::uint8_t kRefitApplied = 1;
 	}
 
 	std::string_view SourceName(Source a_source)
@@ -126,19 +152,23 @@ namespace SH
 		Writer w;
 		w.Put(static_cast<std::uint32_t>(kept.size()));
 		for (const auto& [ref, r] : kept) {
-			w.Put(ref);
-			w.Put(r->base);
-			w.Put(static_cast<std::uint8_t>(r->source));
-			w.Put(static_cast<std::uint8_t>(r->refitApplied ? kRefitApplied : 0));
-			w.Put(r->stamp);
-			w.Put(r->announced);
-			w.Str(r->preset);
-			w.Str(r->refitSet);
-			const auto count = static_cast<std::uint16_t>(std::min<std::size_t>(r->snapshot.size(), 0xFFFF));
+			w.Rec(ref, *r);
+		}
+		const bool picking = picker && (!a_keep || a_keep(picker->ref));
+		w.Put(static_cast<std::uint8_t>(picking ? 1 : 0));
+		if (picking) {
+			w.Put(picker->ref);
+			w.Put(picker->base);
+			w.Put(static_cast<std::uint8_t>(picker->female ? 1 : 0));
+			const auto count = static_cast<std::uint16_t>(std::min<std::size_t>(picker->snapshot.size(), 0xFFFF));
 			w.Put(count);
 			for (std::size_t i = 0; i < count; ++i) {
-				w.Str(r->snapshot[i].first);
-				w.Put(r->snapshot[i].second);
+				w.Str(picker->snapshot[i].first);
+				w.Put(picker->snapshot[i].second);
+			}
+			w.Put(static_cast<std::uint8_t>(picker->before ? 1 : 0));
+			if (picker->before) {
+				w.Rec(picker->ref, *picker->before);
 			}
 		}
 		return w.Take();
@@ -151,44 +181,52 @@ namespace SH
 			a_error = std::format("record list version {} (this plugin reads {})", a_version, kVersion);
 			return false;
 		}
+		const auto resolve = [&](std::uint32_t a_id) { return a_resolve ? a_resolve(a_id) : a_id; };
 		try {
 			std::unordered_map<std::uint32_t, Record> loaded;
 			Reader                                    r(a_bytes);
 			const auto                                count = r.Get<std::uint32_t>();
 			for (std::uint32_t i = 0; i < count; ++i) {
-				const auto saved = r.Get<std::uint32_t>();
-				Record     rec;
-				rec.base = r.Get<std::uint32_t>();
-				const auto source = r.Get<std::uint8_t>();
-				if (source > static_cast<std::uint8_t>(Source::kNameBlacklist)) {
-					throw std::runtime_error(std::format("record {:08X}: unknown source {}", saved, source));
+				// Read the whole record before resolving its id: a record we drop must still be consumed.
+				auto [saved, rec] = r.Rec();
+				const auto ref = resolve(saved);
+				if (ref == 0) {
+					continue;  // the reference is gone (its plugin was removed)
 				}
-				rec.source = static_cast<Source>(source);
-				rec.refitApplied = (r.Get<std::uint8_t>() & kRefitApplied) != 0;
-				rec.stamp = r.Get<std::uint32_t>();
-				rec.announced = r.Get<std::uint32_t>();
-				rec.preset = r.Str();
-				rec.refitSet = r.Str();
+				if (rec.base != 0) {
+					rec.base = resolve(rec.base);
+				}
+				loaded[ref] = std::move(rec);
+			}
+			std::optional<PickerSave> picking;
+			if (r.Get<std::uint8_t>() != 0) {
+				PickerSave p;
+				p.ref = resolve(r.Get<std::uint32_t>());
+				p.base = r.Get<std::uint32_t>();
+				p.base = p.base ? resolve(p.base) : 0;
+				p.female = r.Get<std::uint8_t>() != 0;
 				const auto n = r.Get<std::uint16_t>();
 				for (std::uint16_t k = 0; k < n; ++k) {
 					auto       morph = r.Str();
 					const auto value = r.Get<float>();
-					rec.snapshot.emplace_back(std::move(morph), value);
+					p.snapshot.emplace_back(std::move(morph), value);
 				}
-				// Resolved AFTER reading the whole record: a record we drop must still be consumed.
-				const auto ref = a_resolve ? a_resolve(saved) : saved;
-				if (ref == 0) {
-					continue;  // the reference is gone (its plugin was removed)
+				if (r.Get<std::uint8_t>() != 0) {
+					auto [ignored, before] = r.Rec();
+					if (before.base) {
+						before.base = resolve(before.base);
+					}
+					p.before = std::move(before);
 				}
-				if (rec.base != 0 && a_resolve) {
-					rec.base = a_resolve(rec.base);
+				if (p.ref != 0) {
+					picking = std::move(p);
 				}
-				loaded[ref] = std::move(rec);
 			}
 			if (!r.AtEnd()) {
 				throw std::runtime_error("bytes left over after the last record");
 			}
 			_records = std::move(loaded);
+			picker = std::move(picking);
 			return true;
 		} catch (const std::exception& e) {
 			a_error = e.what();

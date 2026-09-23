@@ -63,10 +63,10 @@ namespace SH
 
 		// 1. per-NPC blacklist -- by form id BodyGen already keeps them bare; by name is ours.
 		if (AnyListed(a_catalog.blacklistedNpcsFormID, a_actor.bases)) {
-			return { Tier::kNone, {}, "blacklisted by form id (BodyGen keeps them bare)" };
+			return { Tier::kNone, {}, "blacklisted by form id (BodyGen keeps them bare)", true };
 		}
 		if (!a_actor.baseName.empty() && ListedName(a_catalog.blacklistedNpcNames, a_actor.baseName)) {
-			return { Tier::kNameBlacklist, {}, std::format("\"{}\" is blacklisted by name", a_actor.baseName) };
+			return { Tier::kNameBlacklist, {}, std::format("\"{}\" is blacklisted by name", a_actor.baseName), true };
 		}
 
 		// 2. per-NPC preset -- by form id BodyGen already did it; by name is ours.
@@ -84,10 +84,10 @@ namespace SH
 
 		// 3. plugin and race blacklists outrank a faction: BodyGen keeps those bare.
 		if (ListedName(a_catalog.blacklistedPlugins[sex], a_actor.originPlugin)) {
-			return { Tier::kNone, {}, std::format("plugin {} is blacklisted (BodyGen keeps them bare)", a_actor.originPlugin) };
+			return { Tier::kNone, {}, std::format("plugin {} is blacklisted (BodyGen keeps them bare)", a_actor.originPlugin), true };
 		}
 		if (ListedName(a_catalog.blacklistedRaces[sex], a_actor.race)) {
-			return { Tier::kNone, {}, std::format("race {} is blacklisted (BodyGen keeps them bare)", a_actor.race) };
+			return { Tier::kNone, {}, std::format("race {} is blacklisted (BodyGen keeps them bare)", a_actor.race), true };
 		}
 
 		// 4. faction -- the first rule, in the config's order, whose faction the NPC record carries.

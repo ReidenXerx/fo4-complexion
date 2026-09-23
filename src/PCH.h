@@ -32,10 +32,12 @@ namespace logger = F4SE::log;
 #include <map>
 #include <mutex>
 #include <optional>
+#include <random>
 #include <ranges>
 #include <set>
 #include <shared_mutex>
 #include <span>
+#include <thread>
 #include <stdexcept>
 #include <string>
 #include <string_view>

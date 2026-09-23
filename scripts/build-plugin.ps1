@@ -43,6 +43,9 @@ if ($LASTEXITCODE) { throw "build failed ($LASTEXITCODE)" }
 $tests = Join-Path $build "$Config\SilhouetteTests.exe"
 & $tests
 if ($LASTEXITCODE) { throw "$LASTEXITCODE offline test(s) failed" }
+# The generated files in data\, read by the plugin's own parser.
+& $tests --check (Join-Path $root 'data')
+if ($LASTEXITCODE) { throw "the plugin would refuse the generated files in data\ - regenerate." }
 
 $dll = Get-Item (Join-Path $build "$Config\Silhouette.dll")
 Write-Host ("built {0}  {1} bytes  {2:yyyy-MM-dd HH:mm:ss}" -f $dll.FullName, $dll.Length, $dll.LastWriteTime)

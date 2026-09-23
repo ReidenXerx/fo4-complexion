@@ -31,11 +31,14 @@ $data = Join-Path $root 'data'
 if (-not (Test-Path $dll)) { throw "Missing $dll - run scripts\build-plugin.ps1." }
 if (-not (Test-Path (Join-Path $pex 'Bridge.pex'))) { throw "Missing scripts - run scripts\build-papyrus.ps1." }
 
+# The generated files, read by the plugin's own parser (SilhouetteTests.exe --check): the catalog,
+# every manifest, and both BodyGen headers against the catalog's build, stamp and rules hash. What
+# the game would refuse at load is refused here.
+$tests = Join-Path $root "build\$Config\SilhouetteTests.exe"
+if (-not (Test-Path $tests)) { throw "Missing $tests - run scripts\build-plugin.ps1." }
+& $tests --check $data
+if ($LASTEXITCODE) { throw "the plugin would refuse these generated files - regenerate." }
 $catalog = Get-Content (Join-Path $data 'F4SE\Plugins\Silhouette\catalog.json') -Raw | ConvertFrom-Json
-$header  = Get-Content (Join-Path $data 'F4SE\Plugins\F4EE\BodyGen\Loose\Silhouette_templates.ini') -TotalCount 5
-if (-not ($header -match "Build $($catalog.build), marker stamp $($catalog.stamp) ")) {
-    throw "catalog.json and the BodyGen templates are different builds - regenerate."
-}
 
 if (Test-Path $out) { Remove-Item -Recurse -Force $out }
 if (Test-Path $zip) { Remove-Item -Force $zip }

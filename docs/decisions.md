@@ -242,6 +242,13 @@ its shape, from the sources (the map: [phase2.md](phase2.md)):
 
 ## S-19 — The generator stays the compiler; the plugin reads a catalog
 
+**Amended by the first microscope wave: the build names the bodies, a rules hash names the rules.** Both
+BodyGen files state "Build <hex>, marker stamp <n> (<mode>), rules <hex>", the catalog carries the same
+rules hash, and the plugin refuses the set when any of the three differs: two runs with different rules
+had produced the same build. The build scripts run the plugin's own parser on the generated files
+(`SilhouetteTests.exe --check`), and the generator refuses a config value of the wrong shape, so what
+the game would refuse at load is refused before anything is deployed.
+
 Agent decision, 2026-09-23. `silhouette_gen.py --write` also writes
 `F4SE/Plugins/Silhouette/catalog.json`: every preset that fits, per sex, with its final values and
 its classification; the player defaults; the compiled rules, including the tiers BodyGen already
@@ -250,6 +257,9 @@ the generator measures. The catalog carries the build and stamp, and the plugin 
 rules or ORefit when they disagree with the BodyGen files, and says so.
 
 ## S-20 — ORefit writes final values and restores a snapshot
+
+**Superseded in its mechanism by S-40 (owner, 2026-09-23): the refit is a keyword layer of floors, not final
+values with a snapshot. The clothed slots and the order of refit sets below still stand.**
 
 Agent decision, 2026-09-23, from both sources. OBody puts the clothed set under a second key
 ("OClothe"), and RaceMenu adds keys, so a negative delta works. LooksMenu takes the MAXIMUM over
@@ -295,6 +305,13 @@ times the work, and menu code is where FO4 plugins crash (CommonLibF4's `VisitMe
 
 ## S-23 — Rules only the runtime can see: name, faction, name blacklist
 
+**Amended by the first microscope wave, from OBody NG's source (Body.cpp): a name rule matches the NPC
+RECORD's name (`actorBase->GetName()`), not the display name.** A reference renamed at runtime (Rapport names
+the settlers it befriends) keeps the rule its record matched; by display name, a blacklisted "Settler"
+renamed by Rapport would have been rolled by BodyGen on the next sighting. Faction rules read the record's
+own factions, as OBody does, not every template's up the chain. The plugin tier (BodyGen's) reads the
+plugin of the chain's root, which is where LooksMenu applies a plugin line.
+
 Agent decision, 2026-09-23. OBody's priority stands (S-11). The plugin acts only when a NAME or
 FACTION tier wins for an NPC: it assigns that preset, and the bridge replaces BodyGen's roll. A name
 blacklist leaves the NPC bare, with a stored blacklist marker (a morph no body has), so BodyGen
@@ -310,12 +327,20 @@ OnActorNaked, OnActorRemovingClothes and OnORefitChanged. The plugin never raise
 
 ## S-25 — The plugin's co-save: who it assigned, why, and what ORefit took
 
+**Superseded by S-43 and S-47: the co-save keeps intent and a picking in progress, nothing of ORefit.** A
+placed reference's record is always written, even when its cell is out of memory at save time (the form
+map does not hold it then, and dropping it lost picked presets); a created (0xFF) reference's record goes
+with the reference.
+
 Agent decision, 2026-09-23. It keeps a record per reference: the preset it assigned and the tier
 that chose it (name rule, faction rule, picker, API), the stamp, whether ORefit is on, and ORefit's
 snapshot. Form ids are resolved through F4SE, so load-order changes are followed. A new game
 starts empty.
 
 ## S-26 — ORefit's sets: a built-in one, and OBody's refit presets
+
+**Amended by S-40 and S-42: every entry is a floor now, and the built-in set is BreastsTogether ≥ 0.3, PushUp ≥
+0.2, and NipBGone 1 under heavy clothes only.**
 
 Agent decision, 2026-09-23. `builtin:female`, for CBBE: BreastsTogether at least 0.3, BreastGravity2 at
 most 0.2, PushUp at least 0.2, NipBGone 1 with NippleLength, NipplePerkiness, NipplePerk2 and NippleTip
@@ -327,6 +352,9 @@ handed out as bodies, and outfits name theirs by the outfit's in-game name
 are OBody's keys too, by form id, name or plugin. The player is never refit.
 
 ## S-27 — Reset, Back to random, and leaving
+
+**Amended by S-40/S-41: Reset also removes the refit layer and nothing is refit until she has a body again;
+leaving needs no step at all -- removing Silhouette.esp removes every refit.**
 
 Agent decision, 2026-09-23, from LooksMenu's source. Reset removes Silhouette's (unkeyed) layer: the NPC
 is bare now, and LooksMenu drops emptied entries when it loads a save (MorphValueMap::Load skips them),
@@ -342,7 +370,119 @@ Agent decision, 2026-09-23. The plugin builds each order when the bridge asks fo
 that moment, one order per actor at a time, the latest decision winning while it waits. The bridge does
 exactly: regenerate, probe, read, Prepare, clear, write, update, Done -- nothing else -- and the offline
 tests run the same steps against a fake LooksMenu layer, so what a body ends up holding is tested, not
-only the orders. The native script is `Silhouette:Plugin` (Papyrus reserves `Native`). Functions that
+only the orders. The native script is `Silhouette:Plugin` (Papyrus reserves `Native`) -- renamed `Silhouette:DLL` by S-46. Functions that
 touch only the plugin's own state are callable from tasklets (no frame each); anything that reads an
 actor runs on the main thread, where the game changes it. Actors travel as form ids.
 
+## S-29 — The shaft is never part of a body
+
+Owner poll, 2026-09-23: "Should Silhouette strip shaft sliders from every body, as it already does
+for erection states?" -- "yes". Two of the eight installed male presets set `Penis Width` (0.2 and
+1.0), the width the owner had already ruled out for variety (S-21): animations aim the penis bones
+and fo4-anatomy's collision is sized to BodyTalk's current shaft, so a wider one clips through the
+lips. Like the runtime states (S-16), the shaft's sliders -- `Penis Length`, `Penis Width`,
+`TipShape` and BodyTalk's `BTPenis*`, `BTShaftRootSize`, `BTUrethraCurve`, `BTSmoothPenis*` -- are
+never written into a template, the player's picker, the catalog or a refit set, and the verifier fails
+a template that has one. Bodies an older build already gave are healed the way S-16 heals states: the
+plugin reads, from the manifest of the stamp an NPC's marker carries, whether that template held any
+morph that is now never part of a body, and zeroes exactly those in the unkeyed layer once; the
+regeneration window does the same for Silhouette-marked NPCs without the plugin. The player keeps
+their own body until they apply a preset again in MCM.
+
+## S-40 — ORefit is a keyword layer that only raises (supersedes S-20's mechanism)
+
+Owner poll, 2026-09-23, after the first microscope wave showed that S-20's design keeps a clothed
+woman's naked values only in Silhouette's co-save, so one save without the DLL, a save that lands in the
+middle of a refit, or an NPC whose cell unloads makes the clothed shape her naked body for good. The owner
+chose the recommended option and added: "dressed and undressed bodyshape should be in sync (besides that
+intentional difference u named)".
+- The refit lives under Silhouette's own keyword (Silhouette.esp, KYWD 0x803). LooksMenu shows the
+  MAXIMUM over keyword layers, so each entry is a FLOOR: while dressed she has at least that value, and
+  everything else is her own body. The clothed shape therefore follows every change to her body -- a new
+  preset, the picker, variety -- with nothing to keep in step.
+- Refit on replaces Silhouette's keyword layer with the set's floors and a refit marker; refit off removes
+  the layer. Both are safe to repeat and to interrupt. Nothing about a refit is kept in the co-save: the
+  marker in LooksMenu's own data says whether one is on.
+- Removing Silhouette.esp removes every refit: LooksMenu drops keyed values whose keyword no longer
+  resolves when it loads a save.
+- The cost: a refit cannot lower anything. No cap on breast sag, no easing of the seat, and a
+  "<Preset>-Refit" preset raises its sliders only. OBody's other refit rules (S-20's slots and order of
+  sets, S-26's refit presets and outfits by name) stand.
+
+## S-41 — Who is refit
+
+Owner poll, 2026-09-23: only bodies that should be, "but we need to be sure we didnt miss something we
+should cover and also i think custom followers should be included by default if user didnt blacklist them".
+Every clothed woman of a distributed race who HAS a body is refit: a Silhouette body, a body another
+mod's BodyGen files gave, a custom follower's, one edited by hand in LooksMenu. Never refit:
+- anyone blacklisted -- by name, by form id, by plugin or by race;
+- anyone reset this session (S-27): she is bare until BodyGen gives her a body after a load;
+- anyone with no body at all: the refit would be her first stored morph, and LooksMenu never runs BodyGen
+  for an actor that holds one;
+- the player and the character-creation dummies.
+Having a body is read from LooksMenu: a Silhouette marker, or a non-zero value of her own.
+Nobody outside this -- the player, the dummies, creatures, races Silhouette does not distribute to -- is
+ever probed: that is most actors in the world. A race taken out of `distributeRaces` keeps the refits its
+women already have until they are reset, or until Silhouette.esp is removed.
+
+## S-42 — Nipples are flattened under heavy clothes only
+
+Owner poll, 2026-09-23 ("would be cool to flatten nipples only on heavy clothes like in reality with rough
+tissue"; then "Armour pieces + armoured outfits"). Measured in the base game and DLCs: most clothes take
+BODY (33) AND [A] Torso (41) -- dresses, suits, lab coats, even the bathrobe -- so the slot says nothing;
+366 of 492 BODY items are rated 0. Heavy is: a separate chest armour piece ([A] Torso without BODY), or an
+outfit whose armour rating is 10 or more (the Brotherhood uniform 10, the Courser jacket 30, Maxson's coat
+50). Config lists name single items heavy or light by form id or name (`heavyOutfitsFormID`,
+`heavyOutfits`, `lightOutfitsFormID`, `lightOutfits`; the rating is `heavyArmorRating`). The built-in CBBE set is
+BreastsTogether at least 0.3 and PushUp at least 0.2 whenever she is dressed, and NipBGone 1 under heavy
+clothes. An arousal bump for nipples is the anatomy project's (owner); under a keyword of its own it
+combines with this one by the same maximum.
+
+## S-43 — Truth first: the co-save keeps intent, LooksMenu keeps the body
+
+Agent decision, 2026-09-23, from the first microscope wave. The co-save and LooksMenu's own data are two
+files that can disagree -- a save that lands between two bridge calls, a save made without the DLL, a
+non-persistent NPC whose morphs LooksMenu drops at load, a reroll that goes around the plugin. So:
+- The first order for an actor in a session is a probe of LooksMenu: her markers (body and refit) and the
+  names she holds.
+- The co-save keeps only INTENT -- who chose which body (a rule, the picker, the API, the name
+  blacklist) -- and it is written when the choice is made, not when the bridge finishes.
+- After each probe the plugin makes reality match intent: a body that is not the chosen one is given
+  again (once a session), a refit that should not be there comes off, one that should is put on.
+- Every order is safe to repeat. Order ids start at a random number each launch, and the bridge checks
+  that an order still names its actor before it writes: a script stack a save resumed cannot act on
+  someone else's order.
+- A record belongs to its reference. Only a created (0xFF) reference's id can be handed to somebody new,
+  so only there does a different NPC record mean somebody else; a placed leveled NPC is given a new
+  temporary record when it respawns and stays the same person to LooksMenu, and keeps its record.
+- Work goes in three lanes: the player's own actions first (picker, menu, API, a refit coming off),
+  then decisions (rules, refits, top-ups), then probes.
+
+## S-44 — Top-up: existing bodies get the variety they lack
+
+Owner poll, 2026-09-23 ("i aggree with recommended, but force regen on 24h function ofc will override
+it"). The first time the plugin sees a Silhouette body that lacks a variety slider the current build rolls
+(S-17, S-21), it writes a drawn value for just those sliders; everything else about her body stays. The
+same order carries the S-29 heal. A regeneration (the window, Back to random, GenActor) replaces the body
+and its variety with a new roll. The variety switches (S-24) apply.
+
+## S-45 — The player is never randomised (S-7, restored)
+
+Agent decision, 2026-09-23, from the first microscope wave: S-21 had put ranges on the player's template,
+because the player's line named the same template as the random pool. The player and the two
+character-creation dummies now name range-free templates with the same values and marker, so a new
+character is the most average preset exactly, and "Back to the default" gives the same body.
+
+## S-46 — The API's events and names
+
+Agent decision, 2026-09-23. The bridge sends its custom events under the names the compiler gives them,
+"silhouette:bridge_<Event>": sent under the bare name, no listener ever receives them (the vanilla scripts
+and Rapport do the same). The native script is `Silhouette:DLL` -- "Plugin" also means an .esp in this
+project's own config. OBody's exact names (ResetActorOBodyMorphs, ReapplyActorOBodyMorphs) are aliases.
+Calls that change a body return before it changes; OnActorGenerated says it happened.
+
+## S-47 — The NPC picker survives a save
+
+Agent decision, 2026-09-23. The picker's copy of the body and the choice the NPC had before are kept in
+the co-save while picking. A save made mid-preview loads as a Cancel: the preview never becomes a body
+nobody kept.

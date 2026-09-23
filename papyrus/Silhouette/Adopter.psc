@@ -13,9 +13,11 @@ Scriptname Silhouette:Adopter extends Quest
  hand in LooksMenu), anyone AAF has busy or locked, and anyone already processed.
  After 24 in-game hours the window closes itself.
 
- The same scan heals Silhouette bodies an older build gave with a runtime STATE in
- them (decision S-16): only the unkeyed value of a state morph goes, only on a body
- that carries a Silhouette marker.}
+ With Silhouette.dll ready, a person is handed to it (Silhouette:API.GenActor): the
+ plugin rolls them the same way and knows it did. Without it this script rolls them
+ itself, and also heals Silhouette bodies an older build gave with a runtime state
+ or a shaft value in them (decisions S-16, S-29) -- the plugin's touch-up does that
+ for everyone it sees.}
 
 ; Every argument is passed explicitly: the decompiled base sources carry no defaults.
 
@@ -101,14 +103,20 @@ EndEvent
 Function Scan()
 	FormList seen = Game.GetFormFromFile(0x801, "Silhouette.esp") as FormList
 	Actor[] people = Silhouette:Player.Nearby()
-	String[] states = Silhouette:Player.StateMorphs()
+	Bool plugin = Silhouette:API.IsReady()
+	String[] states = new String[0]
+	If !plugin
+		states = Silhouette:Player.StateMorphs()
+	EndIf
 	Int i = 0
 	While i < people.Length
 		Actor a = people[i]
 		If a && !Busy(a)
-			Heal(a, states)
+			If !plugin
+				Heal(a, states)
+			EndIf
 			If !(seen && seen.HasForm(a)) && Eligible(a)
-				Adopt(a, seen)
+				Adopt(a, seen, plugin)
 			EndIf
 		EndIf
 		i += 1
@@ -126,9 +134,9 @@ Bool Function Busy(Actor a)
 	Return False
 EndFunction
 
-; A Silhouette body never holds a runtime state (decision S-16), but bodies an older
-; build gave can: Sirius_Male_preset once carried Erection at 100%, so two men kept
-; one for good. Only the unkeyed value goes -- SetMorph with 0 erases exactly that
+; A Silhouette body never holds a runtime state or a shaft value (decisions S-16,
+; S-29), but bodies an older build gave can: Sirius_Male_preset once carried Erection
+; at 100%, so two men kept one for good. Only the unkeyed value goes -- SetMorph with 0 erases exactly that
 ; key -- and only on a body Silhouette gave: a state another mod keeps under its own
 ; keyword, or one set by hand on a body that is not ours, stays where it is.
 Function Heal(Actor a, String[] states)
@@ -180,8 +188,20 @@ Bool Function Eligible(Actor a)
 	Return True
 EndFunction
 
-; Remember every keyed value, let BodyGen roll the actor, put the values back.
-Function Adopt(Actor a, FormList seen)
+; Remember every keyed value, let BodyGen roll the actor, put the values back. With
+; the plugin ready, it does exactly that through its bridge, and the rules by name
+; and faction get their say.
+Function Adopt(Actor a, FormList seen, Bool abPlugin)
+	If abPlugin
+		If Silhouette:API.GenActor(a)
+			If seen
+				seen.AddForm(a)
+			EndIf
+			adopted += 1
+			Debug.Trace("Silhouette adopter: " + a.GetFormID() + " handed to Silhouette.dll to be rolled", 0)
+		EndIf
+		Return
+	EndIf
 	Bool female = Silhouette:Player.IsFemale(a)
 	String[] morphs = BodyGen.GetMorphs(a, female)
 	String[] names = new String[0]

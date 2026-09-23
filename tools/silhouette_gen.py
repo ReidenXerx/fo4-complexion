@@ -139,6 +139,17 @@ NEVER_VARIED = ('AnusBack', 'Penis Length', 'Penis Width', 'TipShape', 'BTPenisL
                 'BTUrethraCurve', 'BTSmoothPenisErect', 'BTSmoothPenisFlaccid')
 VARIETY_GROUPS = ('nipples', 'genitals')
 
+# The shaft (S-29, owner): never part of a body, as the runtime states are not (S-16). Animations aim the
+# penis bones and fo4-anatomy's collision is sized to BodyTalk's current shaft, so a wider or longer one
+# clips; two installed male presets set Penis Width. AnusBack stays a preset's own business.
+SHAFT_MORPHS = tuple(m for m in NEVER_VARIED if m != 'AnusBack')
+# Never written into a template, the player's picker, the catalog or a refit set.
+NEVER_IN_BODY = STATE_MORPHS + SHAFT_MORPHS
+
+# S-45: the templates the player and the character-creation dummies are given -- the default preset's
+# values and marker, none of the ranges.
+PLAYER_TEMPLATE = {'female': 'Silhouette_PlayerFemale', 'male': 'Silhouette_PlayerMale'}
+
 
 def variety_ranges():
     """{'female': {morph: (low, high, group)}, 'male': {...}}: every range BodyGen rolls per NPC --
@@ -331,13 +342,17 @@ def morph_values(name, target, baked, morphs_on_body, preset_name):
         if BODYGEN_SEPARATORS.search(morph):
             print(f'  skipped morph {morph!r} in {preset_name!r}: its name holds a BodyGen separator')
             continue
-        if morph in STATE_MORPHS:
-            # neither set nor compensated: the base's own state is not ours to change either
+        if morph in NEVER_IN_BODY:
+            # neither set nor compensated: the base's own state or shaft is not ours to change either
             if abs(target.get(morph, 0.0)) >= 5e-5:
-                print(f'  left out {morph!r} in {preset_name!r}: a state other mods drive at runtime (S-16)')
+                why = ('a state other mods drive at runtime (S-16)' if morph in STATE_MORPHS
+                       else 'the shaft, never part of a body (S-29)')
+                print(f'  left out {morph!r} in {preset_name!r}: {why}')
             continue
-        v = target.get(morph, 0.0) - baked.get(morph, 0.0)
-        if abs(v) < 5e-5:
+        # Exactly the number the template file will carry: the plugin's bodies, the picker, the
+        # manifest and the catalog then all say the same thing to the last digit.
+        v = float(fmt(target.get(morph, 0.0) - baked.get(morph, 0.0)))
+        if v == 0.0:
             continue
         out.append((morph, v))
     return out
@@ -429,7 +444,9 @@ def write_mcm(folder, picker, default_index, average, build):
                'left alone.', 'Refresh'),
         button('Give the people around me new bodies',
                'Everyone nearby (never your character) rolls a new body, as if met for the first '
-               'time. This clears ALL their body sliders, other mods\' included, and cannot be undone.',
+               'time, and the rules by name and faction get their say. With Silhouette.dll, body '
+               'morphs other mods keep under their own keyword are kept; without it they are cleared '
+               'too. Cannot be undone.',
                'Reroll'),
         {'type': 'section', 'text': 'Regeneration window'},
         {'type': 'text', 'text': 'LooksMenu only shapes people who hold no body morphs at all, so '
@@ -486,9 +503,11 @@ def write_mcm(folder, picker, default_index, average, build):
     settings = [
         {'type': 'section', 'text': 'While they are dressed'},
         {'type': 'switcher', 'id': 'bORefit:General', 'text': 'ORefit',
-         'help': 'A clothed shape while someone wears clothes -- breasts together and lifted, nipples '
-                 'flattened -- and their own body back the moment they undress, exactly as it was. '
-                 'Your character is never refit.' + needs,
+         'help': 'A clothed shape while someone is dressed: breasts held together and lifted, and '
+                 'nipples flattened under armour. It only ever raises a slider, so a body that is '
+                 'already fuller keeps its own, and the moment they undress they are exactly their own '
+                 'body again. Your character is never refit. Removing Silhouette takes every clothed '
+                 'shape off by itself.' + needs,
          'valueOptions': {'sourceType': 'ModSettingBool'}},
         {'type': 'section', 'text': 'Variety in the bodies Silhouette gives'},
         {'type': 'text', 'text': 'BodyGen rolls every NPC their own nipples (and genital shape for women, '
@@ -501,13 +520,11 @@ def write_mcm(folder, picker, default_index, average, build):
          'help': 'Each woman her own genital shape, each man his own ball size. Never the shaft.',
          'valueOptions': {'sourceType': 'ModSettingBool'}},
         {'type': 'section', 'text': 'Silhouette'},
-        bridge_button('How is Silhouette doing?', 'Which build is loaded, what it is listening to, '
-                      'and how much work is waiting.', 'MenuStatus'),
-        bridge_button('Take ORefit off everyone (before uninstalling)',
-                      'Switch ORefit off above first. Everyone this save remembers with a clothed shape '
-                      'gets their own body values back -- the people in memory now at once, the rest '
-                      'when you next see them. Then save, and Silhouette can be removed.',
-                      'MenuRefitOffEverywhere'),
+        {'type': 'button', 'text': 'How is Silhouette doing?',
+         'help': 'Which build is loaded, what it is listening to, and how much work is waiting -- and '
+                 'what is missing when something is.',
+         'action': {'type': 'CallGlobalFunction', 'script': 'Silhouette:API', 'function': 'ShowStatus',
+                    'params': []}},
     ]
 
     config = {'modName': MOD, 'displayName': MOD, 'minMcmVersion': 1,
@@ -546,11 +563,6 @@ def write_papyrus(path, picker, default_index, stamp, build):
     morphs another mod keeps under its own keyword survive. The one exception is
     Reroll, which has to go through RegenerateMorphs and says so in its help.
     """
-    for g in ('female', 'male'):
-        if len(picker[g]) > ARRAY_LIMIT:
-            raise SystemExit(f'{len(picker[g])} {g} presets: the picker holds at most {ARRAY_LIMIT} '
-                             f'(a Papyrus array limit). Hold some back with '
-                             f'blacklistedPresetsShowInOBodyMenu=false.')
     ids = {g: setting_id(g, picker[g]) for g in ('female', 'male')}
     npc_ids = {g: npc_setting_id(g, picker[g]) for g in ('female', 'male')}
     L = [
@@ -570,11 +582,12 @@ def write_papyrus(path, picker, default_index, stamp, build):
         f'    Return {stamp}.0',
         'EndFunction',
         '',
-        '; Morphs other mods drive at runtime (decision S-16): never part of a Silhouette body.',
-        '; The regeneration window takes them out of bodies an older build gave.',
+        '; Never part of a Silhouette body: the morphs other mods drive at runtime (decision',
+        '; S-16) and the shaft (S-29). Without Silhouette.dll the regeneration window takes them',
+        '; out of bodies an older build gave; with it, the plugin does.',
         'String[] Function StateMorphs() Global',
-        f'    String[] out = new String[{len(STATE_MORPHS)}]',
-        *[f'    out[{i}] = {papyrus_string(m)}' for i, m in enumerate(STATE_MORPHS)],
+        f'    String[] out = new String[{len(NEVER_IN_BODY)}]',
+        *[f'    out[{i}] = {papyrus_string(m)}' for i, m in enumerate(NEVER_IN_BODY)],
         '    Return out',
         'EndFunction',
         '',
@@ -653,13 +666,20 @@ def write_papyrus(path, picker, default_index, stamp, build):
         'EndFunction',
         '',
         '; The most average preset -- the same one the Fallout4.esm|7 lines in',
-        '; Silhouette_morphs.ini give a character with no body sliders.',
+        '; Silhouette_morphs.ini give a character with no body sliders. A sex with no preset',
+        '; that fits fully has none: the bare body built in BodySlide, as BodyGen gives it.',
         'Function ApplyDefault() Global',
         '    Actor player = Game.GetPlayer()',
         '    Bool female = IsFemale(player)',
-        '    Int index = ' + str(default_index.get('male', 0)),
+        '    Int index = ' + str(default_index.get('male', -1)),
         '    If female',
-        '        index = ' + str(default_index.get('female', 0)),
+        '        index = ' + str(default_index.get('female', -1)),
+        '    EndIf',
+        '    If index < 0',
+        '        BodyGen.RemoveMorphsByKeyword(player, female, None)',
+        '        BodyGen.UpdateMorphs(player)',
+        '        Debug.MessageBox("Your body is now the bare body you built in BodySlide.")',
+        '        Return',
         '    EndIf',
         '    Debug.MessageBox("Your body is now " + Give(player, female, index) + ".")',
         'EndFunction',
@@ -796,8 +816,9 @@ def write_papyrus(path, picker, default_index, stamp, build):
         'EndFunction',
         '',
         '; Everyone nearby keeps the preset Silhouette gave them, with its values from this build.',
-        '; With Silhouette.dll the plugin gives it again, their own variety included (S-17, S-21);',
-        '; without it the preset alone is written, and the rolled variety is lost.',
+        '; With Silhouette.dll ready the plugin gives it again, their own variety kept (S-17, S-21);',
+        '; without it -- or with its catalog refused -- the preset alone is written, and the rolled',
+        '; variety is lost.',
         'Function Refresh() Global',
         '    Actor[] people = Nearby()',
         '    String[] fm = FemaleMarkers()',
@@ -819,7 +840,7 @@ def write_papyrus(path, picker, default_index, stamp, build):
         '            index = mn.Find(preset, 0)',
         '        EndIf',
         '        If index >= 0',
-        '            If F4SE.GetPluginVersion("Silhouette") > 0',
+        '            If Silhouette:API.IsReady()',
         '                If Silhouette:API.ReapplyActorMorphs(a)',
         '                    done += 1',
         '                EndIf',
@@ -832,16 +853,27 @@ def write_papyrus(path, picker, default_index, stamp, build):
         '    Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you refreshed. The rest have no Silhouette body, or one this build no longer has.")',
         'EndFunction',
         '',
-        '; Everyone nearby rolls again, as if met for the first time. RegenerateMorphs is',
-        '; the only way to run BodyGen for an actor again, and it clears every key.',
+        '; Everyone nearby rolls again, as if met for the first time. With Silhouette.dll ready the',
+        '; plugin does it (Silhouette:API.GenActor): it knows who it rolled, the rules get their say,',
+        '; and other mods\' keyed morphs stay. Without it RegenerateMorphs is the only way to run',
+        '; BodyGen for an actor again, and it clears every key.',
         'Function Reroll() Global',
         '    Actor[] people = Nearby()',
+        '    Bool plugin = Silhouette:API.IsReady()',
+        '    Int done = 0',
         '    Int i = 0',
         '    While i < people.Length',
-        '        BodyGen.RegenerateMorphs(people[i], True)',
+        '        If plugin',
+        '            If Silhouette:API.GenActor(people[i])',
+        '                done += 1',
+        '            EndIf',
+        '        Else',
+        '            BodyGen.RegenerateMorphs(people[i], True)',
+        '            done += 1',
+        '        EndIf',
         '        i += 1',
         '    EndWhile',
-        '    Debug.MessageBox("Silhouette: " + people.Length + " people around you rolled a new body.")',
+        '    Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you rolled a new body.")',
         'EndFunction',
     ]
     for g, cap, female in (('female', 'Female', 'True'), ('male', 'Male', 'False')):
@@ -1051,11 +1083,11 @@ def main():
         if p['kind'] == 'empty':
             buckets['empty'].append(p)
             continue
-        if p['kind'] == 'clothed-variant':
-            buckets['clothed-variant'].append(p)
-            continue
         if catalog.is_refit(p['name']):
             buckets['refit'].append(p)       # OBody's clothed shapes: ORefit's, never a body (S-20)
+            continue
+        if p['kind'] == 'clothed-variant':
+            buckets['clothed-variant'].append(p)
             continue
         g = p['gender']
         b = p['band']
@@ -1114,6 +1146,10 @@ def main():
             if p is None:
                 report.append(f'rules: no preset named {n!r}, skipped')
                 continue
+            if catalog.is_refit(p['name']):
+                report.append(f'rules: {p["name"]!r} is a refit preset, a clothed shape for ORefit and never '
+                              f'a body - skipped')
+                continue
             g = p['gender']
             if gender and g != gender:
                 report.append(f'rules: {p["name"]!r} is a {g} preset, not usable for {gender} NPCs')
@@ -1130,23 +1166,18 @@ def main():
         return out
 
     rule_lines, _needed = rules.compile_lines(cfg, resolve_presets, args.data, report)
+    # The rules only the plugin applies (S-23) name presets too, and every one of them needs a
+    # template and a catalog entry -- even one held back from random distribution and the menu.
+    for _name, wanted in cfg.get('npc', {}).items():
+        resolve_presets(wanted, None)
+    for key, g in (('factionFemale', 'female'), ('factionMale', 'male')):
+        for _edid, wanted in cfg.get(key, {}).items():
+            resolve_presets(wanted, g)
     distribute = cfg.get('distributeRaces') or ['HumanRace']
     print(f'\nrules: {len(rule_lines)} line(s), {len(extra)} extra template(s); random distribution '
           f'races: {", ".join(distribute)}')
     for r in report:
         print(f'  {r}')
-
-    # LooksMenu looks template names up case-insensitively (F4EEFixedString ==
-    # is _stricmp), so two names that differ only in case are one template.
-    seen = collections.defaultdict(set)
-    for n in [PLAYER_GUARD] + [n for g in BODIES for n, _v, _p in pools[g]] + list(extra):
-        seen[n.casefold()].add(n)
-    for g in BODIES:
-        names = collections.Counter(n.casefold() for n, _v, _p in pools[g])
-        seen.update({k: seen[k] | {f'{k} (twice in the {g} pool)'} for k, c in names.items() if c > 1})
-    clash = sorted(v for v in seen.values() if len(v) > 1)
-    if clash:
-        raise SystemExit(f'template names that LooksMenu would read as one: {clash}')
 
     # ---- the player: never randomised; the most average body unless they pick
     # one in MCM (owner, 2026-09-23). The picker offers every preset that fits,
@@ -1182,13 +1213,52 @@ def main():
         else:
             print(f'{g}: no full-fit preset to be the player default -- the player keeps the base body')
 
-    # What BodyGen rolls per NPC (S-17, S-21): only morphs the body carries get a range, since a range
-    # on a morph the .tri lacks moves nothing. Part of what the files say, so part of the build.
     ranges = variety_ranges()
-    variety = {g: sorted((m, (lo, hi)) for m, (lo, hi, _grp) in ranges[g].items() if m in morphs_of[g])
+    mode = 'compensated' if any(baked[g] for g in BODIES) else 'absolute'
+    # What BodyGen rolls per NPC (S-17, S-21): only morphs the body carries get a range, since a range on
+    # a morph the .tri lacks moves nothing. Written like every value -- relative to what the base has
+    # baked in when compensating. Part of what the files say, so part of the build.
+    variety = {g: sorted((mm, (float(fmt(lo - baked[g].get(mm, 0.0))), float(fmt(hi - baked[g].get(mm, 0.0)))))
+                         for mm, (lo, hi, _grp) in ranges[g].items() if mm in morphs_of[g])
                for g in BODIES}
 
-    mode = 'compensated' if any(baked[g] for g in BODIES) else 'absolute'
+    # S-45: the player and the character-creation dummies are never randomised. They name a template of
+    # their own -- the default preset's values and marker, none of the ranges -- so a new character is
+    # the most average preset exactly, and "Back to the default" gives the same body.
+    player_template = {}
+    for g in BODIES:
+        if g in average:
+            e = picker[g][default_index[g]]
+            player_template[g] = (PLAYER_TEMPLATE[g], e['values'], e['marker'])
+    chosen = {g: player_template[g][0] if g in player_template else PLAYER_GUARD for g in BODIES}
+
+    # LooksMenu looks template names up case-insensitively (F4EEFixedString == is _stricmp) and the
+    # plugin reads markers the same way: two names that differ only in case are one. Every template name
+    # and every marker must stand for exactly one thing, the names Silhouette reserves included.
+    owners = collections.defaultdict(set)
+    for n, what in ((PLAYER_GUARD, 'the template that sets nothing'),
+                    (catalog.BLACKLIST_MARKER, 'the blacklist marker'), (catalog.REFIT_MARKER, 'the refit marker')):
+        owners[catalog.ifold(n)].add(what)
+    for g in BODIES:
+        if g in player_template:
+            owners[catalog.ifold(player_template[g][0])].add(f'the {g} player template')
+        for n, _v, p in pools[g]:
+            owners[catalog.ifold(n)].add(f'{g} preset {p["name"]!r}')
+        for e in picker[g]:
+            owners[catalog.ifold(e['marker'])].add(f'{g} preset {e["display"]!r}')
+    for n, (_v, p) in extra.items():
+        owners[catalog.ifold(n)].add(f'{p["gender"]} preset {p["name"]!r}')
+    clash = sorted(f'{k}: {" / ".join(sorted(v))}' for k, v in owners.items() if len(v) > 1)
+    if clash:
+        raise SystemExit('names LooksMenu and the plugin would read as one:\n  ' + '\n  '.join(clash))
+
+    # Refused before anything is written: a run that stops half-way leaves files of two builds.
+    for g in BODIES:
+        if len(picker[g]) > ARRAY_LIMIT:
+            raise SystemExit(f'{len(picker[g])} {g} presets: the picker holds at most {ARRAY_LIMIT} '
+                             f'(a Papyrus array limit). Hold some back with '
+                             f'blacklistedPresetsShowInOBodyMenu=false.')
+
     stamp, build = generation(mode, pools, extra, picker, variety)
     print(f'\nbuild {build}, marker stamp {stamp} ({mode})')
 
@@ -1197,9 +1267,57 @@ def main():
     else:
         root = args.out or (ROOT / 'data')
         out = root / 'F4SE/Plugins/F4EE/BodyGen/Loose'
-        out.mkdir(parents=True, exist_ok=True)
         tfile = out / 'Silhouette_templates.ini'
         mfile = out / 'Silhouette_morphs.ini'
+
+        # Order IS priority: LooksMenu lets a later line overwrite an earlier one.
+        # The broad random pool goes first; rules and blacklists go below it, in
+        # the reverse of OBody's priority (tools/rules.py).
+        m = ['# Silhouette - generated. Later lines override earlier ones for the same NPC.',
+             '# Always name a race: "All|Female" alone matches only NPCs that have none.',
+             '#']
+        for g, label in (('female', 'Female'), ('male', 'Male')):
+            if pools[g]:
+                for race in distribute:
+                    m.append(f'All|{label}|{race}=' + '|'.join(n for n, _v, _p in pools[g]))
+        if rule_lines:
+            m += ['#', '# Rules from Silhouette_presetDistributionConfig.json and includes,',
+                  '# lowest priority first: race, plugin, blacklists, FormID, FormID blacklists.']
+            m += rule_lines
+        m += ['#',
+              '# The player (Fallout4.esm 0x7) is NEVER randomised (S-45): without these lines the All',
+              '# lines above would include them. A character with no body sliders gets the most average',
+              '# of your presets, with none of the ranges; MCM > Silhouette picks another. LooksMenu',
+              '# itself skips a character that already has body sliders.',
+              f'Fallout4.esm|7|Female={chosen["female"]}',
+              f'Fallout4.esm|7|Male={chosen["male"]}',
+              '#',
+              '# ...and neither are the two character-creation dummies. A new game shows',
+              '# MQ101PlayerSpouseMale (A7D34) and MQ101PlayerSpouseFemale (A7D35) at the',
+              '# mirror; on confirm, LooksMenu CLONES the chosen one\'s body morphs onto the',
+              '# player (CloneBodyMorphs -> CloneMorphs), past the player line above. Both',
+              '# are HumanRace with no template, so the All lines would roll them. They get',
+              '# the player\'s default, and the spouse in the intro wears it too.',
+              f'Fallout4.esm|0A7D35|Female={chosen["female"]}',
+              f'Fallout4.esm|0A7D34|Male={chosen["male"]}']
+
+        cat_report = []
+        cat = catalog.build(
+            stamp=stamp, build_id=build, mode=mode,
+            presets=catalog_presets(pools, extra, picker),
+            player={g: average[g] for g in BODIES if g in average},
+            states={g: [mm for mm in STATE_MORPHS if mm in morphs_of[g]] for g in BODIES},
+            never_in_body={g: list(NEVER_IN_BODY) for g in BODIES},
+            variety={g: [(mm, lo, hi, ranges[g][mm][2]) for mm, (lo, hi) in variety[g]] for g in BODIES},
+            cfg=cfg, data=args.data,
+            refit_presets=refit_sets(buckets.get('refit', []), base, baked, morphs_of),
+            body_morphs=morphs_of, report=cat_report)
+        rules_id = catalog.rules_hash(cat, m)
+        cat['rulesHash'] = rules_id
+        catalog.check(cat)
+        # The same words on both files, which the plugin and the build scripts read (S-19).
+        header = f'Build {build}, marker stamp {stamp} ({mode}), rules {rules_id}.'
+        m.insert(1, f'# {header}')
 
         # NO EMPTY LINES, and CRLF. LooksMenu reads each line with the engine's own
         # BSResourceTextFile::ReadLine, which returns the number of bytes before the
@@ -1208,8 +1326,7 @@ def main():
         # it ever worked.) Spacing is done with '#'.
         t = ['# Silhouette - generated by tools/silhouette_gen.py. Do not edit by hand:',
              '# regenerate after adding presets or rebuilding a body in BodySlide.',
-             f'# {len(pools["female"])} female, {len(pools["male"])} male templates. '
-             f'Build {build}, marker stamp {stamp} ({mode}).',
+             f'# {len(pools["female"])} female, {len(pools["male"])} male templates. {header}',
              '#',
              '# Measured base bodies:']
         for g in BODIES:
@@ -1232,23 +1349,15 @@ def main():
               '#',
               f'{PLAYER_GUARD}={PLAYER_GUARD}@0',
               '#']
-        shapes = genital_shapes()
-        if shapes:
-            on_body = {m for m, _r in variety['female']}
-            t.append(f'# Genital shape variety (S-17), rolled per woman: '
-                     f'{", ".join(f"{m} {lo}..{hi}" for m, (lo, hi) in sorted(shapes.items()))}'
-                     f'{"" if on_body & set(shapes) else "  -- NONE on this female body (morphs missing)"}')
-            t.append('#')
         for g, who in (('female', 'woman'), ('male', 'man')):
-            rolled = [(m, lo, hi, grp) for m, (lo, hi, grp) in sorted(ranges[g].items())
-                      if not (g == 'female' and m in shapes)]
-            if not rolled:
-                continue
-            missing = [m for m, _lo, _hi, _grp in rolled if m not in morphs_of[g]]
-            t.append(f'# Nipple{" and ball" if any(grp == "genitals" for *_x, grp in rolled) else ""} variety (S-21), '
-                     f'rolled per {who}: {", ".join(f"{m} {fmt(lo)}..{fmt(hi)}" for m, lo, hi, _grp in rolled)}'
-                     f'{"  -- NOT on this body, so not rolled: " + ", ".join(missing) if missing else ""}')
-            t.append('#')
+            if variety[g]:
+                t.append(f'# Variety rolled per {who} (S-17, S-21): '
+                         + ', '.join(f'{mm} {fmt(lo)}..{fmt(hi)}' for mm, (lo, hi) in variety[g]))
+            missing = sorted(mm for mm in ranges[g] if mm not in morphs_of[g])
+            if missing:
+                t.append(f'#   not on this {g} body, so never rolled: {", ".join(missing)}')
+            if variety[g] or missing:
+                t.append('#')
         for g in BODIES:
             t.append(f'# --- {g} ---')
             for name, values, p in pools[g]:
@@ -1260,42 +1369,19 @@ def main():
             for name, (values, p) in sorted(extra.items()):
                 t.append(f'# {p["name"]}  {p["gender"]}  {100*p["fit"]:.0f}% fit')
                 t.append(f'{name}={", ".join(template_text(name, values, stamp, variety.get(p["gender"], [])))}')
+            t.append('#')
+        if player_template:
+            t.append('# --- the player and the character-creation dummies: the default, never rolled (S-45) ---')
+            for g in BODIES:
+                if g in player_template:
+                    name, values, marker = player_template[g]
+                    t.append(f'# {average[g]}  {g}')
+                    t.append(f'{name}={", ".join(template_text(marker, values, stamp))}')
         assert all(line.strip() for line in t), 'an empty line would end the file for LooksMenu'
-        tfile.write_text('\n'.join(t) + '\n', encoding='ascii', errors='replace', newline='\r\n')
-
-        # Order IS priority: LooksMenu lets a later line overwrite an earlier one.
-        # The broad random pool goes first; rules and blacklists go below it, in
-        # the reverse of OBody's priority (tools/rules.py).
-        m = ['# Silhouette - generated. Later lines override earlier ones for the same NPC.',
-             '# Always name a race: "All|Female" alone matches only NPCs that have none.',
-             '#']
-        for g, label in (('female', 'Female'), ('male', 'Male')):
-            if pools[g]:
-                for race in distribute:
-                    m.append(f'All|{label}|{race}=' + '|'.join(n for n, _v, _p in pools[g]))
-        if rule_lines:
-            m += ['#', '# Rules from Silhouette_presetDistributionConfig.json and includes,',
-                  '# lowest priority first: race, plugin, blacklists, FormID, FormID blacklists.']
-            m += rule_lines
-        chosen = {g: (template_name({'name': average[g]}) if g in average else PLAYER_GUARD)
-                  for g in BODIES}
-        m += ['#',
-              '# The player (Fallout4.esm 0x7) is NEVER randomised: without these lines',
-              '# the All lines above would include them. A character with no body sliders',
-              '# gets the most average of your presets; MCM > Silhouette picks another.',
-              '# LooksMenu itself skips a character that already has body sliders.',
-              f'Fallout4.esm|7|Female={chosen["female"]}',
-              f'Fallout4.esm|7|Male={chosen["male"]}',
-              '#',
-              '# ...and neither are the two character-creation dummies. A new game shows',
-              '# MQ101PlayerSpouseMale (A7D34) and MQ101PlayerSpouseFemale (A7D35) at the',
-              '# mirror; on confirm, LooksMenu CLONES the chosen one\'s body morphs onto the',
-              '# player (CloneBodyMorphs -> CloneMorphs), past the player line above. Both',
-              '# are HumanRace with no template, so the All lines would roll them. They get',
-              '# the player\'s default, and the spouse in the intro wears it too.',
-              f'Fallout4.esm|0A7D35|Female={chosen["female"]}',
-              f'Fallout4.esm|0A7D34|Male={chosen["male"]}']
         assert all(line.strip() for line in m), 'an empty line would end the file for LooksMenu'
+
+        out.mkdir(parents=True, exist_ok=True)
+        tfile.write_text('\n'.join(t) + '\n', encoding='ascii', errors='replace', newline='\r\n')
         mfile.write_text('\n'.join(m) + '\n', encoding='ascii', errors='replace', newline='\r\n')
         print(f'\nwrote {tfile}\nwrote {mfile}')
 
@@ -1306,23 +1392,13 @@ def main():
         write_mcm(root / 'MCM/Config' / MOD, picker, default_index, average, build)
         write_papyrus(args.psc, picker, default_index, stamp, build)
         write_manifest(root / 'F4SE/Plugins/Silhouette/manifests', stamp, build, mode, base, pools,
-                       extra, picker, chosen)
-        cat_report = []
-        cat = catalog.build(
-            stamp=stamp, build_id=build, mode=mode,
-            presets=catalog_presets(pools, extra, picker),
-            player={g: average[g] for g in BODIES if g in average},
-            states={g: [m for m in STATE_MORPHS if m in morphs_of[g]] for g in BODIES},
-            variety={g: [(m, lo, hi, ranges[g][m][2]) for m, (lo, hi) in variety[g]] for g in BODIES},
-            cfg=cfg, data=args.data,
-            refit_presets=refit_sets(buckets.get('refit', []), base, baked, morphs_of),
-            report=cat_report)
+                       extra, picker, {g: {'template': chosen[g], 'preset': average.get(g, '')} for g in BODIES})
         catalog.write(root / 'F4SE/Plugins/Silhouette/catalog.json', cat)
         for line in cat_report:
             print(f'  {line}')
         print(f'wrote {root / "F4SE/Plugins/Silhouette"}\\catalog.json ({len(cat["presets"])} presets, '
               f'{len(cat["rules"]["npcName"])} name rule(s), {len(cat["rules"]["faction"])} faction rule(s), '
-              f'{len(cat["orefit"]["sets"])} refit set(s))')
+              f'{len(cat["orefit"]["sets"])} refit set(s), rules {rules_id})')
         print(f'wrote {root / "MCM/Config" / MOD}\\config.json + settings.ini')
         print(f'wrote {root / "F4SE/Plugins/Silhouette/manifests"}\\{stamp}.json')
         print(f'wrote {args.psc}  (compile: scripts/build-papyrus.ps1)')

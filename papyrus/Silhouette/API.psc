@@ -18,6 +18,11 @@ Scriptname Silhouette:API Hidden
 
  Every argument is passed explicitly: the base sources carry no default values.}
 
+; The order protocol these scripts were built for (Silhouette:Bridge.Protocol).
+Int Function Protocol() Global
+	Return 2
+EndFunction
+
 ; Silhouette.esp's bridge quest, for RegisterForCustomEvent. None without the plugin.
 Silhouette:Bridge Function Bridge() Global
 	If !Game.IsPluginInstalled("Silhouette.esp")
@@ -26,24 +31,53 @@ Silhouette:Bridge Function Bridge() Global
 	Return Game.GetFormFromFile(0x802, "Silhouette.esp") as Silhouette:Bridge
 EndFunction
 
+; Silhouette.dll is loaded and from the same release as these scripts. Nothing
+; below calls it otherwise: a missing or mismatched native only fills the log.
 Bool Function Loaded() Global
-	Return F4SE.GetPluginVersion("Silhouette") > 0
+	If F4SE.GetPluginVersion("Silhouette") <= 0
+		Return False
+	EndIf
+	Return Silhouette:DLL.ProtocolVersion() == Protocol()
 EndFunction
 
 ; The plugin is loaded, its catalog matches the BodyGen files, and the bridge exists.
 Bool Function IsReady() Global
-	Return Loaded() && Silhouette:Plugin.IsReady() && Bridge() != None
+	Return Loaded() && Silhouette:DLL.IsReady() && Bridge() != None
 EndFunction
 
 ; Why the last call here said no.
 String Function LastError() Global
-	If !Loaded()
+	If F4SE.GetPluginVersion("Silhouette") <= 0
 		Return "Silhouette.dll is not loaded"
 	EndIf
-	Return Silhouette:Plugin.LastError()
+	If !Loaded()
+		Return "Silhouette.dll is from another release than its scripts"
+	EndIf
+	Return Silhouette:DLL.LastError()
+EndFunction
+
+; One message: what is loaded, what it listens to, how much work waits. For the MCM,
+; and for anyone asking why nothing happens -- it works without Silhouette.esp.
+Function ShowStatus() Global
+	String esp = " Silhouette.esp is enabled."
+	If !Game.IsPluginInstalled("Silhouette.esp")
+		esp = " Silhouette.esp is NOT enabled: without it nothing carries the plugin's decisions out."
+	EndIf
+	If F4SE.GetPluginVersion("Silhouette") <= 0
+		Debug.MessageBox("Silhouette: Silhouette.dll is not loaded. BodyGen still gives everyone a body; the rules by name and faction, ORefit, the NPC picker and the API are off." + esp)
+		Return
+	EndIf
+	If !Loaded()
+		Debug.MessageBox("Silhouette: Silhouette.dll and its scripts are from different releases. Install one release's files together." + esp)
+		Return
+	EndIf
+	Debug.MessageBox("Silhouette " + Silhouette:DLL.Version() + ": " + Silhouette:DLL.Status() + "." + esp)
 EndFunction
 
 Bool Function IsFemale(Actor akActor) Global
+	If !akActor
+		Return False
+	EndIf
 	Return akActor.GetLeveledActorBase().GetSex() == 1
 EndFunction
 
@@ -54,7 +88,7 @@ String Function GetPresetAssignedToActor(Actor akActor) Global
 	If !akActor || !Loaded()
 		Return ""
 	EndIf
-	String decided = Silhouette:Plugin.AssignedPreset(akActor.GetFormID())
+	String decided = Silhouette:DLL.AssignedPreset(akActor.GetFormID())
 	If decided != ""
 		Return decided
 	EndIf
@@ -63,6 +97,9 @@ EndFunction
 
 ; What their marker names, read from LooksMenu now.
 String Function MarkerPreset(Actor akActor) Global
+	If !akActor || !Loaded()
+		Return ""
+	EndIf
 	Bool female = IsFemale(akActor)
 	String[] morphs = BodyGen.GetMorphs(akActor, female)
 	Int count = 0
@@ -71,10 +108,10 @@ String Function MarkerPreset(Actor akActor) Global
 	EndIf
 	Int i = 0
 	While i < count
-		If Silhouette:Plugin.IsMarker(morphs[i])
+		If Silhouette:DLL.MarkerKind(morphs[i]) == 1
 			Float v = BodyGen.GetMorph(akActor, female, morphs[i], None)
 			If v > 0.0
-				Return Silhouette:Plugin.PresetForMarker(morphs[i], v)
+				Return Silhouette:DLL.PresetForMarker(morphs[i], v)
 			EndIf
 		EndIf
 		i += 1
@@ -89,10 +126,10 @@ String[] Function GetAllPossiblePresets(Actor akActor) Global
 		Return out
 	EndIf
 	Bool female = IsFemale(akActor)
-	Int n = Silhouette:Plugin.PresetCount(female)
+	Int n = Silhouette:DLL.PresetCount(female)
 	Int i = 0
 	While i < n && i < 128
-		out.Add(Silhouette:Plugin.PresetName(female, i), 1)
+		out.Add(Silhouette:DLL.PresetName(female, i), 1)
 		i += 1
 	EndWhile
 	Return out
@@ -104,7 +141,7 @@ Bool Function AssignPresetToActor(Actor akActor, String asPreset) Global
 	If !akActor || !Loaded()
 		Return False
 	EndIf
-	Return Silhouette:Plugin.RequestPreset(akActor.GetFormID(), asPreset, 4)
+	Return Silhouette:DLL.RequestPreset(akActor.GetFormID(), asPreset, 4)
 EndFunction
 
 Bool Function ApplyPresetByName(Actor akActor, String asPreset) Global
@@ -117,7 +154,7 @@ Bool Function GenActor(Actor akActor) Global
 	If !akActor || !Loaded()
 		Return False
 	EndIf
-	Return Silhouette:Plugin.RequestRegenerate(akActor.GetFormID())
+	Return Silhouette:DLL.RequestRegenerate(akActor.GetFormID())
 EndFunction
 
 ; Takes Silhouette's body off: they are bare now. LooksMenu forgets an emptied body
@@ -126,15 +163,23 @@ Bool Function ResetActorMorphs(Actor akActor) Global
 	If !akActor || !Loaded()
 		Return False
 	EndIf
-	Return Silhouette:Plugin.RequestReset(akActor.GetFormID())
+	Return Silhouette:DLL.RequestReset(akActor.GetFormID())
 EndFunction
 
-; The body they have, again, with this build's values.
+Bool Function ResetActorOBodyMorphs(Actor akActor) Global
+	Return ResetActorMorphs(akActor)
+EndFunction
+
+; The body they have, again, with this build's values and their own variety.
 Bool Function ReapplyActorMorphs(Actor akActor) Global
 	If !akActor || !Loaded()
 		Return False
 	EndIf
-	Return Silhouette:Plugin.RequestReapply(akActor.GetFormID(), MarkerPreset(akActor))
+	Return Silhouette:DLL.RequestReapply(akActor.GetFormID(), MarkerPreset(akActor))
+EndFunction
+
+Bool Function ReapplyActorOBodyMorphs(Actor akActor) Global
+	Return ReapplyActorMorphs(akActor)
 EndFunction
 
 ; ORefit on or off, and remembered: the same setting as MCM > Silhouette.
@@ -145,15 +190,15 @@ Function SetORefit(Bool abEnabled) Global
 	If MCM.IsInstalled()
 		MCM.SetModSettingBool("Silhouette", "bORefit:General", abEnabled)
 	EndIf
-	Silhouette:Plugin.SetORefit(abEnabled)
+	Silhouette:DLL.SetORefit(abEnabled)
 EndFunction
 
 Bool Function IsORefitEnabled() Global
-	Return Loaded() && Silhouette:Plugin.IsORefitEnabled()
+	Return Loaded() && Silhouette:DLL.IsORefitEnabled()
 EndFunction
 
 Bool Function IsORefitApplied(Actor akActor) Global
-	Return akActor && Loaded() && Silhouette:Plugin.IsORefitApplied(akActor.GetFormID())
+	Return akActor && Loaded() && Silhouette:DLL.IsORefitApplied(akActor.GetFormID())
 EndFunction
 
 ; Nipple variety in the bodies Silhouette gives from now on. BodyGen's own rolls
@@ -165,10 +210,10 @@ Function SetNippleRand(Bool abEnabled) Global
 	If MCM.IsInstalled()
 		MCM.SetModSettingBool("Silhouette", "bNippleRand:General", abEnabled)
 	EndIf
-	Silhouette:Plugin.SetNippleRand(abEnabled)
+	Silhouette:DLL.SetNippleRand(abEnabled)
 EndFunction
 
-; Genital shape variety (women) and ball size (men), as SetNippleRand.
+; Genital shape variety (women) and ball size (men), as SetNippleRand. Never the shaft.
 Function SetGenitalRand(Bool abEnabled) Global
 	If !Loaded()
 		Return
@@ -176,5 +221,5 @@ Function SetGenitalRand(Bool abEnabled) Global
 	If MCM.IsInstalled()
 		MCM.SetModSettingBool("Silhouette", "bGenitalRand:General", abEnabled)
 	EndIf
-	Silhouette:Plugin.SetGenitalRand(abEnabled)
+	Silhouette:DLL.SetGenitalRand(abEnabled)
 EndFunction

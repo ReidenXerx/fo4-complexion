@@ -283,12 +283,21 @@ namespace SH::Events
 			return 0;
 		}
 		// A global source registers itself as a sink of BSTGlobalEvent's SDM-killer source, so that
-		// sink list is the registry of every global source so far; _sinks sits at +0x08.
+		// sink list is the registry of every global source so far; _sinks sits at +0x08, behind the
+		// source's own lock at +0x00. A source built on another thread registers into that list, which
+		// can move it: it is copied under the lock, and read after.
 		using Sink = RE::BSTEventSink<RE::BSTGlobalEvent::KillSDMEvent>*;
-		const auto* sinks = reinterpret_cast<const RE::BSTArray<Sink>*>(
-			reinterpret_cast<std::uintptr_t>(&global->eventSourceSDMKiller) + 0x08);
-		for (const auto sink : *sinks) {
-			const auto address = reinterpret_cast<std::uintptr_t>(sink);
+		const auto  killer = reinterpret_cast<std::uintptr_t>(&global->eventSourceSDMKiller);
+		const auto* sinks = reinterpret_cast<const RE::BSTArray<Sink>*>(killer + 0x08);
+		std::vector<std::uintptr_t> registered;
+		{
+			const RE::BSAutoLock locker{ *reinterpret_cast<RE::BSSpinLock*>(killer) };
+			registered.reserve(sinks->size());
+			for (const auto sink : *sinks) {
+				registered.push_back(reinterpret_cast<std::uintptr_t>(sink));
+			}
+		}
+		for (const auto address : registered) {
 			const auto rtti = TypeName(address);
 			if (rtti.empty() || !Carries(rtti, "?$EventSource@", a_type)) {
 				continue;

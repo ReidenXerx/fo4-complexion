@@ -37,7 +37,7 @@ if ($game) {
 $dll  = Join-Path $root "build\$Config\Silhouette.dll"
 $pex  = Join-Path $root 'build\papyrus\Silhouette'
 $data = Join-Path $root 'data'
-foreach ($need in @($dll, (Join-Path $pex 'Bridge.pex'), (Join-Path $pex 'Plugin.pex'), (Join-Path $pex 'API.pex'),
+foreach ($need in @($dll, (Join-Path $pex 'Bridge.pex'), (Join-Path $pex 'DLL.pex'), (Join-Path $pex 'API.pex'),
                     (Join-Path $pex 'Adopter.pex'), (Join-Path $data 'F4SE\Plugins\Silhouette\catalog.json'),
                     (Join-Path $data 'Silhouette.esp'))) {
     if (-not (Test-Path $need)) { throw "Missing $need - build and generate first." }
@@ -46,14 +46,15 @@ if (-not (Get-ChildItem $pex -Filter 'player.pex' -ErrorAction SilentlyContinue)
     throw "Missing $pex\Player.pex - run scripts\build-papyrus.ps1."
 }
 
-# The generated files must be one generator run, and the scripts from that run: the
-# plugin refuses a catalog whose build differs from the BodyGen files, and Player.psc
-# names its build too.
+# The generated files, read by the plugin's own parser (SilhouetteTests.exe --check): the catalog,
+# every manifest, and both BodyGen headers against the catalog's build, stamp and rules hash. What
+# the game would refuse at load is refused here.
+$tests = Join-Path $root "build\$Config\SilhouetteTests.exe"
+if (-not (Test-Path $tests)) { throw "Missing $tests - run scripts\build-plugin.ps1." }
+& $tests --check $data
+if ($LASTEXITCODE) { throw "the plugin would refuse these generated files - regenerate." }
 $catalog = Get-Content (Join-Path $data 'F4SE\Plugins\Silhouette\catalog.json') -Raw | ConvertFrom-Json
-$header  = Get-Content (Join-Path $data 'F4SE\Plugins\F4EE\BodyGen\Loose\Silhouette_templates.ini') -TotalCount 5
-if (-not ($header -match "Build $($catalog.build), marker stamp $($catalog.stamp) ")) {
-    throw "catalog.json is build $($catalog.build) but the BodyGen templates say otherwise - regenerate."
-}
+# ...and the scripts must be from that run: Player.psc names its build too.
 $player = Get-Content (Join-Path $root 'papyrus\Silhouette\Player.psc') -Raw
 if ($player -notmatch "Return `"$($catalog.build)`"") {
     throw "papyrus\Silhouette\Player.psc is not build $($catalog.build) - regenerate, then build-papyrus."
@@ -84,7 +85,8 @@ foreach ($f in Get-ChildItem $pex -Filter *.pex) {
 # What landed, from the disk: a deploy that silently did nothing looks exactly like one that worked.
 foreach ($rel in @('F4SE\Plugins\Silhouette.dll', 'F4SE\Plugins\Silhouette\catalog.json',
                    'F4SE\Plugins\F4EE\BodyGen\Loose\Silhouette_templates.ini', 'MCM\Config\Silhouette\keybinds.json',
-                   'Scripts\Silhouette\Bridge.pex', 'Scripts\Silhouette\Player.pex', 'Silhouette.esp')) {
+                   'Scripts\Silhouette\Bridge.pex', 'Scripts\Silhouette\DLL.pex', 'Scripts\Silhouette\Player.pex',
+                   'Silhouette.esp')) {
     $path = Join-Path $Staging $rel
     if (Test-Path $path) {
         $item = Get-Item $path

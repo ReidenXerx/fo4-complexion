@@ -25,13 +25,20 @@ namespace SH
 			return *it;
 		}
 
-		const json* Maybe(const json& a_obj, std::string_view a_key)
+		const json& Object(const json& a_v, std::string_view a_where)
 		{
-			if (!a_obj.is_object()) {
-				return nullptr;
+			if (!a_v.is_object()) {
+				throw Bad(std::format("{}: expected an object", a_where));
 			}
-			const auto it = a_obj.find(a_key);
-			return it == a_obj.end() || it->is_null() ? nullptr : &*it;
+			return a_v;
+		}
+
+		const json& List(const json& a_v, std::string_view a_where)
+		{
+			if (!a_v.is_array()) {
+				throw Bad(std::format("{}: expected a list", a_where));
+			}
+			return a_v;
 		}
 
 		std::string Str(const json& a_v, std::string_view a_where)
@@ -50,16 +57,28 @@ namespace SH
 			return a_v.get<bool>();
 		}
 
+		// A number that is finite as a double AND as the float the plugin keeps (1e39 is not).
 		float Num(const json& a_v, std::string_view a_where)
 		{
 			if (!a_v.is_number()) {
 				throw Bad(std::format("{}: expected a number", a_where));
 			}
 			const auto v = a_v.get<double>();
-			if (!std::isfinite(v)) {
+			const auto f = static_cast<float>(v);
+			if (!std::isfinite(v) || !std::isfinite(f)) {
 				throw Bad(std::format("{}: not a finite number", a_where));
 			}
-			return static_cast<float>(v);
+			return f;
+		}
+
+		// A non-negative integer, however the JSON holds it: a parser reads 12 as unsigned, a program
+		// that builds the document may have written it signed.
+		std::uint64_t Unsigned(const json& a_v, std::string_view a_where)
+		{
+			if (!a_v.is_number_integer() || (!a_v.is_number_unsigned() && a_v.get<std::int64_t>() < 0)) {
+				throw Bad(std::format("{} must be a non-negative integer", a_where));
+			}
+			return a_v.get<std::uint64_t>();
 		}
 
 		bool Sex(const json& a_v, std::string_view a_where)
@@ -76,24 +95,11 @@ namespace SH
 
 		std::vector<std::string> Strings(const json& a_v, std::string_view a_where)
 		{
-			if (!a_v.is_array()) {
-				throw Bad(std::format("{}: expected a list", a_where));
-			}
 			std::vector<std::string> out;
-			for (const auto& e : a_v) {
+			for (const auto& e : List(a_v, a_where)) {
 				out.push_back(Str(e, a_where));
 			}
 			return out;
-		}
-
-		// A non-negative integer, however the JSON holds it: a parser reads 12 as unsigned, a
-		// program that builds the document may have written it signed.
-		std::uint64_t Unsigned(const json& a_v, std::string_view a_where)
-		{
-			if (!a_v.is_number_integer() || (!a_v.is_number_unsigned() && a_v.get<std::int64_t>() < 0)) {
-				throw Bad(std::format("{} must be a non-negative integer", a_where));
-			}
-			return a_v.get<std::uint64_t>();
 		}
 
 		FormRef Ref(const json& a_v, std::string_view a_where)
@@ -114,23 +120,18 @@ namespace SH
 
 		std::vector<FormRef> Refs(const json& a_v, std::string_view a_where)
 		{
-			if (!a_v.is_array()) {
-				throw Bad(std::format("{}: expected a list", a_where));
-			}
 			std::vector<FormRef> out;
-			for (const auto& e : a_v) {
+			for (const auto& e : List(a_v, a_where)) {
 				out.push_back(Ref(e, a_where));
 			}
 			return out;
 		}
 
-		// {"female": [...], "male": [...]} -> [male, female]
+		// {"female": ..., "male": ...}: both sexes, nothing else.
 		template <class F>
 		void PerSex(const json& a_v, std::string_view a_where, F&& a_each)
 		{
-			if (!a_v.is_object()) {
-				throw Bad(std::format("{}: expected {{\"female\": ..., \"male\": ...}}", a_where));
-			}
+			Object(a_v, a_where);
 			for (const auto& [key, value] : a_v.items()) {
 				if (key == "female") {
 					a_each(true, value);
@@ -142,22 +143,9 @@ namespace SH
 			}
 		}
 
-		RefitEntry::Op Op(const json& a_v, std::string_view a_where)
+		bool Listed(const std::vector<std::string>& a_list, std::string_view a_name)
 		{
-			const auto s = Str(a_v, a_where);
-			if (s == "set") {
-				return RefitEntry::Op::kSet;
-			}
-			if (s == "add") {
-				return RefitEntry::Op::kAdd;
-			}
-			if (s == "max") {
-				return RefitEntry::Op::kMax;
-			}
-			if (s == "min") {
-				return RefitEntry::Op::kMin;
-			}
-			throw Bad(std::format("{}: op must be set, add, max or min, not \"{}\"", a_where, s));
+			return std::ranges::any_of(a_list, [&](const std::string& s) { return IEquals(s, a_name); });
 		}
 	}
 
@@ -167,6 +155,40 @@ namespace SH
 		       std::ranges::equal(a_lhs, a_rhs, [](char a, char b) {
 				   return std::tolower(static_cast<unsigned char>(a)) == std::tolower(static_cast<unsigned char>(b));
 			   });
+	}
+
+	std::optional<FilesHeader> ParseFilesHeader(std::istream& a_in)
+	{
+		std::string line;
+		for (int i = 0; i < 12 && std::getline(a_in, line); ++i) {
+			const auto b = line.find("Build ");
+			const auto s = line.find("marker stamp ");
+			if (b == std::string::npos || s == std::string::npos) {
+				continue;
+			}
+			FilesHeader h;
+			h.build = line.substr(b + 6);
+			h.build = h.build.substr(0, h.build.find(','));
+			const auto* digits = line.c_str() + s + 13;
+			const auto [end, ec] = std::from_chars(digits, line.c_str() + line.size(), h.stamp);
+			if (ec != std::errc{} || h.build.empty()) {
+				continue;
+			}
+			if (const auto r = line.find(", rules "); r != std::string::npos) {
+				h.rules = line.substr(r + 8);
+				h.rules = h.rules.substr(0, h.rules.find_first_of(",.; \r"));
+			}
+			return h;
+		}
+		return std::nullopt;
+	}
+
+	MarkerKind KindOf(std::string_view a_morph)
+	{
+		if (IEquals(a_morph, kRefitMarker)) {
+			return MarkerKind::kRefit;
+		}
+		return a_morph.size() > 11 && IEquals(a_morph.substr(0, 11), "Silhouette_") ? MarkerKind::kBody : MarkerKind::kNone;
 	}
 
 	bool FormRef::Is(std::string_view a_plugin, std::uint32_t a_id) const
@@ -187,7 +209,7 @@ namespace SH
 	const Preset* Catalog::FindByMarker(std::string_view a_marker) const
 	{
 		for (const auto& p : presets) {
-			if (p.marker == a_marker) {
+			if (IEquals(p.marker, a_marker)) {
 				return &p;
 			}
 		}
@@ -215,6 +237,11 @@ namespace SH
 		return nullptr;
 	}
 
+	bool Catalog::NeverInBody(bool a_female, std::string_view a_morph) const
+	{
+		return Listed(neverInBody[a_female ? 1 : 0], a_morph);
+	}
+
 	std::string Catalog::OutfitRefitSet(std::string_view a_outfitName, bool a_female) const
 	{
 		if (a_outfitName.empty()) {
@@ -226,11 +253,6 @@ namespace SH
 			}
 		}
 		return {};
-	}
-
-	bool Catalog::IsMarker(std::string_view a_morph)
-	{
-		return a_morph.starts_with("Silhouette_"sv);
 	}
 
 	const RefitSet* Catalog::RefitFor(std::string_view a_preset, bool a_female, std::string_view a_outfitSet) const
@@ -251,7 +273,7 @@ namespace SH
 		return FindRefit(a_female ? "builtin:female"sv : "builtin:male"sv, a_female);
 	}
 
-	void Catalog::AddManifest(std::uint32_t a_stamp, std::unordered_map<std::string, std::string> a_markers)
+	void Catalog::AddManifest(std::uint32_t a_stamp, std::unordered_map<std::string, ManifestEntry> a_markers)
 	{
 		_manifests[a_stamp] = std::move(a_markers);
 	}
@@ -260,7 +282,7 @@ namespace SH
 	{
 		if (const auto it = _manifests.find(a_stamp); it != _manifests.end()) {
 			if (const auto m = it->second.find(std::string{ a_marker }); m != it->second.end()) {
-				return m->second;
+				return m->second.preset;
 			}
 		}
 		// A stamp with no manifest (deleted by hand, or a build we never saw): the current build's
@@ -271,6 +293,25 @@ namespace SH
 			}
 		}
 		return std::nullopt;
+	}
+
+	std::vector<std::string> Catalog::HealFor(std::string_view a_marker, std::uint32_t a_stamp) const
+	{
+		std::vector<std::string> out;
+		const auto               it = _manifests.find(a_stamp);
+		if (it == _manifests.end()) {
+			return out;
+		}
+		const auto m = it->second.find(std::string{ a_marker });
+		if (m == it->second.end()) {
+			return out;
+		}
+		for (const auto& morph : m->second.morphs) {
+			if (NeverInBody(m->second.female, morph)) {
+				out.push_back(morph);
+			}
+		}
+		return out;
 	}
 
 	std::optional<Catalog> ParseCatalog(const nlohmann::json& a_doc, std::string& a_error)
@@ -289,14 +330,44 @@ namespace SH
 			}
 			c.stamp = static_cast<std::uint32_t>(stamp);
 			c.mode = Str(At(a_doc, "mode", "catalog"), "catalog.mode");
+			c.rulesHash = Str(At(a_doc, "rulesHash", "catalog"), "catalog.rulesHash");
+			if (c.rulesHash.empty()) {
+				throw Bad("catalog.rulesHash: empty");
+			}
 
-			for (const auto& p : At(a_doc, "presets", "catalog")) {
+			PerSex(At(a_doc, "states", "catalog"), "catalog.states", [&](bool a_female, const json& a_v) {
+				c.states[a_female ? 1 : 0] = Strings(a_v, "catalog.states");
+			});
+			PerSex(At(a_doc, "neverInBody", "catalog"), "catalog.neverInBody", [&](bool a_female, const json& a_v) {
+				c.neverInBody[a_female ? 1 : 0] = Strings(a_v, "catalog.neverInBody");
+			});
+			for (const bool female : { false, true }) {
+				for (const auto& s : c.states[female ? 1 : 0]) {
+					if (!c.NeverInBody(female, s)) {
+						throw Bad(std::format("catalog.neverInBody: the runtime state \"{}\" is missing (S-16)", s));
+					}
+				}
+			}
+
+			std::unordered_set<std::string> markers;
+			for (const auto& p : List(At(a_doc, "presets", "catalog"), "catalog.presets")) {
 				Preset preset;
 				preset.name = Str(At(p, "name", "preset"), "preset.name");
 				const auto where = std::format("preset \"{}\"", preset.name);
 				preset.female = Sex(At(p, "sex", where), where);
 				preset.marker = Str(At(p, "marker", where), where);
-				for (const auto& [morph, value] : At(p, "values", where).items()) {
+				if (KindOf(preset.marker) != MarkerKind::kBody || IEquals(preset.marker, kBlacklistMarker)) {
+					throw Bad(std::format("{}: marker \"{}\" is not a body marker (\"Silhouette_...\", not a reserved one)", where, preset.marker));
+				}
+				std::string lower = preset.marker;
+				std::ranges::transform(lower, lower.begin(), [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+				if (!markers.insert(lower).second) {
+					throw Bad(std::format("{}: marker \"{}\" is used by another preset too", where, preset.marker));
+				}
+				for (const auto& [morph, value] : Object(At(p, "values", where), where + ".values").items()) {
+					if (c.NeverInBody(preset.female, morph)) {
+						throw Bad(std::format("{}: \"{}\" is never part of a body (S-16, S-29)", where, morph));
+					}
 					preset.values.emplace_back(morph, Num(value, where));
 				}
 				preset.random = Bool(At(p, "random", where), where);
@@ -313,14 +384,8 @@ namespace SH
 			PerSex(At(a_doc, "player", "catalog"), "catalog.player", [&](bool a_female, const json& a_v) {
 				c.playerDefault[a_female ? 1 : 0] = Str(a_v, "catalog.player");
 			});
-			PerSex(At(a_doc, "states", "catalog"), "catalog.states", [&](bool a_female, const json& a_v) {
-				c.states[a_female ? 1 : 0] = Strings(a_v, "catalog.states");
-			});
 			PerSex(At(a_doc, "variety", "catalog"), "catalog.variety", [&](bool a_female, const json& a_v) {
-				if (!a_v.is_array()) {
-					throw Bad("catalog.variety: expected a list per sex");
-				}
-				for (const auto& e : a_v) {
+				for (const auto& e : List(a_v, "catalog.variety")) {
 					VarietyRange r;
 					r.morph = Str(At(e, "morph", "variety"), "variety.morph");
 					const auto where = std::format("variety \"{}\"", r.morph);
@@ -333,17 +398,16 @@ namespace SH
 					if (r.group != "nipples" && r.group != "genitals") {
 						throw Bad(std::format("{}: group must be \"nipples\" or \"genitals\", not \"{}\"", where, r.group));
 					}
+					if (c.NeverInBody(a_female, r.morph)) {
+						throw Bad(std::format("{}: never part of a body (S-16, S-29), so never rolled", where));
+					}
 					auto& list = c.variety[a_female ? 1 : 0];
-					if (std::ranges::any_of(list, [&](const VarietyRange& a_o) { return a_o.morph == r.morph; })) {
+					if (std::ranges::any_of(list, [&](const VarietyRange& a_o) { return IEquals(a_o.morph, r.morph); })) {
 						throw Bad(std::format("{}: listed twice for one sex", where));
 					}
 					list.push_back(std::move(r));
 				}
 			});
-			c.blacklistMarker = Str(At(a_doc, "blacklistMarker", "catalog"), "catalog.blacklistMarker");
-			if (!Catalog::IsMarker(c.blacklistMarker)) {
-				throw Bad(std::format("catalog.blacklistMarker \"{}\" must start with Silhouette_", c.blacklistMarker));
-			}
 
 			const auto& rules = At(a_doc, "rules", "catalog");
 			c.races = Strings(At(rules, "races", "rules"), "rules.races");
@@ -357,7 +421,7 @@ namespace SH
 			PerSex(At(rules, "blacklistedRaces", "rules"), "rules.blacklistedRaces", [&](bool a_female, const json& a_v) {
 				c.blacklistedRaces[a_female ? 1 : 0] = Strings(a_v, "rules.blacklistedRaces");
 			});
-			for (const auto& r : At(rules, "npcName", "rules")) {
+			for (const auto& r : List(At(rules, "npcName", "rules"), "rules.npcName")) {
 				NameRule rule;
 				rule.name = Str(At(r, "name", "rules.npcName"), "rules.npcName");
 				rule.female = Sex(At(r, "sex", "rules.npcName"), "rules.npcName");
@@ -365,7 +429,7 @@ namespace SH
 				c.nameRules.push_back(std::move(rule));
 			}
 			c.blacklistedNpcNames = Strings(At(rules, "blacklistedNpcNames", "rules"), "rules.blacklistedNpcNames");
-			for (const auto& r : At(rules, "faction", "rules")) {
+			for (const auto& r : List(At(rules, "faction", "rules"), "rules.faction")) {
 				FactionRule rule;
 				rule.faction = Ref(r, "rules.faction");
 				rule.editorID = Str(At(r, "editorID", "rules.faction"), "rules.faction");
@@ -375,8 +439,7 @@ namespace SH
 			}
 
 			const auto& orefit = At(a_doc, "orefit", "catalog");
-			c.orefitEnabled = Bool(At(orefit, "enabled", "orefit"), "orefit.enabled");
-			for (const auto& s : At(orefit, "slots", "orefit")) {
+			for (const auto& s : List(At(orefit, "slots", "orefit"), "orefit.slots")) {
 				if (!s.is_number_integer() || s.get<int>() < 30 || s.get<int>() > 61) {
 					throw Bad("orefit.slots: biped slots are 30..61");
 				}
@@ -387,27 +450,47 @@ namespace SH
 			c.outfitBlacklistPlugins = Strings(At(orefit, "blacklistPlugins", "orefit"), "orefit.blacklistPlugins");
 			c.forceRefit = Refs(At(orefit, "force", "orefit"), "orefit.force");
 			c.forceRefitNames = Strings(At(orefit, "forceNames", "orefit"), "orefit.forceNames");
-			for (const auto& o : At(orefit, "outfits", "orefit")) {
+			for (const auto& o : List(At(orefit, "outfits", "orefit"), "orefit.outfits")) {
 				OutfitRefit refit;
 				refit.outfit = Str(At(o, "name", "orefit.outfits"), "orefit.outfits");
 				refit.female = Sex(At(o, "sex", "orefit.outfits"), "orefit.outfits");
 				refit.refitSet = Str(At(o, "set", "orefit.outfits"), "orefit.outfits");
 				c.outfitRefits.push_back(std::move(refit));
 			}
-			for (const auto& s : At(orefit, "sets", "orefit")) {
+			for (const auto& s : List(At(orefit, "sets", "orefit"), "orefit.sets")) {
 				RefitSet set;
 				set.name = Str(At(s, "name", "orefit.sets"), "orefit.sets");
 				const auto where = std::format("refit set \"{}\"", set.name);
 				set.female = Sex(At(s, "sex", where), where);
-				for (const auto& e : At(s, "entries", where)) {
-					RefitEntry entry;
-					entry.morph = Str(At(e, "morph", where), where);
-					entry.op = Op(At(e, "op", where), where);
-					entry.value = Num(At(e, "value", where), where);
-					set.entries.push_back(std::move(entry));
+				if (c.FindRefit(set.name, set.female)) {
+					throw Bad(std::format("{}: listed twice for one sex", where));
+				}
+				for (const auto& e : List(At(s, "floors", where), where)) {
+					RefitFloor floor;
+					floor.morph = Str(At(e, "morph", where), where);
+					if (floor.morph.empty() || KindOf(floor.morph) != MarkerKind::kNone) {
+						throw Bad(std::format("{}: \"{}\" is not a body slider", where, floor.morph));
+					}
+					if (c.NeverInBody(set.female, floor.morph)) {
+						throw Bad(std::format("{}: \"{}\" is never part of a body (S-16, S-29)", where, floor.morph));
+					}
+					floor.value = Num(At(e, "value", where), where);
+					floor.heavyOnly = Bool(At(e, "heavyOnly", where), where);
+					set.floors.push_back(std::move(floor));
 				}
 				c.refitSets.push_back(std::move(set));
 			}
+			const auto& heavy = At(orefit, "heavy", "orefit");
+			const auto  rating = Unsigned(At(heavy, "armorRating", "orefit.heavy"), "orefit.heavy.armorRating");
+			if (rating > 10000) {
+				throw Bad("orefit.heavy.armorRating: at most 10000");
+			}
+			c.heavyArmorRating = static_cast<int>(rating);
+			c.heavyItems = Refs(At(heavy, "items", "orefit.heavy"), "orefit.heavy.items");
+			c.heavyNames = Strings(At(heavy, "names", "orefit.heavy"), "orefit.heavy.names");
+			const auto& light = At(orefit, "light", "orefit");
+			c.lightItems = Refs(At(light, "items", "orefit.light"), "orefit.light.items");
+			c.lightNames = Strings(At(light, "names", "orefit.light"), "orefit.light.names");
 
 			// Every preset a rule names must exist for that sex, or the rule is a promise the plugin
 			// cannot keep: refuse the file now rather than skipping NPCs later without a word.
@@ -430,12 +513,6 @@ namespace SH
 				if (!d.empty() && !c.Find(d, female)) {
 					throw Bad(std::format("player default \"{}\" is not in this catalog", d));
 				}
-				// A range on a runtime state would roll a permanent erection or an open body (S-16).
-				for (const auto& r : c.variety[female ? 1 : 0]) {
-					if (std::ranges::any_of(c.states[female ? 1 : 0], [&](const std::string& a_s) { return IEquals(a_s, r.morph); })) {
-						throw Bad(std::format("variety \"{}\" is a runtime state (S-16) and is never rolled", r.morph));
-					}
-				}
 			}
 			for (const auto& o : c.outfitRefits) {
 				if (!c.FindRefit(o.refitSet, o.female)) {
@@ -449,7 +526,7 @@ namespace SH
 		}
 	}
 
-	std::optional<std::pair<std::uint32_t, std::unordered_map<std::string, std::string>>>
+	std::optional<std::pair<std::uint32_t, std::unordered_map<std::string, ManifestEntry>>>
 		ParseManifest(const nlohmann::json& a_doc, std::string& a_error)
 	{
 		try {
@@ -457,61 +534,24 @@ namespace SH
 			if (stamp == 0 || stamp >= (1ull << 24)) {
 				throw Bad("manifest.stamp: must be 1 .. 2^24-1");
 			}
-			std::unordered_map<std::string, std::string> markers;
-			for (const auto& [marker, entry] : At(a_doc, "templates", "manifest").items()) {
-				markers.emplace(marker, Str(At(entry, "preset", marker), marker));
+			std::unordered_map<std::string, ManifestEntry> markers;
+			for (const auto& [marker, entry] : Object(At(a_doc, "templates", "manifest"), "manifest.templates").items()) {
+				ManifestEntry m;
+				m.preset = Str(At(entry, "preset", marker), marker);
+				if (const auto g = entry.find("gender"); g != entry.end()) {
+					m.female = Sex(*g, marker);
+				}
+				if (const auto v = entry.find("values"); v != entry.end() && v->is_object()) {
+					for (const auto& item : v->items()) {
+						m.morphs.push_back(item.key());
+					}
+				}
+				markers.emplace(marker, std::move(m));
 			}
 			return std::make_pair(static_cast<std::uint32_t>(stamp), std::move(markers));
 		} catch (const std::exception& e) {
 			a_error = e.what();
 			return std::nullopt;
 		}
-	}
-
-	std::vector<std::pair<std::string, float>> ApplyRefit(
-		const RefitSet& a_set, const std::unordered_map<std::string, float>& a_current)
-	{
-		std::vector<std::pair<std::string, float>> out;
-		for (const auto& e : a_set.entries) {
-			const auto it = a_current.find(e.morph);
-			const float now = it == a_current.end() ? 0.0F : it->second;
-			float v = now;
-			switch (e.op) {
-			case RefitEntry::Op::kSet:
-				v = e.value;
-				break;
-			case RefitEntry::Op::kAdd:
-				v = now + e.value;
-				break;
-			case RefitEntry::Op::kMax:
-				v = std::max(now, e.value);
-				break;
-			case RefitEntry::Op::kMin:
-				v = std::min(now, e.value);
-				break;
-			}
-			// One morph named twice in a set: the later entry works on the earlier result, which is
-			// what reading the set top to bottom means.
-			const auto prior = std::ranges::find_if(out, [&](const auto& a_p) { return a_p.first == e.morph; });
-			if (prior != out.end()) {
-				switch (e.op) {
-				case RefitEntry::Op::kSet:
-					prior->second = e.value;
-					break;
-				case RefitEntry::Op::kAdd:
-					prior->second += e.value;
-					break;
-				case RefitEntry::Op::kMax:
-					prior->second = std::max(prior->second, e.value);
-					break;
-				case RefitEntry::Op::kMin:
-					prior->second = std::min(prior->second, e.value);
-					break;
-				}
-			} else {
-				out.emplace_back(e.morph, v);
-			}
-		}
-		return out;
 	}
 }

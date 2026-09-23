@@ -1,13 +1,27 @@
 {
- "schema": 1,
+ "bases": {
+  "female": "FemaleBody is the bare Anatomy Body ZeX reference mesh -- nothing baked in",
+  "male": "MaleBody is the bare BodyTalk4 reference mesh -- nothing baked in"
+ },
  "build": "31d2200c0a98",
- "stamp": 3265056,
+ "format": 1,
  "mode": "absolute",
- "presets": [
-  {
-   "name": "ALSL Body 1.0",
-   "sex": "female",
-   "marker": "Silhouette_ALSL_Body_1_0",
+ "player": {
+  "female": {
+   "preset": "xy - Type 3DCG (Blessed)(2)(a)",
+   "template": "Silhouette_PlayerFemale"
+  },
+  "male": {
+   "preset": "BT - Average",
+   "template": "Silhouette_PlayerMale"
+  }
+ },
+ "stamp": 3265056,
+ "templates": {
+  "Silhouette_ALSL_Body_1_0": {
+   "file": "ALSL Body 1.0.xml",
+   "gender": "female",
+   "preset": "ALSL Body 1.0",
    "values": {
     "Ankles": 0.15,
     "AppleCheeks": 0.25,
@@ -45,28 +59,191 @@
     "SternumDepth": -0.15,
     "Thighs": 0.45,
     "Waist": 1.0
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "Anatomy Zero",
-   "sex": "female",
-   "marker": "Silhouette_Anatomy_Zero",
-   "values": {},
-   "random": false,
-   "menu": true,
-   "zeroed": true,
-   "fit": "full",
-   "family": "Anatomy"
+  "Silhouette_Anatomy_Zero": {
+   "gender": "female",
+   "preset": "Anatomy Zero",
+   "values": {}
   },
-  {
-   "name": "CBBE Athletic",
-   "sex": "female",
-   "marker": "Silhouette_CBBE_Athletic",
+  "Silhouette_BT_Average": {
+   "file": "BT-Average.xml",
+   "gender": "male",
+   "preset": "BT - Average",
+   "values": {
+    "BTAMBackAdjust": 0.1,
+    "BTAMPecAdjust": 1.0,
+    "BTAMShoulderTweaks": 0.51,
+    "BTBackArch": 0.14,
+    "BTButt": 0.04,
+    "BTChestSmoothing": 0.31,
+    "BTChubbyArm": 1.0,
+    "BTChubbyLeg": 0.5,
+    "BTElbowAdjust": 0.6,
+    "BTFootSize": 0.19,
+    "BTHips-In": 0.35,
+    "BTKneeAdust": 0.28,
+    "BTPectorals": 0.15,
+    "BTStomachFat": 0.46,
+    "Hips": 0.21
+   }
+  },
+  "Silhouette_BT_Bodybuilder": {
+   "file": "BT-Bodybuilder.xml",
+   "gender": "male",
+   "preset": "BT - Bodybuilder",
+   "values": {
+    "AryaydaMuscleSlider": 0.57,
+    "BT2AdonisBelt": 0.69,
+    "BTAMBackAdjust": 0.34,
+    "BTAMPecAdjust": 0.42,
+    "BTAMShoulderTweaks": 0.27,
+    "BTAMWaistAdust": 0.33,
+    "BTARYAYDA": 0.2,
+    "BTAbDefinition": 0.03,
+    "BTAryaydaMoreMuscular": 1.0,
+    "BTBallSize": 0.24,
+    "BTCalves": 1.0,
+    "BTChubbyArm": 0.26,
+    "BTChubbyLeg": 0.13,
+    "BTElbowAdjust": 0.52,
+    "BTFootSize": 0.37,
+    "BTHips-In": 0.49,
+    "BTKneeAdust": 0.25,
+    "BTPectorals": 0.34,
+    "BTToeSmaller": 0.31,
+    "Balls": 0.29
+   }
+  },
+  "Silhouette_BT_Chubby": {
+   "file": "BT-Chubby.xml",
+   "gender": "male",
+   "preset": "BT - Chubby",
+   "values": {
+    "BT2AdonisBelt": 0.15,
+    "BTAMPecAdjust": 1.0,
+    "BTAMShoulderTweaks": 0.38,
+    "BTAMWaistAdust": 0.47,
+    "BTARYAYDA": 0.29,
+    "BTAryaydaMoreMuscular": 0.23,
+    "BTBack": 0.45,
+    "BTBackArch": 1.0,
+    "BTBallSize": 0.5,
+    "BTBiceps": 0.41,
+    "BTButt": 0.58,
+    "BTCalves": 0.65,
+    "BTChestSmoothing": 0.58,
+    "BTChubbyArm": 1.0,
+    "BTChubbyLeg": 0.39,
+    "BTElbowAdjust": 0.5,
+    "BTFootSize": 0.38,
+    "BTForearms": 0.65,
+    "BTHips-In": 1.0,
+    "BTKneeAdust": 0.23,
+    "BTNippleSize": 0.5,
+    "BTPectorals": 0.42,
+    "BTShinSize": 0.2,
+    "BTShoulders": 0.71,
+    "BTStomachFat": 1.3,
+    "BTStomachSmooth": 0.19,
+    "BTThigh": 0.44,
+    "BTToeSmaller": 0.15,
+    "BTTraps": 0.61,
+    "BTWaist-In": 1.0,
+    "Balls": 0.51,
+    "Hips": 1.0
+   }
+  },
+  "Silhouette_BT_Muscular": {
+   "file": "BT-Muscular.xml",
+   "gender": "male",
+   "preset": "BT - Muscular",
+   "values": {
+    "BT2AdonisBelt": 0.44,
+    "BTAMPecAdjust": 0.48,
+    "BTARYAYDA": 0.5,
+    "BTAbDefinition": 0.6,
+    "BTBack": 0.36,
+    "BTBackArch": 0.45,
+    "BTBiceps": 1.0,
+    "BTButt": 0.44,
+    "BTCalves": 0.18,
+    "BTElbowAdjust": 0.3,
+    "BTFootSize": 0.14,
+    "BTForearms": 0.22,
+    "BTHips-In": 0.28,
+    "BTKneeAdust": 0.3,
+    "BTPectorals": 0.3,
+    "BTShinSize": 0.39,
+    "BTStomachFat": 0.32,
+    "BTStomachSmooth": 0.9,
+    "BTTHinCalf": 0.13,
+    "BTThinArm": 0.36,
+    "BTToeSmaller": 0.39,
+    "BTTraps": 0.52,
+    "Hips": 0.14,
+    "ThinThigh": 0.76,
+    "TigerSanBBMale": 0.4
+   }
+  },
+  "Silhouette_BT_Swimmer": {
+   "file": "BT-Swimmer.xml",
+   "gender": "male",
+   "preset": "BT - Swimmer",
+   "values": {
+    "BTAMPecAdjust": 0.58,
+    "BTAbDefinition": 0.33,
+    "BTAryaydaMoreMuscular": 0.1,
+    "BTBackArch": 0.45,
+    "BTBiceps": 0.5,
+    "BTButt": 0.52,
+    "BTCalves": 0.75,
+    "BTFootSize": 0.5,
+    "BTForearms": -0.5,
+    "BTPectorals": 0.05,
+    "BTRibcage": -0.3,
+    "BTShinSize": 0.5,
+    "BTShoulders": 0.13,
+    "BTStomach": 0.45,
+    "BTStomachSmooth": 0.15,
+    "BTTHinCalf": 1.0,
+    "BTThigh": 1.0,
+    "BTThinArm": 1.0,
+    "BTTraps": 0.2,
+    "BTWaist-In": 0.23,
+    "BTWaist-Smoothing": 0.44,
+    "Hips": 0.4,
+    "ThinThigh": 1.0
+   }
+  },
+  "Silhouette_BT_Thin": {
+   "file": "BT-Thin.xml",
+   "gender": "male",
+   "preset": "BT - Thin",
+   "values": {
+    "BTAMPecAdjust": 1.0,
+    "BTAMShoulderTweaks": 0.41,
+    "BTButt": -0.2,
+    "BTButtWidth": 0.24,
+    "BTChestSmoothing": 0.13,
+    "BTElbowAdjust": 0.16,
+    "BTRibcage": -0.25,
+    "BTStomach": 0.13,
+    "BTTHinCalf": 1.0,
+    "BTThinArm": 1.0,
+    "BTWaist-In": 0.31,
+    "ThinThigh": 1.0
+   }
+  },
+  "Silhouette_BT_Zero": {
+   "gender": "male",
+   "preset": "BT - Zero",
+   "values": {}
+  },
+  "Silhouette_CBBE_Athletic": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "CBBE Athletic",
    "values": {
     "Ankles": 0.55,
     "Arms": 0.3,
@@ -99,17 +276,12 @@
     "SternumDepth": 0.15,
     "WaistHeight": 0.1,
     "WideWaistLine": 1.0
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "CBBE Chubby",
-   "sex": "female",
-   "marker": "Silhouette_CBBE_Chubby",
+  "Silhouette_CBBE_Chubby": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "CBBE Chubby",
    "values": {
     "AppleCheeks": 0.3,
     "Arms": 0.15,
@@ -145,17 +317,12 @@
     "Thighs": 0.25,
     "Waist": 0.45,
     "WaistHeight": 0.1
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "CBBE Curvy",
-   "sex": "female",
-   "marker": "Silhouette_CBBE_Curvy",
+  "Silhouette_CBBE_Curvy": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "CBBE Curvy",
    "values": {
     "Ankles": 0.25,
     "AppleCheeks": 0.2,
@@ -183,17 +350,12 @@
     "Thighs": 0.25,
     "Waist": 0.75,
     "WaistHeight": 0.1
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "CBBE Petite",
-   "sex": "female",
-   "marker": "Silhouette_CBBE_Petite",
+  "Silhouette_CBBE_Petite": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "CBBE Petite",
    "values": {
     "Ankles": 0.55,
     "Arms": 0.25,
@@ -223,17 +385,12 @@
     "SlimThighs": 0.4,
     "WaistHeight": 0.1,
     "WideWaistLine": 0.55
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "CBBE Slim",
-   "sex": "female",
-   "marker": "Silhouette_CBBE_Slim",
+  "Silhouette_CBBE_Slim": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "CBBE Slim",
    "values": {
     "Ankles": 0.55,
     "Arms": 0.25,
@@ -256,41 +413,25 @@
     "ShoulderWidth": 0.9,
     "SlimThighs": 0.4,
     "WaistHeight": 0.1
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "CBBE Vanilla",
-   "sex": "female",
-   "marker": "Silhouette_CBBE_Vanilla",
+  "Silhouette_CBBE_Vanilla": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "CBBE Vanilla",
    "values": {
     "VanillaFo4": 1.0
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "CBBE Zeroed Sliders",
-   "sex": "female",
-   "marker": "Silhouette_CBBE_Zeroed_Sliders",
-   "values": {},
-   "random": false,
-   "menu": true,
-   "zeroed": true,
-   "fit": "full",
-   "family": "CBBE"
+  "Silhouette_CBBE_Zeroed_Sliders": {
+   "gender": "female",
+   "preset": "CBBE Zeroed Sliders",
+   "values": {}
   },
-  {
-   "name": "Imitation - Dream Girl",
-   "sex": "female",
-   "marker": "Silhouette_Imitation_Dream_Girl",
+  "Silhouette_Imitation_Dream_Girl": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "Imitation - Dream Girl",
    "values": {
     "Ankles": 0.55,
     "AppleCheeks": 0.15,
@@ -330,17 +471,12 @@
     "TummyTuck": 0.1,
     "Waist": 1.0,
     "WideWaistLine": -0.75
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "Imitation - UNP #1",
-   "sex": "female",
-   "marker": "Silhouette_Imitation_UNP_1",
+  "Silhouette_Imitation_UNP_1": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "Imitation - UNP #1",
    "values": {
     "Ankles": 0.25,
     "ArmpitHeight": 1.0,
@@ -393,17 +529,12 @@
     "Waist": -2.0,
     "WaistHeight": 0.1,
     "WideWaistLine": 0.45
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "Imitation - UNP #2",
-   "sex": "female",
-   "marker": "Silhouette_Imitation_UNP_2",
+  "Silhouette_Imitation_UNP_2": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "Imitation - UNP #2",
    "values": {
     "Ankles": 0.3,
     "AppleCheeks": 0.5,
@@ -458,17 +589,12 @@
     "Waist": -1.1,
     "WaistHeight": 0.15,
     "WideWaistLine": -1.5
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "Imitation - UNP Skinny",
-   "sex": "female",
-   "marker": "Silhouette_Imitation_UNP_Skinny",
+  "Silhouette_Imitation_UNP_Skinny": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "Imitation - UNP Skinny",
    "values": {
     "Ankles": 0.55,
     "ArmpitHeight": 1.0,
@@ -512,17 +638,48 @@
     "Waist": -1.1,
     "WaistHeight": 0.15,
     "WideWaistLine": -0.9
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "Josie CBBE Body 2 (Bustier Nude)",
-   "sex": "female",
-   "marker": "Silhouette_Josie_CBBE_Body_2_Bustier_Nude",
+  "Silhouette_Josie_3DBoobs": {
+   "file": "Premium Josie+3DCGH.xml",
+   "gender": "female",
+   "preset": "Josie+3DBoobs",
+   "values": {
+    "Ankles": 0.25,
+    "AppleCheeks": 0.4,
+    "Belly": 0.15,
+    "BreastPerkiness": 0.5,
+    "BreastTopSlope": 0.75,
+    "Breasts": 1.0,
+    "BreastsCleavage": 0.58,
+    "BreastsGone": -0.1,
+    "BreastsNewSH": 0.5,
+    "BreastsSmall": -0.5,
+    "BreastsSmall2": -0.2,
+    "BreastsTogether": 1.0,
+    "Butt": 1.0,
+    "ButtNew": 1.0,
+    "CalfSize": 0.35,
+    "ChubbyArms": 0.26,
+    "ChubbyWaist": 0.25,
+    "CrotchBack": 0.5,
+    "HipUpperWidth": -0.2,
+    "LegShape": 1.0,
+    "NippleLength": 0.3,
+    "NipplePerk2": 0.5,
+    "NipplePerkiness": 1.0,
+    "RoundAss": 1.0,
+    "ShoulderTweak": 1.0,
+    "ShoulderWidth": 0.8,
+    "Thighs": 0.25,
+    "Waist": 1.0,
+    "WaistHeight": 0.1
+   }
+  },
+  "Silhouette_Josie_CBBE_Body_2_Bustier_Nude": {
+   "file": "Josie CBBE Body 2 (Bustier Nude).xml",
+   "gender": "female",
+   "preset": "Josie CBBE Body 2 (Bustier Nude)",
    "values": {
     "Ankles": 0.7,
     "AppleCheeks": 0.1,
@@ -554,17 +711,12 @@
     "ShoulderWidth": 1.0,
     "Waist": 0.75,
     "WaistHeight": 0.25
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "3dnpc"
+   }
   },
-  {
-   "name": "Josie CBBE Body 2 (Nude)",
-   "sex": "female",
-   "marker": "Silhouette_Josie_CBBE_Body_2_Nude",
+  "Silhouette_Josie_CBBE_Body_2_Nude": {
+   "file": "Josie CBBE Body 2 (Nude).xml",
+   "gender": "female",
+   "preset": "Josie CBBE Body 2 (Nude)",
    "values": {
     "Ankles": 0.7,
     "AppleCheeks": 0.1,
@@ -596,58 +748,12 @@
     "ShoulderWidth": 1.0,
     "Waist": 0.75,
     "WaistHeight": 0.25
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "3dnpc"
+   }
   },
-  {
-   "name": "Josie+3DBoobs",
-   "sex": "female",
-   "marker": "Silhouette_Josie_3DBoobs",
-   "values": {
-    "Ankles": 0.25,
-    "AppleCheeks": 0.4,
-    "Belly": 0.15,
-    "BreastPerkiness": 0.5,
-    "BreastTopSlope": 0.75,
-    "Breasts": 1.0,
-    "BreastsCleavage": 0.58,
-    "BreastsGone": -0.1,
-    "BreastsNewSH": 0.5,
-    "BreastsSmall": -0.5,
-    "BreastsSmall2": -0.2,
-    "BreastsTogether": 1.0,
-    "Butt": 1.0,
-    "ButtNew": 1.0,
-    "CalfSize": 0.35,
-    "ChubbyArms": 0.26,
-    "ChubbyWaist": 0.25,
-    "CrotchBack": 0.5,
-    "HipUpperWidth": -0.2,
-    "LegShape": 1.0,
-    "NippleLength": 0.3,
-    "NipplePerk2": 0.5,
-    "NipplePerkiness": 1.0,
-    "RoundAss": 1.0,
-    "ShoulderTweak": 1.0,
-    "ShoulderWidth": 0.8,
-    "Thighs": 0.25,
-    "Waist": 1.0,
-    "WaistHeight": 0.1
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "AtomicBeauty"
-  },
-  {
-   "name": "OxtonCBBEBody+V6",
-   "sex": "female",
-   "marker": "Silhouette_OxtonCBBEBody_V6",
+  "Silhouette_OxtonCBBEBody_V6": {
+   "file": "OxtonCBBEBody+V6.xml",
+   "gender": "female",
+   "preset": "OxtonCBBEBody+V6",
    "values": {
     "AppleCheeks": 0.45,
     "ArmpitHeight": 0.48,
@@ -699,17 +805,12 @@
     "Thighs": 1.0,
     "Waist": 0.04,
     "WideWaistLine": 0.16
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": "ASA1"
+   }
   },
-  {
-   "name": "PLP",
-   "sex": "female",
-   "marker": "Silhouette_PLP",
+  "Silhouette_PLP": {
+   "file": "PLP.xml",
+   "gender": "female",
+   "preset": "PLP",
    "values": {
     "Ankles": 0.42,
     "AppleCheeks": 0.2,
@@ -750,17 +851,12 @@
     "TummyTuck": 0.15,
     "Waist": 0.1,
     "WaistHeight": 0.1
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": ""
+   }
   },
-  {
-   "name": "PLP V2",
-   "sex": "female",
-   "marker": "Silhouette_PLP_V2",
+  "Silhouette_PLP_V2": {
+   "file": "PLP V2.xml",
+   "gender": "female",
+   "preset": "PLP V2",
    "values": {
     "Ankles": 0.42,
     "AppleCheeks": 0.2,
@@ -800,17 +896,12 @@
     "TummyTuck": 0.15,
     "Waist": 0.1,
     "WaistHeight": 0.1
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": ""
+   }
   },
-  {
-   "name": "PNBody Ver.fe",
-   "sex": "female",
-   "marker": "Silhouette_PNBody_Ver_fe",
+  "Silhouette_PNBody_Ver_fe": {
+   "file": "PNBody Ver.fe.xml",
+   "gender": "female",
+   "preset": "PNBody Ver.fe",
    "values": {
     "Ankles": 0.45,
     "AppleCheeks": 0.2,
@@ -864,17 +955,12 @@
     "SlimThighs": 0.2,
     "SternumDepth": 0.1,
     "Thighs": 0.1
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "Apal"
+   }
   },
-  {
-   "name": "Rebecca Rose TWB (Nude)",
-   "sex": "female",
-   "marker": "Silhouette_Rebecca_Rose_TWB_Nude",
+  "Silhouette_Rebecca_Rose_TWB_Nude": {
+   "file": "Rebecca_Rose_TWB_Nude.xml",
+   "gender": "female",
+   "preset": "Rebecca Rose TWB (Nude)",
    "values": {
     "AppleCheeks": 0.5,
     "BackArch": -0.07,
@@ -910,28 +996,124 @@
     "Waist": 1.0,
     "WaistHeight": 0.1,
     "WideWaistLine": -0.41
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "rose2",
-   "sex": "female",
-   "marker": "Silhouette_rose2",
+  "Silhouette_SevenBase": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "SevenBase",
+   "values": {
+    "7B Lower": 1.0,
+    "7B Upper": 1.0
+   }
+  },
+  "Silhouette_SevenBase_Lower": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "SevenBase Lower",
+   "values": {
+    "7B Lower": 1.0,
+    "BreastCenter": 0.75,
+    "BreastCenterBig": 0.25,
+    "BreastTopSlope": 0.8,
+    "BreastWidth": -0.2,
+    "Breasts": 0.4,
+    "BreastsTogether": 0.45,
+    "ChubbyArms": 0.1,
+    "ForearmSize": 0.2,
+    "NippleDown": 0.3,
+    "NipplePerkiness": 0.25,
+    "ShoulderTweak": 1.0,
+    "ShoulderWidth": 0.8
+   }
+  },
+  "Silhouette_SevenBase_Slim": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "SevenBase Slim",
+   "values": {
+    "7B Lower": 1.0,
+    "7B Upper": 1.0,
+    "ArmpitHeight": 0.2,
+    "Arms": 1.0,
+    "Belly": -0.25,
+    "BreastHeight": -0.4,
+    "BreastsSmall": 0.85,
+    "BreastsTogether": 0.4,
+    "ButtSmall": 0.15,
+    "CalfSize": -0.75,
+    "CalfSmooth": 0.4,
+    "NippleDistance": -0.15,
+    "SlimThighs": 0.3,
+    "SternumDepth": 0.3,
+    "SternumHeight": 0.2,
+    "TummyTuck": 0.2
+   }
+  },
+  "Silhouette_SevenBase_Upper": {
+   "file": "CBBE.xml",
+   "gender": "female",
+   "preset": "SevenBase Upper",
+   "values": {
+    "7B Upper": 1.0,
+    "Ankles": 0.55,
+    "AppleCheeks": 0.55,
+    "BackArch": 0.85,
+    "ButtNew": 1.0,
+    "CrotchBack": 0.55,
+    "LegShape": 1.0,
+    "SlimThighs": 0.4,
+    "Thighs": 0.3,
+    "WaistHeight": 0.1
+   }
+  },
+  "Silhouette_Sirius_Male_preset": {
+   "file": "Sirius Male preset.xml",
+   "gender": "male",
+   "preset": "Sirius Male preset",
+   "values": {
+    "BTAMPecAdjust": 0.1,
+    "BTAbDefinition": 0.33,
+    "BTBackArch": 0.45,
+    "BTBallSize": 1.0,
+    "BTBiceps": 0.78,
+    "BTButt": 0.52,
+    "BTCalves": 0.75,
+    "BTChestSmoothing": 0.3,
+    "BTFootSize": 1.0,
+    "BTForearms": -0.5,
+    "BTPectorals": 0.45,
+    "BTRibcage": -0.3,
+    "BTShinSize": 0.5,
+    "BTShoulders": 0.44,
+    "BTStomach": 0.45,
+    "BTStomachSmooth": 0.15,
+    "BTTHinCalf": 1.0,
+    "BTThinArm": 1.0,
+    "BTToeSmaller": 1.0,
+    "BTTraps": 0.22,
+    "BTWaist-In": 0.23,
+    "BTWaist-Smoothing": 0.44,
+    "Balls": 1.0,
+    "Hips": 0.4,
+    "ThinThigh": 1.0
+   }
+  },
+  "Silhouette_TWB": {
+   "file": "TWB.xml",
+   "gender": "female",
+   "preset": "TWB",
    "values": {
     "AppleCheeks": 0.5,
     "BackArch": -0.07,
     "Belly": 0.05,
     "BigButt": 0.4,
+    "BreastCenter": 1.0,
+    "BreastCenterBig": 1.0,
     "BreastFlatness2": -0.77,
-    "BreastGravity2": 1.0,
-    "BreastHeight": 0.62,
-    "BreastPerkiness": 0.67,
-    "BreastTopSlope": 0.46,
-    "Breasts": -0.6,
+    "BreastGravity2": 0.1,
+    "BreastHeight": 0.6,
+    "BreastTopSlope": 1.0,
     "BreastsCleavage": 0.5,
     "BreastsSmall": -1.0,
     "BreastsSmall2": -0.2,
@@ -956,106 +1138,12 @@
     "Waist": 1.0,
     "WaistHeight": 0.1,
     "WideWaistLine": -0.41
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": ""
+   }
   },
-  {
-   "name": "SevenBase",
-   "sex": "female",
-   "marker": "Silhouette_SevenBase",
-   "values": {
-    "7B Lower": 1.0,
-    "7B Upper": 1.0
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
-  },
-  {
-   "name": "SevenBase Lower",
-   "sex": "female",
-   "marker": "Silhouette_SevenBase_Lower",
-   "values": {
-    "7B Lower": 1.0,
-    "BreastCenter": 0.75,
-    "BreastCenterBig": 0.25,
-    "BreastTopSlope": 0.8,
-    "BreastWidth": -0.2,
-    "Breasts": 0.4,
-    "BreastsTogether": 0.45,
-    "ChubbyArms": 0.1,
-    "ForearmSize": 0.2,
-    "NippleDown": 0.3,
-    "NipplePerkiness": 0.25,
-    "ShoulderTweak": 1.0,
-    "ShoulderWidth": 0.8
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
-  },
-  {
-   "name": "SevenBase Slim",
-   "sex": "female",
-   "marker": "Silhouette_SevenBase_Slim",
-   "values": {
-    "7B Lower": 1.0,
-    "7B Upper": 1.0,
-    "ArmpitHeight": 0.2,
-    "Arms": 1.0,
-    "Belly": -0.25,
-    "BreastHeight": -0.4,
-    "BreastsSmall": 0.85,
-    "BreastsTogether": 0.4,
-    "ButtSmall": 0.15,
-    "CalfSize": -0.75,
-    "CalfSmooth": 0.4,
-    "NippleDistance": -0.15,
-    "SlimThighs": 0.3,
-    "SternumDepth": 0.3,
-    "SternumHeight": 0.2,
-    "TummyTuck": 0.2
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
-  },
-  {
-   "name": "SevenBase Upper",
-   "sex": "female",
-   "marker": "Silhouette_SevenBase_Upper",
-   "values": {
-    "7B Upper": 1.0,
-    "Ankles": 0.55,
-    "AppleCheeks": 0.55,
-    "BackArch": 0.85,
-    "ButtNew": 1.0,
-    "CrotchBack": 0.55,
-    "LegShape": 1.0,
-    "SlimThighs": 0.4,
-    "Thighs": 0.3,
-    "WaistHeight": 0.1
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
-  },
-  {
-   "name": "That Gym Booty 2.0",
-   "sex": "female",
-   "marker": "Silhouette_That_Gym_Booty_2_0",
+  "Silhouette_That_Gym_Booty_2_0": {
+   "file": "That Gym Booty 2.0.xml",
+   "gender": "female",
+   "preset": "That Gym Booty 2.0",
    "values": {
     "7B Lower": 0.2,
     "7B Upper": 0.5,
@@ -1085,17 +1173,12 @@
     "NipplePerk2": -0.3,
     "NipplePerkiness": -0.2,
     "Thighs": 0.2
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body CBBE",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_CBBE",
+  "Silhouette_The_Rocket_Bomb_Body_CBBE": {
+   "file": "The Rocket Bomb Body CBBE.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body CBBE",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1151,17 +1234,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body CBBE Extra",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_CBBE_Extra",
+  "Silhouette_The_Rocket_Bomb_Body_CBBE_Extra": {
+   "file": "The Rocket Bomb Body CBBE Extra.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body CBBE Extra",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1218,17 +1296,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body CBBE Extra Extra",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_CBBE_Extra_Extra",
+  "Silhouette_The_Rocket_Bomb_Body_CBBE_Extra_Extra": {
+   "file": "The Rocket Bomb Body CBBE Extra Extra.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body CBBE Extra Extra",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1283,17 +1356,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body CBBE Extra Extra Extra",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_CBBE_Extra_Extra_Extra",
+  "Silhouette_The_Rocket_Bomb_Body_CBBE_Extra_Extra_Extra": {
+   "file": "The Rocket Bomb Body CBBE Extra Extra Extra.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body CBBE Extra Extra Extra",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1349,17 +1417,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body CBBE Small",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_CBBE_Small",
+  "Silhouette_The_Rocket_Bomb_Body_CBBE_Small": {
+   "file": "The Rocket Bomb Body CBBE Small.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body CBBE Small",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1415,17 +1478,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body CBBE Smaller",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_CBBE_Smaller",
+  "Silhouette_The_Rocket_Bomb_Body_CBBE_Smaller": {
+   "file": "The Rocket Bomb Body CBBE Smaller.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body CBBE Smaller",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1481,17 +1539,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body CBBE Smallest",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_CBBE_Smallest",
+  "Silhouette_The_Rocket_Bomb_Body_CBBE_Smallest": {
+   "file": "The Rocket Bomb Body CBBE Smallest.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body CBBE Smallest",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1547,17 +1600,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body TWB",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_TWB",
+  "Silhouette_The_Rocket_Bomb_Body_TWB": {
+   "file": "The Rocket Bomb Body TWB.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body TWB",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1613,17 +1661,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body TWB Extra",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_TWB_Extra",
+  "Silhouette_The_Rocket_Bomb_Body_TWB_Extra": {
+   "file": "The Rocket Bomb Body TWB Extra.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body TWB Extra",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1679,17 +1722,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body TWB Extra Extra",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_TWB_Extra_Extra",
+  "Silhouette_The_Rocket_Bomb_Body_TWB_Extra_Extra": {
+   "file": "The Rocket Bomb Body TWB Extra Extra.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body TWB Extra Extra",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1745,17 +1783,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body TWB Extra Extra Extra",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_TWB_Extra_Extra_Extra",
+  "Silhouette_The_Rocket_Bomb_Body_TWB_Extra_Extra_Extra": {
+   "file": "The Rocket Bomb Body TWB Extra Extra Extra.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body TWB Extra Extra Extra",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1811,17 +1844,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body TWB Small",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_TWB_Small",
+  "Silhouette_The_Rocket_Bomb_Body_TWB_Small": {
+   "file": "The Rocket Bomb Body TWB Small.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body TWB Small",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1877,17 +1905,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body TWB Smaller",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_TWB_Smaller",
+  "Silhouette_The_Rocket_Bomb_Body_TWB_Smaller": {
+   "file": "The Rocket Bomb Body TWB Smaller.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body TWB Smaller",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -1943,17 +1966,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "The Rocket Bomb Body TWB Smallest",
-   "sex": "female",
-   "marker": "Silhouette_The_Rocket_Bomb_Body_TWB_Smallest",
+  "Silhouette_The_Rocket_Bomb_Body_TWB_Smallest": {
+   "file": "The Rocket Bomb Body TWB Smallest.xml",
+   "gender": "female",
+   "preset": "The Rocket Bomb Body TWB Smallest",
    "values": {
     "7B Lower": 0.05,
     "7B Upper": 0.05,
@@ -2009,63 +2027,12 @@
     "Waist": 0.36,
     "WaistHeight": 0.14,
     "WideWaistLine": -0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "TWB",
-   "sex": "female",
-   "marker": "Silhouette_TWB",
-   "values": {
-    "AppleCheeks": 0.5,
-    "BackArch": -0.07,
-    "Belly": 0.05,
-    "BigButt": 0.4,
-    "BreastCenter": 1.0,
-    "BreastCenterBig": 1.0,
-    "BreastFlatness2": -0.77,
-    "BreastGravity2": 0.1,
-    "BreastHeight": 0.6,
-    "BreastTopSlope": 1.0,
-    "BreastsCleavage": 0.5,
-    "BreastsSmall": -1.0,
-    "BreastsSmall2": -0.2,
-    "Butt": 1.0,
-    "ButtNew": 0.4,
-    "ChubbyArms": 0.3,
-    "ChubbyWaist": 0.25,
-    "CrotchBack": 0.5,
-    "ForearmSize": 0.3,
-    "LegShape": 1.0,
-    "MuscularArms": 0.7,
-    "MuscularButt": 0.4,
-    "MuscularChest": 0.1,
-    "MuscularLegs": 0.6,
-    "NippleAreola": 0.5,
-    "NippleDown": 0.2,
-    "RoundAss": 1.0,
-    "ShoulderTweak": 1.0,
-    "ShoulderWidth": 0.8,
-    "SlimThighs": -0.12,
-    "Thighs": 0.25,
-    "Waist": 1.0,
-    "WaistHeight": 0.1,
-    "WideWaistLine": -0.41
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": ""
-  },
-  {
-   "name": "Wasteland Curves (Nude) - TWB Bodyslide Preset.xml",
-   "sex": "female",
-   "marker": "Silhouette_Wasteland_Curves_Nude_TWB_Bodyslide_Preset_xml",
+  "Silhouette_Wasteland_Curves_Nude_TWB_Bodyslide_Preset_xml": {
+   "file": "Wasteland Curves (Nude) - TWB Bodyslide Preset.xml.xml",
+   "gender": "female",
+   "preset": "Wasteland Curves (Nude) - TWB Bodyslide Preset.xml",
    "values": {
     "7B Lower": 0.15,
     "7B Upper": 0.1,
@@ -2100,17 +2067,53 @@
     "Thighs": 0.5,
     "Waist": 1.0,
     "WaistHeight": 0.1
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "wtaw body",
-   "sex": "female",
-   "marker": "Silhouette_wtaw_body",
+  "Silhouette_rose2": {
+   "file": "rose2.xml",
+   "gender": "female",
+   "preset": "rose2",
+   "values": {
+    "AppleCheeks": 0.5,
+    "BackArch": -0.07,
+    "Belly": 0.05,
+    "BigButt": 0.4,
+    "BreastFlatness2": -0.77,
+    "BreastGravity2": 1.0,
+    "BreastHeight": 0.62,
+    "BreastPerkiness": 0.67,
+    "BreastTopSlope": 0.46,
+    "Breasts": -0.6,
+    "BreastsCleavage": 0.5,
+    "BreastsSmall": -1.0,
+    "BreastsSmall2": -0.2,
+    "Butt": 1.0,
+    "ButtNew": 0.4,
+    "ChubbyArms": 0.3,
+    "ChubbyWaist": 0.25,
+    "CrotchBack": 0.5,
+    "ForearmSize": 0.3,
+    "LegShape": 1.0,
+    "MuscularArms": 0.7,
+    "MuscularButt": 0.4,
+    "MuscularChest": 0.1,
+    "MuscularLegs": 0.6,
+    "NippleAreola": 0.5,
+    "NippleDown": 0.2,
+    "RoundAss": 1.0,
+    "ShoulderTweak": 1.0,
+    "ShoulderWidth": 0.8,
+    "SlimThighs": -0.12,
+    "Thighs": 0.25,
+    "Waist": 1.0,
+    "WaistHeight": 0.1,
+    "WideWaistLine": -0.41
+   }
+  },
+  "Silhouette_wtaw_body": {
+   "file": "wtaw body.xml",
+   "gender": "female",
+   "preset": "wtaw body",
    "values": {
     "AppleCheeks": 0.4,
     "Belly": 0.15,
@@ -2137,17 +2140,12 @@
     "Thighs": 0.25,
     "Waist": 1.0,
     "WaistHeight": 0.1
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "wtaw body nude",
-   "sex": "female",
-   "marker": "Silhouette_wtaw_body_nude",
+  "Silhouette_wtaw_body_nude": {
+   "file": "wtaw body nude.xml",
+   "gender": "female",
+   "preset": "wtaw body nude",
    "values": {
     "AppleCheeks": 0.4,
     "Belly": 0.15,
@@ -2173,17 +2171,12 @@
     "Thighs": 0.25,
     "Waist": 1.0,
     "WaistHeight": 0.1
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Blessed)(1)(a)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Blessed_1_a",
+  "Silhouette_xy_Type_3DCG_Blessed_1_a": {
+   "file": "xy - Type 3DCG (Blessed)(1)(a).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Blessed)(1)(a)",
    "values": {
     "Ankles": 0.25,
     "AppleCheeks": 0.4,
@@ -2211,17 +2204,12 @@
     "ShoulderWidth": 0.8,
     "Thighs": 0.25,
     "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Blessed)(1)(a)(Bigger)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Blessed_1_a_Bigger",
+  "Silhouette_xy_Type_3DCG_Blessed_1_a_Bigger": {
+   "file": "xy - Type 3DCG (Blessed)(1)(a)(Bigger).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Blessed)(1)(a)(Bigger)",
    "values": {
     "Ankles": 0.25,
     "AppleCheeks": 0.4,
@@ -2249,17 +2237,12 @@
     "ShoulderWidth": 0.8,
     "Thighs": 0.25,
     "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Blessed)(1)(b)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Blessed_1_b",
+  "Silhouette_xy_Type_3DCG_Blessed_1_b": {
+   "file": "xy - Type 3DCG (Blessed)(1)(b).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Blessed)(1)(b)",
    "values": {
     "Ankles": 0.25,
     "AppleCheeks": 0.4,
@@ -2287,95 +2270,12 @@
     "ShoulderWidth": 0.8,
     "Thighs": 0.25,
     "Waist": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Blessed)(2)(a)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Blessed_2_a",
-   "values": {
-    "AppleCheeks": 0.6,
-    "Belly": 0.15,
-    "BigButt": 0.55,
-    "BreastHeight": 0.29,
-    "Breasts": 1.0,
-    "BreastsCleavage": 1.0,
-    "BreastsNewSH": 0.21,
-    "BreastsSmall": -1.0,
-    "BreastsSmall2": -0.1,
-    "BreastsTogether": 0.5,
-    "Butt": 0.3,
-    "CalfSize": 0.35,
-    "ChubbyArms": 0.26,
-    "ChubbyLegs": 0.1,
-    "ChubbyWaist": 0.3,
-    "CrotchBack": 0.5,
-    "HipBack": 0.2,
-    "HipBone": 0.5,
-    "HipUpperWidth": 0.14,
-    "LegShape": 1.0,
-    "NipBGone": 0.41,
-    "PushUp": 0.3,
-    "RoundAss": 0.29,
-    "ShoulderTweak": 1.0,
-    "ShoulderWidth": 0.8,
-    "Thighs": 1.0,
-    "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
-  },
-  {
-   "name": "xy - Type 3DCG (Blessed)(2)(b)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Blessed_2_b",
-   "values": {
-    "AppleCheeks": 0.6,
-    "Belly": 0.15,
-    "BigButt": 0.55,
-    "BreastCenterBig": 1.0,
-    "BreastTopSlope": 0.65,
-    "BreastWidth": 0.1,
-    "Breasts": 1.0,
-    "BreastsNewSH": 0.25,
-    "BreastsSmall": -1.0,
-    "BreastsSmall2": -0.1,
-    "BreastsTogether": 0.75,
-    "Butt": 0.3,
-    "CalfSize": 0.35,
-    "ChubbyArms": 0.26,
-    "ChubbyLegs": 0.1,
-    "ChubbyWaist": 0.3,
-    "CrotchBack": 0.5,
-    "HipBack": 0.2,
-    "HipBone": 0.5,
-    "Hips": 0.15,
-    "LegShape": 1.0,
-    "NipplePerk2": 0.2,
-    "RoundAss": 0.29,
-    "ShoulderTweak": 1.0,
-    "ShoulderWidth": 0.8,
-    "Thighs": 1.0,
-    "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
-  },
-  {
-   "name": "xy - Type 3DCG (Blessed)(2)(Bigger)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Blessed_2_Bigger",
+  "Silhouette_xy_Type_3DCG_Blessed_2_Bigger": {
+   "file": "xy - Type 3DCG (Blessed)(2)(Bigger).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Blessed)(2)(Bigger)",
    "values": {
     "7B Lower": 0.35,
     "AppleCheeks": 0.6,
@@ -2409,17 +2309,80 @@
     "SlimThighs": -0.23,
     "Thighs": 1.0,
     "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "Ashara"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Blessed)(2)(d)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Blessed_2_d",
+  "Silhouette_xy_Type_3DCG_Blessed_2_a": {
+   "file": "xy - Type 3DCG (Blessed)(2)(a).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Blessed)(2)(a)",
+   "values": {
+    "AppleCheeks": 0.6,
+    "Belly": 0.15,
+    "BigButt": 0.55,
+    "BreastHeight": 0.29,
+    "Breasts": 1.0,
+    "BreastsCleavage": 1.0,
+    "BreastsNewSH": 0.21,
+    "BreastsSmall": -1.0,
+    "BreastsSmall2": -0.1,
+    "BreastsTogether": 0.5,
+    "Butt": 0.3,
+    "CalfSize": 0.35,
+    "ChubbyArms": 0.26,
+    "ChubbyLegs": 0.1,
+    "ChubbyWaist": 0.3,
+    "CrotchBack": 0.5,
+    "HipBack": 0.2,
+    "HipBone": 0.5,
+    "HipUpperWidth": 0.14,
+    "LegShape": 1.0,
+    "NipBGone": 0.41,
+    "PushUp": 0.3,
+    "RoundAss": 0.29,
+    "ShoulderTweak": 1.0,
+    "ShoulderWidth": 0.8,
+    "Thighs": 1.0,
+    "WaistHeight": 0.22
+   }
+  },
+  "Silhouette_xy_Type_3DCG_Blessed_2_b": {
+   "file": "xy - Type 3DCG (Blessed)(2)(b).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Blessed)(2)(b)",
+   "values": {
+    "AppleCheeks": 0.6,
+    "Belly": 0.15,
+    "BigButt": 0.55,
+    "BreastCenterBig": 1.0,
+    "BreastTopSlope": 0.65,
+    "BreastWidth": 0.1,
+    "Breasts": 1.0,
+    "BreastsNewSH": 0.25,
+    "BreastsSmall": -1.0,
+    "BreastsSmall2": -0.1,
+    "BreastsTogether": 0.75,
+    "Butt": 0.3,
+    "CalfSize": 0.35,
+    "ChubbyArms": 0.26,
+    "ChubbyLegs": 0.1,
+    "ChubbyWaist": 0.3,
+    "CrotchBack": 0.5,
+    "HipBack": 0.2,
+    "HipBone": 0.5,
+    "Hips": 0.15,
+    "LegShape": 1.0,
+    "NipplePerk2": 0.2,
+    "RoundAss": 0.29,
+    "ShoulderTweak": 1.0,
+    "ShoulderWidth": 0.8,
+    "Thighs": 1.0,
+    "WaistHeight": 0.22
+   }
+  },
+  "Silhouette_xy_Type_3DCG_Blessed_2_d": {
+   "file": "xy - Type 3DCG (Blessed)(2)(d).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Blessed)(2)(d)",
    "values": {
     "AppleCheeks": 0.6,
     "Belly": 0.15,
@@ -2448,17 +2411,12 @@
     "ShoulderWidth": 0.8,
     "Thighs": 1.0,
     "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "partial",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Blessed)(2)(e)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Blessed_2_e",
+  "Silhouette_xy_Type_3DCG_Blessed_2_e": {
+   "file": "xy - Type 3DCG (Blessed)(2)(e).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Blessed)(2)(e)",
    "values": {
     "AppleCheeks": 0.6,
     "Belly": 0.15,
@@ -2488,17 +2446,12 @@
     "SlimThighs": -0.23,
     "Thighs": 1.0,
     "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "Ashara"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Blessed)(2)(e)(v2)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Blessed_2_e_v2",
+  "Silhouette_xy_Type_3DCG_Blessed_2_e_v2": {
+   "file": "xy - Type 3DCG (Blessed)(2)(e)(v2).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Blessed)(2)(e)(v2)",
    "values": {
     "7B Lower": 0.35,
     "AppleCheeks": 0.6,
@@ -2529,17 +2482,12 @@
     "SlimThighs": -0.23,
     "Thighs": 1.0,
     "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "Ashara"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Blessed)(2)(e)(v2)(test2)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Blessed_2_e_v2_test2",
+  "Silhouette_xy_Type_3DCG_Blessed_2_e_v2_test2": {
+   "file": "xy - Type 3DCG (Blessed)(2)(e)(v2)(test2).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Blessed)(2)(e)(v2)(test2)",
    "values": {
     "7B Lower": 0.4,
     "AppleCheeks": 0.6,
@@ -2570,17 +2518,12 @@
     "SlimThighs": -0.35,
     "Thighs": 1.0,
     "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "Ashara"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Blessed)(2)(e)(v3)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Blessed_2_e_v3",
+  "Silhouette_xy_Type_3DCG_Blessed_2_e_v3": {
+   "file": "xy - Type 3DCG (Blessed)(2)(e)(v3).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Blessed)(2)(e)(v3)",
    "values": {
     "7B Lower": 0.35,
     "AppleCheeks": 0.6,
@@ -2611,17 +2554,12 @@
     "SlimThighs": -0.23,
     "Thighs": 1.0,
     "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Pawg)(1)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Pawg_1",
+  "Silhouette_xy_Type_3DCG_Pawg_1": {
+   "file": "xy - Type 3DCG (Pawg)(1).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Pawg)(1)",
    "values": {
     "AppleCheeks": 0.55,
     "Arms": 0.25,
@@ -2642,17 +2580,12 @@
     "ShoulderWidth": 0.6,
     "Thighs": 1.0,
     "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Pawg)(1.5)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Pawg_1_5",
+  "Silhouette_xy_Type_3DCG_Pawg_1_5": {
+   "file": "xy - Type 3DCG (Pawg)(1.5).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Pawg)(1.5)",
    "values": {
     "Ankles": 0.25,
     "AppleCheeks": 0.4,
@@ -2672,17 +2605,12 @@
     "ShoulderWidth": 0.6,
     "Thighs": 0.25,
     "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Pawg)(2)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Pawg_2",
+  "Silhouette_xy_Type_3DCG_Pawg_2": {
+   "file": "xy - Type 3DCG (Pawg)(2).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Pawg)(2)",
    "values": {
     "Ankles": 0.25,
     "AppleCheeks": 0.4,
@@ -2703,17 +2631,12 @@
     "Thighs": 0.25,
     "Waist": 1.0,
     "WaistHeight": 0.1
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "CBBE"
+   }
   },
-  {
-   "name": "xy - Type 3DCG (Pawg)(2)(e)",
-   "sex": "female",
-   "marker": "Silhouette_xy_Type_3DCG_Pawg_2_e",
+  "Silhouette_xy_Type_3DCG_Pawg_2_e": {
+   "file": "xy - Type 3DCG (Pawg)(2)(e).xml",
+   "gender": "female",
+   "preset": "xy - Type 3DCG (Pawg)(2)(e)",
    "values": {
     "7B Lower": 0.35,
     "AppleCheeks": 0.6,
@@ -2736,483 +2659,7 @@
     "SlimThighs": -0.23,
     "Thighs": 1.0,
     "WaistHeight": 0.22
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "Ashara"
-  },
-  {
-   "name": "BT - Average",
-   "sex": "male",
-   "marker": "Silhouette_BT_Average",
-   "values": {
-    "BTAMBackAdjust": 0.1,
-    "BTAMPecAdjust": 1.0,
-    "BTAMShoulderTweaks": 0.51,
-    "BTBackArch": 0.14,
-    "BTButt": 0.04,
-    "BTChestSmoothing": 0.31,
-    "BTChubbyArm": 1.0,
-    "BTChubbyLeg": 0.5,
-    "BTElbowAdjust": 0.6,
-    "BTFootSize": 0.19,
-    "BTHips-In": 0.35,
-    "BTKneeAdust": 0.28,
-    "BTPectorals": 0.15,
-    "BTStomachFat": 0.46,
-    "Hips": 0.21
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "BodyTalk - Bodies"
-  },
-  {
-   "name": "BT - Bodybuilder",
-   "sex": "male",
-   "marker": "Silhouette_BT_Bodybuilder",
-   "values": {
-    "AryaydaMuscleSlider": 0.57,
-    "BT2AdonisBelt": 0.69,
-    "BTAMBackAdjust": 0.34,
-    "BTAMPecAdjust": 0.42,
-    "BTAMShoulderTweaks": 0.27,
-    "BTAMWaistAdust": 0.33,
-    "BTARYAYDA": 0.2,
-    "BTAbDefinition": 0.03,
-    "BTAryaydaMoreMuscular": 1.0,
-    "BTBallSize": 0.24,
-    "BTCalves": 1.0,
-    "BTChubbyArm": 0.26,
-    "BTChubbyLeg": 0.13,
-    "BTElbowAdjust": 0.52,
-    "BTFootSize": 0.37,
-    "BTHips-In": 0.49,
-    "BTKneeAdust": 0.25,
-    "BTPectorals": 0.34,
-    "BTToeSmaller": 0.31,
-    "Balls": 0.29
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "BodyTalk - Bodies"
-  },
-  {
-   "name": "BT - Chubby",
-   "sex": "male",
-   "marker": "Silhouette_BT_Chubby",
-   "values": {
-    "BT2AdonisBelt": 0.15,
-    "BTAMPecAdjust": 1.0,
-    "BTAMShoulderTweaks": 0.38,
-    "BTAMWaistAdust": 0.47,
-    "BTARYAYDA": 0.29,
-    "BTAryaydaMoreMuscular": 0.23,
-    "BTBack": 0.45,
-    "BTBackArch": 1.0,
-    "BTBallSize": 0.5,
-    "BTBiceps": 0.41,
-    "BTButt": 0.58,
-    "BTCalves": 0.65,
-    "BTChestSmoothing": 0.58,
-    "BTChubbyArm": 1.0,
-    "BTChubbyLeg": 0.39,
-    "BTElbowAdjust": 0.5,
-    "BTFootSize": 0.38,
-    "BTForearms": 0.65,
-    "BTHips-In": 1.0,
-    "BTKneeAdust": 0.23,
-    "BTNippleSize": 0.5,
-    "BTPectorals": 0.42,
-    "BTShinSize": 0.2,
-    "BTShoulders": 0.71,
-    "BTStomachFat": 1.3,
-    "BTStomachSmooth": 0.19,
-    "BTThigh": 0.44,
-    "BTToeSmaller": 0.15,
-    "BTTraps": 0.61,
-    "BTWaist-In": 1.0,
-    "Balls": 0.51,
-    "Hips": 1.0
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "BodyTalk - Bodies"
-  },
-  {
-   "name": "BT - Muscular",
-   "sex": "male",
-   "marker": "Silhouette_BT_Muscular",
-   "values": {
-    "BT2AdonisBelt": 0.44,
-    "BTAMPecAdjust": 0.48,
-    "BTARYAYDA": 0.5,
-    "BTAbDefinition": 0.6,
-    "BTBack": 0.36,
-    "BTBackArch": 0.45,
-    "BTBiceps": 1.0,
-    "BTButt": 0.44,
-    "BTCalves": 0.18,
-    "BTElbowAdjust": 0.3,
-    "BTFootSize": 0.14,
-    "BTForearms": 0.22,
-    "BTHips-In": 0.28,
-    "BTKneeAdust": 0.3,
-    "BTPectorals": 0.3,
-    "BTShinSize": 0.39,
-    "BTStomachFat": 0.32,
-    "BTStomachSmooth": 0.9,
-    "BTTHinCalf": 0.13,
-    "BTThinArm": 0.36,
-    "BTToeSmaller": 0.39,
-    "BTTraps": 0.52,
-    "Hips": 0.14,
-    "ThinThigh": 0.76,
-    "TigerSanBBMale": 0.4
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "BodyTalk - Bodies"
-  },
-  {
-   "name": "BT - Swimmer",
-   "sex": "male",
-   "marker": "Silhouette_BT_Swimmer",
-   "values": {
-    "BTAMPecAdjust": 0.58,
-    "BTAbDefinition": 0.33,
-    "BTAryaydaMoreMuscular": 0.1,
-    "BTBackArch": 0.45,
-    "BTBiceps": 0.5,
-    "BTButt": 0.52,
-    "BTCalves": 0.75,
-    "BTFootSize": 0.5,
-    "BTForearms": -0.5,
-    "BTPectorals": 0.05,
-    "BTRibcage": -0.3,
-    "BTShinSize": 0.5,
-    "BTShoulders": 0.13,
-    "BTStomach": 0.45,
-    "BTStomachSmooth": 0.15,
-    "BTTHinCalf": 1.0,
-    "BTThigh": 1.0,
-    "BTThinArm": 1.0,
-    "BTTraps": 0.2,
-    "BTWaist-In": 0.23,
-    "BTWaist-Smoothing": 0.44,
-    "Hips": 0.4,
-    "ThinThigh": 1.0
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "BodyTalk - Bodies"
-  },
-  {
-   "name": "BT - Thin",
-   "sex": "male",
-   "marker": "Silhouette_BT_Thin",
-   "values": {
-    "BTAMPecAdjust": 1.0,
-    "BTAMShoulderTweaks": 0.41,
-    "BTButt": -0.2,
-    "BTButtWidth": 0.24,
-    "BTChestSmoothing": 0.13,
-    "BTElbowAdjust": 0.16,
-    "BTRibcage": -0.25,
-    "BTStomach": 0.13,
-    "BTTHinCalf": 1.0,
-    "BTThinArm": 1.0,
-    "BTWaist-In": 0.31,
-    "ThinThigh": 1.0
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "BodyTalk - Bodies"
-  },
-  {
-   "name": "BT - Zero",
-   "sex": "male",
-   "marker": "Silhouette_BT_Zero",
-   "values": {},
-   "random": false,
-   "menu": true,
-   "zeroed": true,
-   "fit": "full",
-   "family": "BodyTalk - Bodies"
-  },
-  {
-   "name": "Sirius Male preset",
-   "sex": "male",
-   "marker": "Silhouette_Sirius_Male_preset",
-   "values": {
-    "BTAMPecAdjust": 0.1,
-    "BTAbDefinition": 0.33,
-    "BTBackArch": 0.45,
-    "BTBallSize": 1.0,
-    "BTBiceps": 0.78,
-    "BTButt": 0.52,
-    "BTCalves": 0.75,
-    "BTChestSmoothing": 0.3,
-    "BTFootSize": 1.0,
-    "BTForearms": -0.5,
-    "BTPectorals": 0.45,
-    "BTRibcage": -0.3,
-    "BTShinSize": 0.5,
-    "BTShoulders": 0.44,
-    "BTStomach": 0.45,
-    "BTStomachSmooth": 0.15,
-    "BTTHinCalf": 1.0,
-    "BTThinArm": 1.0,
-    "BTToeSmaller": 1.0,
-    "BTTraps": 0.22,
-    "BTWaist-In": 0.23,
-    "BTWaist-Smoothing": 0.44,
-    "Balls": 1.0,
-    "Hips": 0.4,
-    "ThinThigh": 1.0
-   },
-   "random": true,
-   "menu": true,
-   "zeroed": false,
-   "fit": "full",
-   "family": "BodyTalk3 - Bodies"
+   }
   }
- ],
- "player": {
-  "female": "xy - Type 3DCG (Blessed)(2)(a)",
-  "male": "BT - Average"
- },
- "states": {
-  "female": [
-   "VaginaPenetrate",
-   "AnusPenetrate",
-   "VaginaSpread",
-   "ButtcheeksSpread"
-  ],
-  "male": [
-   "Erection",
-   "Erection Up",
-   "Erection Down"
-  ]
- },
- "neverInBody": {
-  "female": [
-   "Erection",
-   "Erection Up",
-   "Erection Down",
-   "CErection",
-   "VaginaPenetrate",
-   "AnusPenetrate",
-   "VaginaSpread",
-   "ButtcheeksSpread",
-   "Penis Length",
-   "Penis Width",
-   "TipShape",
-   "BTPenisLengthErectv2",
-   "BTPenisLengthFlaccid",
-   "BTPenisWidthv2",
-   "BTPenisTipShapeRounded",
-   "BTShaftRootSize",
-   "BTUrethraCurve",
-   "BTSmoothPenisErect",
-   "BTSmoothPenisFlaccid"
-  ],
-  "male": [
-   "Erection",
-   "Erection Up",
-   "Erection Down",
-   "CErection",
-   "VaginaPenetrate",
-   "AnusPenetrate",
-   "VaginaSpread",
-   "ButtcheeksSpread",
-   "Penis Length",
-   "Penis Width",
-   "TipShape",
-   "BTPenisLengthErectv2",
-   "BTPenisLengthFlaccid",
-   "BTPenisWidthv2",
-   "BTPenisTipShapeRounded",
-   "BTShaftRootSize",
-   "BTUrethraCurve",
-   "BTSmoothPenisErect",
-   "BTSmoothPenisFlaccid"
-  ]
- },
- "variety": {
-  "female": [
-   {
-    "morph": "AnusDonut",
-    "low": 0.0,
-    "high": 0.35,
-    "group": "genitals"
-   },
-   {
-    "morph": "NippleAreola",
-    "low": -0.2,
-    "high": 0.5,
-    "group": "nipples"
-   },
-   {
-    "morph": "NippleLength",
-    "low": 0.0,
-    "high": 0.25,
-    "group": "nipples"
-   },
-   {
-    "morph": "NippleSize",
-    "low": -0.2,
-    "high": 0.5,
-    "group": "nipples"
-   },
-   {
-    "morph": "NippleTip",
-    "low": 0.0,
-    "high": 0.35,
-    "group": "nipples"
-   },
-   {
-    "morph": "VaginaClitSize",
-    "low": 0.0,
-    "high": 0.5,
-    "group": "genitals"
-   },
-   {
-    "morph": "VaginaInnie",
-    "low": 0.0,
-    "high": 0.4,
-    "group": "genitals"
-   },
-   {
-    "morph": "VaginaLabiaSize",
-    "low": 0.0,
-    "high": 0.9,
-    "group": "genitals"
-   },
-   {
-    "morph": "VaginaNarrower",
-    "low": 0.0,
-    "high": 0.5,
-    "group": "genitals"
-   },
-   {
-    "morph": "VaginaSize",
-    "low": -0.35,
-    "high": 0.35,
-    "group": "genitals"
-   }
-  ],
-  "male": [
-   {
-    "morph": "BTBallAsymmetry",
-    "low": 0.0,
-    "high": 0.4,
-    "group": "genitals"
-   },
-   {
-    "morph": "BTBallSize",
-    "low": 0.1,
-    "high": 0.7,
-    "group": "genitals"
-   },
-   {
-    "morph": "BTNippleSize",
-    "low": 0.0,
-    "high": 0.5,
-    "group": "nipples"
-   },
-   {
-    "morph": "BTNippleTipSize",
-    "low": 0.0,
-    "high": 0.35,
-    "group": "nipples"
-   },
-   {
-    "morph": "BTNippleWidth",
-    "low": -0.2,
-    "high": 0.3,
-    "group": "nipples"
-   }
-  ]
- },
- "rules": {
-  "races": [
-   "HumanRace"
-  ],
-  "npcFormID": {
-   "female": [],
-   "male": []
-  },
-  "blacklistedNpcsFormID": [],
-  "blacklistedPlugins": {
-   "female": [],
-   "male": []
-  },
-  "blacklistedRaces": {
-   "female": [],
-   "male": []
-  },
-  "npcName": [],
-  "blacklistedNpcNames": [],
-  "faction": []
- },
- "orefit": {
-  "slots": [
-   33,
-   36,
-   41
-  ],
-  "blacklist": [],
-  "blacklistNames": [],
-  "blacklistPlugins": [],
-  "force": [],
-  "forceNames": [],
-  "outfits": [],
-  "sets": [
-   {
-    "name": "builtin:female",
-    "sex": "female",
-    "floors": [
-     {
-      "morph": "BreastsTogether",
-      "value": 0.3,
-      "heavyOnly": false
-     },
-     {
-      "morph": "PushUp",
-      "value": 0.2,
-      "heavyOnly": false
-     },
-     {
-      "morph": "NipBGone",
-      "value": 1.0,
-      "heavyOnly": true
-     }
-    ]
-   }
-  ],
-  "heavy": {
-   "armorRating": 10,
-   "items": [],
-   "names": []
-  },
-  "light": {
-   "items": [],
-   "names": []
-  }
- },
- "rulesHash": "f98c8afe11f3"
+ }
 }

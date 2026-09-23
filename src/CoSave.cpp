@@ -11,14 +11,22 @@ namespace SH::CoSave
 
 		void OnSave(const F4SE::SerializationInterface* a_intfc)
 		{
-			// A reference that no longer exists (a created one the game deleted) is not written.
-			const auto bytes = Game::TheDirector().SaveRecords([](std::uint32_t a_ref) { return RE::TESForm::GetFormByID(a_ref) != nullptr; });
+			// A created reference (0xFF) the game deleted is not written. A placed one always exists in its
+			// plugin, even while its cell is out of memory and the form map does not hold it -- and a load
+			// drops it anyway when its plugin is gone.
+			const auto bytes = Game::TheDirector().SaveRecords([](std::uint32_t a_ref) {
+				return (a_ref >> 24) != 0xFF || RE::TESForm::GetFormByID(a_ref) != nullptr;
+			});
 			if (!a_intfc->OpenRecord(kRecords, Registry::kVersion) ||
 				!a_intfc->WriteRecordData(bytes.data(), static_cast<std::uint32_t>(bytes.size()))) {
 				logger::error("co-save: could not write the records - this save will not remember who Silhouette shaped");
 				return;
 			}
-			logger::info("co-save: {} record(s) written", Game::TheDirector().RecordCount());
+			std::uint32_t written = 0;
+			if (bytes.size() >= sizeof(written)) {
+				std::memcpy(&written, bytes.data(), sizeof(written));
+			}
+			logger::info("co-save: {} record(s) written ({} held)", written, Game::TheDirector().RecordCount());
 		}
 
 		void OnLoad(const F4SE::SerializationInterface* a_intfc)

@@ -103,11 +103,18 @@ def editor_ids(path, record_type):
 
 
 def load_order(data, plugins_txt):
-    """Plugins in load order: the base game's masters, then the active ones in
-    plugins.txt ('*' marks active). Missing files are left out."""
+    """Plugins in load order: the base game's masters, the Creation Club plugins the
+    game loads by itself (Fallout4.ccc beside the executable, in its order), then the
+    active ones in plugins.txt ('*' marks active). Missing files are left out."""
     base = ['Fallout4.esm', 'DLCRobot.esm', 'DLCworkshop01.esm', 'DLCCoast.esm', 'DLCworkshop02.esm',
             'DLCworkshop03.esm', 'DLCNukaWorld.esm', 'DLCUltraHighResolution.esm']
-    order = [p for p in base if (data / p).exists()]
+    ccc = pathlib.Path(data).parent / 'Fallout4.ccc'
+    if ccc.exists():
+        base += [line.strip() for line in ccc.read_text(encoding='utf-8', errors='replace').splitlines() if line.strip()]
+    order = []
+    for p in base:
+        if (data / p).exists() and p not in order:
+            order.append(p)
     if plugins_txt and pathlib.Path(plugins_txt).exists():
         for line in pathlib.Path(plugins_txt).read_text(encoding='utf-8', errors='replace').splitlines():
             line = line.strip()

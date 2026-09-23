@@ -6,17 +6,27 @@ namespace SH::Game
 	{
 		constexpr auto kFolder = "Data/F4SE/Plugins/Silhouette"sv;
 		constexpr auto kTemplates = "Data/F4SE/Plugins/F4EE/BodyGen/Loose/Silhouette_templates.ini"sv;
+		constexpr auto kMorphs = "Data/F4SE/Plugins/F4EE/BodyGen/Loose/Silhouette_morphs.ini"sv;
 
 		// The two character-creation dummies (Fallout4.esm). LooksMenu CLONES the chosen one's body
 		// onto the player when character creation ends, so nothing of ours may ever be on them.
 		constexpr std::uint32_t kSpouseMale = 0x0A7D34;
 		constexpr std::uint32_t kSpouseFemale = 0x0A7D35;
 
+		// Biped slot bits: slot N is bit N - 30.
+		constexpr std::uint32_t kBodySlot = 1u << (33 - 30);
+		constexpr std::uint32_t kArmorTorsoSlot = 1u << (41 - 30);
+
+		constexpr std::size_t  kInboxLimit = 4096;
+		constexpr std::int64_t kSilentBridgeMs = 60'000;
+
 		struct Resolved
 		{
 			std::vector<std::pair<RE::TESFaction*, FormRef>> factions;  // the faction rules' factions
 			std::unordered_set<std::uint32_t>                 blacklist;  // ORefit, runtime form ids
 			std::unordered_set<std::uint32_t>                 force;
+			std::unordered_set<std::uint32_t>                 heavy;  // S-42
+			std::unordered_set<std::uint32_t>                 light;
 			std::uint32_t                                     clothedMask{ 0 };
 		};
 
@@ -29,21 +39,31 @@ namespace SH::Game
 				bool          equipped;
 			};
 
-			std::mutex                 lock;
-			std::vector<std::uint32_t> loaded;
-			std::vector<Equip>         equips;
+			std::mutex                lock;
+			std::deque<std::uint32_t> loaded;
+			std::deque<Equip>         equips;
+			std::size_t               dropped{ 0 };  // since the last load
+			bool                      warned{ false };
 		};
 
-		Director                 g_director;
-		Resolved                 g_resolved;
-		Inbox                    g_inbox;
+		Director                   g_director;
+		Resolved                   g_resolved;
+		Inbox                      g_inbox;
 		std::atomic<std::uint32_t> g_crosshair{ 0 };
 		std::atomic<std::uint32_t> g_lastAimed{ 0 };
 		std::atomic<std::int64_t>  g_lastAimedMs{ 0 };
+		std::atomic<std::int64_t>  g_loadedMs{ 0 };  // when the last load finished, 0 before any
+		std::atomic<std::int64_t>  g_pumpedMs{ 0 };  // the bridge's last poll
+		std::atomic<bool>          g_watching{ false };
 
 		std::int64_t NowMs()
 		{
 			return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+		}
+
+		bool AnyIEquals(const std::vector<std::string>& a_list, std::string_view a_name)
+		{
+			return std::ranges::any_of(a_list, [&](const std::string& n) { return IEquals(n, a_name); });
 		}
 
 		std::optional<nlohmann::json> ReadJson(const std::filesystem::path& a_path, std::string& a_error)
@@ -61,33 +81,18 @@ namespace SH::Game
 			}
 		}
 
-		// The header the generator writes on the BodyGen templates: "... Build <hex>, marker stamp <n> ...".
-		std::optional<std::pair<std::string, std::uint32_t>> TemplatesBuild(std::string& a_error)
+		std::optional<FilesHeader> ReadHeader(std::string_view a_file, std::string& a_error)
 		{
-			std::ifstream in{ std::filesystem::path{ kTemplates } };
+			std::ifstream in{ std::filesystem::path{ a_file } };
 			if (!in) {
-				a_error = std::format("{} is missing: Silhouette's BodyGen files are not installed", kTemplates);
+				a_error = std::format("{} is missing: Silhouette's BodyGen files are not installed", a_file);
 				return std::nullopt;
 			}
-			std::string line;
-			for (int i = 0; i < 12 && std::getline(in, line); ++i) {
-				const auto b = line.find("Build ");
-				const auto s = line.find("marker stamp ");
-				if (b == std::string::npos || s == std::string::npos) {
-					continue;
-				}
-				auto       build = line.substr(b + 6);
-				const auto comma = build.find(',');
-				build = build.substr(0, comma);
-				std::uint32_t stamp = 0;
-				const auto    digits = line.c_str() + s + 13;
-				const auto [end, ec] = std::from_chars(digits, line.c_str() + line.size(), stamp);
-				if (ec == std::errc{} && !build.empty()) {
-					return std::make_pair(build, stamp);
-				}
+			auto header = ParseFilesHeader(in);
+			if (!header) {
+				a_error = std::format("{} names no build in its header", a_file);
 			}
-			a_error = std::format("{} names no build in its header", kTemplates);
-			return std::nullopt;
+			return header;
 		}
 
 		std::uint32_t Resolve(const FormRef& a_ref)
@@ -95,6 +100,17 @@ namespace SH::Game
 			auto* dh = RE::TESDataHandler::GetSingleton();
 			auto* form = dh ? dh->LookupForm(a_ref.id, a_ref.plugin) : nullptr;
 			return form ? form->GetFormID() : 0;
+		}
+
+		std::unordered_set<std::uint32_t> ResolveAll(const std::vector<FormRef>& a_refs)
+		{
+			std::unordered_set<std::uint32_t> out;
+			for (const auto& f : a_refs) {
+				if (const auto id = Resolve(f)) {
+					out.insert(id);
+				}
+			}
+			return out;
 		}
 
 		std::string PluginOf(const RE::TESForm* a_form)
@@ -123,38 +139,81 @@ namespace SH::Game
 			return static_cast<const RE::BGSBipedObjectForm*>(a_item)->GetFilledSlots();
 		}
 
-		RE::TESObjectARMO* SkinOf(RE::Actor* a_actor)
+		bool IsDummy(RE::TESNPC* a_npc)
 		{
-			auto* npc = a_actor->GetNPC();
-			if (npc && npc->formSkin) {
-				return npc->formSkin;
+			int depth = 0;
+			for (auto* n = a_npc; n && depth < 16; n = n->faceNPC, ++depth) {
+				const auto* file = n->GetFile(0);
+				if (file && IEquals(file->filename, "Fallout4.esm")) {
+					const auto local = n->GetLocalFormID();
+					if (local == kSpouseMale || local == kSpouseFemale) {
+						return true;
+					}
+				}
 			}
-			return a_actor->race ? a_actor->race->formSkin : nullptr;
+			return false;
+		}
+
+		// Every skin the actor's body could be: the record's, each template's up the chain, the race's.
+		// The one on the biped is not clothing, whichever of them it is -- counting a template's skin as
+		// clothes would refit a naked woman.
+		std::vector<RE::TESObjectARMO*> SkinsOf(RE::Actor* a_actor)
+		{
+			std::vector<RE::TESObjectARMO*> out;
+			int                             depth = 0;
+			for (auto* n = a_actor->GetNPC(); n && depth < 16; n = n->faceNPC, ++depth) {
+				if (n->formSkin) {
+					out.push_back(n->formSkin);
+				}
+			}
+			if (a_actor->race && a_actor->race->formSkin) {
+				out.push_back(a_actor->race->formSkin);
+			}
+			return out;
 		}
 
 		struct Worn
 		{
 			bool        clothed{ false };
+			bool        heavy{ false };
 			std::string outfitSet;
-			bool        changingDresses{ false };  // the event's item is one that dresses them
+			bool        removing{ false };  // the event's item comes off a body, chest or pelvis slot
 		};
 
 		bool Dresses(const Catalog& a_catalog, RE::TESObjectARMO* a_item)
 		{
 			const auto id = a_item->GetFormID();
 			const auto name = NameOfForm(a_item);
-			const bool forced = g_resolved.force.contains(id) ||
-			                    std::ranges::any_of(a_catalog.forceRefitNames, [&](const std::string& n) { return IEquals(n, name); });
-			if (forced) {
+			if (g_resolved.force.contains(id) || AnyIEquals(a_catalog.forceRefitNames, name)) {
 				return true;
 			}
 			if ((SlotsOf(a_item) & g_resolved.clothedMask) == 0) {
 				return false;
 			}
-			const bool blacklisted = g_resolved.blacklist.contains(id) ||
-			                         std::ranges::any_of(a_catalog.outfitBlacklistNames, [&](const std::string& n) { return IEquals(n, name); }) ||
-			                         std::ranges::any_of(a_catalog.outfitBlacklistPlugins, [&](const std::string& p) { return IEquals(p, PluginOf(a_item)); });
+			const bool blacklisted = g_resolved.blacklist.contains(id) || AnyIEquals(a_catalog.outfitBlacklistNames, name) ||
+			                         AnyIEquals(a_catalog.outfitBlacklistPlugins, PluginOf(a_item));
 			return !blacklisted;
+		}
+
+		// S-42: what a real chest would be flattened under. The catalog's lists decide first; then a
+		// chest armour piece ([A] Torso without BODY: raider plates, combat armour) is heavy, and so is
+		// anything with an armour rating of at least heavyArmorRating (coats, armoured outfits). Most
+		// clothes -- 366 of the 492 BODY items in the vanilla files -- have none.
+		bool Heavy(const Catalog& a_catalog, RE::TESObjectARMO* a_item)
+		{
+			const auto id = a_item->GetFormID();
+			const auto name = NameOfForm(a_item);
+			if (g_resolved.heavy.contains(id) || AnyIEquals(a_catalog.heavyNames, name)) {
+				return true;
+			}
+			if (g_resolved.light.contains(id) || AnyIEquals(a_catalog.lightNames, name)) {
+				return false;
+			}
+			const auto slots = SlotsOf(a_item);
+			if ((slots & kArmorTorsoSlot) != 0 && (slots & kBodySlot) == 0) {
+				return true;
+			}
+			return static_cast<int>(a_item->armorData.rating) >= a_catalog.heavyArmorRating;
 		}
 
 		// What they wear, from the biped, as OBody decides it (S-20): the item of the equip event
@@ -187,21 +246,20 @@ namespace SH::Game
 			}
 
 			Worn       worn;
-			const auto skin = SkinOf(a_actor);
+			const auto skins = SkinsOf(a_actor);
+			const auto skin = [&](RE::TESObjectARMO* a_item) { return std::ranges::find(skins, a_item) != skins.end(); };
 			std::unordered_set<RE::TESObjectARMO*> checked;
 			for (auto* item : bySlot) {
-				if (!item || item == skin || !checked.insert(item).second) {
+				if (!item || skin(item) || !checked.insert(item).second || !Dresses(a_catalog, item)) {
 					continue;
 				}
-				if (Dresses(a_catalog, item)) {
-					worn.clothed = true;
-					break;
-				}
+				worn.clothed = true;
+				worn.heavy = worn.heavy || Heavy(a_catalog, item);
 			}
 			if (worn.clothed) {
 				for (const int slot : a_catalog.clothedSlots) {
 					auto* item = bySlot[static_cast<std::size_t>(slot - 30)];
-					if (!item || item == skin) {
+					if (!item || skin(item)) {
 						continue;
 					}
 					if (auto set = a_catalog.OutfitRefitSet(NameOfForm(item), a_female); !set.empty()) {
@@ -210,11 +268,13 @@ namespace SH::Game
 					}
 				}
 			}
-			worn.changingDresses = changing && changing != skin && Dresses(a_catalog, changing);
+			// OBody raises OnActorRemovingClothes for whatever leaves the body, chest or pelvis slots,
+			// whatever ORefit's own lists say about it.
+			worn.removing = changing && !a_equipping && !skin(changing) && (SlotsOf(changing) & g_resolved.clothedMask) != 0;
 			return worn;
 		}
 
-		std::optional<Sighting> Read(RE::Actor* a_actor, const Catalog& a_catalog, RE::TESForm* a_changing, bool a_equipping, bool* a_changingDresses)
+		std::optional<Sighting> Read(RE::Actor* a_actor, const Catalog& a_catalog, RE::TESForm* a_changing, bool a_equipping, bool* a_removing)
 		{
 			auto* npc = a_actor ? a_actor->GetNPC() : nullptr;
 			if (!npc) {
@@ -225,29 +285,26 @@ namespace SH::Game
 			s.base = npc->GetFormID();
 			s.facts.female = npc->GetSex() == RE::SEX::kFemale;
 			s.facts.seed = s.ref;
-			if (const char* name = a_actor->GetDisplayFullName(); name) {
-				s.facts.baseName = name;
-			}
-			s.eligible = a_actor != RE::PlayerCharacter::GetSingleton();
+			// The NPC record's name, as OBody reads it: a reference renamed at runtime (Rapport names the
+			// settlers it befriends) keeps the rule its record matched.
+			s.facts.baseName = NameOfForm(npc);
+			s.eligible = !NeverShaped(a_actor);
 
-			// The record and every template up its chain, as BodyGen matches a form-id line.
+			// The record and every template up its chain, as BodyGen matches a form-id line; the plugin
+			// of the chain's root, as BodyGen applies a plugin line (only to records with no template).
 			int depth = 0;
 			for (auto* n = npc; n && depth < 16; n = n->faceNPC, ++depth) {
 				if (const auto* file = n->GetFile(0)) {
-					const auto local = n->GetLocalFormID();
-					s.facts.bases.push_back(FormRef{ file->filename, local });
-					if (s.facts.originPlugin.empty()) {
-						s.facts.originPlugin = file->filename;
-					}
-					if (IEquals(file->filename, "Fallout4.esm") && (local == kSpouseMale || local == kSpouseFemale)) {
-						s.eligible = false;
-					}
+					s.facts.bases.push_back(FormRef{ file->filename, n->GetLocalFormID() });
+					s.facts.originPlugin = file->filename;
 				}
-				for (const auto& [faction, ref] : g_resolved.factions) {
-					if (faction && n->IsInFaction(faction) &&
-						std::ranges::none_of(s.facts.factions, [&](const FormRef& f) { return f.Is(ref.plugin, ref.id); })) {
-						s.facts.factions.push_back(ref);
-					}
+			}
+			// The record's own factions, as OBody reads them. A leveled record that takes its factions
+			// from a template already carries them; walking the chain could only add false matches.
+			for (const auto& [faction, ref] : g_resolved.factions) {
+				if (faction && npc->IsInFaction(faction) &&
+					std::ranges::none_of(s.facts.factions, [&](const FormRef& f) { return f.Is(ref.plugin, ref.id); })) {
+					s.facts.factions.push_back(ref);
 				}
 			}
 			if (a_actor->race) {
@@ -257,11 +314,35 @@ namespace SH::Game
 			}
 			const auto worn = ReadWorn(a_actor, a_catalog, s.facts.female, a_changing, a_equipping);
 			s.clothed = worn.clothed;
+			s.heavy = worn.heavy;
 			s.outfitSet = worn.outfitSet;
-			if (a_changingDresses) {
-				*a_changingDresses = worn.changingDresses;
+			if (a_removing) {
+				*a_removing = worn.removing;
 			}
 			return s;
+		}
+
+		template <class T>
+		void PushCapped(std::deque<T>& a_queue, T a_item)
+		{
+			if (a_queue.size() >= kInboxLimit) {
+				a_queue.pop_front();  // the oldest: an actor seen again later is read again then
+				++g_inbox.dropped;
+			}
+			a_queue.push_back(a_item);
+		}
+
+		void Watch()
+		{
+			for (;;) {
+				std::this_thread::sleep_for(std::chrono::seconds{ 20 });
+				const auto loaded = g_loadedMs.load();
+				if (loaded != 0 && g_pumpedMs.load() < loaded && NowMs() - loaded > kSilentBridgeMs) {
+					logger::warn("the bridge has not polled in the minute since the save loaded: is Silhouette.esp enabled, and are its scripts installed? "
+								 "Nobody is shaped one by one until it does (BodyGen still gives bodies)");
+					g_loadedMs.store(0);  // once per load
+				}
+			}
 		}
 	}
 
@@ -286,23 +367,26 @@ namespace SH::Game
 			return;
 		}
 
-		// The catalog and the BodyGen files come from one generator run, or neither can be trusted:
-		// a marker would name a preset of another build (S-19).
-		const auto templates = TemplatesBuild(error);
-		if (!templates) {
-			logger::error("catalog: {}", error);
-			g_director.Refuse(error);
-			return;
-		}
-		if (templates->first != catalog->build || templates->second != catalog->stamp) {
-			const auto why = std::format("the catalog is build {} (stamp {}) but the BodyGen files are build {} (stamp {}): install one generator run's files together",
-				catalog->build, catalog->stamp, templates->first, templates->second);
-			logger::error("catalog refused: {}", why);
-			g_director.Refuse(why);
-			return;
+		// The catalog and the BodyGen files come from one generator run, or neither can be trusted: a
+		// marker would name a preset of another build (S-19), or the runtime would apply rules the
+		// BodyGen lines do not agree with.
+		for (const auto file : { kTemplates, kMorphs }) {
+			const auto header = ReadHeader(file, error);
+			if (!header) {
+				logger::error("catalog: {}", error);
+				g_director.Refuse(error);
+				return;
+			}
+			if (header->build != catalog->build || header->stamp != catalog->stamp || (!header->rules.empty() && header->rules != catalog->rulesHash)) {
+				const auto why = std::format("the catalog is build {} (stamp {}, rules {}) but {} is build {} (stamp {}, rules {}): install one generator run's files together",
+					catalog->build, catalog->stamp, catalog->rulesHash, file, header->build, header->stamp, header->rules.empty() ? "?" : header->rules);
+				logger::error("catalog refused: {}", why);
+				g_director.Refuse(why);
+				return;
+			}
 		}
 
-		std::size_t manifests = 0;
+		std::size_t     manifests = 0;
 		std::error_code ec;
 		for (const auto& entry : std::filesystem::directory_iterator(std::filesystem::path{ kFolder } / "manifests", ec)) {
 			if (entry.path().extension() != ".json") {
@@ -328,22 +412,16 @@ namespace SH::Game
 			}
 			g_resolved.factions.emplace_back(faction, rule.faction);
 		}
-		for (const auto& f : catalog->outfitBlacklist) {
-			if (const auto id = Resolve(f)) {
-				g_resolved.blacklist.insert(id);
-			}
-		}
-		for (const auto& f : catalog->forceRefit) {
-			if (const auto id = Resolve(f)) {
-				g_resolved.force.insert(id);
-			}
-		}
+		g_resolved.blacklist = ResolveAll(catalog->outfitBlacklist);
+		g_resolved.force = ResolveAll(catalog->forceRefit);
+		g_resolved.heavy = ResolveAll(catalog->heavyItems);
+		g_resolved.light = ResolveAll(catalog->lightItems);
 		for (const int slot : catalog->clothedSlots) {
 			g_resolved.clothedMask |= 1u << (slot - 30);
 		}
 
-		logger::info("catalog: build {}, stamp {}, {} presets, {} manifest(s), {} faction rule(s)",
-			catalog->build, catalog->stamp, catalog->presets.size(), manifests, catalog->factionRules.size());
+		logger::info("catalog: build {}, stamp {}, rules {}, {} presets, {} manifest(s), {} faction rule(s), {} refit set(s)",
+			catalog->build, catalog->stamp, catalog->rulesHash, catalog->presets.size(), manifests, catalog->factionRules.size(), catalog->refitSets.size());
 		g_director.SetCatalog(std::make_shared<const Catalog>(std::move(*catalog)));
 		logger::info("{}", g_director.Status());
 	}
@@ -351,23 +429,19 @@ namespace SH::Game
 	void NoteLoaded(std::uint32_t a_ref)
 	{
 		std::scoped_lock l{ g_inbox.lock };
-		if (g_inbox.loaded.size() < 4096) {
-			g_inbox.loaded.push_back(a_ref);
-		}
+		PushCapped(g_inbox.loaded, a_ref);
 	}
 
 	void NoteEquip(std::uint32_t a_ref, std::uint32_t a_item, bool a_equipped)
 	{
 		std::scoped_lock l{ g_inbox.lock };
-		if (g_inbox.equips.size() < 4096) {
-			g_inbox.equips.push_back({ a_ref, a_item, a_equipped });
-		}
+		PushCapped(g_inbox.equips, Inbox::Equip{ a_ref, a_item, a_equipped });
 	}
 
-	void NoteCrosshair(std::uint32_t a_ref)
+	void NoteCrosshair(std::uint32_t a_ref, bool a_actor)
 	{
 		g_crosshair.store(a_ref);
-		if (a_ref != 0) {
+		if (a_ref != 0 && a_actor) {
 			g_lastAimed.store(a_ref);
 			g_lastAimedMs.store(NowMs());
 		}
@@ -378,8 +452,18 @@ namespace SH::Game
 		std::scoped_lock l{ g_inbox.lock };
 		g_inbox.loaded.clear();
 		g_inbox.equips.clear();
+		g_inbox.dropped = 0;
+		g_inbox.warned = false;
 		g_crosshair.store(0);
 		g_lastAimed.store(0);
+	}
+
+	void NoteGameLoaded()
+	{
+		g_loadedMs.store(NowMs());
+		if (!g_watching.exchange(true)) {
+			std::thread{ Watch }.detach();
+		}
 	}
 
 	RE::Actor* ActorFor(std::uint32_t a_ref)
@@ -412,14 +496,28 @@ namespace SH::Game
 		return name ? std::string{ name } : std::string{};
 	}
 
+	bool NeverShaped(RE::Actor* a_actor)
+	{
+		return !a_actor || a_actor == RE::PlayerCharacter::GetSingleton() || IsDummy(a_actor->GetNPC());
+	}
+
 	void Pump()
 	{
-		std::vector<std::uint32_t> loaded;
-		std::vector<Inbox::Equip>  equips;
+		g_pumpedMs.store(NowMs());
+		std::deque<std::uint32_t> loaded;
+		std::deque<Inbox::Equip>  equips;
+		std::size_t               dropped = 0;
 		{
 			std::scoped_lock l{ g_inbox.lock };
 			loaded.swap(g_inbox.loaded);
 			equips.swap(g_inbox.equips);
+			if (g_inbox.dropped != 0 && !g_inbox.warned) {
+				g_inbox.warned = true;
+				dropped = g_inbox.dropped;
+			}
+		}
+		if (dropped != 0) {
+			logger::warn("the bridge fell behind: {} actor event(s) dropped, the oldest first; those actors are read again when they next load", dropped);
 		}
 		const auto catalog = g_director.CatalogPtr();
 		if (catalog) {
@@ -442,9 +540,9 @@ namespace SH::Game
 					continue;  // no biped to read: they are read again when they load
 				}
 				auto* item = RE::TESForm::GetFormByID(e.item);
-				bool  dresses = false;
-				if (const auto s = Read(actor, *catalog, item, e.equipped, &dresses)) {
-					g_director.Dressed(*s, !e.equipped && dresses);
+				bool  removing = false;
+				if (const auto s = Read(actor, *catalog, item, e.equipped, &removing)) {
+					g_director.Dressed(*s, removing);
 				}
 			}
 		}
@@ -454,11 +552,11 @@ namespace SH::Game
 	std::uint32_t CrosshairActor(float a_recentSeconds)
 	{
 		auto ref = g_crosshair.load();
-		if (ref == 0 && a_recentSeconds > 0.0F && NowMs() - g_lastAimedMs.load() <= static_cast<std::int64_t>(a_recentSeconds * 1000.0F)) {
+		if (!ActorFor(ref) && a_recentSeconds > 0.0F && NowMs() - g_lastAimedMs.load() <= static_cast<std::int64_t>(a_recentSeconds * 1000.0F)) {
 			ref = g_lastAimed.load();
 		}
 		auto* actor = ActorFor(ref);
-		if (!actor || actor == RE::PlayerCharacter::GetSingleton() || !actor->GetNPC()) {
+		if (!actor || NeverShaped(actor) || !actor->GetNPC()) {
 			return 0;
 		}
 		return ref;

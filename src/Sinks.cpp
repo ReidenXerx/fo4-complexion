@@ -45,7 +45,7 @@ namespace SH::Sinks
 		void OnPick(const Events::PickRefStateChangedEvent& a_event)
 		{
 			const auto* ref = a_event.ref.get();
-			Game::NoteCrosshair(ref ? ref->GetFormID() : 0);
+			Game::NoteCrosshair(ref ? ref->GetFormID() : 0, IsActor(ref));
 		}
 
 		Tap<RE::TESObjectLoadedEvent>         g_loaded{ OnLoaded };
@@ -55,18 +55,23 @@ namespace SH::Sinks
 		std::atomic<bool> g_loadedOn{ false };
 		std::atomic<bool> g_equipOn{ false };
 		std::atomic<bool> g_pickOn{ false };
+		std::atomic<bool> g_loadedWarned{ false };
+		std::atomic<bool> g_equipWarned{ false };
 
 		// Both getters fault on 1.10.163 (F4MCP's log on this machine, every launch: "the header's
-		// source getter faulted on this runtime"), so the holder is scanned straight away.
+		// source getter faulted on this runtime"), so the holder is scanned straight away. Every poll
+		// tries again while a source is missing; the log says so once.
 		template <class E>
-		void AttachHolder(std::string_view a_type, Tap<E>& a_tap, std::atomic<bool>& a_on)
+		void AttachHolder(std::string_view a_type, Tap<E>& a_tap, std::atomic<bool>& a_on, std::atomic<bool>& a_warned, std::string_view a_without)
 		{
 			if (a_on.load()) {
 				return;
 			}
 			const auto found = Events::FindHolderSource(a_type);
 			if (!found) {
-				logger::warn("events: no source for {} yet", a_type);
+				if (!a_warned.exchange(true)) {
+					logger::warn("events: no source for {} yet - {} until it is found (tried again every poll)", a_type, a_without);
+				}
 				return;
 			}
 			reinterpret_cast<RE::BSTEventSource<E>*>(found)->RegisterSink(&a_tap);
@@ -77,8 +82,10 @@ namespace SH::Sinks
 
 	void Attach()
 	{
-		AttachHolder<RE::TESObjectLoadedEvent>("TESObjectLoadedEvent"sv, g_loaded, g_loadedOn);
-		AttachHolder<RE::TESEquipEvent>("TESEquipEvent"sv, g_equip, g_equipOn);
+		AttachHolder<RE::TESObjectLoadedEvent>("TESObjectLoadedEvent"sv, g_loaded, g_loadedOn, g_loadedWarned,
+			"nobody is seen loading, so the rules, the touch-up and ORefit act only on who the picker or the API names"sv);
+		AttachHolder<RE::TESEquipEvent>("TESEquipEvent"sv, g_equip, g_equipOn, g_equipWarned,
+			"dressing and undressing go unseen, so ORefit follows only what is read when someone loads"sv);
 		if (!g_pickOn.load()) {
 			if (const auto found = Events::FindGlobalSource("PickRefStateChangedEvent"sv)) {
 				RE::BSTEventSource<Events::PickRefStateChangedEvent>* source =

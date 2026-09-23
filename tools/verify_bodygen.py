@@ -154,27 +154,38 @@ def same_values(a, b):
     return set(a) == set(b) and all(abs(a[k] - b[k]) <= 1e-6 for k in a)
 
 
-def fixed_values(sets):
-    """The morph values of a template that has one set of one-choice, fixed-value
-    selectors -- the only shape Silhouette writes for a BODY. The variety ranges
-    (S-17 genital shapes, S-21 nipples and balls) are set aside ONLY when they are
-    exactly a range one of the two files gives: they are rolled per NPC on purpose,
-    and the body the template describes is everything else. Any other range still
-    makes the template something Silhouette does not write."""
+def split_template(sets):
+    """(fixed {morph: value}, ranges [(morph, low, high)] in file order, ranges_last) for a template
+    of one set of one-choice selectors -- the only shape Silhouette writes -- else None. ranges_last:
+    no morph has a fixed value AFTER its own range, so LooksMenu (a later entry for the same morph
+    wins) lets the range replace the preset's own value (S-21). The marker, last of all, is no range's."""
     if len(sets) != 1:
         return None
-    allowed = {(m, lo, hi) for ranges in sg.variety_ranges().values() for m, (lo, hi, _grp) in ranges.items()}
-    out = {}
+    fixed, ranges, ranges_last, ranged = {}, [], True, set()
     for selector in sets[0]:
         if len(selector) != 1:
             return None
         morph, low, high = selector[0]
-        if (morph, low, high) in allowed:
-            continue
         if low != high:
-            return None
-        out[morph] = low
-    return out
+            ranges.append((morph, low, high))
+            ranged.add(morph)
+        else:
+            fixed[morph] = low
+            if morph in ranged:
+                ranges_last = False
+    return fixed, ranges, ranges_last
+
+
+def fixed_values(sets):
+    """The body a template describes: its fixed values. The ranges are rolled per NPC on purpose
+    (S-17, S-21) and checked against catalog.json on their own."""
+    split = split_template(sets)
+    return split[0] if split else None
+
+
+def same_ranges(got, want):
+    return len(got) == len(want) and all(
+        a[0] == b[0] and abs(a[1] - b[1]) <= 1e-6 and abs(a[2] - b[2]) <= 1e-6 for a, b in zip(got, want))
 
 
 def apply(mesh, values, tri_shape):
@@ -276,9 +287,13 @@ def check_picker(args, templates, player, problems, stamp):
         problems.append(f'the script stamps markers {script_stamp}, the BodyGen files {stamp}')
     script = parse_picker_script(psc)
     for g in ('female', 'male'):
-        sid = next((k for k in options if k.startswith(f'i{g.capitalize()}_')), f'i{g.capitalize()}_?:Player')
+        sid = next((k for k in options if k.startswith(f'i{g.capitalize()}_')), None)
         # (the NPC page's dropdowns, iNpc<Sex>_..., are checked below)
         s = script[g]
+        if sid is None and not s['names']:
+            print(f'{g} picker: no preset of this sex fits the body, so the menu offers none')
+            continue
+        sid = sid or f'i{g.capitalize()}_?:Player'
         if options.get(sid) != s['names']:
             problems.append(f'MCM {sid} lists {len(options.get(sid, []))} presets, the script {len(s["names"])} '
                             f'-- the menu would apply a different preset than it shows')
@@ -290,8 +305,10 @@ def check_picker(args, templates, player, problems, stamp):
             problems.append(f'MCM default {sid}={d} is not an entry of the menu')
         elif g in player and [x for grp in player[g][1] for x in grp]:
             t = [x for grp in player[g][1] for x in grp][0]
-            if s['markers'][d] != t:
-                problems.append(f'MCM default {sid} is {s["markers"][d]!r}, BodyGen gives the player {t!r}')
+            fixed = fixed_values(templates[t]) or {}
+            if s['markers'][d] not in fixed:
+                problems.append(f'MCM default {sid} is {s["markers"][d]!r}, but the player template {t!r} '
+                                f'BodyGen gives carries {[k for k in fixed if k.startswith("Silhouette_")]}')
         agree = 0
         for i, marker in enumerate(s['markers']):
             if s['apply'][i].get(marker) != script_stamp:
@@ -311,6 +328,8 @@ def check_picker(args, templates, player, problems, stamp):
     # Every button and hotkey calls something that exists, with no arguments: a global of the
     # generated Silhouette:Player, or a method of Silhouette:Bridge on Silhouette.esp's 0x802.
     globals_ = set(_re.findall(r'^Function (\w+)\(\) Global$', text, _re.M))
+    api_src = (sg.ROOT / 'papyrus/Silhouette/API.psc').read_text(encoding='utf-8')
+    api_globals = set(_re.findall(r'^Function (\w+)\(\) Global$', api_src, _re.M))
     bridge_src = (sg.ROOT / 'papyrus/Silhouette/Bridge.psc').read_text(encoding='utf-8')
     methods = set(_re.findall(r'^Function (\w+)\(\)\s*$', bridge_src, _re.M))
 
@@ -319,6 +338,8 @@ def check_picker(args, templates, player, problems, stamp):
             return False
         if a.get('type') == 'CallGlobalFunction' and a.get('script') == 'Silhouette:Player':
             return a.get('function') in globals_
+        if a.get('type') == 'CallGlobalFunction' and a.get('script') == 'Silhouette:API':
+            return a.get('function') in api_globals
         if a.get('type') == 'CallFunction' and a.get('form') == sg.BRIDGE_FORM:
             return a.get('function') in methods
         return False
@@ -341,6 +362,9 @@ def check_picker(args, templates, player, problems, stamp):
     for g in ('female', 'male'):
         nid = next((k for k in options if k.startswith(f'iNpc{g.capitalize()}_')), None)
         if nid is None:
+            if script[g]['names']:
+                problems.append(f'the NPC page has no {g} dropdown, but {len(script[g]["names"])} {g} presets '
+                                f'fit: "Give them this preset" could never offer one')
             continue
         if options[nid] != script[g]['names']:
             problems.append(f'MCM {nid} lists other presets than the player picker: NpcChoice would give '
@@ -396,6 +420,32 @@ def main():
         states = sorted({m for s in sets for sel in s for m, _, _ in sel if m in sg.STATE_MORPHS})
         if states:
             problems.append(f'template {t} sets {", ".join(states)}: a runtime state baked into a body for good')
+        shaft = sorted({m for s in sets for sel in s for m, _, _ in sel if m in sg.SHAFT_MORPHS})
+        if shaft:
+            problems.append(f'template {t} sets {", ".join(shaft)}: the shaft is never part of a body (S-29)')
+
+    # The catalog the plugin reads, and what both files' headers say about the run that wrote them.
+    import json as _json
+    groot = args.dir.parent.parent.parent.parent.parent
+    cfile = groot / 'F4SE/Plugins/Silhouette/catalog.json'
+    cat = _json.loads(cfile.read_text(encoding='utf-8')) if cfile.exists() else None
+    if cat is None:
+        problems.append(f'no catalog.json ({cfile}): Silhouette.dll would refuse to start')
+    headers = {}
+    for name in ('Silhouette_templates.ini', 'Silhouette_morphs.ini'):
+        import re as _re0
+        head = (args.dir / name).read_text(encoding='ascii', errors='replace').splitlines()[:12]
+        found = next((_re0.search(r'Build (\w+), marker stamp (\d+) \(\w+\), rules (\w+)\.', h) for h in head
+                      if 'Build ' in h and 'marker stamp ' in h), None)
+        if not found:
+            problems.append(f'{name}: its header states no build, stamp and rules: the plugin refuses it')
+            continue
+        headers[name] = (found.group(1), int(found.group(2)), found.group(3))
+    if cat is not None:
+        for name, (b, st, r) in headers.items():
+            if (b, st, r) != (cat['build'], cat['stamp'], cat.get('rulesHash')):
+                problems.append(f'{name} is build {b} stamp {st} rules {r}, catalog.json build {cat["build"]} '
+                                f'stamp {cat["stamp"]} rules {cat.get("rulesHash")}: the plugin refuses the pair')
 
     # ---- which templates each gender's pool holds, and what the player gets.
     # LooksMenu lets a later line overwrite an earlier one per NPC, so the player's
@@ -451,6 +501,7 @@ def main():
         for g in genders or []:
             if g in ('female', 'male'):
                 player[g] = (n, groups)
+    player_templates = set()
     for g in ('female', 'male'):
         if g not in player:
             continue
@@ -459,13 +510,27 @@ def main():
         if len(groups) != 1 or len(options) != 1:
             problems.append(f'morphs line {n}: a {g} player is RANDOMISED among {len(options)} templates')
             continue
-        vals = fixed_values(templates[options[0]])
+        player_templates.add(options[0])
+        split = split_template(templates[options[0]])
+        vals = split[0] if split else None
+        markers = [k for k in (vals or {}) if k.startswith('Silhouette_')]
+        default = next((p for p in (cat or {}).get('presets', []) if p['sex'] == g
+                        and p['name'] == (cat or {}).get('player', {}).get(g)), None)
         if vals is None:
             problems.append(f'morphs line {n}: the {g} player template is not fixed-valued')
-        elif any(vals.values()) and vals.get(options[0]) != stamp:
+        elif split[1]:
+            problems.append(f'morphs line {n}: the {g} player template rolls {", ".join(r[0] for r in split[1])} '
+                            f'-- the player is never randomised (S-45)')
+        elif not any(vals.values()):
+            print(f'{g} player: {options[0]}, the bare body (no preset fits fully) (line {n})')
+        elif len(markers) != 1 or vals[markers[0]] != stamp:
             problems.append(f'morphs line {n}: the {g} player template has no marker and would re-roll')
+        elif default is None or default['marker'] != markers[0] or not same_values(
+                default['values'], {k: v for k, v in vals.items() if k != markers[0]}):
+            problems.append(f'morphs line {n}: the {g} player template is not the catalog\'s player default '
+                            f'{(cat or {}).get("player", {}).get(g)!r} exactly')
         else:
-            print(f'{g} player: {options[0]} (line {n})')
+            print(f'{g} player: {options[0]} = {default["name"]!r}, no ranges (line {n})')
         d = dummies.get(g)
         mine = options[0]
         if d is None:
@@ -482,10 +547,28 @@ def main():
     for p in presets:
         p.update(sg.classify(p, morphs_of['female'], morphs_of['male']))
     by_template = {sg.template_name(p): p for p in presets}
+    cat_by_marker = {p['marker']: p for p in (cat or {}).get('presets', [])}
+    want_ranges = {g: [(v['morph'], v['low'], v['high']) for v in (cat or {}).get('variety', {}).get(g, [])]
+                   for g in ('female', 'male')}
     pool = {'female': [], 'male': []}
-    for t in sorted(handed_out):
-        vals = fixed_values(templates[t])
+    for t in sorted(handed_out - player_templates):
+        split = split_template(templates[t])
+        vals = split[0] if split else None
         p = by_template.get(t)
+        g = p['gender'] if p else None
+        cp = cat_by_marker.get(t)
+        if split and g in want_ranges and cat is not None:
+            got = split[1]
+            if not same_ranges(got, want_ranges[g]):
+                problems.append(f'{t}: rolls {[r[0] for r in got]}, catalog.json says a {g} body rolls '
+                                f'{[r[0] for r in want_ranges[g]]} (S-17, S-21)')
+            elif not split[2]:
+                problems.append(f'{t}: a range comes before a fixed value, so the preset\'s own value would '
+                                f'win over the roll (S-21)')
+        if vals is not None and cat is not None and (cp is None or not same_values(
+                cp['values'], {k: v for k, v in vals.items() if k != t})):
+            problems.append(f'{t}: catalog.json gives this body other values than BodyGen does -- a body the '
+                            f'plugin gives would differ from the same preset rolled by BodyGen')
         if vals is None:
             problems.append(f'{t}: not a single fixed-value set; cannot verify')
         elif vals.get(t) != stamp:
@@ -521,8 +604,9 @@ def main():
             if p is None or vals is None:
                 problems.append(f'{t}: no preset of that name to compare with')
                 continue
-            # the BODY a preset describes: a runtime state it happens to set is not part of it (S-16)
-            target = {m: v for m, v in base_body.resolve(p, base['set']).items() if m not in sg.STATE_MORPHS}
+            # the BODY a preset describes: a runtime state or the shaft it happens to set is not part
+            # of it (S-16, S-29)
+            target = {m: v for m, v in base_body.resolve(p, base['set']).items() if m not in sg.NEVER_IN_BODY}
             e_max = e_rms = n_max = n_rms = 0.0
             for s in shapes:
                 shown = apply(built_all[s], vals, tris[g][s])
@@ -565,8 +649,9 @@ def main():
         for pr in problems:
             print(f'  {pr}')
         return 1
-    print('PASS - every template parses as LooksMenu reads it, every reference resolves, '
-          'every roll is permanent, the player is untouched, and every body lands on its preset.')
+    print('PASS - every template parses as LooksMenu reads it, every reference resolves, every roll is '
+          'permanent, the player is never rolled, no body holds a state or the shaft, each sex rolls exactly '
+          'its catalog ranges, the plugin gives the same bodies BodyGen does, and every body lands on its preset.')
     return 0
 
 

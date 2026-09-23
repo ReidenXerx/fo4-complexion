@@ -65,11 +65,66 @@ DEFAULT = {
     'blacklistedOutfitsFromORefitPlugin': [],
     'outfitsForceRefitFormID': {}, 'outfitsForceRefit': [],
     'refitOutfitPresetsFemale': {}, 'refitOutfitPresetsMale': {},
-    # Silhouette's one addition: which races take part in random distribution.
-    # OBody distributes to every NPC race; in Fallout 4 only races that wear the
-    # human body should, and the base game has one.
+    # Silhouette's additions. Which races take part in random distribution: OBody
+    # distributes to every NPC race; in Fallout 4 only races that wear the human body
+    # should, and the base game has one.
     'distributeRaces': ['HumanRace'],
+    # What counts as heavy clothes, which flatten the nipples under ORefit (S-42): an
+    # armour rating of at least this, or a chest armour piece; single items named heavy
+    # or light by form id ({plugin: [ids]}) or by name win over both.
+    'heavyArmorRating': 10,
+    'heavyOutfitsFormID': {}, 'heavyOutfits': [],
+    'lightOutfitsFormID': {}, 'lightOutfits': [],
 }
+
+# The shape every key must have. A value of the wrong shape is refused with its key named: the
+# plugin refuses a catalog that does not parse, and a race list written as a string would give
+# nobody a body -- both only discovered in the game otherwise.
+PRESET_MAPS = ('npc', 'factionFemale', 'factionMale', 'npcPluginFemale', 'npcPluginMale', 'raceFemale', 'raceMale')
+STRING_LISTS = ('blacklistedNpcs', 'blacklistedNpcsPluginFemale', 'blacklistedNpcsPluginMale',
+                'blacklistedRacesFemale', 'blacklistedRacesMale', 'blacklistedPresetsFromRandomDistribution',
+                'distributeRaces', 'blacklistedOutfitsFromORefit', 'blacklistedOutfitsFromORefitPlugin',
+                'outfitsForceRefit', 'heavyOutfits', 'lightOutfits')
+FORM_LISTS = ('blacklistedNpcsFormID', 'blacklistedOutfitsFromORefitFormID', 'outfitsForceRefitFormID',
+              'heavyOutfitsFormID', 'lightOutfitsFormID')
+NAME_MAPS = ('refitOutfitPresetsFemale', 'refitOutfitPresetsMale')
+
+
+def validate(cfg, source):
+    """Refuses, naming the key, any value that is not the shape OBody's config gives it."""
+    def bad(key, what):
+        raise SystemExit(f'{source}: {key} must be {what}')
+
+    def names(v):
+        return isinstance(v, str) or (isinstance(v, list) and all(isinstance(x, str) for x in v))
+
+    for key, v in cfg.items():
+        if key in PRESET_MAPS:
+            if not isinstance(v, dict) or not all(isinstance(k, str) and names(x) for k, x in v.items()):
+                bad(key, 'an object of "name": ["preset", ...]')
+        elif key == 'npcFormID':
+            if not isinstance(v, dict) or not all(
+                    isinstance(plugin, str) and isinstance(forms, dict)
+                    and all(isinstance(k, str) and names(x) for k, x in forms.items())
+                    for plugin, forms in v.items()):
+                bad(key, 'an object of "Plugin.esp": {"formid": ["preset", ...]}')
+        elif key in STRING_LISTS:
+            if not isinstance(v, list) or not all(isinstance(x, str) for x in v):
+                bad(key, 'a list of strings')
+        elif key in FORM_LISTS:
+            if not isinstance(v, dict) or not all(
+                    isinstance(plugin, str) and isinstance(ids, list) and all(isinstance(i, str) for i in ids)
+                    for plugin, ids in v.items()):
+                bad(key, 'an object of "Plugin.esp": ["formid", ...], each form id a hex string')
+        elif key in NAME_MAPS:
+            if not isinstance(v, dict) or not all(isinstance(k, str) and isinstance(x, str) for k, x in v.items()):
+                bad(key, 'an object of "outfit name": "refit preset name"')
+        elif key == 'blacklistedPresetsShowInOBodyMenu':
+            if not isinstance(v, bool):
+                bad(key, 'true or false')
+        elif key == 'heavyArmorRating':
+            if not isinstance(v, int) or isinstance(v, bool) or not 0 <= v <= 10000:
+                bad(key, 'a whole number 0..10000')
 
 
 def load(config_path, include_dirs, report):
@@ -80,11 +135,14 @@ def load(config_path, include_dirs, report):
             main = json.loads(config_path.read_text(encoding='utf-8-sig'))
         except json.JSONDecodeError as exc:
             raise SystemExit(f'{config_path}: not valid JSON ({exc})')
-        for k, v in main.items():
-            if k not in cfg and k not in KEYS_PHASE2:
+        if not isinstance(main, dict):
+            raise SystemExit(f'{config_path}: the config must be a JSON object')
+        known = {k: v for k, v in main.items() if k in cfg or k in KEYS_PHASE2}
+        for k in main:
+            if k not in known:
                 report.append(f'config: unknown key {k!r} ignored')
-                continue
-            cfg[k] = v
+        validate(known, config_path.name)
+        cfg.update(known)
     files = {}
     for d in include_dirs:
         if d and d.is_dir():
@@ -97,11 +155,16 @@ def load(config_path, include_dirs, report):
         except json.JSONDecodeError as exc:
             report.append(f'include {f.name}: not valid JSON, skipped ({exc})')
             continue
-        for k, v in inc.items():
+        if not isinstance(inc, dict):
+            report.append(f'include {f.name}: not a JSON object, skipped')
+            continue
+        for k in list(inc):
             if k not in INCLUDE_KEYS:
                 report.append(f'include {f.name}: key {k!r} is not allowed in an include (OBody allows '
                               f'{", ".join(INCLUDE_KEYS)}), ignored')
-                continue
+                del inc[k]
+        validate(inc, f'include {f.name}')
+        for k, v in inc.items():
             if k == 'npcFormID':
                 for plugin, forms in v.items():
                     cfg[k].setdefault(plugin, {}).update(forms)

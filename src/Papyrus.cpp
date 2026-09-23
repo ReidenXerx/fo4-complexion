@@ -7,7 +7,12 @@ namespace SH::Papyrus
 {
 	namespace
 	{
-		constexpr auto kScript = "Silhouette:Plugin"sv;
+		// "Native" is a reserved word in Papyrus, so the script cannot be called that (S-46).
+		constexpr auto kScript = "Silhouette:DLL"sv;
+
+		// What an order asks of the bridge, and in which order. The bridge checks this at every load and
+		// refuses to run orders it would carry out differently: a DLL and scripts of different builds.
+		constexpr std::int32_t kProtocol = 2;
 
 		using Str = RE::BSFixedString;
 
@@ -23,6 +28,7 @@ namespace SH::Papyrus
 		Director& D() { return Game::TheDirector(); }
 
 		std::uint32_t Ref(std::int32_t a_id) { return static_cast<std::uint32_t>(a_id); }
+		std::uint32_t Id(std::int32_t a_order) { return static_cast<std::uint32_t>(a_order); }
 
 		// ---- lifecycle (data only) ----
 
@@ -34,6 +40,8 @@ namespace SH::Papyrus
 		}
 
 		Str Version(std::monostate) { return Str{ SH_VERSION_STRING }; }
+
+		std::int32_t ProtocolVersion(std::monostate) { return kProtocol; }
 
 		std::int32_t Stamp(std::monostate)
 		{
@@ -60,88 +68,77 @@ namespace SH::Papyrus
 
 		std::int32_t NextOrder(std::monostate) { return static_cast<std::int32_t>(D().NextOrder()); }
 
-		std::int32_t OrderActor(std::monostate, std::int32_t a_order)
-		{
-			const auto o = D().Peek(static_cast<std::uint32_t>(a_order));
-			return o ? static_cast<std::int32_t>(o->ref) : 0;
-		}
+		std::int32_t OrderActor(std::monostate, std::int32_t a_order) { return static_cast<std::int32_t>(D().OrderActor(Id(a_order))); }
 
 		std::int32_t OrderKind(std::monostate, std::int32_t a_order)
 		{
-			const auto o = D().Peek(static_cast<std::uint32_t>(a_order));
+			const auto o = D().Peek(Id(a_order));
 			return o ? static_cast<std::int32_t>(o->kind) : 0;
 		}
 
 		bool OrderFemale(std::monostate, std::int32_t a_order)
 		{
-			const auto o = D().Peek(static_cast<std::uint32_t>(a_order));
+			const auto o = D().Peek(Id(a_order));
 			return o && o->female;
 		}
 
 		bool OrderRegenerates(std::monostate, std::int32_t a_order)
 		{
-			const auto o = D().Peek(static_cast<std::uint32_t>(a_order));
+			const auto o = D().Peek(Id(a_order));
 			return o && o->regenerate;
 		}
 
 		bool OrderProbes(std::monostate, std::int32_t a_order)
 		{
-			const auto o = D().Peek(static_cast<std::uint32_t>(a_order));
+			const auto o = D().Peek(Id(a_order));
 			return o && o->probe;
 		}
 
 		bool OrderReadsAll(std::monostate, std::int32_t a_order)
 		{
-			const auto o = D().Peek(static_cast<std::uint32_t>(a_order));
+			const auto o = D().Peek(Id(a_order));
 			return o && o->readAll;
 		}
 
-		std::int32_t OrderReadCount(std::monostate, std::int32_t a_order) { return D().ReadCount(static_cast<std::uint32_t>(a_order)); }
+		void NoteName(std::monostate, std::int32_t a_order, Str a_morph) { D().NoteName(Id(a_order), a_morph.c_str()); }
 
-		Str OrderReadMorph(std::monostate, std::int32_t a_order, std::int32_t a_index)
-		{
-			return Str{ D().ReadMorph(static_cast<std::uint32_t>(a_order), a_index) };
-		}
-
-		void NoteRead(std::monostate, std::int32_t a_order, std::int32_t a_index, float a_value)
-		{
-			D().NoteRead(static_cast<std::uint32_t>(a_order), a_index, a_value);
-		}
-
-		void NoteLayer(std::monostate, std::int32_t a_order, Str a_morph, float a_value)
-		{
-			D().NoteLayer(static_cast<std::uint32_t>(a_order), a_morph.c_str(), a_value);
-		}
+		// 0 an ordinary morph, 1 a body marker (read unkeyed), 2 the refit marker (read under the keyword).
+		std::int32_t MarkerKind(std::monostate, Str a_morph) { return static_cast<std::int32_t>(KindOf(a_morph.c_str())); }
 
 		void NoteMarker(std::monostate, std::int32_t a_order, Str a_marker, float a_value)
 		{
-			D().NoteMarker(static_cast<std::uint32_t>(a_order), a_marker.c_str(), a_value);
+			D().NoteMarker(Id(a_order), a_marker.c_str(), a_value);
 		}
 
-		bool Prepare(std::monostate, std::int32_t a_order) { return D().Prepare(static_cast<std::uint32_t>(a_order)); }
+		std::int32_t OrderReadCount(std::monostate, std::int32_t a_order) { return D().ReadCount(Id(a_order)); }
 
-		bool OrderClears(std::monostate, std::int32_t a_order) { return D().Clears(static_cast<std::uint32_t>(a_order)); }
+		Str OrderReadMorph(std::monostate, std::int32_t a_order, std::int32_t a_index) { return Str{ D().ReadMorph(Id(a_order), a_index) }; }
 
-		std::int32_t OrderWriteCount(std::monostate, std::int32_t a_order) { return D().WriteCount(static_cast<std::uint32_t>(a_order)); }
+		void NoteRead(std::monostate, std::int32_t a_order, std::int32_t a_index, float a_value) { D().NoteRead(Id(a_order), a_index, a_value); }
 
-		Str OrderWriteMorph(std::monostate, std::int32_t a_order, std::int32_t a_index)
+		void NoteLayer(std::monostate, std::int32_t a_order, Str a_morph, float a_value) { D().NoteLayer(Id(a_order), a_morph.c_str(), a_value); }
+
+		bool Prepare(std::monostate, std::int32_t a_order) { return D().Prepare(Id(a_order)); }
+
+		bool OrderClearsUnkeyed(std::monostate, std::int32_t a_order) { return D().ClearsUnkeyed(Id(a_order)); }
+
+		bool OrderClearsRefit(std::monostate, std::int32_t a_order) { return D().ClearsRefit(Id(a_order)); }
+
+		std::int32_t OrderWriteCount(std::monostate, std::int32_t a_order) { return D().WriteCount(Id(a_order)); }
+
+		Str OrderWriteMorph(std::monostate, std::int32_t a_order, std::int32_t a_index) { return Str{ D().WriteMorph(Id(a_order), a_index) }; }
+
+		float OrderWriteValue(std::monostate, std::int32_t a_order, std::int32_t a_index) { return D().WriteValue(Id(a_order), a_index); }
+
+		// 0 the unkeyed layer (keyword None), 1 Silhouette's refit keyword.
+		std::int32_t OrderWriteLayer(std::monostate, std::int32_t a_order, std::int32_t a_index)
 		{
-			return Str{ D().WriteMorph(static_cast<std::uint32_t>(a_order), a_index) };
+			return static_cast<std::int32_t>(D().WriteLayer(Id(a_order), a_index));
 		}
 
-		float OrderWriteValue(std::monostate, std::int32_t a_order, std::int32_t a_index)
-		{
-			return D().WriteValue(static_cast<std::uint32_t>(a_order), a_index);
-		}
+		bool OrderUpdates(std::monostate, std::int32_t a_order) { return D().Updates(Id(a_order)); }
 
-		bool OrderUpdates(std::monostate, std::int32_t a_order) { return D().Updates(static_cast<std::uint32_t>(a_order)); }
-
-		void OrderDone(std::monostate, std::int32_t a_order, bool a_ok)
-		{
-			D().Done(static_cast<std::uint32_t>(a_order), a_ok);
-		}
-
-		bool IsMarker(std::monostate, Str a_morph) { return Catalog::IsMarker(a_morph.c_str()); }
+		void OrderDone(std::monostate, std::int32_t a_order, bool a_ok) { D().Done(Id(a_order), a_ok); }
 
 		// ---- events (data only) ----
 
@@ -149,35 +146,35 @@ namespace SH::Papyrus
 
 		std::int32_t EventKind(std::monostate, std::int32_t a_event)
 		{
-			const auto e = D().EventAt(static_cast<std::uint32_t>(a_event));
+			const auto e = D().EventAt(Id(a_event));
 			return e ? static_cast<std::int32_t>(e->kind) : 0;
 		}
 
 		std::int32_t EventActor(std::monostate, std::int32_t a_event)
 		{
-			const auto e = D().EventAt(static_cast<std::uint32_t>(a_event));
+			const auto e = D().EventAt(Id(a_event));
 			return e ? static_cast<std::int32_t>(e->ref) : 0;
 		}
 
 		Str EventPreset(std::monostate, std::int32_t a_event)
 		{
-			const auto e = D().EventAt(static_cast<std::uint32_t>(a_event));
+			const auto e = D().EventAt(Id(a_event));
 			return Str{ e ? e->preset : std::string{} };
 		}
 
 		bool EventFlag(std::monostate, std::int32_t a_event)
 		{
-			const auto e = D().EventAt(static_cast<std::uint32_t>(a_event));
+			const auto e = D().EventAt(Id(a_event));
 			return e && e->flag;
 		}
 
 		// ---- the picker ----
 
-		Str PickerStep(std::monostate, std::int32_t a_step) { return Str{ D().PickerStep(a_step) }; }
-		Str PickerKeep(std::monostate) { return Str{ D().PickerKeep() }; }
-		Str PickerCancel(std::monostate) { return Str{ D().PickerCancel() }; }
+		Str          PickerStep(std::monostate, std::int32_t a_step) { return Str{ D().PickerStep(a_step) }; }
+		Str          PickerKeep(std::monostate) { return Str{ D().PickerKeep() }; }
+		Str          PickerCancel(std::monostate) { return Str{ D().PickerCancel() }; }
 		std::int32_t PickerTarget(std::monostate) { return static_cast<std::int32_t>(D().PickerTarget()); }
-		bool PickerReady(std::monostate) { return D().PickerReady(); }
+		bool         PickerReady(std::monostate) { return D().PickerReady(); }
 
 		// ---- queries (data only) ----
 
@@ -211,7 +208,7 @@ namespace SH::Papyrus
 		bool IsORefitEnabled(std::monostate)
 		{
 			const auto c = D().CatalogPtr();
-			return c && c->orefitEnabled && D().Current().orefit;
+			return c && !c->refitSets.empty() && D().Current().orefit;
 		}
 
 		bool IsORefitApplied(std::monostate, std::int32_t a_actor) { return D().RefitApplied(Ref(a_actor)); }
@@ -253,16 +250,13 @@ namespace SH::Papyrus
 			Game::Pump();
 		}
 
-		std::int32_t CrosshairActor(std::monostate, float a_recentSeconds)
-		{
-			return static_cast<std::int32_t>(Game::CrosshairActor(a_recentSeconds));
-		}
+		std::int32_t CrosshairActor(std::monostate, float a_recentSeconds) { return static_cast<std::int32_t>(Game::CrosshairActor(a_recentSeconds)); }
 
-		// An NPC Silhouette shapes: not the player, not a character-creation dummy, a distributed race.
+		// An NPC Silhouette shapes: not the player, not a character-creation dummy (S-13), a distributed race.
 		RE::Actor* Shapeable(std::int32_t a_actor, std::string& a_why)
 		{
 			auto* actor = Game::ActorFor(Ref(a_actor));
-			if (!actor || actor == RE::PlayerCharacter::GetSingleton() || !actor->GetNPC()) {
+			if (!actor || Game::NeverShaped(actor) || !actor->GetNPC()) {
 				a_why = "that is not an NPC Silhouette can shape";
 				return nullptr;
 			}
@@ -295,67 +289,50 @@ namespace SH::Papyrus
 			return Str{ D().PickerStart(Ref(a_actor), Game::IsFemale(actor), Game::BaseOf(actor), Game::NameOf(actor)) };
 		}
 
-		bool RequestPreset(std::monostate, std::int32_t a_actor, Str a_preset, std::int32_t a_source)
+		// Each request clears LastError on entry and sets it on every way it can say no.
+		template <class F>
+		bool Request(std::int32_t a_actor, F&& a_do)
 		{
+			SetError({});
 			std::string why;
 			auto*       actor = Shapeable(a_actor, why);
-			const auto  source = a_source == static_cast<std::int32_t>(Source::kPicker) ? Source::kPicker : Source::kAPI;
-			if (!actor || !D().RequestPreset(Ref(a_actor), Game::IsFemale(actor), Game::BaseOf(actor), a_preset.c_str(), source, why)) {
-				SetError(why);
+			if (!actor || !a_do(actor, why)) {
+				SetError(why.empty() ? std::string{ "refused" } : why);
 				return false;
 			}
 			return true;
+		}
+
+		bool RequestPreset(std::monostate, std::int32_t a_actor, Str a_preset, std::int32_t a_source)
+		{
+			const auto source = a_source == static_cast<std::int32_t>(Source::kPicker) ? Source::kPicker : Source::kAPI;
+			return Request(a_actor, [&](RE::Actor* a, std::string& why) {
+				return D().RequestPreset(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), a_preset.c_str(), source, why);
+			});
 		}
 
 		bool RequestRegenerate(std::monostate, std::int32_t a_actor)
 		{
-			std::string why;
-			auto*       actor = Shapeable(a_actor, why);
-			if (!actor) {
-				SetError(why);
-				return false;
-			}
-			return D().RequestRegenerate(Ref(a_actor), Game::IsFemale(actor), Game::BaseOf(actor));
+			return Request(a_actor, [&](RE::Actor* a, std::string& why) {
+				return D().RequestRegenerate(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), why);
+			});
 		}
 
 		bool RequestReset(std::monostate, std::int32_t a_actor)
 		{
-			std::string why;
-			auto*       actor = Shapeable(a_actor, why);
-			if (!actor) {
-				SetError(why);
-				return false;
-			}
-			return D().RequestReset(Ref(a_actor), Game::IsFemale(actor), Game::BaseOf(actor));
+			return Request(a_actor, [&](RE::Actor* a, std::string& why) {
+				return D().RequestReset(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), why);
+			});
 		}
 
 		bool RequestReapply(std::monostate, std::int32_t a_actor, Str a_markerPreset)
 		{
-			std::string why;
-			auto*       actor = Shapeable(a_actor, why);
-			if (!actor || !D().RequestReapply(Ref(a_actor), Game::IsFemale(actor), Game::BaseOf(actor), a_markerPreset.c_str(), why)) {
-				SetError(why);
-				return false;
-			}
-			return true;
+			return Request(a_actor, [&](RE::Actor* a, std::string& why) {
+				return D().RequestReapply(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), a_markerPreset.c_str(), why);
+			});
 		}
 
 		Str NameOf(std::monostate, std::int32_t a_actor) { return Str{ Game::NameOf(Game::ActorFor(Ref(a_actor))) }; }
-
-		// Everyone the save remembers with a refit on and who is in memory now; the rest come off
-		// when they are next seen, as long as ORefit stays off.
-		std::int32_t RefitOffEverywhere(std::monostate)
-		{
-			std::int32_t n = 0;
-			for (const auto ref : D().RefitRefs()) {
-				if (auto* actor = Game::ActorFor(ref)) {
-					D().RefitOff(ref, Game::IsFemale(actor), Game::BaseOf(actor));
-					++n;
-				}
-			}
-			logger::info("ORefit taken off {} actor(s) in memory", n);
-			return n;
-		}
 
 		// Binds a_fn. a_fast: callable from tasklets, so a call costs no frame -- set on our own
 		// function object before binding rather than through the VM's SetCallableFromTasklets, a
@@ -384,6 +361,7 @@ namespace SH::Papyrus
 		Bind(a_vm, "IsReady"sv, IsReady, fast);
 		Bind(a_vm, "Status"sv, Status, fast);
 		Bind(a_vm, "Version"sv, Version, fast);
+		Bind(a_vm, "ProtocolVersion"sv, ProtocolVersion, fast);
 		Bind(a_vm, "Stamp"sv, Stamp, fast);
 		Bind(a_vm, "Build"sv, Build, fast);
 		Bind(a_vm, "Configure"sv, Configure, fast);
@@ -397,19 +375,22 @@ namespace SH::Papyrus
 		Bind(a_vm, "OrderRegenerates"sv, OrderRegenerates, fast);
 		Bind(a_vm, "OrderProbes"sv, OrderProbes, fast);
 		Bind(a_vm, "OrderReadsAll"sv, OrderReadsAll, fast);
+		Bind(a_vm, "NoteName"sv, NoteName, fast);
+		Bind(a_vm, "MarkerKind"sv, MarkerKind, fast);
+		Bind(a_vm, "NoteMarker"sv, NoteMarker, fast);
 		Bind(a_vm, "OrderReadCount"sv, OrderReadCount, fast);
 		Bind(a_vm, "OrderReadMorph"sv, OrderReadMorph, fast);
 		Bind(a_vm, "NoteRead"sv, NoteRead, fast);
 		Bind(a_vm, "NoteLayer"sv, NoteLayer, fast);
-		Bind(a_vm, "NoteMarker"sv, NoteMarker, fast);
 		Bind(a_vm, "Prepare"sv, Prepare, fast);
-		Bind(a_vm, "OrderClears"sv, OrderClears, fast);
+		Bind(a_vm, "OrderClearsUnkeyed"sv, OrderClearsUnkeyed, fast);
+		Bind(a_vm, "OrderClearsRefit"sv, OrderClearsRefit, fast);
 		Bind(a_vm, "OrderWriteCount"sv, OrderWriteCount, fast);
 		Bind(a_vm, "OrderWriteMorph"sv, OrderWriteMorph, fast);
 		Bind(a_vm, "OrderWriteValue"sv, OrderWriteValue, fast);
+		Bind(a_vm, "OrderWriteLayer"sv, OrderWriteLayer, fast);
 		Bind(a_vm, "OrderUpdates"sv, OrderUpdates, fast);
 		Bind(a_vm, "OrderDone"sv, OrderDone, fast);
-		Bind(a_vm, "IsMarker"sv, IsMarker, fast);
 
 		Bind(a_vm, "NextEvent"sv, NextEvent, fast);
 		Bind(a_vm, "EventKind"sv, EventKind, fast);
@@ -444,9 +425,8 @@ namespace SH::Papyrus
 		Bind(a_vm, "RequestReset"sv, RequestReset, main);
 		Bind(a_vm, "RequestReapply"sv, RequestReapply, main);
 		Bind(a_vm, "NameOf"sv, NameOf, main);
-		Bind(a_vm, "RefitOffEverywhere"sv, RefitOffEverywhere, main);
 
-		logger::info("papyrus: {} bound", kScript);
+		logger::info("papyrus: {} bound (protocol {})", kScript, kProtocol);
 		return true;
 	}
 }

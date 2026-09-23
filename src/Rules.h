@@ -29,8 +29,9 @@ namespace SH
 	struct Verdict
 	{
 		Tier        tier{ Tier::kNone };
-		std::string preset;  // for kName and kFaction
-		std::string why;     // one line for the log
+		std::string preset;               // for kName and kFaction
+		std::string why;                  // one line for the log
+		bool        blacklisted{ false };  // any blacklist tier: name, form id, plugin or race (S-41)
 	};
 
 	[[nodiscard]] Verdict Decide(const Catalog& a_catalog, const ActorFacts& a_actor);

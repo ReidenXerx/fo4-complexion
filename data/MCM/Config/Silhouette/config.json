@@ -166,7 +166,7 @@
         {
           "type": "button",
           "text": "Give the people around me new bodies",
-          "help": "Everyone nearby (never your character) rolls a new body, as if met for the first time. This clears ALL their body sliders, other mods' included, and cannot be undone.",
+          "help": "Everyone nearby (never your character) rolls a new body, as if met for the first time, and the rules by name and faction get their say. With Silhouette.dll, body morphs other mods keep under their own keyword are kept; without it they are cleared too. Cannot be undone.",
           "action": {
             "type": "CallGlobalFunction",
             "script": "Silhouette:Player",
@@ -391,7 +391,7 @@
           "type": "switcher",
           "id": "bORefit:General",
           "text": "ORefit",
-          "help": "A clothed shape while someone wears clothes -- breasts together and lifted, nipples flattened -- and their own body back the moment they undress, exactly as it was. Your character is never refit. Needs Silhouette.dll and Silhouette.esp.",
+          "help": "A clothed shape while someone is dressed: breasts held together and lifted, and nipples flattened under armour. It only ever raises a slider, so a body that is already fuller keeps its own, and the moment they undress they are exactly their own body again. Your character is never refit. Removing Silhouette takes every clothed shape off by itself. Needs Silhouette.dll and Silhouette.esp.",
           "valueOptions": {
             "sourceType": "ModSettingBool"
           }
@@ -429,22 +429,11 @@
         {
           "type": "button",
           "text": "How is Silhouette doing?",
-          "help": "Which build is loaded, what it is listening to, and how much work is waiting.",
+          "help": "Which build is loaded, what it is listening to, and how much work is waiting -- and what is missing when something is.",
           "action": {
-            "type": "CallFunction",
-            "form": "Silhouette.esp|802",
-            "function": "MenuStatus",
-            "params": []
-          }
-        },
-        {
-          "type": "button",
-          "text": "Take ORefit off everyone (before uninstalling)",
-          "help": "Switch ORefit off above first. Everyone this save remembers with a clothed shape gets their own body values back -- the people in memory now at once, the rest when you next see them. Then save, and Silhouette can be removed.",
-          "action": {
-            "type": "CallFunction",
-            "form": "Silhouette.esp|802",
-            "function": "MenuRefitOffEverywhere",
+            "type": "CallGlobalFunction",
+            "script": "Silhouette:API",
+            "function": "ShowStatus",
             "params": []
           }
         }

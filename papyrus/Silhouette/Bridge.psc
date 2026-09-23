@@ -1,14 +1,15 @@
 Scriptname Silhouette:Bridge extends Quest
-{Silhouette's hands (decisions S-18, S-22, S-24). Silhouette.dll decides every
- body; this script carries each decision out through LooksMenu's BodyGen -- the only
- door to the morph store -- and raises the events other mods listen for. It polls;
- the plugin never calls in.
+{Silhouette's hands (decisions S-18, S-22, S-24, S-40, S-43). Silhouette.dll decides
+ every body; this script carries each decision out through LooksMenu's BodyGen -- the
+ only door to the morph store -- and raises the events other mods listen for. It
+ polls; the plugin never calls in.
 
  On Silhouette.esp's second quest (0x802). The regeneration window
  (Silhouette:Adopter, 0x800) needs none of this, and nothing here needs it.
 
  What an order does is decided in the plugin and tested there, against a fake
- bridge that does exactly what RunOrder below does. Change one, change the other.
+ bridge that does exactly what RunOrder below does. Change one, change the other,
+ and ProtocolVersion with them.
 
  Every argument is passed explicitly: the base sources are decompiled and carry no
  default values.}
@@ -25,6 +26,9 @@ CustomEvent OnORefitChanged         ; akArgs: [0] Actor, [1] Bool applied
 ; timer with a second id; a single id is the only kind this engine has kept.
 Int Property kPollTimer = 1 AutoReadOnly
 Float Property PollSeconds = 1.0 AutoReadOnly
+; While work waits the poll comes round faster: the picker's orders are the player
+; watching.
+Float Property BusyPollSeconds = 0.25 AutoReadOnly
 ; An order is up to ~120 BodyGen calls, each waiting for a frame on the main thread.
 Int Property OrdersPerPoll = 6 AutoReadOnly
 ; MCM settings are read again every this many polls (no F4SE external events needed).
@@ -33,13 +37,18 @@ Int Property SettingsEvery = 10 AutoReadOnly
 Float Property RecentAimSeconds = 30.0 AutoReadOnly
 String Property ModName = "Silhouette" AutoReadOnly
 Int Property SourcePicker = 3 AutoReadOnly
+; What RunOrder below does. Silhouette.dll says what it expects; they must agree.
+Int Property Protocol = 2 AutoReadOnly
+; Silhouette.esp's refit keyword (S-40): ORefit's floors live under it, apart from the body.
+Int Property RefitKeywordID = 0x803 AutoReadOnly
 
-; Real time the poll's drain began, -1 when none runs. Not a "busy" flag that could
-; outlive a crash: Connect() clears it on every load, and after two minutes it is
-; treated as a drain that is not coming back.
+; Real time the drain began, -1 when none runs. Not a "busy" flag that could outlive
+; a crash: Connect() clears it on every load, and after two minutes it is treated as
+; a drain that is not coming back.
 Float _drainStarted = -1.0
 Int _polls = 0
 Bool _plugin = false
+Keyword _refitKeyword
 
 ;---------------------------------------------------------------------------
 ; Startup: on quest start and on every load. This script's variables live in the
@@ -61,6 +70,7 @@ Function Connect()
 	; Cancel first: Papyrus cannot say whether a timer runs, and two polls at once
 	; is how Rapport's bridge first went wrong.
 	CancelTimer(kPollTimer)
+	_refitKeyword = Game.GetFormFromFile(RefitKeywordID, "Silhouette.esp") as Keyword
 	_plugin = F4SE.GetPluginVersion("Silhouette") > 0
 	If !_plugin
 		; No DLL: nothing below may call a native, or every poll logs an error.
@@ -68,25 +78,49 @@ Function Connect()
 		Debug.Trace("Silhouette bridge: Silhouette.dll is not loaded - rules by name and faction, ORefit, the NPC picker and the API are off", 0)
 		Return
 	EndIf
+	Int theirs = Silhouette:DLL.ProtocolVersion()
+	If theirs != Protocol
+		_plugin = False
+		Silhouette:DLL.Log("the scripts speak protocol " + Protocol + " but Silhouette.dll speaks " + theirs + ": install one release's files together. The bridge stays off.")
+		Debug.Notification("Silhouette: Silhouette.dll and its scripts are from different releases - see Silhouette.log.")
+		Return
+	EndIf
 	PushSettings()
-	Silhouette:Plugin.Log("bridge connected - " + Silhouette:Plugin.Status())
-	String menu = Silhouette:Player.Build()
-	If Silhouette:Plugin.IsReady() && menu != Silhouette:Plugin.Build()
-		Silhouette:Plugin.Log("the scripts are build " + menu + " but the catalog is build " + Silhouette:Plugin.Build() + ": install one generator run's files together")
+	Silhouette:DLL.Log("bridge connected - " + Silhouette:DLL.Status())
+	If !_refitKeyword
+		Silhouette:DLL.Log("Silhouette.esp holds no refit keyword (an older Silhouette.esp?): ORefit stays off")
+	EndIf
+	If Silhouette:DLL.IsReady()
+		String menu = Silhouette:Player.Build()
+		If menu != Silhouette:DLL.Build()
+			Silhouette:DLL.Log("the scripts are build " + menu + " but the catalog is build " + Silhouette:DLL.Build() + ": install one generator run's files together")
+		EndIf
+	Else
+		Debug.Notification("Silhouette: " + Silhouette:DLL.Status())
 	EndIf
 	StartTimer(PollSeconds, kPollTimer)
 EndFunction
 
+; The MCM's switches, when MCM is there. Without it the plugin keeps what it has --
+; its defaults, or what another mod set through Silhouette:API.
 Function PushSettings()
+	Bool hasMCM = MCM.IsInstalled()
+	If !hasMCM && _refitKeyword
+		Return
+	EndIf
 	Bool orefit = True
 	Bool nipples = True
 	Bool genitals = True
-	If MCM.IsInstalled()
+	If hasMCM
 		orefit = MCM.GetModSettingBool(ModName, "bORefit:General")
 		nipples = MCM.GetModSettingBool(ModName, "bNippleRand:General")
 		genitals = MCM.GetModSettingBool(ModName, "bGenitalRand:General")
 	EndIf
-	Silhouette:Plugin.Configure(orefit, nipples, genitals)
+	If !_refitKeyword
+		; Nowhere to put a refit but the body's own layer: none at all instead.
+		orefit = False
+	EndIf
+	Silhouette:DLL.Configure(orefit, nipples, genitals)
 EndFunction
 
 ;---------------------------------------------------------------------------
@@ -97,35 +131,43 @@ Event OnTimer(Int aiTimerID)
 	If aiTimerID != kPollTimer
 		Return
 	EndIf
-	; The next poll is scheduled BEFORE this one does anything, so nothing below
-	; can stop the clock.
-	StartTimer(PollSeconds, kPollTimer)
 	If !_plugin
 		Return
+	EndIf
+	; The next poll is scheduled BEFORE this one does anything, so nothing below
+	; can stop the clock.
+	If Silhouette:DLL.Pending() > 0
+		StartTimer(BusyPollSeconds, kPollTimer)
+	Else
+		StartTimer(PollSeconds, kPollTimer)
 	EndIf
 	_polls += 1
 	If _polls % SettingsEvery == 0
 		PushSettings()
 	EndIf
-	Silhouette:Plugin.Pump()
-	; A drain waits on the main thread once per BodyGen call, so a long one outlasts
-	; the poll. This poll then only raises events; the plugin hands an actor to one
-	; drain at a time either way, so two could not collide -- this keeps them few.
+	Silhouette:DLL.Pump()
+	RaiseEvents()
+	; A drain waits on the main thread once per BodyGen call, so it runs on a stack of
+	; its own and this poll returns at once. One drain at a time keeps them few; the
+	; plugin hands an actor to one order at a time either way, so two could not collide.
 	Float now = Utility.GetCurrentRealTime()
 	If _drainStarted >= 0.0 && now >= _drainStarted && now - _drainStarted < 120.0
-		RaiseEvents()
 		Return
 	EndIf
 	_drainStarted = now
+	CallFunctionNoWait("PollDrain", new Var[0])
+EndEvent
+
+Function PollDrain()
 	Drain(OrdersPerPoll)
 	_drainStarted = -1.0
 	RaiseEvents()
-EndEvent
+EndFunction
 
 Function Drain(Int aiBudget)
 	Int done = 0
 	While done < aiBudget
-		Int id = Silhouette:Plugin.NextOrder()
+		Int id = Silhouette:DLL.NextOrder()
 		If id == 0
 			Return
 		EndIf
@@ -134,21 +176,22 @@ Function Drain(Int aiBudget)
 	EndWhile
 EndFunction
 
-; One order, exactly as the plugin's tests run it.
+; One order, exactly as the plugin's tests run it (protocol 2).
 Function RunOrder(Int aiOrder)
-	Actor a = Game.GetForm(Silhouette:Plugin.OrderActor(aiOrder)) as Actor
+	Int who = Silhouette:DLL.OrderActor(aiOrder)
+	Actor a = Game.GetForm(who) as Actor
 	If !a
-		Silhouette:Plugin.OrderDone(aiOrder, False)
+		Silhouette:DLL.OrderDone(aiOrder, False)
 		Return
 	EndIf
-	Bool female = Silhouette:Plugin.OrderFemale(aiOrder)
+	Bool female = Silhouette:DLL.OrderFemale(aiOrder)
 
-	If Silhouette:Plugin.OrderRegenerates(aiOrder)
+	If Silhouette:DLL.OrderRegenerates(aiOrder)
 		Regenerate(a, female)
 	EndIf
 
-	Bool probe = Silhouette:Plugin.OrderProbes(aiOrder)
-	Bool all = Silhouette:Plugin.OrderReadsAll(aiOrder)
+	Bool probe = Silhouette:DLL.OrderProbes(aiOrder)
+	Bool all = Silhouette:DLL.OrderReadsAll(aiOrder)
 	If probe || all
 		String[] morphs = BodyGen.GetMorphs(a, female)
 		Int count = 0
@@ -157,50 +200,85 @@ Function RunOrder(Int aiOrder)
 		EndIf
 		Int i = 0
 		While i < count
-			Bool marker = probe && Silhouette:Plugin.IsMarker(morphs[i])
-			If marker || all
+			Int kind = 0
+			If probe
+				Silhouette:DLL.NoteName(aiOrder, morphs[i])
+				kind = Silhouette:DLL.MarkerKind(morphs[i])
+			EndIf
+			If kind == 2
+				; The refit marker lives under the refit keyword, not in the body.
+				If _refitKeyword
+					Silhouette:DLL.NoteMarker(aiOrder, morphs[i], BodyGen.GetMorph(a, female, morphs[i], _refitKeyword))
+				EndIf
+			ElseIf kind == 1 || all
 				Float v = BodyGen.GetMorph(a, female, morphs[i], None)
-				If marker
-					Silhouette:Plugin.NoteMarker(aiOrder, morphs[i], v)
+				If kind == 1
+					Silhouette:DLL.NoteMarker(aiOrder, morphs[i], v)
 				EndIf
 				If all && v != 0.0
-					Silhouette:Plugin.NoteLayer(aiOrder, morphs[i], v)
+					Silhouette:DLL.NoteLayer(aiOrder, morphs[i], v)
 				EndIf
 			EndIf
 			i += 1
 		EndWhile
 	EndIf
 
-	; After the probe: which refit set applies can depend on the preset it found.
-	Int reads = Silhouette:Plugin.OrderReadCount(aiOrder)
+	; After the probe: what to read, and which refit applies, depend on what it found.
+	Int reads = Silhouette:DLL.OrderReadCount(aiOrder)
 	Int r = 0
 	While r < reads
-		Silhouette:Plugin.NoteRead(aiOrder, r, BodyGen.GetMorph(a, female, Silhouette:Plugin.OrderReadMorph(aiOrder, r), None))
+		Silhouette:DLL.NoteRead(aiOrder, r, BodyGen.GetMorph(a, female, Silhouette:DLL.OrderReadMorph(aiOrder, r), None))
 		r += 1
 	EndWhile
 
-	If !Silhouette:Plugin.Prepare(aiOrder)
-		Silhouette:Plugin.OrderDone(aiOrder, False)
+	If !Silhouette:DLL.Prepare(aiOrder)
+		Silhouette:DLL.OrderDone(aiOrder, False)
 		Return
 	EndIf
-	; The unkeyed layer only: other mods' keyed morphs (AAF's, a pregnancy belly) stay.
-	If Silhouette:Plugin.OrderClears(aiOrder)
+	; A load since the probe forgot the order, and an id of the save left behind can
+	; name somebody else in this one: nothing is written for an order that is gone.
+	If Silhouette:DLL.OrderActor(aiOrder) != who
+		Return
+	EndIf
+
+	Int writes = Silhouette:DLL.OrderWriteCount(aiOrder)
+	If !_refitKeyword
+		; Without the keyword a refit would land in the body's own layer.
+		Int k = 0
+		While k < writes
+			If Silhouette:DLL.OrderWriteLayer(aiOrder, k) == 1
+				Silhouette:DLL.Log("a refit without Silhouette.esp's refit keyword was not carried out")
+				Silhouette:DLL.OrderDone(aiOrder, False)
+				Return
+			EndIf
+			k += 1
+		EndWhile
+	EndIf
+	; The unkeyed layer is the body. Other mods' keyed morphs (AAF's, a pregnancy
+	; belly, the anatomy arousal layer) are never touched.
+	If Silhouette:DLL.OrderClearsUnkeyed(aiOrder)
 		BodyGen.RemoveMorphsByKeyword(a, female, None)
 	EndIf
-	Int writes = Silhouette:Plugin.OrderWriteCount(aiOrder)
+	If _refitKeyword && Silhouette:DLL.OrderClearsRefit(aiOrder)
+		BodyGen.RemoveMorphsByKeyword(a, female, _refitKeyword)
+	EndIf
 	Int w = 0
 	While w < writes
-		BodyGen.SetMorph(a, female, Silhouette:Plugin.OrderWriteMorph(aiOrder, w), None, Silhouette:Plugin.OrderWriteValue(aiOrder, w))
+		Keyword layer = None
+		If Silhouette:DLL.OrderWriteLayer(aiOrder, w) == 1
+			layer = _refitKeyword
+		EndIf
+		BodyGen.SetMorph(a, female, Silhouette:DLL.OrderWriteMorph(aiOrder, w), layer, Silhouette:DLL.OrderWriteValue(aiOrder, w))
 		w += 1
 	EndWhile
-	If Silhouette:Plugin.OrderUpdates(aiOrder)
+	If Silhouette:DLL.OrderUpdates(aiOrder)
 		BodyGen.UpdateMorphs(a)
 	EndIf
-	Silhouette:Plugin.OrderDone(aiOrder, True)
+	Silhouette:DLL.OrderDone(aiOrder, True)
 EndFunction
 
-; BodyGen rolls them again. RegenerateMorphs clears EVERY key, so other mods' keyed
-; values are remembered first and put back after (the regeneration window's way).
+; BodyGen rolls them again. RegenerateMorphs clears EVERY key, so the keyed values
+; (other mods', and the refit) are remembered first and put back after.
 Function Regenerate(Actor a, Bool female)
 	String[] morphs = BodyGen.GetMorphs(a, female)
 	String[] names = new String[0]
@@ -237,36 +315,39 @@ Function Regenerate(Actor a, Bool female)
 	EndWhile
 EndFunction
 
+; The names are sent as the compiler would have mangled them: against the decompiled
+; base sources SendCustomEvent takes a plain string, and a listener's registration
+; asks for "<script>_<event>" (S-46).
 Function RaiseEvents()
-	Int e = Silhouette:Plugin.NextEvent()
+	Int e = Silhouette:DLL.NextEvent()
 	Int raised = 0
 	While e != 0 && raised < 64
-		Int kind = Silhouette:Plugin.EventKind(e)
-		Actor a = Game.GetForm(Silhouette:Plugin.EventActor(e)) as Actor
+		Int kind = Silhouette:DLL.EventKind(e)
+		Actor a = Game.GetForm(Silhouette:DLL.EventActor(e)) as Actor
 		If a
 			Var[] args
 			If kind == 1
 				args = new Var[2]
 				args[0] = a
-				args[1] = Silhouette:Plugin.EventPreset(e)
-				SendCustomEvent("OnActorGenerated", args)
+				args[1] = Silhouette:DLL.EventPreset(e)
+				SendCustomEvent("silhouette:bridge_OnActorGenerated", args)
 			ElseIf kind == 2
 				args = new Var[1]
 				args[0] = a
-				SendCustomEvent("OnActorNaked", args)
+				SendCustomEvent("silhouette:bridge_OnActorNaked", args)
 			ElseIf kind == 3
 				args = new Var[1]
 				args[0] = a
-				SendCustomEvent("OnActorRemovingClothes", args)
+				SendCustomEvent("silhouette:bridge_OnActorRemovingClothes", args)
 			ElseIf kind == 4
 				args = new Var[2]
 				args[0] = a
-				args[1] = Silhouette:Plugin.EventFlag(e)
-				SendCustomEvent("OnORefitChanged", args)
+				args[1] = Silhouette:DLL.EventFlag(e)
+				SendCustomEvent("silhouette:bridge_OnORefitChanged", args)
 			EndIf
 		EndIf
 		raised += 1
-		e = Silhouette:Plugin.NextEvent()
+		e = Silhouette:DLL.NextEvent()
 	EndWhile
 EndFunction
 
@@ -276,11 +357,11 @@ EndFunction
 
 Bool Function Ready()
 	If !_plugin
-		Debug.Notification("Silhouette: Silhouette.dll is not loaded.")
+		Debug.Notification("Silhouette: Silhouette.dll is not loaded, or is from another release.")
 		Return False
 	EndIf
-	If !Silhouette:Plugin.IsReady()
-		Debug.Notification("Silhouette: " + Silhouette:Plugin.Status())
+	If !Silhouette:DLL.IsReady()
+		Debug.Notification("Silhouette: " + Silhouette:DLL.Status())
 		Return False
 	EndIf
 	Return True
@@ -297,39 +378,39 @@ Function PickerPick()
 	If !Ready()
 		Return
 	EndIf
-	Int target = Silhouette:Plugin.CrosshairActor(0.0)
+	Int target = Silhouette:DLL.CrosshairActor(0.0)
 	If target == 0
 		Debug.Notification("Silhouette: aim at an NPC, then Pick.")
 		Return
 	EndIf
-	Debug.Notification(Silhouette:Plugin.PickerStart(target))
+	Debug.Notification(Silhouette:DLL.PickerStart(target))
 	Act()
 EndFunction
 
 Function PickerNext()
 	If Ready()
-		Debug.Notification(Silhouette:Plugin.PickerStep(1))
+		Debug.Notification(Silhouette:DLL.PickerStep(1))
 		Act()
 	EndIf
 EndFunction
 
 Function PickerPrevious()
 	If Ready()
-		Debug.Notification(Silhouette:Plugin.PickerStep(-1))
+		Debug.Notification(Silhouette:DLL.PickerStep(-1))
 		Act()
 	EndIf
 EndFunction
 
 Function PickerKeep()
 	If Ready()
-		Debug.Notification(Silhouette:Plugin.PickerKeep())
+		Debug.Notification(Silhouette:DLL.PickerKeep())
 		Act()
 	EndIf
 EndFunction
 
 Function PickerCancel()
 	If Ready()
-		Debug.Notification(Silhouette:Plugin.PickerCancel())
+		Debug.Notification(Silhouette:DLL.PickerCancel())
 		Act()
 	EndIf
 EndFunction
@@ -340,20 +421,20 @@ EndFunction
 
 ; The NPC the menu acts on: the one picked with the hotkey, or the last one aimed at.
 Int Function MenuTarget()
-	Int target = Silhouette:Plugin.PickerTarget()
+	Int target = Silhouette:DLL.PickerTarget()
 	If target == 0
-		target = Silhouette:Plugin.CrosshairActor(RecentAimSeconds)
+		target = Silhouette:DLL.CrosshairActor(RecentAimSeconds)
 	EndIf
 	Return target
 EndFunction
 
 Bool Function MenuReady()
 	If !_plugin
-		Debug.MessageBox("Silhouette: Silhouette.dll is not loaded, so NPCs cannot be shaped one by one. BodyGen still gives everyone a body.")
+		Debug.MessageBox("Silhouette: Silhouette.dll is not loaded (or is from another release), so NPCs cannot be shaped one by one. BodyGen still gives everyone a body.")
 		Return False
 	EndIf
-	If !Silhouette:Plugin.IsReady()
-		Debug.MessageBox("Silhouette: " + Silhouette:Plugin.Status())
+	If !Silhouette:DLL.IsReady()
+		Debug.MessageBox("Silhouette: " + Silhouette:DLL.Status())
 		Return False
 	EndIf
 	Return True
@@ -375,12 +456,12 @@ Function MenuApply()
 		Debug.MessageBox("Silhouette: that choice is not in this build of the menu. Nothing was changed.")
 		Return
 	EndIf
-	If !Silhouette:Plugin.RequestPreset(target, preset, SourcePicker)
-		Debug.MessageBox("Silhouette: " + Silhouette:Plugin.LastError())
+	If !Silhouette:DLL.RequestPreset(target, preset, SourcePicker)
+		Debug.MessageBox("Silhouette: " + Silhouette:DLL.LastError())
 		Return
 	EndIf
 	Act()
-	Debug.MessageBox(Silhouette:Plugin.NameOf(target) + " now has " + preset + ". Close the menu to see it.")
+	Debug.MessageBox(Silhouette:DLL.NameOf(target) + " now has " + preset + ". Close the menu to see it.")
 EndFunction
 
 Function MenuRandom()
@@ -392,12 +473,12 @@ Function MenuRandom()
 		Debug.MessageBox("Silhouette: aim at an NPC before opening the menu, or Pick one with the hotkey.")
 		Return
 	EndIf
-	If !Silhouette:Plugin.RequestRegenerate(target)
-		Debug.MessageBox("Silhouette: " + Silhouette:Plugin.LastError())
+	If !Silhouette:DLL.RequestRegenerate(target)
+		Debug.MessageBox("Silhouette: " + Silhouette:DLL.LastError())
 		Return
 	EndIf
 	Act()
-	Debug.MessageBox(Silhouette:Plugin.NameOf(target) + " rolled a new body, as if met for the first time. Other mods' body morphs were kept.")
+	Debug.MessageBox(Silhouette:DLL.NameOf(target) + " rolled a new body, as if met for the first time. Other mods' body morphs were kept.")
 EndFunction
 
 Function MenuWhich()
@@ -410,7 +491,7 @@ Function MenuWhich()
 		Debug.MessageBox("Silhouette: aim at an NPC before opening the menu, or Pick one with the hotkey.")
 		Return
 	EndIf
-	Debug.MessageBox(Silhouette:Plugin.NameOf(target) + ": " + BodyOf(a) + ". " + Silhouette:Plugin.Describe(target) + ".")
+	Debug.MessageBox(Silhouette:DLL.NameOf(target) + ": " + BodyOf(a) + ". " + Silhouette:DLL.Describe(target) + ".")
 EndFunction
 
 ; The preset their marker names, read from LooksMenu now.
@@ -423,10 +504,13 @@ String Function BodyOf(Actor a)
 	EndIf
 	Int i = 0
 	While i < count
-		If Silhouette:Plugin.IsMarker(morphs[i])
+		If Silhouette:DLL.MarkerKind(morphs[i]) == 1
 			Float v = BodyGen.GetMorph(a, female, morphs[i], None)
 			If v > 0.0
-				String preset = Silhouette:Plugin.PresetForMarker(morphs[i], v)
+				If morphs[i] == "Silhouette_Blacklisted"
+					Return "kept bare by the blacklist"
+				EndIf
+				String preset = Silhouette:DLL.PresetForMarker(morphs[i], v)
 				If preset != ""
 					Return preset
 				EndIf
@@ -439,28 +523,4 @@ String Function BodyOf(Actor a)
 		Return "no body sliders at all"
 	EndIf
 	Return "body sliders Silhouette did not set"
-EndFunction
-
-Function MenuStatus()
-	If !_plugin
-		Debug.MessageBox("Silhouette: Silhouette.dll is not loaded.")
-		Return
-	EndIf
-	Debug.MessageBox("Silhouette " + Silhouette:Plugin.Version() + ": " + Silhouette:Plugin.Status())
-EndFunction
-
-; For uninstalling: ORefit off in the menu first, then this. Everyone the save
-; remembers with a refit on -- loaded or not -- gets their naked values back.
-Function MenuRefitOffEverywhere()
-	If !MenuReady()
-		Return
-	EndIf
-	PushSettings()
-	If Silhouette:Plugin.IsORefitEnabled()
-		Debug.MessageBox("Silhouette: turn ORefit off above first, or everyone dressed would be refit again.")
-		Return
-	EndIf
-	Int n = Silhouette:Plugin.RefitOffEverywhere()
-	Act()
-	Debug.MessageBox("Silhouette: " + n + " people get their naked values back over the next minute. Save after that before removing Silhouette.")
 EndFunction

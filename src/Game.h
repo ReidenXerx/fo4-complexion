@@ -17,7 +17,8 @@ namespace SH::Game
 	// From the event sinks, on whatever thread the game sends them: queued, nothing read yet.
 	void NoteLoaded(std::uint32_t a_ref);
 	void NoteEquip(std::uint32_t a_ref, std::uint32_t a_item, bool a_equipped);
-	void NoteCrosshair(std::uint32_t a_ref);
+	// a_actor: the reference is an actor, so it can be the menu's "last NPC aimed at".
+	void NoteCrosshair(std::uint32_t a_ref, bool a_actor);
 
 	// Main thread: everything queued since the last pump.
 	void Pump();
@@ -27,15 +28,22 @@ namespace SH::Game
 	// opening takes the crosshair off them.
 	[[nodiscard]] std::uint32_t CrosshairActor(float a_recentSeconds);
 
-	// Main thread: an actor Silhouette may shape, by form id.
-	[[nodiscard]] RE::Actor* ActorFor(std::uint32_t a_ref);
-	[[nodiscard]] bool       IsFemale(RE::Actor* a_actor);
+	// Main thread: an actor by form id, or null.
+	[[nodiscard]] RE::Actor*    ActorFor(std::uint32_t a_ref);
+	[[nodiscard]] bool          IsFemale(RE::Actor* a_actor);
 	[[nodiscard]] std::uint32_t BaseOf(RE::Actor* a_actor);
-	[[nodiscard]] std::string   NameOf(RE::Actor* a_actor);
+	[[nodiscard]] std::string   NameOf(RE::Actor* a_actor);  // the name the player sees
+	// The player, or a character-creation dummy LooksMenu clones onto the player (S-13).
+	[[nodiscard]] bool NeverShaped(RE::Actor* a_actor);
 
 	// The director's log lines, into ours.
 	void FlushLog();
 
 	// A load is starting: what was queued belongs to the save being left.
 	void ForgetInbox();
+
+	// A save finished loading (or a new game started): the bridge should poll within a minute. A
+	// thread of ours says so in the log once when it does not -- the one symptom of a missing or
+	// disabled Silhouette.esp that nothing else would report.
+	void NoteGameLoaded();
 }

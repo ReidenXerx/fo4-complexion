@@ -51,9 +51,11 @@ namespace
 			SH::Game::ForgetInbox();
 			SH::Game::TheDirector().ForgetWorld();
 			SH::Sinks::Attach();
+			SH::Game::NoteGameLoaded();
 			break;
 		case F4SE::MessagingInterface::kPostLoadGame:
 			SH::Sinks::Attach();
+			SH::Game::NoteGameLoaded();
 			logger::info("after loading: {} record(s); {}", SH::Game::TheDirector().RecordCount(), SH::Sinks::Status());
 			break;
 		default:
