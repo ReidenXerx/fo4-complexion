@@ -99,6 +99,13 @@ BODYGEN_SEPARATORS = re.compile(r'[=/,|@]')
 
 PLAYER_GUARD = rules.UNSHAPED
 
+# Morphs that something else drives at RUNTIME, so they are states, not shapes (decision S-16).
+# AAF raises Erection/CErection under its own keyword for a scene and takes them away after, and
+# Animated Fannies-style scripts do the same with the Penetrate sliders. A preset that sets one
+# would put it in the UNKEYED layer, where nothing ever takes it away. That happened with
+# Sirius_Male_preset (Erection 100%): two males carried a permanent erection (co-save, 2026-09-23).
+STATE_MORPHS = ('Erection', 'Erection Up', 'Erection Down', 'CErection', 'VaginaPenetrate', 'AnusPenetrate')
+
 
 # --------------------------------------------------------------------------
 # reading
@@ -260,6 +267,11 @@ def morph_values(name, target, baked, morphs_on_body, preset_name):
         if BODYGEN_SEPARATORS.search(morph):
             print(f'  skipped morph {morph!r} in {preset_name!r}: its name holds a BodyGen separator')
             continue
+        if morph in STATE_MORPHS:
+            # neither set nor compensated: the base's own state is not ours to change either
+            if abs(target.get(morph, 0.0)) >= 5e-5:
+                print(f'  left out {morph!r} in {preset_name!r}: a state other mods drive at runtime (S-16)')
+            continue
         v = target.get(morph, 0.0) - baked.get(morph, 0.0)
         if abs(v) < 5e-5:
             continue
@@ -398,6 +410,14 @@ def write_papyrus(path, picker, default_index, stamp, build):
         '',
         f'Float Function Stamp() Global',
         f'    Return {stamp}.0',
+        'EndFunction',
+        '',
+        '; Morphs other mods drive at runtime (decision S-16): never part of a Silhouette body.',
+        '; The regeneration window takes them out of bodies an older build gave.',
+        'String[] Function StateMorphs() Global',
+        f'    String[] out = new String[{len(STATE_MORPHS)}]',
+        *[f'    out[{i}] = {papyrus_string(m)}' for i, m in enumerate(STATE_MORPHS)],
+        '    Return out',
         'EndFunction',
         '',
         'Bool Function IsFemale(Actor akActor) Global',

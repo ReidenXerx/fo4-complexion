@@ -322,6 +322,13 @@ def main():
     rules = parse_morphs(args.dir / 'Silhouette_morphs.ini', templates, problems)
     print(f'{len(templates)} templates parse, {len(rules)} rules')
 
+    # A runtime state in a template lands in the unkeyed layer, where nothing ever takes it
+    # away again: a permanent erection, a permanently opened body (decision S-16).
+    for t, sets in templates.items():
+        states = sorted({m for s in sets for sel in s for m, _, _ in sel if m in sg.STATE_MORPHS})
+        if states:
+            problems.append(f'template {t} sets {", ".join(states)}: a runtime state baked into a body for good')
+
     # ---- which templates each gender's pool holds, and what the player gets.
     # LooksMenu lets a later line overwrite an earlier one per NPC, so the player's
     # table entry is whatever the LAST line naming them says.
@@ -446,7 +453,8 @@ def main():
             if p is None or vals is None:
                 problems.append(f'{t}: no preset of that name to compare with')
                 continue
-            target = base_body.resolve(p, base['set'])
+            # the BODY a preset describes: a runtime state it happens to set is not part of it (S-16)
+            target = {m: v for m, v in base_body.resolve(p, base['set']).items() if m not in sg.STATE_MORPHS}
             e_max = e_rms = n_max = n_rms = 0.0
             for s in shapes:
                 shown = apply(built_all[s], vals, tris[g][s])

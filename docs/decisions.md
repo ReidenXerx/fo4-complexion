@@ -176,3 +176,31 @@ the fix can keep their morphs:
   Silhouette body, or sliders set by hand), anyone AAF has busy (`AAF_ActorBusy`) or locked
   (`AAF_ActorLocked`), anyone already handled.
 - This is Silhouette's only plugin; everything else still works without it (S-9).
+
+## S-16 — A runtime STATE is never part of a body
+
+Agent decision, 2026-09-23, from the rapport session's co-save reading: two men carried
+`Erection=1` in the UNKEYED layer, rolled from `Sirius_Male_preset`, which sets Erection at 100%.
+AAF raises Erection under its own keyword for a scene and takes it away after. A preset that sets
+it writes it where nothing ever takes it away, so those two had it for good.
+
+- `STATE_MORPHS` in `silhouette_gen.py` lists the morphs something drives at runtime: Erection,
+  Erection Up/Down and CErection (AAF), plus VaginaPenetrate and AnusPenetrate (the opening
+  sliders of the genital body in `fo4-anatomy`). They are never written into a template or the
+  picker, and never compensated either; the base's own state is not ours to change. The
+  generator says which presets lost one.
+- `verify_bodygen.py` fails any template that sets one. It was proven on the unfixed files first
+  (1 failure: Sirius). It also compares each body with its preset MINUS the states.
+- Bodies an older build already gave are healed by the regeneration window (S-15). Only the
+  unkeyed value of a state morph goes: `SetMorph(..., None, 0.0)` erases exactly that key, per
+  LooksMenu's `UserValues::SetValue`. Only bodies carrying a Silhouette marker are touched, so a
+  state another mod keeps under its keyword, or one set by hand on a body that is not ours, stays.
+  "Refresh the people around me" fixes them as well, because Give re-applies the preset.
+- Build dffb550bfd66, stamp 14678869. Its manifest joins the old one; manifests are never deleted
+  (S-12).
+
+A related question from the same report: does an actor whose last keyed morph was removed keep
+BodyGen away for good? No. The emptied entry lasts until the next save and load. LooksMenu does
+not load an empty morph map (`BodyMorphInterface::Load`: `if(morphValueMap->empty()) return
+true;`, and `MorphValueMap::Load` skips a morph with no values). BodyGen then rolls the actor as
+new, because `ActorUpdateManager` evaluates only when `GetMorphMap` returns null.

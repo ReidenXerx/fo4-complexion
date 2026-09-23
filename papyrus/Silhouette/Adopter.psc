@@ -11,7 +11,11 @@ Scriptname Silhouette:Adopter extends Quest
 
  Left alone: anyone with an unkeyed value (a Silhouette body, or sliders set by
  hand in LooksMenu), anyone AAF has busy or locked, and anyone already processed.
- After 24 in-game hours the window closes itself.}
+ After 24 in-game hours the window closes itself.
+
+ The same scan heals Silhouette bodies an older build gave with a runtime STATE in
+ them (decision S-16): only the unkeyed value of a state morph goes, only on a body
+ that carries a Silhouette marker.}
 
 ; Every argument is passed explicitly: the decompiled base sources carry no defaults.
 
@@ -25,6 +29,7 @@ Int Property AAFActorLocked = 0x017CEA AutoReadOnly
 
 Float openedAt = -1.0      ; GetCurrentGameTime() when the window opened; -1 = closed
 Int adopted = 0
+Int healed = 0
 Keyword busyKeyword
 Keyword lockedKeyword
 
@@ -72,6 +77,10 @@ Int Function Adopted()
 	Return adopted
 EndFunction
 
+Int Function Healed()
+	Return healed
+EndFunction
+
 Event OnTimer(Int aiTimerID)
 	If aiTimerID != ScanTimer
 		Return
@@ -92,27 +101,66 @@ EndEvent
 Function Scan()
 	FormList seen = Game.GetFormFromFile(0x801, "Silhouette.esp") as FormList
 	Actor[] people = Silhouette:Player.Nearby()
+	String[] states = Silhouette:Player.StateMorphs()
 	Int i = 0
 	While i < people.Length
 		Actor a = people[i]
-		If a && Candidate(a, seen) && Eligible(a)
-			Adopt(a, seen)
+		If a && !Busy(a)
+			Heal(a, states)
+			If !(seen && seen.HasForm(a)) && Eligible(a)
+				Adopt(a, seen)
+			EndIf
 		EndIf
 		i += 1
 	EndWhile
 EndFunction
 
-Bool Function Candidate(Actor a, FormList seen)
-	If seen && seen.HasForm(a)
-		Return False
-	EndIf
+; In an AAF scene, or flagged for other mods to leave alone.
+Bool Function Busy(Actor a)
 	If busyKeyword && a.HasKeyword(busyKeyword)
-		Return False
+		Return True
 	EndIf
 	If lockedKeyword && a.HasKeyword(lockedKeyword)
-		Return False
+		Return True
 	EndIf
-	Return True
+	Return False
+EndFunction
+
+; A Silhouette body never holds a runtime state (decision S-16), but bodies an older
+; build gave can: Sirius_Male_preset once carried Erection at 100%, so two men kept
+; one for good. Only the unkeyed value goes -- SetMorph with 0 erases exactly that
+; key -- and only on a body Silhouette gave: a state another mod keeps under its own
+; keyword, or one set by hand on a body that is not ours, stays where it is.
+Function Heal(Actor a, String[] states)
+	Bool female = Silhouette:Player.IsFemale(a)
+	String[] found = new String[0]
+	Int i = 0
+	While i < states.Length
+		If BodyGen.GetMorph(a, female, states[i], None) != 0.0
+			found.Add(states[i], 1)
+		EndIf
+		i += 1
+	EndWhile
+	If found.Length == 0
+		Return
+	EndIf
+	String preset = ""
+	If female
+		preset = Silhouette:Player.PresetOf(a, True, Silhouette:Player.FemaleMarkers(), Silhouette:Player.FemaleNames())
+	Else
+		preset = Silhouette:Player.PresetOf(a, False, Silhouette:Player.MaleMarkers(), Silhouette:Player.MaleNames())
+	EndIf
+	If preset == "" || preset == "*"
+		Return
+	EndIf
+	Int j = 0
+	While j < found.Length
+		BodyGen.SetMorph(a, female, found[j], None, 0.0)
+		j += 1
+	EndWhile
+	BodyGen.UpdateMorphs(a)
+	healed += 1
+	Debug.Trace("Silhouette adopter: " + a.GetFormID() + " (" + preset + ") lost " + found.Length + " runtime state(s) an older build baked in", 0)
 EndFunction
 
 ; Holds body morphs, and every one of them under another mod's keyword.
