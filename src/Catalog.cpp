@@ -188,6 +188,9 @@ namespace SH
 		if (IEquals(a_morph, kRefitMarker)) {
 			return MarkerKind::kRefit;
 		}
+		if (IEquals(a_morph, kChoiceMarker)) {
+			return MarkerKind::kChoice;
+		}
 		return a_morph.size() > 11 && IEquals(a_morph.substr(0, 11), "Silhouette_") ? MarkerKind::kBody : MarkerKind::kNone;
 	}
 
@@ -199,7 +202,7 @@ namespace SH
 	const Preset* Catalog::Find(std::string_view a_name, bool a_female) const
 	{
 		for (const auto& p : presets) {
-			if (p.female == a_female && p.name == a_name) {
+			if (p.female == a_female && IEquals(p.name, a_name)) {
 				return &p;
 			}
 		}
@@ -242,6 +245,53 @@ namespace SH
 		return Listed(neverInBody[a_female ? 1 : 0], a_morph);
 	}
 
+	namespace
+	{
+		// Lower-case ASCII words of a name: "Combat Armor Chest-Piece" -> combat armor chest piece.
+		std::vector<std::string> Words(std::string_view a_text)
+		{
+			std::vector<std::string> out;
+			std::string               word;
+			for (const char ch : a_text) {
+				const auto c = static_cast<unsigned char>(ch);
+				if (std::isalnum(c) || c >= 0x80) {
+					word.push_back(static_cast<char>(std::tolower(c)));
+				} else if (!word.empty()) {
+					out.push_back(std::move(word));
+					word.clear();
+				}
+			}
+			if (!word.empty()) {
+				out.push_back(std::move(word));
+			}
+			return out;
+		}
+
+		std::string LowerAscii(std::string_view a_text)
+		{
+			std::string out{ a_text };
+			std::ranges::transform(out, out.begin(), [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+			return out;
+		}
+	}
+
+	std::string Catalog::HeavyWord(std::string_view a_itemName) const
+	{
+		const auto name = Words(a_itemName);
+		for (const auto& phrase : heavyWords) {
+			const auto words = Words(phrase);
+			if (words.empty() || words.size() > name.size()) {
+				continue;
+			}
+			for (std::size_t i = 0; i + words.size() <= name.size(); ++i) {
+				if (std::equal(words.begin(), words.end(), name.begin() + static_cast<std::ptrdiff_t>(i))) {
+					return phrase;
+				}
+			}
+		}
+		return {};
+	}
+
 	std::string Catalog::OutfitRefitSet(std::string_view a_outfitName, bool a_female) const
 	{
 		if (a_outfitName.empty()) {
@@ -275,13 +325,19 @@ namespace SH
 
 	void Catalog::AddManifest(std::uint32_t a_stamp, std::unordered_map<std::string, ManifestEntry> a_markers)
 	{
-		_manifests[a_stamp] = std::move(a_markers);
+		// Markers arrive from LooksMenu through the engine's case-insensitive string pool: keyed in
+		// lower case, looked up in lower case.
+		std::unordered_map<std::string, ManifestEntry> lowered;
+		for (auto& [marker, entry] : a_markers) {
+			lowered.emplace(LowerAscii(marker), std::move(entry));
+		}
+		_manifests[a_stamp] = std::move(lowered);
 	}
 
 	std::optional<std::string> Catalog::PresetForMarker(std::string_view a_marker, std::uint32_t a_stamp) const
 	{
 		if (const auto it = _manifests.find(a_stamp); it != _manifests.end()) {
-			if (const auto m = it->second.find(std::string{ a_marker }); m != it->second.end()) {
+			if (const auto m = it->second.find(LowerAscii(a_marker)); m != it->second.end()) {
 				return m->second.preset;
 			}
 		}
@@ -302,7 +358,7 @@ namespace SH
 		if (it == _manifests.end()) {
 			return out;
 		}
-		const auto m = it->second.find(std::string{ a_marker });
+		const auto m = it->second.find(LowerAscii(a_marker));
 		if (m == it->second.end()) {
 			return out;
 		}
@@ -475,17 +531,21 @@ namespace SH
 						throw Bad(std::format("{}: \"{}\" is never part of a body (S-16, S-29)", where, floor.morph));
 					}
 					floor.value = Num(At(e, "value", where), where);
+					if (!(floor.value > 0.0F)) {
+						throw Bad(std::format("{}: \"{}\" at {}: a floor must be above 0, a refit only raises (S-40)", where, floor.morph, floor.value));
+					}
 					floor.heavyOnly = Bool(At(e, "heavyOnly", where), where);
 					set.floors.push_back(std::move(floor));
 				}
 				c.refitSets.push_back(std::move(set));
 			}
 			const auto& heavy = At(orefit, "heavy", "orefit");
-			const auto  rating = Unsigned(At(heavy, "armorRating", "orefit.heavy"), "orefit.heavy.armorRating");
-			if (rating > 10000) {
-				throw Bad("orefit.heavy.armorRating: at most 10000");
+			c.heavyWords = Strings(At(heavy, "words", "orefit.heavy"), "orefit.heavy.words");
+			for (const auto& w : c.heavyWords) {
+				if (Words(w).empty()) {
+					throw Bad(std::format("orefit.heavy.words: \"{}\" holds no word", w));
+				}
 			}
-			c.heavyArmorRating = static_cast<int>(rating);
 			c.heavyItems = Refs(At(heavy, "items", "orefit.heavy"), "orefit.heavy.items");
 			c.heavyNames = Strings(At(heavy, "names", "orefit.heavy"), "orefit.heavy.names");
 			const auto& light = At(orefit, "light", "orefit");

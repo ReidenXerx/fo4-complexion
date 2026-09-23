@@ -13,11 +13,12 @@ Scriptname Silhouette:Adopter extends Quest
  hand in LooksMenu), anyone AAF has busy or locked, and anyone already processed.
  After 24 in-game hours the window closes itself.
 
- With Silhouette.dll ready, a person is handed to it (Silhouette:API.GenActor): the
- plugin rolls them the same way and knows it did. Without it this script rolls them
- itself, and also heals Silhouette bodies an older build gave with a runtime state
- or a shaft value in them (decisions S-16, S-29) -- the plugin's touch-up does that
- for everyone it sees.}
+ With Silhouette.dll ready, a person is handed to it (Silhouette:DLL.RequestAdopt):
+ the plugin rolls them the same way, knows it did, and says no for anyone whose body
+ is somebody's choice, who was reset (S-53), or who is being picked. Without it this
+ script rolls them itself, and also heals Silhouette bodies an older build gave with
+ a runtime state or a shaft value in them (decisions S-16, S-29) -- the plugin's
+ touch-up does that for everyone it sees.}
 
 ; Every argument is passed explicitly: the decompiled base sources carry no defaults.
 
@@ -34,6 +35,9 @@ Int adopted = 0
 Int healed = 0
 Keyword busyKeyword
 Keyword lockedKeyword
+; Real time the running scan began, -1 when none runs. A scan waits a frame for every
+; LooksMenu call, and the next timer can fire while one is still going.
+Float scanStarted = -1.0
 
 Event OnQuestInit()
 	RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")
@@ -43,6 +47,7 @@ EndEvent
 
 ; A load is a new lifetime for timers; an open window must survive it.
 Event Actor.OnPlayerLoadGame(Actor akSender)
+	scanStarted = -1.0
 	LookUpAAF()
 	If IsOpen()
 		StartTimer(ScanSeconds, ScanTimer)
@@ -97,26 +102,47 @@ Event OnTimer(Int aiTimerID)
 	; The next scan is scheduled BEFORE this one runs, so nothing below can stop
 	; the window by failing.
 	StartTimer(ScanSeconds, ScanTimer)
+	Float now = Utility.GetCurrentRealTime()
+	If scanStarted >= 0.0 && now >= scanStarted && now - scanStarted < 120.0
+		Return    ; the last scan is still going
+	EndIf
+	scanStarted = now
 	Scan()
+	scanStarted = -1.0
 EndEvent
 
 Function Scan()
 	FormList seen = Game.GetFormFromFile(0x801, "Silhouette.esp") as FormList
+	FormList looked = Game.GetFormFromFile(0x804, "Silhouette.esp") as FormList
 	Actor[] people = Silhouette:Player.Nearby()
 	Bool plugin = Silhouette:API.IsReady()
 	String[] states = new String[0]
+	String[] femaleMarkers = new String[0]
+	String[] maleMarkers = new String[0]
 	If !plugin
 		states = Silhouette:Player.StateMorphs()
+		femaleMarkers = Silhouette:Player.FemaleMarkers()
+		maleMarkers = Silhouette:Player.MaleMarkers()
 	EndIf
 	Int i = 0
 	While i < people.Length
 		Actor a = people[i]
 		If a && !Busy(a)
-			If !plugin
-				Heal(a, states)
-			EndIf
-			If !(seen && seen.HasForm(a)) && Eligible(a)
-				Adopt(a, seen, plugin)
+			Bool isSeen = seen && seen.HasForm(a)
+			Bool isLooked = looked && looked.HasForm(a)
+			If !isSeen || (!plugin && !isLooked)
+				Bool female = Silhouette:Player.IsFemale(a)
+				String[] morphs = BodyGen.GetMorphs(a, female)
+				If !plugin && !isLooked
+					If female
+						Heal(a, female, morphs, states, femaleMarkers, looked)
+					Else
+						Heal(a, female, morphs, states, maleMarkers, looked)
+					EndIf
+				EndIf
+				If !isSeen && Eligible(a, female, morphs)
+					Adopt(a, female, seen, plugin)
+				EndIf
 			EndIf
 		EndIf
 		i += 1
@@ -136,79 +162,110 @@ EndFunction
 
 ; A Silhouette body never holds a runtime state or a shaft value (decisions S-16,
 ; S-29), but bodies an older build gave can: Sirius_Male_preset once carried Erection
-; at 100%, so two men kept one for good. Only the unkeyed value goes -- SetMorph with 0 erases exactly that
-; key -- and only on a body Silhouette gave: a state another mod keeps under its own
-; keyword, or one set by hand on a body that is not ours, stays where it is.
-Function Heal(Actor a, String[] states)
-	Bool female = Silhouette:Player.IsFemale(a)
+; at 100%, so two men kept one for good. Only the unkeyed value goes -- SetMorph with
+; 0 erases exactly that key -- and only on a body Silhouette gave: a state another mod
+; keeps under its own keyword, or one set by hand on a body that is not ours, stays.
+; Names first (one call, compared as strings): most bodies hold none of these at all.
+; Each person is looked at once, so a value set by hand afterwards stays.
+Function Heal(Actor a, Bool female, String[] morphs, String[] states, String[] markers, FormList looked)
+	If looked
+		looked.AddForm(a)
+	EndIf
+	If !morphs
+		Return
+	EndIf
 	String[] found = new String[0]
+	String marker = ""
 	Int i = 0
-	While i < states.Length
-		If BodyGen.GetMorph(a, female, states[i], None) != 0.0
-			found.Add(states[i], 1)
+	While i < morphs.Length
+		If states.Find(morphs[i], 0) >= 0
+			found.Add(morphs[i], 1)
+		ElseIf marker == "" && markers.Find(morphs[i], 0) >= 0
+			marker = morphs[i]
 		EndIf
 		i += 1
 	EndWhile
-	If found.Length == 0
+	If found.Length == 0 || marker == ""
 		Return
 	EndIf
-	String preset = ""
-	If female
-		preset = Silhouette:Player.PresetOf(a, True, Silhouette:Player.FemaleMarkers(), Silhouette:Player.FemaleNames())
-	Else
-		preset = Silhouette:Player.PresetOf(a, False, Silhouette:Player.MaleMarkers(), Silhouette:Player.MaleNames())
-	EndIf
-	If preset == "" || preset == "*"
+	; A marker counts only while it holds a value: an emptied name is listed until a load.
+	If BodyGen.GetMorph(a, female, marker, None) <= 0.0
 		Return
 	EndIf
+	Int zeroed = 0
 	Int j = 0
 	While j < found.Length
-		BodyGen.SetMorph(a, female, found[j], None, 0.0)
+		If BodyGen.GetMorph(a, female, found[j], None) != 0.0
+			BodyGen.SetMorph(a, female, found[j], None, 0.0)
+			zeroed += 1
+		EndIf
 		j += 1
 	EndWhile
-	BodyGen.UpdateMorphs(a)
-	healed += 1
-	Debug.Trace("Silhouette adopter: " + a.GetFormID() + " (" + preset + ") lost " + found.Length + " runtime state(s) an older build baked in", 0)
+	If zeroed > 0
+		BodyGen.UpdateMorphs(a)
+		healed += 1
+		Debug.Trace("Silhouette adopter: " + a.GetFormID() + " (" + marker + ") lost " + zeroed + " runtime state(s) an older build baked in", 0)
+	EndIf
 EndFunction
 
-; Holds body morphs, and every one of them under another mod's keyword.
-Bool Function Eligible(Actor a)
-	Bool female = Silhouette:Player.IsFemale(a)
-	String[] morphs = BodyGen.GetMorphs(a, female)
+; Holds body morphs, every one of them under another mod's keyword, and at least one
+; of those with a value: an emptied name is listed until the next load, and someone
+; with nothing stored at all is LooksMenu's own BodyGen's to give a body.
+Bool Function Eligible(Actor a, Bool female, String[] morphs)
 	If !morphs || morphs.Length == 0
-		Return False    ; nothing stored: LooksMenu's own BodyGen takes care of them
+		Return False
 	EndIf
+	Bool keyed = False
 	Int i = 0
 	While i < morphs.Length
 		If BodyGen.GetMorph(a, female, morphs[i], None) != 0.0
 			Return False    ; an unkeyed value: a Silhouette body, or sliders set by hand
 		EndIf
+		If !keyed
+			Keyword[] kws = BodyGen.GetKeywords(a, female, morphs[i])
+			If kws
+				Int k = 0
+				While !keyed && k < kws.Length
+					If kws[k] && BodyGen.GetMorph(a, female, morphs[i], kws[k]) != 0.0
+						keyed = True
+					EndIf
+					k += 1
+				EndWhile
+			EndIf
+		EndIf
 		i += 1
 	EndWhile
-	Return True
+	Return keyed
 EndFunction
 
 ; Remember every keyed value, let BodyGen roll the actor, put the values back. With
-; the plugin ready, it does exactly that through its bridge, and the rules by name
-; and faction get their say.
-Function Adopt(Actor a, FormList seen, Bool abPlugin)
+; the plugin ready, it does exactly that through its bridge, the rules by name and
+; faction get their say, and it says no for anyone it has a reason to leave alone --
+; they are its to decide, and are not asked about again.
+Function Adopt(Actor a, Bool female, FormList seen, Bool abPlugin)
 	If abPlugin
-		If Silhouette:API.GenActor(a)
-			If seen
-				seen.AddForm(a)
-			EndIf
+		String why = Silhouette:DLL.RequestAdopt(a.GetFormID())
+		If seen
+			seen.AddForm(a)
+		EndIf
+		If why == ""
 			adopted += 1
 			Debug.Trace("Silhouette adopter: " + a.GetFormID() + " handed to Silhouette.dll to be rolled", 0)
+		Else
+			Debug.Trace("Silhouette adopter: " + a.GetFormID() + " left to Silhouette.dll: " + why, 0)
 		EndIf
 		Return
 	EndIf
-	Bool female = Silhouette:Player.IsFemale(a)
 	String[] morphs = BodyGen.GetMorphs(a, female)
 	String[] names = new String[0]
 	Keyword[] keys = new Keyword[0]
 	Float[] values = new Float[0]
+	Int count = 0
+	If morphs
+		count = morphs.Length
+	EndIf
 	Int i = 0
-	While i < morphs.Length
+	While i < count
 		Keyword[] kws = BodyGen.GetKeywords(a, female, morphs[i])
 		If kws
 			Int k = 0

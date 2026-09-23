@@ -10,9 +10,14 @@
   is ONE session's act: whoever holds the game says it is free first.
 
   What goes in, all of it built or generated, none of it hand-edited:
-    build\<Config>\Silhouette.dll          scripts\build-plugin.ps1
+    build\<Config>\Silhouette.dll (+.pdb)  scripts\build-plugin.ps1
     build\papyrus\Silhouette\*.pex         scripts\build-papyrus.ps1
     data\...                               tools\silhouette_gen.py --write, tools\make_esp.py
+
+  Refused before anything is copied: files the plugin's parser would refuse, a
+  compiled player.pex of another generator run, and files the verifier fails
+  (tools\verify_bodygen.py -- it reads the built bodies in Data, so a body rebuilt
+  since the generator ran fails here too).
 
   The whole staged tree is replaced (manifests excepted, which are only ever
   added): a file an older build shipped and this one does not would otherwise
@@ -54,11 +59,22 @@ if (-not (Test-Path $tests)) { throw "Missing $tests - run scripts\build-plugin.
 & $tests --check $data
 if ($LASTEXITCODE) { throw "the plugin would refuse these generated files - regenerate." }
 $catalog = Get-Content (Join-Path $data 'F4SE\Plugins\Silhouette\catalog.json') -Raw | ConvertFrom-Json
-# ...and the scripts must be from that run: Player.psc names its build too.
+# ...and the scripts must be from that run: Player.psc names its build, and so does what was COMPILED
+# from it -- the .pex is what ships, and a stale one outlives a regenerated source.
 $player = Get-Content (Join-Path $root 'papyrus\Silhouette\Player.psc') -Raw
 if ($player -notmatch "Return `"$($catalog.build)`"") {
     throw "papyrus\Silhouette\Player.psc is not build $($catalog.build) - regenerate, then build-papyrus."
 }
+$pexFile = (Get-ChildItem $pex -Filter 'player.pex').FullName
+$pexText = [System.Text.Encoding]::GetEncoding(28591).GetString([System.IO.File]::ReadAllBytes($pexFile))
+if (-not $pexText.Contains($catalog.build)) {
+    throw "$pexFile was not compiled from build $($catalog.build) - run scripts\build-papyrus.ps1."
+}
+# The files do what they claim, against the bodies built in Data now.
+$python = (Get-Command python -ErrorAction SilentlyContinue).Source
+if (-not $python) { throw "No python: the verifier (tools\verify_bodygen.py) must pass before a deploy." }
+& $python (Join-Path $root 'tools\verify_bodygen.py') --dir $data --psc (Join-Path $root 'papyrus\Silhouette\Player.psc') | Select-Object -Last 3
+if ($LASTEXITCODE) { throw "tools\verify_bodygen.py fails these files - see its output; regenerate if a body was rebuilt." }
 
 New-Item -ItemType Directory -Force -Path $Staging | Out-Null
 foreach ($old in @('F4SE\Plugins\F4EE', 'MCM', 'Scripts')) {
@@ -74,6 +90,9 @@ Copy-Item (Join-Path $data 'F4SE') $Staging -Recurse -Force
 Copy-Item (Join-Path $data 'MCM') $Staging -Recurse -Force
 Copy-Item (Join-Path $data 'Silhouette.esp') $Staging -Force
 Copy-Item $dll (Join-Path $Staging 'F4SE\Plugins\Silhouette.dll') -Force
+# Beside the DLL, a crash logger names Silhouette's functions instead of offsets.
+$pdb = [System.IO.Path]::ChangeExtension($dll, '.pdb')
+if (Test-Path $pdb) { Copy-Item $pdb (Join-Path $Staging 'F4SE\Plugins\Silhouette.pdb') -Force }
 $scripts = Join-Path $Staging 'Scripts\Silhouette'
 New-Item -ItemType Directory -Force -Path $scripts | Out-Null
 foreach ($f in Get-ChildItem $pex -Filter *.pex) {

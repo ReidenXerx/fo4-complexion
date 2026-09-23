@@ -125,12 +125,21 @@ def load_order(data, plugins_txt):
     return order
 
 
+def _fold(text):
+    """ASCII letters in lower case, as the game compares editor ids."""
+    return ''.join(c.lower() if 'A' <= c <= 'Z' else c for c in text)
+
+
 def resolve(data, plugins_txt, record_type, wanted, report):
     """{editor id: (owner plugin, local id)} for the wanted ids, the last plugin in
-    load order that carries each one winning, as the game's own lookup does."""
-    wanted = set(wanted)
+    load order that carries each one winning, as the game's own lookup does. Editor ids
+    match in any case, as the game matches them; the answer is keyed by the spelling
+    that was asked for."""
+    by_fold = {}
+    for w in set(wanted):
+        by_fold.setdefault(_fold(w), []).append(w)
     found = {}
-    if not wanted:
+    if not by_fold:
         return found
     for plugin in load_order(data, plugins_txt):
         try:
@@ -139,8 +148,8 @@ def resolve(data, plugins_txt, record_type, wanted, report):
             report.append(f'rules: could not read {plugin} for {record_type} editor ids ({exc})')
             continue
         for edid, where in ids.items():
-            if edid in wanted:
-                found[edid] = where
-    for edid in sorted(wanted - set(found)):
+            for w in by_fold.get(_fold(edid), ()):
+                found[w] = where
+    for edid in sorted(set(wanted) - set(found)):
         report.append(f'rules: no {record_type} with editor id {edid!r} in the load order - that rule is skipped')
     return found

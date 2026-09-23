@@ -19,6 +19,14 @@
 
 namespace SH
 {
+	// Who waits for whom (S-55): the player's own actions first, then decisions, then the rest.
+	enum class Lane : int
+	{
+		kUrgent = 0,      // the picker, the NPC page, a refit coming off
+		kNormal = 1,      // other mods' API calls, rules, refits going on, touch-ups, first contact while dressing
+		kBackground = 2,  // probes, the bulk buttons, the regeneration window, deferred work
+	};
+
 	// One change to an actor's body that the plugin has decided on and the bridge has not made yet.
 	struct BodyRequest
 	{
@@ -28,14 +36,17 @@ namespace SH
 			kBlacklist,   // bare, with the blacklist marker, no refit (S-23)
 			kRestore,     // the picker's Cancel: exactly the unkeyed layer they had
 			kRegenerate,  // BodyGen rolls again, keyed layers kept
-			kReset,       // the unkeyed layer and the refit removed: bare until BodyGen after a load (S-27)
+			kReset,       // the unkeyed layer and the refit removed: a new body at the next load (S-53)
+			kMark,        // only the choice marker, beside a body already there (S-51)
 		};
 
 		What        what{ What::kPreset };
 		std::string preset;
 		bool        preview{ false };      // the picker trying a preset on: not intent
-		bool        keepVariety{ false };  // Refresh / Reapply: keep the variety they already have
+		bool        keepVariety{ false };  // Refresh / Reapply: read the layer first, keep the variety in it
+		Morphs      keepFrom;              // picker previews: keep the variety of the body they had at Pick
 		Morphs      restore;
+		Source      choice{ Source::kNone };  // picker or API: the choice marker goes with the body (S-51)
 	};
 
 	// What the game side read about an actor, on the main thread.
@@ -46,7 +57,7 @@ namespace SH
 		ActorFacts    facts;
 		bool          eligible{ true };  // false: the player, the character-creation dummies
 		bool          clothed{ false };
-		bool          heavy{ false };    // S-42
+		bool          heavy{ false };    // S-48
 		std::string   outfitSet;         // the refit set the worn outfit brings, "" for none
 	};
 
@@ -65,7 +76,7 @@ namespace SH
 		std::uint32_t ref{ 0 };
 		std::string   preset;
 		bool          flag{ false };
-		std::uint32_t announce{ 0 };  // kGenerated: the body it announces, recorded when handed out
+		std::uint32_t announce{ 0 };  // kGenerated: the body it announces, recorded when the bridge raised it
 	};
 
 	enum class OrderKind : std::int32_t
@@ -91,23 +102,26 @@ namespace SH
 	};
 
 	// One job for the bridge. It does, in this order: regenerate, probe (names, markers), readAll, the
-	// reads, Prepare, the clears, the writes, update; then reports Done. Every value it writes was
-	// decided here.
+	// reads (stopping early when told), Prepare, the clears, the writes, update; then reports Done -- or
+	// Gone when the actor is not in memory, or Defer when another mod has them busy.
 	struct Order
 	{
 		std::uint32_t id{ 0 };
 		std::uint32_t ref{ 0 };
 		bool          female{ false };
 		OrderKind     kind{ OrderKind::kProbe };
+		Lane          lane{ Lane::kBackground };
 
 		bool                     regenerate{ false };
 		bool                     probe{ false };
 		bool                     readAll{ false };
 		std::vector<std::string> reads;
+		bool                     readsUntilBody{ false };  // stop at the first non-zero own value (S-41)
 
 		std::string              marker;  // reported by the probe: the body marker
 		float                    markerValue{ 0.0F };
-		float                    refitValue{ 0.0F };  // the refit marker's value, 0 for none
+		float                    refitValue{ 0.0F };   // the refit marker's value, 0 for none
+		float                    choiceValue{ 0.0F };  // the choice marker's value, 0 for none
 		std::vector<std::string> names;
 		std::vector<float>       readValues;  // parallel to reads; NaN until reported
 		Morphs                   layer;       // reported by readAll
@@ -123,13 +137,20 @@ namespace SH
 		bool          refitOn{ false };
 		bool          heavy{ false };
 		std::string   refitSet;
-		std::uint32_t touchHash{ 0 };
+		std::uint32_t touchKey{ 0 };
 	};
 
 	struct Settings
 	{
 		bool            orefit{ true };  // MCM, and SetORefit (S-24)
 		VarietySwitches variety;
+	};
+
+	enum class Switch
+	{
+		kORefit,
+		kNipples,
+		kGenitals,
 	};
 
 	class Director
@@ -145,6 +166,7 @@ namespace SH
 		[[nodiscard]] std::shared_ptr<const Catalog> CatalogPtr() const;
 
 		void                   Configure(const Settings& a_settings);
+		void                   SetSwitch(Switch a_switch, bool a_on);  // one switch, under one lock
 		[[nodiscard]] Settings Current() const;
 
 		// A save is being left: everything about the world goes, the records stay (the co-save's).
@@ -155,16 +177,21 @@ namespace SH
 		// --- what the game saw ---
 		void Seen(const Sighting& a_sighting);
 		// An equip event was handled: a_sighting is the actor after it. a_removedClothing: the event took
-		// off an item that dresses them (OnActorRemovingClothes).
+		// off an item from a body, chest or pelvis slot (OnActorRemovingClothes).
 		void Dressed(const Sighting& a_sighting, bool a_removedClothing);
 
 		// --- requests (API, MCM, picker); each writes the intent at once (S-43) ---
-		bool RequestPreset(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_preset, Source a_source, std::string& a_why);
-		bool RequestRegenerate(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string& a_why);
-		bool RequestReset(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string& a_why);
+		bool RequestPreset(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_preset, Source a_source, Lane a_lane,
+			std::string& a_why);
+		bool RequestRegenerate(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, Lane a_lane, std::string& a_why);
+		bool RequestReset(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, Lane a_lane, std::string& a_why);
 		// The body they have, again, with this build's values and their own variety: their record's
 		// preset, or the one their marker names (a_markerPreset, from a probe) for a body BodyGen gave.
-		bool RequestReapply(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_markerPreset, std::string& a_why);
+		bool RequestReapply(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_markerPreset, Lane a_lane,
+			std::string& a_why);
+		// The regeneration window (S-15): a roll for someone other mods marked first -- refused for anyone
+		// with a choice behind their body, a reset waiting, a picking, or work on the way.
+		bool RequestAdopt(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string& a_why);
 
 		// --- the bridge ---
 		[[nodiscard]] std::uint32_t        NextOrder();
@@ -172,11 +199,11 @@ namespace SH
 		[[nodiscard]] std::uint32_t        OrderActor(std::uint32_t a_order) const;
 		void                               NoteName(std::uint32_t a_order, std::string_view a_morph);
 		void                               NoteMarker(std::uint32_t a_order, std::string_view a_marker, float a_value);
-		// How many morphs to read before Prepare -- decided on this first call, after the probe: a body
-		// without a Silhouette marker is recognised by a few of its own values.
+		// How many morphs to read before Prepare -- decided on this first call, after the probe.
 		[[nodiscard]] std::int32_t ReadCount(std::uint32_t a_order);
 		[[nodiscard]] std::string  ReadMorph(std::uint32_t a_order, std::int32_t a_index) const;
 		void                       NoteRead(std::uint32_t a_order, std::int32_t a_index, float a_value);
+		[[nodiscard]] bool         ReadsDone(std::uint32_t a_order) const;  // the reads can stop here
 		void                       NoteLayer(std::uint32_t a_order, std::string_view a_morph, float a_value);
 		bool                       Prepare(std::uint32_t a_order);
 		[[nodiscard]] bool         ClearsUnkeyed(std::uint32_t a_order) const;
@@ -187,11 +214,21 @@ namespace SH
 		[[nodiscard]] float        WriteValue(std::uint32_t a_order, std::int32_t a_index) const;
 		[[nodiscard]] Layer        WriteLayer(std::uint32_t a_order, std::int32_t a_index) const;
 		void                       Done(std::uint32_t a_order, bool a_ok);
-		[[nodiscard]] std::size_t  Pending() const;
+		// The actor is not in memory: the work waits for the next sighting.
+		void Gone(std::uint32_t a_order);
+		// Another mod has them busy (an AAF scene): the work goes to the back and is not handed out again
+		// for kDeferWait -- the bridge's drain ends instead of spinning on it until the scene is over.
+		void                      Defer(std::uint32_t a_order);
+		[[nodiscard]] std::size_t Pending() const;
 
-		// Events for the bridge to raise, oldest first. 0: none.
+		using Clock = std::function<std::chrono::steady_clock::time_point()>;
+		static constexpr std::chrono::seconds kDeferWait{ 10 };
+		void SetClock(Clock a_clock);  // tests move time by hand
+
+		// Events for the bridge to raise, oldest first. 0: none. EventDone once it has been raised.
 		[[nodiscard]] std::uint32_t        NextEvent();
 		[[nodiscard]] std::optional<Event> EventAt(std::uint32_t a_event) const;
+		void                               EventDone(std::uint32_t a_event);
 
 		// --- the NPC picker (S-22, S-47) ---
 		std::string                 PickerStart(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_name);
@@ -207,31 +244,29 @@ namespace SH
 		[[nodiscard]] std::string Describe(std::uint32_t a_ref) const;
 
 		// --- the co-save (S-25, S-47) ---
-		[[nodiscard]] std::vector<std::byte> SaveRecords(const std::function<bool(std::uint32_t)>& a_keep) const;
-		bool                                 LoadRecords(std::span<const std::byte> a_bytes, std::uint32_t a_version,
-											 const std::function<std::uint32_t(std::uint32_t)>& a_resolve, std::string& a_error);
+		[[nodiscard]] std::vector<std::byte> SaveRecords(const Registry::KeepFn& a_keep) const;  // a_keep runs under the lock
+		Registry::Loaded                     LoadRecords(std::span<const std::byte> a_bytes, std::uint32_t a_version,
+								const std::function<std::uint32_t(std::uint32_t)>& a_resolve, std::string& a_error);
 		[[nodiscard]] std::size_t            RecordCount() const;
 		[[nodiscard]] std::optional<Record>  RecordOf(std::uint32_t a_ref) const;
+		[[nodiscard]] bool                   HasPicking(std::uint32_t a_ref) const;
 
 		// Lines for the log, taken by the game side (the director never logs itself: no game here).
 		[[nodiscard]] std::vector<std::string> TakeLog();
+		// One line of what the bridge did since the last call, "" when nothing happened and nothing waits.
+		[[nodiscard]] std::string TakeSummary();
 
 	private:
-		enum Lane : int
-		{
-			kUrgent = 0,      // the player's own actions, and a refit coming off
-			kNormal = 1,      // decisions: rules, refits, touch-ups
-			kBackground = 2,  // probes
-		};
-
 		struct Work
 		{
-			int                        lane{ kBackground };
+			Lane                       lane{ Lane::kBackground };
 			bool                       snapshot{ false };
 			std::optional<BodyRequest> body;
 			bool                       touch{ false };
 			bool                       refit{ false };
 			bool                       probe{ false };
+			bool                       parked{ false };  // the actor was not in memory: waits for a sighting
+			std::chrono::steady_clock::time_point notBefore{};  // deferred: not handed out before this
 
 			[[nodiscard]] bool Empty() const { return !snapshot && !body && !touch && !refit && !probe; }
 		};
@@ -247,17 +282,25 @@ namespace SH
 			bool          heavy{ false };
 			std::string   outfitSet;
 			ActorFacts    facts;
+			Verdict       verdict;
 
 			// What this session knows of LooksMenu's layers (S-43).
 			bool                     probed{ false };
 			std::string              marker;  // the body marker, "" for none
 			std::uint32_t            stamp{ 0 };
 			bool                     hasBody{ false };
-			int                      refit{ -1 };  // -1 unknown, 0 none, else the refit marker's value
-			std::vector<std::string> names;
-			bool                     reset{ false };      // reset this session: bare, never refit (S-41)
-			bool                     regiven{ false };    // intent was restored once this session
-			bool                     restoring{ false };  // a picker restore after a load is queued
+			int                      refit{ -1 };  // -1 unknown, 0 none, -2 unfinished, else the refit marker's value
+			Source                   choice{ Source::kNone };  // what the choice marker says (S-51)
+			std::vector<std::string> names;                    // every layer's names
+			std::vector<std::string> own;                      // of those read, the ones her OWN layer holds
+
+			bool stranger{ false };        // a created reference's id reused: a choice LooksMenu holds was somebody else's
+			bool reset{ false };           // reset this session: bare, never refit (S-41, S-53)
+			bool regiven{ false };         // intent was restored once this session
+			bool restoring{ false };       // a picker restore is queued
+			bool marked{ false };          // the choice marker was asked for this session
+			bool announceOnDone{ false };  // Keep on a preview still on its way: announce when it lands
+			bool deferNoted{ false };
 		};
 
 		struct Picker
@@ -269,7 +312,8 @@ namespace SH
 			std::vector<std::string> presets;
 			std::int32_t             index{ -1 };  // -1: nothing tried on yet
 			bool                     snapped{ false };
-			std::string              current;  // the preset they had at Pick, "" unknown
+			bool                     tried{ false };  // a preview was asked for: Cancel has something to undo
+			std::string              current;         // the preset they had at Pick, "" unknown
 		};
 
 		struct Want
@@ -278,29 +322,43 @@ namespace SH
 			bool            heavy{ false };
 		};
 
+		struct Counts
+		{
+			std::size_t probes{ 0 }, bodies{ 0 }, refits{ 0 }, touches{ 0 }, snapshots{ 0 }, failed{ 0 }, gone{ 0 }, deferred{ 0 };
+
+			[[nodiscard]] bool Any() const { return probes || bodies || refits || touches || snapshots || failed || gone || deferred; }
+		};
+
 		// all of these expect the lock held
-		Verdict                   Admit(Session& a_session, const Sighting& a_sighting);
+		void                      Admit(Session& a_session, const Sighting& a_sighting);
 		void                      LeaveAlone(std::uint32_t a_ref, const Session& a_session);
+		void                      Unpark(std::uint32_t a_ref);
+		void                      PendingRestore(std::uint32_t a_ref, Session& a_session);
+		void                      Retire(std::uint32_t a_ref);
 		[[nodiscard]] Order*      Find(std::uint32_t a_order);
 		void                      Log(std::string a_line);
 		void                      Push(EventKind a_kind, std::uint32_t a_ref, std::string a_preset = {}, bool a_flag = false, std::uint32_t a_announce = 0);
-		Work&                     WorkFor(std::uint32_t a_ref, int a_lane);
-		void                      QueueBody(std::uint32_t a_ref, BodyRequest a_body, int a_lane);
+		Work&                     WorkFor(std::uint32_t a_ref, Lane a_lane);
+		void                      QueueBody(std::uint32_t a_ref, BodyRequest a_body, Lane a_lane);
+		void                      Requeue(Order& a_order, bool a_park);
 		[[nodiscard]] bool        BodyPending(std::uint32_t a_ref) const;
 		void                      Intend(std::uint32_t a_ref, const Session& a_session, Source a_source, std::string a_preset);
-		void                      DecideBody(std::uint32_t a_ref, Session& a_session, const Verdict& a_verdict);
+		[[nodiscard]] BodyRequest RestoreOf(const Morphs& a_snapshot, bool a_female) const;
+		void                      AfterProbe(std::uint32_t a_ref, Session& a_session);
+		void                      RebuildChoice(std::uint32_t a_ref, Session& a_session);
+		void                      FollowReset(std::uint32_t a_ref, Session& a_session);
+		void                      DecideBody(std::uint32_t a_ref, Session& a_session);
 		void                      OnProbed(std::uint32_t a_ref, const Order& a_order);
 		void                      Reconcile(std::uint32_t a_ref, Session& a_session);
 		void                      AnnounceBody(std::uint32_t a_ref, const Session& a_session);
 		void                      CheckTouch(std::uint32_t a_ref, const Session& a_session);
 		[[nodiscard]] Want        WantRefit(const Session& a_session) const;
-		[[nodiscard]] float       RefitMarkerValue(const RefitSet& a_set, bool a_heavy) const;
 		void                      ReconcileRefit(std::uint32_t a_ref);
 		[[nodiscard]] std::string PresetNamedBy(std::string_view a_marker, std::uint32_t a_stamp) const;
 		void                      FinishBody(Order& a_order);
 		void                      FinishRefit(Order& a_order);
 		void                      ClosePicker();
-		std::string               CancelPicking();
+		std::string               CancelPicking(std::string_view a_message = {});
 
 		mutable std::mutex _lock;
 
@@ -321,5 +379,7 @@ namespace SH
 		std::uint32_t                              _nextEvent{ 1 };
 		Picker                                     _picker;
 		std::vector<std::string>                   _log;
+		Counts                                     _counts;
+		Clock                                      _clock{ [] { return std::chrono::steady_clock::now(); } };
 	};
 }

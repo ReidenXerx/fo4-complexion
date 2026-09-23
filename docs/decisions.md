@@ -315,8 +315,9 @@ plugin of the chain's root, which is where LooksMenu applies a plugin line.
 Agent decision, 2026-09-23. OBody's priority stands (S-11). The plugin acts only when a NAME or
 FACTION tier wins for an NPC: it assigns that preset, and the bridge replaces BodyGen's roll. A name
 blacklist leaves the NPC bare, with a stored blacklist marker (a morph no body has), so BodyGen
-never rolls them again. OBody's `obody_blacklisted` morph does the same job. Names are the NPC's
-in-game display name, as OBody's users write them.
+never rolls them again. OBody's `obody_blacklisted` morph does the same job. Names are the NPC
+record's name, as the amendment above says -- the name OBody's users write, since the record's name is
+the one the game shows until a script renames the reference.
 
 ## S-24 — The API and events are OBody's, in Papyrus
 
@@ -354,7 +355,10 @@ are OBody's keys too, by form id, name or plugin. The player is never refit.
 ## S-27 — Reset, Back to random, and leaving
 
 **Amended by S-40/S-41: Reset also removes the refit layer and nothing is refit until she has a body again;
-leaving needs no step at all -- removing Silhouette.esp removes every refit.**
+leaving needs no step at all -- removing Silhouette.esp removes every refit.** **Amended by S-53: with
+another mod's keyed morph on them LooksMenu keeps their map and never runs BodyGen, so the plugin remembers
+a reset and rolls them a body itself at the next load. And by S-54: without a working Silhouette.dll the
+bridge takes refits off the people around the player.**
 
 Agent decision, 2026-09-23, from LooksMenu's source. Reset removes Silhouette's (unkeyed) layer: the NPC
 is bare now, and LooksMenu drops emptied entries when it loads a save (MorphValueMap::Load skips them),
@@ -391,6 +395,10 @@ their own body until they apply a preset again in MCM.
 
 ## S-40 — ORefit is a keyword layer that only raises (supersedes S-20's mechanism)
 
+**Amended by S-50: the refit marker's value names the set, its weight and the floors applied, so a build
+with new floors reaches a woman who never undresses; odd is light, even is heavy. A floor must be above
+0: the parser refuses anything else.**
+
 Owner poll, 2026-09-23, after the first microscope wave showed that S-20's design keeps a clothed
 woman's naked values only in Silhouette's co-save, so one save without the DLL, a save that lands in the
 middle of a refit, or an NPC whose cell unloads makes the clothed shape her naked body for good. The owner
@@ -423,9 +431,13 @@ mod's BodyGen files gave, a custom follower's, one edited by hand in LooksMenu. 
 Having a body is read from LooksMenu: a Silhouette marker, or a non-zero value of her own.
 Nobody outside this -- the player, the dummies, creatures, races Silhouette does not distribute to -- is
 ever probed: that is most actors in the world. A race taken out of `distributeRaces` keeps the refits its
-women already have until they are reset, or until Silhouette.esp is removed.
+women already have until Silhouette.esp is removed: they are never probed, and a Reset is refused for a
+race Silhouette does not shape. Nor are anyone in power armour refit (S-48).
 
 ## S-42 — Nipples are flattened under heavy clothes only
+
+**Superseded by S-48 as to what is heavy -- the rating and chest-piece rules below are gone -- and by S-49
+as to arousal. The built-in set stands.**
 
 Owner poll, 2026-09-23 ("would be cool to flatten nipples only on heavy clothes like in reality with rough
 tissue"; then "Armour pieces + armoured outfits"). Measured in the base game and DLCs: most clothes take
@@ -455,10 +467,18 @@ non-persistent NPC whose morphs LooksMenu drops at load, a reroll that goes arou
 - A record belongs to its reference. Only a created (0xFF) reference's id can be handed to somebody new,
   so only there does a different NPC record mean somebody else; a placed leveled NPC is given a new
   temporary record when it respawns and stays the same person to LooksMenu, and keeps its record.
-- Work goes in three lanes: the player's own actions first (picker, menu, API, a refit coming off),
-  then decisions (rules, refits, top-ups), then probes.
+- Work goes in three lanes (S-55 moved other mods' calls out of the first): the player's own actions,
+  then decisions and other mods, then probes and bulk work.
+- A rule decides after the first probe, knowing the body she has (wave 2): a choice LooksMenu mirrors
+  (S-51) is rebuilt first, so a rule never replaces a body somebody chose.
 
 ## S-44 — Top-up: existing bodies get the variety they lack
+
+**Amended by the second microscope wave: a body is touched once per build of what is wanted of it -- its
+marker, the heals its build needs and the ranges switched on -- so a later build's heal or new range still
+reaches a body touched before, and a body that needed nothing is remembered too (a value the player takes
+off afterwards is not put back). Presence is read from her own layer: another mod's keyed value of a variety
+slider is not hers. A body Silhouette gives or rolls counts as touched when it lands.**
 
 Owner poll, 2026-09-23 ("i aggree with recommended, but force regen on 24h function ofc will override
 it"). The first time the plugin sees a Silhouette body that lacks a variety slider the current build rolls
@@ -475,6 +495,12 @@ character is the most average preset exactly, and "Back to the default" gives th
 
 ## S-46 — The API's events and names
 
+**Amended by the second microscope wave: every body given on request is announced, the same preset again
+included (Back to random rolling the same preset, a Reapply); a body about to be replaced is not; and an
+announcement counts as made only once the bridge has raised it (EventDone), so one a save cut off is made
+again after the load. A listener compiled against the decompiled base sources registers the mangled name,
+"silhouette:bridge_OnActorGenerated"; one compiled against the Creation Kit's own sources, the plain one.**
+
 Agent decision, 2026-09-23. The bridge sends its custom events under the names the compiler gives them,
 "silhouette:bridge_<Event>": sent under the bare name, no listener ever receives them (the vanilla scripts
 and Rapport do the same). The native script is `Silhouette:DLL` -- "Plugin" also means an .esp in this
@@ -486,3 +512,104 @@ Calls that change a body return before it changes; OnActorGenerated says it happ
 Agent decision, 2026-09-23. The picker's copy of the body and the choice the NPC had before are kept in
 the co-save while picking. A save made mid-preview loads as a Cancel: the preview never becomes a body
 nobody kept.
+
+**Amended by the second microscope wave.** One saved picking per NPC (up to 64): picking somebody else no
+longer loses the first one's way back. Picking an NPC again carries on from the body they had then. A
+restore puts back the choice behind the body with it, and never a value no body may hold (S-16, S-29).
+Keep on the preset they already had is a Cancel -- exactly the body they had, their own edits included --
+and previews keep their own variety. Any decision made elsewhere (a rule, another mod, Back to random)
+ends a picking and anything it left to restore. A created reference's id handed to someone new drops the
+picking (S-57).
+
+## S-48 — Heavy is told by the item's name (supersedes S-42's mechanism)
+
+Owner poll, 2026-09-23, after the second microscope wave measured S-42 misfiring: NipBGone shows only where
+the garment's own .tri carries it (2 of 64 vanilla clothes, none of the DLC04 armours), while bras, tops and
+shirts in slot 41 were classed heavy -- 635 items heavy, 137 of them visibly. Nothing about slots or ratings
+separated them. The owner: "i think we need here kinda regexp by name maybe? flatten only obvious armors ...
+armor-like words in name, etc or top type of cloth such as jacket, so flattened nipples where it shouldnt be
+worse than visible nipples where they shouldnt".
+- The config's lists decide first: items named heavy or light by form id (`heavyOutfitsFormID`,
+  `lightOutfitsFormID`) or by exact name (`heavyOutfits`, `lightOutfits`).
+- Otherwise an item is heavy when its NAME holds one of `heavyWords` as a whole word or phrase, in any case
+  and with any separator: "Combat Armor Chest Piece", "Leather chest-piece", "Minuteman Coat". A word inside
+  another word is not the word: "Armorsmith's Apron" and "Coated Dress" are light. The default words are
+  armor, armour, armored, armoured, chest piece, chestpiece, breastplate, cuirass, jacket, coat, trenchcoat,
+  parka.
+- Everything the name does not say is light.
+- Power armour -- frames and pieces, by their Fallout4.esm keywords -- is not clothes at all: an NPC in a
+  frame is not refit, and climbing in and out is not dressing.
+- Each item is decided once; a heavy or listed one says why in Silhouette.log.
+
+## S-49 — Arousal is held flat under heavy clothes
+
+Owner poll, 2026-09-23: "Hold it flat (Recommended)". NipBGone is a floor, and LooksMenu shows the MAXIMUM
+per morph over keyword layers: the anatomy mod's arousal layer, on its own keyword, raises other nipple
+morphs that add to the shape, so a heavily dressed, aroused woman showed 0.90 against 0.13 calm. The anatomy
+mod holds its nipple rise at 0 while Silhouette's heavy refit is on her, which it reads from S-50's marker.
+
+## S-50 — The refit marker says which refit is on, and how heavy
+
+Agent decision, 2026-09-23, from the second microscope wave, shaped by S-49's contract. The marker
+`Silhouette_Refit`, under Silhouette.esp's keyword 0x803, holds 1 + heavy + 2 x (a hash of the set's name,
+its weight and the floors applied, modulo 8388606): a whole number below 2^24, exact in the float LooksMenu
+keeps, ODD under light clothes and EVEN under heavy ones; 0.25 while a refit is being written; nothing when
+no refit is on. A build whose floors changed gives another value, so a woman who never undresses is refit
+again the next time she is seen. Other mods read it from LooksMenu, or through `Silhouette:API.IsHeavilyDressed`
+and `Silhouette:API.IsORefitApplied`, which read it there.
+
+## S-51 — A choice is mirrored into LooksMenu
+
+Owner poll, 2026-09-23: "Mirror into LooksMenu (Recommended)". F4SE keeps no co-save chunk of a plugin that
+is not loaded, so one save made without Silhouette.dll lost every choice, and the rules then took picked
+bodies back. A body the picker or another mod chose carries `Silhouette_Chosen` beside it in its own layer
+(3: picked, 4: another mod) -- a morph no body has. When the co-save has no record, the probe rebuilds the
+choice from it; a choice recorded without the marker (given before this) gets it.
+
+## S-52 — A rule's draw is kept while the rule lists it
+
+Owner poll, 2026-09-23: "Keep it (Recommended)". A name or faction rule with several presets draws one per
+person. A met NPC keeps the preset recorded for them while the rule still lists it: adding a preset to a
+rule re-bodies nobody (before, about two thirds of the people it covered), and taking theirs out draws again
+from what is left.
+
+## S-53 — Reset means a new body at the next load
+
+Owner poll, 2026-09-23: "New body next load (Recommended)". Reset leaves them bare now, with no refit, and
+the plugin remembers it. At the next load: when LooksMenu dropped their emptied map, BodyGen gives them a
+body and the reset is over; when another mod's keyed morph kept the map (BodyGen never runs for a stored
+map), the plugin rolls them a body itself, the other mod's morphs kept. The regeneration window leaves a
+reset NPC alone.
+
+## S-54 — Without a working Silhouette.dll, refits are swept off
+
+Owner poll, 2026-09-23: "Sweep them off (Recommended)". A missing Silhouette.dll, one of another release, or
+a catalog it refused left every refit on for good, dressed or not. The bridge then looks at the people
+around the player -- once each per load, every 30 seconds -- and takes off a refit layer it finds; their own
+body, BodyGen's, stays.
+
+## S-55 — Lanes: the player's own actions first
+
+Owner poll, 2026-09-23: "Player actions first (Recommended)". Three lanes, in order: urgent -- the picker,
+the NPC page, a refit coming off; normal -- other mods' API calls, the rules, a refit going on, touch-ups,
+first contact with someone who is dressing; background -- probes, the bulk buttons (Refresh, Give the
+people around me new bodies) and the regeneration window. Within a lane, first asked, first done. Before,
+a bulk button's hundred orders in the urgent lane made the picker wait behind them.
+
+## S-56 — Work waits instead of being lost
+
+Agent decision, 2026-09-23, from the second microscope wave. An order whose actor is not in memory waits,
+off the queue, until they are seen again -- a roll has no recorded intent to fall back on (the regeneration
+window's hand-offs were lost). A roll for someone AAF has busy or locked waits too, tried again no sooner
+than 10 seconds later: a roll keeps every keyed value it finds, and in a scene those are the scene's -- AAF's
+erection would have stayed for good. Found while fixing it: an order handed straight back would have kept
+the bridge's drain spinning for the whole scene. A new decision replaces the one waiting and is tried at
+once.
+
+## S-57 — A created reference's id handed to someone new
+
+Agent decision, 2026-09-23. The game gives a deleted created (0xFF) reference's id to whoever is created
+next, and LooksMenu can keep the old morphs on it. Everything that came with the id is the previous NPC's:
+the record and a saved picking are dropped, and a choice marker is taken off -- never rebuilt into a choice
+that would pin the body against the rules. The body itself stays. The co-save writes a created reference's
+record only while the id is still an actor of the same NPC.

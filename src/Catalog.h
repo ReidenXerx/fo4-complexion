@@ -9,12 +9,14 @@ namespace SH
 	// Markers Silhouette writes that are not a preset's (the generator reserves both names).
 	inline constexpr std::string_view kBlacklistMarker = "Silhouette_Blacklisted";  // S-23, unkeyed
 	inline constexpr std::string_view kRefitMarker = "Silhouette_Refit";            // S-40, under the refit keyword
+	inline constexpr std::string_view kChoiceMarker = "Silhouette_Chosen";          // S-51, unkeyed: who chose the body
 
 	enum class MarkerKind : std::int32_t
 	{
 		kNone = 0,
-		kBody = 1,   // unkeyed: a preset's marker, or the blacklist marker
-		kRefit = 2,  // under Silhouette's refit keyword
+		kBody = 1,    // unkeyed: a preset's marker, or the blacklist marker
+		kRefit = 2,   // under Silhouette's refit keyword
+		kChoice = 3,  // unkeyed: the source of a chosen body (picker, API), beside its marker
 	};
 
 	[[nodiscard]] MarkerKind KindOf(std::string_view a_morph);
@@ -136,17 +138,22 @@ namespace SH
 		std::vector<std::string> forceRefitNames;
 		std::vector<OutfitRefit> outfitRefits;
 		std::vector<RefitSet>    refitSets;
-		int                      heavyArmorRating{ 10 };
+		std::vector<std::string> heavyWords;  // S-48: a word or phrase in an item's name that makes it heavy
 		std::vector<FormRef>     heavyItems;
 		std::vector<std::string> heavyNames;
 		std::vector<FormRef>     lightItems;
 		std::vector<std::string> lightNames;
 
+		// By name, ignoring case: names arrive through the engine's string pool, which keeps the first
+		// spelling it ever saw.
 		[[nodiscard]] const Preset*              Find(std::string_view a_name, bool a_female) const;
 		[[nodiscard]] const Preset*              FindByMarker(std::string_view a_marker) const;
 		[[nodiscard]] std::vector<const Preset*> MenuPresets(bool a_female) const;
 		[[nodiscard]] const RefitSet*            FindRefit(std::string_view a_name, bool a_female) const;
 		[[nodiscard]] bool                       NeverInBody(bool a_female, std::string_view a_morph) const;
+
+		// S-48: the word of heavyWords an item's name holds as a whole word (or phrase), "" for none.
+		[[nodiscard]] std::string HeavyWord(std::string_view a_itemName) const;
 
 		// The refit set an outfit brings by its name, or "".
 		[[nodiscard]] std::string OutfitRefitSet(std::string_view a_outfitName, bool a_female) const;

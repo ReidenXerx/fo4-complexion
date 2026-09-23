@@ -12,6 +12,7 @@ build scripts run the parser itself on the written files (SilhouetteTests.exe --
 """
 import hashlib
 import json
+import math
 import os
 import pathlib
 import string
@@ -23,10 +24,12 @@ SCHEMA = 1
 MARKER_PREFIX = 'Silhouette_'
 BLACKLIST_MARKER = 'Silhouette_Blacklisted'   # S-23: stored unkeyed, moves nothing, keeps BodyGen away
 REFIT_MARKER = 'Silhouette_Refit'             # S-40: under the refit keyword, names the set that is on
+CHOICE_MARKER = 'Silhouette_Chosen'           # S-51: unkeyed, beside a picked or API-given body
+RESERVED_MARKERS = (BLACKLIST_MARKER, REFIT_MARKER, CHOICE_MARKER)
 CLOTHED_SLOTS = [33, 36, 41]                  # BODY, [U] Torso, [A] Torso (S-20)
-HEAVY_ARMOR_RATING = 10                       # S-42: the Brotherhood uniform is 10, most clothes 0
+FLOAT32_MAX = 3.4028234663852886e38
 
-# The built-in clothed shape for a CBBE body (S-40, S-42): FLOORS under Silhouette's refit keyword.
+# The built-in clothed shape for a CBBE body (S-40, S-48): FLOORS under Silhouette's refit keyword.
 # While she is dressed she has at least these; every other slider is her own body, so the clothed shape
 # follows her body wherever it goes. NipBGone only under heavy clothes.
 BUILTIN_FEMALE = [
@@ -54,17 +57,38 @@ def plugins_txt():
     return pathlib.Path(local) / 'Fallout4' / 'plugins.txt' if local else None
 
 
+def resolve_races(cfg, data, report):
+    """Every race editor id the rules name, found in the load order -- or the run is refused. A race
+    no plugin defines matches nobody: a typo in distributeRaces would give no NPC a body, and every
+    check would still pass. Matched in any case, as the game and LooksMenu match them."""
+    wanted = set(cfg.get('distributeRaces') or ['HumanRace'])
+    for key in ('blacklistedRacesFemale', 'blacklistedRacesMale'):
+        wanted.update(cfg.get(key, []))
+    for key in ('raceFemale', 'raceMale'):
+        wanted.update(cfg.get(key, {}))
+    missing = []
+    found = plugin_forms.resolve(data, plugins_txt(), 'RACE', wanted, missing)
+    unknown = sorted(w for w in wanted if w not in found)
+    if unknown:
+        raise SystemExit(f'rules: no race with the editor id {", ".join(map(repr, unknown))} in the load order -- '
+                         f'a rule naming it would match nobody. Check the spelling (HumanRace, GhoulRace, ...)')
+    report.extend(m for m in missing if 'could not read' in m)
+
+
 def build(*, stamp, build_id, mode, presets, player, states, never_in_body, variety, cfg, data,
-          refit_presets, body_morphs, report):
+          refit_presets, body_morphs, baked, report):
     """The catalog as a dict, without its rulesHash (rules_hash() below, once the BodyGen lines exist).
 
-    presets:  [{name, sex, marker, values: [(morph, v)], random, menu, fit, family}] in
+    presets:  [{name, sex, marker, values: [(morph, v)], random, menu, zeroed, fit, family}] in
               the order the pickers list them first (the NPC hotkeys walk this order)
     player:   {sex: preset name}          states, never_in_body: {sex: [morph]}
     variety:  {sex: [(morph, low, high, group)]}, only morphs the body carries
     refit_presets: [{name, sex, values: [(morph, v)]}] -- "<Preset>-Refit", "Female-Refit"...
     body_morphs: {sex: set of morphs the installed body carries}
+    baked:    {sex: {morph: value}} the base body already has (compensated mode; empty when zeroed):
+              every value here is written relative to it, the built-in floors too
     """
+    resolve_races(cfg, data, report)
     have = {(p['sex'], p['name'].casefold()): p['name'] for p in presets}
 
     def names_for(sex, wanted, what):
@@ -153,7 +177,15 @@ def build(*, stamp, build_id, mode, presets, player, states, never_in_body, vari
 
     sets = []
     female_body = body_morphs.get('female', set())
-    builtin = [(m, v, h) for m, v, h in BUILTIN_FEMALE if m in female_body]
+    # A floor is a value of the morph layer, which a compensated body adds to what its mesh has baked
+    # in: the floor that lands the body AT the built-in value is that value minus the baked one.
+    female_baked = (baked or {}).get('female', {})
+    builtin = [(m, round(v - female_baked.get(m, 0.0), 6), h) for m, v, h in BUILTIN_FEMALE if m in female_body]
+    lower = [m for m, v, _h in builtin if v <= 0]
+    if lower:
+        report.append(f'catalog: the base body already has {", ".join(lower)} at or above the built-in clothed '
+                      f'shape: no floor needed there')
+    builtin = [(m, v, h) for m, v, h in builtin if v > 0]
     missing = [m for m, _v, _h in BUILTIN_FEMALE if m not in female_body]
     if missing:
         report.append(f'catalog: the installed female body has no {", ".join(missing)}: the built-in clothed shape '
@@ -191,7 +223,7 @@ def build(*, stamp, build_id, mode, presets, player, states, never_in_body, vari
         'schema': SCHEMA, 'build': build_id, 'stamp': stamp, 'mode': mode,
         'presets': [{'name': p['name'], 'sex': p['sex'], 'marker': p['marker'],
                      'values': {m: round(v, 6) for m, v in p['values']},
-                     'random': p['random'], 'menu': p['menu'], 'zeroed': not p['values'],
+                     'random': p['random'], 'menu': p['menu'], 'zeroed': bool(p.get('zeroed', not p['values'])),
                      'fit': p['fit'], 'family': p['family']} for p in presets],
         'player': {s: player[s] for s in ('female', 'male') if player.get(s)},
         'states': {s: list(states.get(s, [])) for s in ('female', 'male')},
@@ -218,7 +250,7 @@ def build(*, stamp, build_id, mode, presets, player, states, never_in_body, vari
             'forceNames': list(cfg.get('outfitsForceRefit', [])),
             'outfits': outfits,
             'sets': sets,
-            'heavy': {'armorRating': int(cfg.get('heavyArmorRating', HEAVY_ARMOR_RATING)),
+            'heavy': {'words': list(cfg.get('heavyWords', rules.DEFAULT['heavyWords'])),
                       'items': refs('heavyOutfitsFormID'), 'names': list(cfg.get('heavyOutfits', []))},
             'light': {'items': refs('lightOutfitsFormID'), 'names': list(cfg.get('lightOutfits', []))},
         },
@@ -237,7 +269,8 @@ def rules_hash(doc, morph_lines):
 
 
 def check(doc):
-    """What the plugin's parser (src/Catalog.cpp ParseCatalog) refuses, refused here first."""
+    """What the plugin's parser (src/Catalog.cpp ParseCatalog) refuses, refused here first -- and a
+    little more: what it would accept but could never mean (a range of one value)."""
     def fail(msg):
         raise SystemExit(f'catalog: {msg}')
 
@@ -253,12 +286,31 @@ def check(doc):
 
     def ref_list(v, where):
         for r in need(v, list, where):
-            need(r.get('plugin'), str, where)
+            if not need(r.get('plugin'), str, where):
+                fail(f'{where}: an empty plugin name')
             i = need(r.get('id'), int, where)
             if not 0 <= i <= 0xFFFFFF:
                 fail(f'{where}: id {i:X} carries a load-order byte')
         return v
 
+    # Everywhere: text the plugin can read back (JSON is UTF-8; a lone surrogate is refused whole), and
+    # numbers finite as the float the plugin keeps (it refuses 1e39 and NaN).
+    def walk(v, where):
+        if isinstance(v, str):
+            if not rules.encodable(v):
+                fail(f'{where}: {v!r} is not valid Unicode')
+        elif isinstance(v, float):
+            if not math.isfinite(v) or abs(v) > FLOAT32_MAX:
+                fail(f'{where}: {v!r} is not a finite float32')
+        elif isinstance(v, dict):
+            for k, x in v.items():
+                walk(k, where)
+                walk(x, f'{where}.{k}')
+        elif isinstance(v, list):
+            for x in v:
+                walk(x, where)
+
+    walk(doc, 'catalog')
     if doc.get('schema') != SCHEMA:
         fail(f'schema must be {SCHEMA}')
     if not (0 < need(doc.get('stamp'), int, 'stamp') < 1 << 24):
@@ -280,7 +332,7 @@ def check(doc):
             fail(f'{where}: sex must be "female" or "male"')
         marker = need(p.get('marker'), str, where)
         if len(marker) <= len(MARKER_PREFIX) or ifold(marker[:len(MARKER_PREFIX)]) != ifold(MARKER_PREFIX) \
-                or ifold(marker) in (ifold(BLACKLIST_MARKER), ifold(REFIT_MARKER)):
+                or ifold(marker) in {ifold(r) for r in RESERVED_MARKERS}:
             fail(f'{where}: marker {marker!r} is not a body marker ("{MARKER_PREFIX}...", not a reserved one)')
         if ifold(marker) in markers:
             fail(f'{where}: marker {marker!r} is used by another preset too')
@@ -291,18 +343,20 @@ def check(doc):
             need(v, (int, float), where)
         for k in ('random', 'menu', 'zeroed'):
             need(p.get(k), bool, where)
-        key = (p['sex'], p['name'])
+        # The engine's string pool keeps one spelling per name, whatever the case (L3 F12): two
+        # names that differ only in case are one preset to the plugin.
+        key = (p['sex'], ifold(p['name']))
         if key in seen:
-            fail(f'{where} listed twice for {p["sex"]}')
+            fail(f'{where} listed twice for {p["sex"]} (names are compared in any case)')
         seen.add(key)
     for s, name in doc['player'].items():
-        if (s, name) not in seen:
+        if (s, ifold(name)) not in seen:
             fail(f'the {s} player default {name!r} is not a preset of this build')
     for s in ('female', 'male'):
         names = set()
         for v in need(doc['variety'][s], list, 'variety'):
-            if v['low'] > v['high']:
-                fail(f'variety {v["morph"]!r} has low above high')
+            if not v['low'] < v['high']:
+                fail(f'variety {v["morph"]!r}: the range {v["low"]}..{v["high"]} rolls nothing (low must be below high)')
             if v['group'] not in ('nipples', 'genitals'):
                 fail(f'variety {v["morph"]!r}: group {v["group"]!r}')
             if ifold(v['morph']) in never[s]:
@@ -320,7 +374,7 @@ def check(doc):
     strings(r['blacklistedNpcNames'], 'rules.blacklistedNpcNames')
     for rule in r['npcName'] + r['faction']:
         for n in strings(rule['presets'], 'rule presets'):
-            if (rule['sex'], n) not in seen:
+            if (rule['sex'], ifold(n)) not in seen:
                 fail(f'a rule names {n!r}, not a {rule["sex"]} preset of this build')
     ref_list(r['faction'], 'rules.faction')
     o = doc['orefit']
@@ -344,14 +398,15 @@ def check(doc):
                 fail(f'{where}: {m!r} is not a body slider')
             if ifold(m) in never[st['sex']]:
                 fail(f'{where}: {m!r} is never part of a body (S-16, S-29)')
-            need(f.get('value'), (int, float), where)
+            if not need(f.get('value'), (int, float), where) > 0:
+                fail(f'{where}: {m!r} at {f["value"]}: a floor must be above 0, a refit only raises (S-40)')
             need(f.get('heavyOnly'), bool, where)
     for ot in o['outfits']:
         if (ot['sex'], ifold(ot['set'])) not in set_keys:
             fail(f'orefit.outfits {ot["name"]!r}: refit set {ot["set"]!r} is not in this catalog')
-    rating = need(o['heavy']['armorRating'], int, 'orefit.heavy.armorRating')
-    if not 0 <= rating <= 10000:
-        fail('orefit.heavy.armorRating: 0 .. 10000')
+    for w in strings(o['heavy']['words'], 'orefit.heavy.words'):
+        if not rules.has_word(w):
+            fail(f'orefit.heavy.words: {w!r} holds no word (S-48)')
     for k in ('heavy', 'light'):
         ref_list(o[k]['items'], f'orefit.{k}.items')
         strings(o[k]['names'], f'orefit.{k}.names')
@@ -360,4 +415,4 @@ def check(doc):
 def write(path, doc):
     check(doc)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(doc, indent=1, sort_keys=False) + '\n', encoding='utf-8')
+    path.write_text(json.dumps(doc, indent=1, sort_keys=False, allow_nan=False) + '\n', encoding='utf-8')

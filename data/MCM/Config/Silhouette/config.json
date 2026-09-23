@@ -155,7 +155,7 @@
         {
           "type": "button",
           "text": "Refresh the people around me",
-          "help": "Everyone nearby keeps their preset but gets its values from this build again -- for after you edited a preset or rebuilt your bodies. Body morphs other mods add are left alone.",
+          "help": "Everyone nearby keeps their preset but gets its values from this build again -- for after you edited a preset or rebuilt your bodies. Body morphs other mods add are left alone. With Silhouette.dll each keeps their own nipple and genital variety; without it the preset's values alone are written.",
           "action": {
             "type": "CallGlobalFunction",
             "script": "Silhouette:Player",
@@ -310,7 +310,7 @@
         {
           "type": "button",
           "text": "Give them this preset",
-          "help": "The preset chosen above for their sex, on the NPC you picked -- or, with nobody picked, the last NPC you aimed at in the half minute before opening the menu. Their own nipple and genital variety comes with it. Close the menu to see it.",
+          "help": "The preset chosen above for their sex, on the NPC you picked -- or, with nobody picked, the last NPC you aimed at in the half minute before opening the menu. Their own nipple and genital variety comes with it while those switches are on (Settings). Close the menu to see it.",
           "action": {
             "type": "CallFunction",
             "form": "Silhouette.esp|802",
@@ -321,7 +321,7 @@
         {
           "type": "button",
           "text": "Back to random",
-          "help": "They roll a new body, as if met for the first time: the rules get their say again. Body morphs other mods keep under their own keyword (AAF, pregnancy) are kept.",
+          "help": "They roll a new body, as if met for the first time: the rules get their say again. Body morphs other mods keep under their own keyword (AAF, pregnancy) are kept. In the middle of an AAF scene the roll waits for the scene to end.",
           "action": {
             "type": "CallFunction",
             "form": "Silhouette.esp|802",
@@ -346,7 +346,7 @@
         },
         {
           "type": "text",
-          "text": "Pick someone, then Next and Previous put each preset on them in turn (about a second each, LooksMenu is reached through Papyrus). Keep makes it theirs; Cancel puts back exactly what they had."
+          "text": "Pick someone, then Next and Previous put each preset on them in turn (a second or so each: LooksMenu is reached through Papyrus, one value a frame, and the picker goes before any other work). Keep makes it theirs; Cancel puts back exactly what they had."
         },
         {
           "type": "hotkey",
@@ -391,7 +391,7 @@
           "type": "switcher",
           "id": "bORefit:General",
           "text": "ORefit",
-          "help": "A clothed shape while someone is dressed: breasts held together and lifted, and nipples flattened under armour. It only ever raises a slider, so a body that is already fuller keeps its own, and the moment they undress they are exactly their own body again. Your character is never refit. Removing Silhouette takes every clothed shape off by itself. Needs Silhouette.dll and Silhouette.esp.",
+          "help": "A clothed shape while someone is dressed: breasts held together and lifted, and nipples flattened under heavy clothes -- armour, jackets, coats, told by the item's name. It only ever raises a slider, so a body that is already fuller keeps its own, and the moment they undress they are exactly their own body again. Your character is never refit, nor anyone in power armour. Removing Silhouette.esp takes every clothed shape off by itself, and without a working Silhouette.dll the shapes left on people are taken off as you meet them. Needs Silhouette.dll and Silhouette.esp.",
           "valueOptions": {
             "sourceType": "ModSettingBool"
           }

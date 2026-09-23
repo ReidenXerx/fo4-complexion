@@ -58,47 +58,47 @@ namespace SH
 
 		// Races Silhouette does not distribute to are not ours at all (S-11 distributeRaces).
 		if (!ListedName(a_catalog.races, a_actor.race)) {
-			return { Tier::kNone, {}, std::format("race {} is not distributed", a_actor.race) };
+			return { Tier::kNone, {}, {}, std::format("race {} is not distributed", a_actor.race) };
 		}
 
 		// 1. per-NPC blacklist -- by form id BodyGen already keeps them bare; by name is ours.
 		if (AnyListed(a_catalog.blacklistedNpcsFormID, a_actor.bases)) {
-			return { Tier::kNone, {}, "blacklisted by form id (BodyGen keeps them bare)", true };
+			return { Tier::kNone, {}, {}, "blacklisted by form id (BodyGen keeps them bare)", true };
 		}
 		if (!a_actor.baseName.empty() && ListedName(a_catalog.blacklistedNpcNames, a_actor.baseName)) {
-			return { Tier::kNameBlacklist, {}, std::format("\"{}\" is blacklisted by name", a_actor.baseName), true };
+			return { Tier::kNameBlacklist, {}, {}, std::format("\"{}\" is blacklisted by name", a_actor.baseName), true };
 		}
 
 		// 2. per-NPC preset -- by form id BodyGen already did it; by name is ours.
 		if (AnyListed(a_catalog.npcFormIDRules[sex], a_actor.bases)) {
-			return { Tier::kNone, {}, "has a per-NPC preset by form id (BodyGen's)" };
+			return { Tier::kNone, {}, {}, "has a per-NPC preset by form id (BodyGen's)" };
 		}
 		if (!a_actor.baseName.empty()) {
 			for (const auto& rule : a_catalog.nameRules) {
 				if (rule.female == a_actor.female && IEquals(rule.name, a_actor.baseName)) {
 					auto preset = Pick(rule.presets, a_actor.seed);
-					return { Tier::kName, preset, std::format("npc rule \"{}\" -> {}", rule.name, preset) };
+					return { Tier::kName, preset, rule.presets, std::format("npc rule \"{}\" -> {}", rule.name, preset) };
 				}
 			}
 		}
 
 		// 3. plugin and race blacklists outrank a faction: BodyGen keeps those bare.
 		if (ListedName(a_catalog.blacklistedPlugins[sex], a_actor.originPlugin)) {
-			return { Tier::kNone, {}, std::format("plugin {} is blacklisted (BodyGen keeps them bare)", a_actor.originPlugin), true };
+			return { Tier::kNone, {}, {}, std::format("plugin {} is blacklisted (BodyGen keeps them bare)", a_actor.originPlugin), true };
 		}
 		if (ListedName(a_catalog.blacklistedRaces[sex], a_actor.race)) {
-			return { Tier::kNone, {}, std::format("race {} is blacklisted (BodyGen keeps them bare)", a_actor.race), true };
+			return { Tier::kNone, {}, {}, std::format("race {} is blacklisted (BodyGen keeps them bare)", a_actor.race), true };
 		}
 
 		// 4. faction -- the first rule, in the config's order, whose faction the NPC record carries.
 		for (const auto& rule : a_catalog.factionRules) {
 			if (rule.female == a_actor.female && Listed(a_actor.factions, rule.faction)) {
 				auto preset = Pick(rule.presets, a_actor.seed);
-				return { Tier::kFaction, preset, std::format("faction {} -> {}", rule.editorID, preset) };
+				return { Tier::kFaction, preset, rule.presets, std::format("faction {} -> {}", rule.editorID, preset) };
 			}
 		}
 
 		// 5. plugin, race, random: BodyGen's.
-		return { Tier::kNone, {}, "no runtime rule applies (BodyGen's roll stands)" };
+		return { Tier::kNone, {}, {}, "no runtime rule applies (BodyGen's roll stands)" };
 	}
 }

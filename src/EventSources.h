@@ -27,4 +27,11 @@ namespace SH::Events
 
 	// Calls a plain function under a structured-exception guard; false if it faulted.
 	bool Guarded(void (*a_fn)(void*), void* a_context);
+
+	// A sink's event can hold a pointer to something being torn down, and naming such a pointer inside
+	// a sink crashed F4MCP twice. These read the form id (TESForm +0x14) and form type (+0x1A) of the
+	// object a pointer claims to be only after its vtable's RTTI checks out, calling nothing -- 0 when
+	// it does not (ported from fo4-mcp src/Matrix.cpp).
+	[[nodiscard]] std::uint32_t SafeFormID(const void* a_object);
+	[[nodiscard]] std::uint8_t  SafeFormType(const void* a_object);
 }

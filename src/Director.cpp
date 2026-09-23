@@ -6,9 +6,8 @@ namespace SH
 	{
 		constexpr std::size_t kMaxEvents = 512;
 		constexpr std::size_t kMaxLog = 512;
-		constexpr std::size_t kBodyReads = 5;  // own values read to tell a body from nothing (S-41)
 		constexpr float       kRefitPending = 0.25F;  // the refit marker while a refit is being written
-		constexpr int         kRefitUnfinished = 99;  // what a probe makes of a pending marker
+		constexpr int         kRefitUnfinished = -2;  // what a probe makes of a pending marker
 
 		bool Distributed(const Catalog& a_catalog, const ActorFacts& a_facts)
 		{
@@ -35,6 +34,47 @@ namespace SH
 		std::uint32_t Stamp(float a_value)
 		{
 			return a_value > 0.0F && a_value < 16777216.0F ? static_cast<std::uint32_t>(std::lround(a_value)) : 0;
+		}
+
+		bool RefitOn(int a_refit)
+		{
+			return a_refit > 0 || a_refit == kRefitUnfinished;
+		}
+
+		bool Chosen(Source a_source)
+		{
+			return a_source == Source::kPicker || a_source == Source::kAPI;
+		}
+
+		// The choice marker's value is the source's byte (S-51).
+		Source ChoiceOf(float a_value)
+		{
+			const auto v = std::lround(a_value);
+			if (v == static_cast<long>(Source::kPicker)) {
+				return Source::kPicker;
+			}
+			if (v == static_cast<long>(Source::kAPI)) {
+				return Source::kAPI;
+			}
+			return Source::kNone;
+		}
+
+		bool ContainsI(const std::vector<std::string>& a_list, std::string_view a_name)
+		{
+			return std::ranges::any_of(a_list, [&](const std::string& s) { return IEquals(s, a_name); });
+		}
+
+		const char* LaneName(Lane a_lane)
+		{
+			switch (a_lane) {
+			case Lane::kUrgent:
+				return "urgent";
+			case Lane::kNormal:
+				return "normal";
+			case Lane::kBackground:
+				return "background";
+			}
+			return "?";
 		}
 	}
 
@@ -92,13 +132,42 @@ namespace SH
 		if (!refitChanged || !_catalog) {
 			return;
 		}
-		// Everyone seen this session follows at once; the rest follow when they are next seen.
+		// Everyone seen this session follows at once; the rest follow when they are next seen. Actors
+		// Silhouette never shapes are left alone (ReconcileRefit only takes a refit it found off them).
 		for (const auto& [ref, session] : _sessions) {
 			if (session.known) {
 				ReconcileRefit(ref);
 			}
 		}
 		Log(std::format("ORefit {} by the settings", _settings.orefit ? "on" : "off"));
+	}
+
+	// One switch, read and written under one lock: two callers (the MCM and the API) cannot undo each other.
+	void Director::SetSwitch(Switch a_switch, bool a_on)
+	{
+		std::scoped_lock l{ _lock };
+		auto             next = _settings;
+		switch (a_switch) {
+		case Switch::kORefit:
+			next.orefit = a_on;
+			break;
+		case Switch::kNipples:
+			next.variety.nipples = a_on;
+			break;
+		case Switch::kGenitals:
+			next.variety.genitals = a_on;
+			break;
+		}
+		const bool refitChanged = next.orefit != _settings.orefit;
+		_settings = next;
+		if (refitChanged && _catalog) {
+			for (const auto& [ref, session] : _sessions) {
+				if (session.known) {
+					ReconcileRefit(ref);
+				}
+			}
+			Log(std::format("ORefit {} by the API", _settings.orefit ? "on" : "off"));
+		}
 	}
 
 	Settings Director::Current() const
@@ -128,22 +197,32 @@ namespace SH
 
 	// ------------------------------------------------------------------ what the game saw
 
-	Verdict Director::Admit(Session& a_session, const Sighting& a_sighting)
+	void Director::Admit(Session& a_session, const Sighting& a_sighting)
 	{
 		const auto ref = a_sighting.ref;
 		// A created reference's id, handed to someone new: what we knew was about somebody else. Only a
 		// created (0xFF) reference can be. A placed one is its NPC for good, and a leveled one's base is a
 		// temporary record the engine replaces when it respawns, while LooksMenu keeps its morphs.
-		const bool created = (ref >> 24) == 0xFF;
-		if (created && a_session.known && a_session.base != 0 && a_sighting.base != 0 && a_session.base != a_sighting.base) {
-			a_session = {};
-			if (const auto w = _work.find(ref); w != _work.end()) {
-				w->second = {};
+		if ((ref >> 24) == 0xFF && a_sighting.base != 0) {
+			bool reused = false;
+			if (a_session.known && a_session.base != 0 && a_session.base != a_sighting.base) {
+				a_session = {};
+				if (const auto w = _work.find(ref); w != _work.end()) {
+					w->second = {};
+				}
+				reused = true;
 			}
-		}
-		if (const auto* rec = _registry.Find(ref); created && rec && rec->base != 0 && a_sighting.base != 0 && rec->base != a_sighting.base) {
-			Log(std::format("{:08X}: the record was for NPC {:08X}, this is {:08X} - forgotten", ref, rec->base, a_sighting.base));
-			_registry.Erase(ref);
+			if (const auto* rec = _registry.Find(ref); rec && rec->base != 0 && rec->base != a_sighting.base) {
+				Log(std::format("{:08X}: the record was for NPC {:08X}, this is {:08X} - forgotten", ref, rec->base, a_sighting.base));
+				_registry.Erase(ref);
+				reused = true;
+			}
+			if (const auto p = _registry.pickings.find(ref); p != _registry.pickings.end() && p->second.base != 0 && p->second.base != a_sighting.base) {
+				Log(std::format("{:08X}: the unfinished picking was for NPC {:08X}, this is {:08X} - forgotten", ref, p->second.base, a_sighting.base));
+				_registry.pickings.erase(p);
+				reused = true;
+			}
+			a_session.stranger = a_session.stranger || reused;
 		}
 		a_session.known = true;
 		a_session.female = a_sighting.facts.female;
@@ -153,9 +232,30 @@ namespace SH
 		a_session.outfitSet = a_sighting.outfitSet;
 		a_session.facts = a_sighting.facts;
 		a_session.eligible = a_sighting.eligible && Distributed(*_catalog, a_sighting.facts);
-		const auto verdict = Decide(*_catalog, a_sighting.facts);
-		a_session.blacklisted = verdict.blacklisted;
-		return verdict;
+		a_session.verdict = Decide(*_catalog, a_sighting.facts);
+		a_session.blacklisted = a_session.verdict.blacklisted;
+	}
+
+	// The player, the character-creation dummies, creatures and every race Silhouette does not distribute
+	// to: never shaped, never refit, so never probed either -- most actors in the world are one of these.
+	// Only a refit this session already found (it cannot have been put there by this build) comes off.
+	void Director::LeaveAlone(std::uint32_t a_ref, const Session& a_session)
+	{
+		if (RefitOn(a_session.refit)) {
+			ReconcileRefit(a_ref);
+		}
+	}
+
+	void Director::Unpark(std::uint32_t a_ref)
+	{
+		const auto w = _work.find(a_ref);
+		if (w == _work.end() || !w->second.parked) {
+			return;
+		}
+		w->second.parked = false;
+		if (std::ranges::find(_queue, a_ref) == _queue.end()) {
+			_queue.push_back(a_ref);
+		}
 	}
 
 	void Director::Seen(const Sighting& a_sighting)
@@ -166,32 +266,20 @@ namespace SH
 		}
 		const auto ref = a_sighting.ref;
 		auto&      session = _sessions[ref];
-		const auto verdict = Admit(session, a_sighting);
+		Admit(session, a_sighting);
+		Unpark(ref);
 		if (!session.eligible) {
 			LeaveAlone(ref, session);
 			return;
 		}
-		// A picking a save cut short (S-47): put back what they had, before anything else.
-		if (_registry.picker && _registry.picker->ref == ref && !session.restoring && _picker.ref != ref) {
-			session.restoring = true;
-			QueueBody(ref, BodyRequest{ .what = BodyRequest::What::kRestore, .restore = _registry.picker->snapshot }, kUrgent);
-		}
-		DecideBody(ref, session, verdict);
+		PendingRestore(ref, session);
 		if (!session.probed) {
-			WorkFor(ref, kBackground).probe = true;
-		} else {
-			ReconcileRefit(ref);
+			// LooksMenu first (S-43): what the rules decide, they decide knowing the body she has.
+			WorkFor(ref, Lane::kBackground).probe = true;
+			return;
 		}
-	}
-
-	// The player, the character-creation dummies, creatures and every race Silhouette does not distribute
-	// to: never shaped, never refit, so never probed either -- most actors in the world are one of these.
-	// Only a refit this session already found (it cannot have been put there by this build) comes off.
-	void Director::LeaveAlone(std::uint32_t a_ref, const Session& a_session)
-	{
-		if (a_session.refit > 0) {
-			ReconcileRefit(a_ref);
-		}
+		DecideBody(ref, session);
+		ReconcileRefit(ref);
 	}
 
 	void Director::Dressed(const Sighting& a_sighting, bool a_removedClothing)
@@ -205,6 +293,7 @@ namespace SH
 		const bool knew = session.known;
 		const bool was = session.clothed;
 		Admit(session, a_sighting);
+		Unpark(ref);
 		if (!session.eligible) {
 			LeaveAlone(ref, session);
 			return;
@@ -216,10 +305,10 @@ namespace SH
 			Push(EventKind::kNaked, ref);
 		}
 		if (!session.probed) {
-			WorkFor(ref, kUrgent).probe = true;  // the refit follows the probe, promptly
-		} else {
-			ReconcileRefit(ref);
+			WorkFor(ref, Lane::kNormal).probe = true;  // first contact while dressing: the refit follows the probe
+			return;
 		}
+		ReconcileRefit(ref);
 	}
 
 	// ------------------------------------------------------------------ deciding
@@ -244,21 +333,117 @@ namespace SH
 		_registry.Prune(a_ref);
 	}
 
-	void Director::DecideBody(std::uint32_t a_ref, Session& a_session, const Verdict& a_verdict)
+	BodyRequest Director::RestoreOf(const Morphs& a_snapshot, bool a_female) const
 	{
-		if (_picker.ref == a_ref || BodyPending(a_ref)) {
-			return;  // the player is choosing, or a change is already on its way
+		BodyRequest b{ .what = BodyRequest::What::kRestore };
+		for (const auto& [m, v] : a_snapshot) {
+			// What they had -- but never what no body may hold (S-16, S-29): a restore does not undo a heal.
+			if (!_catalog->NeverInBody(a_female, m)) {
+				b.restore.emplace_back(m, v);
+			}
+		}
+		return b;
+	}
+
+	void Director::PendingRestore(std::uint32_t a_ref, Session& a_session)
+	{
+		const auto it = _registry.pickings.find(a_ref);
+		if (it == _registry.pickings.end() || _picker.ref == a_ref || a_session.restoring) {
+			return;
+		}
+		// A picking a save or an unreachable actor left unfinished (S-47): the choice behind the body goes
+		// back now, as a Cancel's does, and the body follows.
+		if (it->second.before) {
+			_registry.Get(a_ref) = *it->second.before;
+		} else {
+			_registry.Erase(a_ref);
+		}
+		a_session.restoring = true;
+		Log(std::format("{:08X}: a picking left unfinished - the body they had goes back", a_ref));
+		QueueBody(a_ref, RestoreOf(it->second.snapshot, it->second.female), Lane::kUrgent);
+	}
+
+	// A decision made elsewhere ends a picking of this actor and anything a picking left behind.
+	void Director::Retire(std::uint32_t a_ref)
+	{
+		if (_picker.ref == a_ref) {
+			ClosePicker();
+		}
+		_registry.pickings.erase(a_ref);
+		if (const auto s = _sessions.find(a_ref); s != _sessions.end()) {
+			s->second.restoring = false;
+		}
+	}
+
+	void Director::AfterProbe(std::uint32_t a_ref, Session& a_session)
+	{
+		if (!a_session.known || !a_session.eligible) {
+			ReconcileRefit(a_ref);
+			return;
+		}
+		RebuildChoice(a_ref, a_session);
+		FollowReset(a_ref, a_session);
+		DecideBody(a_ref, a_session);
+		Reconcile(a_ref, a_session);
+		AnnounceBody(a_ref, a_session);
+		CheckTouch(a_ref, a_session);
+		ReconcileRefit(a_ref);
+	}
+
+	// S-51: a picked or API-given body carries a marker saying so, beside its own. A save made while the
+	// plugin was not loaded dropped the record; LooksMenu kept the marker, and the record comes back from it.
+	void Director::RebuildChoice(std::uint32_t a_ref, Session& a_session)
+	{
+		if (!Chosen(a_session.choice) || a_session.stranger) {
+			return;  // no choice -- or one that came with a reused id, from whoever had it before (Reconcile takes it off)
+		}
+		if (const auto* rec = _registry.Find(a_ref); rec && (rec->source != Source::kNone || !rec->preset.empty())) {
+			return;  // the co-save still knows
+		}
+		const auto preset = PresetNamedBy(a_session.marker, a_session.stamp);
+		if (preset.empty()) {
+			return;
+		}
+		Intend(a_ref, a_session, a_session.choice, preset);
+		_registry.Get(a_ref).stamp = a_session.stamp;  // the build the body has: a newer one re-gives it
+		Log(std::format("{:08X}: {} ({}) rebuilt from the choice LooksMenu keeps beside the body", a_ref, preset, SourceName(a_session.choice)));
+	}
+
+	// S-53: Reset means a new body at the next load. Without other mods' morphs LooksMenu's BodyGen gives
+	// it; with them it never runs, and the plugin rolls one.
+	void Director::FollowReset(std::uint32_t a_ref, Session& a_session)
+	{
+		const auto* rec = _registry.Find(a_ref);
+		if (!rec || rec->source != Source::kReset || a_session.reset) {
+			return;
+		}
+		if (a_session.hasBody) {
+			Log(std::format("{:08X}: reset earlier; BodyGen has given them a body", a_ref));
+			Intend(a_ref, a_session, Source::kNone, {});
+			return;
+		}
+		if (!BodyPending(a_ref)) {
+			Log(std::format("{:08X}: reset earlier and still bare - a new body", a_ref));
+			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, Lane::kNormal);
+		}
+	}
+
+	void Director::DecideBody(std::uint32_t a_ref, Session& a_session)
+	{
+		if (!a_session.eligible || !a_session.probed || _picker.ref == a_ref || BodyPending(a_ref) || a_session.restoring) {
+			return;  // not ours, not read yet, the player is choosing, or a change is already on its way
 		}
 		const auto& c = *_catalog;
 		auto*       rec = _registry.Find(a_ref);
 
 		// A choice somebody made stays made; a new build gives it this build's values.
-		if (rec && (rec->source == Source::kPicker || rec->source == Source::kAPI)) {
+		if (rec && Chosen(rec->source)) {
 			if (rec->stamp != c.stamp) {
-				if (c.Find(rec->preset, a_session.female)) {
-					Log(std::format("{:08X}: {} ({}) again, with build {}'s values", a_ref, rec->preset, SourceName(rec->source), c.build));
+				if (const auto* p = c.Find(rec->preset, a_session.female)) {
+					Log(std::format("{:08X}: {} ({}) again, with build {}'s values", a_ref, p->name, SourceName(rec->source), c.build));
 					rec->stamp = c.stamp;
-					QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = rec->preset }, kNormal);
+					rec->preset = p->name;
+					QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = p->name, .choice = rec->source }, Lane::kNormal);
 				} else {
 					Log(std::format("{:08X}: {} ({}) is not in build {}; their body stays as it is", a_ref, rec->preset, SourceName(rec->source), c.build));
 					rec->source = Source::kNone;
@@ -268,24 +453,42 @@ namespace SH
 			}
 			return;
 		}
+		if (rec && rec->source == Source::kReset) {
+			return;
+		}
 
-		switch (a_verdict.tier) {
+		const auto& v = a_session.verdict;
+		switch (v.tier) {
 		case Tier::kName:
 		case Tier::kFaction:
 			{
-				const auto source = a_verdict.tier == Tier::kName ? Source::kNameRule : Source::kFactionRule;
-				if (!(rec && rec->source == source && rec->preset == a_verdict.preset && rec->stamp == c.stamp)) {
-					Log(std::format("{:08X} \"{}\": {}", a_ref, a_session.facts.baseName, a_verdict.why));
-					Intend(a_ref, a_session, source, a_verdict.preset);
-					QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = a_verdict.preset }, kNormal);
+				const auto  source = v.tier == Tier::kName ? Source::kNameRule : Source::kFactionRule;
+				std::string preset = v.preset;
+				// A met NPC keeps what the rule drew for them while the rule still lists it (S-52).
+				if (rec && rec->source == source && ContainsI(v.options, rec->preset)) {
+					if (const auto* kept = c.Find(rec->preset, a_session.female)) {
+						preset = kept->name;
+					}
 				}
+				const auto* p = c.Find(preset, a_session.female);
+				if (!p || (rec && rec->source == source && IEquals(rec->preset, preset) && rec->stamp == c.stamp)) {
+					break;
+				}
+				Intend(a_ref, a_session, source, p->name);
+				if (IEquals(a_session.marker, p->marker) && a_session.stamp == c.stamp) {
+					break;  // that body is on them already: only the record was missing
+				}
+				Log(std::format("{:08X} \"{}\": {}", a_ref, a_session.facts.baseName, v.why));
+				QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = p->name }, Lane::kNormal);
 				break;
 			}
 		case Tier::kNameBlacklist:
 			if (!(rec && rec->source == Source::kNameBlacklist)) {
-				Log(std::format("{:08X}: {}", a_ref, a_verdict.why));
+				Log(std::format("{:08X}: {}", a_ref, v.why));
 				Intend(a_ref, a_session, Source::kNameBlacklist, {});
-				QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kBlacklist }, kNormal);
+				if (!IEquals(a_session.marker, kBlacklistMarker)) {
+					QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kBlacklist }, Lane::kNormal);
+				}
 			}
 			break;
 		case Tier::kNone:
@@ -296,7 +499,7 @@ namespace SH
 			} else if (rec && rec->source == Source::kNameBlacklist) {
 				Log(std::format("{:08X} \"{}\": no longer blacklisted - BodyGen rolls them", a_ref, a_session.facts.baseName));
 				Intend(a_ref, a_session, Source::kNone, {});
-				QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, kNormal);
+				QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, Lane::kNormal);
 			}
 			break;
 		}
@@ -319,18 +522,40 @@ namespace SH
 		s.refit = a_order.refitValue >= 0.9F ? static_cast<int>(std::lround(a_order.refitValue))
 		        : a_order.refitValue > 0.0F  ? kRefitUnfinished
 		                                     : 0;
+		s.choice = ChoiceOf(a_order.choiceValue);
 		s.names = a_order.names;
+		s.own.clear();
+		if (a_order.readAll) {
+			for (const auto& [m, v] : a_order.layer) {
+				if (v != 0.0F && KindOf(m) == MarkerKind::kNone) {
+					s.own.push_back(m);
+				}
+			}
+		} else {
+			for (std::size_t i = 0; i < a_order.reads.size() && i < a_order.readValues.size(); ++i) {
+				const auto v = a_order.readValues[i];
+				if (!std::isnan(v) && v != 0.0F) {
+					s.own.push_back(a_order.reads[i]);
+				}
+			}
+		}
 		const bool bodyMarker = !s.marker.empty() && !IEquals(s.marker, kBlacklistMarker) && s.stamp != 0;
-		const bool ownValues = std::ranges::any_of(a_order.readValues, [](float v) { return !std::isnan(v) && v != 0.0F; });
-		s.hasBody = bodyMarker || ownValues;
+		s.hasBody = bodyMarker || !s.own.empty();
 	}
 
 	void Director::Reconcile(std::uint32_t a_ref, Session& a_session)
 	{
-		if (_picker.ref == a_ref || BodyPending(a_ref) || a_session.regiven || a_session.restoring) {
+		if (!a_session.eligible || _picker.ref == a_ref || BodyPending(a_ref) || a_session.regiven || a_session.restoring) {
 			return;
 		}
 		const auto* rec = _registry.Find(a_ref);
+		if (a_session.stranger && Chosen(a_session.choice) && !(rec && Chosen(rec->source)) && !a_session.marked) {
+			// The body stays; the choice beside it was the previous owner's of this id, and would pin it against the rules.
+			a_session.marked = true;
+			Log(std::format("{:08X}: the choice LooksMenu holds came with a reused id - taken off", a_ref));
+			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kMark, .choice = Source::kNone }, Lane::kNormal);
+			return;
+		}
 		if (!rec) {
 			return;
 		}
@@ -339,7 +564,7 @@ namespace SH
 			if (!IEquals(a_session.marker, kBlacklistMarker)) {
 				a_session.regiven = true;
 				Log(std::format("{:08X}: blacklisted by name but LooksMenu holds a body - bare again", a_ref));
-				QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kBlacklist }, kNormal);
+				QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kBlacklist }, Lane::kNormal);
 			}
 			return;
 		}
@@ -350,6 +575,7 @@ namespace SH
 		if (!p) {
 			return;
 		}
+		const auto choice = Chosen(rec->source) ? rec->source : Source::kNone;
 		if (!IEquals(a_session.marker, p->marker) || a_session.stamp != rec->stamp) {
 			a_session.regiven = true;
 			Log(std::format("{:08X}: should have {} ({}), LooksMenu holds {} - given again", a_ref, rec->preset, SourceName(rec->source),
@@ -357,12 +583,30 @@ namespace SH
 			if (rec->stamp != _catalog->stamp) {
 				_registry.Get(a_ref).stamp = _catalog->stamp;
 			}
-			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = rec->preset }, kNormal);
+			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = p->name, .choice = choice }, Lane::kNormal);
+			return;
+		}
+		// The body is right. A choice with no marker beside it (given before S-51, or the marker lost) gets one.
+		if (choice != Source::kNone && a_session.choice != choice && !a_session.marked) {
+			a_session.marked = true;
+			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kMark, .choice = choice }, Lane::kNormal);
 		}
 	}
 
 	void Director::AnnounceBody(std::uint32_t a_ref, const Session& a_session)
 	{
+		if (!a_session.eligible) {
+			return;
+		}
+		// A body about to be replaced is not announced: its replacement is, when it lands. Only a marker
+		// written beside it leaves the body as it is.
+		const auto replaces = [](const BodyRequest& a_body) { return a_body.what != BodyRequest::What::kMark; };
+		if (const auto it = _work.find(a_ref); it != _work.end() && it->second.body && replaces(*it->second.body)) {
+			return;
+		}
+		if (std::ranges::any_of(_inflight, [&](const auto& p) { return p.second.ref == a_ref && p.second.kind == OrderKind::kBody && replaces(p.second.body); })) {
+			return;
+		}
 		const auto preset = PresetNamedBy(a_session.marker, a_session.stamp);
 		if (preset.empty()) {
 			return;
@@ -376,20 +620,28 @@ namespace SH
 
 	void Director::CheckTouch(std::uint32_t a_ref, const Session& a_session)
 	{
-		if (PresetNamedBy(a_session.marker, a_session.stamp).empty() || BodyPending(a_ref)) {
+		if (!a_session.eligible || _picker.ref == a_ref || BodyPending(a_ref) || _registry.pickings.contains(a_ref)) {
+			return;
+		}
+		if (PresetNamedBy(a_session.marker, a_session.stamp).empty()) {
 			return;  // only a body Silhouette can name is healed or topped up
 		}
-		const auto hash = BodyHash(a_session.marker, a_session.stamp);
-		if (const auto* rec = _registry.Find(a_ref); rec && rec->touched == hash) {
+		const auto key = TouchKey(*_catalog, a_session.marker, a_session.stamp, a_session.female, _settings.variety);
+		if (const auto* rec = _registry.Find(a_ref); rec && rec->touched == key) {
 			return;
 		}
 		const auto heal = _catalog->HealFor(a_session.marker, a_session.stamp);
-		const bool healing = std::ranges::any_of(heal, [&](const std::string& m) {
-			return std::ranges::any_of(a_session.names, [&](const std::string& n) { return IEquals(n, m); });
-		});
-		if (healing || !TopUp(*_catalog, a_session.female, a_ref, _settings.variety, a_session.names).empty()) {
-			WorkFor(a_ref, kNormal).touch = true;
+		const bool healing = std::ranges::any_of(heal, [&](const std::string& m) { return ContainsI(a_session.own, m); });
+		if (healing || !TopUp(*_catalog, a_session.female, a_ref, _settings.variety, a_session.own).empty()) {
+			WorkFor(a_ref, Lane::kNormal).touch = true;
+			return;
 		}
+		// Nothing wanted: remembered, so a value the player takes off later is not put back (S-44).
+		auto& rec = _registry.Get(a_ref);
+		if (rec.base == 0) {
+			rec.base = a_session.base;
+		}
+		rec.touched = key;
 	}
 
 	Director::Want Director::WantRefit(const Session& a_session) const
@@ -403,19 +655,6 @@ namespace SH
 		return set ? Want{ set, a_session.heavy } : Want{};
 	}
 
-	// The refit marker's value names the set and whether it is the heavy one, so the next session's probe
-	// knows exactly what is on: 1 + heavy + 2 * the set's index.
-	float Director::RefitMarkerValue(const RefitSet& a_set, bool a_heavy) const
-	{
-		std::size_t index = 0;
-		for (std::size_t i = 0; i < _catalog->refitSets.size(); ++i) {
-			if (&_catalog->refitSets[i] == &a_set) {
-				index = i;
-			}
-		}
-		return static_cast<float>(1 + (a_heavy ? 1 : 0) + 2 * static_cast<int>(index));
-	}
-
 	void Director::ReconcileRefit(std::uint32_t a_ref)
 	{
 		const auto it = _sessions.find(a_ref);
@@ -423,42 +662,79 @@ namespace SH
 			return;
 		}
 		const auto& s = it->second;
-		if (s.refit < 0) {
+		if (!s.eligible) {
+			// Never refit (S-41): only a refit already found on them comes off; nothing is probed.
+			if (RefitOn(s.refit)) {
+				WorkFor(a_ref, Lane::kUrgent).refit = true;
+			}
+			return;
+		}
+		if (s.refit == -1) {
 			if (!s.probed) {
-				WorkFor(a_ref, kBackground).probe = true;  // unknown until the probe says
+				WorkFor(a_ref, Lane::kBackground).probe = true;  // unknown until the probe says
 			}
 			return;
 		}
 		const auto want = WantRefit(s);
 		if (!want.set) {
-			if (s.refit > 0) {
-				WorkFor(a_ref, kUrgent).refit = true;  // coming off: at once
+			if (RefitOn(s.refit)) {
+				WorkFor(a_ref, Lane::kUrgent).refit = true;  // coming off: at once
 			}
 			return;
 		}
-		if (s.refit != static_cast<int>(RefitMarkerValue(*want.set, want.heavy))) {
-			WorkFor(a_ref, kNormal).refit = true;
+		if (s.refit != static_cast<int>(RefitMarker(*want.set, want.heavy))) {
+			WorkFor(a_ref, Lane::kNormal).refit = true;
 		}
 	}
 
-	Director::Work& Director::WorkFor(std::uint32_t a_ref, int a_lane)
+	Director::Work& Director::WorkFor(std::uint32_t a_ref, Lane a_lane)
 	{
 		auto [it, inserted] = _work.try_emplace(a_ref);
+		auto& w = it->second;
 		if (inserted) {
-			it->second.lane = a_lane;
+			w.lane = a_lane;
 			_queue.push_back(a_ref);
 		} else {
-			it->second.lane = std::min(it->second.lane, a_lane);
-			if (std::ranges::find(_queue, a_ref) == _queue.end()) {
+			w.lane = static_cast<Lane>(std::min(static_cast<int>(w.lane), static_cast<int>(a_lane)));
+			if (!w.parked && std::ranges::find(_queue, a_ref) == _queue.end()) {
 				_queue.push_back(a_ref);
 			}
 		}
-		return it->second;
+		return w;
 	}
 
-	void Director::QueueBody(std::uint32_t a_ref, BodyRequest a_body, int a_lane)
+	void Director::QueueBody(std::uint32_t a_ref, BodyRequest a_body, Lane a_lane)
 	{
-		WorkFor(a_ref, a_lane).body = std::move(a_body);  // the latest decision wins
+		auto& w = WorkFor(a_ref, a_lane);
+		w.body = std::move(a_body);  // the latest decision wins
+		w.notBefore = {};            // and is tried at once, not after the one it replaced was deferred
+	}
+
+	void Director::Requeue(Order& a_order, bool a_park)
+	{
+		auto& w = WorkFor(a_order.ref, a_order.lane);
+		switch (a_order.kind) {
+		case OrderKind::kBody:
+			if (!w.body) {
+				w.body = std::move(a_order.body);  // a newer decision already waiting wins
+			}
+			break;
+		case OrderKind::kTouch:
+			w.touch = true;
+			break;
+		case OrderKind::kRefit:
+			w.refit = true;
+			break;
+		case OrderKind::kProbe:
+			w.probe = true;
+			break;
+		case OrderKind::kSnapshot:
+			break;
+		}
+		if (a_park) {
+			w.parked = true;
+			std::erase(_queue, a_order.ref);
+		}
 	}
 
 	// ------------------------------------------------------------------ requests
@@ -476,11 +752,13 @@ namespace SH
 		}
 	}
 
-	bool Director::RequestPreset(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_preset, Source a_source, std::string& a_why)
+	bool Director::RequestPreset(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_preset, Source a_source, Lane a_lane,
+		std::string& a_why)
 	{
 		std::scoped_lock l{ _lock };
 		return WithCatalog(_catalog, _status, a_why, [&] {
-			if (!_catalog->Find(a_preset, a_female)) {
+			const auto* p = _catalog->Find(a_preset, a_female);
+			if (!p) {
 				a_why = std::format("there is no preset \"{}\" for a {} body", a_preset, a_female ? "female" : "male");
 				return false;
 			}
@@ -489,18 +767,17 @@ namespace SH
 				session.female = a_female;
 				session.base = a_base;
 			}
-			if (_picker.ref == a_ref) {
-				ClosePicker();  // a decision made elsewhere ends the trying-on; it is what they get
-				_registry.picker.reset();
-			}
+			Retire(a_ref);
 			session.reset = false;
-			Intend(a_ref, session, a_source, std::string{ a_preset });
-			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = std::string{ a_preset } }, kUrgent);
+			Intend(a_ref, session, a_source, p->name);
+			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = p->name, .choice = Chosen(a_source) ? a_source : Source::kNone },
+				a_lane);
+			Unpark(a_ref);
 			return true;
 		});
 	}
 
-	bool Director::RequestRegenerate(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string& a_why)
+	bool Director::RequestRegenerate(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, Lane a_lane, std::string& a_why)
 	{
 		std::scoped_lock l{ _lock };
 		return WithCatalog(_catalog, _status, a_why, [&] {
@@ -509,18 +786,16 @@ namespace SH
 				session.female = a_female;
 				session.base = a_base;
 			}
-			if (_picker.ref == a_ref) {
-				ClosePicker();
-				_registry.picker.reset();
-			}
+			Retire(a_ref);
 			session.reset = false;
 			Intend(a_ref, session, Source::kNone, {});
-			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, kUrgent);
+			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, a_lane);
+			Unpark(a_ref);
 			return true;
 		});
 	}
 
-	bool Director::RequestReset(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string& a_why)
+	bool Director::RequestReset(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, Lane a_lane, std::string& a_why)
 	{
 		std::scoped_lock l{ _lock };
 		return WithCatalog(_catalog, _status, a_why, [&] {
@@ -529,29 +804,29 @@ namespace SH
 				session.female = a_female;
 				session.base = a_base;
 			}
-			if (_picker.ref == a_ref) {
-				ClosePicker();
-				_registry.picker.reset();
-			}
-			Intend(a_ref, session, Source::kNone, {});
-			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kReset }, kUrgent);
+			Retire(a_ref);
+			Intend(a_ref, session, Source::kReset, {});
+			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kReset }, a_lane);
+			Unpark(a_ref);
 			return true;
 		});
 	}
 
-	bool Director::RequestReapply(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_markerPreset, std::string& a_why)
+	bool Director::RequestReapply(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_markerPreset, Lane a_lane,
+		std::string& a_why)
 	{
 		std::scoped_lock l{ _lock };
 		return WithCatalog(_catalog, _status, a_why, [&] {
 			const auto* rec = _registry.Find(a_ref);
-			const bool  ours = rec && !rec->preset.empty();
-			std::string preset = ours ? rec->preset : std::string{ a_markerPreset };
-			if (preset.empty()) {
+			const bool  ours = rec && !rec->preset.empty() && rec->source != Source::kNameBlacklist && rec->source != Source::kReset;
+			const auto  source = ours ? rec->source : Source::kNone;
+			const auto* p = _catalog->Find(ours ? std::string_view{ rec->preset } : a_markerPreset, a_female);
+			if (!ours && a_markerPreset.empty()) {
 				a_why = "they have no Silhouette body to give again";
 				return false;
 			}
-			if (!_catalog->Find(preset, a_female)) {
-				a_why = std::format("\"{}\" is not in this build", preset);
+			if (!p) {
+				a_why = std::format("\"{}\" is not in this build", ours ? rec->preset : std::string{ a_markerPreset });
 				return false;
 			}
 			auto& session = _sessions[a_ref];
@@ -559,12 +834,39 @@ namespace SH
 				session.female = a_female;
 				session.base = a_base;
 			}
-			if (_picker.ref == a_ref) {
-				ClosePicker();
-				_registry.picker.reset();
+			Retire(a_ref);
+			// A body BodyGen gave stays BodyGen's: giving it again pins nobody's choice on it.
+			if (ours) {
+				Intend(a_ref, session, source, p->name);
 			}
-			Intend(a_ref, session, ours ? rec->source : Source::kNone, preset);
-			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = preset, .keepVariety = true }, kUrgent);
+			QueueBody(a_ref,
+				BodyRequest{ .what = BodyRequest::What::kPreset, .preset = p->name, .keepVariety = true, .choice = Chosen(source) ? source : Source::kNone },
+				a_lane);
+			Unpark(a_ref);
+			return true;
+		});
+	}
+
+	bool Director::RequestAdopt(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string& a_why)
+	{
+		std::scoped_lock l{ _lock };
+		return WithCatalog(_catalog, _status, a_why, [&] {
+			if (const auto* rec = _registry.Find(a_ref); rec && (rec->source != Source::kNone || !rec->preset.empty())) {
+				a_why = std::format("their body is {}'s to decide", SourceName(rec->source));
+				return false;
+			}
+			const auto s = _sessions.find(a_ref);
+			if (_picker.ref == a_ref || _registry.pickings.contains(a_ref) || BodyPending(a_ref) || (s != _sessions.end() && s->second.reset)) {
+				a_why = "a change to their body is already on its way";
+				return false;
+			}
+			auto& session = _sessions[a_ref];
+			if (!session.known) {
+				session.female = a_female;
+				session.base = a_base;
+			}
+			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, Lane::kBackground);
+			Unpark(a_ref);
 			return true;
 		});
 	}
@@ -580,7 +882,8 @@ namespace SH
 		for (;;) {
 			// The most urgent actor with work and nothing in flight; within a lane, the first to ask.
 			std::ptrdiff_t best = -1;
-			int            bestLane = kBackground + 1;
+			int            bestLane = static_cast<int>(Lane::kBackground) + 1;
+			const auto     now = _clock();
 			for (std::size_t i = 0; i < _queue.size();) {
 				const auto ref = _queue[i];
 				const auto wit = _work.find(ref);
@@ -589,10 +892,11 @@ namespace SH
 					_queue.erase(_queue.begin() + static_cast<std::ptrdiff_t>(i));
 					continue;
 				}
-				if (!_busy.contains(ref) && wit->second.lane < bestLane) {
+				const auto lane = static_cast<int>(wit->second.lane);
+				if (!_busy.contains(ref) && lane < bestLane && wit->second.notBefore <= now) {
 					best = static_cast<std::ptrdiff_t>(i);
-					bestLane = wit->second.lane;
-					if (bestLane == kUrgent) {
+					bestLane = lane;
+					if (bestLane == static_cast<int>(Lane::kUrgent)) {
 						break;
 					}
 				}
@@ -608,6 +912,7 @@ namespace SH
 			Order o;
 			o.ref = ref;
 			o.female = session.female;
+			o.lane = w.lane;
 			bool made = true;
 			if (w.snapshot) {
 				w.snapshot = false;
@@ -635,7 +940,7 @@ namespace SH
 					o.refitOn = true;
 					o.heavy = want.heavy;
 					o.refitSet = want.set->name;
-				} else if (session.refit != 0) {  // on, or unknown: coming off is safe to repeat
+				} else if (session.refit != 0) {  // on, unfinished, or unknown: coming off is safe to repeat
 					o.kind = OrderKind::kRefit;
 					o.refitOn = false;
 				} else {
@@ -699,9 +1004,17 @@ namespace SH
 		if (!o || !(a_value > 0.0F)) {
 			return;  // 0 is what "removed" looks like: the name stays listed until a load
 		}
-		if (KindOf(a_marker) == MarkerKind::kRefit) {
+		switch (KindOf(a_marker)) {
+		case MarkerKind::kRefit:
 			o->refitValue = a_value;
 			return;
+		case MarkerKind::kChoice:
+			o->choiceValue = a_value;
+			return;
+		case MarkerKind::kNone:
+			return;
+		case MarkerKind::kBody:
+			break;
 		}
 		// A body carries one marker. Should a layer hold two, a Silhouette preset's wins over the
 		// blacklist marker, and the first stays.
@@ -720,15 +1033,29 @@ namespace SH
 		}
 		if (!o->readsDecided) {
 			o->readsDecided = true;
-			// No Silhouette marker: is there a body at all? A few of their own values say (S-41).
-			if (o->probe && o->marker.empty()) {
-				for (const auto& n : o->names) {
-					if (o->reads.size() >= kBodyReads) {
-						break;
+			if (o->probe && !o->readAll) {
+				const auto& c = *_catalog;
+				const auto  stamp = Stamp(o->markerValue);
+				if (!o->marker.empty() && !IEquals(o->marker, kBlacklistMarker) && stamp != 0) {
+					// A Silhouette body: her own values of what the touch-up weighs -- another mod's keyed value
+					// of the same name is not hers (S-44).
+					auto weighed = c.HealFor(o->marker, stamp);
+					for (const auto& r : c.variety[o->female ? 1 : 0]) {
+						weighed.push_back(r.morph);
 					}
-					if (KindOf(n) == MarkerKind::kNone && !_catalog->NeverInBody(o->female, n)) {
-						o->reads.push_back(n);
+					for (const auto& n : o->names) {
+						if (ContainsI(weighed, n) && !ContainsI(o->reads, n)) {
+							o->reads.push_back(n);
+						}
 					}
+				} else {
+					// No Silhouette marker: is there a body at all? One value of her own says so (S-41).
+					for (const auto& n : o->names) {
+						if (KindOf(n) == MarkerKind::kNone && !c.NeverInBody(o->female, n) && !ContainsI(o->reads, n)) {
+							o->reads.push_back(n);
+						}
+					}
+					o->readsUntilBody = true;
 				}
 				o->readValues.assign(o->reads.size(), std::numeric_limits<float>::quiet_NaN());
 			}
@@ -752,6 +1079,17 @@ namespace SH
 		if (auto* o = Find(a_order); o && a_index >= 0 && static_cast<std::size_t>(a_index) < o->readValues.size()) {
 			o->readValues[static_cast<std::size_t>(a_index)] = a_value;
 		}
+	}
+
+	bool Director::ReadsDone(std::uint32_t a_order) const
+	{
+		std::scoped_lock l{ _lock };
+		const auto       it = _inflight.find(a_order);
+		if (it == _inflight.end()) {
+			return true;
+		}
+		const auto& o = it->second;
+		return o.readsUntilBody && std::ranges::any_of(o.readValues, [](float v) { return !std::isnan(v) && v != 0.0F; });
 	}
 
 	void Director::NoteLayer(std::uint32_t a_order, std::string_view a_morph, float a_value)
@@ -803,8 +1141,17 @@ namespace SH
 					for (const auto& [m, v] : o->layer) {
 						keep.emplace(m, v);
 					}
+					for (const auto& [m, v] : o->body.keepFrom) {
+						keep.emplace(m, v);
+					}
+					const bool keeping = o->body.keepVariety || !o->body.keepFrom.empty();
+					auto       body = BodyFor(c, *p, o->ref, _settings.variety, keeping ? &keep : nullptr);
+					if (Chosen(o->body.choice)) {
+						// Beside the body, before its marker: the marker last is what tells a whole body.
+						body.insert(body.end() - 1, { std::string{ kChoiceMarker }, static_cast<float>(o->body.choice) });
+					}
 					o->clearUnkeyed = true;
-					unkeyed(BodyFor(c, *p, o->ref, _settings.variety, o->body.keepVariety ? &keep : nullptr));
+					unkeyed(body);
 					o->update = true;
 					return true;
 				}
@@ -831,18 +1178,22 @@ namespace SH
 				o->clearRefit = true;
 				o->update = true;
 				return true;
+			case BodyRequest::What::kMark:
+				// The choice's marker written beside the body -- or, for nobody's choice, erased (SetMorph 0).
+				o->writes.push_back(Write{ std::string{ kChoiceMarker }, Chosen(o->body.choice) ? static_cast<float>(o->body.choice) : 0.0F, Layer::kUnkeyed });
+				return true;  // a marker moves nothing: no update
 			}
 			return false;
 		case OrderKind::kTouch:
 			{
 				const auto& s = _sessions[o->ref];
-				o->touchHash = BodyHash(s.marker, s.stamp);
+				o->touchKey = TouchKey(c, s.marker, s.stamp, s.female, _settings.variety);
 				for (const auto& m : c.HealFor(s.marker, s.stamp)) {
-					if (std::ranges::any_of(s.names, [&](const std::string& n) { return IEquals(n, m); })) {
-						o->writes.push_back(Write{ m, 0.0F, Layer::kUnkeyed });  // SetMorph(0) erases it
+					if (ContainsI(s.own, m)) {
+						o->writes.push_back(Write{ m, 0.0F, Layer::kUnkeyed });  // SetMorph(0) erases her own value only
 					}
 				}
-				unkeyed(TopUp(c, s.female, o->ref, _settings.variety, s.names));
+				unkeyed(TopUp(c, s.female, o->ref, _settings.variety, s.own));
 				o->update = !o->writes.empty();
 				return true;
 			}
@@ -856,13 +1207,11 @@ namespace SH
 				}
 				// The marker goes first as "pending" and last with its value: a refit a save cut short
 				// reads back as unfinished, and the next probe finishes it or takes it off (S-43).
-				for (auto [m, v] : RefitFloors(*set, o->heavy)) {
-					if (KindOf(m) == MarkerKind::kRefit) {
-						v = kRefitPending;
-					}
+				o->writes.push_back(Write{ std::string{ kRefitMarker }, kRefitPending, Layer::kRefit });
+				for (auto& [m, v] : RefitFloors(*set, o->heavy)) {
 					o->writes.push_back(Write{ std::move(m), v, Layer::kRefit });
 				}
-				o->writes.push_back(Write{ std::string{ kRefitMarker }, RefitMarkerValue(*set, o->heavy), Layer::kRefit });
+				o->writes.push_back(Write{ std::string{ kRefitMarker }, RefitMarker(*set, o->heavy), Layer::kRefit });
 			}
 			return true;
 		}
@@ -941,13 +1290,14 @@ namespace SH
 			return;
 		}
 		if (!a_ok) {
+			++_counts.failed;
 			Log(std::format("{:08X}: order {} (kind {}) not completed by the bridge", o.ref, o.id, static_cast<int>(o.kind)));
 			if (o.kind == OrderKind::kSnapshot && _picker.ref == o.ref) {
 				ClosePicker();  // without the snapshot a Cancel could not put them back
 			}
 			if (o.kind == OrderKind::kBody && o.body.what == BodyRequest::What::kRestore) {
 				if (auto s = _sessions.find(o.ref); s != _sessions.end()) {
-					s->second.restoring = false;  // the saved picking is kept: the next sighting tries again
+					s->second.restoring = false;  // the picking stays: the next sighting tries again
 				}
 			}
 			return;
@@ -955,20 +1305,19 @@ namespace SH
 		auto& session = _sessions[o.ref];
 		switch (o.kind) {
 		case OrderKind::kProbe:
+			++_counts.probes;
 			OnProbed(o.ref, o);
-			Reconcile(o.ref, session);
-			AnnounceBody(o.ref, session);
-			CheckTouch(o.ref, session);
-			ReconcileRefit(o.ref);
+			AfterProbe(o.ref, session);
 			break;
 		case OrderKind::kSnapshot:
+			++_counts.snapshots;
 			OnProbed(o.ref, o);
-			if (_picker.ref == o.ref) {
+			if (_picker.ref == o.ref && !_picker.snapped) {
 				_picker.snapped = true;
 				_picker.current = PresetNamedBy(session.marker, session.stamp);
 				_picker.index = -1;
 				for (std::size_t i = 0; i < _picker.presets.size(); ++i) {
-					if (_picker.presets[i] == _picker.current) {
+					if (IEquals(_picker.presets[i], _picker.current)) {
 						_picker.index = static_cast<std::int32_t>(i);
 					}
 				}
@@ -980,35 +1329,98 @@ namespace SH
 				if (const auto* rec = _registry.Find(o.ref)) {
 					save.before = *rec;
 				}
-				_registry.picker = std::move(save);
+				_registry.Keep(std::move(save));
 			}
 			ReconcileRefit(o.ref);
 			break;
 		case OrderKind::kBody:
+			++_counts.bodies;
 			FinishBody(o);
 			break;
 		case OrderKind::kTouch:
 			{
+				++_counts.touches;
 				auto& rec = _registry.Get(o.ref);
 				if (rec.base == 0) {
 					rec.base = session.base;
 				}
-				rec.touched = o.touchHash;
+				rec.touched = o.touchKey;
 				if (!o.writes.empty()) {
 					Log(std::format("{:08X}: {} slider(s) healed or topped up on {}", o.ref, o.writes.size(), PresetNamedBy(session.marker, session.stamp)));
 				}
 				break;
 			}
 		case OrderKind::kRefit:
+			++_counts.refits;
 			FinishRefit(o);
 			break;
 		}
+	}
+
+	void Director::Gone(std::uint32_t a_order)
+	{
+		std::scoped_lock l{ _lock };
+		const auto       it = _inflight.find(a_order);
+		if (it == _inflight.end()) {
+			return;
+		}
+		Order o = std::move(it->second);
+		_inflight.erase(it);
+		_busy.erase(o.ref);
+		if (!_catalog) {
+			return;
+		}
+		++_counts.gone;
+		if (o.kind == OrderKind::kSnapshot) {
+			if (_picker.ref == o.ref) {
+				ClosePicker();
+			}
+			return;
+		}
+		if (o.kind == OrderKind::kBody && o.body.what == BodyRequest::What::kRestore) {
+			if (auto s = _sessions.find(o.ref); s != _sessions.end()) {
+				s->second.restoring = false;  // the picking stays: the next sighting puts them back
+			}
+			return;
+		}
+		Requeue(o, true);  // waits for them to be seen again
+	}
+
+	void Director::Defer(std::uint32_t a_order)
+	{
+		std::scoped_lock l{ _lock };
+		const auto       it = _inflight.find(a_order);
+		if (it == _inflight.end()) {
+			return;
+		}
+		Order o = std::move(it->second);
+		_inflight.erase(it);
+		_busy.erase(o.ref);
+		if (!_catalog) {
+			return;
+		}
+		++_counts.deferred;
+		auto& s = _sessions[o.ref];
+		if (!s.deferNoted) {
+			s.deferNoted = true;
+			Log(std::format("{:08X}: another mod has them busy - the change waits", o.ref));
+		}
+		o.lane = Lane::kBackground;
+		const auto ref = o.ref;
+		Requeue(o, false);
+		WorkFor(ref, Lane::kBackground).notBefore = _clock() + kDeferWait;
 	}
 
 	std::size_t Director::Pending() const
 	{
 		std::scoped_lock l{ _lock };
 		return _queue.size() + _inflight.size();
+	}
+
+	void Director::SetClock(Clock a_clock)
+	{
+		std::scoped_lock l{ _lock };
+		_clock = std::move(a_clock);
 	}
 
 	void Director::FinishBody(Order& a_order)
@@ -1034,12 +1446,22 @@ namespace SH
 						s.names.push_back(r.morph);
 					}
 				}
-				if (!a_order.body.preview && p) {
-					const auto hash = BodyHash(p->marker, c.stamp);
-					const auto* rec = _registry.Find(ref);
-					if (!rec || rec->announced != hash) {
-						Push(EventKind::kGenerated, ref, a_order.body.preset, false, hash);
+				s.own = s.names;  // all of it written into her own layer
+				s.choice = a_order.body.choice;
+				if (Chosen(s.choice)) {
+					s.names.emplace_back(kChoiceMarker);
+				}
+				if (p && (!a_order.body.preview || s.announceOnDone)) {
+					// Every body given on request is announced, the same preset again included (S-46).
+					Push(EventKind::kGenerated, ref, p->name, false, BodyHash(p->marker, c.stamp));
+					s.announceOnDone = false;
+				}
+				if (p && !a_order.body.preview) {
+					auto& rec = _registry.Get(ref);
+					if (rec.base == 0) {
+						rec.base = s.base;
 					}
+					rec.touched = TouchKey(c, p->marker, c.stamp, a_order.female, _settings.variety);
 				}
 				break;
 			}
@@ -1048,40 +1470,76 @@ namespace SH
 			s.stamp = c.stamp;
 			s.hasBody = false;
 			s.refit = 0;
+			s.choice = Source::kNone;
+			s.own.clear();
 			break;
 		case BodyRequest::What::kRestore:
 			{
 				s.marker.clear();
 				s.stamp = 0;
 				s.hasBody = false;
+				s.choice = Source::kNone;
 				s.names.clear();
+				s.own.clear();
 				for (const auto& [m, v] : a_order.body.restore) {
 					s.names.push_back(m);
-					if (KindOf(m) == MarkerKind::kBody && v > 0.0F) {
-						s.marker = m;
-						s.stamp = Stamp(v);
+					switch (KindOf(m)) {
+					case MarkerKind::kBody:
+						if (v > 0.0F) {
+							s.marker = m;
+							s.stamp = Stamp(v);
+						}
+						break;
+					case MarkerKind::kChoice:
+						s.choice = ChoiceOf(v);
+						break;
+					case MarkerKind::kNone:
+						if (v != 0.0F) {
+							s.own.push_back(m);
+						}
+						break;
+					case MarkerKind::kRefit:
+						break;
 					}
-					s.hasBody = s.hasBody || v != 0.0F;
 				}
+				s.hasBody = (!s.marker.empty() && !IEquals(s.marker, kBlacklistMarker) && s.stamp != 0) || !s.own.empty();
 				s.restoring = false;
-				if (_registry.picker && _registry.picker->ref == ref) {
-					_registry.picker.reset();  // the picking is over
+				if (_picker.ref != ref) {
+					_registry.pickings.erase(ref);  // the picking is over
 				}
 				break;
 			}
 		case BodyRequest::What::kRegenerate:
-			OnProbed(ref, a_order);
-			s.reset = false;
-			AnnounceBody(ref, s);
-			DecideBody(ref, s, Decide(c, s.facts));  // generated as if new: the rules get their say again
-			break;
+			{
+				OnProbed(ref, a_order);
+				s.reset = false;
+				if (const auto* rec = _registry.Find(ref); rec && rec->source == Source::kReset) {
+					Intend(ref, s, Source::kNone, {});
+				}
+				// Announced like every body given on request (S-46), whether or not this session has seen them yet.
+				if (const auto preset = PresetNamedBy(s.marker, s.stamp); !preset.empty()) {
+					Push(EventKind::kGenerated, ref, preset, false, BodyHash(s.marker, s.stamp));
+					auto& rec = _registry.Get(ref);
+					if (rec.base == 0) {
+						rec.base = s.base;
+					}
+					rec.touched = TouchKey(c, s.marker, s.stamp, a_order.female, _settings.variety);
+				}
+				DecideBody(ref, s);  // generated as if new: the rules get their say again
+				break;
+			}
 		case BodyRequest::What::kReset:
 			s.marker.clear();
 			s.stamp = 0;
 			s.hasBody = false;
 			s.refit = 0;
 			s.reset = true;
+			s.choice = Source::kNone;
 			s.names.clear();
+			s.own.clear();
+			break;
+		case BodyRequest::What::kMark:
+			s.choice = a_order.body.choice;
 			break;
 		}
 		ReconcileRefit(ref);
@@ -1092,9 +1550,11 @@ namespace SH
 		auto& s = _sessions[a_order.ref];
 		if (a_order.refitOn) {
 			const auto* set = _catalog->FindRefit(a_order.refitSet, a_order.female);
-			s.refit = set ? static_cast<int>(RefitMarkerValue(*set, a_order.heavy)) : 1;
+			s.refit = set ? static_cast<int>(RefitMarker(*set, a_order.heavy)) : 1;
+			Log(std::format("{:08X} \"{}\": refit on ({}{})", a_order.ref, s.facts.baseName, a_order.refitSet, a_order.heavy ? ", heavy" : ""));
 		} else {
 			s.refit = 0;
+			Log(std::format("{:08X} \"{}\": refit off", a_order.ref, s.facts.baseName));
 		}
 		Push(EventKind::kORefitChanged, a_order.ref, {}, a_order.refitOn);
 		ReconcileRefit(a_order.ref);  // they may have dressed or undressed while it ran
@@ -1130,18 +1590,7 @@ namespace SH
 		if (_taken.size() > 64) {
 			_taken.pop_front();
 		}
-		const auto& e = _taken.back();
-		// Announced when it leaves, not when it was queued: a save in between announces it again.
-		if (e.kind == EventKind::kGenerated && e.announce != 0) {
-			auto& rec = _registry.Get(e.ref);
-			if (rec.base == 0) {
-				if (const auto s = _sessions.find(e.ref); s != _sessions.end()) {
-					rec.base = s->second.base;
-				}
-			}
-			rec.announced = e.announce;
-		}
-		return e.id;
+		return _taken.back().id;
 	}
 
 	std::optional<Event> Director::EventAt(std::uint32_t a_event) const
@@ -1155,6 +1604,25 @@ namespace SH
 		return std::nullopt;
 	}
 
+	// Announced once the bridge has raised it: a save between hand-out and raise announces it again.
+	void Director::EventDone(std::uint32_t a_event)
+	{
+		std::scoped_lock l{ _lock };
+		for (const auto& e : _taken) {
+			if (e.id != a_event || e.kind != EventKind::kGenerated || e.announce == 0) {
+				continue;
+			}
+			auto& rec = _registry.Get(e.ref);
+			if (rec.base == 0) {
+				if (const auto s = _sessions.find(e.ref); s != _sessions.end()) {
+					rec.base = s->second.base;
+				}
+			}
+			rec.announced = e.announce;
+			return;
+		}
+	}
+
 	// ------------------------------------------------------------------ the picker
 
 	void Director::ClosePicker()
@@ -1162,33 +1630,34 @@ namespace SH
 		_picker = {};
 	}
 
-	std::string Director::CancelPicking()
+	std::string Director::CancelPicking(std::string_view a_message)
 	{
 		const auto name = _picker.name;
 		const auto ref = _picker.ref;
-		if (_picker.index < 0 || !_picker.snapped) {
-			const bool tried = _picker.snapped && _picker.index >= 0;
-			ClosePicker();
-			if (!tried) {
-				_registry.picker.reset();
-				return std::format("{} keeps the body they had.", name);
+		const auto entry = _registry.pickings.find(ref);
+		if (!_picker.snapped || !_picker.tried || entry == _registry.pickings.end()) {
+			// Nothing was tried on: nothing to undo.
+			if (const auto w = _work.find(ref); w != _work.end()) {
+				w->second.snapshot = false;
 			}
-		}
-		if (!_registry.picker || _registry.picker->ref != ref) {
 			ClosePicker();
-			return std::format("{} keeps the body they had.", name);
+			if (entry != _registry.pickings.end()) {
+				_registry.pickings.erase(entry);
+			}
+			return a_message.empty() ? std::format("{} keeps the body they had.", name) : std::string{ a_message };
 		}
 		// The choice behind the body goes back at once; the body follows with the restore, and the saved
 		// picking stays until that restore is done (S-47).
-		if (_registry.picker->before) {
-			_registry.Get(ref) = *_registry.picker->before;
+		if (entry->second.before) {
+			_registry.Get(ref) = *entry->second.before;
 		} else {
 			_registry.Erase(ref);
 		}
-		QueueBody(ref, BodyRequest{ .what = BodyRequest::What::kRestore, .restore = _registry.picker->snapshot }, kUrgent);
+		_sessions[ref].restoring = true;
+		QueueBody(ref, RestoreOf(entry->second.snapshot, entry->second.female), Lane::kUrgent);
 		const auto back = _picker.current.empty() ? std::string{ "the body they had" } : _picker.current;
 		ClosePicker();
-		return std::format("{} is back to {}.", name, back);
+		return a_message.empty() ? std::format("{} is back to {}.", name, back) : std::string{ a_message };
 	}
 
 	std::string Director::PickerStart(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_name)
@@ -1201,7 +1670,8 @@ namespace SH
 		if (_picker.ref == a_ref) {
 			return std::format("{} is already picked: Next / Previous try presets, Keep or Cancel ends it.", _picker.name);
 		}
-		if (BodyPending(a_ref)) {
+		const auto pending = _registry.pickings.find(a_ref);
+		if (pending == _registry.pickings.end() && BodyPending(a_ref)) {
 			return std::format("{}'s body is still changing - pick them again in a moment.", name);
 		}
 		std::string before;
@@ -1226,7 +1696,29 @@ namespace SH
 		_picker.base = a_base;
 		_picker.name = name;
 		_picker.presets = std::move(presets);
-		WorkFor(a_ref, kUrgent).snapshot = true;
+		const auto again = _registry.pickings.find(a_ref);
+		if (again != _registry.pickings.end()) {
+			// A picking a save or a Cancel left unfinished: it carries on from the body they had then, whatever
+			// is on them now (S-47). A queued restore of it is not needed any more.
+			if (const auto w = _work.find(a_ref); w != _work.end() && w->second.body && w->second.body->what == BodyRequest::What::kRestore) {
+				w->second.body.reset();
+			}
+			session.restoring = false;
+			_picker.snapped = true;
+			_picker.tried = true;
+			for (const auto& [m, v] : again->second.snapshot) {
+				if (KindOf(m) == MarkerKind::kBody && v > 0.0F) {
+					_picker.current = PresetNamedBy(m, Stamp(v));
+				}
+			}
+			for (std::size_t i = 0; i < _picker.presets.size(); ++i) {
+				if (IEquals(_picker.presets[i], _picker.current)) {
+					_picker.index = static_cast<std::int32_t>(i);
+				}
+			}
+			return before + std::format("{} picked again: Next / Previous try their {} presets; Keep or Cancel ends it.", _picker.name, _picker.presets.size());
+		}
+		WorkFor(a_ref, Lane::kUrgent).snapshot = true;
 		return before + std::format("{} picked. Next / Previous try their {} presets; Keep or Cancel ends it.", _picker.name, _picker.presets.size());
 	}
 
@@ -1236,7 +1728,8 @@ namespace SH
 		if (_picker.ref == 0) {
 			return "Pick an NPC first: aim at them and press Pick.";
 		}
-		if (!_picker.snapped) {
+		const auto entry = _registry.pickings.find(_picker.ref);
+		if (!_picker.snapped || entry == _registry.pickings.end()) {
 			return std::format("Still reading {}'s body - a moment.", _picker.name);
 		}
 		const auto n = static_cast<std::int32_t>(_picker.presets.size());
@@ -1250,7 +1743,10 @@ namespace SH
 			_picker.index = ((_picker.index + a_step) % n + n) % n;
 		}
 		const auto& preset = _picker.presets[static_cast<std::size_t>(_picker.index)];
-		QueueBody(_picker.ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = preset, .preview = true }, kUrgent);
+		_picker.tried = true;
+		// Their own variety comes along: previews differ only in the preset (S-21).
+		QueueBody(_picker.ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = preset, .preview = true, .keepFrom = entry->second.snapshot },
+			Lane::kUrgent);
 		return std::format("{}: {} ({}/{})", _picker.name, preset, _picker.index + 1, n);
 	}
 
@@ -1262,22 +1758,34 @@ namespace SH
 		}
 		const auto name = _picker.name;
 		const auto ref = _picker.ref;
-		const bool changed = _picker.snapped && _picker.index >= 0 &&
-		                     _picker.presets[static_cast<std::size_t>(_picker.index)] != _picker.current;
-		if (!changed) {
-			ClosePicker();
-			_registry.picker.reset();
-			return std::format("{} keeps the body they had.", name);
+		if (!_picker.snapped) {
+			return CancelPicking();
+		}
+		const bool same = _picker.index < 0 || IEquals(_picker.presets[static_cast<std::size_t>(_picker.index)], _picker.current);
+		if (same) {
+			// Back on their own preset: they keep the body they had, exactly -- not a preview of it.
+			return CancelPicking(std::format("{} keeps the body they had.", name));
 		}
 		const auto preset = _picker.presets[static_cast<std::size_t>(_picker.index)];
-		Intend(ref, _sessions[ref], Source::kPicker, preset);
-		// The preview is on them already, or on its way: it is the body now, and announced as one.
-		const auto* p = _catalog->Find(preset, _picker.female);
-		if (p) {
-			Push(EventKind::kGenerated, ref, preset, false, BodyHash(p->marker, _catalog->stamp));
+		auto&      s = _sessions[ref];
+		Intend(ref, s, Source::kPicker, preset);
+		const auto w = _work.find(ref);
+		if (w != _work.end() && w->second.body && w->second.body->what == BodyRequest::What::kPreset && w->second.body->preview) {
+			// The preview is not written yet: it is written as the choice, its marker beside it, and announced.
+			w->second.body->preview = false;
+			w->second.body->choice = Source::kPicker;
+		} else {
+			const bool writing = std::ranges::any_of(_inflight, [&](const auto& p) { return p.second.ref == ref && p.second.kind == OrderKind::kBody; });
+			if (writing) {
+				s.announceOnDone = true;  // announced when the preview lands
+			} else if (const auto* p = _catalog->Find(preset, _picker.female)) {
+				Push(EventKind::kGenerated, ref, p->name, false, BodyHash(p->marker, _catalog->stamp));
+			}
+			s.marked = true;
+			QueueBody(ref, BodyRequest{ .what = BodyRequest::What::kMark, .choice = Source::kPicker }, Lane::kNormal);
 		}
+		_registry.pickings.erase(ref);
 		ClosePicker();
-		_registry.picker.reset();
 		return std::format("{} keeps {}.", name, preset);
 	}
 
@@ -1308,7 +1816,7 @@ namespace SH
 	{
 		std::scoped_lock l{ _lock };
 		const auto*      rec = _registry.Find(a_ref);
-		return rec && rec->source != Source::kNameBlacklist ? rec->preset : std::string{};
+		return rec && rec->source != Source::kNameBlacklist && rec->source != Source::kReset ? rec->preset : std::string{};
 	}
 
 	bool Director::RefitApplied(std::uint32_t a_ref) const
@@ -1325,15 +1833,20 @@ namespace SH
 		std::string      out;
 		if (rec && rec->source == Source::kNameBlacklist) {
 			out = "blacklisted by name: kept bare";
+		} else if (rec && rec->source == Source::kReset) {
+			out = "reset: a new body at the next load";
 		} else if (rec && !rec->preset.empty()) {
 			out = std::format("chosen: {} ({})", rec->preset, SourceName(rec->source));
 		} else {
 			out = "nobody chose their body: it is BodyGen's";
 		}
 		if (const auto it = _sessions.find(a_ref); it != _sessions.end()) {
-			if (it->second.refit > 0) {
-				out += it->second.refit % 2 == 0 ? "; dressed heavily, refit on" : "; dressed, refit on";
-			} else if (it->second.refit == 0 && it->second.clothed) {
+			const auto& s = it->second;
+			if (s.refit > 0) {
+				out += s.refit % 2 == 0 ? "; dressed heavily, refit on" : "; dressed, refit on";
+			} else if (s.refit == kRefitUnfinished) {
+				out += "; a refit half written";
+			} else if (s.refit == 0 && s.clothed) {
 				out += "; dressed, not refit";
 			}
 		}
@@ -1342,13 +1855,13 @@ namespace SH
 
 	// ------------------------------------------------------------------ the co-save
 
-	std::vector<std::byte> Director::SaveRecords(const std::function<bool(std::uint32_t)>& a_keep) const
+	std::vector<std::byte> Director::SaveRecords(const Registry::KeepFn& a_keep) const
 	{
 		std::scoped_lock l{ _lock };
 		return _registry.Serialize(a_keep);
 	}
 
-	bool Director::LoadRecords(std::span<const std::byte> a_bytes, std::uint32_t a_version,
+	Registry::Loaded Director::LoadRecords(std::span<const std::byte> a_bytes, std::uint32_t a_version,
 		const std::function<std::uint32_t(std::uint32_t)>& a_resolve, std::string& a_error)
 	{
 		std::scoped_lock l{ _lock };
@@ -1368,6 +1881,12 @@ namespace SH
 		return rec ? std::optional<Record>{ *rec } : std::nullopt;
 	}
 
+	bool Director::HasPicking(std::uint32_t a_ref) const
+	{
+		std::scoped_lock l{ _lock };
+		return _registry.pickings.contains(a_ref);
+	}
+
 	void Director::Log(std::string a_line)
 	{
 		if (_log.size() >= kMaxLog) {
@@ -1380,5 +1899,28 @@ namespace SH
 	{
 		std::scoped_lock l{ _lock };
 		return std::exchange(_log, {});
+	}
+
+	std::string Director::TakeSummary()
+	{
+		std::scoped_lock l{ _lock };
+		const auto       waiting = _queue.size() + _inflight.size();
+		if (!_counts.Any() && waiting == 0) {
+			return {};
+		}
+		const auto& n = _counts;
+		auto line = std::format("bridge: {} probe(s), {} body order(s), {} refit(s), {} touch-up(s), {} snapshot(s); {} failed, {} out of reach, {} deferred; {} waiting",
+			n.probes, n.bodies, n.refits, n.touches, n.snapshots, n.failed, n.gone, n.deferred, waiting);
+		std::size_t lanes[3]{};
+		for (const auto ref : _queue) {
+			if (const auto w = _work.find(ref); w != _work.end()) {
+				++lanes[static_cast<int>(w->second.lane)];
+			}
+		}
+		if (waiting != 0) {
+			line += std::format(" ({} {}, {} {}, {} {})", lanes[0], LaneName(Lane::kUrgent), lanes[1], LaneName(Lane::kNormal), lanes[2], LaneName(Lane::kBackground));
+		}
+		_counts = {};
+		return line;
 	}
 }

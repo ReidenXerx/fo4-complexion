@@ -12,7 +12,9 @@ namespace SH::Papyrus
 
 		// What an order asks of the bridge, and in which order. The bridge checks this at every load and
 		// refuses to run orders it would carry out differently: a DLL and scripts of different builds.
-		constexpr std::int32_t kProtocol = 2;
+		// 3: OrderReadsDone, OrderGone, OrderDefer, EventDone, RequestAdopt; Request* take a lane and
+		// return why they refused ("" = accepted); marker kind 3, the choice marker.
+		constexpr std::int32_t kProtocol = 3;
 
 		using Str = RE::BSFixedString;
 
@@ -29,6 +31,9 @@ namespace SH::Papyrus
 
 		std::uint32_t Ref(std::int32_t a_id) { return static_cast<std::uint32_t>(a_id); }
 		std::uint32_t Id(std::int32_t a_order) { return static_cast<std::uint32_t>(a_order); }
+
+		// 0 urgent (the player's own actions), 1 normal (other mods, rules), 2 background (bulk work) (S-55).
+		Lane LaneOf(std::int32_t a_lane) { return static_cast<Lane>(std::clamp(a_lane, 0, 2)); }
 
 		// ---- lifecycle (data only) ----
 
@@ -102,7 +107,8 @@ namespace SH::Papyrus
 
 		void NoteName(std::monostate, std::int32_t a_order, Str a_morph) { D().NoteName(Id(a_order), a_morph.c_str()); }
 
-		// 0 an ordinary morph, 1 a body marker (read unkeyed), 2 the refit marker (read under the keyword).
+		// 0 an ordinary morph, 1 a body marker (read unkeyed), 2 the refit marker (read under the keyword),
+		// 3 the choice marker (read unkeyed, S-51).
 		std::int32_t MarkerKind(std::monostate, Str a_morph) { return static_cast<std::int32_t>(KindOf(a_morph.c_str())); }
 
 		void NoteMarker(std::monostate, std::int32_t a_order, Str a_marker, float a_value)
@@ -115,6 +121,9 @@ namespace SH::Papyrus
 		Str OrderReadMorph(std::monostate, std::int32_t a_order, std::int32_t a_index) { return Str{ D().ReadMorph(Id(a_order), a_index) }; }
 
 		void NoteRead(std::monostate, std::int32_t a_order, std::int32_t a_index, float a_value) { D().NoteRead(Id(a_order), a_index, a_value); }
+
+		// The reads so far already answer the order: the bridge stops reading.
+		bool OrderReadsDone(std::monostate, std::int32_t a_order) { return D().ReadsDone(Id(a_order)); }
 
 		void NoteLayer(std::monostate, std::int32_t a_order, Str a_morph, float a_value) { D().NoteLayer(Id(a_order), a_morph.c_str(), a_value); }
 
@@ -139,6 +148,12 @@ namespace SH::Papyrus
 		bool OrderUpdates(std::monostate, std::int32_t a_order) { return D().Updates(Id(a_order)); }
 
 		void OrderDone(std::monostate, std::int32_t a_order, bool a_ok) { D().Done(Id(a_order), a_ok); }
+
+		// The actor is not in memory (Game.GetForm gave None): the work waits for their next sighting.
+		void OrderGone(std::monostate, std::int32_t a_order) { D().Gone(Id(a_order)); }
+
+		// Another mod has them busy (AAF): the work is tried again later, not now.
+		void OrderDefer(std::monostate, std::int32_t a_order) { D().Defer(Id(a_order)); }
 
 		// ---- events (data only) ----
 
@@ -167,6 +182,10 @@ namespace SH::Papyrus
 			const auto e = D().EventAt(Id(a_event));
 			return e && e->flag;
 		}
+
+		// The bridge raised it: only now is an OnActorGenerated remembered as said (a save between the
+		// hand-out and the raise says it again after the load).
+		void EventDone(std::monostate, std::int32_t a_event) { D().EventDone(Id(a_event)); }
 
 		// ---- the picker ----
 
@@ -213,26 +232,11 @@ namespace SH::Papyrus
 
 		bool IsORefitApplied(std::monostate, std::int32_t a_actor) { return D().RefitApplied(Ref(a_actor)); }
 
-		void SetORefit(std::monostate, bool a_on)
-		{
-			auto s = D().Current();
-			s.orefit = a_on;
-			D().Configure(s);
-		}
-
-		void SetNippleRand(std::monostate, bool a_on)
-		{
-			auto s = D().Current();
-			s.variety.nipples = a_on;
-			D().Configure(s);
-		}
-
-		void SetGenitalRand(std::monostate, bool a_on)
-		{
-			auto s = D().Current();
-			s.variety.genitals = a_on;
-			D().Configure(s);
-		}
+		// One switch each, read and written under the director's one lock: the MCM and another mod's API
+		// call cannot undo each other.
+		void SetORefit(std::monostate, bool a_on) { D().SetSwitch(Switch::kORefit, a_on); }
+		void SetNippleRand(std::monostate, bool a_on) { D().SetSwitch(Switch::kNipples, a_on); }
+		void SetGenitalRand(std::monostate, bool a_on) { D().SetSwitch(Switch::kGenitals, a_on); }
 
 		Str Describe(std::monostate, std::int32_t a_actor) { return Str{ D().Describe(Ref(a_actor)) }; }
 
@@ -265,9 +269,9 @@ namespace SH::Papyrus
 				a_why = D().Status();
 				return nullptr;
 			}
-			const char* race = actor->race ? actor->race->GetFormEditorID() : nullptr;
-			if (!race || std::ranges::none_of(c->races, [&](const std::string& r) { return IEquals(r, race); })) {
-				a_why = std::format("{} is of a race Silhouette does not shape ({})", Game::NameOf(actor), race ? race : "?");
+			const auto race = Game::RaceOf(actor);
+			if (race.empty() || std::ranges::none_of(c->races, [&](const std::string& r) { return IEquals(r, race); })) {
+				a_why = std::format("{} is of a race Silhouette does not shape ({})", Game::NameOf(actor), race.empty() ? "?" : race);
 				return nullptr;
 			}
 			return actor;
@@ -289,46 +293,60 @@ namespace SH::Papyrus
 			return Str{ D().PickerStart(Ref(a_actor), Game::IsFemale(actor), Game::BaseOf(actor), Game::NameOf(actor)) };
 		}
 
-		// Each request clears LastError on entry and sets it on every way it can say no.
+		// Each request answers with why it said no, "" when it was accepted: the answer belongs to the call
+		// that asked, where a shared LastError could be another script's by the time it is read. LastError
+		// is still set, for scripts built before the answer was returned.
 		template <class F>
-		bool Request(std::int32_t a_actor, F&& a_do)
+		Str Request(std::int32_t a_actor, F&& a_do)
 		{
-			SetError({});
 			std::string why;
 			auto*       actor = Shapeable(a_actor, why);
 			if (!actor || !a_do(actor, why)) {
-				SetError(why.empty() ? std::string{ "refused" } : why);
-				return false;
+				if (why.empty()) {
+					why = "refused";
+				}
+				SetError(why);
+				return Str{ why };
 			}
-			return true;
+			SetError({});
+			return Str{};
 		}
 
-		bool RequestPreset(std::monostate, std::int32_t a_actor, Str a_preset, std::int32_t a_source)
+		Str RequestPreset(std::monostate, std::int32_t a_actor, Str a_preset, std::int32_t a_source, std::int32_t a_lane)
 		{
 			const auto source = a_source == static_cast<std::int32_t>(Source::kPicker) ? Source::kPicker : Source::kAPI;
 			return Request(a_actor, [&](RE::Actor* a, std::string& why) {
-				return D().RequestPreset(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), a_preset.c_str(), source, why);
+				return D().RequestPreset(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), a_preset.c_str(), source, LaneOf(a_lane), why);
 			});
 		}
 
-		bool RequestRegenerate(std::monostate, std::int32_t a_actor)
+		Str RequestRegenerate(std::monostate, std::int32_t a_actor, std::int32_t a_lane)
 		{
 			return Request(a_actor, [&](RE::Actor* a, std::string& why) {
-				return D().RequestRegenerate(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), why);
+				return D().RequestRegenerate(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), LaneOf(a_lane), why);
 			});
 		}
 
-		bool RequestReset(std::monostate, std::int32_t a_actor)
+		Str RequestReset(std::monostate, std::int32_t a_actor, std::int32_t a_lane)
 		{
 			return Request(a_actor, [&](RE::Actor* a, std::string& why) {
-				return D().RequestReset(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), why);
+				return D().RequestReset(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), LaneOf(a_lane), why);
 			});
 		}
 
-		bool RequestReapply(std::monostate, std::int32_t a_actor, Str a_markerPreset)
+		Str RequestReapply(std::monostate, std::int32_t a_actor, Str a_markerPreset, std::int32_t a_lane)
 		{
 			return Request(a_actor, [&](RE::Actor* a, std::string& why) {
-				return D().RequestReapply(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), a_markerPreset.c_str(), why);
+				return D().RequestReapply(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), a_markerPreset.c_str(), LaneOf(a_lane), why);
+			});
+		}
+
+		// The regeneration window's roll (S-15): refused for anyone with a choice, a reset, a picking or
+		// work already on the way. Always the background lane.
+		Str RequestAdopt(std::monostate, std::int32_t a_actor)
+		{
+			return Request(a_actor, [&](RE::Actor* a, std::string& why) {
+				return D().RequestAdopt(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), why);
 			});
 		}
 
@@ -381,6 +399,7 @@ namespace SH::Papyrus
 		Bind(a_vm, "OrderReadCount"sv, OrderReadCount, fast);
 		Bind(a_vm, "OrderReadMorph"sv, OrderReadMorph, fast);
 		Bind(a_vm, "NoteRead"sv, NoteRead, fast);
+		Bind(a_vm, "OrderReadsDone"sv, OrderReadsDone, fast);
 		Bind(a_vm, "NoteLayer"sv, NoteLayer, fast);
 		Bind(a_vm, "Prepare"sv, Prepare, fast);
 		Bind(a_vm, "OrderClearsUnkeyed"sv, OrderClearsUnkeyed, fast);
@@ -391,12 +410,15 @@ namespace SH::Papyrus
 		Bind(a_vm, "OrderWriteLayer"sv, OrderWriteLayer, fast);
 		Bind(a_vm, "OrderUpdates"sv, OrderUpdates, fast);
 		Bind(a_vm, "OrderDone"sv, OrderDone, fast);
+		Bind(a_vm, "OrderGone"sv, OrderGone, fast);
+		Bind(a_vm, "OrderDefer"sv, OrderDefer, fast);
 
 		Bind(a_vm, "NextEvent"sv, NextEvent, fast);
 		Bind(a_vm, "EventKind"sv, EventKind, fast);
 		Bind(a_vm, "EventActor"sv, EventActor, fast);
 		Bind(a_vm, "EventPreset"sv, EventPreset, fast);
 		Bind(a_vm, "EventFlag"sv, EventFlag, fast);
+		Bind(a_vm, "EventDone"sv, EventDone, fast);
 
 		Bind(a_vm, "PickerStep"sv, PickerStep, fast);
 		Bind(a_vm, "PickerKeep"sv, PickerKeep, fast);
@@ -424,6 +446,7 @@ namespace SH::Papyrus
 		Bind(a_vm, "RequestRegenerate"sv, RequestRegenerate, main);
 		Bind(a_vm, "RequestReset"sv, RequestReset, main);
 		Bind(a_vm, "RequestReapply"sv, RequestReapply, main);
+		Bind(a_vm, "RequestAdopt"sv, RequestAdopt, main);
 		Bind(a_vm, "NameOf"sv, NameOf, main);
 
 		logger::info("papyrus: {} bound (protocol {})", kScript, kProtocol);

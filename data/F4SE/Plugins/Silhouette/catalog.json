@@ -3205,7 +3205,20 @@
    }
   ],
   "heavy": {
-   "armorRating": 10,
+   "words": [
+    "armor",
+    "armour",
+    "armored",
+    "armoured",
+    "chest piece",
+    "chestpiece",
+    "breastplate",
+    "cuirass",
+    "jacket",
+    "coat",
+    "trenchcoat",
+    "parka"
+   ],
    "items": [],
    "names": []
   },
@@ -3214,5 +3227,5 @@
    "names": []
   }
  },
- "rulesHash": "f98c8afe11f3"
+ "rulesHash": "a19598e7c77b"
 }

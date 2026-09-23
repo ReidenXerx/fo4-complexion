@@ -3,8 +3,12 @@ Scriptname Silhouette:API Hidden
  as global functions. Every one is safe to call whatever is installed: without
  Silhouette.dll they do nothing and say so through their return value.
 
- Events: register on the bridge quest --
+ Events: register on the bridge quest. Built against the decompiled base sources
+ (Papyrus Compiler from F4SE's scripts, most setups), register the mangled name:
+     RegisterForCustomEvent(Silhouette:API.Bridge(), "silhouette:bridge_OnActorGenerated")
+ Built against the Creation Kit's own sources, the plain name is what compiles:
      RegisterForCustomEvent(Silhouette:API.Bridge(), "OnActorGenerated")
+ Either way the handler is
      Event Silhouette:Bridge.OnActorGenerated(Silhouette:Bridge akSender, Var[] akArgs)
          Actor who = akArgs[0] as Actor
          String preset = akArgs[1] as String
@@ -14,13 +18,19 @@ Scriptname Silhouette:API Hidden
 
  A body change asked for here is carried out by the bridge a moment later, not
  inside the call: LooksMenu is reached through Papyrus, one frame per value.
- GetPresetAssignedToActor already answers with the decision.
+ GetPresetAssignedToActor already answers with the decision; OnActorGenerated says
+ when the body is on them.
 
  Every argument is passed explicitly: the base sources carry no default values.}
 
 ; The order protocol these scripts were built for (Silhouette:Bridge.Protocol).
 Int Function Protocol() Global
-	Return 2
+	Return 3
+EndFunction
+
+; Other mods' requests wait behind the player's own actions and go before bulk work (S-55).
+Int Function LaneOtherMods() Global
+	Return 1
 EndFunction
 
 ; Silhouette.esp's bridge quest, for RegisterForCustomEvent. None without the plugin.
@@ -40,18 +50,26 @@ Bool Function Loaded() Global
 	Return Silhouette:DLL.ProtocolVersion() == Protocol()
 EndFunction
 
-; The plugin is loaded, its catalog matches the BodyGen files, and the bridge exists.
+; The plugin is loaded, its catalog matches the BodyGen files, and the bridge exists:
+; a change asked for now is carried out.
 Bool Function IsReady() Global
 	Return Loaded() && Silhouette:DLL.IsReady() && Bridge() != None
 EndFunction
 
-; Why the last call here said no.
+; Why the last refusal here said no -- the last of ANY caller's: read it right after
+; the call that returned False.
 String Function LastError() Global
 	If F4SE.GetPluginVersion("Silhouette") <= 0
 		Return "Silhouette.dll is not loaded"
 	EndIf
 	If !Loaded()
 		Return "Silhouette.dll is from another release than its scripts"
+	EndIf
+	If Bridge() == None
+		Return "Silhouette.esp is not enabled: nothing would carry a change out"
+	EndIf
+	If !Silhouette:DLL.IsReady()
+		Return Silhouette:DLL.Status()
 	EndIf
 	Return Silhouette:DLL.LastError()
 EndFunction
@@ -136,12 +154,13 @@ String[] Function GetAllPossiblePresets(Actor akActor) Global
 EndFunction
 
 ; Gives the actor this preset, kept like a choice made in the picker: rules do not
-; override it. False (and LastError says why) for a preset that does not fit them.
+; override it, and it is marked in LooksMenu beside the body (S-51). False (and
+; LastError says why) for a preset that does not fit them.
 Bool Function AssignPresetToActor(Actor akActor, String asPreset) Global
-	If !akActor || !Loaded()
+	If !akActor || !IsReady()
 		Return False
 	EndIf
-	Return Silhouette:DLL.RequestPreset(akActor.GetFormID(), asPreset, 4)
+	Return Silhouette:DLL.RequestPreset(akActor.GetFormID(), asPreset, 4, LaneOtherMods()) == ""
 EndFunction
 
 Bool Function ApplyPresetByName(Actor akActor, String asPreset) Global
@@ -149,21 +168,22 @@ Bool Function ApplyPresetByName(Actor akActor, String asPreset) Global
 EndFunction
 
 ; A new body, as if met for the first time: BodyGen rolls, the rules get their say,
-; other mods' keyed morphs stay.
+; other mods' keyed morphs stay. Waits while AAF has them in a scene.
 Bool Function GenActor(Actor akActor) Global
-	If !akActor || !Loaded()
+	If !akActor || !IsReady()
 		Return False
 	EndIf
-	Return Silhouette:DLL.RequestRegenerate(akActor.GetFormID())
+	Return Silhouette:DLL.RequestRegenerate(akActor.GetFormID(), LaneOtherMods()) == ""
 EndFunction
 
-; Takes Silhouette's body off: they are bare now. LooksMenu forgets an emptied body
-; when a save is loaded, and BodyGen then gives them one again.
+; Takes Silhouette's body off: they are bare now, and get a new body when a save is
+; next loaded (S-53) -- from LooksMenu's BodyGen when nothing else is stored on
+; them, from Silhouette when another mod's morphs are.
 Bool Function ResetActorMorphs(Actor akActor) Global
-	If !akActor || !Loaded()
+	If !akActor || !IsReady()
 		Return False
 	EndIf
-	Return Silhouette:DLL.RequestReset(akActor.GetFormID())
+	Return Silhouette:DLL.RequestReset(akActor.GetFormID(), LaneOtherMods()) == ""
 EndFunction
 
 Bool Function ResetActorOBodyMorphs(Actor akActor) Global
@@ -172,22 +192,23 @@ EndFunction
 
 ; The body they have, again, with this build's values and their own variety.
 Bool Function ReapplyActorMorphs(Actor akActor) Global
-	If !akActor || !Loaded()
+	If !akActor || !IsReady()
 		Return False
 	EndIf
-	Return Silhouette:DLL.RequestReapply(akActor.GetFormID(), MarkerPreset(akActor))
+	Return Silhouette:DLL.RequestReapply(akActor.GetFormID(), MarkerPreset(akActor), LaneOtherMods()) == ""
 EndFunction
 
 Bool Function ReapplyActorOBodyMorphs(Actor akActor) Global
 	Return ReapplyActorMorphs(akActor)
 EndFunction
 
-; ORefit on or off, and remembered: the same setting as MCM > Silhouette.
+; ORefit on or off: the same switch as MCM > Silhouette. With MCM installed it is
+; kept in MCM's settings; without MCM it lasts until the game is closed.
 Function SetORefit(Bool abEnabled) Global
 	If !Loaded()
 		Return
 	EndIf
-	If MCM.IsInstalled()
+	If F4SE.GetPluginVersion("MCM") > 0
 		MCM.SetModSettingBool("Silhouette", "bORefit:General", abEnabled)
 	EndIf
 	Silhouette:DLL.SetORefit(abEnabled)
@@ -197,17 +218,41 @@ Bool Function IsORefitEnabled() Global
 	Return Loaded() && Silhouette:DLL.IsORefitEnabled()
 EndFunction
 
+; The refit marker under Silhouette.esp's refit keyword (0x803), read from LooksMenu
+; now: 0 when no refit is on them, 0.25 while one is being written, else a whole
+; number -- EVEN under heavy clothes (armour, jackets: nipples flattened), ODD under
+; light ones (S-40, S-50).
+Float Function RefitMarkerValue(Actor akActor) Global
+	If !akActor || F4SE.GetPluginVersion("F4EE") <= 0 || !Game.IsPluginInstalled("Silhouette.esp")
+		Return 0.0
+	EndIf
+	Keyword refit = Game.GetFormFromFile(0x803, "Silhouette.esp") as Keyword
+	If !refit
+		Return 0.0
+	EndIf
+	Return BodyGen.GetMorph(akActor, IsFemale(akActor), "Silhouette_Refit", refit)
+EndFunction
+
+; ORefit's floors are on them now (clothes on, ORefit on).
 Bool Function IsORefitApplied(Actor akActor) Global
-	Return akActor && Loaded() && Silhouette:DLL.IsORefitApplied(akActor.GetFormID())
+	Return RefitMarkerValue(akActor) >= 1.0
+EndFunction
+
+; They wear something heavy -- armour, a jacket, a coat -- and ORefit has flattened
+; their nipples under it. A mod raising nipples (arousal) holds them flat while this
+; is true (S-49): the refit's floor loses to a higher value anywhere else.
+Bool Function IsHeavilyDressed(Actor akActor) Global
+	Float v = RefitMarkerValue(akActor)
+	Return v >= 1.0 && (v as Int) % 2 == 0
 EndFunction
 
 ; Nipple variety in the bodies Silhouette gives from now on. BodyGen's own rolls
-; come from the generated files and always carry it.
+; come from the generated files and always carry it. Kept like SetORefit.
 Function SetNippleRand(Bool abEnabled) Global
 	If !Loaded()
 		Return
 	EndIf
-	If MCM.IsInstalled()
+	If F4SE.GetPluginVersion("MCM") > 0
 		MCM.SetModSettingBool("Silhouette", "bNippleRand:General", abEnabled)
 	EndIf
 	Silhouette:DLL.SetNippleRand(abEnabled)
@@ -218,7 +263,7 @@ Function SetGenitalRand(Bool abEnabled) Global
 	If !Loaded()
 		Return
 	EndIf
-	If MCM.IsInstalled()
+	If F4SE.GetPluginVersion("MCM") > 0
 		MCM.SetModSettingBool("Silhouette", "bGenitalRand:General", abEnabled)
 	EndIf
 	Silhouette:DLL.SetGenitalRand(abEnabled)

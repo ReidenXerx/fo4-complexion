@@ -264,6 +264,29 @@ namespace SH::Events
 		}
 	}
 
+	std::uint32_t SafeFormID(const void* a_object)
+	{
+		const auto address = reinterpret_cast<std::uintptr_t>(a_object);
+		if (!address || TypeName(address).empty()) {
+			return 0;
+		}
+		std::uint32_t id = 0;
+		if (!SafeRead(reinterpret_cast<const void*>(address + 0x14), &id, 4) || id == 0xFFFFFFFF) {
+			return 0;
+		}
+		return id;
+	}
+
+	std::uint8_t SafeFormType(const void* a_object)
+	{
+		const auto address = reinterpret_cast<std::uintptr_t>(a_object);
+		if (!address || TypeName(address).empty()) {
+			return 0;
+		}
+		std::uint8_t type = 0;
+		return SafeRead(reinterpret_cast<const void*>(address + 0x1A), &type, 1) ? type : 0;
+	}
+
 	std::uintptr_t FindHolderSource(std::string_view a_type)
 	{
 		for (const auto& member : WalkHolder()) {

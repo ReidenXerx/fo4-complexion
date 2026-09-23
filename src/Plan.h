@@ -31,14 +31,24 @@ namespace SH
 		const std::unordered_map<std::string, float>* a_keep = nullptr);
 
 	// The variety an existing body lacks (S-44): a drawn value for every enabled range whose morph is not
-	// in a_present. Nothing else.
+	// in a_present -- the morphs her OWN layer holds, not other mods' keyed ones. Nothing else.
 	[[nodiscard]] Morphs TopUp(const Catalog& a_catalog, bool a_female, std::uint32_t a_seed, VarietySwitches a_switches,
 		const std::vector<std::string>& a_present);
 
-	// What goes under Silhouette's refit keyword while she is dressed (S-40): the refit marker FIRST, so a
-	// refit a save cut short is still recognisable as one, then every floor of the set that applies
-	// (heavy-only floors under heavy clothes, S-42). A morph named twice keeps its highest floor.
+	// What this build wants of a body it touches up: the marker and stamp, what the heal zeroes and which
+	// ranges the top-up draws. Once a body is touched with a key, only a build that wants something new
+	// of it (another heal, another range) touches it again (S-44).
+	[[nodiscard]] std::uint32_t TouchKey(const Catalog& a_catalog, std::string_view a_marker, std::uint32_t a_stamp, bool a_female,
+		VarietySwitches a_switches);
+
+	// The floors of a set that apply (heavy-only floors under heavy clothes, S-42), without the marker.
+	// A morph named twice keeps its highest floor.
 	[[nodiscard]] Morphs RefitFloors(const RefitSet& a_set, bool a_heavy);
+
+	// The refit marker's value (S-40): which set, which floors, and whether heavy -- a hash that fits a
+	// float exactly, ODD for light clothes and EVEN for heavy. Another mod may read the parity (S-50);
+	// a build that changes a set's floors gives a new value, so a probe sees the refit is stale.
+	[[nodiscard]] float RefitMarker(const RefitSet& a_set, bool a_heavy);
 
 	// A marker and the stamp it was written with, as one number, so the co-save can tell whether the
 	// body it knows is still the body the actor has.

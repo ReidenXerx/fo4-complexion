@@ -37,8 +37,11 @@ namespace
 		}
 		switch (a_message->type) {
 		case F4SE::MessagingInterface::kGameDataReady:
-			SH::Game::Load();
-			SH::Sinks::Attach();
+			// Sent twice: data false before the data loads, true once it has. Forms exist only then.
+			if (a_message->data) {
+				SH::Game::Load();
+				SH::Sinks::Attach();
+			}
 			break;
 		case F4SE::MessagingInterface::kPreLoadGame:
 			// Everything queued belongs to the save being left. FF-prefixed ids are allocated per
@@ -47,16 +50,21 @@ namespace
 			SH::Game::TheDirector().ForgetWorld();
 			break;
 		case F4SE::MessagingInterface::kNewGame:
-			// A new game from the main menu sends no kPreLoadGame.
+			// A new game from the main menu sends no kPreLoadGame, and has no records to keep. The
+			// watchdog is not armed: character creation runs a long while before the bridge's quest.
 			SH::Game::ForgetInbox();
 			SH::Game::TheDirector().ForgetWorld();
+			SH::Game::TheDirector().RevertRecords();
 			SH::Sinks::Attach();
-			SH::Game::NoteGameLoaded();
 			break;
 		case F4SE::MessagingInterface::kPostLoadGame:
+			// data: whether the load succeeded. A failed one leaves the game where it was.
 			SH::Sinks::Attach();
-			SH::Game::NoteGameLoaded();
-			logger::info("after loading: {} record(s); {}", SH::Game::TheDirector().RecordCount(), SH::Sinks::Status());
+			if (a_message->data) {
+				SH::Game::NoteGameLoaded();
+			}
+			logger::info("after loading{}: {} record(s); {}", a_message->data ? "" : " (the load FAILED)", SH::Game::TheDirector().RecordCount(),
+				SH::Sinks::Status());
 			break;
 		default:
 			break;

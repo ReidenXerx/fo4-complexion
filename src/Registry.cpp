@@ -23,6 +23,9 @@ namespace SH
 				_out.insert(_out.end(), p, p + size);
 			}
 
+			void Bytes(const std::vector<std::byte>& a_bytes) { _out.insert(_out.end(), a_bytes.begin(), a_bytes.end()); }
+
+			// A record's fields, without its length: a later version appends after them.
 			void Rec(std::uint32_t a_ref, const Record& a_r)
 			{
 				Put(a_ref);
@@ -34,6 +37,7 @@ namespace SH
 				Str(a_r.preset);
 			}
 
+			[[nodiscard]] std::size_t            Size() const { return _out.size(); }
 			[[nodiscard]] std::vector<std::byte> Take() { return std::move(_out); }
 
 		private:
@@ -50,7 +54,7 @@ namespace SH
 			T Get()
 			{
 				static_assert(std::is_trivially_copyable_v<T>);
-				if (_at + sizeof(T) > _in.size()) {
+				if (_at + sizeof(T) > _end) {
 					throw std::runtime_error(std::format("record list ends early at byte {}", _at));
 				}
 				T value;
@@ -62,7 +66,7 @@ namespace SH
 			std::string Str()
 			{
 				const auto size = Get<std::uint16_t>();
-				if (_at + size > _in.size()) {
+				if (_at + size > _end) {
 					throw std::runtime_error(std::format("a string runs past the end at byte {}", _at));
 				}
 				std::string text(reinterpret_cast<const char*>(_in.data() + _at), size);
@@ -76,10 +80,8 @@ namespace SH
 				Record     r;
 				r.base = Get<std::uint32_t>();
 				const auto source = Get<std::uint8_t>();
-				if (source > static_cast<std::uint8_t>(Source::kNameBlacklist)) {
-					throw std::runtime_error(std::format("record {:08X}: unknown source {}", saved, source));
-				}
-				r.source = static_cast<Source>(source);
+				// A source a later version added means nothing here: the body stays, nobody's choice.
+				r.source = source <= static_cast<std::uint8_t>(Source::kReset) ? static_cast<Source>(source) : Source::kNone;
 				r.stamp = Get<std::uint32_t>();
 				r.announced = Get<std::uint32_t>();
 				r.touched = Get<std::uint32_t>();
@@ -87,11 +89,28 @@ namespace SH
 				return { saved, std::move(r) };
 			}
 
+			// Reads a_length bytes as one item: whatever a later version appended after the fields this one
+			// knows is skipped, and an item cannot read past its own end.
+			template <class F>
+			void Item(std::size_t a_length, F&& a_read)
+			{
+				if (_at + a_length > _end) {
+					throw std::runtime_error(std::format("an item of {} bytes runs past the end at byte {}", a_length, _at));
+				}
+				const auto end = _end;
+				const auto stop = _at + a_length;
+				_end = stop;
+				a_read();
+				_at = stop;
+				_end = end;
+			}
+
 			[[nodiscard]] bool AtEnd() const { return _at == _in.size(); }
 
 		private:
 			std::span<const std::byte> _in;
 			std::size_t                _at{ 0 };
+			std::size_t                _end{ _in.size() };
 		};
 	}
 
@@ -110,6 +129,8 @@ namespace SH
 			return "another mod"sv;
 		case Source::kNameBlacklist:
 			return "blacklisted"sv;
+		case Source::kReset:
+			return "reset"sv;
 		}
 		return "?"sv;
 	}
@@ -138,11 +159,21 @@ namespace SH
 		}
 	}
 
-	std::vector<std::byte> Registry::Serialize(const std::function<bool(std::uint32_t)>& a_keep) const
+	void Registry::Keep(PickerSave a_save)
+	{
+		a_save.seq = ++_seq;
+		pickings[a_save.ref] = std::move(a_save);
+		while (pickings.size() > kMaxPickings) {
+			const auto oldest = std::ranges::min_element(pickings, {}, [](const auto& a_p) { return a_p.second.seq; });
+			pickings.erase(oldest);
+		}
+	}
+
+	std::vector<std::byte> Registry::Serialize(const KeepFn& a_keep) const
 	{
 		std::vector<std::pair<std::uint32_t, const Record*>> kept;
 		for (const auto& [ref, record] : _records) {
-			if (!record.Empty() && (!a_keep || a_keep(ref))) {
+			if (!record.Empty() && (!a_keep || a_keep(ref, record.base))) {
 				kept.emplace_back(ref, &record);
 			}
 		}
@@ -152,85 +183,108 @@ namespace SH
 		Writer w;
 		w.Put(static_cast<std::uint32_t>(kept.size()));
 		for (const auto& [ref, r] : kept) {
-			w.Rec(ref, *r);
+			Writer item;
+			item.Rec(ref, *r);
+			w.Put(static_cast<std::uint16_t>(item.Size()));
+			w.Bytes(item.Take());
 		}
-		const bool picking = picker && (!a_keep || a_keep(picker->ref));
-		w.Put(static_cast<std::uint8_t>(picking ? 1 : 0));
-		if (picking) {
-			w.Put(picker->ref);
-			w.Put(picker->base);
-			w.Put(static_cast<std::uint8_t>(picker->female ? 1 : 0));
-			const auto count = static_cast<std::uint16_t>(std::min<std::size_t>(picker->snapshot.size(), 0xFFFF));
-			w.Put(count);
+		std::vector<const PickerSave*> saves;
+		for (const auto& [ref, save] : pickings) {
+			if (!a_keep || a_keep(ref, save.base)) {
+				saves.push_back(&save);
+			}
+		}
+		w.Put(static_cast<std::uint32_t>(saves.size()));
+		for (const auto* save : saves) {
+			Writer item;
+			item.Put(save->ref);
+			item.Put(save->base);
+			item.Put(static_cast<std::uint8_t>(save->female ? 1 : 0));
+			const auto count = static_cast<std::uint16_t>(std::min<std::size_t>(save->snapshot.size(), 0xFFFF));
+			item.Put(count);
 			for (std::size_t i = 0; i < count; ++i) {
-				w.Str(picker->snapshot[i].first);
-				w.Put(picker->snapshot[i].second);
+				item.Str(save->snapshot[i].first);
+				item.Put(save->snapshot[i].second);
 			}
-			w.Put(static_cast<std::uint8_t>(picker->before ? 1 : 0));
-			if (picker->before) {
-				w.Rec(picker->ref, *picker->before);
+			item.Put(static_cast<std::uint8_t>(save->before ? 1 : 0));
+			if (save->before) {
+				item.Rec(save->ref, *save->before);
 			}
+			w.Put(static_cast<std::uint32_t>(item.Size()));
+			w.Bytes(item.Take());
 		}
 		return w.Take();
 	}
 
-	bool Registry::Deserialize(std::span<const std::byte> a_bytes, std::uint32_t a_version,
+	Registry::Loaded Registry::Deserialize(std::span<const std::byte> a_bytes, std::uint32_t a_version,
 		const std::function<std::uint32_t(std::uint32_t)>& a_resolve, std::string& a_error)
 	{
+		if (a_version > kVersion) {
+			a_error = std::format("record list version {} is newer than this plugin's ({})", a_version, kVersion);
+			return Loaded::kNewer;
+		}
 		if (a_version != kVersion) {
 			a_error = std::format("record list version {} (this plugin reads {})", a_version, kVersion);
-			return false;
+			return Loaded::kRefused;
 		}
 		const auto resolve = [&](std::uint32_t a_id) { return a_resolve ? a_resolve(a_id) : a_id; };
 		try {
 			std::unordered_map<std::uint32_t, Record> loaded;
+			std::map<std::uint32_t, PickerSave>       saves;
 			Reader                                    r(a_bytes);
 			const auto                                count = r.Get<std::uint32_t>();
 			for (std::uint32_t i = 0; i < count; ++i) {
-				// Read the whole record before resolving its id: a record we drop must still be consumed.
-				auto [saved, rec] = r.Rec();
-				const auto ref = resolve(saved);
-				if (ref == 0) {
-					continue;  // the reference is gone (its plugin was removed)
-				}
-				if (rec.base != 0) {
-					rec.base = resolve(rec.base);
-				}
-				loaded[ref] = std::move(rec);
-			}
-			std::optional<PickerSave> picking;
-			if (r.Get<std::uint8_t>() != 0) {
-				PickerSave p;
-				p.ref = resolve(r.Get<std::uint32_t>());
-				p.base = r.Get<std::uint32_t>();
-				p.base = p.base ? resolve(p.base) : 0;
-				p.female = r.Get<std::uint8_t>() != 0;
-				const auto n = r.Get<std::uint16_t>();
-				for (std::uint16_t k = 0; k < n; ++k) {
-					auto       morph = r.Str();
-					const auto value = r.Get<float>();
-					p.snapshot.emplace_back(std::move(morph), value);
-				}
-				if (r.Get<std::uint8_t>() != 0) {
-					auto [ignored, before] = r.Rec();
-					if (before.base) {
-						before.base = resolve(before.base);
+				const auto length = r.Get<std::uint16_t>();
+				r.Item(length, [&] {
+					auto [saved, rec] = r.Rec();
+					const auto ref = resolve(saved);
+					if (ref == 0) {
+						return;  // the reference is gone (its plugin was removed)
 					}
-					p.before = std::move(before);
-				}
-				if (p.ref != 0) {
-					picking = std::move(p);
-				}
+					if (rec.base != 0) {
+						rec.base = resolve(rec.base);
+					}
+					loaded[ref] = std::move(rec);
+				});
+			}
+			const auto pickingCount = r.Get<std::uint32_t>();
+			for (std::uint32_t i = 0; i < pickingCount; ++i) {
+				const auto length = r.Get<std::uint32_t>();
+				r.Item(length, [&] {
+					PickerSave p;
+					p.ref = resolve(r.Get<std::uint32_t>());
+					const auto base = r.Get<std::uint32_t>();
+					p.base = base ? resolve(base) : 0;
+					p.female = r.Get<std::uint8_t>() != 0;
+					const auto n = r.Get<std::uint16_t>();
+					for (std::uint16_t k = 0; k < n; ++k) {
+						auto       morph = r.Str();
+						const auto value = r.Get<float>();
+						p.snapshot.emplace_back(std::move(morph), value);
+					}
+					if (r.Get<std::uint8_t>() != 0) {
+						auto rec = r.Rec().second;
+						if (rec.base) {
+							rec.base = resolve(rec.base);
+						}
+						p.before = std::move(rec);
+					}
+					if (p.ref != 0) {
+						p.seq = i + 1;
+						saves[p.ref] = std::move(p);
+					}
+				});
 			}
 			if (!r.AtEnd()) {
-				throw std::runtime_error("bytes left over after the last record");
+				throw std::runtime_error("bytes left over after the last picking");
 			}
 			_records = std::move(loaded);
-			picker = std::move(picking);
-			return true;
+			pickings = std::move(saves);
+			_seq = pickingCount;
+			return Loaded::kOk;
 		} catch (const std::exception& e) {
 			a_error = e.what();
-			return false;
+			return Loaded::kRefused;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 {
  "bases": {
-  "female": "FemaleBody is the bare Anatomy Body ZeX reference mesh -- nothing baked in",
+  "female": "FemaleBody is the bare Anatomy Body reference mesh -- nothing baked in",
   "male": "MaleBody is the bare BodyTalk4 reference mesh -- nothing baked in"
  },
  "build": "31d2200c0a98",

@@ -37,6 +37,7 @@ Plugin and race lines must name a race: LooksMenu matches `npc->race == nullptr
 """
 import json
 import pathlib
+import re
 
 KEYS_PRESET_MAP = ('npcFormID', 'npc', 'factionFemale', 'factionMale',
                    'npcPluginFemale', 'npcPluginMale', 'raceFemale', 'raceMale')
@@ -69,13 +70,21 @@ DEFAULT = {
     # distributes to every NPC race; in Fallout 4 only races that wear the human body
     # should, and the base game has one.
     'distributeRaces': ['HumanRace'],
-    # What counts as heavy clothes, which flatten the nipples under ORefit (S-42): an
-    # armour rating of at least this, or a chest armour piece; single items named heavy
-    # or light by form id ({plugin: [ids]}) or by name win over both.
-    'heavyArmorRating': 10,
+    # What counts as heavy clothes, which flatten the nipples under ORefit (S-48): an item
+    # whose NAME holds one of these words or phrases, as a whole word, in any case --
+    # plainly armour, or a jacket or coat over the chest. Anything the name does not say
+    # is light: nipples flattened where they should show are worse than nipples showing
+    # where they should not (owner, 2026-09-23). Single items named heavy or light by form
+    # id ({plugin: [ids]}) or by exact name win over the words.
+    'heavyWords': ['armor', 'armour', 'armored', 'armoured', 'chest piece', 'chestpiece', 'breastplate',
+                   'cuirass', 'jacket', 'coat', 'trenchcoat', 'parka'],
     'heavyOutfitsFormID': {}, 'heavyOutfits': [],
     'lightOutfitsFormID': {}, 'lightOutfits': [],
 }
+
+# The player (Fallout4.esm 0x7) and the two character-creation dummies (0xA7D34, 0xA7D35): their
+# own lines come last in Silhouette_morphs.ini, so a rule naming them never reaches them (S-45).
+PLAYER_FORMS = {'000007', '0A7D34', '0A7D35'}
 
 # The shape every key must have. A value of the wrong shape is refused with its key named: the
 # plugin refuses a catalog that does not parse, and a race list written as a string would give
@@ -84,21 +93,55 @@ PRESET_MAPS = ('npc', 'factionFemale', 'factionMale', 'npcPluginFemale', 'npcPlu
 STRING_LISTS = ('blacklistedNpcs', 'blacklistedNpcsPluginFemale', 'blacklistedNpcsPluginMale',
                 'blacklistedRacesFemale', 'blacklistedRacesMale', 'blacklistedPresetsFromRandomDistribution',
                 'distributeRaces', 'blacklistedOutfitsFromORefit', 'blacklistedOutfitsFromORefitPlugin',
-                'outfitsForceRefit', 'heavyOutfits', 'lightOutfits')
+                'outfitsForceRefit', 'heavyOutfits', 'lightOutfits', 'heavyWords')
 FORM_LISTS = ('blacklistedNpcsFormID', 'blacklistedOutfitsFromORefitFormID', 'outfitsForceRefitFormID',
               'heavyOutfitsFormID', 'lightOutfitsFormID')
 NAME_MAPS = ('refitOutfitPresetsFemale', 'refitOutfitPresetsMale')
 
 
+def has_word(text):
+    """A letter or digit in it, as the plugin splits a name into words: ASCII letters and digits, and
+    every byte of a character beyond ASCII (src/Catalog.cpp Words)."""
+    return any((c.isascii() and c.isalnum()) or not c.isascii() for c in text)
+
+
+def encodable(text):
+    """Written as UTF-8 (JSON) and read back by the plugin: a lone surrogate would be refused whole."""
+    try:
+        text.encode('utf-8')
+        return True
+    except UnicodeEncodeError:
+        return False
+
+
 def validate(cfg, source):
-    """Refuses, naming the key, any value that is not the shape OBody's config gives it."""
+    """Refuses, naming the key, any value that is not the shape OBody's config gives it -- and any
+    empty name or plugin, or text the plugin could not read back."""
     def bad(key, what):
         raise SystemExit(f'{source}: {key} must be {what}')
 
     def names(v):
         return isinstance(v, str) or (isinstance(v, list) and all(isinstance(x, str) for x in v))
 
+    def texts(v):
+        if isinstance(v, str):
+            yield v
+        elif isinstance(v, list):
+            for x in v:
+                yield from texts(x)
+        elif isinstance(v, dict):
+            for k, x in v.items():
+                yield k
+                yield from texts(x)
+
     for key, v in cfg.items():
+        for t in texts(v):
+            if not isinstance(t, str):
+                continue
+            if not encodable(t):
+                bad(key, f'text the plugin can read (found {t!r}, which is not valid Unicode)')
+            if not t.strip() and key not in ('blacklistedPresetsShowInOBodyMenu',):
+                bad(key, 'free of empty names, plugins and form ids')
         if key in PRESET_MAPS:
             if not isinstance(v, dict) or not all(isinstance(k, str) and names(x) for k, x in v.items()):
                 bad(key, 'an object of "name": ["preset", ...]')
@@ -122,9 +165,10 @@ def validate(cfg, source):
         elif key == 'blacklistedPresetsShowInOBodyMenu':
             if not isinstance(v, bool):
                 bad(key, 'true or false')
-        elif key == 'heavyArmorRating':
-            if not isinstance(v, int) or isinstance(v, bool) or not 0 <= v <= 10000:
-                bad(key, 'a whole number 0..10000')
+        if key == 'heavyWords':
+            for w in v:
+                if not has_word(w):
+                    bad(key, f'words or phrases ({w!r} holds no letter or digit)')
 
 
 def load(config_path, include_dirs, report):
@@ -201,11 +245,14 @@ def form_key(text, light=False):
     A light plugin's id is its last THREE digits: LooksMenu builds
     0xFE000000 | light index << 12 | (id & 0xFFFFFF), so anything above 0xFFF
     lands in another plugin's range (OBody's DiscardFormDigits keeps 3 digits for
-    light mods too). An xEdit-style 'FE00A801' is local id 801."""
-    try:
-        v = int(str(text).strip().lower().removeprefix('0x'), 16)
-    except ValueError:
+    light mods too). An xEdit-style 'FE00A801' is local id 801.
+
+    Strict: 1 to 8 hex digits and nothing else. Python's int() would also take '+12', '1_2'
+    and ' 12 ', none of which OBody or LooksMenu reads as that id."""
+    t = str(text).strip().lower().removeprefix('0x')
+    if not re.fullmatch(r'[0-9a-f]{1,8}', t):
         return None
+    v = int(t, 16)
     v &= 0xFFF if light else 0xFFFFFF
     return f'{v:06X}' if v else None
 
@@ -273,6 +320,11 @@ def compile_lines(cfg, resolve_presets, data, report):
             if fid is None:
                 report.append(f'rules: npcFormID {plugin} {key!r} is not a FormID, skipped')
                 continue
+            if plugin.lower() == 'fallout4.esm' and fid in PLAYER_FORMS:
+                report.append(f'rules: npcFormID {plugin} {key!r} is the player or a character-creation dummy: '
+                              f'their own lines come last and are never randomised (S-45), so this rule never '
+                              f'reaches them -- pick the player\'s body in MCM instead')
+                continue
             by_g = resolve_presets(names, None)
             for g, label in (('female', 'Female'), ('male', 'Male')):
                 emit(f'{plugin}|{fid}|{label}', by_g.get(g))
@@ -285,6 +337,10 @@ def compile_lines(cfg, resolve_presets, data, report):
             fid = form_key(key, light)
             if fid is None:
                 report.append(f'rules: blacklistedNpcsFormID {plugin} {key!r} is not a FormID, skipped')
+                continue
+            if plugin.lower() == 'fallout4.esm' and fid in PLAYER_FORMS:
+                report.append(f'rules: blacklistedNpcsFormID {plugin} {key!r} is the player or a character-creation '
+                              f'dummy: their own lines come last (S-45), so this blacklist never reaches them')
                 continue
             emit(f'{plugin}|{fid}', [UNSHAPED])
     return lines, needed

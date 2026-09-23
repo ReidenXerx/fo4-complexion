@@ -61,6 +61,7 @@ import argparse
 import collections
 import hashlib
 import json
+import math
 import pathlib
 import re
 import sys
@@ -176,8 +177,8 @@ def variety_ranges():
         for morph, (low, high, _group) in ranges.items():
             if morph in NEVER_VARIED:
                 raise SystemExit(f'{morph} is never rolled (S-17, S-21): take it out of the range files')
-            if low > high:
-                raise SystemExit(f'{morph}: range {low}..{high} has low above high')
+            if not (math.isfinite(low) and math.isfinite(high) and low < high):
+                raise SystemExit(f'{morph}: range {low}..{high} rolls nothing -- low must be below high')
     return out
 
 
@@ -188,8 +189,11 @@ def variety_ranges():
 def read_presets(folder):
     """Every <Preset>, read the way BodySlide reads it (SliderPresets.cpp):
     recursive, first preset of a name wins, size="big" or "both" gives the big
-    value, and a SetSlider with no size is ignored. Values come out 0..1."""
-    out, seen_names = [], set()
+    value, and a SetSlider with no size is ignored. Values come out 0..1.
+
+    Names are compared in any case: the engine keeps one spelling per string, so to
+    LooksMenu and the plugin two presets named alike are one (the first is used)."""
+    out, seen_names = [], {}
     for f in sorted(folder.rglob('*.xml')):
         try:
             root = ET.parse(f).getroot()
@@ -198,15 +202,23 @@ def read_presets(folder):
             continue
         for p in root.iter('Preset'):
             name = p.get('name')
-            if not name or name in seen_names:
+            if not name:
                 continue
-            seen_names.add(name)
+            if name.casefold() in seen_names:
+                if seen_names[name.casefold()] != name:
+                    print(f'  skipped preset {name!r} ({f.name}): the same name as {seen_names[name.casefold()]!r} '
+                          f'in another case, and the game reads them as one')
+                continue
+            seen_names[name.casefold()] = name
             big, small_only = {}, set()
             for s in p.iter('SetSlider'):
                 slider, size = s.get('name'), (s.get('size') or '').lower()
                 try:
                     value = float(s.get('value')) / 100.0
                 except (TypeError, ValueError):
+                    continue
+                if not math.isfinite(value):
+                    print(f'  skipped slider {slider!r} of {name!r}: {s.get("value")!r} is not a number')
                     continue
                 if size in ('big', 'both'):
                     big[slider] = value
@@ -281,11 +293,29 @@ def band(preset, family):
 # writing
 # --------------------------------------------------------------------------
 
-def template_name(preset):
+def plain_marker(name):
     # A template name is split on '=' and looked up as an exact string. Keep it to
     # characters that survive both files: letters, digits and underscores.
-    safe = re.sub(r'[^A-Za-z0-9]+', '_', preset['name']).strip('_')
-    return f'Silhouette_{safe}'
+    safe = re.sub(r'[^A-Za-z0-9]+', '_', name).strip('_')
+    return f'Silhouette_{safe}' if safe else ''
+
+
+def assign_markers(presets):
+    """Each preset's marker, which is also its template's name. Two presets that come out the same
+    in any case ("Body 1" and "Body-1"), a name with nothing left of it ("Тело"), and one that lands
+    on a name Silhouette reserves each get the first 6 hex digits of their name's hash as well:
+    LooksMenu and the plugin read names case-insensitively, so each must stand for one thing."""
+    reserved = {catalog.ifold(n) for n in (PLAYER_GUARD, *PLAYER_TEMPLATE.values(), *catalog.RESERVED_MARKERS)}
+    counts = collections.Counter(catalog.ifold(plain_marker(p['name'])) for p in presets)
+    for p in presets:
+        m = plain_marker(p['name'])
+        if not m or counts[catalog.ifold(m)] > 1 or catalog.ifold(m) in reserved:
+            m = f'{m or "Silhouette"}_{hashlib.sha1(p["name"].encode("utf-8")).hexdigest()[:6]}'
+        p['marker'] = m
+
+
+def template_name(preset):
+    return preset.get('marker') or plain_marker(preset['name'])
 
 
 def target_values(preset, base):
@@ -320,6 +350,24 @@ def describe(base):
 def built_roots(args):
     """Where the built bodies are looked for: every --built folder, then Data."""
     return list(args.built or []) + [args.data]
+
+
+def ini_bytes(name, lines):
+    """A BodyGen file's bytes: CRLF (see below), in cp1252 -- the code page the game keeps a
+    plugin's file name in, which LooksMenu compares a line's plugin with byte for byte. A
+    comment may lose a character cp1252 cannot hold; a line LooksMenu reads may not: a plugin
+    or morph it would misspell is refused, naming the line (L4 F11)."""
+    out = bytearray()
+    for line in lines:
+        try:
+            data = line.encode('cp1252')
+        except UnicodeEncodeError:
+            if not line.startswith('#'):
+                raise SystemExit(f'{name}: {line[:100]!r} holds a character the game\'s code page (cp1252) cannot, '
+                                 f'so LooksMenu would never match it -- rename that plugin or preset')
+            data = line.encode('cp1252', errors='replace')
+        out += data + b'\r\n'
+    return bytes(out)
 
 
 def fmt(v):
@@ -367,7 +415,9 @@ SCRIPT = 'Silhouette:Player'
 
 
 def papyrus_string(s):
-    return '"' + s.replace('\\', '/').replace('"', "'") + '"'
+    """A Papyrus string literal saying exactly s: the menu shows a name as the catalog holds it, and
+    the picker hands that same name to the plugin (L4 F9)."""
+    return '"' + s.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n').replace('\t', '\\t') + '"'
 
 
 def list_hash(entries):
@@ -441,7 +491,8 @@ def write_mcm(folder, picker, default_index, average, build):
         button('Refresh the people around me',
                'Everyone nearby keeps their preset but gets its values from this build again -- for '
                'after you edited a preset or rebuilt your bodies. Body morphs other mods add are '
-               'left alone.', 'Refresh'),
+               'left alone. With Silhouette.dll each keeps their own nipple and genital variety; '
+               'without it the preset\'s values alone are written.', 'Refresh'),
         button('Give the people around me new bodies',
                'Everyone nearby (never your character) rolls a new body, as if met for the first '
                'time, and the rules by name and faction get their say. With Silhouette.dll, body '
@@ -485,17 +536,20 @@ def write_mcm(folder, picker, default_index, average, build):
         bridge_button('Give them this preset',
                       'The preset chosen above for their sex, on the NPC you picked -- or, with nobody '
                       'picked, the last NPC you aimed at in the half minute before opening the menu. Their '
-                      'own nipple and genital variety comes with it. Close the menu to see it.', 'MenuApply'),
+                      'own nipple and genital variety comes with it while those switches are on (Settings). '
+                      'Close the menu to see it.', 'MenuApply'),
         bridge_button('Back to random',
                       'They roll a new body, as if met for the first time: the rules get their say again. '
-                      'Body morphs other mods keep under their own keyword (AAF, pregnancy) are kept.',
+                      'Body morphs other mods keep under their own keyword (AAF, pregnancy) are kept. In '
+                      'the middle of an AAF scene the roll waits for the scene to end.',
                       'MenuRandom'),
         bridge_button('Which body do they have?', 'The preset their body carries, and who chose it.',
                       'MenuWhich'),
         {'type': 'section', 'text': 'Hotkeys: try presets on them in the world'},
         {'type': 'text', 'text': 'Pick someone, then Next and Previous put each preset on them in turn '
-                                 '(about a second each, LooksMenu is reached through Papyrus). Keep '
-                                 'makes it theirs; Cancel puts back exactly what they had.'},
+                                 '(a second or so each: LooksMenu is reached through Papyrus, one value '
+                                 'a frame, and the picker goes before any other work). Keep makes it '
+                                 'theirs; Cancel puts back exactly what they had.'},
     ]
     npcs += [{'type': 'hotkey', 'id': kid, 'text': text, 'help': text + '.' + needs}
              for kid, text, _fn in HOTKEYS]
@@ -504,10 +558,12 @@ def write_mcm(folder, picker, default_index, average, build):
         {'type': 'section', 'text': 'While they are dressed'},
         {'type': 'switcher', 'id': 'bORefit:General', 'text': 'ORefit',
          'help': 'A clothed shape while someone is dressed: breasts held together and lifted, and '
-                 'nipples flattened under armour. It only ever raises a slider, so a body that is '
-                 'already fuller keeps its own, and the moment they undress they are exactly their own '
-                 'body again. Your character is never refit. Removing Silhouette takes every clothed '
-                 'shape off by itself.' + needs,
+                 'nipples flattened under heavy clothes -- armour, jackets, coats, told by the item\'s '
+                 'name. It only ever raises a slider, so a body that is already fuller keeps its own, and '
+                 'the moment they undress they are exactly their own body again. Your character is never '
+                 'refit, nor anyone in power armour. Removing Silhouette.esp takes every clothed shape off '
+                 'by itself, and without a working Silhouette.dll the shapes left on people are taken off '
+                 'as you meet them.' + needs,
          'valueOptions': {'sourceType': 'ModSettingBool'}},
         {'type': 'section', 'text': 'Variety in the bodies Silhouette gives'},
         {'type': 'text', 'text': 'BodyGen rolls every NPC their own nipples (and genital shape for women, '
@@ -816,15 +872,16 @@ def write_papyrus(path, picker, default_index, stamp, build):
         'EndFunction',
         '',
         '; Everyone nearby keeps the preset Silhouette gave them, with its values from this build.',
-        '; With Silhouette.dll ready the plugin gives it again, their own variety kept (S-17, S-21);',
-        '; without it -- or with its catalog refused -- the preset alone is written, and the rolled',
-        '; variety is lost.',
+        '; With Silhouette.dll ready the plugin gives it again, their own variety kept (S-17, S-21),',
+        '; as bulk work behind anything the player or another mod asked for (S-55); without it --',
+        '; or with its catalog refused -- the preset alone is written, and the rolled variety is lost.',
         'Function Refresh() Global',
         '    Actor[] people = Nearby()',
         '    String[] fm = FemaleMarkers()',
         '    String[] fn = FemaleNames()',
         '    String[] mm = MaleMarkers()',
         '    String[] mn = MaleNames()',
+        '    Bool plugin = Silhouette:API.IsReady()',
         '    Int done = 0',
         '    Int i = 0',
         '    While i < people.Length',
@@ -840,8 +897,8 @@ def write_papyrus(path, picker, default_index, stamp, build):
         '            index = mn.Find(preset, 0)',
         '        EndIf',
         '        If index >= 0',
-        '            If Silhouette:API.IsReady()',
-        '                If Silhouette:API.ReapplyActorMorphs(a)',
+        '            If plugin',
+        '                If Silhouette:DLL.RequestReapply(a.GetFormID(), Silhouette:API.MarkerPreset(a), 2) == ""',
         '                    done += 1',
         '                EndIf',
         '            ElseIf Give(a, female, index) != ""',
@@ -850,13 +907,17 @@ def write_papyrus(path, picker, default_index, stamp, build):
         '        EndIf',
         '        i += 1',
         '    EndWhile',
-        '    Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you refreshed. The rest have no Silhouette body, or one this build no longer has.")',
+        '    If plugin',
+        '        Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you get their preset again, with this build\'s values -- over the next moments. The rest have no Silhouette body, or one this build no longer has.")',
+        '    Else',
+        '        Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you have their preset again, with this build\'s values. The rest have no Silhouette body, or one this build no longer has.")',
+        '    EndIf',
         'EndFunction',
         '',
         '; Everyone nearby rolls again, as if met for the first time. With Silhouette.dll ready the',
-        '; plugin does it (Silhouette:API.GenActor): it knows who it rolled, the rules get their say,',
-        '; and other mods\' keyed morphs stay. Without it RegenerateMorphs is the only way to run',
-        '; BodyGen for an actor again, and it clears every key.',
+        '; plugin does it as bulk work (S-55): it knows who it rolled, the rules get their say, other',
+        '; mods\' keyed morphs stay, and anyone in an AAF scene waits for it to end. Without it',
+        '; RegenerateMorphs is the only way to run BodyGen for an actor again, and it clears every key.',
         'Function Reroll() Global',
         '    Actor[] people = Nearby()',
         '    Bool plugin = Silhouette:API.IsReady()',
@@ -864,7 +925,7 @@ def write_papyrus(path, picker, default_index, stamp, build):
         '    Int i = 0',
         '    While i < people.Length',
         '        If plugin',
-        '            If Silhouette:API.GenActor(people[i])',
+        '            If Silhouette:DLL.RequestRegenerate(people[i].GetFormID(), 2) == ""',
         '                done += 1',
         '            EndIf',
         '        Else',
@@ -873,7 +934,11 @@ def write_papyrus(path, picker, default_index, stamp, build):
         '        EndIf',
         '        i += 1',
         '    EndWhile',
-        '    Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you rolled a new body.")',
+        '    If plugin',
+        '        Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you get a new body -- over the next moments.")',
+        '    Else',
+        '        Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you have a new body.")',
+        '    EndIf',
         'EndFunction',
     ]
     for g, cap, female in (('female', 'Female', 'True'), ('male', 'Male', 'False')):
@@ -903,13 +968,13 @@ def catalog_presets(pools, extra, picker):
     then the presets only the rules name."""
     out, seen = [], set()
 
-    def add(sex, p, marker, values, menu):
-        key = (sex, p['name'])
+    def add(sex, p, marker, values, menu, zeroed):
+        key = (sex, p['name'].casefold())
         if key in seen:
             return
         seen.add(key)
         out.append({'name': p['name'], 'sex': sex, 'marker': marker, 'values': list(values),
-                    'random': any(n == marker for n, _v, _p in pools[sex]), 'menu': menu,
+                    'random': any(n == marker for n, _v, _p in pools[sex]), 'menu': menu, 'zeroed': zeroed,
                     'fit': p.get('band', 'full'), 'family': (p.get('families') or [''])[0]})
 
     by_display = {}
@@ -922,28 +987,43 @@ def catalog_presets(pools, extra, picker):
         for e in picker[g]:
             p = by_display.get((g, e['display']), {'name': e['display'], 'band': e['band'],
                                                    'families': e.get('families', [])})
-            add(g, p, e['marker'], e['values'], True)
+            add(g, p, e['marker'], e['values'], True, is_zeroed(e['target']))
     for g in ('female', 'male'):
         for name, values, p in pools[g]:
-            add(g, p, name, values, False)
+            add(g, p, name, values, False, p.get('zeroed', False))
     for name, (values, p) in sorted(extra.items()):
-        add(p['gender'], p, name, values, False)
+        add(p['gender'], p, name, values, False, p.get('zeroed', False))
     return out
 
 
 def refit_sets(refit_presets, base, baked, morphs_of):
-    """OBody's refit presets ("<Preset>-Refit", "Female-Refit", "Male-Refit"), as the values
-    the unkeyed layer takes while dressed -- written the way the templates are, so a refit
-    and a body mean the same thing by the same number."""
+    """OBody's refit presets ("<Preset>-Refit", "Female-Refit", "Male-Refit"), as the floors the
+    refit keyword holds while dressed -- written the way the templates are, so a refit and a body
+    mean the same thing by the same number.
+
+    Only presets that fit the installed body as a body preset must (a Fusion Girl refit on a CBBE
+    body moves nothing it means to), and only the sliders a refit preset SETS: resolved against its
+    slider set, every slider it leaves alone comes out at the set's default -- a Male-Refit naming
+    only BTChest would otherwise hold 25 floors, BTBallSize at 1.0 among them (L4 F4)."""
     out = []
     for p in refit_presets:
         g = p['gender']
         if g not in morphs_of:
             continue
-        target = {k: v for k, v in target_values(p, base[g]).items() if k in morphs_of[g]}
+        if p.get('band') not in ('full', 'partial'):
+            print(f'  refit preset {p["name"]!r} does not fit the installed {g} body ({p.get("band")}) -- left out')
+            continue
+        target = {k: v for k, v in target_values(p, base[g]).items() if k in morphs_of[g] and k in p['sliders']}
         out.append({'name': p['name'], 'sex': g,
                     'values': morph_values(template_name(p), target, baked[g], morphs_of[g], p['name'])})
     return out
+
+
+def is_zeroed(target):
+    """A preset that puts nothing on the body: no value it would WRITE -- a state or the shaft it sets
+    is never written (S-16, S-29) -- reaches the body, measured absolutely (L4 F5, F6)."""
+    return not any(abs(v) >= 5e-5 for m, v in target.items()
+                   if m not in NEVER_IN_BODY and not BODYGEN_SEPARATORS.search(m))
 
 
 def write_manifest(folder, stamp, build, mode, base, pools, extra, picker, player):
@@ -1027,6 +1107,7 @@ def main():
         tris[g] = base_body.read_tri(tri)
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
     presets = read_presets(args.data / 'Tools/BodySlide/SliderPresets')
+    assign_markers(presets)
 
     for p in presets:
         p.update(classify(p, morphs_of['female'], morphs_of['male']))
@@ -1098,11 +1179,12 @@ def main():
             held_back.append(p)
             continue
         target = {k: v for k, v in target_values(p, base[g]).items() if k in morphs_of[g]}
-        if not any(target.values()):
+        if is_zeroed(target):
             # A zeroed preset. OBody NG blacklists these from random distribution
             # by default ("Zeroed Sliders", "HIMBO Zero for OBody"); here that is
-            # decided by the values, not the name, so "CBBE Zeroed Sliders" and
-            # "BT - Zero" are caught too.
+            # decided by the values it would write, not the name, so "CBBE Zeroed
+            # Sliders" and "BT - Zero" are caught too -- and so is a preset whose only
+            # values are a state or the shaft, which are never written.
             zeroed.append(p)
             continue
         name = template_name(p)
@@ -1161,6 +1243,7 @@ def main():
             name = template_name(p)
             if not any(name == n2 for n2, _l, _p in pools[g]) and name not in extra:
                 target = {k: v for k, v in target_values(p, base[g]).items() if k in morphs_of[g]}
+                p['zeroed'] = is_zeroed(target)
                 extra[name] = (morph_values(name, target, baked[g], morphs_of[g], p['name']), p)
             out[g].append(name)
         return out
@@ -1266,6 +1349,16 @@ def main():
         print('\n(measure only - pass --write to produce the BodyGen files)')
     else:
         root = args.out or (ROOT / 'data')
+        # The stamp is 24 bits of the build's hash, and a body's marker carries only the stamp: two
+        # builds sharing one could never be told apart, and this run would overwrite the other's
+        # manifest -- the only thing that says what its bodies are.
+        taken = root / 'F4SE/Plugins/Silhouette/manifests' / f'{stamp}.json'
+        if taken.exists():
+            other = json.loads(taken.read_text(encoding='utf-8')).get('build')
+            if other != build:
+                raise SystemExit(f'build {build} has marker stamp {stamp}, and so has build {other} ({taken}): bodies of '
+                                 f'the two could not be told apart. Change anything in the presets or the ranges '
+                                 f'(a new build hash), then run this again.')
         out = root / 'F4SE/Plugins/F4EE/BodyGen/Loose'
         tfile = out / 'Silhouette_templates.ini'
         mfile = out / 'Silhouette_morphs.ini'
@@ -1311,7 +1404,7 @@ def main():
             variety={g: [(mm, lo, hi, ranges[g][mm][2]) for mm, (lo, hi) in variety[g]] for g in BODIES},
             cfg=cfg, data=args.data,
             refit_presets=refit_sets(buckets.get('refit', []), base, baked, morphs_of),
-            body_morphs=morphs_of, report=cat_report)
+            body_morphs=morphs_of, baked=baked, report=cat_report)
         rules_id = catalog.rules_hash(cat, m)
         cat['rulesHash'] = rules_id
         catalog.check(cat)
@@ -1380,9 +1473,11 @@ def main():
         assert all(line.strip() for line in t), 'an empty line would end the file for LooksMenu'
         assert all(line.strip() for line in m), 'an empty line would end the file for LooksMenu'
 
+        # Both encoded before either is written: a refusal leaves no half-written pair.
+        tbytes, mbytes = ini_bytes(tfile.name, t), ini_bytes(mfile.name, m)
         out.mkdir(parents=True, exist_ok=True)
-        tfile.write_text('\n'.join(t) + '\n', encoding='ascii', errors='replace', newline='\r\n')
-        mfile.write_text('\n'.join(m) + '\n', encoding='ascii', errors='replace', newline='\r\n')
+        tfile.write_bytes(tbytes)
+        mfile.write_bytes(mbytes)
         print(f'\nwrote {tfile}\nwrote {mfile}')
 
         cfg_file = root / 'F4SE/Plugins/Silhouette' / rules.CONFIG_NAME

@@ -27,13 +27,16 @@ Function Log(String asLine) Global Native     ; into Silhouette.log
 ; decisions. The bridge calls it once per poll.
 Function Pump() Global Native
 
-; ---- orders (protocol 2): exactly this, in this order ----------------------
-; NextOrder -> (Regenerates) -> (Probes: NoteName each morph; MarkerKind 1 or 2 ->
-; NoteMarker) -> (ReadsAll: NoteLayer) -> OrderReadCount / OrderReadMorph / NoteRead
+; ---- orders (protocol 3): exactly this, in this order ----------------------
+; NextOrder -> OrderActor: no actor in memory -> OrderGone, stop.
+; -> (Regenerates: busy in another mod's scene -> OrderDefer, stop; else regenerate)
+; -> (Probes: NoteName each morph; MarkerKind 1 or 3 -> NoteMarker of the unkeyed
+;    value, 2 -> NoteMarker of the refit keyword's value) -> (ReadsAll: NoteLayer)
+; -> OrderReadCount / OrderReadMorph / NoteRead, stopping once OrderReadsDone
 ; -> Prepare -> OrderActor again -> (OrderClearsUnkeyed) (OrderClearsRefit)
 ; -> OrderWriteCount / OrderWriteMorph / OrderWriteValue / OrderWriteLayer
 ; -> (OrderUpdates) -> OrderDone.
-Int Function NextOrder() Global Native        ; 0: nothing to do
+Int Function NextOrder() Global Native        ; 0: nothing to do now
 Int Function OrderActor(Int aiOrder) Global Native   ; 0: the order is gone (a load forgot it)
 Int Function OrderKind(Int aiOrder) Global Native    ; 1 probe, 2 body, 3 refit, 4 snapshot, 5 touch-up
 Bool Function OrderFemale(Int aiOrder) Global Native
@@ -41,11 +44,13 @@ Bool Function OrderRegenerates(Int aiOrder) Global Native
 Bool Function OrderProbes(Int aiOrder) Global Native
 Bool Function OrderReadsAll(Int aiOrder) Global Native
 Function NoteName(Int aiOrder, String asMorph) Global Native
-Int Function MarkerKind(String asMorph) Global Native  ; 0 none, 1 body marker (unkeyed), 2 refit marker (refit keyword)
+; 0 none, 1 body marker (unkeyed), 2 refit marker (refit keyword), 3 choice marker (unkeyed)
+Int Function MarkerKind(String asMorph) Global Native
 Function NoteMarker(Int aiOrder, String asMarker, Float afValue) Global Native
 Int Function OrderReadCount(Int aiOrder) Global Native
 String Function OrderReadMorph(Int aiOrder, Int aiIndex) Global Native
 Function NoteRead(Int aiOrder, Int aiIndex, Float afValue) Global Native
+Bool Function OrderReadsDone(Int aiOrder) Global Native  ; the reads so far answer it: stop reading
 Function NoteLayer(Int aiOrder, String asMorph, Float afValue) Global Native
 Bool Function Prepare(Int aiOrder) Global Native
 Bool Function OrderClearsUnkeyed(Int aiOrder) Global Native
@@ -56,6 +61,8 @@ Float Function OrderWriteValue(Int aiOrder, Int aiIndex) Global Native
 Int Function OrderWriteLayer(Int aiOrder, Int aiIndex) Global Native  ; 0 unkeyed, 1 the refit keyword
 Bool Function OrderUpdates(Int aiOrder) Global Native
 Function OrderDone(Int aiOrder, Bool abOk) Global Native
+Function OrderGone(Int aiOrder) Global Native   ; not in memory: the work waits for their next sighting
+Function OrderDefer(Int aiOrder) Global Native  ; busy in another mod's scene: tried again later
 
 ; ---- events for the bridge to raise (S-24) ---------------------------------
 Int Function NextEvent() Global Native        ; 0: none
@@ -63,6 +70,7 @@ Int Function EventKind(Int aiEvent) Global Native   ; 1 generated, 2 naked, 3 re
 Int Function EventActor(Int aiEvent) Global Native
 String Function EventPreset(Int aiEvent) Global Native
 Bool Function EventFlag(Int aiEvent) Global Native
+Function EventDone(Int aiEvent) Global Native  ; raised: only now is an announcement remembered as made
 
 ; ---- the NPC picker (S-22, S-47) ---------------------------------------------
 Int Function CrosshairActor(Float afRecentSeconds) Global Native  ; main thread
@@ -80,15 +88,17 @@ String Function AssignedPreset(Int aiActor) Global Native
 String Function PresetForMarker(String asMarker, Float afStamp) Global Native
 Int Function PresetCount(Bool abFemale) Global Native
 String Function PresetName(Bool abFemale, Int aiIndex) Global Native
-; Main thread. False, with LastError saying why, on every refusal.
-Bool Function RequestPreset(Int aiActor, String asPreset, Int aiSource) Global Native  ; 3 picker, 4 another mod
-Bool Function RequestRegenerate(Int aiActor) Global Native
-Bool Function RequestReset(Int aiActor) Global Native
-Bool Function RequestReapply(Int aiActor, String asMarkerPreset) Global Native
+; Main thread. Each answers "" when it accepted the request, or why it did not.
+; aiLane (S-55): 0 the player's own actions, 1 other mods and rules, 2 bulk work.
+String Function RequestPreset(Int aiActor, String asPreset, Int aiSource, Int aiLane) Global Native  ; source 3 picker, 4 another mod
+String Function RequestRegenerate(Int aiActor, Int aiLane) Global Native
+String Function RequestReset(Int aiActor, Int aiLane) Global Native
+String Function RequestReapply(Int aiActor, String asMarkerPreset, Int aiLane) Global Native
+String Function RequestAdopt(Int aiActor) Global Native  ; the regeneration window (S-15), bulk lane
 Bool Function IsORefitEnabled() Global Native
-Bool Function IsORefitApplied(Int aiActor) Global Native
+Bool Function IsORefitApplied(Int aiActor) Global Native  ; what this session has seen; the API reads LooksMenu
 Function SetORefit(Bool abOn) Global Native
 Function SetNippleRand(Bool abOn) Global Native
 Function SetGenitalRand(Bool abOn) Global Native
 String Function Describe(Int aiActor) Global Native
-String Function LastError() Global Native
+String Function LastError() Global Native  ; the last refusal of any caller: prefer the Request* answer

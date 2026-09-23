@@ -112,19 +112,78 @@ namespace SH
 
 	Morphs RefitFloors(const RefitSet& a_set, bool a_heavy)
 	{
-		Morphs out{ { std::string{ kRefitMarker }, a_heavy ? 2.0F : 1.0F } };
+		Morphs out;
 		for (const auto& f : a_set.floors) {
-			if (f.heavyOnly && !a_heavy) {
+			if ((f.heavyOnly && !a_heavy) || !(f.value > 0.0F)) {
 				continue;
 			}
 			const auto it = std::ranges::find_if(out, [&](const auto& p) { return IEquals(p.first, f.morph); });
 			if (it != out.end()) {
 				it->second = std::max(it->second, f.value);
-			} else if (f.value != 0.0F) {
+			} else {
 				out.emplace_back(f.morph, f.value);
 			}
 		}
 		return out;
+	}
+
+	namespace
+	{
+		std::uint32_t Mix(std::uint32_t a_hash, std::string_view a_text)
+		{
+			for (const char c : a_text) {
+				a_hash ^= static_cast<std::uint8_t>(std::tolower(static_cast<unsigned char>(c)));
+				a_hash *= 16777619u;
+			}
+			a_hash ^= 0xFFu;  // a separator, so "ab"+"c" and "a"+"bc" differ
+			a_hash *= 16777619u;
+			return a_hash;
+		}
+
+		std::uint32_t MixWord(std::uint32_t a_hash, std::uint32_t a_word)
+		{
+			for (int i = 0; i < 4; ++i) {
+				a_hash ^= (a_word >> (8 * i)) & 0xFFu;
+				a_hash *= 16777619u;
+			}
+			return a_hash;
+		}
+	}
+
+	float RefitMarker(const RefitSet& a_set, bool a_heavy)
+	{
+		std::uint32_t h = Mix(2166136261u, a_set.name);
+		h = MixWord(h, a_heavy ? 1u : 0u);
+		for (const auto& [morph, value] : RefitFloors(a_set, a_heavy)) {
+			h = Mix(h, morph);
+			h = MixWord(h, std::bit_cast<std::uint32_t>(value));
+		}
+		const auto k = h % 8388606u;  // 1 + 1 + 2 * 8388605 = 16777212: below 2^24, exact as a float
+		return static_cast<float>(1 + (a_heavy ? 1 : 0) + 2 * k);
+	}
+
+	std::uint32_t TouchKey(const Catalog& a_catalog, std::string_view a_marker, std::uint32_t a_stamp, bool a_female,
+		VarietySwitches a_switches)
+	{
+		std::uint32_t h = Mix(2166136261u, a_marker);
+		h = MixWord(h, a_stamp);
+		auto heal = a_catalog.HealFor(a_marker, a_stamp);
+		std::ranges::sort(heal);
+		for (const auto& m : heal) {
+			h = Mix(h, m);
+		}
+		std::vector<std::string> ranges;
+		for (const auto& r : a_catalog.variety[a_female ? 1 : 0]) {
+			const bool on = r.group == "nipples" ? a_switches.nipples : a_switches.genitals;
+			if (on && !a_catalog.NeverInBody(a_female, r.morph)) {
+				ranges.push_back(r.morph);
+			}
+		}
+		std::ranges::sort(ranges);
+		for (const auto& m : ranges) {
+			h = Mix(h, m);
+		}
+		return h ? h : 1u;
 	}
 
 	std::uint32_t BodyHash(std::string_view a_marker, std::uint32_t a_stamp)

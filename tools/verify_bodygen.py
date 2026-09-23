@@ -23,10 +23,21 @@ generator believes it wrote something correct.
 import argparse
 import math
 import pathlib
+import re
 import sys
 
 import base_body
+import catalog
 import silhouette_gen as sg
+
+# Morph names are compared in any case, as LooksMenu and the plugin compare them.
+STATES = {m.casefold() for m in sg.STATE_MORPHS}
+SHAFT = {m.casefold() for m in sg.SHAFT_MORPHS}
+
+
+def papyrus_unescape(s):
+    """The text a Papyrus string literal holds (sg.papyrus_string, read back)."""
+    return re.sub(r'\\(.)', lambda m: {'n': '\n', 't': '\t'}.get(m.group(1), m.group(1)), s)
 
 LINE_LIMIT = 0x7FFF        # BSResourceTextFile<0x7FFF>
 MAX_ERROR = 0.1            # game units; half floats step 0.0625 above |64|
@@ -64,9 +75,9 @@ def engine_lines(path, problems):
         if len(seg) >= LINE_LIMIT:
             problems.append(f'{path.name}:{i}: line is {len(seg)} bytes, LooksMenu reads it in '
                             f'{LINE_LIMIT - 1}-byte pieces')
-        out.append((i, seg.rstrip(b'\r').decode('ascii', errors='replace')))
+        out.append((i, seg.rstrip(b'\r').decode('cp1252', errors='replace')))
     if tail:
-        out.append((len(segments) + 1, tail.rstrip(b'\r').decode('ascii', errors='replace')))
+        out.append((len(segments) + 1, tail.rstrip(b'\r').decode('cp1252', errors='replace')))
     return out
 
 
@@ -232,7 +243,7 @@ def parse_picker_script(path):
         if kind in ('markers', 'names'):
             m = re.match(r'a\.Add\("(.*)", 1\)$', s)
             if m:
-                out[g][kind].append(m.group(1))
+                out[g][kind].append(papyrus_unescape(m.group(1)))
         else:
             m = re.match(r'(?:If|ElseIf) index == (\d+)$', s)
             if m:
@@ -241,12 +252,13 @@ def parse_picker_script(path):
                 continue
             m = re.match(r'BodyGen\.SetMorph\(a, (True|False), "(.*)", None, (\S+)\)$', s)
             if m and branch is not None:
-                out[g]['apply'][branch][m.group(2)] = float(m.group(3))
+                out[g]['apply'][branch][papyrus_unescape(m.group(2))] = float(m.group(3))
     return out
 
 
-def check_picker(args, templates, player, problems, stamp):
+def check_picker(args, templates, player, problems, stamp, cat):
     import json
+    cat_by_marker = {p['marker'].casefold(): p for p in (cat or {}).get('presets', [])}
     mcm = args.dir.parent.parent.parent.parent.parent / 'MCM/Config/Silhouette'
     psc = args.psc
     if not (mcm / 'config.json').exists() or not psc.exists():
@@ -306,17 +318,26 @@ def check_picker(args, templates, player, problems, stamp):
         elif g in player and [x for grp in player[g][1] for x in grp]:
             t = [x for grp in player[g][1] for x in grp][0]
             fixed = fixed_values(templates[t]) or {}
-            if s['markers'][d] not in fixed:
+            # With no preset that fits fully the player gets the bare body (the template that sets
+            # nothing), and the menu's default is simply its first entry (L4 F7).
+            if any(fixed.values()) and s['markers'][d] not in fixed:
                 problems.append(f'MCM default {sid} is {s["markers"][d]!r}, but the player template {t!r} '
                                 f'BodyGen gives carries {[k for k in fixed if k.startswith("Silhouette_")]}')
         agree = 0
         for i, marker in enumerate(s['markers']):
-            if s['apply'][i].get(marker) != script_stamp:
+            got = s['apply'][i]
+            if got.get(marker) != script_stamp:
                 problems.append(f'picker {g} #{i} {s["names"][i]!r}: sets no marker with the build\'s '
                                 f'stamp')
+            # Every branch, not only the ones the random pool has a template for: a picker-only preset
+            # (a zeroed one) is compared with the body the plugin gives by the same marker.
+            cp = cat_by_marker.get(marker.casefold())
+            if cat is not None and (cp is None or cp['sex'] != g or cp['name'] != s['names'][i] or not same_values(
+                    cp['values'], {k: v for k, v in got.items() if k != marker})):
+                problems.append(f'picker {g} {s["names"][i]!r} ({marker}) is not the catalog\'s preset of that marker: '
+                                f'the menu would give another body than the plugin does')
             if marker in templates:
                 want = fixed_values(templates[marker])
-                got = s['apply'][i]
                 if want is None or set(want) != set(got) or any(
                         abs(want[k] - got[k]) > 1e-6 for k in want):
                     problems.append(f'picker {g} {s["names"][i]!r} applies different values than '
@@ -415,12 +436,13 @@ def main():
     print(f'{len(templates)} templates parse, {len(rules)} rules')
 
     # A runtime state in a template lands in the unkeyed layer, where nothing ever takes it
-    # away again: a permanent erection, a permanently opened body (decision S-16).
+    # away again: a permanent erection, a permanently opened body (decision S-16). In any case:
+    # "erection" is Erection to LooksMenu.
     for t, sets in templates.items():
-        states = sorted({m for s in sets for sel in s for m, _, _ in sel if m in sg.STATE_MORPHS})
+        states = sorted({m for s in sets for sel in s for m, _, _ in sel if m.casefold() in STATES})
         if states:
             problems.append(f'template {t} sets {", ".join(states)}: a runtime state baked into a body for good')
-        shaft = sorted({m for s in sets for sel in s for m, _, _ in sel if m in sg.SHAFT_MORPHS})
+        shaft = sorted({m for s in sets for sel in s for m, _, _ in sel if m.casefold() in SHAFT})
         if shaft:
             problems.append(f'template {t} sets {", ".join(shaft)}: the shaft is never part of a body (S-29)')
 
@@ -446,6 +468,21 @@ def main():
             if (b, st, r) != (cat['build'], cat['stamp'], cat.get('rulesHash')):
                 problems.append(f'{name} is build {b} stamp {st} rules {r}, catalog.json build {cat["build"]} '
                                 f'stamp {cat["stamp"]} rules {cat.get("rulesHash")}: the plugin refuses the pair')
+        # The hash names what the rules ARE: recomputed from the lines LooksMenu reads and the catalog the
+        # plugin reads, a file edited after the generator wrote it no longer agrees with its header.
+        lines = [text for _n, text in engine_lines(args.dir / 'Silhouette_morphs.ini', [])]
+        if catalog.rules_hash(cat, lines) != cat.get('rulesHash'):
+            problems.append('catalog.json or Silhouette_morphs.ini changed after the generator wrote them: their rules '
+                            'no longer hash to the rules the headers name -- run the generator again')
+        # The strict checks the generator ran, run on what is on disk.
+        try:
+            catalog.check(cat)
+        except SystemExit as exc:
+            problems.append(f'catalog.json: {exc}')
+        for p in cat.get('presets', []):
+            bad = sorted(m for m in p.get('values', {}) if m.casefold() in STATES | SHAFT)
+            if bad:
+                problems.append(f'catalog.json preset {p["name"]!r} carries {", ".join(bad)}: never part of a body (S-16, S-29)')
 
     # ---- which templates each gender's pool holds, and what the player gets.
     # LooksMenu lets a later line overwrite an earlier one per NPC, so the player's
@@ -474,6 +511,21 @@ def main():
             manifest = _json.loads(mfile.read_text(encoding='utf-8'))
             print(f'stamp {int(stamp)}, build {manifest.get("build")}, {manifest.get("mode")}, '
                   f'{len(manifest.get("templates", {}))} templates in its manifest')
+            # Every entry is what the plugin will believe a body of this build IS: the catalog's preset of
+            # the same marker, value for value -- the heal (S-29) reads its morphs from here.
+            if cat is not None:
+                if manifest.get('build') != cat['build']:
+                    problems.append(f'the manifest of stamp {int(stamp)} is build {manifest.get("build")}, the catalog '
+                                    f'{cat["build"]}')
+                by_marker = {p['marker'].casefold(): p for p in cat.get('presets', [])}
+                for marker, entry in manifest.get('templates', {}).items():
+                    cp = by_marker.get(marker.casefold())
+                    bad = sorted(m for m in entry.get('values', {}) if m.casefold() in STATES | SHAFT)
+                    if bad:
+                        problems.append(f'manifest {marker}: carries {", ".join(bad)}, never part of a body (S-16, S-29)')
+                    if cp is None or cp['name'] != entry.get('preset') or not same_values(entry.get('values'), cp['values']):
+                        problems.append(f'manifest {marker}: not the catalog\'s preset of that marker -- the plugin would '
+                                        f'name or heal bodies of this build wrongly')
 
     handed_out = set()          # every template any line can give an NPC
     player, dummies = {}, {}
@@ -544,6 +596,7 @@ def main():
     tris = {g: base_body.read_tri(body_file[b].with_suffix('.tri')) for g, b in sg.BODIES.items()}
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
     presets = sg.read_presets(args.data / 'Tools/BodySlide/SliderPresets')
+    sg.assign_markers(presets)
     for p in presets:
         p.update(sg.classify(p, morphs_of['female'], morphs_of['male']))
     by_template = {sg.template_name(p): p for p in presets}
@@ -641,7 +694,7 @@ def main():
 
     # ---- the player picker: the MCM menu, its defaults and the generated script
     # must agree with each other and with the templates above.
-    check_picker(args, templates, player, problems, stamp)
+    check_picker(args, templates, player, problems, stamp, cat)
 
     print()
     if problems:

@@ -35,6 +35,8 @@ namespace SH::Game
 	[[nodiscard]] std::string   NameOf(RE::Actor* a_actor);  // the name the player sees
 	// The player, or a character-creation dummy LooksMenu clones onto the player (S-13).
 	[[nodiscard]] bool NeverShaped(RE::Actor* a_actor);
+	// The editor id of the NPC record's race, as BodyGen matches a line ("" when it has none).
+	[[nodiscard]] std::string RaceOf(RE::Actor* a_actor);
 
 	// The director's log lines, into ours.
 	void FlushLog();

@@ -18,6 +18,7 @@ namespace logger = F4SE::log;
 #include <algorithm>
 #include <array>
 #include <atomic>
+#include <bit>
 #include <charconv>
 #include <chrono>
 #include <cmath>

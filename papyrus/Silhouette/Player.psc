@@ -266,15 +266,16 @@ Function Census() Global
 EndFunction
 
 ; Everyone nearby keeps the preset Silhouette gave them, with its values from this build.
-; With Silhouette.dll ready the plugin gives it again, their own variety kept (S-17, S-21);
-; without it -- or with its catalog refused -- the preset alone is written, and the rolled
-; variety is lost.
+; With Silhouette.dll ready the plugin gives it again, their own variety kept (S-17, S-21),
+; as bulk work behind anything the player or another mod asked for (S-55); without it --
+; or with its catalog refused -- the preset alone is written, and the rolled variety is lost.
 Function Refresh() Global
     Actor[] people = Nearby()
     String[] fm = FemaleMarkers()
     String[] fn = FemaleNames()
     String[] mm = MaleMarkers()
     String[] mn = MaleNames()
+    Bool plugin = Silhouette:API.IsReady()
     Int done = 0
     Int i = 0
     While i < people.Length
@@ -290,8 +291,8 @@ Function Refresh() Global
             index = mn.Find(preset, 0)
         EndIf
         If index >= 0
-            If Silhouette:API.IsReady()
-                If Silhouette:API.ReapplyActorMorphs(a)
+            If plugin
+                If Silhouette:DLL.RequestReapply(a.GetFormID(), Silhouette:API.MarkerPreset(a), 2) == ""
                     done += 1
                 EndIf
             ElseIf Give(a, female, index) != ""
@@ -300,13 +301,17 @@ Function Refresh() Global
         EndIf
         i += 1
     EndWhile
-    Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you refreshed. The rest have no Silhouette body, or one this build no longer has.")
+    If plugin
+        Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you get their preset again, with this build's values -- over the next moments. The rest have no Silhouette body, or one this build no longer has.")
+    Else
+        Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you have their preset again, with this build's values. The rest have no Silhouette body, or one this build no longer has.")
+    EndIf
 EndFunction
 
 ; Everyone nearby rolls again, as if met for the first time. With Silhouette.dll ready the
-; plugin does it (Silhouette:API.GenActor): it knows who it rolled, the rules get their say,
-; and other mods' keyed morphs stay. Without it RegenerateMorphs is the only way to run
-; BodyGen for an actor again, and it clears every key.
+; plugin does it as bulk work (S-55): it knows who it rolled, the rules get their say, other
+; mods' keyed morphs stay, and anyone in an AAF scene waits for it to end. Without it
+; RegenerateMorphs is the only way to run BodyGen for an actor again, and it clears every key.
 Function Reroll() Global
     Actor[] people = Nearby()
     Bool plugin = Silhouette:API.IsReady()
@@ -314,7 +319,7 @@ Function Reroll() Global
     Int i = 0
     While i < people.Length
         If plugin
-            If Silhouette:API.GenActor(people[i])
+            If Silhouette:DLL.RequestRegenerate(people[i].GetFormID(), 2) == ""
                 done += 1
             EndIf
         Else
@@ -323,7 +328,11 @@ Function Reroll() Global
         EndIf
         i += 1
     EndWhile
-    Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you rolled a new body.")
+    If plugin
+        Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you get a new body -- over the next moments.")
+    Else
+        Debug.MessageBox("Silhouette: " + done + " of " + people.Length + " people around you have a new body.")
+    EndIf
 EndFunction
 
 String[] Function FemaleMarkers() Global

@@ -22,30 +22,35 @@ namespace SH::Sinks
 			void (*on)(const E&);
 		};
 
-		bool IsActor(const RE::TESForm* a_form)
+		// A sink only READS, and only through the guarded reads: plain fields, and ids and types of objects
+		// whose RTTI checked out. Forms are looked up and read on the main thread, in the pump.
+		bool Is(const void* a_form, RE::ENUM_FORM_ID a_type)
 		{
-			return a_form && a_form->Is(RE::ENUM_FORM_ID::kACHR);
+			return Events::SafeFormType(a_form) == static_cast<std::uint8_t>(a_type);
 		}
 
 		void OnLoaded(const RE::TESObjectLoadedEvent& a_event)
 		{
-			if (a_event.loaded && IsActor(RE::TESForm::GetFormByID(a_event.formID))) {
+			if (a_event.loaded && Is(RE::TESForm::GetFormByID(a_event.formID), RE::ENUM_FORM_ID::kACHR)) {
 				Game::NoteLoaded(a_event.formID);
 			}
 		}
 
 		void OnEquip(const RE::TESEquipEvent& a_event)
 		{
+			// Only clothing changes what someone wears: weapons, ammunition and aid are never queued.
 			const auto* ref = a_event.actor.get();
-			if (IsActor(ref)) {
-				Game::NoteEquip(ref->GetFormID(), a_event.baseObject, a_event.equipped);
+			if (Is(ref, RE::ENUM_FORM_ID::kACHR) && Is(RE::TESForm::GetFormByID(a_event.baseObject), RE::ENUM_FORM_ID::kARMO)) {
+				if (const auto id = Events::SafeFormID(ref)) {
+					Game::NoteEquip(id, a_event.baseObject, a_event.equipped);
+				}
 			}
 		}
 
 		void OnPick(const Events::PickRefStateChangedEvent& a_event)
 		{
 			const auto* ref = a_event.ref.get();
-			Game::NoteCrosshair(ref ? ref->GetFormID() : 0, IsActor(ref));
+			Game::NoteCrosshair(Events::SafeFormID(ref), Is(ref, RE::ENUM_FORM_ID::kACHR));
 		}
 
 		Tap<RE::TESObjectLoadedEvent>         g_loaded{ OnLoaded };

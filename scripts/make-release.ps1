@@ -39,6 +39,18 @@ if (-not (Test-Path $tests)) { throw "Missing $tests - run scripts\build-plugin.
 & $tests --check $data
 if ($LASTEXITCODE) { throw "the plugin would refuse these generated files - regenerate." }
 $catalog = Get-Content (Join-Path $data 'F4SE\Plugins\Silhouette\catalog.json') -Raw | ConvertFrom-Json
+# The compiled picker script must be of that run: the .pex is what ships.
+$pexFile = (Get-ChildItem $pex -Filter 'player.pex' -ErrorAction SilentlyContinue).FullName
+if (-not $pexFile) { throw "Missing $pex\Player.pex - run scripts\build-papyrus.ps1." }
+$pexText = [System.Text.Encoding]::GetEncoding(28591).GetString([System.IO.File]::ReadAllBytes($pexFile))
+if (-not $pexText.Contains($catalog.build)) {
+    throw "$pexFile was not compiled from build $($catalog.build) - run scripts\build-papyrus.ps1."
+}
+# ...and the files do what they claim.
+$python = (Get-Command python -ErrorAction SilentlyContinue).Source
+if (-not $python) { throw "No python: the verifier (tools\verify_bodygen.py) must pass before a release." }
+& $python (Join-Path $root 'tools\verify_bodygen.py') --dir $data --psc (Join-Path $root 'papyrus\Silhouette\Player.psc') | Select-Object -Last 3
+if ($LASTEXITCODE) { throw "tools\verify_bodygen.py fails these files - see its output." }
 
 if (Test-Path $out) { Remove-Item -Recurse -Force $out }
 if (Test-Path $zip) { Remove-Item -Force $zip }
@@ -61,4 +73,11 @@ foreach ($doc in @('README.md', 'LICENSE')) {
 Compress-Archive -Path (Join-Path $out '*') -DestinationPath $zip -CompressionLevel Optimal
 $item = Get-Item $zip
 Write-Host ("packed {0}  {1} bytes: build {2}, stamp {3}" -f $item.FullName, $item.Length, $catalog.build, $catalog.stamp)
+# The PDB stays out of the archive (twenty times the DLL) but beside it: a user's crash log is read
+# against the exact build that crashed.
+$pdb = [System.IO.Path]::ChangeExtension($dll, '.pdb')
+if (Test-Path $pdb) {
+    Copy-Item $pdb "$out.pdb" -Force
+    Write-Host "kept $out.pdb for reading crash logs of this build (not in the archive)"
+}
 Write-Host "Nothing was uploaded."

@@ -1,7 +1,8 @@
 # Phase 2 — the Silhouette plugin
 
 What the F4SE plugin adds to Phase 1, how it does it, and why it is shaped this way. The decisions
-behind it are S-18 to S-29 and S-40 to S-47 in [decisions.md](decisions.md); this is the map.
+behind it are S-18 to S-29 and S-40 to S-57 in [decisions.md](decisions.md); this is the map. The first
+in-game session follows [phase2-test-plan.md](phase2-test-plan.md).
 
 ## What stays as it is
 
@@ -33,7 +34,9 @@ LooksMenu BodyGen ──(on NPC load)──▶ random body + marker, stored in L
         │ UpdateMorphs   (Papyrus only)
         │
 Silhouette:Bridge  (Papyrus, Silhouette.esp's quest 0x802, ONE timer, drains on a stack of its own)
-        │   polls:   Silhouette:DLL.NextOrder()     reports: NoteName/NoteMarker/NoteRead, OrderDone()
+        │   polls:   Silhouette:DLL.NextOrder()     reports: NoteName/NoteMarker/NoteRead, OrderDone(),
+        │            Silhouette:DLL.NextEvent()              OrderGone() (not in memory), OrderDefer() (AAF
+        │                                                     has them busy), EventDone() (raised)
         ▼
 Silhouette.dll  (F4SE, CommonLibF4 OG)
     Catalog   catalog.json + manifests/<stamp>.json, written by silhouette_gen.py
@@ -53,8 +56,8 @@ LooksMenu offers other plugins no C++ interface (its `exports.def` has only F4SE
 points and its message handler answers F4SE alone), so Papyrus is the only door there is.
 
 What an order does is fixed by a protocol number both sides state (`Silhouette:DLL.ProtocolVersion`
-and `Silhouette:Bridge.Protocol`, now 2). A DLL and scripts of different releases refuse each other at
-load instead of half-working. The offline tests drive the whole director through a fake bridge that
+and `Silhouette:Bridge.Protocol`, now 3). A DLL and scripts of different releases refuse each other at
+load instead of half-working -- and the bridge then sweeps refits off (S-54, below). The offline tests drive the whole director through a fake bridge that
 does exactly what `RunOrder` does, against a fake LooksMenu that keeps the unkeyed layer, Silhouette's
 keyword layer and another mod's, and shows their maximum — so what a body ends up looking like is what
 is tested.
@@ -71,9 +74,14 @@ bodies, and the co-save holds only intent:
   made, not when the bridge finishes;
 - after each probe the plugin makes the body match the intent — once a session — and every order is
   safe to repeat, so a save that lands in the middle of one is repaired by the next session's probe;
-- orders go in three lanes: the player's own actions and a refit coming off, then decisions (rules,
-  refits, touch-ups), then probes. Order ids start at a random number each launch, and the bridge
-  checks that an order still names its actor before it writes.
+- a picked or API-given body carries a choice marker beside it in LooksMenu (S-51), so a save made
+  without the DLL -- which F4SE keeps no co-save chunk for -- loses no choice: the probe rebuilds it;
+- orders go in three lanes (S-55): urgent -- the picker, the NPC page, a refit coming off; normal --
+  other mods' calls, the rules, a refit going on, touch-ups, first contact with someone dressing;
+  background -- probes, the bulk buttons, the regeneration window. Order ids start at a random number
+  each launch, and the bridge checks that an order still names its actor before it writes;
+- work waits instead of being lost (S-56): an actor not in memory keeps their order until they are seen
+  again, and a roll for someone in an AAF scene is tried again 10 seconds later, as long as it lasts.
 
 Only actors Silhouette could shape are probed: the player, the character-creation dummies, creatures
 and undistributed races never are.
@@ -97,16 +105,19 @@ wrote, and the plugin reads them to name the preset behind any marker, including
 build wrote. `SilhouetteTests.exe --check <data>` runs the plugin's own parser on the generated files,
 and the build and deploy scripts call it.
 
-## ORefit (S-20, S-40 to S-42)
+## ORefit (S-20, S-40 to S-42, S-48 to S-50, S-54)
 
 LooksMenu shows the **maximum** over keyword layers (`UserValues::GetEffectiveValue` is
 `std::max_element`). So the refit lives under Silhouette.esp's own keyword (0x803) as **floors**: while
 dressed she has at least these values, and everything else is her own body. The clothed shape follows
 every change to her body with nothing to keep in step, and undressing removes the layer: she is exactly
 her own body again. A refit cannot lower anything — that is the price. Nothing about a refit is kept in
-the co-save: a refit marker under the same keyword says which set is on, and a pending value while one
-is being written, so a probe knows. Removing Silhouette.esp removes every refit, because LooksMenu drops
-values whose keyword no longer resolves.
+the co-save: a refit marker under the same keyword says which set is on (S-50: a whole number naming the
+set and its floors, ODD under light clothes and EVEN under heavy ones), and 0.25 while one is being
+written, so a probe knows. A build with new floors reaches a woman who never undresses. Removing
+Silhouette.esp removes every refit, because LooksMenu drops values whose keyword no longer resolves; a
+missing or mismatched Silhouette.dll, or a refused catalog, makes the bridge sweep refits off the people
+around the player instead (S-54).
 
 Clothed, as OBody decides it and in Fallout 4's slots: something in **BODY (33)**, **[U] Torso (36)**
 or **[A] Torso (41)** that is not blacklisted, or any force-refit item (OBody's keys in
@@ -114,13 +125,18 @@ or **[A] Torso (41)** that is not blacklisted, or any force-refit item (OBody's 
 preset, `<Preset>-Refit`, `Female-Refit`/`Male-Refit`, else the built-in set for this body (CBBE:
 BreastsTogether at least 0.3 and PushUp at least 0.2).
 
-**Heavy** clothes also flatten the nipples (NipBGone 1): a chest armour piece ([A] Torso without BODY),
-or anything with an armour rating of at least `heavyArmorRating` (10: the Brotherhood uniform; most
-clothes are 0). Single items can be named heavy or light by form id or name.
+**Heavy** clothes also flatten the nipples (NipBGone 1). Heavy is told by the item's NAME (S-48): the
+config's lists first (`heavyOutfitsFormID`, `heavyOutfits`, `lightOutfitsFormID`, `lightOutfits`), then a
+whole word or phrase of `heavyWords` -- armor, armour, armored, armoured, chest piece, chestpiece,
+breastplate, cuirass, jacket, coat, trenchcoat, parka by default. Anything else is light: a chest flattened
+under a shirt is worse than a nipple showing through a coat. Silhouette.log names each heavy or listed item
+once, with its reason. A mod that raises nipples (fo4-anatomy's arousal) holds them flat while the refit
+marker is even (S-49): `Silhouette:API.IsHeavilyDressed`, or the marker read from LooksMenu directly.
 
 Refit: every clothed woman of a distributed race who HAS a body — a Silhouette body, another BodyGen
 mod's, a custom follower's, a hand-edited one — except anyone blacklisted, anyone reset this session,
-and the player. A woman with no body gets nothing stored, so BodyGen can still give her one.
+anyone in power armour, and the player. A woman with no body gets nothing stored, so BodyGen can still
+give her one.
 
 ## Variety (S-17, S-21) and the touch-up (S-29, S-44)
 
@@ -138,7 +154,10 @@ ranges from the reference id.
 
 The first time the plugin sees a Silhouette body that lacks a range the current build rolls, it draws
 just those; in the same order it zeroes any morph an older build put into that template that is never
-part of a body now. Once per body; a regeneration replaces the body and its variety with a new roll.
+part of a body now. Once per body and per build of what is wanted of it (its marker, the heals and the
+ranges switched on): a later build's heal still reaches a body touched before, and a value the player
+takes off afterwards stays off. Presence is read from her own layer, not another mod's keyed value. A
+regeneration replaces the body and its variety with a new roll.
 
 The player and the character-creation dummies are never rolled (S-45): they name a template of their
 own with the default preset's values and marker and none of the ranges.
@@ -146,10 +165,13 @@ own with the default preset's values and marker and none of the ranges.
 ## The NPC picker (S-22, S-47)
 
 Aim at an NPC, press **Pick** (MCM hotkey): they become the target. **Next / Previous** cycle every
-preset that fits their body live, starting from the one they have, with the name shown; **Keep**
-records it (it then survives, like a rule); **Cancel** puts back exactly what they had. A save made
-while picking loads as a Cancel. MCM > Silhouette > *The NPC in your sights* offers a dropdown of every
-preset, with Give them this preset, Back to random, and Which body.
+preset that fits their body live, starting from the one they have, with the name shown and their own
+variety kept; **Keep** records it (it then survives, like a rule, and is marked in LooksMenu); Keep on
+the preset they had is a Cancel; **Cancel** puts back exactly what they had. A save made while picking
+loads as a Cancel, one saved picking per NPC, and a decision made elsewhere ends a picking. MCM >
+Silhouette > *The NPC in your sights* offers a dropdown of every preset, with Give them this preset, Back
+to random, and Which body; the menu acts on the NPC last aimed at within 30 seconds of the crosshair
+leaving them.
 
 ## Runtime rules (S-23)
 
@@ -158,27 +180,44 @@ name) → plugin and race blacklists → faction → plugin → race → random.
 every tier it can name; the plugin sees an NPC load and acts only where a NAME or FACTION tier is the
 winner: it assigns that preset (the bridge replaces BodyGen's roll), or, for a name blacklist, leaves
 the NPC bare with a stored blacklist marker so BodyGen never rolls them again. Names are the NPC
-record's, as OBody reads them, so a rename at runtime changes nothing.
+record's, as OBody reads them, so a rename at runtime changes nothing. A rule with several presets draws
+one per person, and a met NPC keeps that draw while the rule still lists it (S-52). Race and faction
+editor ids are found in the load order when the generator runs, in any case; a race no plugin defines
+is refused there, since a rule naming it would match nobody.
 
 ## API and events (S-24, S-46)
 
 `Silhouette:API` (global functions, OBody's names): `IsReady`, `GetPresetAssignedToActor`,
 `GetAllPossiblePresets`, `AssignPresetToActor`/`ApplyPresetByName`, `GenActor`,
 `ResetActorMorphs`/`ResetActorOBodyMorphs`, `ReapplyActorMorphs`/`ReapplyActorOBodyMorphs`,
-`SetORefit`/`IsORefitEnabled`/`IsORefitApplied`, `SetNippleRand`, `SetGenitalRand`, `LastError`,
-`ShowStatus`. Events, raised by the bridge as custom events on `Silhouette:Bridge` and sent under the
-names the compiler gives them: `OnActorGenerated(Actor, String preset)`, `OnActorNaked(Actor)`,
-`OnActorRemovingClothes(Actor)`, `OnORefitChanged(Actor, Bool applied)`. A call that changes a body
-returns before the body changes; OnActorGenerated says when it has.
+`SetORefit`/`IsORefitEnabled`/`IsORefitApplied`, `IsHeavilyDressed`, `RefitMarkerValue`,
+`SetNippleRand`, `SetGenitalRand`, `LastError`, `ShowStatus`. A call that would change a body answers
+False, with LastError saying why, unless the plugin is ready and Silhouette.esp is there to carry it out.
+`IsORefitApplied`, `IsHeavilyDressed` and `RefitMarkerValue` read LooksMenu, not the plugin. Reset leaves
+someone bare and gives them a new body at the next load (S-53). Events, raised by the bridge as custom
+events on `Silhouette:Bridge` and sent under the names the compiler gives them: `OnActorGenerated(Actor,
+String preset)`, `OnActorNaked(Actor)`, `OnActorRemovingClothes(Actor)`, `OnORefitChanged(Actor, Bool
+applied)`. A listener compiled against the decompiled base sources registers the mangled name
+("silhouette:bridge_OnActorGenerated"); one compiled against the Creation Kit's sources, the plain one. A
+call that changes a body returns before the body changes; OnActorGenerated says when it has, for every body
+given on request, and an announcement a save cut off is made again after the load.
 
 ## Failure behaviour
 
 - No DLL, or the wrong runtime: Phase 1 is untouched — BodyGen still distributes, the player picker
-  still works (S-9). The MCM says the plugin is missing instead of offering dead buttons.
-- A DLL and scripts of different releases: the bridge stays off and says so.
+  still works (S-9). The MCM says the plugin is missing instead of offering dead buttons. Refits left
+  from a working session are swept off the people around the player (S-54).
+- A DLL and scripts of different releases: the bridge stays off, says so, and sweeps refits off.
 - A catalog missing, or of another run than the BodyGen files: the plugin refuses to act on rules and
-  ORefit and says so in its log, at load in a notification, and in the MCM's status.
+  ORefit and says so in its log, at load in a notification, and in the MCM's status; refits are swept.
+- LooksMenu missing: nothing can be shaped; the bridge stays off and says so once.
 - Silhouette.esp missing or disabled: nothing polls; the plugin's log says so a minute after the load.
   An older Silhouette.esp without the refit keyword: ORefit stays off rather than writing into the body.
-- Every order the bridge cannot complete is reported back, never dropped silently; a load forgets the
-  orders of the save being left, and the next session's probes repair what they had half done.
+- Every order the bridge cannot complete is reported back, never dropped silently; an actor out of
+  memory keeps their order until they are seen again, and one AAF has busy waits for the scene to end
+  (S-56). A load forgets the orders of the save being left, and the next session's probes repair what
+  they had half done.
+- Silhouette.log says every half minute what the bridge did (probes, bodies, refits, touch-ups, failures)
+  and what still waits, lane by lane, while there is any of it.
+- A save written by a newer Silhouette: its records are kept unchanged and written back into every save,
+  and this version remembers nothing new until the newer one is installed again.

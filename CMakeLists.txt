@@ -66,12 +66,16 @@ target_compile_definitions(
 
 target_include_directories("${PROJECT_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-target_link_libraries("${PROJECT_NAME}" PRIVATE CommonLibF4::CommonLibF4)
+find_package(nlohmann_json CONFIG REQUIRED)
+target_link_libraries("${PROJECT_NAME}" PRIVATE CommonLibF4::CommonLibF4 nlohmann_json::nlohmann_json)
 
 target_precompile_headers("${PROJECT_NAME}" PRIVATE "src/PCH.h")
 
 if(MSVC)
-	target_compile_options("${PROJECT_NAME}" PRIVATE "/permissive-" "/Zc:preprocessor" "/utf-8" "/W4" "/wd4201")
+	# A PDB for the Release DLL too: a crash log names our functions only with one. /DEBUG turns the
+	# linker's /OPT:REF and /OPT:ICF off by default, so they are asked for again.
+	target_compile_options("${PROJECT_NAME}" PRIVATE "/permissive-" "/Zc:preprocessor" "/utf-8" "/W4" "/wd4201" "$<$<CONFIG:Release>:/Zi>")
+	target_link_options("${PROJECT_NAME}" PRIVATE "$<$<CONFIG:Release>:/DEBUG;/OPT:REF;/OPT:ICF>")
 endif()
 
 # Everything with no game in it -- the catalog, the rules, the plans, the co-save bytes and the whole

@@ -1,13 +1,15 @@
 // Offline tests for everything in the plugin with no game in it: the catalog reader, OBody's rule
 // priority as the runtime applies it (S-23), the bodies the plugin writes (variety S-17/S-21, never the
-// shaft S-29), ORefit's keyword floors (S-40..S-42), the co-save bytes (S-43, S-47), and the whole
+// shaft S-29), ORefit's keyword floors (S-40..S-42, S-48), the co-save bytes (S-43, S-47), and the whole
 // director -- driven through a fake bridge that does to a fake LooksMenu exactly what Silhouette:Bridge
 // does to the real one. The fake keeps LooksMenu's three kinds of layer (unkeyed, Silhouette's refit
-// keyword, another mod's keyword) and shows the MAXIMUM over them, as LooksMenu does, so each test checks
-// what the woman would look like, not just the orders on the way. It can also stop an order half-way,
-// the way a save that lands between two bridge calls does.
+// keyword, another mod's keyword) and shows the MAXIMUM over them per morph, as LooksMenu does, so each
+// test checks what the woman would look like, not just the orders on the way. It can also stop an order
+// half-way, the way a save that lands between two bridge calls does, lose an actor from memory, and keep
+// one busy in another mod's scene.
 //
-//     build\Release\SilhouetteTests.exe        -> "N passed, 0 failed", exit code 0
+//     build\Release\SilhouetteTests.exe                -> "N passed, 0 failed", exit code 0
+//     build\Release\SilhouetteTests.exe --check <data> -> the generated files, read by the plugin's parser
 
 #include "PCH.h"
 
@@ -34,6 +36,10 @@ namespace
 			std::cout << "FAIL: " << a_what << "\n";
 		}
 	}
+
+	constexpr auto kUrgent = SH::Lane::kUrgent;
+	constexpr auto kNormal = SH::Lane::kNormal;
+	constexpr auto kBackground = SH::Lane::kBackground;
 
 	nlohmann::json BaseCatalog()
 	{
@@ -82,8 +88,8 @@ namespace
 					{"name": "Curvy-Refit", "sex": "female", "floors": [{"morph": "Breasts", "value": 0.95, "heavyOnly": false}]},
 					{"name": "Jumpsuit-Refit", "sex": "female", "floors": [{"morph": "BreastsTogether", "value": 0.6, "heavyOnly": false}]}
 				],
-				"heavy": {"armorRating": 10, "items": [], "names": []},
-				"light": {"items": [], "names": []}
+				"heavy": {"words": ["armor", "armour", "armored", "chest piece", "jacket", "coat"], "items": [], "names": ["Heavy Robe"]},
+				"light": {"items": [], "names": ["Sexy Armor Bikini"]}
 			}
 		})json");
 	}
@@ -108,7 +114,7 @@ namespace
 			Check(false, std::format("test catalog: {}", error));
 			return nullptr;
 		}
-		// An older build's manifest: Curvy then carried a shaft value... on a woman? No -- a man's body.
+		// An older build's manifest (stamp 99): its bodies carried what no body may carry now.
 		std::unordered_map<std::string, SH::ManifestEntry> old{
 			{ "Silhouette_BT_Old", { "BT - Average", false, { "BTChest", "Penis Width", "Erection" } } },
 			{ "Silhouette_Curvy", { "Curvy", true, { "Breasts", "Butt" } } },
@@ -129,12 +135,19 @@ namespace
 		}
 		Check(c->presets.size() == 4, "four presets");
 		Check(c->Find("Curvy", true) != nullptr && c->Find("Curvy", false) == nullptr, "presets are per sex");
+		Check(c->Find("cURVY", true) && c->Find("cURVY", true)->name == "Curvy", "a preset is found whatever the case of the name asked for");
 		Check(c->FindByMarker("silhouette_slim") && c->FindByMarker("Silhouette_Slim")->name == "Slim", "marker -> preset, any case");
 		Check(c->playerDefault[1] == "Slim" && c->playerDefault[0] == "BT - Average", "player defaults");
 		Check(c->NeverInBody(false, "penis width") && !c->NeverInBody(true, "Penis Width"), "never-in-body is per sex");
 		Check(SH::KindOf("Silhouette_Refit") == SH::MarkerKind::kRefit && SH::KindOf("Silhouette_Curvy") == SH::MarkerKind::kBody &&
-				  SH::KindOf("Breasts") == SH::MarkerKind::kNone,
+				  SH::KindOf("silhouette_chosen") == SH::MarkerKind::kChoice && SH::KindOf("Breasts") == SH::MarkerKind::kNone,
 			"marker kinds");
+		Check(c->HeavyWord("Combat Armor Chest Piece") == "armor" && c->HeavyWord("Leather chest-piece") == "chest piece" &&
+				  c->HeavyWord("Armored Vault Suit") == "armored" && c->HeavyWord("Minuteman Coat") == "coat",
+			"heavy by a whole word or phrase of the name, any case, any separator (S-48)");
+		Check(c->HeavyWord("Sexy Bra").empty() && c->HeavyWord("Armorsmith's Apron").empty() && c->HeavyWord("Coated Dress").empty() &&
+				  c->HeavyWord("").empty(),
+			"a word inside another word is not the word: bras, aprons and coated things stay light");
 
 		struct Broken
 		{
@@ -151,6 +164,8 @@ namespace
 			{ [](auto& d) { d["presets"][1]["marker"] = "Silhouette_curvy"; }, "two presets sharing a marker" },
 			{ [](auto& d) { d["presets"][0]["marker"] = "Silhouette_Blacklisted"; }, "a preset using the reserved blacklist marker" },
 			{ [](auto& d) { d["presets"][0]["marker"] = "Silhouette_Refit"; }, "a preset using the reserved refit marker" },
+			{ [](auto& d) { d["presets"][0]["marker"] = "Silhouette_Chosen"; }, "a preset using the reserved choice marker (S-51)" },
+			{ [](auto& d) { d["presets"][1]["name"] = "curvy"; }, "two presets whose names differ only in case" },
 			{ [](auto& d) { d["variety"]["male"][0]["morph"] = "Penis Width"; }, "variety on a morph never part of a body (S-29)" },
 			{ [](auto& d) { d["presets"][0]["values"]["Breasts"] = 1e39; }, "a value a float cannot hold" },
 			{ [](auto& d) { d["presets"][0]["values"] = nlohmann::json::array({ 0.1, 0.2 }); }, "values given as a list" },
@@ -159,8 +174,12 @@ namespace
 			{ [](auto& d) { d["neverInBody"]["female"] = nlohmann::json::array(); }, "a runtime state missing from never-in-body" },
 			{ [](auto& d) { d["presets"][3]["values"]["Penis Width"] = 1.0; }, "a preset carrying a shaft value (S-29)" },
 			{ [](auto& d) { d["orefit"]["sets"][0]["floors"][0]["morph"] = "Silhouette_Curvy"; }, "a refit floor on a marker" },
+			{ [](auto& d) { d["orefit"]["sets"][0]["floors"][0]["value"] = -0.2; }, "a floor below 0: a refit only raises (S-40)" },
+			{ [](auto& d) { d["orefit"]["sets"][0]["floors"][0]["value"] = 0.0; }, "a floor of 0" },
 			{ [](auto& d) { d["orefit"]["outfits"][0]["set"] = "Nope-Refit"; }, "an outfit naming a set that does not exist" },
 			{ [](auto& d) { d.erase("rulesHash"); }, "no rules hash" },
+			{ [](auto& d) { d["orefit"]["heavy"]["words"] = { "--" }; }, "a heavy word with no word in it" },
+			{ [](auto& d) { d["orefit"]["heavy"].erase("words"); }, "no heavy words" },
 		};
 		for (const auto& b : broken) {
 			auto doc = BaseCatalog();
@@ -186,9 +205,10 @@ namespace
 		if (m) {
 			c->AddManifest(m->first, m->second);
 			Check(c->PresetForMarker("Silhouette_Old", 99) == "Old Preset (v1)", "an older build's marker names its preset");
+			Check(c->PresetForMarker("SILHOUETTE_OLD", 99) == "Old Preset (v1)", "a marker is looked up whatever its case (the engine's string pool)");
 			Check(!c->PresetForMarker("Silhouette_Old", 1234).has_value(), "a marker is read against ITS stamp only");
 			Check(c->PresetForMarker("Silhouette_Curvy", 1234) == "Curvy", "the current build's markers fall back to the catalog");
-			const auto heal = c->HealFor("Silhouette_Old", 99);
+			const auto heal = c->HealFor("silhouette_old", 99);
 			Check(heal.size() == 1 && heal[0] == "Penis Width", "HealFor names exactly what that template held that no body may hold");
 			Check(c->HealFor("Silhouette_Curvy", 1234).empty(), "this build's bodies need no heal");
 		}
@@ -208,7 +228,7 @@ namespace
 		Check(SH::Decide(*c, a).tier == SH::Tier::kNone && !SH::Decide(*c, a).blacklisted, "a plain NPC keeps BodyGen's roll");
 		a.baseName = "piper";
 		auto v = SH::Decide(*c, a);
-		Check(v.tier == SH::Tier::kName && v.preset == "Curvy", "npc by name, case-insensitive");
+		Check(v.tier == SH::Tier::kName && v.preset == "Curvy" && v.options == std::vector<std::string>{ "Curvy" }, "npc by name, case-insensitive, with its list");
 		a = Npc();
 		a.baseName = "Piper";
 		a.female = false;
@@ -251,6 +271,7 @@ namespace
 			same &= SH::Decide(*c, a).preset == first;
 		}
 		Check(same, "a rule with several presets draws the same one for the same person");
+		Check(SH::Decide(*c, a).options.size() == 2, "the verdict carries every preset the rule lists (S-52)");
 		std::set<std::string> drawn;
 		for (std::uint32_t id = 0xFF000800; id < 0xFF000840; ++id) {
 			a.seed = id;
@@ -308,17 +329,39 @@ namespace
 		Check(Value(k, "NippleSize") == 0.33F, "a rolled value in range is kept");
 		Check(Value(k, "VaginaSize") == SH::Draw(0xFF000801, "VaginaSize", -0.3F, 0.3F), "a value out of range is drawn again");
 
-		// top-up: only what is missing
+		// top-up: only what is missing from her own layer
 		const auto t = SH::TopUp(*c, true, 5, {}, { "Breasts", "nipplesize" });
 		Check(t.size() == 1 && t[0].first == "VaginaSize", "top-up adds exactly the missing ranges (names compared in any case)");
 		Check(SH::TopUp(*c, true, 5, { .nipples = true, .genitals = false }, { "Breasts" }).size() == 1, "top-up follows the switches");
 
-		// refit floors: marker first, heavy-only only when heavy
+		// refit floors, and the marker that names them (S-40, S-42, S-50)
 		const auto* builtin = c->FindRefit("builtin:female", true);
 		const auto  light = SH::RefitFloors(*builtin, false);
 		const auto  heavy = SH::RefitFloors(*builtin, true);
-		Check(light.front().first == "Silhouette_Refit" && light.front().second == 1.0F && heavy.front().second == 2.0F, "the refit marker comes first");
-		Check(!Value(light, "NipBGone") && Value(heavy, "NipBGone") == 1.0F && Value(light, "BreastsTogether") == 0.3F, "NipBGone under heavy clothes only");
+		Check(!Value(light, "Silhouette_Refit") && !Value(light, "NipBGone") && Value(heavy, "NipBGone") == 1.0F && Value(light, "BreastsTogether") == 0.3F,
+			"floors only, no marker; NipBGone under heavy clothes only");
+		const auto ml = SH::RefitMarker(*builtin, false);
+		const auto mh = SH::RefitMarker(*builtin, true);
+		Check(ml >= 1.0F && ml < 16777216.0F && static_cast<int>(ml) % 2 == 1 && static_cast<int>(mh) % 2 == 0,
+			"the refit marker fits a float exactly, odd for light clothes, even for heavy");
+		Check(ml == SH::RefitMarker(*builtin, false), "the same set gives the same marker");
+		auto changed = *builtin;
+		changed.floors[0].value = 0.5F;
+		Check(SH::RefitMarker(changed, false) != ml, "a set whose floors changed gives another marker: the old refit reads as stale");
+		auto renamed = *builtin;
+		renamed.name = "Female-Refit";
+		Check(SH::RefitMarker(renamed, false) != ml, "another set with the same floors gives another marker");
+
+		// the touch-up's key: what this build wants of a body
+		const auto key = SH::TouchKey(*c, "Silhouette_BT_Old", 99, false, {});
+		Check(key == SH::TouchKey(*c, "silhouette_bt_old", 99, false, {}), "the touch key ignores the marker's case");
+		Check(key != SH::TouchKey(*c, "Silhouette_BT_Old", 99, false, { .nipples = true, .genitals = false }), "switching a range group changes the key");
+		auto more = *c;
+		more.variety[0].push_back({ "BTNippleSize", 0.0F, 0.5F, "nipples" });
+		Check(key != SH::TouchKey(more, "Silhouette_BT_Old", 99, false, {}), "a build with a new range changes the key");
+		auto healer = *c;
+		healer.neverInBody[0].push_back("BTChest");
+		Check(key != SH::TouchKey(healer, "Silhouette_BT_Old", 99, false, {}), "a build that heals something new changes the key");
 
 		float lo = 1.0F;
 		float hi = -1.0F;
@@ -346,38 +389,84 @@ namespace
 		a.announced = 77;
 		a.touched = 88;
 		r.Get(0xFF000900).announced = 5;
+		r.Get(0x00000777).source = SH::Source::kReset;
 		(void)r.Get(0x00000001);  // empty: never written
-		r.picker = SH::PickerSave{ .ref = 0x0001A4F2, .base = 0x0002F1E5, .female = true,
-			.snapshot = { { "Breasts", 0.33F }, { "Silhouette_Slim", 1234.0F } }, .before = a };
+		r.Keep(SH::PickerSave{ .ref = 0x0001A4F2, .base = 0x0002F1E5, .female = true,
+			.snapshot = { { "Breasts", 0.33F }, { "Silhouette_Slim", 1234.0F } }, .before = a });
+		r.Keep(SH::PickerSave{ .ref = 0x00000888, .base = 0x00012345, .female = true, .snapshot = { { "Butt", 0.5F } } });
 
-		const auto   bytes = r.Serialize([](std::uint32_t) { return true; });
+		const auto   bytes = r.Serialize([](std::uint32_t, std::uint32_t) { return true; });
+		std::vector<std::pair<std::uint32_t, std::uint32_t>> asked;
+		(void)r.Serialize([&](std::uint32_t a_ref, std::uint32_t a_base) {
+			asked.emplace_back(a_ref, a_base);
+			return true;
+		});
+		Check(std::ranges::find(asked, std::pair<std::uint32_t, std::uint32_t>{ 0x0001A4F2, 0x0002F1E5 }) != asked.end() &&
+				  std::ranges::find(asked, std::pair<std::uint32_t, std::uint32_t>{ 0x00000888, 0x00012345 }) != asked.end(),
+			"the keep predicate is told whose each record and picking is: a created id handed to someone else is not written");
 		SH::Registry back;
 		std::string  error;
-		Check(back.Deserialize(bytes, SH::Registry::kVersion, [](std::uint32_t id) { return id; }, error), std::format("records read back ({})", error));
+		Check(back.Deserialize(bytes, SH::Registry::kVersion, [](std::uint32_t id) { return id; }, error) == SH::Registry::Loaded::kOk,
+			std::format("records read back ({})", error));
 		const auto* b = back.Find(0x0001A4F2);
 		Check(b && b->base == 0x0002F1E5 && b->source == SH::Source::kPicker && b->preset == "Curvy" && b->stamp == 1234 &&
 				  b->announced == 77 && b->touched == 88,
 			"a record survives the co-save exactly");
-		Check(back.Size() == 2, "an empty record is not written");
-		Check(back.picker && back.picker->snapshot == r.picker->snapshot && back.picker->before && back.picker->before->preset == "Curvy",
-			"a picking in progress survives the co-save (S-47)");
+		Check(back.Size() == 3 && back.Find(0x777) && back.Find(0x777)->source == SH::Source::kReset, "an empty record is not written; a reset is");
+		Check(back.pickings.size() == 2 && back.pickings.at(0x0001A4F2).snapshot == r.pickings.at(0x0001A4F2).snapshot &&
+				  back.pickings.at(0x0001A4F2).before && back.pickings.at(0x0001A4F2).before->preset == "Curvy",
+			"every picking in progress survives the co-save, one per actor (S-47)");
 
 		SH::Registry moved;
 		Check(moved.Deserialize(bytes, SH::Registry::kVersion,
-				  [](std::uint32_t id) -> std::uint32_t { return id == 0xFF000900 ? 0 : (id & 0x00FFFFFF) | 0x05000000; }, error),
+				  [](std::uint32_t id) -> std::uint32_t { return id == 0xFF000900 ? 0 : (id & 0x00FFFFFF) | 0x05000000; }, error) == SH::Registry::Loaded::kOk,
 			"records read back with a new load order");
-		Check(moved.Size() == 1 && moved.Find(0x0501A4F2) && moved.Find(0x0501A4F2)->base == 0x0502F1E5 && moved.picker &&
-				  moved.picker->ref == 0x0501A4F2,
+		Check(moved.Size() == 2 && moved.Find(0x0501A4F2) && moved.Find(0x0501A4F2)->base == 0x0502F1E5 && moved.pickings.contains(0x0501A4F2),
 			"ids resolved, the gone one dropped");
+
+		// A later version appends a field to a record: this one skips it and reads the rest.
+		{
+			auto grown = bytes;
+			// the first record's u16 length sits right after the u32 count
+			std::uint16_t length = 0;
+			std::memcpy(&length, grown.data() + 4, 2);
+			const auto longer = static_cast<std::uint16_t>(length + 3);
+			std::memcpy(grown.data() + 4, &longer, 2);
+			grown.insert(grown.begin() + 6 + length, { std::byte{ 1 }, std::byte{ 2 }, std::byte{ 3 } });
+			SH::Registry later;
+			Check(later.Deserialize(grown, SH::Registry::kVersion, nullptr, error) == SH::Registry::Loaded::kOk && later.Size() == 3,
+				std::format("a record with fields this version does not know is read, the new fields skipped ({})", error));
+		}
+		// A source a later version added is nobody's choice here.
+		{
+			auto odd = bytes;
+			// count(4) + length(2) + ref(4) + base(4): the source byte of the first record (0x00000777 sorts first)
+			odd[4 + 2 + 4 + 4] = std::byte{ 42 };
+			SH::Registry later;
+			Check(later.Deserialize(odd, SH::Registry::kVersion, nullptr, error) == SH::Registry::Loaded::kOk && later.Find(0x777) &&
+					  later.Find(0x777)->source == SH::Source::kNone,
+				"an unknown source reads as none, the rest kept");
+		}
 
 		SH::Registry cut;
 		cut.Get(42).announced = 1;
 		std::vector<std::byte> shorter(bytes.begin(), bytes.end() - 3);
-		Check(!cut.Deserialize(shorter, SH::Registry::kVersion, nullptr, error) && cut.Find(42), "cut-short bytes are refused, nothing replaced");
-		Check(!cut.Deserialize(bytes, 99, nullptr, error), "another version is refused");
-		const auto   kept = r.Serialize([](std::uint32_t id) { return id != 0xFF000900; });
+		Check(cut.Deserialize(shorter, SH::Registry::kVersion, nullptr, error) == SH::Registry::Loaded::kRefused && cut.Find(42),
+			"cut-short bytes are refused, nothing replaced");
+		Check(cut.Deserialize(bytes, 1, nullptr, error) == SH::Registry::Loaded::kRefused, "the never-released version 1 is refused");
+		Check(cut.Deserialize(bytes, SH::Registry::kVersion + 1, nullptr, error) == SH::Registry::Loaded::kNewer && cut.Find(42),
+			"a newer version is not read -- and says so, so its bytes are kept");
+		const auto   kept = r.Serialize([](std::uint32_t id, std::uint32_t) { return id != 0xFF000900; });
 		SH::Registry k;
-		Check(k.Deserialize(kept, SH::Registry::kVersion, nullptr, error) && k.Size() == 1, "a deleted reference's record is not saved");
+		Check(k.Deserialize(kept, SH::Registry::kVersion, nullptr, error) == SH::Registry::Loaded::kOk && k.Size() == 2,
+			"a deleted reference's record is not saved");
+
+		SH::Registry cap;
+		for (std::uint32_t i = 1; i <= SH::Registry::kMaxPickings + 5; ++i) {
+			cap.Keep(SH::PickerSave{ .ref = i });
+		}
+		Check(cap.pickings.size() == SH::Registry::kMaxPickings && !cap.pickings.contains(1) && cap.pickings.contains(SH::Registry::kMaxPickings + 5),
+			"past the cap the oldest picking goes");
 	}
 
 	// ------------------------------------------------------------------ the fake game
@@ -408,6 +497,9 @@ namespace
 		std::unordered_map<std::uint32_t, FakeActor> actors;
 		std::string                                  rollsTo = "Silhouette_Slim";  // what BodyGen's regenerate gives
 		float                                        stamp = 1234.0F;
+		std::set<std::uint32_t>                      away;    // not in memory: Game.GetForm gives None
+		std::set<std::uint32_t>                      busy;    // in another mod's scene (AAF_ActorBusy)
+		bool                                         keyword = true;  // Silhouette.esp's refit keyword resolves
 
 		// A body as BodyGen writes it: a template's values, its ranges drawn, the marker.
 		void Roll(std::uint32_t a_ref, const SH::Catalog& a_c, std::string_view a_marker, float a_stamp)
@@ -440,17 +532,26 @@ namespace
 		}
 	};
 
-	// Exactly what Silhouette:Bridge does with one order. a_stopAfter: the writes that land before a save
-	// cuts the order short (-1: all of them, and Done).
+	// Exactly what Silhouette:Bridge does with one order (protocol 3). a_stopAfter: the writes that land
+	// before a save cuts the order short (-1: all of them, and Done).
 	void RunOrder(SH::Director& d, std::uint32_t a_id, FakeGame& g, int a_stopAfter = -1)
 	{
 		const auto o = d.Peek(a_id);
-		if (!o || d.OrderActor(a_id) != o->ref) {
+		const auto who = d.OrderActor(a_id);
+		if (!o || who != o->ref) {
 			return;
 		}
-		auto& a = g.actors[o->ref];
+		if (g.away.contains(who)) {
+			d.Gone(a_id);
+			return;
+		}
+		auto& a = g.actors[who];
 		if (o->regenerate) {
-			// RegenerateMorphs clears every key; the bridge put the keyed values back.
+			if (g.busy.contains(who)) {
+				d.Defer(a_id);
+				return;
+			}
+			// RegenerateMorphs clears every key; the bridge puts the keyed values back.
 			const auto refit = a.refit;
 			const auto other = a.other;
 			a = {};
@@ -463,49 +564,58 @@ namespace
 				}
 			}
 		}
-		if (o->probe) {
+		const auto unkeyed = [&](const std::string& a_m) {
+			const auto it = a.unkeyed.find(a_m);
+			return it == a.unkeyed.end() ? 0.0F : it->second;
+		};
+		if (o->probe || o->readAll) {
 			for (const auto& name : a.listed) {
-				d.NoteName(a_id, name);
-				switch (SH::KindOf(name)) {
-				case SH::MarkerKind::kBody:
-					d.NoteMarker(a_id, name, a.unkeyed.contains(name) ? a.unkeyed.at(name) : 0.0F);
-					break;
-				case SH::MarkerKind::kRefit:
-					d.NoteMarker(a_id, name, a.refit.contains(name) ? a.refit.at(name) : 0.0F);
-					break;
-				case SH::MarkerKind::kNone:
-					break;
+				auto kind = SH::MarkerKind::kNone;
+				if (o->probe) {
+					d.NoteName(a_id, name);
+					kind = SH::KindOf(name);
 				}
-			}
-		}
-		if (o->readAll) {
-			for (const auto& name : a.listed) {
-				const auto it = a.unkeyed.find(name);
-				if (it != a.unkeyed.end() && it->second != 0.0F) {
-					d.NoteLayer(a_id, name, it->second);
+				if (kind == SH::MarkerKind::kRefit) {
+					if (g.keyword) {
+						d.NoteMarker(a_id, name, a.refit.contains(name) ? a.refit.at(name) : 0.0F);
+					}
+				} else if (kind == SH::MarkerKind::kBody || kind == SH::MarkerKind::kChoice || o->readAll) {
+					const auto v = unkeyed(name);
+					if (kind != SH::MarkerKind::kNone) {
+						d.NoteMarker(a_id, name, v);
+					}
+					if (o->readAll && v != 0.0F) {
+						d.NoteLayer(a_id, name, v);
+					}
 				}
 			}
 		}
 		const auto n = d.ReadCount(a_id);
-		for (std::int32_t i = 0; i < n; ++i) {
-			const auto m = d.ReadMorph(a_id, i);
-			const auto it = a.unkeyed.find(m);
-			d.NoteRead(a_id, i, it == a.unkeyed.end() ? 0.0F : it->second);
+		for (std::int32_t i = 0; i < n && !d.ReadsDone(a_id); ++i) {
+			d.NoteRead(a_id, i, unkeyed(d.ReadMorph(a_id, i)));
 		}
 		if (!d.Prepare(a_id)) {
 			d.Done(a_id, false);
 			return;
 		}
-		if (d.OrderActor(a_id) != o->ref) {
+		if (d.OrderActor(a_id) != who) {
 			return;
+		}
+		const auto w = d.WriteCount(a_id);
+		if (!g.keyword) {
+			for (std::int32_t i = 0; i < w; ++i) {
+				if (d.WriteLayer(a_id, i) == SH::Layer::kRefit) {
+					d.Done(a_id, false);
+					return;
+				}
+			}
 		}
 		if (d.ClearsUnkeyed(a_id)) {
 			a.unkeyed.clear();
 		}
-		if (d.ClearsRefit(a_id)) {
+		if (g.keyword && d.ClearsRefit(a_id)) {
 			a.refit.clear();
 		}
-		const auto w = d.WriteCount(a_id);
 		for (std::int32_t i = 0; i < w; ++i) {
 			if (a_stopAfter >= 0 && i >= a_stopAfter) {
 				return;  // the save landed here: no Done, and the order is forgotten with the session
@@ -539,11 +649,13 @@ namespace
 		return n;
 	}
 
+	// The bridge raises each event and says so.
 	std::vector<SH::Event> Events(SH::Director& d)
 	{
 		std::vector<SH::Event> out;
 		while (const auto id = d.NextEvent()) {
 			out.push_back(*d.EventAt(id));
+			d.EventDone(id);
 		}
 		return out;
 	}
@@ -551,6 +663,11 @@ namespace
 	bool Has(const std::vector<SH::Event>& a_events, SH::EventKind a_kind, std::string_view a_preset = {})
 	{
 		return std::ranges::any_of(a_events, [&](const SH::Event& e) { return e.kind == a_kind && (a_preset.empty() || e.preset == a_preset); });
+	}
+
+	std::size_t Count(const std::vector<SH::Event>& a_events, SH::EventKind a_kind)
+	{
+		return static_cast<std::size_t>(std::ranges::count_if(a_events, [&](const SH::Event& e) { return e.kind == a_kind; }));
 	}
 
 	SH::Sighting See(std::uint32_t a_ref, std::string a_name, bool a_clothed = false, bool a_heavy = false, std::string a_outfit = {})
@@ -574,7 +691,17 @@ namespace
 		d.ForgetWorld();
 		d.RevertRecords();
 		std::string error;
-		Check(d.LoadRecords(bytes, SH::Registry::kVersion, [](std::uint32_t id) { return id; }, error), std::format("reload ({})", error));
+		Check(d.LoadRecords(bytes, SH::Registry::kVersion, [](std::uint32_t id) { return id; }, error) == SH::Registry::Loaded::kOk,
+			std::format("reload ({})", error));
+		d.SetCatalog(Cat(a_doc));
+		g.Load();
+	}
+
+	// A save made while Silhouette.dll was not loaded: F4SE keeps no chunk of a plugin that is not there.
+	void ReloadWithoutRecords(SH::Director& d, FakeGame& g, const nlohmann::json& a_doc = BaseCatalog())
+	{
+		d.ForgetWorld();
+		d.RevertRecords();
 		d.SetCatalog(Cat(a_doc));
 		g.Load();
 	}
@@ -587,6 +714,7 @@ namespace
 		FakeGame     g;
 		const auto   cat = Cat(BaseCatalog());
 		d.SetCatalog(cat);
+		std::string why;
 
 		// A plain NPC: BodyGen gave them Slim. One probe, one OnActorGenerated, nothing else.
 		g.Roll(0x100, *cat, "Silhouette_Slim", 1234.0F);
@@ -602,47 +730,52 @@ namespace
 		(void)Drain(d, g);
 		Check(!Has(Events(d), SH::EventKind::kGenerated), "a new session probes again but announces a body only once");
 
-		// An announcement queued but never handed out before a save is made again after the load.
+		// An announcement handed out but not raised before a save is made again after the load.
 		g.Roll(0x110, *cat, "Silhouette_Athletic", 1234.0F);
 		d.Seen(See(0x110, "Somebody"));
 		(void)Drain(d, g);
-		Reload(d, g);  // the event was never taken
+		Check(d.NextEvent() != 0, "(set-up) the event handed out; the save lands before the bridge raises it");
+		Reload(d, g);
 		d.Seen(See(0x110, "Somebody"));
 		(void)Drain(d, g);
 		Check(Has(Events(d), SH::EventKind::kGenerated, "Athletic"), "an announcement lost to a save is made again");
 
-		// A name rule: the intent is written the moment it is decided, the body follows.
+		// A name rule: decided once LooksMenu is read, the intent written before the body order runs.
 		g.Roll(0x200, *cat, "Silhouette_Slim", 1234.0F);
 		d.Seen(See(0x200, "Piper"));
+		const auto probe = d.NextOrder();
+		RunOrder(d, probe, g);
 		const auto intent = d.RecordOf(0x200);
 		Check(intent && intent->source == SH::Source::kNameRule && intent->preset == "Curvy", "the rule's intent is recorded before the bridge acts (S-43)");
 		(void)Drain(d, g);
 		Check(g.actors[0x200].unkeyed.contains("Silhouette_Curvy") && !g.actors[0x200].unkeyed.contains("Silhouette_Slim") &&
 				  g.actors[0x200].unkeyed.at("Breasts") == 0.8F,
 			"the name rule's preset replaced BodyGen's body, marker and all");
-		Check(Has(Events(d), SH::EventKind::kGenerated, "Curvy"), "OnActorGenerated for the rule's body");
+		auto ev = Events(d);
+		Check(Has(ev, SH::EventKind::kGenerated, "Curvy") && !Has(ev, SH::EventKind::kGenerated, "Slim"),
+			"OnActorGenerated for the rule's body, not for the one it replaced");
 		d.Seen(See(0x200, "Piper"));
 		Check(Drain(d, g) == 0, "a rule already applied is not applied again");
 
-		// LooksMenu forgot her (a non-persistent NPC away from the loaded area) and BodyGen rolled again:
-		// the probe sees reality differ from intent and gives the rule's body back.
+		// LooksMenu forgot her and BodyGen rolled again: reality differs from intent, the rule's body goes back.
 		Reload(d, g);
 		g.Roll(0x200, *cat, "Silhouette_Athletic", 1234.0F);
 		d.Seen(See(0x200, "Piper"));
 		(void)Drain(d, g);
 		Check(g.actors[0x200].unkeyed.contains("Silhouette_Curvy"), "a body that is not the intended one is given again (S-43)");
 
-		// An API request accepted and saved before the bridge ever ran it survives the save.
-		std::string why;
+		// An API choice accepted and saved before the bridge ran it survives the save.
 		g.Roll(0x300, *cat, "Silhouette_Slim", 1234.0F);
-		Check(d.RequestPreset(0x300, true, 0x00012345, "Athletic", SH::Source::kAPI, why), "an API choice is accepted");
+		Check(d.RequestPreset(0x300, true, 0x00012345, "Athletic", SH::Source::kAPI, kNormal, why), "an API choice is accepted");
 		Reload(d, g);
 		d.Seen(See(0x300, "Somebody Else"));
 		(void)Drain(d, g);
 		Check(g.actors[0x300].unkeyed.contains("Silhouette_Athletic"), "a choice queued before a save lands after the load");
+		Check(g.actors[0x300].unkeyed.contains("Silhouette_Chosen") && g.actors[0x300].unkeyed.at("Silhouette_Chosen") == 4.0F,
+			"an API body carries the choice beside it (S-51)");
 
 		// A save that cuts a body order short leaves half a body without a marker; the load repairs it.
-		Check(d.RequestPreset(0x310, true, 0x00012345, "Curvy", SH::Source::kPicker, why), "picked");
+		Check(d.RequestPreset(0x310, true, 0x00012345, "Curvy", SH::Source::kPicker, kUrgent, why), "picked");
 		g.Roll(0x310, *cat, "Silhouette_Slim", 1234.0F);
 		const auto cut = d.NextOrder();
 		RunOrder(d, cut, g, 1);  // the clear and one write, then the save
@@ -650,9 +783,10 @@ namespace
 		Reload(d, g);
 		d.Seen(See(0x310, "Somebody"));
 		(void)Drain(d, g);
-		const auto want = SH::BodyFor(*cat, *cat->Find("Curvy", true), 0x310, {});
-		Layer      whole(want.begin(), want.end());
-		Check(g.actors[0x310].unkeyed == whole, "the next session gives the whole body");
+		auto  want = SH::BodyFor(*cat, *cat->Find("Curvy", true), 0x310, {});
+		Layer whole(want.begin(), want.end());
+		whole["Silhouette_Chosen"] = 3.0F;
+		Check(g.actors[0x310].unkeyed == whole, "the next session gives the whole body, its choice marker beside it");
 
 		// A new build re-gives a picked preset with its values; its own build leaves it be.
 		auto next = BaseCatalog();
@@ -662,6 +796,19 @@ namespace
 		(void)Drain(d, g);
 		Check(g.actors[0x310].unkeyed.contains("Silhouette_Curvy") && g.actors[0x310].unkeyed.at("Silhouette_Curvy") == 5678.0F,
 			"a new build re-gives the choice, stamped with the new build");
+
+		// The re-give decided, then a save before it was written: the record has the new stamp, LooksMenu the old.
+		auto third = BaseCatalog();
+		third["stamp"] = 9999;
+		Reload(d, g, third);
+		d.Seen(See(0x310, "Somebody"));
+		RunOrder(d, d.NextOrder(), g);  // the probe: the re-give is decided and recorded
+		Check(d.RecordOf(0x310) && d.RecordOf(0x310)->stamp == 9999 && g.actors[0x310].unkeyed.at("Silhouette_Curvy") == 5678.0F,
+			"(set-up) the record says 9999, the body is still 5678");
+		Reload(d, g, third);
+		d.Seen(See(0x310, "Somebody"));
+		(void)Drain(d, g);
+		Check(g.actors[0x310].unkeyed.at("Silhouette_Curvy") == 9999.0F, "a re-give a save cut short is given at the next load");
 		Reload(d, g);
 
 		// Name blacklist: bare with the marker; kept bare after LooksMenu forgets; lifted, BodyGen rolls.
@@ -689,23 +836,37 @@ namespace
 		// Not ours: the player and the dummies, and races Silhouette does not distribute to.
 		auto player = See(0x14, "Piper");
 		player.eligible = false;
+		g.Roll(0x14, *cat, "Silhouette_Slim", 1234.0F);
+		g.actors[0x14].unkeyed.erase("VaginaSize");  // a default body lacking a range the build rolls
+		const auto playerBody = g.actors[0x14].unkeyed;
 		d.Seen(player);
+		d.Dressed(player, false);
 		auto ghoul = See(0x500, "Piper");
 		ghoul.facts.race = "GhoulRace";
 		d.Seen(ghoul);
 		Check(Drain(d, g) == 0, "the player, the dummies and undistributed races are left alone");
+		// ...and stay alone when ORefit is switched, though they are known this session (wave 2, L1 F1).
+		d.Configure({ .orefit = false });
+		d.Configure({ .orefit = true });
+		d.SetSwitch(SH::Switch::kORefit, false);
+		d.SetSwitch(SH::Switch::kORefit, true);
+		Check(Drain(d, g) == 0 && g.actors[0x14].unkeyed == playerBody && !Has(Events(d), SH::EventKind::kGenerated),
+			"switching ORefit probes nobody Silhouette never shapes: the player is never touched (S-45)");
 
 		// A created reference's id reused by someone else: the record is forgotten.
-		Check(d.RequestPreset(0xFF000A00, true, 0x00011111, "Curvy", SH::Source::kPicker, why), "picked");
+		Check(d.RequestPreset(0xFF000A00, true, 0x00011111, "Curvy", SH::Source::kPicker, kUrgent, why), "picked");
 		(void)Drain(d, g);
 		auto stranger = See(0xFF000A00, "Somebody");
 		stranger.base = 0x00022222;
 		d.Seen(stranger);
 		(void)Drain(d, g);
 		Check(!d.RecordOf(0xFF000A00) || d.RecordOf(0xFF000A00)->source != SH::Source::kPicker, "a record for a reused id is dropped");
+		// LooksMenu kept the old owner's morphs on the id: the body stays, the choice beside it goes.
+		Check(g.actors[0xFF000A00].unkeyed.contains("Silhouette_Curvy") && !g.actors[0xFF000A00].unkeyed.contains("Silhouette_Chosen"),
+			"a choice that came with a reused id is not rebuilt, and its marker is taken off");
 
 		// A placed leveled NPC respawned: a new temporary base, the same person to LooksMenu. The choice stays.
-		Check(d.RequestPreset(0x0A00, true, 0xFF00B000, "Curvy", SH::Source::kPicker, why), "picked");
+		Check(d.RequestPreset(0x0A00, true, 0xFF00B000, "Curvy", SH::Source::kPicker, kUrgent, why), "picked");
 		(void)Drain(d, g);
 		auto respawned = See(0x0A00, "Somebody");
 		respawned.base = 0xFF00B001;
@@ -714,35 +875,38 @@ namespace
 		Check(d.RecordOf(0x0A00) && d.RecordOf(0x0A00)->source == SH::Source::kPicker && g.actors[0x0A00].unkeyed.contains("Silhouette_Curvy"),
 			"a placed reference keeps its record when its leveled base is replaced");
 
-		Check(!d.RequestPreset(0x600, true, 1, "Nobody", SH::Source::kAPI, why) && why.find("Nobody") != std::string::npos, "an unknown preset is refused with a reason");
-		Check(!d.RequestPreset(0x600, false, 1, "Curvy", SH::Source::kAPI, why), "a preset of the other sex is refused");
+		Check(!d.RequestPreset(0x600, true, 1, "Nobody", SH::Source::kAPI, kNormal, why) && why.find("Nobody") != std::string::npos,
+			"an unknown preset is refused with a reason");
+		Check(!d.RequestPreset(0x600, false, 1, "Curvy", SH::Source::kAPI, kNormal, why), "a preset of the other sex is refused");
+		Check(d.RequestPreset(0x601, true, 1, "cURVY", SH::Source::kAPI, kNormal, why) && d.AssignedPreset(0x601) == "Curvy",
+			"a preset asked for in another case is the catalog's (the engine's string pool)");
+		(void)Drain(d, g);
 
 		// The latest decision wins while an actor waits; one order per actor at a time.
-		(void)d.RequestPreset(0x700, true, 1, "Curvy", SH::Source::kAPI, why);
-		(void)d.RequestPreset(0x700, true, 1, "Athletic", SH::Source::kAPI, why);
-		(void)d.RequestPreset(0x701, true, 1, "Slim", SH::Source::kAPI, why);
+		(void)d.RequestPreset(0x700, true, 1, "Curvy", SH::Source::kAPI, kNormal, why);
+		(void)d.RequestPreset(0x700, true, 1, "Athletic", SH::Source::kAPI, kNormal, why);
 		const auto first = d.NextOrder();
-		(void)d.RequestPreset(0x700, true, 1, "Slim", SH::Source::kAPI, why);
-		const auto second = d.NextOrder();
 		Check(d.Peek(first) && d.Peek(first)->ref == 0x700 && d.Peek(first)->body.preset == "Athletic", "two requests before the bridge came: the second wins");
-		Check(d.Peek(second) && d.Peek(second)->ref == 0x701, "an actor with an order in flight waits; the next actor goes");
+		(void)d.RequestPreset(0x700, true, 1, "Slim", SH::Source::kAPI, kNormal, why);
+		Check(d.NextOrder() == 0, "an actor with an order in flight gets no second one");
 		Check(d.AssignedPreset(0x700) == "Slim", "AssignedPreset answers with the intent");
 		RunOrder(d, first, g);
-		RunOrder(d, second, g);
 		(void)Drain(d, g);
 		Check(g.actors[0x700].unkeyed.contains("Silhouette_Slim"), "and the last decision is the one that lands");
 
-		// Reset: bare, and the intent says so at once; Regenerate: BodyGen's roll, keyed layers kept.
+		// Regenerate: BodyGen's roll, keyed layers kept, announced even when it rolls the same preset.
 		g.actors[0x700].other["Erection"] = 1.0F;
-		Check(d.RequestReset(0x700, true, 1, why) && d.AssignedPreset(0x700).empty(), "Reset: the intent is cleared at once");
+		g.rollsTo = "Silhouette_Slim";
+		(void)Events(d);
+		Check(d.RequestRegenerate(0x700, true, 1, kUrgent, why), "regenerate accepted");
 		(void)Drain(d, g);
-		Check(g.actors[0x700].unkeyed.empty() && g.actors[0x700].refit.empty(), "Reset leaves no unkeyed morph and no refit");
-		g.rollsTo = "Silhouette_Curvy";
-		Check(d.RequestRegenerate(0x700, true, 1, why), "regenerate accepted");
+		Check(g.actors[0x700].unkeyed.contains("Silhouette_Slim") && g.actors[0x700].other.at("Erection") == 1.0F &&
+				  Has(Events(d), SH::EventKind::kGenerated, "Slim"),
+			"Regenerate: BodyGen's roll, another mod's keyed morph kept, announced though it is the same preset (S-46)");
+		(void)d.RequestReapply(0x700, true, 1, "Slim", kNormal, why);
 		(void)Drain(d, g);
-		Check(g.actors[0x700].unkeyed.contains("Silhouette_Curvy") && g.actors[0x700].other.at("Erection") == 1.0F &&
-				  Has(Events(d), SH::EventKind::kGenerated, "Curvy"),
-			"Regenerate: BodyGen's roll, another mod's keyed morph kept, announced");
+		Check(Has(Events(d), SH::EventKind::kGenerated, "Slim"), "Reapply is announced too");
+		Check(!d.RecordOf(0x700) || d.RecordOf(0x700)->preset.empty(), "reapplying a body BodyGen gave pins nobody's choice on it");
 
 		// A stale order from another launch is nobody's.
 		SH::Director other;
@@ -750,16 +914,246 @@ namespace
 		Check(other.OrderActor(first) == 0 && other.Peek(first) == std::nullopt, "an order id from another launch names nothing");
 		Check(d.NextOrder() == 0, "(idle)");
 
-		// Lanes: a request goes ahead of probes queued earlier.
+		// Lanes (S-55): the player's actions, then decisions and other mods, then probes and bulk work.
 		for (std::uint32_t r = 0x800; r < 0x805; ++r) {
 			g.Roll(r, *cat, "Silhouette_Slim", 1234.0F);
 			d.Seen(See(r, "Somebody"));
 		}
-		(void)d.RequestPreset(0x810, true, 1, "Curvy", SH::Source::kAPI, why);
-		const auto lane = d.NextOrder();
-		Check(d.Peek(lane) && d.Peek(lane)->ref == 0x810, "the player's request is served before background probes");
-		RunOrder(d, lane, g);
-		(void)Drain(d, g);
+		(void)d.RequestRegenerate(0x806, true, 1, kBackground, why);  // "Give the people around me new bodies"
+		(void)d.RequestPreset(0x807, true, 1, "Athletic", SH::Source::kAPI, kNormal, why);
+		d.Dressed(See(0x808, "Somebody", true), false);  // first contact while dressing
+		(void)d.RequestPreset(0x810, true, 1, "Curvy", SH::Source::kPicker, kUrgent, why);
+		std::vector<std::uint32_t> order;
+		while (const auto id = d.NextOrder()) {
+			order.push_back(d.Peek(id)->ref);
+			RunOrder(d, id, g);
+			if (order.size() > 64) {
+				break;
+			}
+		}
+		Check(order.size() >= 3 && order[0] == 0x810, "the NPC page / picker goes first");
+		Check(order.size() >= 3 && ((order[1] == 0x807 && order[2] == 0x808) || (order[1] == 0x808 && order[2] == 0x807)),
+			"then other mods' calls and first contacts while dressing");
+		Check(std::ranges::find(order, 0x806) > std::ranges::find(order, 0x808), "bulk work waits behind them with the probes");
+	}
+
+	// ------------------------------------------------------------------ the director: decisions of wave 2
+
+	void TestDecisions()
+	{
+		std::string why;
+
+		// S-52: a met NPC keeps the preset a rule drew while the rule still lists it.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			std::vector<std::uint32_t> raiders;
+			for (std::uint32_t r = 0x900; r < 0x920; ++r) {
+				auto s = See(r, "Raider");
+				s.facts.factions = { { "Fallout4.esm", 3001 } };
+				g.Roll(r, *cat, "Silhouette_Athletic", 1234.0F);
+				d.Seen(s);
+				raiders.push_back(r);
+			}
+			(void)Drain(d, g);
+			std::map<std::uint32_t, std::string> drawn;
+			for (const auto r : raiders) {
+				drawn[r] = d.AssignedPreset(r);
+			}
+			auto more = BaseCatalog();
+			more["rules"]["faction"][1]["presets"] = { "Slim", "Curvy", "Athletic" };
+			Reload(d, g, more);
+			for (const auto r : raiders) {
+				auto s = See(r, "Raider");
+				s.facts.factions = { { "Fallout4.esm", 3001 } };
+				d.Seen(s);
+			}
+			(void)Drain(d, g);
+			const auto kept = std::ranges::count_if(raiders, [&](std::uint32_t r) { return d.AssignedPreset(r) == drawn[r]; });
+			Check(kept == static_cast<std::ptrdiff_t>(raiders.size()),
+				std::format("adding a preset to a rule re-bodies nobody already met ({} of {} kept)", kept, raiders.size()));
+			auto fewer = BaseCatalog();
+			fewer["rules"]["faction"][1]["presets"] = { "Slim" };
+			Reload(d, g, fewer);
+			for (const auto r : raiders) {
+				auto s = See(r, "Raider");
+				s.facts.factions = { { "Fallout4.esm", 3001 } };
+				d.Seen(s);
+			}
+			(void)Drain(d, g);
+			Check(std::ranges::all_of(raiders, [&](std::uint32_t r) { return d.AssignedPreset(r) == "Slim" && g.actors[r].unkeyed.contains("Silhouette_Slim"); }),
+				"a preset taken out of the rule is drawn again from what is left");
+		}
+
+		// S-51: a choice survives a save made while the plugin was not loaded.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			auto bos = See(0x930, "Scribe");
+			bos.facts.factions = { { "Fallout4.esm", 3000 } };  // the faction rule gives Athletic
+			g.Roll(0x930, *cat, "Silhouette_Slim", 1234.0F);
+			d.Seen(bos);
+			(void)Drain(d, g);
+			Check(g.actors[0x930].unkeyed.contains("Silhouette_Athletic"), "(set-up) the faction rule's body");
+			Check(d.RequestPreset(0x930, true, 0x00012345, "Curvy", SH::Source::kAPI, kNormal, why), "another mod chooses Curvy");
+			(void)Drain(d, g);
+			ReloadWithoutRecords(d, g);
+			d.Seen(bos);
+			(void)Drain(d, g);
+			const auto rec = d.RecordOf(0x930);
+			Check(g.actors[0x930].unkeyed.contains("Silhouette_Curvy") && rec && rec->source == SH::Source::kAPI && rec->preset == "Curvy",
+				"the choice is rebuilt from LooksMenu: the faction rule does not take her back");
+
+			// Without the marker (a body from before S-51) the rule wins, as it must.
+			g.actors[0x930].unkeyed.erase("Silhouette_Chosen");
+			ReloadWithoutRecords(d, g);
+			d.Seen(bos);
+			(void)Drain(d, g);
+			Check(g.actors[0x930].unkeyed.contains("Silhouette_Athletic"), "no marker, no record: the rule decides");
+
+			// A record the co-save kept but LooksMenu's marker missing: the marker is put back beside the body.
+			Check(d.RequestPreset(0x931, true, 0x00012345, "Slim", SH::Source::kPicker, kUrgent, why), "picked");
+			(void)Drain(d, g);
+			g.actors[0x931].unkeyed.erase("Silhouette_Chosen");
+			Reload(d, g);
+			d.Seen(See(0x931, "Somebody"));
+			(void)Drain(d, g);
+			Check(g.actors[0x931].unkeyed.contains("Silhouette_Chosen") && g.actors[0x931].unkeyed.at("Silhouette_Chosen") == 3.0F &&
+					  g.actors[0x931].unkeyed.contains("Silhouette_Slim"),
+				"a choice without its marker gets it, the body untouched");
+		}
+
+		// S-53: Reset means a new body at the next load, even when another mod keeps a morph on them.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			g.Roll(0x940, *cat, "Silhouette_Slim", 1234.0F);
+			g.actors[0x940].other["AnatomyArousal"] = 0.4F;
+			d.Seen(See(0x940, "Somebody", true));
+			(void)Drain(d, g);
+			Check(d.RequestReset(0x940, true, 0x00012345, kNormal, why) && d.AssignedPreset(0x940).empty(), "Reset: the intent is cleared at once");
+			(void)Drain(d, g);
+			Check(g.actors[0x940].unkeyed.empty() && g.actors[0x940].refit.empty() && d.RecordOf(0x940) &&
+					  d.RecordOf(0x940)->source == SH::Source::kReset,
+				"bare now, no refit, and the reset remembered");
+			std::string no;
+			Check(!d.RequestAdopt(0x940, true, 0x00012345, no), "the regeneration window leaves a reset alone");
+			Reload(d, g);  // LooksMenu keeps her map (the anatomy layer): BodyGen does not run
+			g.rollsTo = "Silhouette_Athletic";
+			d.Seen(See(0x940, "Somebody"));
+			(void)Drain(d, g);
+			Check(g.actors[0x940].unkeyed.contains("Silhouette_Athletic") && g.actors[0x940].other.at("AnatomyArousal") == 0.4F &&
+					  (!d.RecordOf(0x940) || d.RecordOf(0x940)->source == SH::Source::kNone),
+				"the next load: still bare, so the plugin rolls her a body, the other mod's morph kept");
+
+			g.Roll(0x941, *cat, "Silhouette_Slim", 1234.0F);
+			d.Seen(See(0x941, "Somebody"));
+			(void)Drain(d, g);
+			(void)d.RequestReset(0x941, true, 0x00012345, kNormal, why);
+			(void)Drain(d, g);
+			Reload(d, g);
+			g.Roll(0x941, *cat, "Silhouette_Curvy", 1234.0F);  // LooksMenu dropped her empty map; BodyGen rolled her
+			d.Seen(See(0x941, "Somebody"));
+			(void)Drain(d, g);
+			Check(g.actors[0x941].unkeyed.contains("Silhouette_Curvy") && (!d.RecordOf(0x941) || d.RecordOf(0x941)->source == SH::Source::kNone),
+				"BodyGen gave her a body at the load: the reset is over, her new body stays");
+		}
+
+		// The regeneration window (S-15) through the plugin.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			g.actors[0x950].other["AnatomyArousal"] = 0.2F;
+			g.Load();
+			Check(d.RequestAdopt(0x950, true, 0x00012345, why), "someone with only another mod's morph is adopted");
+			(void)d.RequestPreset(0x951, true, 1, "Curvy", SH::Source::kAPI, kNormal, why);
+			(void)Drain(d, g);
+			Check(!d.RequestAdopt(0x951, true, 1, why), "not someone whose body another mod chose");
+			(void)d.PickerStart(0x952, true, 1, "Cait");
+			Check(!d.RequestAdopt(0x952, true, 1, why), "not someone being picked");
+			(void)d.RequestPreset(0x953, true, 1, "Slim", SH::Source::kAPI, kNormal, why);
+			Check(!d.RequestAdopt(0x953, true, 1, why), "not someone with a change on its way");
+			(void)Drain(d, g);
+			Check(g.actors[0x950].unkeyed.contains("Silhouette_Slim") && g.actors[0x950].other.at("AnatomyArousal") == 0.2F, "the adopted one rolled, the morph kept");
+		}
+
+		// Out of reach and busy: the work waits instead of being lost.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			g.Roll(0x960, *cat, "Silhouette_Slim", 1234.0F);
+			(void)d.RequestPreset(0x960, true, 0x00012345, "Curvy", SH::Source::kAPI, kNormal, why);
+			g.away.insert(0x960);
+			(void)Drain(d, g);
+			Check(d.Pending() == 0 && g.actors[0x960].unkeyed.contains("Silhouette_Slim"), "an actor out of memory: the order waits, off the queue");
+			g.away.erase(0x960);
+			d.Seen(See(0x960, "Somebody"));
+			(void)Drain(d, g);
+			Check(g.actors[0x960].unkeyed.contains("Silhouette_Curvy"), "seen again: the waiting change lands");
+
+			// A roll has no intent to fall back on: only the parked order brings it (the Adopter's hand-off, L3 F7a).
+			g.actors[0x962].other["AnatomyArousal"] = 0.2F;
+			g.Load();
+			g.away.insert(0x962);
+			Check(d.RequestAdopt(0x962, true, 0x00012345, why), "(set-up) adopted");
+			(void)Drain(d, g);
+			g.away.erase(0x962);
+			d.Seen(See(0x962, "Somebody"));
+			(void)Drain(d, g);
+			Check(g.actors[0x962].unkeyed.contains("Silhouette_Slim") && g.actors[0x962].other.at("AnatomyArousal") == 0.2F,
+				"a roll that could not reach them lands when they are seen again");
+
+			auto now = std::chrono::steady_clock::time_point{} + std::chrono::hours(1);
+			d.SetClock([&] { return now; });
+			g.Roll(0x961, *cat, "Silhouette_Slim", 1234.0F);
+			g.actors[0x961].other["Erection"] = 1.0F;
+			g.busy.insert(0x961);
+			(void)d.RequestRegenerate(0x961, true, 0x00012345, kUrgent, why);
+			Check(Drain(d, g) == 1 && d.Pending() == 1 && g.actors[0x961].unkeyed.contains("Silhouette_Slim"),
+				"in another mod's scene: the roll is handed out once and waits, nothing captured -- the drain ends instead of spinning");
+			now += SH::Director::kDeferWait - std::chrono::seconds(1);
+			Check(d.NextOrder() == 0, "not tried again before the wait is over");
+			now += std::chrono::seconds(1);
+			Check(Drain(d, g) == 1 && d.Pending() == 1, "tried again after the wait, still busy: deferred again");
+			g.busy.erase(0x961);
+			g.rollsTo = "Silhouette_Athletic";
+			now += SH::Director::kDeferWait;
+			(void)Drain(d, g);
+			Check(g.actors[0x961].unkeyed.contains("Silhouette_Athletic") && g.actors[0x961].other.at("Erection") == 1.0F, "the scene over: the roll lands");
+
+			// A new decision made while a deferred one waits is tried at once.
+			g.busy.insert(0x961);
+			(void)d.RequestRegenerate(0x961, true, 0x00012345, kNormal, why);
+			(void)Drain(d, g);
+			g.busy.erase(0x961);
+			Check(d.RequestPreset(0x961, true, 0x00012345, "Curvy", SH::Source::kAPI, kNormal, why) && Drain(d, g) == 1 &&
+					  g.actors[0x961].unkeyed.contains("Silhouette_Curvy"),
+				"a new decision replaces the deferred one and does not wait out its time");
+		}
+
+		// The summary line says what the bridge did.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			Check(d.TakeSummary().empty(), "nothing done, nothing waiting: no summary");
+			g.Roll(0x970, *cat, "Silhouette_Slim", 1234.0F);
+			d.Seen(See(0x970, "Somebody"));
+			(void)Drain(d, g);
+			const auto line = d.TakeSummary();
+			Check(line.find("1 probe(s)") != std::string::npos && d.TakeSummary().empty(), std::format("the summary counts and resets ({})", line));
+		}
 	}
 
 	// ------------------------------------------------------------------ the director: ORefit
@@ -770,6 +1164,7 @@ namespace
 		FakeGame     g;
 		const auto   cat = Cat(BaseCatalog());
 		d.SetCatalog(cat);
+		std::string why;
 
 		// Dressed with a body: floors under the keyword, her own layer untouched, the clothed shape her
 		// body raised to the floors -- in sync by construction (S-40).
@@ -782,7 +1177,8 @@ namespace
 		Check(a.unkeyed == naked, "the refit never touches her own layer");
 		Check(a.Effective("BreastsTogether") == 0.3F && a.Effective("PushUp") == 0.2F && a.Effective("NipBGone") == 0.0F,
 			"dressed lightly: breasts together and pushed up, nipples as they are");
-		Check(a.refit.contains("Silhouette_Refit") && d.RefitApplied(0x100), "the refit marker says a refit is on");
+		Check(a.refit.contains("Silhouette_Refit") && static_cast<int>(a.refit.at("Silhouette_Refit")) % 2 == 1 && d.RefitApplied(0x100),
+			"the refit marker says a light refit is on (odd)");
 		auto ev = Events(d);
 		Check(Has(ev, SH::EventKind::kORefitChanged) && std::ranges::find_if(ev, [](auto& e) { return e.kind == SH::EventKind::kORefitChanged; })->flag,
 			"OnORefitChanged(applied)");
@@ -790,7 +1186,8 @@ namespace
 		// Heavy clothes flatten the nipples; back to light, they come back.
 		d.Dressed(See(0x100, "Somebody", true, true), false);
 		(void)Drain(d, g);
-		Check(a.Effective("NipBGone") == 1.0F, "under heavy clothes, nipples flat (S-42)");
+		Check(a.Effective("NipBGone") == 1.0F && static_cast<int>(a.refit.at("Silhouette_Refit")) % 2 == 0,
+			"under heavy clothes, nipples flat, and the marker even: another mod can see it (S-49, S-50)");
 		d.Dressed(See(0x100, "Somebody", true, false), false);
 		(void)Drain(d, g);
 		Check(a.Effective("NipBGone") == 0.0F && a.Effective("BreastsTogether") == 0.3F, "under light clothes again, nipples back");
@@ -816,47 +1213,59 @@ namespace
 		(void)Drain(d, g);
 		Check(g.actors[0x200].Effective("BreastsTogether") == 0.6F && !g.actors[0x200].refit.contains("Breasts"), "another outfit's set replaces the refit layer");
 
-		// Who is never refit (S-41).
+		// Who is never refit (S-41) -- each with a body of her own, so only the rule can keep it off.
 		const auto refitOf = [&](std::uint32_t ref) { return !g.actors[ref].refit.empty(); };
 		g.Roll(0x300, *cat, "Silhouette_Slim", 1234.0F);
 		d.Seen(See(0x300, "Mama Murphy", true));
 		(void)Drain(d, g);
 		Check(!refitOf(0x300), "a name-blacklisted woman stays bare, dressed or not");
-		auto formBlack = See(0x301, "Somebody", true);
+		auto formBlack = See(0x301, "Heather", true);
 		formBlack.facts.bases = { { "Fallout4.esm", 2000 } };
+		g.actors[0x301].unkeyed = { { "Breasts", 0.6F }, { "Waist", 0.2F } };
+		g.actors[0x301].listed = { "Breasts", "Waist" };
 		d.Seen(formBlack);
 		(void)Drain(d, g);
-		Check(!refitOf(0x301), "a woman BodyGen keeps bare by form id is not refit");
+		Check(!refitOf(0x301), "a woman blacklisted by form id is not refit, though she has a body of her own");
+		auto pluginBlack = See(0x309, "Heather", true);
+		pluginBlack.facts.originPlugin = "Blocked.esp";
+		g.actors[0x309].unkeyed = { { "Breasts", 0.6F } };
+		g.actors[0x309].listed = { "Breasts" };
+		d.Seen(pluginBlack);
+		(void)Drain(d, g);
+		Check(!refitOf(0x309), "a woman of a blacklisted plugin is not refit");
 		g.actors[0x302].other["VaginaSize"] = 0.4F;  // only another mod's keyed morph
+		g.Load();
 		d.Seen(See(0x302, "Somebody", true));
 		(void)Drain(d, g);
 		Check(!refitOf(0x302), "a woman with only other mods' morphs has no body: not refit, the regeneration window can still roll her");
 		d.Seen(See(0x303, "Somebody", true));
 		(void)Drain(d, g);
 		Check(!refitOf(0x303) && g.actors[0x303].listed.empty(), "a woman with nothing stored gets nothing stored: BodyGen can still roll her");
-		std::string why;
 		g.Roll(0x304, *cat, "Silhouette_Slim", 1234.0F);
 		d.Seen(See(0x304, "Somebody", true));
 		(void)Drain(d, g);
 		Check(refitOf(0x304), "(set-up) refit on");
-		Check(d.RequestReset(0x304, true, 0x00012345, why), "reset accepted");
+		Check(d.RequestReset(0x304, true, 0x00012345, kNormal, why), "reset accepted");
 		(void)Drain(d, g);
 		d.Dressed(See(0x304, "Somebody", true), false);
 		(void)Drain(d, g);
 		Check(g.actors[0x304].unkeyed.empty() && g.actors[0x304].refit.empty(), "reset while dressed: bare, no refit, nothing to keep BodyGen away");
 
-		// A custom follower: no Silhouette marker, a body of her own. Refit (owner, S-41).
-		g.actors[0x305].unkeyed = { { "Breasts", 0.6F }, { "Waist", 0.2F } };
-		g.actors[0x305].listed = { "Breasts", "Waist" };
+		// A custom follower: no Silhouette marker, a body of her own -- found past other mods' names (L1 F11).
+		g.actors[0x305].other = { { "AnatomyArousal", 0.3F }, { "AnatomyWet", 0.1F }, { "AnatomyA", 0.1F }, { "AnatomyB", 0.1F },
+			{ "AnatomyC", 0.1F }, { "AnatomyD", 0.1F } };
+		g.actors[0x305].unkeyed = { { "Waist", 0.2F } };
+		g.Load();
 		d.Seen(See(0x305, "Heather", true));
 		(void)Drain(d, g);
-		Check(refitOf(0x305) && g.actors[0x305].Effective("BreastsTogether") == 0.3F, "a custom follower with her own body is refit");
+		Check(refitOf(0x305) && g.actors[0x305].Effective("BreastsTogether") == 0.3F,
+			"a custom follower with her own body is refit, however many other mods' morphs are listed first");
 
 		// A new body while dressed: the refit stays, and the clothed shape follows the new body.
 		g.Roll(0x306, *cat, "Silhouette_Slim", 1234.0F);
 		d.Seen(See(0x306, "Somebody", true));
 		(void)Drain(d, g);
-		Check(d.RequestPreset(0x306, true, 0x00012345, "Curvy", SH::Source::kPicker, why), "picked");
+		Check(d.RequestPreset(0x306, true, 0x00012345, "Curvy", SH::Source::kPicker, kUrgent, why), "picked");
 		(void)Drain(d, g);
 		Check(g.actors[0x306].unkeyed.contains("Silhouette_Curvy") && g.actors[0x306].Effective("Breasts") == 0.95F,
 			"a new body arrives under the refit it should have (Curvy-Refit)");
@@ -873,9 +1282,19 @@ namespace
 		d.Configure({ .orefit = false });
 		(void)Drain(d, g);
 		Check(!refitOf(0x200) && !refitOf(0x305) && !refitOf(0x306), "ORefit off: every refit comes off");
-		d.Configure({ .orefit = true });
+		d.SetSwitch(SH::Switch::kORefit, true);
 		(void)Drain(d, g);
-		Check(refitOf(0x200) && refitOf(0x305), "ORefit on: refit again");
+		Check(refitOf(0x200) && refitOf(0x305), "ORefit on (through the API's switch): refit again");
+
+		// A build that changes the floors reaches a woman who never undresses (wave 2, L6 F3).
+		auto firmer = BaseCatalog();
+		firmer["orefit"]["sets"][0]["floors"][0]["value"] = 0.5;
+		firmer["stamp"] = 4321;
+		Reload(d, g, firmer);
+		d.Seen(See(0x305, "Heather", true));
+		(void)Drain(d, g);
+		Check(g.actors[0x305].Effective("BreastsTogether") == 0.5F, "new floors land on a still-dressed woman at the next sighting");
+		Reload(d, g);
 
 		// A save that cuts a refit short: the pending marker tells the next session.
 		SH::Director e;
@@ -884,9 +1303,8 @@ namespace
 		h.Roll(0x100, *cat, "Silhouette_Slim", 1234.0F);
 		const auto bare = h.actors[0x100].unkeyed;
 		e.Seen(See(0x100, "Somebody", true));
-		const auto probe = e.NextOrder();
-		RunOrder(e, probe, h);
-		const auto refitOrder = e.NextOrder();
+		RunOrder(e, e.NextOrder(), h);  // the probe
+		auto refitOrder = e.NextOrder();
 		Check(e.Peek(refitOrder) && e.Peek(refitOrder)->kind == SH::OrderKind::kRefit, "(set-up) the refit order");
 		RunOrder(e, refitOrder, h, 2);  // the pending marker and one floor, then the save
 		Reload(e, h);
@@ -895,10 +1313,18 @@ namespace
 		Check(h.actors[0x100].refit.empty() && h.actors[0x100].unkeyed == bare, "an unfinished refit found naked after a load comes off entirely");
 		e.Seen(See(0x100, "Somebody", true));
 		(void)Drain(e, h);
-		RunOrder(e, e.NextOrder(), h);
 		Reload(e, h);
-		h.actors[0x100].refit.erase("PushUp");  // a refit cut short after its last floor... but before the final marker
-		h.actors[0x100].refit["Silhouette_Refit"] = 0.25F;
+		e.Seen(See(0x100, "Somebody", true));
+		RunOrder(e, e.NextOrder(), h);  // the probe: the refit is whole
+		Check(e.NextOrder() == 0, "(set-up) a whole refit found dressed needs nothing");
+		Reload(e, h);
+		h.actors[0x100].refit.clear();
+		e.Seen(See(0x100, "Somebody", true));
+		RunOrder(e, e.NextOrder(), h);
+		refitOrder = e.NextOrder();
+		RunOrder(e, refitOrder, h, 1);  // only the pending marker lands, then the save
+		Check(h.actors[0x100].refit.size() == 1 && h.actors[0x100].refit.at("Silhouette_Refit") == 0.25F, "(set-up) the marker is written first, as pending");
+		Reload(e, h);
 		e.Seen(See(0x100, "Somebody", true));
 		(void)Drain(e, h);
 		Check(h.actors[0x100].Effective("PushUp") == 0.2F && h.actors[0x100].refit.at("Silhouette_Refit") >= 1.0F,
@@ -910,6 +1336,17 @@ namespace
 		e.Seen(See(0x100, "Somebody", true));
 		(void)Drain(e, h);
 		Check(h.actors[0x100].Effective("BreastsTogether") == 0.3F, "a refit LooksMenu dropped is put back on the next sighting");
+
+		// Without the keyword (an older Silhouette.esp) nothing of a refit reaches her own layer.
+		SH::Director f;
+		FakeGame     k;
+		k.keyword = false;
+		f.SetCatalog(cat);
+		k.Roll(0x100, *cat, "Silhouette_Slim", 1234.0F);
+		const auto own = k.actors[0x100].unkeyed;
+		f.Seen(See(0x100, "Somebody", true));
+		(void)Drain(f, k);
+		Check(k.actors[0x100].unkeyed == own && k.actors[0x100].refit.empty(), "no refit keyword: the refit is refused, her body untouched");
 	}
 
 	// ------------------------------------------------------------------ the director: touch-up
@@ -937,6 +1374,16 @@ namespace
 		d.Seen(man);
 		Check(Drain(d, g) == 1 && m.unkeyed == after, "touched once: the next session only probes");
 
+		// A build that forbids something new of that old body heals it again (wave 2, L6 F2).
+		auto stricter = BaseCatalog();
+		stricter["neverInBody"]["male"].push_back("BTChest");
+		stricter["presets"][3]["values"] = { { "BTArms", 0.2 } };
+		Reload(d, g, stricter);
+		d.Seen(man);
+		(void)Drain(d, g);
+		Check(!m.unkeyed.contains("BTChest") && m.unkeyed.contains("BTBallSize"), "a later build's heal reaches a body already touched");
+		Reload(d, g);
+
 		// A woman from before the variety existed gets it; what she has stays.
 		auto& w = g.actors[0x200];
 		w.unkeyed = { { "Breasts", 0.8F }, { "Butt", 0.5F }, { "NippleSize", 0.2F }, { "Silhouette_Curvy", 99.0F } };
@@ -953,14 +1400,48 @@ namespace
 		(void)Drain(d, g);
 		Check(!w.unkeyed.contains("VaginaSize"), "a topped-up value the player removed later is not put back");
 
+		// ...and so is a body that never needed a top-up (wave 2, L1 F6).
+		g.Roll(0x210, *cat, "Silhouette_Curvy", 1234.0F);
+		d.Seen(See(0x210, "Somebody"));
+		(void)Drain(d, g);
+		g.actors[0x210].unkeyed.erase("NippleSize");
+		Reload(d, g);
+		d.Seen(See(0x210, "Somebody"));
+		(void)Drain(d, g);
+		Check(!g.actors[0x210].unkeyed.contains("NippleSize"), "a value removed from a body that needed nothing is not put back either");
+
+		// ...nor from a body Silhouette gave or rolled itself.
+		std::string why;
+		(void)d.RequestPreset(0x211, true, 0x00012345, "Curvy", SH::Source::kAPI, kNormal, why);
+		(void)d.RequestRegenerate(0x212, true, 0x00012345, kNormal, why);
+		(void)Drain(d, g);
+		g.actors[0x211].unkeyed.erase("NippleSize");
+		Reload(d, g);
+		d.Seen(See(0x211, "Somebody"));
+		d.Seen(See(0x212, "Somebody"));
+		(void)Drain(d, g);
+		Check(!g.actors[0x211].unkeyed.contains("NippleSize") && g.actors[0x211].unkeyed.contains("Silhouette_Curvy"),
+			"a value removed from a body Silhouette gave is not put back");
+		Check(!g.actors[0x212].unkeyed.contains("NippleSize") && !g.actors[0x212].unkeyed.contains("VaginaSize"),
+			"a body a roll gave is taken as it came: nothing topped up after");
+
+		// Another mod's keyed value of a variety slider is not hers: she still gets her own (L5 #6).
+		auto& x = g.actors[0x220];
+		x.unkeyed = { { "Breasts", 0.8F }, { "VaginaSize", 0.1F }, { "Silhouette_Curvy", 1234.0F } };
+		x.other = { { "NippleSize", 0.3F } };
+		g.Load();
+		d.Seen(See(0x220, "Somebody"));
+		(void)Drain(d, g);
+		Check(x.unkeyed.contains("NippleSize") && x.other.at("NippleSize") == 0.3F, "top-up weighs her own layer, not the anatomy layer's value");
+
 		// Variety switched off: no top-up of that group.
-		auto& x = g.actors[0x300];
-		x.unkeyed = { { "Breasts", 0.8F }, { "Silhouette_Curvy", 99.0F } };
-		x.listed = { "Breasts", "Silhouette_Curvy" };
+		auto& y = g.actors[0x300];
+		y.unkeyed = { { "Breasts", 0.8F }, { "Silhouette_Curvy", 99.0F } };
+		y.listed = { "Breasts", "Silhouette_Curvy" };
 		d.Configure({ .orefit = true, .variety = { .nipples = false, .genitals = true } });
 		d.Seen(See(0x300, "Somebody"));
 		(void)Drain(d, g);
-		Check(!x.unkeyed.contains("NippleSize") && x.unkeyed.contains("VaginaSize"), "the variety switches apply to the top-up");
+		Check(!y.unkeyed.contains("NippleSize") && y.unkeyed.contains("VaginaSize"), "the variety switches apply to the top-up");
 	}
 
 	// ------------------------------------------------------------------ the director: the picker
@@ -971,7 +1452,10 @@ namespace
 		FakeGame     g;
 		const auto   cat = Cat(BaseCatalog());
 		d.SetCatalog(cat);
+		std::string why;
 		g.Roll(0x100, *cat, "Silhouette_Slim", 1234.0F);
+		g.actors[0x100].unkeyed["Waist"] = -0.4F;  // a slider she was given by hand
+		g.Load();
 		const auto before = g.actors[0x100].unkeyed;
 		d.Seen(See(0x100, "Cait"));
 		(void)Drain(d, g);
@@ -985,33 +1469,81 @@ namespace
 		msg = d.PickerStep(1);
 		Check(msg == "Cait: Athletic (3/3)", std::format("Next starts from the preset she has (Slim is 2/3): {}", msg));
 		(void)Drain(d, g);
-		Check(g.actors[0x100].unkeyed.contains("Silhouette_Athletic"), "the preview is on her");
+		Check(g.actors[0x100].unkeyed.contains("Silhouette_Athletic") &&
+				  g.actors[0x100].unkeyed.at("NippleSize") == before.at("NippleSize") && g.actors[0x100].unkeyed.at("VaginaSize") == before.at("VaginaSize"),
+			"the preview is on her, with her own variety (L6 F12)");
 		Check(!d.RecordOf(0x100) || d.RecordOf(0x100)->source != SH::Source::kPicker, "a preview is not a choice");
 		msg = d.PickerCancel();
 		(void)Drain(d, g);
 		Check(g.actors[0x100].unkeyed == before, std::format("Cancel puts back exactly what she had ({})", msg));
-		Check(d.PickerTarget() == 0, "and ends the picking");
+		Check(d.PickerTarget() == 0 && !d.HasPicking(0x100), "and ends the picking");
+
+		// Next then Previous back to her own preset, then Keep: exactly her body, hand edit included (L1 F9).
+		(void)d.PickerStart(0x100, true, 0x00012345, "Cait");
+		(void)Drain(d, g);
+		(void)d.PickerStep(1);
+		(void)Drain(d, g);
+		(void)d.PickerStep(-1);
+		(void)Drain(d, g);
+		msg = d.PickerKeep();
+		(void)Drain(d, g);
+		Check(msg == "Cait keeps the body they had." && g.actors[0x100].unkeyed == before, std::format("Keep on her own preset restores it exactly ({})", msg));
 
 		(void)d.PickerStart(0x100, true, 0x00012345, "Cait");
 		(void)Drain(d, g);
 		(void)d.PickerStep(-1);
 		(void)Drain(d, g);
+		(void)Events(d);
 		msg = d.PickerKeep();
+		(void)Drain(d, g);
 		Check(msg == "Cait keeps Curvy.", msg);
 		const auto rec = d.RecordOf(0x100);
 		Check(rec && rec->source == SH::Source::kPicker && rec->preset == "Curvy", "Keep records a picker choice");
-		Check(Has(Events(d), SH::EventKind::kGenerated, "Curvy"), "Keep announces the body");
+		Check(g.actors[0x100].unkeyed.contains("Silhouette_Chosen") && g.actors[0x100].unkeyed.at("Silhouette_Chosen") == 3.0F,
+			"and marks it in LooksMenu (S-51)");
+		Check(Count(Events(d), SH::EventKind::kGenerated) == 1, "Keep announces the body once");
+
+		// Keep while the preview is still queued: it is written as the choice, announced once.
+		g.Roll(0x110, *cat, "Silhouette_Slim", 1234.0F);
+		d.Seen(See(0x110, "Curie"));
+		(void)Drain(d, g);
+		(void)Events(d);
+		(void)d.PickerStart(0x110, true, 0x00012345, "Curie");
+		(void)Drain(d, g);
+		(void)d.PickerStep(1);
+		msg = d.PickerKeep();
+		(void)Drain(d, g);
+		Check(g.actors[0x110].unkeyed.contains("Silhouette_Athletic") && g.actors[0x110].unkeyed.contains("Silhouette_Chosen") &&
+				  Count(Events(d), SH::EventKind::kGenerated) == 1,
+			std::format("a Keep before the preview landed makes it the choice ({})", msg));
+
+		// Keep while the preview is being written: announced once, when it lands, the choice marked after it.
+		g.Roll(0x120, *cat, "Silhouette_Slim", 1234.0F);
+		d.Seen(See(0x120, "Nora"));
+		(void)Drain(d, g);
+		(void)Events(d);
+		(void)d.PickerStart(0x120, true, 0x00012345, "Nora");
+		(void)Drain(d, g);
+		(void)d.PickerStep(1);
+		const auto writing = d.NextOrder();
+		Check(d.Peek(writing) && d.Peek(writing)->kind == SH::OrderKind::kBody && d.Peek(writing)->body.preview, "(set-up) the preview is in flight");
+		msg = d.PickerKeep();
+		Check(Count(Events(d), SH::EventKind::kGenerated) == 0, std::format("nothing announced before the body is written ({})", msg));
+		RunOrder(d, writing, g);
+		(void)Drain(d, g);
+		Check(Count(Events(d), SH::EventKind::kGenerated) == 1 && g.actors[0x120].unkeyed.contains("Silhouette_Athletic") &&
+				  g.actors[0x120].unkeyed.contains("Silhouette_Chosen") && g.actors[0x120].unkeyed.at("Silhouette_Chosen") == 3.0F,
+			"Keep while the preview is being written: announced once when it lands, the choice marked beside it");
 
 		// Picking refused while a body is on its way; a request made while picking ends it.
-		std::string why;
 		g.Roll(0x200, *cat, "Silhouette_Slim", 1234.0F);
-		(void)d.RequestPreset(0x200, true, 0x00012345, "Athletic", SH::Source::kAPI, why);
+		(void)d.RequestPreset(0x200, true, 0x00012345, "Athletic", SH::Source::kAPI, kNormal, why);
 		Check(d.PickerStart(0x200, true, 0x00012345, "Curie").find("still changing") != std::string::npos, "no picking while a body is on its way");
 		(void)Drain(d, g);
 		(void)d.PickerStart(0x200, true, 0x00012345, "Curie");
 		(void)Drain(d, g);
-		(void)d.RequestPreset(0x200, true, 0x00012345, "Curvy", SH::Source::kAPI, why);
-		Check(d.PickerTarget() == 0, "a decision made elsewhere ends the picking");
+		(void)d.RequestPreset(0x200, true, 0x00012345, "Curvy", SH::Source::kAPI, kNormal, why);
+		Check(d.PickerTarget() == 0 && !d.HasPicking(0x200), "a decision made elsewhere ends the picking");
 		(void)Drain(d, g);
 		Check(g.actors[0x200].unkeyed.contains("Silhouette_Curvy"), "and is what she gets");
 
@@ -1028,19 +1560,91 @@ namespace
 		Reload(d, g);
 		d.Seen(See(0x300, "Cait"));
 		(void)Drain(d, g);
-		Check(g.actors[0x300].unkeyed == hers, "a picking saved mid-preview loads as a Cancel");
+		Check(g.actors[0x300].unkeyed == hers && !d.HasPicking(0x300), "a picking saved mid-preview loads as a Cancel");
 		Reload(d, g);
 		d.Seen(See(0x300, "Cait"));
 		(void)Drain(d, g);
 		Check(g.actors[0x300].unkeyed == hers, "and only once");
 
-		// Picking someone else puts the first back; a failed snapshot ends the picking.
-		(void)d.PickerStart(0x100, true, 0x00012345, "Cait");
+		// One saved picking per actor (L6 F6): picking B does not lose A's.
+		g.Roll(0x400, *cat, "Silhouette_Slim", 1234.0F);
+		g.Roll(0x401, *cat, "Silhouette_Slim", 1234.0F);
+		const auto herA = g.actors[0x400].unkeyed;
+		d.Seen(See(0x400, "A"));
+		d.Seen(See(0x401, "B"));
+		(void)Drain(d, g);
+		(void)d.PickerStart(0x400, true, 0x00012345, "A");
 		(void)Drain(d, g);
 		(void)d.PickerStep(1);
 		(void)Drain(d, g);
+		g.away.insert(0x400);  // A leaves memory
+		msg = d.PickerStart(0x401, true, 0x00012345, "B");
+		(void)Drain(d, g);
+		Check(d.HasPicking(0x400) && d.PickerTarget() == 0x401, std::format("A's Cancel could not reach her, and is kept ({})", msg));
+		(void)d.PickerCancel();
+		(void)Drain(d, g);
+		g.away.erase(0x400);
+		d.Seen(See(0x400, "A"));
+		(void)Drain(d, g);
+		Check(g.actors[0x400].unkeyed == herA && !d.HasPicking(0x400), "seen again, A gets exactly her body back");
+
+		// A load, then A picked again before she is seen: the picking carries on from her real body (L6 F6c).
+		(void)d.PickerStart(0x400, true, 0x00012345, "A");
+		(void)Drain(d, g);
+		(void)d.PickerStep(1);
+		(void)Drain(d, g);
+		Reload(d, g);
+		msg = d.PickerStart(0x400, true, 0x00012345, "A");
+		Check(msg.find("again") != std::string::npos && d.PickerReady(), std::format("the saved picking is taken up at once ({})", msg));
+		(void)d.PickerCancel();
+		(void)Drain(d, g);
+		Check(g.actors[0x400].unkeyed == herA, "Cancel then puts back her body, not the preview a save left on her");
+
+		// A decision made while a restore waits retires it (L6 F8).
+		(void)d.PickerStart(0x400, true, 0x00012345, "A");
+		(void)Drain(d, g);
+		(void)d.PickerStep(1);
+		(void)Drain(d, g);
+		Reload(d, g);
+		g.rollsTo = "Silhouette_Curvy";
+		(void)d.RequestRegenerate(0x400, true, 0x00012345, kNormal, why);
+		d.Seen(See(0x400, "A"));
+		(void)Drain(d, g);
+		Check(g.actors[0x400].unkeyed.contains("Silhouette_Curvy") && !d.HasPicking(0x400), "the new roll stays: the old picking is not restored over it");
+
+		// A saved picking of a created reference whose id now names somebody else is dropped (L6 F9).
+		g.Roll(0xFF000B00, *cat, "Silhouette_Slim", 1234.0F);
+		auto made = See(0xFF000B00, "Made");
+		made.base = 0x00031111;
+		d.Seen(made);
+		(void)Drain(d, g);
+		(void)d.PickerStart(0xFF000B00, true, 0x00031111, "Made");
+		(void)Drain(d, g);
+		(void)d.PickerStep(1);
+		(void)Drain(d, g);
+		Reload(d, g);
+		g.Roll(0xFF000B00, *cat, "Silhouette_Curvy", 1234.0F);  // the id reused by someone else
+		const auto strangerBody = g.actors[0xFF000B00].unkeyed;
+		auto       stranger = See(0xFF000B00, "Stranger");
+		stranger.base = 0x00032222;
+		d.Seen(stranger);
+		(void)Drain(d, g);
+		Check(g.actors[0xFF000B00].unkeyed == strangerBody && !d.HasPicking(0xFF000B00), "somebody else's picking is not restored on a stranger");
+
+		// A restore never puts back what no body may hold (L1 F8).
+		auto& old = g.actors[0x500];
+		old.unkeyed = { { "BTChest", 0.4F }, { "Penis Width", 1.0F }, { "Silhouette_BT_Old", 99.0F } };
+		g.Load();
+		(void)d.PickerStart(0x500, false, 0x00012345, "Old");
+		(void)Drain(d, g);
+		(void)d.PickerStep(1);
+		(void)Drain(d, g);
+		(void)d.PickerCancel();
+		(void)Drain(d, g);
+		Check(!old.unkeyed.contains("Penis Width") && old.unkeyed.at("BTChest") == 0.4F, "Cancel restores the body, not the shaft value a heal takes out");
+
+		// A failed snapshot ends the picking instead of leaving it waiting.
 		msg = d.PickerStart(0x300, true, 0x00012345, "Curie");
-		Check(msg.starts_with("Cait is back to"), msg);
 		std::uint32_t snap = 0;
 		while (const auto id = d.NextOrder()) {
 			if (d.Peek(id)->kind == SH::OrderKind::kSnapshot) {
@@ -1049,11 +1653,10 @@ namespace
 			}
 			RunOrder(d, id, g);
 		}
-		Check(snap != 0, "the new snapshot is asked for");
+		Check(snap != 0, "the snapshot is asked for");
 		d.Done(snap, false);
 		(void)Drain(d, g);
-		Check(d.PickerTarget() == 0, "a snapshot that failed ends the picking instead of leaving it waiting");
-		Check(g.actors[0x100].unkeyed.contains("Silhouette_Curvy"), "Cait is back to her kept body");
+		Check(d.PickerTarget() == 0, "a snapshot that failed ends the picking");
 	}
 }
 
@@ -1061,7 +1664,7 @@ namespace
 // is refused here, before anything is deployed (L4F1). a_root is a Data folder or a mod folder.
 int CheckData(const std::filesystem::path& a_root)
 {
-	const auto folder = a_root / "F4SE/Plugins/Silhouette";
+	const auto  folder = a_root / "F4SE/Plugins/Silhouette";
 	std::string error;
 	std::ifstream in(folder / "catalog.json", std::ios::binary);
 	if (!in) {
@@ -1078,15 +1681,16 @@ int CheckData(const std::filesystem::path& a_root)
 		std::cout << "CHECK FAIL: the plugin would refuse catalog.json: " << error << "\n";
 		return 1;
 	}
-	int failed = 0;
-	std::size_t manifests = 0;
-	bool own = false;
+	int             failed = 0;
+	std::size_t     manifests = 0;
+	bool            own = false;
 	std::error_code ec;
-	for (const auto& entry : std::filesystem::directory_iterator(folder / "manifests", ec)) {
-		if (entry.path().extension() != ".json") {
+	for (std::filesystem::directory_iterator it{ folder / "manifests", ec }, end; !ec && it != end; it.increment(ec)) {
+		const auto& path = it->path();
+		if (path.extension() != ".json") {
 			continue;
 		}
-		std::ifstream m(entry.path(), std::ios::binary);
+		std::ifstream m(path, std::ios::binary);
 		std::optional<std::pair<std::uint32_t, std::unordered_map<std::string, SH::ManifestEntry>>> parsed;
 		try {
 			parsed = SH::ParseManifest(nlohmann::json::parse(m), error);
@@ -1094,12 +1698,16 @@ int CheckData(const std::filesystem::path& a_root)
 			error = e.what();
 		}
 		if (!parsed) {
-			std::cout << "CHECK FAIL: manifest " << entry.path().filename().string() << ": " << error << "\n";
+			std::cout << "CHECK FAIL: manifest " << path.filename().string() << ": " << error << "\n";
 			++failed;
 			continue;
 		}
 		own = own || parsed->first == catalog->stamp;
 		++manifests;
+	}
+	if (ec) {
+		std::cout << "CHECK FAIL: manifests: " << ec.message() << "\n";
+		++failed;
 	}
 	if (!own) {
 		std::cout << "CHECK FAIL: no manifest for this build's stamp " << catalog->stamp << "\n";
@@ -1107,7 +1715,7 @@ int CheckData(const std::filesystem::path& a_root)
 	}
 	for (const auto* file : { "Silhouette_templates.ini", "Silhouette_morphs.ini" }) {
 		std::ifstream h(a_root / "F4SE/Plugins/F4EE/BodyGen/Loose" / file);
-		const auto header = h ? SH::ParseFilesHeader(h) : std::nullopt;
+		const auto    header = h ? SH::ParseFilesHeader(h) : std::nullopt;
 		if (!header) {
 			std::cout << "CHECK FAIL: " << file << " names no build in its header\n";
 			++failed;
@@ -1134,6 +1742,7 @@ int main(int argc, char** argv)
 	TestPlan();
 	TestRegistry();
 	TestBodies();
+	TestDecisions();
 	TestRefit();
 	TestTouchUp();
 	TestPicker();
