@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
-  Compiles Silhouette's Papyrus scripts (the generated player picker).
+  Compiles Silhouette's Papyrus scripts: the generated player picker (Player),
+  the regeneration window (Adopter), and Phase 2's Plugin, Bridge and API.
 
 .DESCRIPTION
   Compiles papyrus/ into build/papyrus/ against the reconstructed base sources and

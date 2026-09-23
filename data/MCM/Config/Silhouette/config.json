@@ -205,6 +205,250 @@
           }
         }
       ]
+    },
+    {
+      "pageDisplayName": "The NPC in your sights",
+      "content": [
+        {
+          "type": "text",
+          "text": "Aim at someone, then open this menu -- or Pick them with the hotkey below and open it any time. Anyone you give a preset keeps it: the rules by name and faction no longer change them. Needs Silhouette.dll and Silhouette.esp."
+        },
+        {
+          "type": "section",
+          "text": "Their body"
+        },
+        {
+          "type": "dropdown",
+          "id": "iNpcFemale_debf592f:Picker",
+          "text": "If they are female",
+          "help": "60 presets that fit a female body. Nothing changes until you press \"Give them this preset\".",
+          "valueOptions": {
+            "sourceType": "ModSettingInt",
+            "options": [
+              "ALSL Body 1.0",
+              "Anatomy Zero",
+              "CBBE Athletic",
+              "CBBE Chubby",
+              "CBBE Curvy",
+              "CBBE Petite",
+              "CBBE Slim",
+              "CBBE Vanilla",
+              "CBBE Zeroed Sliders",
+              "Imitation - Dream Girl",
+              "Imitation - UNP #1",
+              "Imitation - UNP #2",
+              "Imitation - UNP Skinny",
+              "Josie CBBE Body 2 (Bustier Nude)",
+              "Josie CBBE Body 2 (Nude)",
+              "Josie+3DBoobs",
+              "OxtonCBBEBody+V6",
+              "PLP",
+              "PLP V2",
+              "PNBody Ver.fe",
+              "Rebecca Rose TWB (Nude)",
+              "rose2",
+              "SevenBase",
+              "SevenBase Lower",
+              "SevenBase Slim",
+              "SevenBase Upper",
+              "That Gym Booty 2.0",
+              "The Rocket Bomb Body CBBE",
+              "The Rocket Bomb Body CBBE Extra",
+              "The Rocket Bomb Body CBBE Extra Extra",
+              "The Rocket Bomb Body CBBE Extra Extra Extra",
+              "The Rocket Bomb Body CBBE Small",
+              "The Rocket Bomb Body CBBE Smaller",
+              "The Rocket Bomb Body CBBE Smallest",
+              "The Rocket Bomb Body TWB",
+              "The Rocket Bomb Body TWB Extra",
+              "The Rocket Bomb Body TWB Extra Extra",
+              "The Rocket Bomb Body TWB Extra Extra Extra",
+              "The Rocket Bomb Body TWB Small",
+              "The Rocket Bomb Body TWB Smaller",
+              "The Rocket Bomb Body TWB Smallest",
+              "TWB",
+              "Wasteland Curves (Nude) - TWB Bodyslide Preset.xml",
+              "wtaw body",
+              "wtaw body nude",
+              "xy - Type 3DCG (Blessed)(1)(a)",
+              "xy - Type 3DCG (Blessed)(1)(a)(Bigger)",
+              "xy - Type 3DCG (Blessed)(1)(b)",
+              "xy - Type 3DCG (Blessed)(2)(a)",
+              "xy - Type 3DCG (Blessed)(2)(b)",
+              "xy - Type 3DCG (Blessed)(2)(Bigger)",
+              "xy - Type 3DCG (Blessed)(2)(d)",
+              "xy - Type 3DCG (Blessed)(2)(e)",
+              "xy - Type 3DCG (Blessed)(2)(e)(v2)",
+              "xy - Type 3DCG (Blessed)(2)(e)(v2)(test2)",
+              "xy - Type 3DCG (Blessed)(2)(e)(v3)",
+              "xy - Type 3DCG (Pawg)(1)",
+              "xy - Type 3DCG (Pawg)(1.5)",
+              "xy - Type 3DCG (Pawg)(2)",
+              "xy - Type 3DCG (Pawg)(2)(e)"
+            ]
+          }
+        },
+        {
+          "type": "dropdown",
+          "id": "iNpcMale_68da3aca:Picker",
+          "text": "If they are male",
+          "help": "8 presets that fit a male body. Nothing changes until you press \"Give them this preset\".",
+          "valueOptions": {
+            "sourceType": "ModSettingInt",
+            "options": [
+              "BT - Average",
+              "BT - Bodybuilder",
+              "BT - Chubby",
+              "BT - Muscular",
+              "BT - Swimmer",
+              "BT - Thin",
+              "BT - Zero",
+              "Sirius Male preset"
+            ]
+          }
+        },
+        {
+          "type": "button",
+          "text": "Give them this preset",
+          "help": "The preset chosen above for their sex, on the NPC you picked -- or, with nobody picked, the last NPC you aimed at in the half minute before opening the menu. Their own nipple and genital variety comes with it. Close the menu to see it.",
+          "action": {
+            "type": "CallFunction",
+            "form": "Silhouette.esp|802",
+            "function": "MenuApply",
+            "params": []
+          }
+        },
+        {
+          "type": "button",
+          "text": "Back to random",
+          "help": "They roll a new body, as if met for the first time: the rules get their say again. Body morphs other mods keep under their own keyword (AAF, pregnancy) are kept.",
+          "action": {
+            "type": "CallFunction",
+            "form": "Silhouette.esp|802",
+            "function": "MenuRandom",
+            "params": []
+          }
+        },
+        {
+          "type": "button",
+          "text": "Which body do they have?",
+          "help": "The preset their body carries, and who chose it.",
+          "action": {
+            "type": "CallFunction",
+            "form": "Silhouette.esp|802",
+            "function": "MenuWhich",
+            "params": []
+          }
+        },
+        {
+          "type": "section",
+          "text": "Hotkeys: try presets on them in the world"
+        },
+        {
+          "type": "text",
+          "text": "Pick someone, then Next and Previous put each preset on them in turn (about a second each, LooksMenu is reached through Papyrus). Keep makes it theirs; Cancel puts back exactly what they had."
+        },
+        {
+          "type": "hotkey",
+          "id": "pick",
+          "text": "Pick the NPC in your sights",
+          "help": "Pick the NPC in your sights. Needs Silhouette.dll and Silhouette.esp."
+        },
+        {
+          "type": "hotkey",
+          "id": "next",
+          "text": "Try the next preset on them",
+          "help": "Try the next preset on them. Needs Silhouette.dll and Silhouette.esp."
+        },
+        {
+          "type": "hotkey",
+          "id": "previous",
+          "text": "Try the previous preset on them",
+          "help": "Try the previous preset on them. Needs Silhouette.dll and Silhouette.esp."
+        },
+        {
+          "type": "hotkey",
+          "id": "keep",
+          "text": "Keep the preset they are trying on",
+          "help": "Keep the preset they are trying on. Needs Silhouette.dll and Silhouette.esp."
+        },
+        {
+          "type": "hotkey",
+          "id": "cancel",
+          "text": "Put back the body they had",
+          "help": "Put back the body they had. Needs Silhouette.dll and Silhouette.esp."
+        }
+      ]
+    },
+    {
+      "pageDisplayName": "Settings",
+      "content": [
+        {
+          "type": "section",
+          "text": "While they are dressed"
+        },
+        {
+          "type": "switcher",
+          "id": "bORefit:General",
+          "text": "ORefit",
+          "help": "A clothed shape while someone wears clothes -- breasts together and lifted, nipples flattened -- and their own body back the moment they undress, exactly as it was. Your character is never refit. Needs Silhouette.dll and Silhouette.esp.",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          }
+        },
+        {
+          "type": "section",
+          "text": "Variety in the bodies Silhouette gives"
+        },
+        {
+          "type": "text",
+          "text": "BodyGen rolls every NPC their own nipples (and genital shape for women, ball size for men) from the generated files, always. These two decide the same for bodies Silhouette itself gives: the rules, the picker, other mods."
+        },
+        {
+          "type": "switcher",
+          "id": "bNippleRand:General",
+          "text": "Nipple variety",
+          "help": "Each person their own nipple size, areola and tip.",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          }
+        },
+        {
+          "type": "switcher",
+          "id": "bGenitalRand:General",
+          "text": "Genital variety",
+          "help": "Each woman her own genital shape, each man his own ball size. Never the shaft.",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          }
+        },
+        {
+          "type": "section",
+          "text": "Silhouette"
+        },
+        {
+          "type": "button",
+          "text": "How is Silhouette doing?",
+          "help": "Which build is loaded, what it is listening to, and how much work is waiting.",
+          "action": {
+            "type": "CallFunction",
+            "form": "Silhouette.esp|802",
+            "function": "MenuStatus",
+            "params": []
+          }
+        },
+        {
+          "type": "button",
+          "text": "Take ORefit off everyone (before uninstalling)",
+          "help": "Switch ORefit off above first. Everyone this save remembers with a clothed shape gets their own body values back -- the people in memory now at once, the rest when you next see them. Then save, and Silhouette can be removed.",
+          "action": {
+            "type": "CallFunction",
+            "form": "Silhouette.esp|802",
+            "function": "MenuRefitOffEverywhere",
+            "params": []
+          }
+        }
+      ]
     }
   ]
 }

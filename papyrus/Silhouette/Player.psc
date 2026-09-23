@@ -4,14 +4,14 @@ Scriptname Silhouette:Player Hidden
  Called by the MCM menu. Needs LooksMenu (BodyGen) and MCM.}
 
 ; Every argument is passed explicitly: the decompiled base sources carry no defaults.
-; Build 081e1f0a1be7; marker stamp 531999.
+; Build 3198337fbaec; marker stamp 3250227.
 
 String Function Build() Global
-    Return "081e1f0a1be7"
+    Return "3198337fbaec"
 EndFunction
 
 Float Function Stamp() Global
-    Return 531999.0
+    Return 3250227.0
 EndFunction
 
 ; Morphs other mods drive at runtime (decision S-16): never part of a Silhouette body.
@@ -31,6 +31,27 @@ EndFunction
 
 Bool Function IsFemale(Actor akActor) Global
     Return akActor.GetLeveledActorBase().GetSex() == 1
+EndFunction
+
+; The preset chosen on the NPC page (Silhouette:Bridge.MenuApply), "" for a choice
+; this build of the menu does not have.
+String Function NpcChoice(Bool female) Global
+    If !MCM.IsInstalled()
+        Return ""
+    EndIf
+    Int index = -1
+    If female
+        index = MCM.GetModSettingInt("Silhouette", "iNpcFemale_debf592f:Picker")
+    Else
+        index = MCM.GetModSettingInt("Silhouette", "iNpcMale_68da3aca:Picker")
+    EndIf
+    If index < 0 || index >= Count(female)
+        Return ""
+    EndIf
+    If female
+        Return FemaleNames()[index]
+    EndIf
+    Return MaleNames()[index]
 EndFunction
 
 Int Function Count(Bool female) Global
@@ -226,6 +247,8 @@ Function Census() Global
 EndFunction
 
 ; Everyone nearby keeps the preset Silhouette gave them, with its values from this build.
+; With Silhouette.dll the plugin gives it again, their own variety included (S-17, S-21);
+; without it the preset alone is written, and the rolled variety is lost.
 Function Refresh() Global
     Actor[] people = Nearby()
     String[] fm = FemaleMarkers()
@@ -246,8 +269,14 @@ Function Refresh() Global
             preset = PresetOf(a, False, mm, mn)
             index = mn.Find(preset, 0)
         EndIf
-        If index >= 0 && Give(a, female, index) != ""
-            done += 1
+        If index >= 0
+            If F4SE.GetPluginVersion("Silhouette") > 0
+                If Silhouette:API.ReapplyActorMorphs(a)
+                    done += 1
+                EndIf
+            ElseIf Give(a, female, index) != ""
+                done += 1
+            EndIf
         EndIf
         i += 1
     EndWhile
@@ -435,10 +464,10 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "SternumDepth", None, -0.15)
         BodyGen.SetMorph(a, True, "Thighs", None, 0.45)
         BodyGen.SetMorph(a, True, "Waist", None, 1)
-        BodyGen.SetMorph(a, True, "Silhouette_ALSL_Body_1_0", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_ALSL_Body_1_0", None, 3250227.0)
         Return "ALSL Body 1.0"
     ElseIf index == 1
-        BodyGen.SetMorph(a, True, "Silhouette_Anatomy_Zero", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_Anatomy_Zero", None, 3250227.0)
         Return "Anatomy Zero"
     ElseIf index == 2
         BodyGen.SetMorph(a, True, "Ankles", None, 0.55)
@@ -472,7 +501,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "SternumDepth", None, 0.15)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, 1)
-        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Athletic", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Athletic", None, 3250227.0)
         Return "CBBE Athletic"
     ElseIf index == 3
         BodyGen.SetMorph(a, True, "AppleCheeks", None, 0.3)
@@ -509,7 +538,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Thighs", None, 0.25)
         BodyGen.SetMorph(a, True, "Waist", None, 0.45)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
-        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Chubby", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Chubby", None, 3250227.0)
         Return "CBBE Chubby"
     ElseIf index == 4
         BodyGen.SetMorph(a, True, "Ankles", None, 0.25)
@@ -538,7 +567,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Thighs", None, 0.25)
         BodyGen.SetMorph(a, True, "Waist", None, 0.75)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
-        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Curvy", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Curvy", None, 3250227.0)
         Return "CBBE Curvy"
     ElseIf index == 5
         BodyGen.SetMorph(a, True, "Ankles", None, 0.55)
@@ -569,7 +598,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "SlimThighs", None, 0.4)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, 0.55)
-        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Petite", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Petite", None, 3250227.0)
         Return "CBBE Petite"
     ElseIf index == 6
         BodyGen.SetMorph(a, True, "Ankles", None, 0.55)
@@ -593,14 +622,14 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "ShoulderWidth", None, 0.9)
         BodyGen.SetMorph(a, True, "SlimThighs", None, 0.4)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
-        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Slim", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Slim", None, 3250227.0)
         Return "CBBE Slim"
     ElseIf index == 7
         BodyGen.SetMorph(a, True, "VanillaFo4", None, 1)
-        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Vanilla", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Vanilla", None, 3250227.0)
         Return "CBBE Vanilla"
     ElseIf index == 8
-        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Zeroed_Sliders", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_CBBE_Zeroed_Sliders", None, 3250227.0)
         Return "CBBE Zeroed Sliders"
     ElseIf index == 9
         BodyGen.SetMorph(a, True, "Ankles", None, 0.55)
@@ -641,7 +670,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "TummyTuck", None, 0.1)
         BodyGen.SetMorph(a, True, "Waist", None, 1)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.75)
-        BodyGen.SetMorph(a, True, "Silhouette_Imitation_Dream_Girl", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_Imitation_Dream_Girl", None, 3250227.0)
         Return "Imitation - Dream Girl"
     ElseIf index == 10
         BodyGen.SetMorph(a, True, "Ankles", None, 0.25)
@@ -695,7 +724,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, -2)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, 0.45)
-        BodyGen.SetMorph(a, True, "Silhouette_Imitation_UNP_1", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_Imitation_UNP_1", None, 3250227.0)
         Return "Imitation - UNP #1"
     ElseIf index == 11
         BodyGen.SetMorph(a, True, "Ankles", None, 0.3)
@@ -751,7 +780,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, -1.1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.15)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -1.5)
-        BodyGen.SetMorph(a, True, "Silhouette_Imitation_UNP_2", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_Imitation_UNP_2", None, 3250227.0)
         Return "Imitation - UNP #2"
     ElseIf index == 12
         BodyGen.SetMorph(a, True, "Ankles", None, 0.55)
@@ -796,7 +825,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, -1.1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.15)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.9)
-        BodyGen.SetMorph(a, True, "Silhouette_Imitation_UNP_Skinny", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_Imitation_UNP_Skinny", None, 3250227.0)
         Return "Imitation - UNP Skinny"
     ElseIf index == 13
         BodyGen.SetMorph(a, True, "Ankles", None, 0.7)
@@ -829,7 +858,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "ShoulderWidth", None, 1)
         BodyGen.SetMorph(a, True, "Waist", None, 0.75)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.25)
-        BodyGen.SetMorph(a, True, "Silhouette_Josie_CBBE_Body_2_Bustier_Nude", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_Josie_CBBE_Body_2_Bustier_Nude", None, 3250227.0)
         Return "Josie CBBE Body 2 (Bustier Nude)"
     ElseIf index == 14
         BodyGen.SetMorph(a, True, "Ankles", None, 0.7)
@@ -862,7 +891,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "ShoulderWidth", None, 1)
         BodyGen.SetMorph(a, True, "Waist", None, 0.75)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.25)
-        BodyGen.SetMorph(a, True, "Silhouette_Josie_CBBE_Body_2_Nude", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_Josie_CBBE_Body_2_Nude", None, 3250227.0)
         Return "Josie CBBE Body 2 (Nude)"
     ElseIf index == 15
         BodyGen.SetMorph(a, True, "Ankles", None, 0.25)
@@ -894,7 +923,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Thighs", None, 0.25)
         BodyGen.SetMorph(a, True, "Waist", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
-        BodyGen.SetMorph(a, True, "Silhouette_Josie_3DBoobs", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_Josie_3DBoobs", None, 3250227.0)
         Return "Josie+3DBoobs"
     ElseIf index == 16
         BodyGen.SetMorph(a, True, "AppleCheeks", None, 0.45)
@@ -947,7 +976,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Thighs", None, 1)
         BodyGen.SetMorph(a, True, "Waist", None, 0.04)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, 0.16)
-        BodyGen.SetMorph(a, True, "Silhouette_OxtonCBBEBody_V6", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_OxtonCBBEBody_V6", None, 3250227.0)
         Return "OxtonCBBEBody+V6"
     ElseIf index == 17
         BodyGen.SetMorph(a, True, "Ankles", None, 0.42)
@@ -989,7 +1018,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "TummyTuck", None, 0.15)
         BodyGen.SetMorph(a, True, "Waist", None, 0.1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
-        BodyGen.SetMorph(a, True, "Silhouette_PLP", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_PLP", None, 3250227.0)
         Return "PLP"
     ElseIf index == 18
         BodyGen.SetMorph(a, True, "Ankles", None, 0.42)
@@ -1030,7 +1059,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "TummyTuck", None, 0.15)
         BodyGen.SetMorph(a, True, "Waist", None, 0.1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
-        BodyGen.SetMorph(a, True, "Silhouette_PLP_V2", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_PLP_V2", None, 3250227.0)
         Return "PLP V2"
     ElseIf index == 19
         BodyGen.SetMorph(a, True, "Ankles", None, 0.45)
@@ -1085,7 +1114,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "SlimThighs", None, 0.2)
         BodyGen.SetMorph(a, True, "SternumDepth", None, 0.1)
         BodyGen.SetMorph(a, True, "Thighs", None, 0.1)
-        BodyGen.SetMorph(a, True, "Silhouette_PNBody_Ver_fe", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_PNBody_Ver_fe", None, 3250227.0)
         Return "PNBody Ver.fe"
     ElseIf index == 20
         BodyGen.SetMorph(a, True, "AppleCheeks", None, 0.5)
@@ -1122,7 +1151,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.41)
-        BodyGen.SetMorph(a, True, "Silhouette_Rebecca_Rose_TWB_Nude", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_Rebecca_Rose_TWB_Nude", None, 3250227.0)
         Return "Rebecca Rose TWB (Nude)"
     ElseIf index == 21
         BodyGen.SetMorph(a, True, "AppleCheeks", None, 0.5)
@@ -1159,12 +1188,12 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.41)
-        BodyGen.SetMorph(a, True, "Silhouette_rose2", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_rose2", None, 3250227.0)
         Return "rose2"
     ElseIf index == 22
         BodyGen.SetMorph(a, True, "7B Lower", None, 1)
         BodyGen.SetMorph(a, True, "7B Upper", None, 1)
-        BodyGen.SetMorph(a, True, "Silhouette_SevenBase", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_SevenBase", None, 3250227.0)
         Return "SevenBase"
     ElseIf index == 23
         BodyGen.SetMorph(a, True, "7B Lower", None, 1)
@@ -1180,7 +1209,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "NipplePerkiness", None, 0.25)
         BodyGen.SetMorph(a, True, "ShoulderTweak", None, 1)
         BodyGen.SetMorph(a, True, "ShoulderWidth", None, 0.8)
-        BodyGen.SetMorph(a, True, "Silhouette_SevenBase_Lower", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_SevenBase_Lower", None, 3250227.0)
         Return "SevenBase Lower"
     ElseIf index == 24
         BodyGen.SetMorph(a, True, "7B Lower", None, 1)
@@ -1199,7 +1228,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "SternumDepth", None, 0.3)
         BodyGen.SetMorph(a, True, "SternumHeight", None, 0.2)
         BodyGen.SetMorph(a, True, "TummyTuck", None, 0.2)
-        BodyGen.SetMorph(a, True, "Silhouette_SevenBase_Slim", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_SevenBase_Slim", None, 3250227.0)
         Return "SevenBase Slim"
     ElseIf index == 25
         BodyGen.SetMorph(a, True, "7B Upper", None, 1)
@@ -1212,7 +1241,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "SlimThighs", None, 0.4)
         BodyGen.SetMorph(a, True, "Thighs", None, 0.3)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
-        BodyGen.SetMorph(a, True, "Silhouette_SevenBase_Upper", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_SevenBase_Upper", None, 3250227.0)
         Return "SevenBase Upper"
     ElseIf index == 26
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.2)
@@ -1243,7 +1272,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "NipplePerk2", None, -0.3)
         BodyGen.SetMorph(a, True, "NipplePerkiness", None, -0.2)
         BodyGen.SetMorph(a, True, "Thighs", None, 0.2)
-        BodyGen.SetMorph(a, True, "Silhouette_That_Gym_Booty_2_0", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_That_Gym_Booty_2_0", None, 3250227.0)
         Return "That Gym Booty 2.0"
     ElseIf index == 27
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1300,7 +1329,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE", None, 3250227.0)
         Return "The Rocket Bomb Body CBBE"
     ElseIf index == 28
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1358,7 +1387,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE_Extra", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE_Extra", None, 3250227.0)
         Return "The Rocket Bomb Body CBBE Extra"
     ElseIf index == 29
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1414,7 +1443,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE_Extra_Extra", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE_Extra_Extra", None, 3250227.0)
         Return "The Rocket Bomb Body CBBE Extra Extra"
     ElseIf index == 30
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1471,7 +1500,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE_Extra_Extra_Extra", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE_Extra_Extra_Extra", None, 3250227.0)
         Return "The Rocket Bomb Body CBBE Extra Extra Extra"
     ElseIf index == 31
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1528,7 +1557,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE_Small", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE_Small", None, 3250227.0)
         Return "The Rocket Bomb Body CBBE Small"
     ElseIf index == 32
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1585,7 +1614,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE_Smaller", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE_Smaller", None, 3250227.0)
         Return "The Rocket Bomb Body CBBE Smaller"
     ElseIf index == 33
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1642,7 +1671,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE_Smallest", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_CBBE_Smallest", None, 3250227.0)
         Return "The Rocket Bomb Body CBBE Smallest"
     ElseIf index == 34
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1699,7 +1728,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB", None, 3250227.0)
         Return "The Rocket Bomb Body TWB"
     ElseIf index == 35
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1756,7 +1785,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB_Extra", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB_Extra", None, 3250227.0)
         Return "The Rocket Bomb Body TWB Extra"
     ElseIf index == 36
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1813,7 +1842,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB_Extra_Extra", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB_Extra_Extra", None, 3250227.0)
         Return "The Rocket Bomb Body TWB Extra Extra"
     ElseIf index == 37
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1870,7 +1899,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB_Extra_Extra_Extra", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB_Extra_Extra_Extra", None, 3250227.0)
         Return "The Rocket Bomb Body TWB Extra Extra Extra"
     ElseIf index == 38
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1927,7 +1956,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB_Small", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB_Small", None, 3250227.0)
         Return "The Rocket Bomb Body TWB Small"
     ElseIf index == 39
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -1984,7 +2013,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB_Smaller", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB_Smaller", None, 3250227.0)
         Return "The Rocket Bomb Body TWB Smaller"
     ElseIf index == 40
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.05)
@@ -2041,7 +2070,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 0.36)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.14)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.29)
-        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB_Smallest", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_The_Rocket_Bomb_Body_TWB_Smallest", None, 3250227.0)
         Return "The Rocket Bomb Body TWB Smallest"
     ElseIf index == 41
         BodyGen.SetMorph(a, True, "AppleCheeks", None, 0.5)
@@ -2078,7 +2107,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Waist", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
         BodyGen.SetMorph(a, True, "WideWaistLine", None, -0.41)
-        BodyGen.SetMorph(a, True, "Silhouette_TWB", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_TWB", None, 3250227.0)
         Return "TWB"
     ElseIf index == 42
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.15)
@@ -2114,7 +2143,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Thighs", None, 0.5)
         BodyGen.SetMorph(a, True, "Waist", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
-        BodyGen.SetMorph(a, True, "Silhouette_Wasteland_Curves_Nude_TWB_Bodyslide_Preset_xml", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_Wasteland_Curves_Nude_TWB_Bodyslide_Preset_xml", None, 3250227.0)
         Return "Wasteland Curves (Nude) - TWB Bodyslide Preset.xml"
     ElseIf index == 43
         BodyGen.SetMorph(a, True, "AppleCheeks", None, 0.4)
@@ -2142,7 +2171,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Thighs", None, 0.25)
         BodyGen.SetMorph(a, True, "Waist", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
-        BodyGen.SetMorph(a, True, "Silhouette_wtaw_body", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_wtaw_body", None, 3250227.0)
         Return "wtaw body"
     ElseIf index == 44
         BodyGen.SetMorph(a, True, "AppleCheeks", None, 0.4)
@@ -2169,7 +2198,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Thighs", None, 0.25)
         BodyGen.SetMorph(a, True, "Waist", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
-        BodyGen.SetMorph(a, True, "Silhouette_wtaw_body_nude", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_wtaw_body_nude", None, 3250227.0)
         Return "wtaw body nude"
     ElseIf index == 45
         BodyGen.SetMorph(a, True, "Ankles", None, 0.25)
@@ -2198,7 +2227,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "ShoulderWidth", None, 0.8)
         BodyGen.SetMorph(a, True, "Thighs", None, 0.25)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_1_a", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_1_a", None, 3250227.0)
         Return "xy - Type 3DCG (Blessed)(1)(a)"
     ElseIf index == 46
         BodyGen.SetMorph(a, True, "Ankles", None, 0.25)
@@ -2227,7 +2256,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "ShoulderWidth", None, 0.8)
         BodyGen.SetMorph(a, True, "Thighs", None, 0.25)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_1_a_Bigger", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_1_a_Bigger", None, 3250227.0)
         Return "xy - Type 3DCG (Blessed)(1)(a)(Bigger)"
     ElseIf index == 47
         BodyGen.SetMorph(a, True, "Ankles", None, 0.25)
@@ -2256,7 +2285,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "ShoulderWidth", None, 0.8)
         BodyGen.SetMorph(a, True, "Thighs", None, 0.25)
         BodyGen.SetMorph(a, True, "Waist", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_1_b", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_1_b", None, 3250227.0)
         Return "xy - Type 3DCG (Blessed)(1)(b)"
     ElseIf index == 48
         BodyGen.SetMorph(a, True, "AppleCheeks", None, 0.6)
@@ -2286,7 +2315,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "ShoulderWidth", None, 0.8)
         BodyGen.SetMorph(a, True, "Thighs", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_a", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_a", None, 3250227.0)
         Return "xy - Type 3DCG (Blessed)(2)(a)"
     ElseIf index == 49
         BodyGen.SetMorph(a, True, "AppleCheeks", None, 0.6)
@@ -2316,7 +2345,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "ShoulderWidth", None, 0.8)
         BodyGen.SetMorph(a, True, "Thighs", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_b", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_b", None, 3250227.0)
         Return "xy - Type 3DCG (Blessed)(2)(b)"
     ElseIf index == 50
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.35)
@@ -2351,7 +2380,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "SlimThighs", None, -0.23)
         BodyGen.SetMorph(a, True, "Thighs", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_Bigger", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_Bigger", None, 3250227.0)
         Return "xy - Type 3DCG (Blessed)(2)(Bigger)"
     ElseIf index == 51
         BodyGen.SetMorph(a, True, "AppleCheeks", None, 0.6)
@@ -2381,7 +2410,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "ShoulderWidth", None, 0.8)
         BodyGen.SetMorph(a, True, "Thighs", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_d", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_d", None, 3250227.0)
         Return "xy - Type 3DCG (Blessed)(2)(d)"
     ElseIf index == 52
         BodyGen.SetMorph(a, True, "AppleCheeks", None, 0.6)
@@ -2412,7 +2441,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "SlimThighs", None, -0.23)
         BodyGen.SetMorph(a, True, "Thighs", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_e", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_e", None, 3250227.0)
         Return "xy - Type 3DCG (Blessed)(2)(e)"
     ElseIf index == 53
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.35)
@@ -2444,7 +2473,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "SlimThighs", None, -0.23)
         BodyGen.SetMorph(a, True, "Thighs", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_e_v2", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_e_v2", None, 3250227.0)
         Return "xy - Type 3DCG (Blessed)(2)(e)(v2)"
     ElseIf index == 54
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.4)
@@ -2476,7 +2505,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "SlimThighs", None, -0.35)
         BodyGen.SetMorph(a, True, "Thighs", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_e_v2_test2", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_e_v2_test2", None, 3250227.0)
         Return "xy - Type 3DCG (Blessed)(2)(e)(v2)(test2)"
     ElseIf index == 55
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.35)
@@ -2508,7 +2537,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "SlimThighs", None, -0.23)
         BodyGen.SetMorph(a, True, "Thighs", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_e_v3", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Blessed_2_e_v3", None, 3250227.0)
         Return "xy - Type 3DCG (Blessed)(2)(e)(v3)"
     ElseIf index == 56
         BodyGen.SetMorph(a, True, "AppleCheeks", None, 0.55)
@@ -2530,7 +2559,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "ShoulderWidth", None, 0.6)
         BodyGen.SetMorph(a, True, "Thighs", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Pawg_1", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Pawg_1", None, 3250227.0)
         Return "xy - Type 3DCG (Pawg)(1)"
     ElseIf index == 57
         BodyGen.SetMorph(a, True, "Ankles", None, 0.25)
@@ -2551,7 +2580,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "ShoulderWidth", None, 0.6)
         BodyGen.SetMorph(a, True, "Thighs", None, 0.25)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Pawg_1_5", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Pawg_1_5", None, 3250227.0)
         Return "xy - Type 3DCG (Pawg)(1.5)"
     ElseIf index == 58
         BodyGen.SetMorph(a, True, "Ankles", None, 0.25)
@@ -2573,7 +2602,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "Thighs", None, 0.25)
         BodyGen.SetMorph(a, True, "Waist", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.1)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Pawg_2", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Pawg_2", None, 3250227.0)
         Return "xy - Type 3DCG (Pawg)(2)"
     ElseIf index == 59
         BodyGen.SetMorph(a, True, "7B Lower", None, 0.35)
@@ -2597,7 +2626,7 @@ String Function ApplyFemale(Actor a, Int index) Global
         BodyGen.SetMorph(a, True, "SlimThighs", None, -0.23)
         BodyGen.SetMorph(a, True, "Thighs", None, 1)
         BodyGen.SetMorph(a, True, "WaistHeight", None, 0.22)
-        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Pawg_2_e", None, 531999.0)
+        BodyGen.SetMorph(a, True, "Silhouette_xy_Type_3DCG_Pawg_2_e", None, 3250227.0)
         Return "xy - Type 3DCG (Pawg)(2)(e)"
     EndIf
     Return ""
@@ -2647,7 +2676,7 @@ String Function ApplyMale(Actor a, Int index) Global
         BodyGen.SetMorph(a, False, "BTPectorals", None, 0.15)
         BodyGen.SetMorph(a, False, "BTStomachFat", None, 0.46)
         BodyGen.SetMorph(a, False, "Hips", None, 0.21)
-        BodyGen.SetMorph(a, False, "Silhouette_BT_Average", None, 531999.0)
+        BodyGen.SetMorph(a, False, "Silhouette_BT_Average", None, 3250227.0)
         Return "BT - Average"
     ElseIf index == 1
         BodyGen.SetMorph(a, False, "AryaydaMuscleSlider", None, 0.57)
@@ -2672,7 +2701,7 @@ String Function ApplyMale(Actor a, Int index) Global
         BodyGen.SetMorph(a, False, "Balls", None, 0.29)
         BodyGen.SetMorph(a, False, "Penis Width", None, 0.2)
         BodyGen.SetMorph(a, False, "TipShape", None, 1)
-        BodyGen.SetMorph(a, False, "Silhouette_BT_Bodybuilder", None, 531999.0)
+        BodyGen.SetMorph(a, False, "Silhouette_BT_Bodybuilder", None, 3250227.0)
         Return "BT - Bodybuilder"
     ElseIf index == 2
         BodyGen.SetMorph(a, False, "BT2AdonisBelt", None, 0.15)
@@ -2709,7 +2738,7 @@ String Function ApplyMale(Actor a, Int index) Global
         BodyGen.SetMorph(a, False, "Hips", None, 1)
         BodyGen.SetMorph(a, False, "Penis Width", None, 1)
         BodyGen.SetMorph(a, False, "TipShape", None, 1)
-        BodyGen.SetMorph(a, False, "Silhouette_BT_Chubby", None, 531999.0)
+        BodyGen.SetMorph(a, False, "Silhouette_BT_Chubby", None, 3250227.0)
         Return "BT - Chubby"
     ElseIf index == 3
         BodyGen.SetMorph(a, False, "BT2AdonisBelt", None, 0.44)
@@ -2737,7 +2766,7 @@ String Function ApplyMale(Actor a, Int index) Global
         BodyGen.SetMorph(a, False, "Hips", None, 0.14)
         BodyGen.SetMorph(a, False, "ThinThigh", None, 0.76)
         BodyGen.SetMorph(a, False, "TigerSanBBMale", None, 0.4)
-        BodyGen.SetMorph(a, False, "Silhouette_BT_Muscular", None, 531999.0)
+        BodyGen.SetMorph(a, False, "Silhouette_BT_Muscular", None, 3250227.0)
         Return "BT - Muscular"
     ElseIf index == 4
         BodyGen.SetMorph(a, False, "BTAMPecAdjust", None, 0.58)
@@ -2763,7 +2792,7 @@ String Function ApplyMale(Actor a, Int index) Global
         BodyGen.SetMorph(a, False, "BTWaist-Smoothing", None, 0.44)
         BodyGen.SetMorph(a, False, "Hips", None, 0.4)
         BodyGen.SetMorph(a, False, "ThinThigh", None, 1)
-        BodyGen.SetMorph(a, False, "Silhouette_BT_Swimmer", None, 531999.0)
+        BodyGen.SetMorph(a, False, "Silhouette_BT_Swimmer", None, 3250227.0)
         Return "BT - Swimmer"
     ElseIf index == 5
         BodyGen.SetMorph(a, False, "BTAMPecAdjust", None, 1)
@@ -2778,10 +2807,10 @@ String Function ApplyMale(Actor a, Int index) Global
         BodyGen.SetMorph(a, False, "BTThinArm", None, 1)
         BodyGen.SetMorph(a, False, "BTWaist-In", None, 0.31)
         BodyGen.SetMorph(a, False, "ThinThigh", None, 1)
-        BodyGen.SetMorph(a, False, "Silhouette_BT_Thin", None, 531999.0)
+        BodyGen.SetMorph(a, False, "Silhouette_BT_Thin", None, 3250227.0)
         Return "BT - Thin"
     ElseIf index == 6
-        BodyGen.SetMorph(a, False, "Silhouette_BT_Zero", None, 531999.0)
+        BodyGen.SetMorph(a, False, "Silhouette_BT_Zero", None, 3250227.0)
         Return "BT - Zero"
     ElseIf index == 7
         BodyGen.SetMorph(a, False, "BTAMPecAdjust", None, 0.1)
@@ -2809,7 +2838,7 @@ String Function ApplyMale(Actor a, Int index) Global
         BodyGen.SetMorph(a, False, "Balls", None, 1)
         BodyGen.SetMorph(a, False, "Hips", None, 0.4)
         BodyGen.SetMorph(a, False, "ThinThigh", None, 1)
-        BodyGen.SetMorph(a, False, "Silhouette_Sirius_Male_preset", None, 531999.0)
+        BodyGen.SetMorph(a, False, "Silhouette_Sirius_Male_preset", None, 3250227.0)
         Return "Sirius Male preset"
     EndIf
     Return ""
