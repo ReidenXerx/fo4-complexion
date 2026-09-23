@@ -4,11 +4,11 @@
   "minMcmVersion": 1,
   "pages": [
     {
-      "pageDisplayName": "Your character",
+      "pageDisplayName": "Bodies",
       "content": [
         {
           "type": "text",
-          "text": "Every NPC gets one of your BodySlide presets the first time you meet them. Your own character gets the most average of them unless you choose one here."
+          "text": "Every NPC gets one of your BodySlide presets the first time you meet them, and keeps it. Your own character gets the most average of them unless you choose one here."
         },
         {
           "type": "section",
@@ -16,7 +16,7 @@
         },
         {
           "type": "dropdown",
-          "id": "iFemale:Player",
+          "id": "iFemale_879cafb3:Player",
           "text": "If your character is female",
           "help": "59 presets that fit your female body. Nothing changes until you press \"Apply to my character\".",
           "valueOptions": {
@@ -86,7 +86,7 @@
         },
         {
           "type": "dropdown",
-          "id": "iMale:Player",
+          "id": "iMale_68da3aca:Player",
           "text": "If your character is male",
           "help": "8 presets that fit your male body. Nothing changes until you press \"Apply to my character\".",
           "valueOptions": {
@@ -106,7 +106,7 @@
         {
           "type": "button",
           "text": "Apply to my character",
-          "help": "Gives your character the preset chosen above for their sex. It REPLACES their body sliders, including any you set in LooksMenu yourself. Close the menu to see it.",
+          "help": "Gives your character the preset chosen above for their sex. It replaces the body sliders LooksMenu and BodyGen set, including ones you set in LooksMenu yourself; body morphs other mods add are left alone. Close the menu to see it.",
           "action": {
             "type": "CallGlobalFunction",
             "script": "Silhouette:Player",
@@ -128,7 +128,7 @@
         {
           "type": "button",
           "text": "Which body do I have?",
-          "help": "Names the preset your character has now.",
+          "help": "Names the preset Silhouette last gave your character.",
           "action": {
             "type": "CallGlobalFunction",
             "script": "Silhouette:Player",
@@ -143,11 +143,33 @@
         {
           "type": "button",
           "text": "Count the bodies around me",
-          "help": "How many people nearby have a Silhouette body, and in how many different presets. Each one, with the preset, is written to the Papyrus log.",
+          "help": "How many people nearby have a Silhouette body, and in how many different presets. Each one, with its preset, is written to the Papyrus log.",
           "action": {
             "type": "CallGlobalFunction",
             "script": "Silhouette:Player",
             "function": "Census",
+            "params": []
+          }
+        },
+        {
+          "type": "button",
+          "text": "Refresh the people around me",
+          "help": "Everyone nearby keeps their preset but gets its values from this build again -- for after you edited a preset or rebuilt your bodies. Body morphs other mods add are left alone.",
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "Silhouette:Player",
+            "function": "Refresh",
+            "params": []
+          }
+        },
+        {
+          "type": "button",
+          "text": "Give the people around me new bodies",
+          "help": "Everyone nearby (never your character) rolls a new body, as if met for the first time. This clears ALL their body sliders, other mods' included, and cannot be undone.",
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "Silhouette:Player",
+            "function": "Reroll",
             "params": []
           }
         }

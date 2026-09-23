@@ -110,16 +110,33 @@ def load(config_path, include_dirs, report):
     return cfg
 
 
-def form_key(text):
-    """OBody writes FormIDs as hex, with or without 0x, sometimes with the load-order
-    byte; LooksMenu wants the id WITHOUT it (it adds the plugin's own). -> 6 hex
-    digits, or None if the key is not hex. For a light (ESL) plugin give the
-    local id; LooksMenu composes 0xFE with the plugin's light index itself."""
+def is_light(data, plugin):
+    """.esl, or the TES4 header's light flag (0x200) on an .esp/.esm."""
+    if plugin.lower().endswith('.esl'):
+        return True
+    p = data / plugin
+    try:
+        with open(p, 'rb') as f:
+            head = f.read(12)
+    except OSError:
+        return False
+    return head[:4] == b'TES4' and bool(int.from_bytes(head[8:12], 'little') & 0x200)
+
+
+def form_key(text, light=False):
+    """OBody writes FormIDs as hex, with or without 0x, often with the load-order
+    byte(s); LooksMenu wants the id WITHOUT them (it adds the plugin's own). ->
+    6 hex digits, or None if the key is not hex or cannot be right.
+
+    A light plugin's id is its last THREE digits: LooksMenu builds
+    0xFE000000 | light index << 12 | (id & 0xFFFFFF), so anything above 0xFFF
+    lands in another plugin's range (OBody's DiscardFormDigits keeps 3 digits for
+    light mods too). An xEdit-style 'FE00A801' is local id 801."""
     try:
         v = int(str(text).strip().lower().removeprefix('0x'), 16)
     except ValueError:
         return None
-    v &= 0xFFFFFF
+    v &= 0xFFF if light else 0xFFFFFF
     return f'{v:06X}' if v else None
 
 
@@ -135,6 +152,11 @@ def compile_lines(cfg, resolve_presets, data, report):
     distribute = cfg.get('distributeRaces') or ['HumanRace']
 
     def plugin_ok(plugin):
+        if plugin.lower().startswith('all'):
+            # _strnicmp(name, "all", 3): LooksMenu reads such a line as an All line.
+            report.append(f'rules: plugin {plugin!r} starts with "All", which LooksMenu reads as an '
+                          f'All line -- its rules cannot work and are skipped')
+            return False
         if not (data / plugin).exists():
             report.append(f'rules: plugin {plugin!r} is not in Data -- LooksMenu will skip its lines')
         return True
@@ -151,7 +173,8 @@ def compile_lines(cfg, resolve_presets, data, report):
     # 5. plugin presets -- every race that takes part, since a line needs one
     for g, key, label in (('female', 'npcPluginFemale', 'Female'), ('male', 'npcPluginMale', 'Male')):
         for plugin, names in cfg.get(key, {}).items():
-            plugin_ok(plugin)
+            if not plugin_ok(plugin):
+                continue
             races = sorted(set(distribute) | set(cfg.get(f'race{label}', {})))
             for race in races:
                 emit(f'{plugin}|All|{label}|{race}', resolve_presets(names, g).get(g))
@@ -160,20 +183,23 @@ def compile_lines(cfg, resolve_presets, data, report):
     for g, key, label in (('female', 'blacklistedNpcsPluginFemale', 'Female'),
                           ('male', 'blacklistedNpcsPluginMale', 'Male')):
         for plugin in cfg.get(key, []):
-            plugin_ok(plugin)
+            if not plugin_ok(plugin):
+                continue
             races = sorted(set(distribute) | set(cfg.get(f'race{label}', {})))
             for race in races:
-                emit(f'{plugin}|All|{label}|{race}', [KEEP])
+                emit(f'{plugin}|All|{label}|{race}', [UNSHAPED])
     for g, key, label in (('female', 'blacklistedRacesFemale', 'Female'),
                           ('male', 'blacklistedRacesMale', 'Male')):
         for race in cfg.get(key, []):
-            emit(f'All|{label}|{race}', [KEEP])
+            emit(f'All|{label}|{race}', [UNSHAPED])
     # 2. per-NPC presets by FormID. A preset list may hold both sexes' presets;
     # each sex's table gets its own.
     for plugin, forms in cfg.get('npcFormID', {}).items():
-        plugin_ok(plugin)
+        if not plugin_ok(plugin):
+            continue
+        light = is_light(data, plugin)
         for key, names in forms.items():
-            fid = form_key(key)
+            fid = form_key(key, light)
             if fid is None:
                 report.append(f'rules: npcFormID {plugin} {key!r} is not a FormID, skipped')
                 continue
@@ -182,17 +208,22 @@ def compile_lines(cfg, resolve_presets, data, report):
                 emit(f'{plugin}|{fid}|{label}', by_g.get(g))
     # 1. per-NPC blacklists by FormID
     for plugin, keys in cfg.get('blacklistedNpcsFormID', {}).items():
-        plugin_ok(plugin)
+        if not plugin_ok(plugin):
+            continue
+        light = is_light(data, plugin)
         for key in keys:
-            fid = form_key(key)
+            fid = form_key(key, light)
             if fid is None:
                 report.append(f'rules: blacklistedNpcsFormID {plugin} {key!r} is not a FormID, skipped')
                 continue
-            emit(f'{plugin}|{fid}', [KEEP])
+            emit(f'{plugin}|{fid}', [UNSHAPED])
     return lines, needed
 
 
-KEEP = 'Silhouette_KeepBase'
+# The template that sets nothing. An NPC it is given stays UNSHAPED: it has no
+# stored morphs, so LooksMenu evaluates it again on every load and it evaluates
+# to nothing again. Safe only as the sole option on its line.
+UNSHAPED = 'Silhouette_Unshaped'
 
 
 def write_default(path):

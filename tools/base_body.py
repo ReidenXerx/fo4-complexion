@@ -40,11 +40,18 @@ import xml.etree.ElementTree as ET
 from nif_geometry import read_shapes
 
 # Share of the displacement a preset may leave unexplained and still be THE preset
-# the body was built from. Measured matches leave 0.005% and 0.015%; the closest
-# wrong answer seen leaves 3.7% (the right preset on the wrong reference mesh).
+# the body was built from. Measured matches leave 0.005% and 0.015%. A share alone
+# has less margin than it looks: the right preset on the wrong reference mesh
+# ("CBBE Body" instead of "CBBE Body Physics") leaves only 0.105%. What separates
+# them cleanly is the WORST vertex: 0.0313 for a true match -- half the 1/16 step
+# of a half float between |64| and |128| -- against 0.164 for the wrong mesh.
 MATCH = 0.005
-# Below this RMS vertex offset the built mesh IS the reference: every slider at 0.
-ZEROED_RMS = 0.01
+MATCH_MAX = 0.035
+# A zeroed build IS its reference: measured, both rebuilt bodies and every zeroed
+# outfit differ from theirs by exactly 0.0. A tolerance only lets real slider
+# values through (BTAMBackAdjust at 100% moves the male body by RMS 0.004).
+ZEROED_MAX = 1e-4
+ZEROED_RMS = ZEROED_MAX
 
 BODY_OUTPUT = r'meshes\actors\character\characterassets'
 
@@ -275,8 +282,8 @@ def measure(data, body, presets, built_roots=None):
         disp = {n: [(a[0] - r[0], a[1] - r[1], a[2] - r[2]) for a, r in zip(built[n], ref[n])]
                 for n in shapes}
         total = sum(x * x + y * y + z * z for n in shapes for x, y, z in disp[n])
-        count = sum(len(disp[n]) for n in shapes)
-        if (total / count) ** 0.5 < ZEROED_RMS:
+        worst = max(max(abs(x), abs(y), abs(z)) for n in shapes for x, y, z in disp[n])
+        if worst <= ZEROED_MAX:
             return {'status': 'zeroed', 'set': ss, 'preset': None, 'unexplained': 0.0,
                     'baked': {}, 'note': f'{body} is the bare {ss["name"]} reference mesh'}
 
@@ -284,27 +291,30 @@ def measure(data, body, presets, built_roots=None):
         candidates.append(('(slider set defaults, no preset)',
                            resolve({'sliders': {}}, ss)))
         for name, values in candidates:
-            resid = 0.0
+            resid, far = 0.0, 0.0
             for n in shapes:
                 pred = _predict(values, tri[n])
                 for i, (x, y, z) in enumerate(disp[n]):
                     px, py, pz = pred.get(i, (0.0, 0.0, 0.0))
-                    resid += (x - px) ** 2 + (y - py) ** 2 + (z - pz) ** 2
+                    d2 = (x - px) ** 2 + (y - py) ** 2 + (z - pz) ** 2
+                    resid += d2
+                    far = max(far, d2)
             share = resid / total
             if best is None or share < best[0]:
-                best = (share, ss, name, values)
+                best = (share, ss, name, values, far ** 0.5)
 
     if best is None:
         return {'status': 'unmeasurable', 'set': None, 'preset': None, 'unexplained': None,
                 'baked': None,
                 'note': f'no BodySlide reference mesh on disk matches {body}.nif'}
-    share, ss, name, values = best
-    if share <= MATCH:
+    share, ss, name, values, far = best
+    if share <= MATCH and far <= MATCH_MAX:
         return {'status': 'preset', 'set': ss, 'preset': name, 'unexplained': share,
                 'baked': values,
                 'note': f'{body} was built from "{name}" on {ss["name"]}'}
     return {'status': 'unknown', 'set': ss, 'preset': name, 'unexplained': share,
             'baked': None,
             'note': (f'{body} matches no preset on disk: the closest, "{name}", leaves '
-                     f'{100 * share:.1f}% of its shape unexplained. It was probably built '
-                     f'with sliders moved by hand and never saved as a preset.')}
+                     f'{100 * share:.2f}% of its shape unexplained, {far:.3f} units at the worst '
+                     f'vertex. It was probably built with sliders moved by hand and never saved '
+                     f'as a preset.')}
