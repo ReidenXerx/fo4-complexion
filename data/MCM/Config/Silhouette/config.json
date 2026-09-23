@@ -135,6 +135,21 @@
             "function": "ShowCurrent",
             "params": []
           }
+        },
+        {
+          "type": "section",
+          "text": "Everyone else"
+        },
+        {
+          "type": "button",
+          "text": "Count the bodies around me",
+          "help": "How many people nearby have a Silhouette body, and in how many different presets. Each one, with the preset, is written to the Papyrus log.",
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "Silhouette:Player",
+            "function": "Census",
+            "params": []
+          }
         }
       ]
     }
