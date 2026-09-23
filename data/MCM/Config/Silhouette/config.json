@@ -16,13 +16,14 @@
         },
         {
           "type": "dropdown",
-          "id": "iFemale_879cafb3:Player",
+          "id": "iFemale_debf592f:Player",
           "text": "If your character is female",
-          "help": "59 presets that fit your female body. Nothing changes until you press \"Apply to my character\".",
+          "help": "60 presets that fit your female body. Nothing changes until you press \"Apply to my character\".",
           "valueOptions": {
             "sourceType": "ModSettingInt",
             "options": [
               "ALSL Body 1.0",
+              "Anatomy Zero",
               "CBBE Athletic",
               "CBBE Chubby",
               "CBBE Curvy",
