@@ -111,6 +111,11 @@ Two consequences nobody writes down:
    dummy's morphs onto the player (`CloneMorphs`), past any line for `0x7`. Give the dummies what
    the player should get.
 
+4. **Another mod's morph shuts BodyGen out.** "No stored morphs" means none from anyone: an actor
+   that already holds, say, AAF's `Erection` morph from an earlier scene (measured in a real
+   co-save) is never evaluated, so it never gets a BodyGen body. Silhouette's MCM "Give the
+   people around me new bodies" (`RegenerateMorphs`) clears such actors and rolls them.
+
 Stored morphs survive save and load with any name: `MorphValueMap::Save` writes every entry and
 `Load` drops only zero values and keywords that no longer resolve — nothing is checked against a
 `.tri`. So a marker is permanent.
