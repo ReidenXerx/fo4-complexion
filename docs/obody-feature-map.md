@@ -20,20 +20,28 @@ Silhouette writes — see [bodygen-format.md](bodygen-format.md) for the exact s
 
 ## Rules, in OBody's priority order
 
-OBody resolves faction → npcFormID → npc name → npcPlugin → race → random. In BodyGen, priority is
-**line order**: the random pool first, then each rule below it, most important last.
+OBody's order, read from `OBody::GenerateActorBody` (highest first): per-NPC blacklist (name or
+FormID) → per-NPC preset (`npcFormID`, `npc`) → plugin and race blacklists → faction → plugin → race
+→ random. In BodyGen, priority is **line order** (a later line overwrites an earlier one for the same
+NPC), so `tools/rules.py` writes them in reverse under the random pool, the player's lines last.
+
+The config is OBody's own shape, key for key: `F4SE/Plugins/Silhouette/Silhouette_presetDistributionConfig.json`,
+plus `includes/*.json` (OBody's `obody_includes`: only `npc`, `npcFormID`, `npcPluginFemale/Male`,
+alphabetical, later wins). Silhouette adds one key, `distributeRaces` (default `["HumanRace"]`):
+OBody distributes to every NPC race, but in Fallout 4 only races wearing the human body should.
 
 | OBody key | BodyGen | Phase |
 | --- | --- | --- |
-| `raceFemale` / `raceMale` | `All\|Female\|<Race>=...` | 1b |
-| `npcPluginFemale` / `npcPluginMale` | `<Plugin>\|All\|Female\|HumanRace=...` | 1b |
-| `npcFormID` | `<Plugin>\|<FormID>=...` (no load-order byte; ESL supported; leveled lists expand) | 1b |
-| `npc` (by name) | Not in BodyGen. Resolved at **build time** by reading the plugins' `NPC_` records (`FULL` name → FormID), then written as FormID lines | 1b |
-| `factionFemale` / `factionMale` | Not in BodyGen. Build time: `NPC_` `SNAM` faction list → FormID lines. Run-time faction changes need Phase 2 | 1b / 2 |
-| `blacklistedNpcs`, `…FormID`, `…PluginFemale/Male`, `blacklistedRacesFemale/Male` | A dedicated line whose only template sets nothing. Safe as a blacklist **only** because every option on that line is zero (see "A template that sets nothing re-rolls" in bodygen-format.md) | 1b |
-| `blacklistedPresetsFromRandomDistribution` | Left out of the pool at generation. Zeroed presets are left out by default, as OBody's shipped config does | **1 — zeroed done**, list 1b |
-| `blacklistedPresetsShowInOBodyMenu` | Picker option | 2 |
-| `obody_includes/*.json` (only `npc`, `npcFormID`, `npcPluginFemale/Male`; alphabetical, later wins) | `includes/*.json` read by the generator, same keys, same order | 1b |
+| `raceFemale` / `raceMale` | `All\|Female\|<Race>=...` (race = editor ID, as LooksMenu's `GetRaceByName` matches) | **1b — done** |
+| `npcPluginFemale` / `npcPluginMale` | `<Plugin>\|All\|Female\|<Race>=...`, one line per distributed race (a plugin line with no race reaches only race-less NPCs) | **1b — done** |
+| `npcFormID` | `<Plugin>\|<FormID>\|<Sex>=...`, one line per sex of the listed presets (no load-order byte; ESL supported; leveled lists expand) | **1b — done** |
+| `npc` (by name) | Not expressible in BodyGen, and base-game names are localised inside `Fallout4 - Interface.ba2`. Read and reported; resolved at run time by the plugin | 2 |
+| `factionFemale` / `factionMale` | Not expressible in BodyGen. Read and reported; resolved at run time by the plugin (which also sees faction changes) | 2 |
+| `blacklistedNpcsFormID`, `…PluginFemale/Male`, `blacklistedRacesFemale/Male` | A dedicated line whose only template sets nothing. Safe as a blacklist **only** because it is the only option on its line (see "A template that sets nothing re-rolls" in bodygen-format.md); `verify_bodygen.py` fails a line that mixes one into a random choice | **1b — done** |
+| `blacklistedNpcs` (by name) | Needs names, as `npc` | 2 |
+| `blacklistedPresetsFromRandomDistribution` | Left out of the pool at generation; rules may still hand them out (a template is written for any preset a rule names). Zeroed presets are left out by default, as OBody's shipped config does | **1b — done** |
+| `blacklistedPresetsShowInOBodyMenu` | Whether those presets still appear in the MCM player picker (default true, as OBody) | **1b — done** |
+| `obody_includes/*.json` (only `npc`, `npcFormID`, `npcPluginFemale/Male`; alphabetical, later wins) | `F4SE/Plugins/Silhouette/includes/*.json`, same keys, same order; other keys in an include are reported and ignored | **1b — done** |
 | `blacklistedRaces… "ElderRace"` default | No elder race in FO4. Ghouls (`GhoulRace`) have their own body meshes and are simply not named | — |
 
 ## In-game picker (OBody menu)

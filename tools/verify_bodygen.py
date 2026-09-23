@@ -195,7 +195,7 @@ def parse_picker_script(path):
 def check_picker(args, templates, player, problems):
     import json
     mcm = args.dir.parent.parent.parent.parent.parent / 'MCM/Config/Silhouette'
-    psc = sg.ROOT / 'papyrus/Silhouette/Player.psc'
+    psc = args.psc
     if not (mcm / 'config.json').exists() or not psc.exists():
         problems.append(f'picker files missing ({mcm}\\config.json or {psc})')
         return
@@ -255,6 +255,8 @@ def main():
                     help='a folder BodySlide built into (repeatable), searched before Data')
     ap.add_argument('--dir', type=pathlib.Path,
                     default=sg.ROOT / 'data/F4SE/Plugins/F4EE/BodyGen/Loose')
+    ap.add_argument('--psc', type=pathlib.Path, default=sg.ROOT / 'papyrus/Silhouette/Player.psc',
+                    help='the generated picker script source to check against the menu')
     args = ap.parse_args()
     roots = sg.built_roots(args)
     body_file = {b: base_body.locate(roots, f'Meshes/Actors/Character/CharacterAssets/{b}.nif')
@@ -272,18 +274,31 @@ def main():
     # ---- which templates each gender's pool holds, and what the player gets.
     # LooksMenu lets a later line overwrite an earlier one per NPC, so the player's
     # table entry is whatever the LAST line naming them says.
-    pool = {'female': [], 'male': []}
+    def sets_nothing(t):
+        vals = fixed_values(templates[t])
+        return vals is not None and not any(vals.values())
+
+    handed_out = set()          # every template any line can give an NPC
     player = {}
     for form, groups, n in rules:
-        head = form[0].lower()
-        if head.startswith('all') and len(form) >= 3:
-            gender = form[1].lower()
-            if gender in pool:
-                pool[gender] += [t for g in groups for t in g]
-                player[gender] = (n, groups)          # the All line includes the player
-        elif head == 'fallout4.esm' and form[1] == '7':
-            gender = form[2].lower() if len(form) > 2 else None
-            for g in ([gender] if gender in ('female', 'male') else ['female', 'male']):
+        low = [x.lower() for x in form]
+        for grp in groups:
+            if len(grp) > 1 and any(sets_nothing(t) for t in grp):
+                problems.append(f'morphs line {n}: a template that sets nothing shares a choice with '
+                                f'others -- an NPC that rolls it is rolled again on the next load, and '
+                                f'again, until it lands on one that sets something')
+            handed_out.update(t for t in grp if not sets_nothing(t))
+        # Lines that reach the Player record: All|G|HumanRace, Fallout4.esm|All|G|HumanRace
+        # and Fallout4.esm|7[|G]. The last one per gender is what the player gets.
+        genders = None
+        if low[0].startswith('all') and len(low) >= 3 and low[-1] == 'humanrace':
+            genders = [low[1]]
+        elif low[0] == 'fallout4.esm' and len(low) >= 4 and low[1] == 'all' and low[-1] == 'humanrace':
+            genders = [low[2]]
+        elif low[0] == 'fallout4.esm' and len(low) >= 2 and low[1] == '7':
+            genders = [low[2]] if len(low) > 2 else ['female', 'male']
+        for g in genders or []:
+            if g in ('female', 'male'):
                 player[g] = (n, groups)
     for g in ('female', 'male'):
         if g not in player:
@@ -301,24 +316,29 @@ def main():
         else:
             print(f'{g} player: {options[0]} (line {n})')
 
-    # ---- every pooled template must be fixed-valued and carry its own marker
+    # ---- every template handed out must be fixed-valued and carry its own marker
     tris = {g: base_body.read_tri(body_file[b].with_suffix('.tri')) for g, b in sg.BODIES.items()}
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
-    for g in pool:
-        for t in pool[g]:
-            vals = fixed_values(templates[t])
-            if vals is None:
-                problems.append(f'{t}: not a single fixed-value set; cannot verify')
-            elif vals.get(t) != 1.0:
-                problems.append(f'{t}: no marker "{t}@1" -- a roll that sets nothing re-rolls every load')
-            elif t in morphs_of[g]:
-                problems.append(f'{t}: the marker names a real morph and would move the body')
-
-    # ---- build every body and compare it with its preset
     presets = sg.read_presets(args.data / 'Tools/BodySlide/SliderPresets')
     for p in presets:
         p.update(sg.classify(p, morphs_of['female'], morphs_of['male']))
     by_template = {sg.template_name(p): p for p in presets}
+    pool = {'female': [], 'male': []}
+    for t in sorted(handed_out):
+        vals = fixed_values(templates[t])
+        p = by_template.get(t)
+        if vals is None:
+            problems.append(f'{t}: not a single fixed-value set; cannot verify')
+        elif vals.get(t) != 1.0:
+            problems.append(f'{t}: no marker "{t}@1" -- a roll that sets nothing re-rolls every load')
+        elif p is None or p['gender'] not in pool:
+            problems.append(f'{t}: no preset of that name to compare with')
+        elif t in morphs_of[p['gender']]:
+            problems.append(f'{t}: the marker names a real morph and would move the body')
+        else:
+            pool[p['gender']].append(t)
+
+    # ---- build every body and compare it with its preset
 
     worst = {}
     for g, body in sg.BODIES.items():

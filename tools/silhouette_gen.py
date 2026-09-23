@@ -66,6 +66,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 import base_body
+import rules
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DEFAULT_DATA = pathlib.Path(r'D:\GOGGames\Fallout 4 GOTY\Data')
@@ -437,6 +438,9 @@ def main():
                     help='the mod folder to write into (default: this repo\'s data/)')
     ap.add_argument('--psc', type=pathlib.Path, default=ROOT / 'papyrus/Silhouette/Player.psc',
                     help='where the generated picker script source goes')
+    ap.add_argument('--config', type=pathlib.Path, default=None,
+                    help='the rules file (default: data/F4SE/Plugins/Silhouette/'
+                         'Silhouette_presetDistributionConfig.json; includes/ beside it)')
     ap.add_argument('--no-partial', action='store_true',
                     help='random pool uses full fits only (owner default: include partial)')
     ap.add_argument('--compensate', action='store_true',
@@ -494,10 +498,20 @@ def main():
             print(f'     (--compensate cannot help: the baked shape matches no preset on disk.)')
     print()
 
+    # ---- the rules (OBody's config keys; tools/rules.py)
+    report = []
+    cfg_file = args.config or (ROOT / 'data/F4SE/Plugins/Silhouette' / rules.CONFIG_NAME)
+    cfg = rules.load(cfg_file, [cfg_file.parent / 'includes',
+                                args.data / 'F4SE/Plugins/Silhouette/includes'], report)
+    not_random = {n.casefold() for n in cfg.get('blacklistedPresetsFromRandomDistribution', [])}
+
     # ---- the pools
     pools = {'female': [], 'male': []}
     buckets = collections.defaultdict(list)
-    zeroed = []
+    zeroed, held_back = [], []
+    for p in presets:
+        if p['kind'] != 'empty':
+            p['band'] = band(p, family[p['gender']])
     for p in presets:
         if p['kind'] == 'empty':
             buckets['empty'].append(p)
@@ -506,10 +520,12 @@ def main():
             buckets['clothed-variant'].append(p)
             continue
         g = p['gender']
-        b = band(p, family[g])
-        p['band'] = b
+        b = p['band']
         buckets[f'{g}-{b}'].append(p)
         if not (b == 'full' or (b == 'partial' and not args.no_partial)):
+            continue
+        if p['name'].casefold() in not_random:
+            held_back.append(p)
             continue
         target = {k: v for k, v in target_values(p, base[g]).items() if k in morphs_of[g]}
         if not any(target.values()):
@@ -543,12 +559,48 @@ def main():
     if small_only:
         print(f'sliders with only a "small" value (a FO4 build uses the default): {small_only}')
 
+    if held_back:
+        print('held back from random distribution by the config: ' + ', '.join(p['name'] for p in held_back))
+
     for g in BODIES:
         names = collections.Counter(n for n, _l, _p in pools[g])
         clash = [n for n, c in names.items() if c > 1]
         if clash:
             raise SystemExit(f'two presets reduce to the same template name: {clash}')
         print(f'\n{g} random pool: {len(pools[g])} template(s)')
+
+    # ---- rule lines, and templates for presets only the rules name
+    by_name = {p['name'].casefold(): p for p in presets if p['kind'] != 'empty'}
+    extra = {}                                       # template name -> (line, preset)
+
+    def resolve_presets(names, gender):
+        out = {'female': [], 'male': []}
+        for n in names if isinstance(names, list) else [names]:
+            p = by_name.get(str(n).casefold())
+            if p is None:
+                report.append(f'rules: no preset named {n!r}, skipped')
+                continue
+            g = p['gender']
+            if gender and g != gender:
+                report.append(f'rules: {p["name"]!r} is a {g} preset, not usable for {gender} NPCs')
+                continue
+            if p['band'] not in ('full', 'partial'):
+                report.append(f'rules: {p["name"]!r} does not fit the installed {g} body '
+                              f'({p["band"]}), skipped')
+                continue
+            name = template_name(p)
+            if not any(name == n2 for n2, _l, _p in pools[g]) and name not in extra:
+                target = {k: v for k, v in target_values(p, base[g]).items() if k in morphs_of[g]}
+                extra[name] = (template_line(name, target, baked[g], morphs_of[g], p['name']), p)
+            out[g].append(name)
+        return out
+
+    rule_lines, _needed = rules.compile_lines(cfg, resolve_presets, args.data, report)
+    distribute = cfg.get('distributeRaces') or ['HumanRace']
+    print(f'\nrules: {len(rule_lines)} line(s), {len(extra)} extra template(s); random distribution '
+          f'races: {", ".join(distribute)}')
+    for r in report:
+        print(f'  {r}')
 
     # ---- the player: never randomised; the most average body unless they pick
     # one in MCM (owner, 2026-09-23). The picker offers every preset that fits,
@@ -560,6 +612,8 @@ def main():
             if p['gender'] != g or p['kind'] != 'body':
                 continue
             if not (p['band'] == 'full' or (p['band'] == 'partial' and not args.no_partial)):
+                continue
+            if p['name'].casefold() in not_random and not cfg.get('blacklistedPresetsShowInOBodyMenu', True):
                 continue
             target = {k: v for k, v in target_values(p, base[g]).items() if k in morphs_of[g]}
             name = template_name(p)
@@ -618,15 +672,27 @@ def main():
                 t.append(f'# {p["name"]}  {100*p["fit"]:.0f}% fit  families={p["families"]}')
                 t.append(f'{name}={", ".join(line)}')
             t.append('')
+        if extra:
+            t.append('# --- presets only the rules hand out ---')
+            for name, (line, p) in sorted(extra.items()):
+                t.append(f'# {p["name"]}  {p["gender"]}  {100*p["fit"]:.0f}% fit')
+                t.append(f'{name}={", ".join(line)}')
+            t.append('')
         tfile.write_text('\n'.join(t) + '\n', encoding='ascii', errors='replace')
 
         # Order IS priority: LooksMenu lets a later line overwrite an earlier one.
-        # The broad random pool goes first; rules and blacklists go below it.
+        # The broad random pool goes first; rules and blacklists go below it, in
+        # the reverse of OBody's priority (tools/rules.py).
         m = ['# Silhouette - generated. Later lines override earlier ones for the same NPC.',
              '# Always name a race: "All|Female" alone matches only NPCs that have none.', '']
         for g, label in (('female', 'Female'), ('male', 'Male')):
             if pools[g]:
-                m.append(f'All|{label}|HumanRace=' + '|'.join(n for n, _l, _p in pools[g]))
+                for race in distribute:
+                    m.append(f'All|{label}|{race}=' + '|'.join(n for n, _l, _p in pools[g]))
+        if rule_lines:
+            m += ['', '# Rules from Silhouette_presetDistributionConfig.json and includes,',
+                  '# lowest priority first: race, plugin, blacklists, FormID, FormID blacklists.']
+            m += rule_lines
         m += ['',
               '# The player (Fallout4.esm 0x7) is NEVER randomised: without these lines',
               '# the All lines above would include them. A character with no body sliders',
@@ -638,6 +704,10 @@ def main():
         mfile.write_text('\n'.join(m) + '\n', encoding='ascii', errors='replace')
         print(f'\nwrote {tfile}\nwrote {mfile}')
 
+        cfg_file = root / 'F4SE/Plugins/Silhouette' / rules.CONFIG_NAME
+        if not cfg_file.exists():
+            rules.write_default(cfg_file)
+            print(f'wrote {cfg_file} (every OBody key, empty)')
         write_mcm(root / 'MCM/Config' / MOD, picker, default_index, average)
         write_papyrus(args.psc, picker)
         print(f'wrote {root / "MCM/Config" / MOD}\\config.json + settings.ini')

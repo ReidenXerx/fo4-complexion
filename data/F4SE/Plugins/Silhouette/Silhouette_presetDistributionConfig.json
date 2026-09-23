@@ -1,0 +1,21 @@
+{
+  "npcFormID": {},
+  "npc": {},
+  "factionFemale": {},
+  "factionMale": {},
+  "npcPluginFemale": {},
+  "npcPluginMale": {},
+  "raceFemale": {},
+  "raceMale": {},
+  "blacklistedNpcs": [],
+  "blacklistedNpcsFormID": {},
+  "blacklistedNpcsPluginFemale": [],
+  "blacklistedNpcsPluginMale": [],
+  "blacklistedRacesFemale": [],
+  "blacklistedRacesMale": [],
+  "blacklistedPresetsFromRandomDistribution": [],
+  "blacklistedPresetsShowInOBodyMenu": true,
+  "distributeRaces": [
+    "HumanRace"
+  ]
+}

@@ -109,3 +109,20 @@ RMS over the vertices, to the **mean body** of the random pool — the pool's me
 word means. For women, whose collection has no preset called average, it is "xy - Type 3DCG
 (Blessed)(2)(a)" (0.467 units from the mean body). "CBBE Vanilla" was 48th of 58, so "vanilla" and
 "average" are not the same thing here. Partial fits are not candidates until S-4 is settled in game.
+
+## S-11 — Rules are OBody's config, compiled in OBody's order
+
+Agent decision, 2026-09-23, from OBody's source. The config file and includes use OBody's keys and
+shapes unchanged, so an OBody user needs no new vocabulary. Priority is the one
+`OBody::GenerateActorBody` actually implements — per-NPC blacklist, per-NPC preset, plugin/race
+blacklist, faction, plugin, race, random — not the one commonly summarised; BodyGen expresses
+priority only as line order, so the lines are written in reverse (`tools/rules.py`).
+
+What a morphs.ini line cannot name — an NPC's display name (`npc`, `blacklistedNpcs`) or a faction
+(`faction*`) — is read, validated and reported as pending, not guessed: base-game names are localised
+into string tables inside `Fallout4 - Interface.ba2`, and the Phase 2 plugin can ask the game
+directly. ORefit keys are reported the same way.
+
+One addition, `distributeRaces` (default `["HumanRace"]`): OBody gives a body to every NPC race; in
+Fallout 4 only races that wear the human body should, and naming them is the only way a BodyGen line
+reaches them.
