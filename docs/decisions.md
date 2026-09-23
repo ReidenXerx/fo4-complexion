@@ -221,3 +221,83 @@ BodyGen can roll them.
   its preset, so the body check still covers every template.
 - AnusBack stays out of the random variety for now. It moves the anal ring ~0.85 back toward ZeX's
   anus bones, so it is an alignment control for fo4-anatomy's anus decision, not a taste.
+
+## S-18 — Phase 2: the plugin decides, a Papyrus bridge applies, BodyGen keeps distributing
+
+Owner poll, 2026-09-23: production-ready means **full v1 with the F4SE plugin**. Agent decisions on
+its shape, from the sources (the map: [phase2.md](phase2.md)):
+- LooksMenu offers other plugins no C++ interface: `f4ee/exports.def` exports only F4SE's entry
+  points, and its message handler answers only F4SE's own messages. Its Papyrus `BodyGen` is the
+  only door to the morph store.
+- A plugin must not dispatch into the Papyrus VM. Rapport crashed twice in
+  `DispatchMethodCallImpl`, because F4SE tasks run on a BSJobs thread and the VM packs arguments
+  through the per-thread scrap heap. So `Silhouette.dll` decides and queues, and
+  `Silhouette:Bridge` (one quest script, ONE timer, per Rapport's scar) asks and does every
+  LooksMenu call. MCM hotkeys call the bridge directly, so the picker previews instantly.
+- BodyGen keeps doing random distribution. It applies a body at load, before anyone looks, and a
+  plugin reaching LooksMenu through Papyrus arrives a poll later. The plugin adds only what a file
+  cannot express.
+- Built against alandtse/CommonLibF4 (the commit Rapport runs, `ba22620e`), OG 1.10.163 only,
+  refusing any other runtime.
+
+## S-19 — The generator stays the compiler; the plugin reads a catalog
+
+Agent decision, 2026-09-23. `silhouette_gen.py --write` also writes
+`F4SE/Plugins/Silhouette/catalog.json`: every preset that fits, per sex, with its final values and
+its classification; the player defaults; the compiled rules, including the tiers BodyGen already
+carries, so the plugin knows when NOT to act; and the ORefit sets. The plugin re-derives nothing
+the generator measures. The catalog carries the build and stamp, and the plugin refuses to act on
+rules or ORefit when they disagree with the BodyGen files, and says so.
+
+## S-20 — ORefit writes final values and restores a snapshot
+
+Agent decision, 2026-09-23, from both sources. OBody puts the clothed set under a second key
+("OClothe"), and RaceMenu adds keys, so a negative delta works. LooksMenu takes the MAXIMUM over
+keys (`UserValues::GetEffectiveValue` is `std::max_element`), so a refit that lowers a value cannot
+live under a key of its own. While an NPC is clothed, Silhouette's own (unkeyed) layer holds the
+refit's final values. Before writing them, the bridge snapshots exactly those morphs into the
+plugin's co-save, and puts the snapshot back on undressing. An NPC's values are their preset plus
+their own rolled variety, or a picker choice, or a hand edit, and only a snapshot knows which.
+Clothed follows OBody in Fallout 4's slots: BODY (33), [U] Torso (36) or [A] Torso (41), not
+blacklisted, or any force-refit item. A refit comes, in order, from the outfit's own refit preset,
+`<Preset>-Refit`, `Female-Refit`/`Male-Refit`, and finally the built-in set for this body.
+
+## S-21 — Variety rides on BodyGen ranges; men get nipples and balls only
+
+Owner polls, 2026-09-23. Nipple variety for both sexes, plus ball size for men. Shaft length and
+width are NEVER varied. The owner asked whether it would harm "alignment of penis-hole-mouth", and it
+would: animations aim the penis bones, and fo4-anatomy's collision spheres are sized to BodyTalk's
+current shaft (r 2.0 against a visible 1.55). A wider shaft clips through the lips; a thinner one
+opens them with nothing inside. Same mechanism as S-17: `Morph@low:high` entries in the templates,
+from `tools/variety.json`. One loader reads both range files, refuses runtime states (S-16), and
+FAILS if both files name the same morph. AnusBack is never randomised (S-17).
+
+## S-22 — The NPC picker is hotkeys and an MCM page
+
+Owner poll, 2026-09-23. Aim at an NPC and press Pick: they become the target. Next and Previous
+cycle every preset that fits their body, live, with the name shown. Keep records the choice; Cancel
+restores exactly what they had. The MCM page shows the target with a dropdown of every preset,
+plus Apply, Back to random and Which body. There is no custom Scaleform menu: it would be several
+times the work, and menu code is where FO4 plugins crash (CommonLibF4's `VisitMembers` on 1.10.163).
+
+## S-23 — Rules only the runtime can see: name, faction, name blacklist
+
+Agent decision, 2026-09-23. OBody's priority stands (S-11). The plugin acts only when a NAME or
+FACTION tier wins for an NPC: it assigns that preset, and the bridge replaces BodyGen's roll. A name
+blacklist leaves the NPC bare, with a stored blacklist marker (a morph no body has), so BodyGen
+never rolls them again. OBody's `obody_blacklisted` morph does the same job. Names are the NPC's
+in-game display name, as OBody's users write them.
+
+## S-24 — The API and events are OBody's, in Papyrus
+
+Agent decision, 2026-09-23. `Silhouette:API` offers global functions named as in OBodyNative. The
+bridge raises the events as custom events that any script can register for: OnActorGenerated,
+OnActorNaked, OnActorRemovingClothes and OnORefitChanged. The plugin never raises an event itself
+(S-18).
+
+## S-25 — The plugin's co-save: who it assigned, why, and what ORefit took
+
+Agent decision, 2026-09-23. It keeps a record per reference: the preset it assigned and the tier
+that chose it (name rule, faction rule, picker, API), the stamp, whether ORefit is on, and ORefit's
+snapshot. Form ids are resolved through F4SE, so load-order changes are followed. A new game
+starts empty.
