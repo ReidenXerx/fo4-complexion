@@ -104,7 +104,26 @@ PLAYER_GUARD = rules.UNSHAPED
 # Animated Fannies-style scripts do the same with the Penetrate sliders. A preset that sets one
 # would put it in the UNKEYED layer, where nothing ever takes it away. That happened with
 # Sirius_Male_preset (Erection 100%): two males carried a permanent erection (co-save, 2026-09-23).
-STATE_MORPHS = ('Erection', 'Erection Up', 'Erection Down', 'CErection', 'VaginaPenetrate', 'AnusPenetrate')
+STATE_MORPHS = ('Erection', 'Erection Up', 'Erection Down', 'CErection', 'VaginaPenetrate', 'AnusPenetrate',
+                'VaginaSpread', 'ButtcheeksSpread')
+
+# Per-woman genital shape variety (S-17): {morph: (low, high)} from tools/genital_shapes.json, appended to
+# every female template as Morph@low:high so LooksMenu rolls each woman her own shape. Only morphs the
+# body has; never a runtime state (S-16).
+GENITAL_SHAPES_FILE = pathlib.Path(__file__).resolve().parent / 'genital_shapes.json'
+
+
+def genital_shapes():
+    import json
+    if not GENITAL_SHAPES_FILE.exists():
+        return {}
+    ranges = json.loads(GENITAL_SHAPES_FILE.read_text(encoding='utf-8')).get('ranges', {})
+    out = {}
+    for morph, (low, high) in ranges.items():
+        if morph in STATE_MORPHS:
+            raise SystemExit(f'{GENITAL_SHAPES_FILE.name}: {morph} is a runtime state (S-16), not a shape')
+        out[morph] = (float(low), float(high))
+    return out
 
 
 # --------------------------------------------------------------------------
@@ -221,7 +240,7 @@ def target_values(preset, base):
     return dict(preset['sliders'])      # no set to read defaults from: as written
 
 
-def template_text(name, values, stamp):
+def template_text(name, values, stamp, ranges=()):
     """A template's right-hand side: the morphs LooksMenu must add to the base body
     to reach the preset, then the marker. `values` comes from morph_values().
 
@@ -231,7 +250,8 @@ def template_text(name, values, stamp):
     value is free to say which generation of the files rolled this NPC -- the
     manifest of that generation names the exact preset and its values (S-12).
     """
-    return [f'{m}@{fmt(v)}' for m, v in values] + [f'{name}@{stamp}']
+    return ([f'{m}@{fmt(v)}' for m, v in values] + [f'{m}@{fmt(lo)}:{fmt(hi)}' for m, (lo, hi) in ranges]
+            + [f'{name}@{stamp}'])
 
 
 def describe(base):
@@ -984,17 +1004,25 @@ def main():
               '#',
               f'{PLAYER_GUARD}={PLAYER_GUARD}@0',
               '#']
+        shapes = genital_shapes()
+        variety = {g: sorted((m, r) for m, r in shapes.items() if m in morphs_of[g]) if g == 'female' else []
+                   for g in BODIES}
+        if shapes:
+            t.append(f'# Genital shape variety (S-17), rolled per woman: '
+                     f'{", ".join(f"{m} {lo}..{hi}" for m, (lo, hi) in sorted(shapes.items()))}'
+                     f'{"" if variety["female"] else "  -- NONE on this female body (morphs missing)"}')
+            t.append('#')
         for g in BODIES:
             t.append(f'# --- {g} ---')
             for name, values, p in pools[g]:
                 t.append(f'# {p["name"]}  {100*p["fit"]:.0f}% fit  families={p["families"]}')
-                t.append(f'{name}={", ".join(template_text(name, values, stamp))}')
+                t.append(f'{name}={", ".join(template_text(name, values, stamp, variety[g]))}')
             t.append('#')
         if extra:
             t.append('# --- presets only the rules hand out ---')
             for name, (values, p) in sorted(extra.items()):
                 t.append(f'# {p["name"]}  {p["gender"]}  {100*p["fit"]:.0f}% fit')
-                t.append(f'{name}={", ".join(template_text(name, values, stamp))}')
+                t.append(f'{name}={", ".join(template_text(name, values, stamp, variety.get(p["gender"], [])))}')
         assert all(line.strip() for line in t), 'an empty line would end the file for LooksMenu'
         tfile.write_text('\n'.join(t) + '\n', encoding='ascii', errors='replace', newline='\r\n')
 

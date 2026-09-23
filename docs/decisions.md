@@ -204,3 +204,20 @@ BodyGen away for good? No. The emptied entry lasts until the next save and load.
 not load an empty morph map (`BodyMorphInterface::Load`: `if(morphValueMap->empty()) return
 true;`, and `MorphValueMap::Load` skips a morph with no values). BodyGen then rolls the actor as
 new, because `ActorUpdateManager` evaluates only when `GetMorphMap` returns null.
+
+## S-17 — Genital shape variety per woman (owner poll, 2026-09-23)
+
+The owner chose, for the labia: jiggle and react (fo4-anatomy A-13), change their look, and vary
+per woman. The anatomy body carries Nahka's genital SHAPE sliders (VaginaLabiaSize, VaginaInnie,
+VaginaInnie2, VaginaSize, VaginaNarrower, VaginaClitSize, AnusDonut, AnusBack) in its .tri, so
+BodyGen can roll them.
+- `tools/genital_shapes.json` holds `{morph: [low, high]}`. Every female template gets
+  `Morph@low:high` for the morphs the female body has, so LooksMenu rolls each woman her own shape.
+  The centre is the owner's chosen look, picked in BodySlide on "Anatomy Body ZeX". It is empty
+  until then, and with it empty the generator's output is unchanged.
+- Runtime states are refused by name (S-16). VaginaSpread and ButtcheeksSpread join STATE_MORPHS:
+  like VaginaPenetrate and AnusPenetrate, they are what scenes animate, never a body.
+- `verify_bodygen.fixed_values` sets these ranges aside and compares the rest of each template with
+  its preset, so the body check still covers every template.
+- AnusBack stays out of the random variety for now. It moves the anal ring ~0.85 back toward ZeX's
+  anus bones, so it is an alignment control for fo4-anatomy's anus decision, not a taste.

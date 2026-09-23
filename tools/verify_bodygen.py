@@ -156,14 +156,19 @@ def same_values(a, b):
 
 def fixed_values(sets):
     """The morph values of a template that has one set of one-choice, fixed-value
-    selectors -- the only shape Silhouette writes."""
+    selectors -- the only shape Silhouette writes for a BODY. The genital shape
+    ranges (S-17) are set aside: they are rolled per woman on purpose, and the body
+    the template describes is everything else."""
     if len(sets) != 1:
         return None
+    variety = sg.genital_shapes()
     out = {}
     for selector in sets[0]:
         if len(selector) != 1:
             return None
         morph, low, high = selector[0]
+        if morph in variety and (low, high) == variety[morph]:
+            continue
         if low != high:
             return None
         out[morph] = low
