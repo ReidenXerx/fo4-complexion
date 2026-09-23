@@ -65,6 +65,21 @@ def norm_path(p):
     return (p or '').strip().replace('/', '\\').lower().rstrip('\\')
 
 
+def output_of(slider_set_element):
+    """The output a SliderSet writes, lower-cased, without extension.
+
+    The FILE name is taken exactly as written: BodySlide does not trim it, and
+    neither do the plugins that reference it. Measured: "Obi's CozyClassic_Full"
+    writes "CozyClassic_Full .nif" -- with the space -- and the outfit's ARMA
+    references that same name. Trimming it (as this tool once did) looks for a
+    file that does not exist and reports a built outfit as never built.
+    """
+    of = slider_set_element.find('OutputFile')
+    name = (of.text or '') if of is not None else ''
+    path = norm_path(slider_set_element.findtext('OutputPath') or '')
+    return f'{path}\\{name.lower()}' if name.strip() else ''
+
+
 def truthy(v):
     return (v or '').strip().lower() == 'true'
 
@@ -73,7 +88,12 @@ def read_slider_sets(bodyslide):
     """Every SliderSet in every .osp: where it builds from, where it builds to,
     and each slider's default, inversion and kind."""
     sets = []
-    for osp in sorted((bodyslide / 'SliderSets').glob('*.osp')):
+    # As BodySlide's LoadSliderSets: wxDir::GetAllFiles is RECURSIVE, and both
+    # *.osp and *.xml are slider sets. Measured: 30 sets live in subfolders here
+    # (Enclave Recon Corps Armor, DX Naughty Secretary) -- a top-level glob missed
+    # them, and with them 61 built meshes.
+    folder = bodyslide / 'SliderSets'
+    for osp in sorted(list(folder.rglob('*.osp')) + list(folder.rglob('*.xml'))):
         try:
             root = ET.parse(osp).getroot()
         except ET.ParseError:
@@ -100,8 +120,7 @@ def read_slider_sets(bodyslide):
                 'osp': osp.name,
                 'data_folder': s.findtext('DataFolder') or '',
                 'source_file': s.findtext('SourceFile') or '',
-                'output': norm_path((s.findtext('OutputPath') or '') + '\\'
-                                    + ((of.text or '') if of is not None else '')),
+                'output': output_of(s),
                 'sliders': sliders,
             })
     return sets

@@ -128,12 +128,19 @@ def main():
     ap.add_argument('--all', action='store_true', help='list every output, not only the problems')
     ap.add_argument('--identify', action='store_true',
                     help='name the preset of builds the body presets do not explain (slow)')
+    ap.add_argument('--no-data', action='store_true',
+                    help='measure ONLY the --built folders, never fall back to what Data holds')
     args = ap.parse_args()
-    roots = sg.built_roots(args)
+    roots = list(args.built or []) if args.no_data else sg.built_roots(args)
+    if not roots:
+        raise SystemExit('--no-data needs at least one --built folder')
     bodyslide = args.data / 'Tools/BodySlide'
 
     presets = sg.read_presets(bodyslide / 'SliderPresets')
-    likely = set()
+    # A zero preset explains an outfit whose own (non-body) sliders keep their
+    # authored defaults -- that IS a zeroed build.
+    zeros = {p['name'] for p in presets if p['sliders'] and not any(p['sliders'].values())}
+    likely = set(zeros)
     for body in sg.BODIES.values():
         m = base_body.measure(args.data, body, presets, roots)
         print(f'{body}: {sg.describe(m)}')
@@ -178,6 +185,8 @@ def main():
                 return (2, v.get('rms', 0.0))
             return (3, 0.0)
         ss, v = min(verdicts, key=rank)
+        if v['status'] in zeros:
+            v = {**v, 'status': 'zeroed', 'note': f'outfit sliders at their defaults ("{v["status"]}")'}
         rows.append({'output': output, 'set': ss['name'], 'where': str(nif.parent), **v})
 
     by = collections.Counter(r['status'] for r in rows)
