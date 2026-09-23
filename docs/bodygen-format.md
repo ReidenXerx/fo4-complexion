@@ -11,14 +11,24 @@ contradicts what people commonly say about BodyGen, the source is quoted.
 1. For every **loaded** plugin, in load order: `F4SE\Plugins\F4EE\BodyGen\<Plugin.esp>\templates.ini`.
 2. For every loaded plugin, in load order: `...\BodyGen\<Plugin.esp>\morphs.ini`.
 3. Then `Data\F4SE\Plugins\F4EE\BodyGen\Loose\*_templates.ini`, and after all of those,
-   `Loose\*_morphs.ini` — each set sorted **alphabetically**, loaded **whatever plugins are active**.
+   `Loose\*_morphs.ini` — loaded **whatever plugins are active**, in **case-sensitive byte order**
+   (the intended lowercasing is a no-op: `transform(begin, begin, end, ...)` has an empty range), so
+   `Z...` sorts before `a...`.
 
 So the `Loose` folder needs no `.esp`, and loads after (therefore overrides) every per-plugin folder.
 Only loose files are seen there (a real `IDirectoryIterator`, not the archive-aware resource
-system). BodyGen must be enabled: `f4ee.ini` → `[BodyMorph] bEnable=1, bEnableBodyGen=1`.
+system). BodyGen must be enabled: `f4ee.ini` → `[BodyMorph] bEnable=1, bEnableBodyGen=1`, and
+`bEnableModelPreprocessor=1` (it maps a mesh to its `.tri`). Its log lines ("Loaded N template(s)",
+"Acquired N ... target(s)", "template not found") only appear with `iLogLevel` of 3 or more — the
+default 1 prints errors only.
 
-Both files are read line by line into a `BSResourceTextFile<0x7FFF>`: a line longer than **32,766
-characters** is cut off. Lines are trimmed; empty lines and lines **starting with `#`** are skipped.
+Both files are read line by line through the ENGINE's `BSResourceTextFile::ReadLine` (F4SE
+0.6.23 `0x01B93C40`, disassembled): it returns the number of bytes before the `'\n'`, and both
+parsers loop `while (textFile.ReadLine(&str))`. **So an empty line ends the file when the endings
+are LF** — everything after it is silently never read. With CRLF an "empty" line is `\r` and
+survives, which is the only reason blank lines ever worked. Write CRLF and no empty lines. A line
+longer than 32,766 bytes is split into the next line, not cut. After trimming, lines **starting
+with `#`** are skipped.
 
 ## templates.ini
 
@@ -69,7 +79,12 @@ group     = Template | Template | ...           ('|' = one chosen uniformly at r
   At evaluation the actor's base is followed up its template chain until one is found in the table,
   so generated/leveled actors still resolve through their root.
 - FormIDs are written **without** the load-order byte; it is added from the plugin named. Light
-  (ESL) plugins are supported. A `TESLevCharacter` is expanded to every NPC it can produce.
+  (ESL) plugins are supported with a local id of at most `FFF` (LooksMenu ORs the id into
+  `0xFE000000 | light << 12`). A `TESLevCharacter` is expanded to every NPC it can produce.
+- A line whose templates are ALL missing still overwrites the NPC's entry — with an empty choice.
+  The NPC gets nothing; it does not fall back to an earlier line.
+- `Plugin|All|...` reaches only NPCs a plugin DEFINES, not ones it overrides (OBody's plugin keys
+  include overrides).
 - `_strnicmp(name, "all", 3)`: a plugin whose name *starts with* "all" is read as `All`.
 - Weighting is by repetition: list a template twice to double its chance.
 
@@ -90,6 +105,15 @@ Two consequences nobody writes down:
 2. **The player is not special-cased.** `All|...|HumanRace` includes the Player record
    (`Fallout4.esm` `0x7`). A player who never set a LooksMenu body slider has no stored morphs and
    is randomised on the next load like anybody else.
+3. **A new game clones a dummy onto the player.** The mirror at character creation shows
+   `MQ101PlayerSpouseMale` (`A7D34`) and `MQ101PlayerSpouseFemale` (`A7D35`) — HumanRace, no
+   template, so `All` lines roll them. On confirm, LooksMenu's `CloneBodyMorphs` copies the chosen
+   dummy's morphs onto the player (`CloneMorphs`), past any line for `0x7`. Give the dummies what
+   the player should get.
+
+Stored morphs survive save and load with any name: `MorphValueMap::Save` writes every entry and
+`Load` drops only zero values and keywords that no longer resolve — nothing is checked against a
+`.tri`. So a marker is permanent.
 
 ## How a value becomes a shape
 

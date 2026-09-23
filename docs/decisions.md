@@ -126,3 +126,31 @@ directly. ORefit keys are reported the same way.
 One addition, `distributeRaces` (default `["HumanRace"]`): OBody gives a body to every NPC race; in
 Fallout 4 only races that wear the human body should, and naming them is the only way a BodyGen line
 reaches them.
+
+## S-12 — Every marker carries the build's stamp; a manifest says what it means
+
+Agent decision, 2026-09-23, from the microscope review (judgment lens). A marker's NAME is a
+sanitised template name, which loses the exact preset name, and its VALUE was a constant 1.0 —
+yet LooksMenu stores any non-zero value and moves no vertex for it. The value is now the build's
+stamp: the first 24 bits of a hash of everything the files say (exact in float32), and
+`F4SE/Plugins/Silhouette/manifests/<stamp>.json` records, for every marker of that build, the exact
+preset, its file and the values written. Manifests are never deleted: an NPC rolled by a build
+carries its stamp for the rest of that save, and Phase 2 can interpret it. This had to happen
+before the first real save, because a roll cannot be re-stamped afterwards.
+
+## S-13 — The character-creation dummies get the player's default
+
+Agent decision, 2026-09-23, found by two review lenses independently. See bodygen-format.md "A new
+game clones a dummy onto the player". Without their lines, S-7 fails on every new game. The spouse
+in the intro therefore wears the player's default body too.
+
+## S-14 — "Zeroed" is about BODY sliders, and some builds cannot follow a body at all
+
+Agent decision, 2026-09-23. A zeroed build puts every body slider (a morph the body's `.tri` has)
+at 0 and leaves an outfit's own sliders (FootShape, OFFSET, ...) at their authored defaults. A
+preset's name proves nothing: "CBBE Zeroed Sliders" names one slider, so on a BodyTalk set it
+leaves 26 body sliders at 100. `audit_builds.py` also reports STATIC builds — zeroed but unable to
+follow any body: a set made for another body family, or an empty `.tri` because the mod ships the
+wrong slider data. On the owner's install four were fixed by building a CBBE variant instead of a
+Fusion Girl one or a broken one; two have no alternative (FurbyKnight 1st-person sleeves, BodyTalk4
+Suit Clean).
