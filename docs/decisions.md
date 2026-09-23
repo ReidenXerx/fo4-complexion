@@ -154,3 +154,25 @@ follow any body: a set made for another body family, or an empty `.tri` because 
 wrong slider data. On the owner's install four were fixed by building a CBBE variant instead of a
 Fusion Girl one or a broken one; two have no alternative (FurbyKnight 1st-person sleeves, BodyTalk4
 Suit Clean).
+
+## S-15 — A 24-in-game-hour regeneration window for people other mods marked first
+
+**Owner, 2026-09-23:** *"Maybe we need kinda overwrite mod? That temporary will regenerate them and
+that aaf set morphs?"* ... *"this regeneration feature will be kinda enable on 24 in game hour and
+after that it will automatically disabled."*
+
+LooksMenu runs BodyGen only for an actor with no stored morphs at all, so anyone another mod marked
+before Silhouette arrived never gets a body (measured: a Diamond City guard, `000F61B6`, holding
+AAF's `Erection` under `AAF_MorphKeyword`). AAF and other mods write under their OWN keywords, so
+the fix can keep their morphs:
+
+- `Silhouette.esp` (flagged light, no load-order slot): one self-starting quest running
+  `Silhouette:Adopter`, and a form list of people already handled.
+- The window opens on the first load with Silhouette and closes itself after 24 in-game hours;
+  MCM opens a new one and reports its status.
+- Every 10 seconds while it is open, people around the player who hold ONLY keyed morphs are
+  rolled by BodyGen (`RegenerateMorphs` -- the same rules, blacklists and player lines as everyone
+  else) and their keyed morphs are put back. Left alone: anyone with an unkeyed value (a
+  Silhouette body, or sliders set by hand), anyone AAF has busy (`AAF_ActorBusy`) or locked
+  (`AAF_ActorLocked`), anyone already handled.
+- This is Silhouette's only plugin; everything else still works without it (S-9).

@@ -36,6 +36,14 @@ which is reassuring). **MCM > Silhouette** lists every preset that fits your cha
 choose one and press *Apply to my character*; *Back to the default* and *Which body do I have?* are
 next to it. No plugin is involved — the menu calls a small script LooksMenu drives.
 
+## People other mods marked first
+
+LooksMenu only gives a body to someone who holds no body morphs at all, so an NPC another mod
+already marked (an AAF morph left behind by a scene) never gets one. With `Silhouette.esp` enabled
+(a light plugin, no load-order slot), for 24 in-game hours after Silhouette first loads, such people
+around you are given a body and the other mod's morphs are kept; MCM shows the window and can open a
+new one.
+
 ## Requirements
 
 - Fallout 4 with F4SE and **LooksMenu**, BodyGen enabled in `Data/F4SE/Plugins/f4ee.ini`

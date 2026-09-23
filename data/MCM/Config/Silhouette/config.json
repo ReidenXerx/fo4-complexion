@@ -172,6 +172,36 @@
             "function": "Reroll",
             "params": []
           }
+        },
+        {
+          "type": "section",
+          "text": "Regeneration window"
+        },
+        {
+          "type": "text",
+          "text": "LooksMenu only shapes people who hold no body morphs at all, so someone another mod already marked (an AAF morph left by a scene) never gets a body. For 24 in-game hours after Silhouette first loads, such people around you are given one, and the other mod's morphs are kept. Needs Silhouette.esp."
+        },
+        {
+          "type": "button",
+          "text": "How is the regeneration window doing?",
+          "help": "Open or closed, the in-game hours left, and how many people it has given a body.",
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "Silhouette:Player",
+            "function": "RegenerationStatus",
+            "params": []
+          }
+        },
+        {
+          "type": "button",
+          "text": "Open a new 24-hour regeneration window",
+          "help": "Starts another 24 in-game hours of giving bodies to people other mods marked first. People it already handled are not handled twice.",
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "Silhouette:Player",
+            "function": "OpenRegenerationWindow",
+            "params": []
+          }
         }
       ]
     }

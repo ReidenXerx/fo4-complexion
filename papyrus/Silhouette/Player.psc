@@ -121,6 +121,36 @@ Function ShowCurrent() Global
     EndIf
 EndFunction
 
+; The regeneration window lives in Silhouette.esp (decision S-15); everything
+; else here works without it.
+Silhouette:Adopter Function Adopter() Global
+    If !Game.IsPluginInstalled("Silhouette.esp")
+        Return None
+    EndIf
+    Return Game.GetFormFromFile(0x800, "Silhouette.esp") as Silhouette:Adopter
+EndFunction
+
+Function RegenerationStatus() Global
+    Silhouette:Adopter q = Adopter()
+    If !q
+        Debug.MessageBox("Silhouette: the regeneration window needs Silhouette.esp enabled in your load order.")
+    ElseIf q.IsOpen()
+        Debug.MessageBox("Silhouette: the regeneration window is open for " + (q.HoursLeft() as Int) + " more in-game hours. " + q.Adopted() + " people given a body so far.")
+    Else
+        Debug.MessageBox("Silhouette: the regeneration window is closed. " + q.Adopted() + " people were given a body.")
+    EndIf
+EndFunction
+
+Function OpenRegenerationWindow() Global
+    Silhouette:Adopter q = Adopter()
+    If !q
+        Debug.MessageBox("Silhouette: the regeneration window needs Silhouette.esp enabled in your load order.")
+        Return
+    EndIf
+    q.OpenWindow()
+    Debug.MessageBox("Silhouette: regeneration window open for the next 24 in-game hours.")
+EndFunction
+
 ; Everyone nearby, never the player.
 Actor[] Function Nearby() Global
     Actor player = Game.GetPlayer()
