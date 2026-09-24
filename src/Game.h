@@ -17,15 +17,17 @@ namespace SH::Game
 	// From the event sinks, on whatever thread the game sends them: queued, nothing read yet.
 	void NoteLoaded(std::uint32_t a_ref);
 	void NoteEquip(std::uint32_t a_ref, std::uint32_t a_item, bool a_equipped);
-	// a_actor: the reference is an actor, so it can be the menu's "last NPC aimed at".
-	void NoteCrosshair(std::uint32_t a_ref, bool a_actor);
+	// The view caster's picks, as reference HANDLES (0: none): what the player would activate, and the
+	// dialogue pick (written to the log when a Pick finds nobody).
+	void NoteCrosshair(std::uint32_t a_activate, std::uint32_t a_dialogue);
 
 	// Main thread: everything queued since the last pump.
 	void Pump();
 
-	// Main thread. The NPC under the crosshair (0 for none, the player, or anyone Silhouette leaves
-	// alone). a_recentSeconds > 0 also accepts the last NPC aimed at within that many seconds: a menu
-	// opening takes the crosshair off them.
+	// Main thread. The form id of the NPC under the crosshair -- the one the player could talk to, so
+	// within activation reach -- or 0 for none, the player, or anyone Silhouette leaves alone.
+	// a_recentSeconds > 0 also accepts the last NPC aimed at within that many seconds of the crosshair
+	// leaving them: a menu opening takes the crosshair off them. A 0 says why in the log.
 	[[nodiscard]] std::uint32_t CrosshairActor(float a_recentSeconds);
 
 	// Main thread: an actor by form id, or null.

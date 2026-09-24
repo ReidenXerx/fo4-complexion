@@ -47,15 +47,19 @@ namespace SH::Sinks
 			}
 		}
 
-		void OnPick(const Events::PickRefStateChangedEvent& a_event)
+		// Two handles copied, nothing looked up: the main thread does that when someone asks.
+		void OnViewCaster(const Events::ViewCasterUpdateEvent& a_event)
 		{
-			const auto* ref = a_event.ref.get();
-			Game::NoteCrosshair(Events::SafeFormID(ref), Is(ref, RE::ENUM_FORM_ID::kACHR));
+			if (a_event.active) {
+				Game::NoteCrosshair(a_event.activatePickRef, a_event.dialoguePickRef);
+			} else {
+				Game::NoteCrosshair(0, 0);
+			}
 		}
 
-		Tap<RE::TESObjectLoadedEvent>         g_loaded{ OnLoaded };
-		Tap<RE::TESEquipEvent>                g_equip{ OnEquip };
-		Tap<Events::PickRefStateChangedEvent> g_pick{ OnPick };
+		Tap<RE::TESObjectLoadedEvent>      g_loaded{ OnLoaded };
+		Tap<RE::TESEquipEvent>             g_equip{ OnEquip };
+		Tap<Events::ViewCasterUpdateEvent> g_pick{ OnViewCaster };
 
 		std::atomic<bool> g_loadedOn{ false };
 		std::atomic<bool> g_equipOn{ false };
@@ -92,12 +96,12 @@ namespace SH::Sinks
 		AttachHolder<RE::TESEquipEvent>("TESEquipEvent"sv, g_equip, g_equipOn, g_equipWarned,
 			"dressing and undressing go unseen, so ORefit follows only what is read when someone loads"sv);
 		if (!g_pickOn.load()) {
-			if (const auto found = Events::FindGlobalSource("PickRefStateChangedEvent"sv)) {
-				RE::BSTEventSource<Events::PickRefStateChangedEvent>* source =
-					reinterpret_cast<RE::BSTGlobalEvent::EventSource<Events::PickRefStateChangedEvent>*>(found);
+			if (const auto found = Events::FindGlobalSource("ViewCasterUpdateEvent"sv)) {
+				RE::BSTEventSource<Events::ViewCasterUpdateEvent>* source =
+					reinterpret_cast<RE::BSTGlobalEvent::EventSource<Events::ViewCasterUpdateEvent>*>(found);
 				source->RegisterSink(&g_pick);
 				g_pickOn.store(true);
-				logger::info("events: crosshair attached (global source, {:X})", found);
+				logger::info("events: crosshair attached (the view caster's global source, {:X})", found);
 			}
 		}
 	}

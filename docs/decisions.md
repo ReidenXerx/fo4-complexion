@@ -860,3 +860,27 @@ Owner poll, 2026-09-24: "Plugin folder (Recommended)". The archive held README.m
 a mod manager installs into Data's root, where every other mod that does the same collides with them. They go
 to `F4SE/Plugins/Silhouette/`, beside the catalog and the config the plugin already owns. The licence stays in
 the archive: GPL-3.0 wants its text shipped with the DLL.
+
+## S-64 — The crosshair is the view caster's activate pick
+
+Agent decision, 2026-09-24, after the owner's report: the Pick hotkey answered "aim at an NPC" with the
+crosshair on one, even up close. Silhouette read the crosshair from `PickRefStateChangedEvent`, as F4MCP's
+`aim` does, taking a reference at +08. That event is a `BSTValueEvent<bool>`, two bytes: the HUD's "update
+the activate prompt" flag (`HUDRolloverModel::activatePromptUpdateQueued` in the CommonLibF4 that Papyrus
+Common Library builds on, LucaDotGit/CommonLibF4, whose layouts carry static asserts). Whatever sat at +08
+was the sender's stack. It held what F4MCP's checks looked at (a door, and once Richard), and in the owner's
+game never the NPC they aimed at. A read-only look at the running game's memory confirmed the sink was
+attached and receiving: it held a trapdoor, and it recorded no actor at all between the last load and the
+quit, about three minutes.
+
+The crosshair is now `ViewCasterUpdateEvent`'s `activatePickRef`: the reference the player would activate,
+which for an NPC is the one they could talk to. Papyrus Common Library's `GetCurrentCrosshairRef` reads the
+same field. Its reach is the game's activation reach, so Pick takes an NPC close enough to talk to, and the
+notification says so. The sink copies two handles and looks nothing up; the main thread resolves them when
+Pick or the menu asks. The menu's "last NPC aimed at within 30 seconds" (S-22) comes from a trail of the
+last 64 picks, each with the time the crosshair left it, so the sink's thread never has to know which picks
+were actors. When a Pick finds nobody, the log says what the crosshair was on: nothing within reach, a named
+object, or someone Silhouette never shapes.
+
+The dialogue pick (`dialoguePickRef`) is logged, not used: what it holds, and how far it reaches, is
+unmeasured.

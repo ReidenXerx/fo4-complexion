@@ -544,7 +544,7 @@ Function PickerPick()
 	EndIf
 	Int target = Silhouette:DLL.CrosshairActor(0.0)
 	If target == 0
-		Debug.Notification("Silhouette: aim at an NPC, then Pick.")
+		Debug.Notification("Silhouette: aim at an NPC close enough to talk to, then Pick.")
 		Return
 	EndIf
 	Debug.Notification(Silhouette:DLL.PickerStart(target))

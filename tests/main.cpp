@@ -14,6 +14,7 @@
 #include "PCH.h"
 
 #include "Catalog.h"
+#include "Crosshair.h"
 #include "Director.h"
 #include "Plan.h"
 #include "Registry.h"
@@ -3044,6 +3045,68 @@ int CheckData(const std::filesystem::path& a_root)
 	return failed;
 }
 
+// The crosshair (the Pick hotkey, the menu's target): the picks the sink saw, chosen on the main thread.
+// Handles 0x100-0x1FF stand for NPCs Silhouette shapes, anything else for a door or a chair.
+static void TestCrosshairTrail()
+{
+	using SH::CrosshairTrail;
+	const auto npc = [](std::uint32_t a_handle) { return a_handle >= 0x100 && a_handle < 0x200; };
+	{
+		CrosshairTrail t;
+		Check(t.Choose(0, 1000, npc) == 0, "crosshair: nothing seen, nobody picked");
+		t.Note(0x101, 1000);
+		Check(t.Choose(0, 1000, npc) == 0x101, "crosshair: the NPC under the crosshair is picked");
+		t.Note(0x050, 2000);
+		Check(t.Choose(0, 2000, npc) == 0, "crosshair: Pick takes only what is under the crosshair now; a door is nobody");
+		Check(t.Choose(30'000, 2000, npc) == 0x101, "crosshair: the menu takes the NPC the crosshair left, within the window");
+		Check(t.Choose(30'000, 32'000, npc) == 0x101, "crosshair: ... to the window's last millisecond");
+		Check(t.Choose(30'000, 32'001, npc) == 0, "crosshair: ... and not after it");
+	}
+	{
+		CrosshairTrail t;
+		t.Note(0x101, 1000);
+		t.Note(0x101, 50'000);  // the view caster reports every update: the same pick changes nothing
+		t.Note(0, 60'000);
+		Check(t.Choose(30'000, 89'000, npc) == 0x101, "crosshair: a long look counts from when the crosshair left them, not from the first sight");
+	}
+	{
+		CrosshairTrail t;
+		t.Note(0x101, 1000);
+		for (std::int64_t frame = 0; frame < 1000; ++frame) {
+			t.Note(0x050, 2000 + frame);  // a door, reported on every update
+		}
+		Check(t.Choose(30'000, 3000, npc) == 0x101, "crosshair: a pick reported on every update is one pick, and does not push the NPC out");
+	}
+	{
+		CrosshairTrail t;
+		t.Note(0x101, 1000);
+		t.Note(0x102, 2000);
+		t.Note(0x050, 3000);
+		t.Note(0, 4000);
+		Check(t.Choose(30'000, 5000, npc) == 0x102, "crosshair: the newest NPC left wins over an older one");
+		Check(t.Choose(30'000, 5000, [](std::uint32_t a_handle) { return a_handle == 0x101; }) == 0x101,
+			"crosshair: an older pick is found when the newer ones are not wanted");
+		Check(t.Current() == 0, "crosshair: nothing under it now");
+	}
+	{
+		CrosshairTrail t;
+		t.Note(0x101, 1000);
+		for (std::uint32_t i = 0; i < CrosshairTrail::kKept; ++i) {
+			t.Note(0x1000 + i, 2000 + i);  // the first moves the NPC into the trail, each next one a door
+		}
+		Check(t.Choose(30'000, 3000, npc) == 0x101, "crosshair: the NPC is still found behind kKept - 1 doors");
+		t.Note(0x2000, 3001);
+		Check(t.Choose(30'000, 3001, npc) == 0, "crosshair: past kKept picks the oldest is forgotten");
+	}
+	{
+		CrosshairTrail t;
+		t.Note(0x101, 1000);
+		t.Note(0x102, 2000);  // 0x101 is in the trail, 0x102 under the crosshair
+		t.Forget();
+		Check(t.Current() == 0 && t.Choose(30'000, 2000, npc) == 0, "crosshair: a load forgets the pick and the trail");
+	}
+}
+
 int main(int argc, char** argv)
 {
 	if (argc == 3 && std::string_view{ argv[1] } == "--check") {
@@ -3061,6 +3124,7 @@ int main(int argc, char** argv)
 	TestWave3();
 	TestWave4();
 	TestWave5();
+	TestCrosshairTrail();
 	std::cout << g_passed << " passed, " << g_failed << " failed\n";
 	return g_failed;
 }

@@ -44,7 +44,7 @@ Silhouette.dll  (F4SE, CommonLibF4 OG)
     Director  what each actor should have, against what LooksMenu holds; the orders; the lanes
     Registry  co-save: INTENT only -- who chose which body -- and a picking in progress
     Sinks     TESObjectLoadedEvent (who appeared), TESEquipEvent (who dressed or undressed),
-              the crosshair (the picker's target); from the first poll after each load, for
+              the view caster's pick (the picker's target, S-64); from the first poll after each load, for
               30 s, the process lists too (after a load in a running game the first gives
               nobody, S-43)
 ```
@@ -180,9 +180,9 @@ regeneration replaces the body and its variety with a new roll.
 The player and the character-creation dummies are never rolled (S-45): they name a template of their
 own with the default preset's values and marker and none of the ranges.
 
-## The NPC picker (S-22, S-47)
+## The NPC picker (S-22, S-47, S-64)
 
-Aim at an NPC, press **Pick** (MCM hotkey): they become the target. **Next / Previous** cycle every
+Aim at an NPC close enough to talk to, press **Pick** (MCM hotkey): they become the target. **Next / Previous** cycle every
 preset that fits their body live, starting from the one they have, with the name shown and their own
 variety kept; **Keep** records it (it then survives, like a rule, and is marked in LooksMenu); Keep on
 the preset they had is a Cancel; **Cancel** puts back exactly what they had. A save made while picking

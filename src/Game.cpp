@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include "Crosshair.h"
+
 namespace SH::Game
 {
 	namespace
@@ -52,10 +54,9 @@ namespace SH::Game
 		Director                   g_director;
 		Resolved                   g_resolved;
 		Inbox                      g_inbox;
-		std::atomic<std::uint32_t> g_crosshair{ 0 };
-		std::atomic<std::uint32_t> g_lastAimed{ 0 };
-		std::atomic<std::int64_t>  g_lastAimedMs{ 0 };
-		std::atomic<std::int64_t>  g_loadedMs{ 0 };  // when the last load finished, 0 before any
+		CrosshairTrail             g_trail;              // the view caster's activate picks, as handles
+		std::atomic<std::uint32_t> g_dialoguePick{ 0 };  // its dialogue pick, a handle: for the log only
+		std::atomic<std::int64_t>  g_loadedMs{ 0 };      // when the last load finished, 0 before any
 		std::atomic<std::int64_t>  g_pumpedMs{ 0 };  // the bridge's last poll
 		std::atomic<std::int64_t>  g_askedMs{ 0 };   // the bridge's last protocol check (Connect)
 		std::atomic<bool>          g_watching{ false };
@@ -81,6 +82,26 @@ namespace SH::Game
 		std::int64_t NowMs()
 		{
 			return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+		}
+
+		// Main thread: the reference a handle names now, or null -- a handle outlives its reference, and
+		// then names nobody. A handle IS its 32-bit value, and that is all the sink copied.
+		RE::NiPointer<RE::TESObjectREFR> RefFor(std::uint32_t a_handle)
+		{
+			static_assert(sizeof(RE::ObjectRefHandle) == sizeof(std::uint32_t));
+			if (a_handle == 0) {
+				return {};
+			}
+			RE::ObjectRefHandle handle;
+			std::memcpy(static_cast<void*>(&handle), &a_handle, sizeof(a_handle));
+			return handle.get();
+		}
+
+		// Main thread: "Harold Roach (00115EA1)", for the log.
+		std::string Described(RE::TESObjectREFR* a_ref)
+		{
+			const char* name = a_ref ? a_ref->GetDisplayFullName() : nullptr;
+			return std::format("{} ({:08X})", name && *name ? name : "unnamed", a_ref ? a_ref->GetFormID() : 0u);
 		}
 
 		bool AnyIEquals(const std::vector<std::string>& a_list, std::string_view a_name)
@@ -575,17 +596,12 @@ namespace SH::Game
 		PushCapped(g_inbox.equips, Inbox::Equip{ a_ref, a_item, a_equipped });
 	}
 
-	void NoteCrosshair(std::uint32_t a_ref, bool a_actor)
+	void NoteCrosshair(std::uint32_t a_activate, std::uint32_t a_dialogue)
 	{
-		const auto before = g_crosshair.exchange(a_ref);
-		if (a_ref != 0 && a_actor) {
-			g_lastAimed.store(a_ref);
-			g_lastAimedMs.store(NowMs());
-		} else if (before != 0 && before == g_lastAimed.load()) {
-			// "Aimed at within the last N seconds" counts from when the crosshair LEFT them: a long look
-			// followed by opening a menu is the case the window exists for.
-			g_lastAimedMs.store(NowMs());
-		}
+		// "Aimed at within the last N seconds" counts from when the crosshair LEFT them: a long look
+		// followed by opening a menu is the case the window exists for.
+		g_trail.Note(a_activate, NowMs());
+		g_dialoguePick.store(a_dialogue);
 	}
 
 	void ForgetInbox()
@@ -597,8 +613,8 @@ namespace SH::Game
 			g_inbox.dropped = 0;
 			g_inbox.warned = false;
 		}
-		g_crosshair.store(0);
-		g_lastAimed.store(0);
+		g_trail.Forget();
+		g_dialoguePick.store(0);
 		// Main thread (a load or a new game starting): an item created in the save being left (0xFF)
 		// has an id the next save gives to something else. Every other id keeps its answer.
 		std::erase_if(g_resolved.heavyOf, [](const auto& a_item) { return (a_item.first >> 24) == 0xFF; });
@@ -766,15 +782,42 @@ namespace SH::Game
 
 	std::uint32_t CrosshairActor(float a_recentSeconds)
 	{
-		auto ref = g_crosshair.load();
-		if (!ActorFor(ref) && a_recentSeconds > 0.0F && NowMs() - g_lastAimedMs.load() <= static_cast<std::int64_t>(a_recentSeconds * 1000.0F)) {
-			ref = g_lastAimed.load();
+		const auto    recentMs = a_recentSeconds > 0.0F ? static_cast<std::int64_t>(a_recentSeconds * 1000.0F) : std::int64_t{ 0 };
+		std::uint32_t found = 0;
+		(void)g_trail.Choose(recentMs, NowMs(), [&](std::uint32_t a_handle) {
+			const auto ref = RefFor(a_handle);
+			auto*      actor = ref ? ActorFor(ref->GetFormID()) : nullptr;
+			if (!actor || NeverShaped(actor) || !actor->GetNPC()) {
+				return false;
+			}
+			found = actor->GetFormID();
+			return true;
+		});
+		if (found == 0) {
+			// The one question a player cannot answer from the screen: what did the game say was there.
+			const auto current = g_trail.Current();
+			const auto ref = RefFor(current);
+			auto*      actor = ref ? ActorFor(ref->GetFormID()) : nullptr;
+			std::string what;
+			if (current == 0) {
+				what = "nothing is under the crosshair within reach -- aim at someone close enough to talk to";
+			} else if (!ref) {
+				what = "the reference under the crosshair is gone";
+			} else if (!actor || !actor->GetNPC()) {
+				what = std::format("the crosshair is on {}, not an NPC", Described(ref.get()));
+			} else {
+				what = std::format("the crosshair is on {}, whom Silhouette never shapes (the player or a character-creation dummy)", Described(ref.get()));
+			}
+			if (const auto talk = g_dialoguePick.load(); talk != 0 && talk != current) {
+				const auto other = RefFor(talk);
+				what += std::format("; the dialogue pick is {}", other ? Described(other.get()) : "gone");
+			}
+			if (recentMs > 0) {
+				what += std::format("; nobody Silhouette shapes was aimed at in the last {:.0f} s", a_recentSeconds);
+			}
+			logger::info("pick: nobody to pick - {}", what);
 		}
-		auto* actor = ActorFor(ref);
-		if (!actor || NeverShaped(actor) || !actor->GetNPC()) {
-			return 0;
-		}
-		return ref;
+		return found;
 	}
 
 	void FlushLog()

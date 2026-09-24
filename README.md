@@ -67,8 +67,8 @@ Without the DLL, everything above keeps working.
   clothed shape off by itself, and without a working DLL the bridge takes them off the people around you.
   Nobody in power armour is refit. `<Preset>-Refit` BodySlide presets and OBody's outfit lists work as in
   OBody.
-- **The NPC picker** — MCM hotkeys: aim, *Pick*, *Next*/*Previous* to try every preset on them live,
-  *Keep* or *Cancel*. The MCM page *The NPC in your sights* gives a preset, a new random body, or names
+- **The NPC picker** — MCM hotkeys: aim at someone close enough to talk to, *Pick*, *Next*/*Previous*
+  to try every preset on them live, *Keep* or *Cancel*. The MCM page *The NPC in your sights* gives a preset, a new random body, or names
   the one they have. A choice is kept like a rule's, and marked in LooksMenu, so a save made without the
   DLL keeps it (MCM's *Refresh* pressed without the DLL gives the body again without the mark).
 - **Touch-up** — bodies an older build gave get the nipple and genital variety they lack, and lose any

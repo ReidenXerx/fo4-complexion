@@ -123,8 +123,11 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
 
 ## The picker
 
-11. Bind the five hotkeys in MCM (unbound by default). Pick someone and wait a second ("Still reading"
-    otherwise). Next three times -- each preset lands about a second after its notification -- then
+11. Bind the five hotkeys in MCM (unbound by default). Pick someone WITH THE HOTKEY, aiming at them from
+    talking distance (the crosshair is the game's activate pick, S-64; `DLL.PickerStart` from the console
+    skips the crosshair, and that is how the first run missed that Pick never found anyone). Aim at a door
+    and press Pick: the notification asks for an NPC, and Silhouette.log has `pick: nobody to pick - the
+    crosshair is on <door>, not an NPC`. Wait a second after a Pick ("Still reading" otherwise). Next three times -- each preset lands about a second after its notification -- then
     Keep. "Which body" says `chosen: <preset> (picked)`. Save and reload: she keeps it. Lanes (S-55):
     press MCM's Refresh with a crowd around, and at once Pick someone and press Next -- the preview
     still lands within about a second.
