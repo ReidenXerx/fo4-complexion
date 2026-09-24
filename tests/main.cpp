@@ -3202,6 +3202,78 @@ static void TestResetEveryone()
 		Check(g.actors[0xB30].unkeyed.contains("Silhouette_Athletic"), "a named character met after the press is rolled again: their own line gives their body");
 	}
 	{
+		// S-70: bodies Silhouette did not make -- from before it was installed, or another mod's. They cannot be
+		// dated, so the press reaches each of them once: at the first sighting since it, wherever they are.
+		SH::Director d;
+		FakeGame     g;
+		const auto   cat = Cat(BaseCatalog());
+		d.SetCatalog(cat);
+		const auto foreign = [&](std::uint32_t a_ref, float a_value) {
+			g.actors[a_ref].unkeyed = { { "Breasts", a_value } };
+			g.actors[a_ref].listed = { "Breasts" };
+		};
+		foreign(0xC00, 0.4F);  // seen before the press
+		foreign(0xC10, 0.5F);  // met after it, in the same session
+		foreign(0xC20, 0.6F);  // met after it, in a later session
+		foreign(0xC30, 0.3F);  // met after it, but no BodyGen line gives them a body
+		d.Seen(See(0xC00, "Somebody"));
+		(void)Drain(d, g);
+		Check((g.actors[0xC00].unkeyed == Layer{ { "Breasts", 0.4F } }), "(set-up) never pressed: a body Silhouette did not make is left alone");
+
+		g.rollsTo = "Silhouette_Athletic";
+		Check(d.RequestResetEveryone(said), "pressed");
+		(void)Drain(d, g);
+		Check(g.actors[0xC00].unkeyed.contains("Silhouette_Athletic") && !g.actors[0xC00].unkeyed.contains("Breasts"),
+			"seen at the press: the body from before Silhouette is replaced at once");
+		d.Seen(See(0xC10, "Somebody"));
+		(void)Drain(d, g);
+		Check(g.actors[0xC10].unkeyed.contains("Silhouette_Athletic"), "met after the press: a body Silhouette did not make is decided again");
+
+		// After that sighting, what is put on them is theirs: sliders set by hand, another mod's body.
+		g.actors[0xC10].unkeyed = { { "Breasts", 0.9F } };
+		g.actors[0xC10].listed = { "Breasts" };
+		auto blocked = See(0xC30, "Somebody");
+		blocked.facts.originPlugin = "Blocked.esp";
+		Reload(d, g);
+		d.Seen(See(0xC10, "Somebody"));
+		d.Seen(See(0xC20, "Somebody"));
+		d.Seen(blocked);
+		(void)Drain(d, g);
+		Check((g.actors[0xC10].unkeyed == Layer{ { "Breasts", 0.9F } }),
+			"a body put on someone after their first sighting since the press stays theirs, across a save");
+		Check(g.actors[0xC20].unkeyed.contains("Silhouette_Athletic"), "first met in a later session: decided again then");
+		Check((g.actors[0xC30].unkeyed == Layer{ { "Breasts", 0.3F } }), "no BodyGen line gives them a body: left alone");
+
+		g.actors[0xC20].unkeyed = { { "Breasts", 0.2F } };
+		g.actors[0xC20].listed = { "Breasts" };
+		d.Seen(See(0xC20, "Somebody"));
+		(void)Drain(d, g);
+		Check((g.actors[0xC20].unkeyed == Layer{ { "Breasts", 0.2F } }), "... and in the same session: only the first sighting counts");
+
+		// Seen at the press, given a body by it, then sliders set by hand: the press already looked at them.
+		g.actors[0xC00].unkeyed = { { "Breasts", 0.8F } };
+		g.actors[0xC00].listed = { "Breasts" };
+		// Only other mods' keyed morphs: BodyGen never rolls someone who holds any morph at all.
+		g.actors[0xC50].other = { { "Erection", 1.0F } };
+		g.actors[0xC50].listed = { "Erection" };
+		Reload(d, g);
+		d.Seen(See(0xC00, "Somebody"));
+		d.Seen(See(0xC50, "Somebody"));
+		(void)Drain(d, g);
+		Check((g.actors[0xC00].unkeyed == Layer{ { "Breasts", 0.8F } }), "someone the press itself reached keeps what was put on them after it");
+		Check(g.actors[0xC50].unkeyed.contains("Silhouette_Athletic"), "someone holding only another mod's keyed morphs gets a body when met");
+
+		// Pressed again, with nobody seen yet this session: a new start, the list with it.
+		foreign(0xC40, 0.7F);
+		Reload(d, g);
+		Check(d.RequestResetEveryone(said), "pressed again");
+		d.Seen(See(0xC20, "Somebody"));
+		d.Seen(See(0xC40, "Somebody"));
+		(void)Drain(d, g);
+		Check(g.actors[0xC20].unkeyed.contains("Silhouette_Athletic") && g.actors[0xC40].unkeyed.contains("Silhouette_Athletic"),
+			"a new press reaches everyone's body again when met, a hand-set one looked at after the last press too");
+	}
+	{
 		SH::Registry r;
 		std::string  error;
 		Check(r.SerializeReset().empty(), "never pressed: no reset record");
@@ -3214,7 +3286,27 @@ static void TestResetEveryone()
 		longer.insert(longer.end(), { std::byte{ 7 }, std::byte{ 7 } });
 		Check(back.DeserializeReset(longer, SH::Registry::kResetVersion, error) == SH::Registry::Loaded::kOk && back.resetStamps == r.resetStamps,
 			"fields a later version appends are skipped");
-		Check(bytes.size() == 2 + 2 * 4, "the reset record is a count and its stamps");
+		Check(bytes.size() == 2 + 2 * 4 + 4, "the reset record is a count and its stamps, then who was met since (nobody)");
+
+		// S-70: who was met since the press follows the stamps, in form ids resolved for this session.
+		r.resetMet = { 0x0A000001, 0x0B000002, 0x00000C03 };
+		const auto withMet = r.SerializeReset();
+		SH::Registry met;
+		const auto   moved = [](std::uint32_t a_id) -> std::uint32_t {
+			if (a_id >> 24 == 0x0A) {
+				return (a_id & 0xFFFFFF) | 0x0C000000;  // the plugin moved in the load order
+			}
+			return a_id >> 24 == 0x0B ? 0 : a_id;  // that plugin is gone
+		};
+		Check(met.DeserializeReset(withMet, SH::Registry::kResetVersion, error, moved) == SH::Registry::Loaded::kOk &&
+				  met.resetStamps == r.resetStamps && (met.resetMet == std::unordered_set<std::uint32_t>{ 0x0C000001, 0x00000C03 }),
+			"who was met since the press reads back, resolved: moved ids follow, gone ones drop");
+		SH::Registry old;
+		old.resetMet = { 99 };
+		Check(old.DeserializeReset(std::span{ withMet }.first(2 + 2 * 4), SH::Registry::kResetVersion, error) == SH::Registry::Loaded::kOk &&
+				  old.resetStamps == r.resetStamps && old.resetMet.empty(),
+			"a record from before S-70 (the stamps alone): nobody met since the press yet");
+		r.resetMet.clear();
 		SH::Registry cut;
 		cut.resetStamps = { 42 };
 		Check(bytes.size() >= 2 &&

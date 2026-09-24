@@ -1,6 +1,6 @@
 # Phase 2 — the first in-game session
 
-Twenty-two steps for the first session with Silhouette.dll, each with what to expect and what a failure
+Twenty-three steps for the first session with Silhouette.dll, each with what to expect and what a failure
 means. Written from the second and third microscope waves' measurements of the owner's own install (809
 plugins, 1,609 built .tri files, the saves that hold Silhouette bodies); the log lines are quoted from the
 code. Everything the offline tests cannot reach is here: LooksMenu itself, the engine's events, the frame
@@ -170,7 +170,7 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
     the middle; load it. Anyone the save cut short gets `half a body of <preset> (a save cut it short) -
     given again, whole`, and nobody is left with half a body (S-58).
 
-## The pool, the named people and Reset everyone (S-65, S-66, S-68)
+## The pool, the named people and Reset everyone (S-65, S-66, S-68, S-70)
 
 19. Go somewhere you have not been since the update: the new people are varied and mostly ordinary.
     Silhouette.log names their bodies (`N slider(s) healed or topped up on Plain F07`, `... Rough F03`):
@@ -187,6 +187,12 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
     your sights > "Which body do they have?" (`Piper Wright`, `Cait`, `Ivy`), not a pool body.
 22. A NEW character with no LooksMenu body sliders: MCM > Bodies > "Which body do I have?" names Plain F01
     (a woman) or Plain M02 (a man), the most average body of the weighted pool (S-65).
+23. A COPY of a save from before Silhouette was ever installed (S-70). Within about ten seconds of the load a
+    notification says Silhouette is new to this save, and Silhouette.log has `a save new to Silhouette:
+    Reset everyone pressed for it (S-70)`; the people around you get new bodies. Go where you met people
+    before: each gets one as you meet them (`<id> "<name>": a body Silhouette did not make, met since Reset
+    everyone - a new body`). Save, load, meet them again: nothing more. Load a save that already had
+    Silhouette: no notification, nobody changes.
 
 ## Not checked offline
 

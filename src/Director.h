@@ -266,7 +266,8 @@ namespace SH
 		[[nodiscard]] std::size_t            RecordCount() const;
 		// S-68: the reset's own record; empty bytes when it was never pressed (nothing is written then).
 		[[nodiscard]] std::vector<std::byte> SaveReset() const;
-		Registry::Loaded                     LoadReset(std::span<const std::byte> a_bytes, std::uint32_t a_version, std::string& a_error);
+		Registry::Loaded                     LoadReset(std::span<const std::byte> a_bytes, std::uint32_t a_version, std::string& a_error,
+								const std::function<std::uint32_t(std::uint32_t)>& a_resolve = {});
 		[[nodiscard]] std::optional<Record>  RecordOf(std::uint32_t a_ref) const;
 		[[nodiscard]] bool                   HasPicking(std::uint32_t a_ref) const;
 

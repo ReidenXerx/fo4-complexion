@@ -528,19 +528,32 @@ namespace SH
 		if (Claimed(a_ref, a_session)) {
 			return;
 		}
+		// S-70: the first sighting since the press. What they wear is looked at now and not again.
+		const bool first = _registry.resetMet.insert(a_ref).second;
 		if (const auto* rec = _registry.Find(a_ref);
 			rec && (rec->source == Source::kRoll || rec->source == Source::kReset || rec->source == Source::kNameBlacklist)) {
 			return;  // a new body is owed already, or they are kept bare by name
 		}
-		if (KindOf(a_session.marker) != MarkerKind::kBody || IEquals(a_session.marker, kBlacklistMarker) || a_session.pendingBody ||
-			a_session.stamp == 0 || std::ranges::find(stamps, a_session.stamp) != stamps.end()) {
-			return;  // no body of Silhouette's (another mod's cannot be dated), or one made since the press
-		}
 		if (a_session.verdict.tier != Tier::kNone) {
 			return;  // a rule by name or faction decides them: DecideBody gives the rule's body, this build's values
 		}
-		Log(std::format("{:08X} \"{}\": {} is from before Reset everyone - a new body", a_ref, a_session.facts.baseName,
-			PresetNamedBy(a_session.marker, a_session.stamp)));
+		if (KindOf(a_session.marker) == MarkerKind::kBody && !IEquals(a_session.marker, kBlacklistMarker)) {
+			if (a_session.pendingBody || a_session.stamp == 0 || std::ranges::find(stamps, a_session.stamp) != stamps.end()) {
+				return;  // being written, or made since the press
+			}
+			Log(std::format("{:08X} \"{}\": {} is from before Reset everyone - a new body", a_ref, a_session.facts.baseName,
+				PresetNamedBy(a_session.marker, a_session.stamp)));
+		} else {
+			// A body Silhouette did not make -- from before it was installed, or another mod's -- cannot be
+			// dated -- nor can only other mods' keyed morphs, with which BodyGen never rolls them. It is decided
+			// again at the first sighting since the press, where BodyGen gives them a body; after that, what is
+			// put on them stays theirs.
+			if (!first || !a_session.verdict.bodyGen) {
+				return;
+			}
+			Log(std::format("{:08X} \"{}\": a body Silhouette did not make, met since Reset everyone - a new body", a_ref,
+				a_session.facts.baseName));
+		}
 		Intend(a_ref, a_session, Source::kRoll, {});  // owed until it lands (S-59)
 		QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, Lane::kBackground);
 	}
@@ -1124,12 +1137,14 @@ namespace SH
 				return false;
 			}
 			_registry.resetStamps = { _catalog->stamp };
+			_registry.resetMet.clear();
 			const auto forgotten = _registry.ForgetChoices();
 			std::size_t now = 0;
 			for (auto& [ref, s] : _sessions) {
 				if (!s.known || !s.eligible) {
 					continue;
 				}
+				_registry.resetMet.insert(ref);  // decided here, whatever they wear (S-70)
 				const bool ours = KindOf(s.marker) == MarkerKind::kBody && !IEquals(s.marker, kBlacklistMarker);
 				s.facts.salt = 0;  // a rule draws by id alone, as for someone met the first time
 				s.verdict = Decide(*_catalog, s.facts);
@@ -2301,10 +2316,11 @@ namespace SH
 		return _registry.SerializeReset();
 	}
 
-	Registry::Loaded Director::LoadReset(std::span<const std::byte> a_bytes, std::uint32_t a_version, std::string& a_error)
+	Registry::Loaded Director::LoadReset(std::span<const std::byte> a_bytes, std::uint32_t a_version, std::string& a_error,
+		const std::function<std::uint32_t(std::uint32_t)>& a_resolve)
 	{
 		std::scoped_lock l{ _lock };
-		return _registry.DeserializeReset(a_bytes, a_version, a_error);
+		return _registry.DeserializeReset(a_bytes, a_version, a_error, a_resolve);
 	}
 
 	std::optional<Record> Director::RecordOf(std::uint32_t a_ref) const

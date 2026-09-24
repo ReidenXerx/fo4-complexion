@@ -2,6 +2,8 @@
 
 #include "Plan.h"
 
+#include <unordered_set>
+
 // What the plugin remembers per reference between saves (S-25, S-43): INTENT -- who chose which body --
 // and what it has already done to that body. Never the body itself: that is LooksMenu's, and every
 // session reads it back (S-43). No game types: the co-save glue hands these bytes to F4SE, and the
@@ -79,6 +81,7 @@ namespace SH
 			_records.clear();
 			pickings.clear();
 			resetStamps.clear();
+			resetMet.clear();
 		}
 		void                      Prune(std::uint32_t a_ref);  // erases it if Empty()
 		[[nodiscard]] std::size_t Size() const { return _records.size(); }
@@ -92,6 +95,11 @@ namespace SH
 		// S-68, MCM's "Reset everyone": the builds whose bodies count as made after the last press -- the one
 		// current at the press, and each newer one since. Empty: never pressed.
 		std::vector<std::uint32_t> resetStamps;
+
+		// S-70: everyone looked at since the press. A body Silhouette did not make cannot be dated, so it is
+		// decided again at the first sighting after the press and only then: sliders set by hand, or another
+		// mod's body, put on someone after that are theirs to keep.
+		std::unordered_set<std::uint32_t> resetMet;
 
 		// The press, for everyone on record wherever they are: a choice (the picker's, another mod's) or a
 		// picking in progress becomes a roll owed (S-59 carries it to their next sighting), and a rule's draw
@@ -117,12 +125,15 @@ namespace SH
 		Loaded Deserialize(std::span<const std::byte> a_bytes, std::uint32_t a_version,
 			const std::function<std::uint32_t(std::uint32_t)>& a_resolve, std::string& a_error);
 
-		// The reset's own co-save record (resetStamps), apart from the records: written only once it has been
-		// pressed, so a save that never was is as before, and an older plugin skips it. A later version
-		// appends fields after the stamps, which this one skips.
+		// The reset's own co-save record (resetStamps, then resetMet), apart from the records: written only once
+		// it has been pressed, so a save that never was is as before, and an older plugin skips it. A later
+		// field is appended, never a new version: a plugin refuses a version newer than its own, and skips
+		// the bytes after what it knows (the first plugin to write this record knew only the stamps).
 		static constexpr std::uint32_t         kResetVersion = 1;
 		[[nodiscard]] std::vector<std::byte> SerializeReset() const;
-		Loaded DeserializeReset(std::span<const std::byte> a_bytes, std::uint32_t a_version, std::string& a_error);
+		// a_resolve maps a saved form id to this session's (0: gone); none keeps them as they are.
+		Loaded DeserializeReset(std::span<const std::byte> a_bytes, std::uint32_t a_version, std::string& a_error,
+			const std::function<std::uint32_t(std::uint32_t)>& a_resolve = {});
 
 	private:
 		std::unordered_map<std::uint32_t, Record> _records;

@@ -228,10 +228,18 @@ namespace SH
 		for (std::size_t i = 0; i < count; ++i) {
 			w.Put(resetStamps[i]);
 		}
+		// S-70, after the stamps: the plugin that first wrote this record stops reading there.
+		std::vector<std::uint32_t> met(resetMet.begin(), resetMet.end());
+		std::ranges::sort(met);
+		w.Put(static_cast<std::uint32_t>(met.size()));
+		for (const auto ref : met) {
+			w.Put(ref);
+		}
 		return w.Take();
 	}
 
-	Registry::Loaded Registry::DeserializeReset(std::span<const std::byte> a_bytes, std::uint32_t a_version, std::string& a_error)
+	Registry::Loaded Registry::DeserializeReset(std::span<const std::byte> a_bytes, std::uint32_t a_version, std::string& a_error,
+		const std::function<std::uint32_t(std::uint32_t)>& a_resolve)
 	{
 		if (a_version > kResetVersion) {
 			a_error = std::format("reset record version {} is newer than this plugin's ({})", a_version, kResetVersion);
@@ -252,8 +260,20 @@ namespace SH
 				}
 				stamps.push_back(s);
 			}
-			// Whatever a later version appended after the stamps is not this one's to read.
+			// Who was looked at since the press (S-70). A record from before it ends at the stamps: nobody yet.
+			std::unordered_set<std::uint32_t> met;
+			if (!r.AtEnd()) {
+				const auto n = r.Get<std::uint32_t>();
+				for (std::uint32_t i = 0; i < n; ++i) {
+					const auto saved = r.Get<std::uint32_t>();
+					if (const auto ref = a_resolve ? a_resolve(saved) : saved; ref != 0) {
+						met.insert(ref);
+					}
+				}
+			}
+			// Whatever a later version appended after that is not this one's to read.
 			resetStamps = std::move(stamps);
+			resetMet = std::move(met);
 			return Loaded::kOk;
 		} catch (const std::exception& e) {
 			a_error = e.what();

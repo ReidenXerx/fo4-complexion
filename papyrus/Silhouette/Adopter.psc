@@ -41,10 +41,15 @@ Bool looksMenu = False     ; LooksMenu's F4SE plugin ("F4EE"): without it no Bod
 ; Real time the running scan began, -1 when none runs. A scan waits a frame for every
 ; LooksMenu call, and the next timer can fire while one is still going.
 Float scanStarted = -1.0
+; S-70: this save had never held Silhouette.esp before, and Reset everyone is still to be pressed for it.
+Bool freshSave = False
 
+; Runs once in a save: the first time Silhouette.esp is in it. A window MCM opens later
+; does not come through here.
 Event OnQuestInit()
 	RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")
 	LookUpAAF()
+	freshSave = True
 	OpenWindow()
 EndEvent
 
@@ -106,6 +111,10 @@ Event OnTimer(Int aiTimerID)
 		If openedAt >= 0.0
 			Debug.Trace("Silhouette adopter: window closed after " + adopted + " actor(s)", 0)
 		EndIf
+		If freshSave
+			Debug.Trace("Silhouette adopter: Silhouette.dll never answered in this save's first window - Reset everyone not pressed", 0)
+		EndIf
+		freshSave = False
 		openedAt = -1.0
 		Return
 	EndIf
@@ -117,9 +126,34 @@ Event OnTimer(Int aiTimerID)
 		Return    ; the last scan is still going
 	EndIf
 	scanStarted = now
+	If freshSave
+		FreshStart()
+	EndIf
 	Scan()
 	scanStarted = -1.0
 EndEvent
+
+; S-70 (owner poll, 2026-09-24: "Do it automatically"). A save Silhouette.esp was never in
+; before: everyone met so far wears a body from before Silhouette -- LooksMenu gives a body only
+; to someone who has none, and Silhouette never replaces one it did not make on its own. So
+; Reset everyone is pressed for this save, once, as soon as Silhouette.dll can take it: the
+; people around the player change now, everyone else at their first sighting since. A new
+; game comes through here too, where nobody has been met and nothing changes. Not pressed
+; when the plugin never answers in this first window: a later install would take the bodies
+; Silhouette's own files gave by then for bodies from before it.
+Function FreshStart()
+	If !Silhouette:API.IsReady()
+		Return    ; still starting, or not installed: asked again at the next scan
+	EndIf
+	String said = Silhouette:DLL.ResetEveryone()
+	If said == "not done: " + Silhouette:DLL.LastError()
+		Debug.Trace("Silhouette adopter: a save new to Silhouette - Reset everyone waits (" + said + ")", 0)
+		Return    ; a picking in progress: asked again at the next scan
+	EndIf
+	freshSave = False
+	Silhouette:DLL.Log("a save new to Silhouette: Reset everyone pressed for it (S-70) - " + said)
+	Debug.Notification("Silhouette is new to this save: everyone you have met gets a Silhouette body.")
+EndFunction
 
 Function Scan()
 	If !looksMenu

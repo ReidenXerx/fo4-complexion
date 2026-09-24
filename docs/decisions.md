@@ -1053,3 +1053,35 @@ of its checks was proven on a broken generator or verifier (9 of 9). A 300-prese
 
 Left as it was: the MCM dropdown lists every preset in one list, and the census counts at most 128
 different presets (a count, nothing is applied from it).
+
+## S-70 — A save new to Silhouette gets Reset everyone by itself, and the press reaches every body
+
+Owner decision, 2026-09-24, by poll. Loading a save from before Silhouette was installed, the owner found the
+people already met kept their old bodies until Reset everyone was pressed, and some changed by themselves
+while others did not. The log showed why (22:48: 39 people read, 1 body given). LooksMenu gives a body only
+to someone with none stored, so the people who had none changed and the rest kept theirs; and Silhouette never
+replaces a body it did not make on its own. Asked what a save new to Silhouette should do: "Do it
+automatically", knowing that bodies from another mod or sliders set by hand are replaced too.
+
+- **Once per save, by itself.** `Silhouette:Adopter`'s quest starts once in a save, the first time
+  `Silhouette.esp` is in it (OnQuestInit; a window MCM opens later does not come through there). It marks the
+  save as fresh, and its first scan presses Reset everyone as soon as Silhouette.dll answers (`FreshStart`),
+  with one notification. A refusal (a picking in progress) is asked again at the next scan. If the plugin
+  never answers in that first 24-hour window, nothing is pressed: a later install would otherwise take the
+  bodies Silhouette's own files gave in the meantime. A new game comes through too, where nobody has been
+  met and nothing changes.
+- **The press reaches every body now (S-68 amended).** A body Silhouette did not make carries no build to
+  compare with the press, so S-68 left it alone, even after a press. Now it is decided again once, at the first
+  sighting since the press, where BodyGen gives that person a body and no rule by name or faction decides
+  them (those are DecideBody's). That includes someone holding only other mods' keyed morphs, whom BodyGen
+  never rolls (S-15's window reaches them only in its 24 hours). `RST1` holds who has been looked at since the press, after the stamps
+  (`Registry::resetMet`, form ids resolved on load): sliders set by hand or another mod's body put on someone
+  after that stay theirs. Everyone seen at the press counts as looked at. A new press starts the list again.
+- **The record stays version 1.** A plugin refuses a record version newer than its own, so the list is
+  appended after the stamps rather than bumping the version: the plugin that first wrote `RST1` stops reading
+  at the stamps and follows the press as before; this one reads a record from before as "nobody yet".
+
+`tests/main.cpp` (TestResetEveryone) covers the first sighting after the press in the same and a later
+session, the hand-set body after it, someone with no BodyGen line, the second press, and the record's round
+trip, load-order moves and older bytes. Each guard was proven on a broken build (mutants M1-M9 killed); M10,
+the rule check moved after the roll, is equivalent: the rule's body replaces the extra roll when it lands.

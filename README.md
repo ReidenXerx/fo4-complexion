@@ -90,7 +90,11 @@ Without the DLL, everything above keeps working.
   body Silhouette gave, the ones you picked too, is decided again as if everyone were met for the first
   time. The people around you change at once, everyone else the next time you meet them; the save
   remembers it, and a later update of Silhouette does not set it off again. After updating to the pool,
-  this is how people you had already met get it.
+  this is how people you had already met get it. It reaches bodies Silhouette did not make too (from
+  before it was installed, or another mod's), each once: at the first sighting since the press.
+- **A save that has never had Silhouette** gets *Reset everyone* by itself, once, on its first load with
+  Silhouette: without it, everyone you had already met would keep the body they had before, since a body is
+  given only to someone who has none.
 - **Touch-up** — bodies an older build gave get the nipple and genital variety they lack, and lose any
   shaft slider (never part of a body); a value you take off afterwards stays off.
 - **API** — `Silhouette:API`, OBody NG's function names (`GetPresetAssignedToActor`,

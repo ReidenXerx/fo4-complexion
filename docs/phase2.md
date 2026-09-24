@@ -200,6 +200,13 @@ draw by id. Anyone met later whose Silhouette body a build older than the press 
 met, once: the co-save's own record `RST1` holds the builds whose bodies came after the press (the press's,
 then each newer one loaded).
 
+A body Silhouette did not make -- from before it was installed, or another mod's -- carries no build to
+compare, so the press reaches it once, at that person's first sighting since the press (S-70). `RST1` holds
+who has been looked at since the press after the stamps, so sliders set by hand or another mod's body put on
+someone after that stay theirs. A save that never held `Silhouette.esp` gets the press by itself: the
+regeneration window's quest starts once per save, and its first scan presses Reset everyone as soon as the
+plugin answers (Silhouette:Adopter.FreshStart).
+
 ## Runtime rules (S-23)
 
 OBody's priority, highest first: per-NPC blacklist (name or form id) → per-NPC preset (form id or

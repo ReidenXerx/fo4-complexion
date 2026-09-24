@@ -78,9 +78,10 @@ namespace SH::CoSave
 				if (type == kReset) {
 					std::vector<std::byte> bytes(length);
 					std::string            error;
+					const auto             resolve = [&](std::uint32_t a_saved) { return a_intfc->ResolveFormID(a_saved).value_or(0); };
 					if (length && a_intfc->ReadRecordData(bytes.data(), length) != length) {
 						logger::error("co-save: Reset everyone is cut short - not followed in this save");
-					} else if (Game::TheDirector().LoadReset(bytes, version, error) != Registry::Loaded::kOk) {
+					} else if (Game::TheDirector().LoadReset(bytes, version, error, resolve) != Registry::Loaded::kOk) {
 						logger::error("co-save: Reset everyone not followed in this save ({})", error);
 					} else {
 						logger::info("co-save: Reset everyone was pressed in this save: bodies from older builds are decided again when met");
