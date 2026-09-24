@@ -199,6 +199,12 @@ namespace SH
 		// The regeneration window (S-15): a roll for someone other mods marked first -- refused for anyone
 		// with a choice behind their body, a reset waiting, a picking, or work on the way.
 		bool RequestAdopt(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string& a_why);
+		// S-68, MCM's "Reset everyone": a fresh start. Every body Silhouette gave, picks included, is decided
+		// again as if they were met for the first time -- a roll, then the rules have their say. Everyone seen
+		// this session now; every choice and rule's draw on record, wherever they are; and anyone met later
+		// whose body a build older than the press made, when met. Refused while the picker is open. a_said:
+		// what happened, or why not.
+		bool RequestResetEveryone(std::string& a_said);
 
 		// --- the bridge ---
 		[[nodiscard]] std::uint32_t        NextOrder();
@@ -258,6 +264,9 @@ namespace SH
 		Registry::Loaded                     LoadRecords(std::span<const std::byte> a_bytes, std::uint32_t a_version,
 								const std::function<std::uint32_t(std::uint32_t)>& a_resolve, std::string& a_error);
 		[[nodiscard]] std::size_t            RecordCount() const;
+		// S-68: the reset's own record; empty bytes when it was never pressed (nothing is written then).
+		[[nodiscard]] std::vector<std::byte> SaveReset() const;
+		Registry::Loaded                     LoadReset(std::span<const std::byte> a_bytes, std::uint32_t a_version, std::string& a_error);
 		[[nodiscard]] std::optional<Record>  RecordOf(std::uint32_t a_ref) const;
 		[[nodiscard]] bool                   HasPicking(std::uint32_t a_ref) const;
 
@@ -377,6 +386,7 @@ namespace SH
 		void                      Resettle(std::uint32_t a_ref);
 		void                      FollowReset(std::uint32_t a_ref, Session& a_session);
 		void                      FollowRoll(std::uint32_t a_ref, Session& a_session);
+		void                      FollowResetEveryone(std::uint32_t a_ref, Session& a_session);
 		void                      FinishPendingBody(std::uint32_t a_ref, Session& a_session);
 		void                      DecideBody(std::uint32_t a_ref, Session& a_session);
 		void                      Redraw(std::uint32_t a_ref, Session& a_session);

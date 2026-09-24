@@ -14,7 +14,8 @@ namespace SH::Papyrus
 		// refuses to run orders it would carry out differently: a DLL and scripts of different builds.
 		// 3: OrderReadsDone, OrderGone, OrderDefer, EventDone, RequestAdopt; Request* take a lane and
 		// return why they refused ("" = accepted); marker kind 3, the choice marker.
-		constexpr std::int32_t kProtocol = 3;
+		// 4: ResetEveryone (S-68), which the bridge's MCM button calls.
+		constexpr std::int32_t kProtocol = 4;
 
 		using Str = RE::BSFixedString;
 
@@ -361,6 +362,16 @@ namespace SH::Papyrus
 			});
 		}
 
+		// S-68, MCM's "Reset everyone". What happened, or why not -- either way the line for the player. The
+		// director's state only: the people it resets are the ones it has already read.
+		Str ResetEveryone(std::monostate)
+		{
+			std::string said;
+			const bool  done = D().RequestResetEveryone(said);
+			SetError(done ? std::string{} : said);
+			return Str{ done ? said : "not done: " + said };
+		}
+
 		Str NameOf(std::monostate, std::int32_t a_actor) { return Str{ Game::NameOf(Game::ActorFor(Ref(a_actor))) }; }
 
 		// Binds a_fn. a_fast: callable from tasklets, so a call costs no frame -- set on our own
@@ -458,6 +469,7 @@ namespace SH::Papyrus
 		Bind(a_vm, "RequestReset"sv, RequestReset, main);
 		Bind(a_vm, "RequestReapply"sv, RequestReapply, main);
 		Bind(a_vm, "RequestAdopt"sv, RequestAdopt, main);
+		Bind(a_vm, "ResetEveryone"sv, ResetEveryone, fast);
 		Bind(a_vm, "NameOf"sv, NameOf, main);
 
 		logger::info("papyrus: {} bound (protocol {})", kScript, kProtocol);

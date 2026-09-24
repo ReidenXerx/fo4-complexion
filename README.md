@@ -86,6 +86,11 @@ Without the DLL, everything above keeps working.
   their body again: a named character's own body, a rule's draw, or a new roll from the pool), or names
   the one they have. A choice is kept like a rule's, and marked in LooksMenu, so a save made without the
   DLL keeps it (MCM's *Refresh* pressed without the DLL gives the body again without the mark).
+- **Reset everyone** (MCM > Silhouette > Bodies, pressed twice) — a fresh start for the whole save: every
+  body Silhouette gave, the ones you picked too, is decided again as if everyone were met for the first
+  time. The people around you change at once, everyone else the next time you meet them; the save
+  remembers it, and a later update of Silhouette does not set it off again. After updating to the pool,
+  this is how people you had already met get it.
 - **Touch-up** — bodies an older build gave get the nipple and genital variety they lack, and lose any
   shaft slider (never part of a body); a value you take off afterwards stays off.
 - **API** — `Silhouette:API`, OBody NG's function names (`GetPresetAssignedToActor`,

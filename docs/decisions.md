@@ -974,3 +974,40 @@ Only the label, its help and the message changed. The action is the same (`MenuR
 `RequestRegenerate`: a new body at once, other mods' keyed morphs kept). The API's Reset (S-27, S-53:
 bare now, a new body at the next load) is a different action with the same word, and MCM does not offer
 it. Earlier entries and the code's comments say "Back to random"; they mean this button.
+
+## S-68 — "Reset everyone": a fresh start, picks included, for the whole save
+
+Owner decision, 2026-09-24, by two polls. S-65 and S-66 changed what people are GIVEN, but a body is given
+once (OBody's rule, and BodyGen's): everyone already met kept the installed pin-up they had rolled, and
+Piper, Cait and Ivy kept theirs, because a form-id rule is BodyGen's line and BodyGen reads a line only for
+someone who has no body yet (the director leaves such a verdict alone, Director.cpp DecideBody, `kNone`).
+Asked what the update should do to people already met, the owner first chose "everyone switches", then
+decided against logic that fires once by itself: "better just wipe all bodies in mcm and reapply them
+accordingly unique rules built in silhouette and new pool for random bodies". So it is a button. Asked
+whom one press reaches: "Everyone, as met". Asked about bodies the player picked: wiped too, "who wants
+fresh start rollback to silhouette only experience".
+
+MCM > Silhouette > Bodies > **Reset everyone**, pressed twice within 10 seconds. Everyone is decided again
+as if met for the first time: a roll, then the rules have their say -- a named character's own line, a
+rule by name or faction drawing by id alone (S-60's presses forgotten), the pool for everyone else.
+- **Around the player, at once**: everyone the plugin has seen this session whom Silhouette shapes (a
+  distributed race, S-11; never the player or a dummy) and who wears a Silhouette body, or whom a rule or
+  BodyGen now gives one. Someone blacklisted by name stays bare; a Silhouette body under another blacklist
+  goes to what BodyGen's blacklist line gives (bare). Another mod's body is replaced only where BodyGen now
+  gives a body -- for someone met later it cannot be dated, and is left.
+- **On record, wherever they are**: every choice (the picker's, another mod's) and every picking in
+  progress becomes a roll owed, which S-59 carries to their next sighting; every rule's kept draw goes back
+  to the draw by id. A choice asked for before the press and not written yet -- queued, or with the bridge
+  -- is replaced by that roll, so it cannot land after the press; and someone blacklisted by name who wore
+  another mod's choice is rolled too, so the blacklist has its say at once. (Both found by fuzzing the
+  press into the director's random sessions: 183 of 100,000 runs ended with a choice back on someone.)
+- **Everyone met later**: a Silhouette body that a build older than the press made is decided again when
+  they are met, once. The save remembers the press as the builds whose bodies count as made after it --
+  the one current at the press, and every newer one loaded since -- so an update of Silhouette never sets
+  it off again. A body the press's own build made before the press, on someone out of sight, stays: the
+  rules of now made it.
+
+The press lives in the co-save as a record of its own ('RST1', written only once pressed), not as an item
+of the records: the record list refuses bytes after its last picking, so a block appended there would have
+made every older plugin drop every record. An older plugin skips 'RST1' and simply does not follow the
+reset. Protocol 4 (the bridge calls the new native).

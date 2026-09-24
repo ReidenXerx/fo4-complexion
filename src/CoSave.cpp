@@ -7,10 +7,14 @@ namespace SH::CoSave
 	namespace
 	{
 		constexpr std::uint32_t kPluginID = 'SLHT';
-		// The one record Silhouette writes, in every version: a later version appends fields inside its
-		// items (each carries its length) rather than adding records or bumping the version. A record of
-		// another type is skipped here and not written back.
+		// The records, in every version: a later version appends fields inside its items (each carries its
+		// length) rather than adding records or bumping the version. A record of another type is skipped
+		// here and not written back.
 		constexpr std::uint32_t kRecords = 'REC1';
+		// S-68: "Reset everyone" is not about one reference, so it is not an item of the records; it has a
+		// record of its own, written only once it has been pressed. An older plugin skips it: it has no
+		// such button, and the reset is simply not followed there.
+		constexpr std::uint32_t kReset = 'RST1';
 
 		// Records a newer Silhouette wrote, which this one cannot read: kept exactly and written back, so
 		// going back to the newer version finds them. Only touched by the co-save callbacks and Revert.
@@ -57,6 +61,12 @@ namespace SH::CoSave
 				std::memcpy(&written, bytes.data(), sizeof(written));
 			}
 			logger::info("co-save: {} record(s) written ({} held)", written, Game::TheDirector().RecordCount());
+			if (const auto reset = Game::TheDirector().SaveReset(); !reset.empty()) {
+				if (!a_intfc->OpenRecord(kReset, Registry::kResetVersion) ||
+					!a_intfc->WriteRecordData(reset.data(), static_cast<std::uint32_t>(reset.size()))) {
+					logger::error("co-save: could not write Reset everyone - this save will not decide anyone met later again");
+				}
+			}
 		}
 
 		void OnLoad(const F4SE::SerializationInterface* a_intfc)
@@ -65,6 +75,18 @@ namespace SH::CoSave
 			std::uint32_t version = 0;
 			std::uint32_t length = 0;
 			while (a_intfc->GetNextRecordInfo(type, version, length)) {
+				if (type == kReset) {
+					std::vector<std::byte> bytes(length);
+					std::string            error;
+					if (length && a_intfc->ReadRecordData(bytes.data(), length) != length) {
+						logger::error("co-save: Reset everyone is cut short - not followed in this save");
+					} else if (Game::TheDirector().LoadReset(bytes, version, error) != Registry::Loaded::kOk) {
+						logger::error("co-save: Reset everyone not followed in this save ({})", error);
+					} else {
+						logger::info("co-save: Reset everyone was pressed in this save: bodies from older builds are decided again when met");
+					}
+					continue;
+				}
 				if (type != kRecords) {
 					logger::warn("co-save: unknown record {:08X} skipped", type);
 					continue;

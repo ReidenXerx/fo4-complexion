@@ -191,6 +191,15 @@ Silhouette > *The NPC in your sights* offers a dropdown of every preset, with Gi
 to random, and Which body; the menu acts on the NPC last aimed at within 30 seconds of the crosshair
 leaving them.
 
+## Reset everyone (S-68)
+
+MCM > Silhouette > Bodies > *Reset everyone*, pressed twice within 10 seconds: a fresh start for the whole
+save. Everyone the plugin has seen this session gets a roll now and the rules have their say; every choice
+and picking on record becomes a roll owed (S-59), wherever they are; every rule's kept draw goes back to the
+draw by id. Anyone met later whose Silhouette body a build older than the press made is decided again when
+met, once: the co-save's own record `RST1` holds the builds whose bodies came after the press (the press's,
+then each newer one loaded).
+
 ## Runtime rules (S-23)
 
 OBody's priority, highest first: per-NPC blacklist (name or form id) → per-NPC preset (form id or

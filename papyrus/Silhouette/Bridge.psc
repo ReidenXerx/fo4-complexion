@@ -47,8 +47,12 @@ String Property ModName = "Silhouette" AutoReadOnly
 Int Property SourcePicker = 3 AutoReadOnly
 ; The player's own actions (the picker, the NPC page) go first (S-55).
 Int Property LaneUrgent = 0 AutoReadOnly
-; What RunOrder below does. Silhouette.dll says what it expects; they must agree.
-Int Property Protocol = 3 AutoReadOnly
+; What RunOrder below does, and the natives the menu calls. Silhouette.dll says what it
+; expects; they must agree. 4: ResetEveryone (S-68).
+Int Property Protocol = 4 AutoReadOnly
+; "Reset everyone" forgets every body, picks included: a second press within this long
+; confirms the first.
+Float Property ResetConfirmSeconds = 10.0 AutoReadOnly
 ; Silhouette.esp's refit keyword (S-40): ORefit's floors live under it, apart from the body.
 Int Property RefitKeywordID = 0x803 AutoReadOnly
 String Property RefitMarker = "Silhouette_Refit" AutoReadOnly
@@ -61,6 +65,7 @@ Int Property AAFActorLocked = 0x017CEA AutoReadOnly
 ; a crash: Connect() clears it on every load, and after two minutes it is treated as
 ; a drain that is not coming back.
 Float _drainStarted = -1.0
+Float _resetAsked = -1.0  ; real time of the first press of "Reset everyone", -1 when none waits
 Int _polls = 0
 Bool _plugin = false      ; Silhouette.dll is loaded and speaks this protocol
 Bool _looksMenu = false
@@ -654,6 +659,24 @@ Function MenuRandom()
 		see = " Another mod has them in a scene: the new body comes when it ends."
 	EndIf
 	Debug.MessageBox(Silhouette:DLL.NameOf(target) + " is reset: Silhouette decides their body again, as if met for the first time (their own body if they have one; a rule with several presets draws again). Other mods' body morphs are kept." + see)
+EndFunction
+
+; S-68: every body Silhouette gave, picks included, decided again. The first press only
+; asks; a second within ResetConfirmSeconds does it.
+Function MenuResetEveryone()
+	If !MenuReady()
+		Return
+	EndIf
+	Float now = Utility.GetCurrentRealTime()
+	If _resetAsked < 0.0 || now - _resetAsked > ResetConfirmSeconds || now < _resetAsked
+		_resetAsked = now
+		Debug.MessageBox("Silhouette: Reset everyone forgets every body Silhouette gave -- the ones you picked too -- and decides them again as if everyone were met for the first time: named characters get their own body, rules draw again, everyone else a new roll from the pool. People around you change at once, everyone else when you next meet them. Other mods' body morphs are kept. Press Reset everyone again within 10 seconds to do it.")
+		Return
+	EndIf
+	_resetAsked = -1.0
+	String said = Silhouette:DLL.ResetEveryone()
+	Act()
+	Debug.MessageBox("Silhouette: " + said)
 EndFunction
 
 Function MenuWhich()

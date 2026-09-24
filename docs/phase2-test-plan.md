@@ -1,6 +1,6 @@
 # Phase 2 — the first in-game session
 
-Eighteen steps for the first session with Silhouette.dll, each with what to expect and what a failure
+Twenty-two steps for the first session with Silhouette.dll, each with what to expect and what a failure
 means. Written from the second and third microscope waves' measurements of the owner's own install (809
 plugins, 1,609 built .tri files, the saves that hold Silhouette bodies); the log lines are quoted from the
 code. Everything the offline tests cannot reach is here: LooksMenu itself, the engine's events, the frame
@@ -137,7 +137,7 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
     had goes back` (S-47), and probes after the load. (Wave 3 failed exactly this: nobody was read after such
     a load.) Then undress a companion through the trade menu: `refit off` within about a second, so the
     equip events still arrive after a load in a running game.
-14. "Reset" (MCM, formerly "Reset"; The NPC in your sights) on a woman who is not in a scene: a new body within a
+14. "Reset" (MCM, formerly "Back to random"; The NPC in your sights) on a woman who is not in a scene: a new body within a
     second, other mods' keyed morphs kept -- the anatomy arousal layer included (fo4-mcp's `bodygen
     morphs` verb shows its keyword layer before and after). (A Reset saved before it lands is carried out after the
     load, S-59: too quick to catch by hand, the offline tests cover it.)
@@ -169,6 +169,24 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
 18. Optional, on a copy: press Refresh with a crowd around (15 to 30 seconds of work) and quicksave in
     the middle; load it. Anyone the save cut short gets `half a body of <preset> (a save cut it short) -
     given again, whole`, and nobody is left with half a body (S-58).
+
+## The pool, the named people and Reset everyone (S-65, S-66, S-68)
+
+19. Go somewhere you have not been since the update: the new people are varied and mostly ordinary.
+    Silhouette.log names their bodies (`N slider(s) healed or topped up on Plain F07`, `... Rough F03`):
+    about seven in ten Plain, two Rough, one Fine in ten -- a handful of people proves nothing, a town does.
+    Nobody new gets an installed preset (Rocket Bomb, Blessed): those are the picker's now.
+20. On a COPY of the save: MCM > Silhouette > Bodies > "Reset everyone". The first press only explains
+    and asks; press it again within 10 seconds. The answer counts who changes now and the picks and rule
+    draws forgotten; within seconds the people around you have new bodies, and Silhouette.log has `Reset
+    everyone (build ...): N seen this session get a new body now, M choice(s) or rule draw(s) on record
+    forgotten`. Someone you picked a body for earlier has a new one (their pick is gone).
+21. Still on that copy, go where you met people before the update: each gets a new body as you meet them
+    (`<id> "<name>": <preset> is from before Reset everyone - a new body`). Save, load, meet them again:
+    no second reset. Piper, Cait, Ivy and the other named people read their own body in MCM > The NPC in
+    your sights > "Which body do they have?" (`Piper Wright`, `Cait`, `Ivy`), not a pool body.
+22. A NEW character with no LooksMenu body sliders: MCM > Bodies > "Which body do I have?" names Plain F01
+    (a woman) or Plain M02 (a man), the most average body of the weighted pool (S-65).
 
 ## Not checked offline
 

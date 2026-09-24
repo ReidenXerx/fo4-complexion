@@ -728,11 +728,15 @@ namespace
 	void Reload(SH::Director& d, FakeGame& g, const nlohmann::json& a_doc = BaseCatalog())
 	{
 		const auto bytes = d.SaveRecords(nullptr);
+		const auto reset = d.SaveReset();  // S-68: its own record, only once pressed
 		d.ForgetWorld();
 		d.RevertRecords();
 		std::string error;
 		Check(d.LoadRecords(bytes, SH::Registry::kVersion, [](std::uint32_t id) { return id; }, error) == SH::Registry::Loaded::kOk,
 			std::format("reload ({})", error));
+		if (!reset.empty()) {
+			Check(d.LoadReset(reset, SH::Registry::kResetVersion, error) == SH::Registry::Loaded::kOk, std::format("reload the reset ({})", error));
+		}
 		d.SetCatalog(Cat(a_doc));
 		g.Load();
 	}
@@ -3045,6 +3049,200 @@ int CheckData(const std::filesystem::path& a_root)
 	return failed;
 }
 
+// S-68, MCM's "Reset everyone": a fresh start -- everyone seen now, every choice on record wherever they
+// are, and anyone met later whose Silhouette body an older build made; picks included (owner poll). The
+// catalog's build is stamp 1234; stamp 99 is an older build's (Cat's manifest names its Curvy).
+static void TestResetEveryone()
+{
+	using Layer = std::map<std::string, float>;
+	std::string why;
+	std::string said;
+	{
+		SH::Director d;
+		FakeGame     g;
+		const auto   cat = Cat(BaseCatalog());
+		d.SetCatalog(cat);
+		g.Roll(0xA00, *cat, "Silhouette_Curvy", 99.0F);   // an older build's roll, seen this session
+		g.Roll(0xA10, *cat, "Silhouette_Slim", 1234.0F);  // this build's roll, seen this session
+		g.Roll(0xA20, *cat, "Silhouette_Slim", 1234.0F);  // picked, then out of sight: a record only
+		g.Roll(0xA30, *cat, "Silhouette_Curvy", 99.0F);   // an older build's roll, met in an earlier session
+		g.Roll(0xA40, *cat, "Silhouette_Slim", 1234.0F);  // this build's roll, met in an earlier session
+		g.Roll(0xA50, *cat, "Silhouette_Slim", 1234.0F);  // blacklisted by name
+		d.Seen(See(0xA20, "Somebody"));
+		d.Seen(See(0xA50, "Mama Murphy"));
+		(void)Drain(d, g);
+		Check(d.RequestPreset(0xA20, true, 0x00012345, "Curvy", SH::Source::kPicker, kUrgent, why), "(set-up) picked");
+		(void)Drain(d, g);
+		Check(g.actors[0xA20].unkeyed.contains("Silhouette_Chosen"), "(set-up) the pick carries its marker");
+		Reload(d, g);
+		d.Seen(See(0xA00, "Somebody"));
+		d.Seen(See(0xA10, "Somebody"));
+		d.Seen(See(0xA50, "Mama Murphy"));
+		(void)Drain(d, g);
+		Check(g.actors[0xA00].unkeyed.contains("Silhouette_Curvy") && g.actors[0xA00].unkeyed.at("Silhouette_Curvy") == 99.0F,
+			"(set-up) before the press an older build's body is left as it is");
+
+		g.rollsTo = "Silhouette_Athletic";
+		Check(d.RequestResetEveryone(said), "Reset everyone is accepted");
+		Check(said.starts_with("2 around you"), std::format("the answer counts who changes now ({})", said));
+		(void)Drain(d, g);
+		Check(g.actors[0xA00].unkeyed.contains("Silhouette_Athletic") && !g.actors[0xA00].unkeyed.contains("Silhouette_Curvy"),
+			"someone seen this session gets a new body at once");
+		Check(g.actors[0xA10].unkeyed.contains("Silhouette_Athletic"), "... a body this build made too: everyone around");
+		Check((g.actors[0xA50].unkeyed == Layer{ { "Silhouette_Blacklisted", 1234.0F } }), "someone blacklisted by name stays bare");
+
+		d.Seen(See(0xA20, "Somebody"));
+		(void)Drain(d, g);
+		Check(g.actors[0xA20].unkeyed.contains("Silhouette_Athletic") && !g.actors[0xA20].unkeyed.contains("Silhouette_Chosen") &&
+				  !d.RecordOf(0xA20).value_or(SH::Record{}).Intent(),
+			"a pick made before the press is forgotten wherever they were, marker and all (owner: picks too)");
+		d.Seen(See(0xA30, "Somebody"));
+		(void)Drain(d, g);
+		Check(g.actors[0xA30].unkeyed.contains("Silhouette_Athletic"), "someone met later with an older build's body is decided again when met");
+		d.Seen(See(0xA40, "Somebody"));
+		(void)Drain(d, g);
+		Check(g.actors[0xA40].unkeyed.contains("Silhouette_Slim"), "someone met later with this build's body keeps it: the rules of now made it");
+
+		// Once, and across a save; a newer build's bodies came after the press.
+		g.rollsTo = "Silhouette_Slim";
+		g.Roll(0xA60, *cat, "Silhouette_Curvy", 99.0F);
+		auto next = BaseCatalog();
+		next["stamp"] = 5678;
+		Reload(d, g, next);
+		g.Roll(0xA70, *cat, "Silhouette_Curvy", 5678.0F);
+		for (const std::uint32_t r : { 0xA00u, 0xA30u, 0xA60u, 0xA70u }) {
+			d.Seen(See(r, "Somebody"));
+		}
+		(void)Drain(d, g);
+		Check(g.actors[0xA00].unkeyed.contains("Silhouette_Athletic") && g.actors[0xA30].unkeyed.contains("Silhouette_Athletic"),
+			"decided again once: the next session leaves the new bodies be");
+		Check(g.actors[0xA60].unkeyed.contains("Silhouette_Slim"), "the press survives a save: an older build's body met after it is decided again");
+		Check(g.actors[0xA70].unkeyed.contains("Silhouette_Curvy") && g.actors[0xA70].unkeyed.at("Silhouette_Curvy") == 5678.0F,
+			"a body a newer build made came after the press: kept");
+
+		// Blacklisted by name, wearing another mod's choice (a choice beats the blacklist): the fresh start
+		// forgets the choice, and the blacklist has its say -- bare, in this session, not at the next.
+		g.Roll(0xA90, *cat, "Silhouette_Slim", 5678.0F);
+		d.Seen(See(0xA90, "Mama Murphy"));
+		(void)Drain(d, g);
+		Check(d.RequestPreset(0xA90, true, 0x00012345, "Curvy", SH::Source::kAPI, kNormal, why), "(set-up) another mod's choice");
+		(void)Drain(d, g);
+		Check(g.actors[0xA90].unkeyed.contains("Silhouette_Chosen"), "(set-up) the choice is on her, beside Curvy");
+		Check(d.RequestResetEveryone(said), "pressed again");
+		(void)Drain(d, g);
+		Check((g.actors[0xA90].unkeyed == Layer{ { "Silhouette_Blacklisted", 5678.0F } }),
+			"someone blacklisted by name who wore a choice is bare after the press, in the same session");
+
+		// A choice another mod asked for before the press, for someone never seen, not written yet: it does not
+		// land after the press -- the roll owed takes its place.
+		g.Roll(0xAA0, *cat, "Silhouette_Slim", 5678.0F);
+		Check(d.RequestPreset(0xAA0, true, 0x00012345, "Curvy", SH::Source::kAPI, kNormal, why), "(set-up) another mod asks; nothing written yet");
+		Check(d.RequestResetEveryone(said), "pressed with that choice still queued");
+		(void)Drain(d, g);
+		Check(!g.actors[0xAA0].unkeyed.contains("Silhouette_Chosen") && !g.actors[0xAA0].unkeyed.contains("Silhouette_Curvy"),
+			"a choice queued before the press does not land after it");
+
+		// A save made without the plugin carries no reset: the next session follows none.
+		g.Roll(0xA80, *cat, "Silhouette_Curvy", 99.0F);
+		ReloadWithoutRecords(d, g, next);
+		d.Seen(See(0xA80, "Somebody"));
+		(void)Drain(d, g);
+		Check(g.actors[0xA80].unkeyed.contains("Silhouette_Curvy"), "a save without the reset's record decides nobody again");
+	}
+	{
+		SH::Director d;
+		FakeGame     g;
+		const auto   cat = Cat(BaseCatalog());
+		d.SetCatalog(cat);
+		g.Roll(0xB00, *cat, "Silhouette_Slim", 1234.0F);
+		d.Seen(See(0xB00, "Somebody"));
+		(void)Drain(d, g);
+		(void)d.PickerStart(0xB00, true, 0x00012345, "Somebody");
+		(void)Drain(d, g);
+		Check(!d.RequestResetEveryone(said) && said.contains("picked"), "refused while the picker is open");
+		(void)d.PickerCancel();
+		(void)Drain(d, g);
+
+		// A race Silhouette does not distribute to is not its at all (S-11): whatever body they have is left be,
+		// a Silhouette one from an older build included.
+		auto ghoul = See(0xB10, "Somebody");
+		ghoul.facts.race = "GhoulRace";
+		g.Roll(0xB10, *cat, "Silhouette_Curvy", 99.0F);
+		auto other = See(0xB20, "Somebody");
+		other.facts.race = "GhoulRace";
+		g.actors[0xB20].unkeyed = { { "Breasts", 0.4F } };
+		g.actors[0xB20].listed = { "Breasts" };
+		d.Seen(ghoul);
+		d.Seen(other);
+		(void)Drain(d, g);
+		g.rollsTo = "Silhouette_Athletic";
+		Check(d.RequestResetEveryone(said), "accepted once the picking is over");
+		(void)Drain(d, g);
+		Check(g.actors[0xB10].unkeyed.contains("Silhouette_Curvy"), "a race Silhouette does not distribute to keeps even a Silhouette body (S-11)");
+		Check((g.actors[0xB20].unkeyed == Layer{ { "Breasts", 0.4F } }), "... and another mod's body");
+
+		// Someone a blacklist keeps from BodyGen, wearing another mod's body: nothing of Silhouette's, nothing
+		// for BodyGen to give -- not touched.
+		auto blocked = See(0xB40, "Somebody");
+		blocked.facts.originPlugin = "Blocked.esp";
+		g.actors[0xB40].unkeyed = { { "Breasts", 0.6F } };
+		g.actors[0xB40].listed = { "Breasts" };
+		d.Seen(blocked);
+		(void)Drain(d, g);
+		Check(d.RequestResetEveryone(said), "pressed again");
+		(void)Drain(d, g);
+		Check((g.actors[0xB40].unkeyed == Layer{ { "Breasts", 0.6F } }), "a blacklisted NPC's body from another mod is left alone");
+
+		// A named character (a form-id rule: BodyGen's own line for them) met after the press.
+		auto named = See(0xB30, "Piper Wright");
+		named.facts.bases = { { "Fallout4.esm", 1000 } };
+		g.Roll(0xB30, *cat, "Silhouette_Curvy", 99.0F);
+		d.Seen(named);
+		(void)Drain(d, g);
+		Check(g.actors[0xB30].unkeyed.contains("Silhouette_Athletic"), "a named character met after the press is rolled again: their own line gives their body");
+	}
+	{
+		SH::Registry r;
+		std::string  error;
+		Check(r.SerializeReset().empty(), "never pressed: no reset record");
+		r.resetStamps = { 1234, 5678 };
+		const auto   bytes = r.SerializeReset();
+		SH::Registry back;
+		Check(back.DeserializeReset(bytes, SH::Registry::kResetVersion, error) == SH::Registry::Loaded::kOk && back.resetStamps == r.resetStamps,
+			"the reset record reads back");
+		auto longer = bytes;
+		longer.insert(longer.end(), { std::byte{ 7 }, std::byte{ 7 } });
+		Check(back.DeserializeReset(longer, SH::Registry::kResetVersion, error) == SH::Registry::Loaded::kOk && back.resetStamps == r.resetStamps,
+			"fields a later version appends are skipped");
+		Check(bytes.size() == 2 + 2 * 4, "the reset record is a count and its stamps");
+		SH::Registry cut;
+		cut.resetStamps = { 42 };
+		Check(bytes.size() >= 2 &&
+				  cut.DeserializeReset(std::span{ bytes }.first(bytes.size() - 2), SH::Registry::kResetVersion, error) == SH::Registry::Loaded::kRefused &&
+				  cut.resetStamps == std::vector<std::uint32_t>{ 42 },
+			"cut short: refused, nothing replaced");
+		Check(cut.DeserializeReset(bytes, SH::Registry::kResetVersion + 1, error) == SH::Registry::Loaded::kNewer, "a newer version is not read");
+
+		SH::Registry f;
+		f.Get(1).source = SH::Source::kPicker;
+		f.Get(1).preset = "Curvy";
+		f.Get(2).source = SH::Source::kNameRule;
+		f.Get(2).preset = "Slim";
+		f.Get(2).salt = 3;
+		f.Get(3).source = SH::Source::kNameBlacklist;
+		f.Get(4).source = SH::Source::kReset;
+		f.Keep(SH::PickerSave{ .ref = 5, .base = 77 });
+		const auto changed = f.ForgetChoices();
+		Check(f.Find(1)->source == SH::Source::kRoll && f.Find(1)->preset.empty(), "a pick on record becomes a roll owed");
+		Check(f.Find(2)->source == SH::Source::kNameRule && f.Find(2)->preset.empty() && f.Find(2)->salt == 0,
+			"a rule's kept draw goes back to the draw by id alone");
+		Check(f.Find(3)->source == SH::Source::kNameBlacklist && f.Find(4)->source == SH::Source::kReset, "a name blacklist and a reset owed stay as they are");
+		Check(f.pickings.empty() && f.Find(5) && f.Find(5)->source == SH::Source::kRoll && f.Find(5)->base == 77,
+			"a picking in progress becomes a roll owed");
+		Check(changed == 3, std::format("the count is the pick, the rule's draw and the picking ({})", changed));
+	}
+}
+
 // The crosshair (the Pick hotkey, the menu's target): the picks the sink saw, chosen on the main thread.
 // Handles 0x100-0x1FF stand for NPCs Silhouette shapes, anything else for a door or a chair.
 static void TestCrosshairTrail()
@@ -3125,6 +3323,7 @@ int main(int argc, char** argv)
 	TestWave4();
 	TestWave5();
 	TestCrosshairTrail();
+	TestResetEveryone();
 	std::cout << g_passed << " passed, " << g_failed << " failed\n";
 	return g_failed;
 }

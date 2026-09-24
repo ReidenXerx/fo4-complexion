@@ -78,6 +78,7 @@ namespace SH
 		{
 			_records.clear();
 			pickings.clear();
+			resetStamps.clear();
 		}
 		void                      Prune(std::uint32_t a_ref);  // erases it if Empty()
 		[[nodiscard]] std::size_t Size() const { return _records.size(); }
@@ -87,6 +88,15 @@ namespace SH
 		// Keyed by reference. Adding one past the cap drops the oldest.
 		std::map<std::uint32_t, PickerSave> pickings;
 		void                                Keep(PickerSave a_save);
+
+		// S-68, MCM's "Reset everyone": the builds whose bodies count as made after the last press -- the one
+		// current at the press, and each newer one since. Empty: never pressed.
+		std::vector<std::uint32_t> resetStamps;
+
+		// The press, for everyone on record wherever they are: a choice (the picker's, another mod's) or a
+		// picking in progress becomes a roll owed (S-59 carries it to their next sighting), and a rule's draw
+		// goes back to the draw by id alone. How many records that changed.
+		std::size_t ForgetChoices();
 
 		// The bytes for the co-save. a_keep(ref, base, intent) says which records and pickings to write
 		// (KeepInCoSave is the plugin's rule); a record with nothing in it never is. a_intent: it holds what
@@ -106,6 +116,13 @@ namespace SH
 		// (0: that form is gone, and so is its record).
 		Loaded Deserialize(std::span<const std::byte> a_bytes, std::uint32_t a_version,
 			const std::function<std::uint32_t(std::uint32_t)>& a_resolve, std::string& a_error);
+
+		// The reset's own co-save record (resetStamps), apart from the records: written only once it has been
+		// pressed, so a save that never was is as before, and an older plugin skips it. A later version
+		// appends fields after the stamps, which this one skips.
+		static constexpr std::uint32_t         kResetVersion = 1;
+		[[nodiscard]] std::vector<std::byte> SerializeReset() const;
+		Loaded DeserializeReset(std::span<const std::byte> a_bytes, std::uint32_t a_version, std::string& a_error);
 
 	private:
 		std::unordered_map<std::uint32_t, Record> _records;

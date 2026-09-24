@@ -299,6 +299,17 @@
           }
         },
         {
+          "type": "button",
+          "text": "Reset everyone",
+          "help": "A fresh start: forgets every body Silhouette gave -- the ones you picked too -- and decides them all again, as if everyone were met for the first time. Named characters get their own body, the rules by name and faction draw again, everyone else rolls a new body from the pool. People around you change at once; everyone else the next time you meet them (the save remembers the reset). Body morphs other mods keep under their own keyword are kept. Press it twice to confirm. Cannot be undone. Needs Silhouette.dll and Silhouette.esp.",
+          "action": {
+            "type": "CallFunction",
+            "form": "Silhouette.esp|802",
+            "function": "MenuResetEveryone",
+            "params": []
+          }
+        },
+        {
           "type": "section",
           "text": "Regeneration window"
         },

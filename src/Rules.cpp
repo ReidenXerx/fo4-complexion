@@ -72,7 +72,7 @@ namespace SH
 
 		// 2. per-NPC preset -- by form id BodyGen already did it; by name is ours.
 		if (AnyListed(a_catalog.npcFormIDRules[sex], a_actor.bases)) {
-			return { Tier::kNone, {}, {}, "has a per-NPC preset by form id (BodyGen's)" };
+			return { Tier::kNone, {}, {}, "has a per-NPC preset by form id (BodyGen's)", false, true };
 		}
 		if (!a_actor.baseName.empty()) {
 			for (const auto& rule : a_catalog.nameRules) {
@@ -100,6 +100,6 @@ namespace SH
 		}
 
 		// 5. plugin, race, random: BodyGen's.
-		return { Tier::kNone, {}, {}, "no runtime rule applies (BodyGen's roll stands)" };
+		return { Tier::kNone, {}, {}, "no runtime rule applies (BodyGen's roll stands)", false, true };
 	}
 }

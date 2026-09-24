@@ -743,6 +743,11 @@ def write_mcm(folder, picker, default_index, average, build):
                 'action': {'type': 'CallGlobalFunction', 'script': SCRIPT, 'function': function,
                            'params': []}}
 
+    def bridge_button(text, help_, function):
+        return {'type': 'button', 'text': text, 'help': help_,
+                'action': {'type': 'CallFunction', 'form': BRIDGE_FORM, 'function': function, 'params': []}}
+
+    needs = ' Needs Silhouette.dll and Silhouette.esp.'
     content = [
         {'type': 'text', 'text': 'Every NPC gets one of your BodySlide presets the first time you '
                                  'meet them, and keeps it. Your own character gets the most average '
@@ -785,6 +790,15 @@ def write_mcm(folder, picker, default_index, average, build):
                'own keyword are kept, and anyone in an AAF scene gets theirs when the scene ends; '
                'without it those morphs are cleared too. Cannot be undone.',
                'Reroll'),
+        # S-68 (owner poll): the whole save, not only who is near, and the bodies you picked too.
+        bridge_button('Reset everyone',
+                      'A fresh start: forgets every body Silhouette gave -- the ones you picked too -- and '
+                      'decides them all again, as if everyone were met for the first time. Named characters '
+                      'get their own body, the rules by name and faction draw again, everyone else rolls a '
+                      'new body from the pool. People around you change at once; everyone else the next time '
+                      'you meet them (the save remembers the reset). Body morphs other mods keep under their '
+                      'own keyword are kept. Press it twice to confirm. Cannot be undone.' + needs,
+                      'MenuResetEveryone'),
         {'type': 'section', 'text': 'Regeneration window'},
         {'type': 'text', 'text': 'LooksMenu only shapes people who hold no body morphs at all, so '
                                  'someone another mod already marked (an AAF morph left by a scene) '
@@ -798,11 +812,6 @@ def write_mcm(folder, picker, default_index, average, build):
                'Starts another 24 in-game hours of giving bodies to people other mods marked first. '
                'People it already handled are not handled twice.', 'OpenRegenerationWindow'),
     ]
-    def bridge_button(text, help_, function):
-        return {'type': 'button', 'text': text, 'help': help_,
-                'action': {'type': 'CallFunction', 'form': BRIDGE_FORM, 'function': function, 'params': []}}
-
-    needs = ' Needs Silhouette.dll and Silhouette.esp.'
     npcs = [
         {'type': 'text', 'text': 'Aim at someone, then open this menu -- or Pick them with the hotkey below '
                                  'and open it any time. Anyone you give a preset keeps it: the rules by name '

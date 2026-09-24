@@ -34,6 +34,7 @@ namespace SH
 		std::vector<std::string> options;  // for kName and kFaction: every preset the rule lists (S-52)
 		std::string why;                  // one line for the log
 		bool        blacklisted{ false };  // any blacklist tier: name, form id, plugin or race (S-41)
+		bool        bodyGen{ false };      // BodyGen gives them a body: their form-id line, or the roll (S-68)
 	};
 
 	[[nodiscard]] Verdict Decide(const Catalog& a_catalog, const ActorFacts& a_actor);

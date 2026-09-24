@@ -182,6 +182,85 @@ namespace SH
 		}
 	}
 
+	std::size_t Registry::ForgetChoices()
+	{
+		std::size_t changed = 0;
+		const auto  owe = [&](Record& a_r) {
+			if (a_r.source != Source::kRoll) {
+				a_r.source = Source::kRoll;
+				++changed;
+			}
+			a_r.preset.clear();
+			a_r.salt = 0;
+		};
+		for (auto& [ref, r] : _records) {
+			if (r.source == Source::kPicker || r.source == Source::kAPI) {
+				owe(r);
+			} else if (r.source == Source::kNameRule || r.source == Source::kFactionRule || r.salt != 0) {
+				// The rule decides again as if they were met now: the draw by id alone, not the one they kept.
+				if (!r.preset.empty() || r.salt != 0) {
+					++changed;
+				}
+				r.preset.clear();
+				r.salt = 0;
+			}
+		}
+		// A picking would put back the body they had; the fresh one replaces it.
+		for (const auto& [ref, save] : pickings) {
+			auto& r = _records[ref];
+			if (r.base == 0) {
+				r.base = save.base;
+			}
+			owe(r);
+		}
+		pickings.clear();
+		return changed;
+	}
+
+	std::vector<std::byte> Registry::SerializeReset() const
+	{
+		if (resetStamps.empty()) {
+			return {};
+		}
+		Writer w;
+		const auto count = static_cast<std::uint16_t>(std::min<std::size_t>(resetStamps.size(), 0xFFFF));
+		w.Put(count);
+		for (std::size_t i = 0; i < count; ++i) {
+			w.Put(resetStamps[i]);
+		}
+		return w.Take();
+	}
+
+	Registry::Loaded Registry::DeserializeReset(std::span<const std::byte> a_bytes, std::uint32_t a_version, std::string& a_error)
+	{
+		if (a_version > kResetVersion) {
+			a_error = std::format("reset record version {} is newer than this plugin's ({})", a_version, kResetVersion);
+			return Loaded::kNewer;
+		}
+		if (a_version != kResetVersion) {
+			a_error = std::format("reset record version {} (this plugin reads {})", a_version, kResetVersion);
+			return Loaded::kRefused;
+		}
+		try {
+			Reader                     r(a_bytes);
+			std::vector<std::uint32_t> stamps;
+			const auto                 count = r.Get<std::uint16_t>();
+			for (std::uint16_t i = 0; i < count; ++i) {
+				const auto s = r.Get<std::uint32_t>();
+				if (s == 0 || s >= (1u << 24)) {
+					throw std::runtime_error(std::format("{} is not a build stamp", s));
+				}
+				stamps.push_back(s);
+			}
+			// Whatever a later version appended after the stamps is not this one's to read.
+			resetStamps = std::move(stamps);
+			return Loaded::kOk;
+		} catch (const std::exception& e) {
+			a_error = e.what();
+			return Loaded::kRefused;
+		}
+	}
+
 	std::vector<std::byte> Registry::Serialize(const KeepFn& a_keep) const
 	{
 		std::vector<std::pair<std::uint32_t, const Record*>> kept;

@@ -422,6 +422,7 @@ namespace SH
 		RebuildChoice(a_ref, a_session);
 		FollowReset(a_ref, a_session);
 		FollowRoll(a_ref, a_session);
+		FollowResetEveryone(a_ref, a_session);
 		DecideBody(a_ref, a_session);
 		Reconcile(a_ref, a_session);
 		FinishPendingBody(a_ref, a_session);
@@ -510,6 +511,38 @@ namespace SH
 		}
 		Log(std::format("{:08X}: a new body asked for before the save - rolled now", a_ref));
 		QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, Lane::kNormal);
+	}
+
+	// S-68: after "Reset everyone", someone met whose body a build older than the press made -- a roll, a
+	// pick, a rule's body of then -- is decided again, once: a roll, and the rules have their say when it
+	// lands. The records the press could reach it changed itself (ForgetChoices); this is everyone else.
+	void Director::FollowResetEveryone(std::uint32_t a_ref, Session& a_session)
+	{
+		auto& stamps = _registry.resetStamps;
+		if (stamps.empty()) {
+			return;
+		}
+		if (std::ranges::find(stamps, _catalog->stamp) == stamps.end()) {
+			stamps.push_back(_catalog->stamp);  // a build newer than the press: whatever it made came after it
+		}
+		if (Claimed(a_ref, a_session)) {
+			return;
+		}
+		if (const auto* rec = _registry.Find(a_ref);
+			rec && (rec->source == Source::kRoll || rec->source == Source::kReset || rec->source == Source::kNameBlacklist)) {
+			return;  // a new body is owed already, or they are kept bare by name
+		}
+		if (KindOf(a_session.marker) != MarkerKind::kBody || IEquals(a_session.marker, kBlacklistMarker) || a_session.pendingBody ||
+			a_session.stamp == 0 || std::ranges::find(stamps, a_session.stamp) != stamps.end()) {
+			return;  // no body of Silhouette's (another mod's cannot be dated), or one made since the press
+		}
+		if (a_session.verdict.tier != Tier::kNone) {
+			return;  // a rule by name or faction decides them: DecideBody gives the rule's body, this build's values
+		}
+		Log(std::format("{:08X} \"{}\": {} is from before Reset everyone - a new body", a_ref, a_session.facts.baseName,
+			PresetNamedBy(a_session.marker, a_session.stamp)));
+		Intend(a_ref, a_session, Source::kRoll, {});  // owed until it lands (S-59)
+		QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, Lane::kBackground);
 	}
 
 	// S-58: a body a save cut short while it was being written. Its marker went first, as "pending", so
@@ -1074,6 +1107,69 @@ namespace SH
 			Intend(a_ref, session, Source::kRoll, {});
 			QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, Lane::kBackground);
 			Unpark(a_ref);
+			return true;
+		});
+	}
+
+	bool Director::RequestResetEveryone(std::string& a_said)
+	{
+		std::scoped_lock l{ _lock };
+		return WithCatalog(_catalog, _status, a_said, [&] {
+			if (_picker.ref != 0) {
+				a_said = "someone is being picked: Keep or Cancel first";
+				return false;
+			}
+			if (std::ranges::any_of(_sessions, [](const auto& a_s) { return a_s.second.restoring; })) {
+				a_said = "a picking is being put back: try again in a moment";
+				return false;
+			}
+			_registry.resetStamps = { _catalog->stamp };
+			const auto forgotten = _registry.ForgetChoices();
+			std::size_t now = 0;
+			for (auto& [ref, s] : _sessions) {
+				if (!s.known || !s.eligible) {
+					continue;
+				}
+				const bool ours = KindOf(s.marker) == MarkerKind::kBody && !IEquals(s.marker, kBlacklistMarker);
+				s.facts.salt = 0;  // a rule draws by id alone, as for someone met the first time
+				s.verdict = Decide(*_catalog, s.facts);
+				const auto& v = s.verdict;
+				// Eligible: a race Silhouette distributes to (S-11), neither the player nor a dummy. A Silhouette
+				// body is decided again whatever the rules now say (a blacklist's: bare); anyone else only where
+				// a rule or BodyGen gives them a body now. A choice just forgotten is always carried out here:
+				// someone blacklisted by name who wore another mod's choice goes bare once the roll lands.
+				const auto* rec = _registry.Find(ref);
+				const bool  owed = rec && rec->source == Source::kRoll;
+				if (!owed &&
+					(v.tier == Tier::kNameBlacklist || (!ours && !v.bodyGen && v.tier != Tier::kName && v.tier != Tier::kFaction))) {
+					continue;  // kept bare by name (DecideBody sees to it), or not Silhouette's and nothing to give
+				}
+				Retire(ref);
+				s.reset = false;
+				Intend(ref, s, Source::kRoll, {});  // owed until it lands (S-59)
+				QueueBody(ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, Lane::kBackground);
+				Unpark(ref);
+				++now;
+			}
+			// A choice asked for before the press and not written yet -- still queued, or with the bridge now --
+			// would land after it. Whoever is owed a roll and has such work gets the roll in its place (it waits
+			// for an order in flight), seen this session or not; anyone else owed one gets it when met (S-59).
+			for (const auto& [ref, rec] : _registry.All()) {
+				if (rec.source != Source::kRoll) {
+					continue;
+				}
+				const auto w = _work.find(ref);
+				const bool queued = w != _work.end() && w->second.body && w->second.body->what != BodyRequest::What::kRegenerate;
+				const bool flying = _busy.contains(ref) && !(w != _work.end() && w->second.body);
+				if (queued || flying) {
+					QueueBody(ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, Lane::kBackground);
+				}
+			}
+			Log(std::format("Reset everyone (build {}): {} seen this session get a new body now, {} choice(s) or rule draw(s) on record forgotten; "
+							"anyone met later with a body from an older build is decided again then",
+				_catalog->build, now, forgotten));
+			a_said = std::format("{} around you get a new body now; {} pick(s) and rule draw(s) forgotten. Everyone else is decided again when you meet them.",
+				now, forgotten);
 			return true;
 		});
 	}
@@ -2197,6 +2293,18 @@ namespace SH
 	{
 		std::scoped_lock l{ _lock };
 		return _registry.Size();
+	}
+
+	std::vector<std::byte> Director::SaveReset() const
+	{
+		std::scoped_lock l{ _lock };
+		return _registry.SerializeReset();
+	}
+
+	Registry::Loaded Director::LoadReset(std::span<const std::byte> a_bytes, std::uint32_t a_version, std::string& a_error)
+	{
+		std::scoped_lock l{ _lock };
+		return _registry.DeserializeReset(a_bytes, a_version, a_error);
 	}
 
 	std::optional<Record> Director::RecordOf(std::uint32_t a_ref) const
