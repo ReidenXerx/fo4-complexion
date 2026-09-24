@@ -2911,6 +2911,21 @@ namespace
 			Check(!d.PickerReady() && g.actors[A].unkeyed.contains("Silhouette_Athletic"), "a snapshot come back gone ends the picking, and the owed roll lands");
 		}
 
+		// Wave 6 lens 1: nobody is picked without an NPC record. A picking stored with base 0 was never found
+		// stale when its created id went to somebody else (S-57), and a Cancel then put the previous owner's
+		// choice and body on the newcomer.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			constexpr std::uint32_t A = 0xFF000D80;
+			g.Roll(A, *cat, "Silhouette_Slim", 1234.0F);
+			const auto said = d.PickerStart(A, true, 0, "Somebody");
+			(void)Drain(d, g);
+			Check(!d.PickerReady() && d.PickerTarget() == 0 && !d.HasPicking(A), std::format("an actor with no NPC record is not picked ({})", said));
+		}
+
 		// Lens 1 N8: someone Silhouette no longer shapes (their race left the build) keeps what was asked for
 		// (S-59) -- and "Which body" says it waits for that, not that it is on its way.
 		{

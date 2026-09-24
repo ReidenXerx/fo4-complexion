@@ -242,8 +242,8 @@ given on request, and an announcement a save cut off is made again after the loa
   again whole (S-58).
 - Silhouette.log (Documents\My Games\Fallout4\F4SE) is opened by its path as Windows gives it, so a user
   name no code page holds (Cyrillic, Polish, Chinese) still gets it -- opening it through a narrow name threw
-  at load, and F4SE disabled the whole plugin (fifth wave). Nothing in writing it may stop the plugin: without
-  the log it still runs.
+  at load, and F4SE disabled the whole plugin (fifth wave). Nothing in writing it may stop the plugin -- a
+  folder that cannot be written made the old sink throw too: without the log it still runs.
 - Silhouette.log says every half minute what the bridge did (probes, bodies, refits, touch-ups, failures)
   and what still waits, lane by lane, while there is any of it -- with what a scene holds back and what
   waits for people out of memory.

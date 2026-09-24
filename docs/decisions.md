@@ -399,7 +399,10 @@ worth keeping: a presence check tests the half that cannot go live early (the DL
 the first write unless every file can be written (nothing holds one open, no folder stands where a file goes),
 and a write that still fails names what was written and says Data now mixes two builds. Whether the Deploy
 is needed is read from Data itself, file by file (the same file id as the staged one, or not): a run that
-listed new files and was not followed by a Deploy told the next run that nothing waited.
+listed new files and was not followed by a Deploy told the next run that nothing waited. (Sixth wave, from the
+first real run: Vortex's own `__folder_managed_by_vortex` markers are not files an older build left, and do
+not call for a Deploy. A folder that refuses a NEW file is found by the copy, not before it; the copy then
+says what was written.)
 
 Agent decision, 2026-09-23, from LooksMenu's source. Reset removes Silhouette's (unkeyed) layer: the NPC
 is bare now, and LooksMenu drops emptied entries when it loads a save (MorphValueMap::Load skips them),
@@ -527,7 +530,9 @@ read 27 of 27 after a load from the main menu and 0 of 27 after an in-session on
 (Fifth wave: the 30 seconds start at the bridge's first poll after the load, not at the load, because the
 bridge polls only while the game runs; a failed load, which has already forgotten everyone, starts the sweep
 too; and the line also counts actors the game reported that the sweep did not find, and says how long the
-first poll took.)
+first poll took. In game with wave 5: 26 of 26 reported after a main-menu load, one more reported that the
+sweep did not find -- the player, whom the process lists do not hold -- first poll after 6.3 s; 26 of 0 after
+an in-session one, first poll after 3.2 s.)
 
 ## S-44 — Top-up: existing bodies get the variety they lack
 
@@ -753,7 +758,10 @@ whose cell is unloaded is not in memory, and is not gone: dropping them lost a p
 then nothing flagged the stranger who got the id later, whose body the old marker pinned. The next sighting
 sorts it out, as above. Intent grows only with what the player and other mods do. (Fourth wave, the bound:
 a thousand created NPCs pressed once and then deleted leave a thousand records, about 33 KB, that are never
-pruned. At a save, a deleted created NPC and one whose cell is unloaded look the same. Accepted.)
+pruned. At a save, a deleted created NPC and one whose cell is unloaded look the same. Accepted.) (Sixth wave:
+nobody is picked without an NPC record. A picking keeps the record it was made for, and that is how an id given
+to somebody else is told; one kept with none would have put the previous owner's choice and body on the
+newcomer at a Cancel. No caller passes none today; the director refuses it anyway.)
 
 ## S-58 — A body being written says so
 

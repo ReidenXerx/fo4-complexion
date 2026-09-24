@@ -42,9 +42,11 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
      game reported M of them as loaded, and K it reported were not among them; the first poll came T s after
      the load`, with N about the number of people, creatures and robots nearby. M is large after a load from
      the main menu and 0 after one in a running game (27 and 0 in wave 4's run): the game reports only the
-     first (S-43's amendment), and N is what makes up for it. K near 0 says the sweep finds whom the game
-     reports. With `bAlwaysActive=0`, load in the running game and alt-tab out for 40 seconds at once: T
-     reads about 40, and the line and step 13's restore still come.
+     first (S-43's amendment), and N is what makes up for it. K is 0, or 1 after a main-menu load: the game
+     reports the player, whom the process lists do not hold (and Silhouette never shapes). More would mean
+     the sweep misses people the game reports. With `bAlwaysActive=0` -- the owner's `Fallout4Custom.ini`
+     sets 1, which keeps the game running unfocused and masks this -- load in the running game and alt-tab
+     out for 40 seconds at once: T reads about 40, and the line and step 13's restore still come.
 
    What a failure means:
    - no Silhouette.log at all -- the plugin did not load: F4SE's own `f4se.log` says why (another runtime,

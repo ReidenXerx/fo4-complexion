@@ -456,10 +456,14 @@ def assign_markers(presets, history=None):
         taken[fold(m)] = name
 
 
-def previous_markers(folders, catalogs):
+def previous_markers(folders, catalogs, notes=None):
     """({preset name, casefolded: marker}, manifest path) of the build a package holds now: the first of
     `catalogs` (the output root's catalog.json, then the game's Data's) that names a stamp, read through that
-    stamp's manifest in `folders` (manifest_folders()). ({}, None) when there is none."""
+    stamp's manifest in `folders` (manifest_folders()). ({}, None) when there is none -- and when a catalog
+    names a stamp that no manifest there records, `notes` says so: a move since that build cannot be said, and
+    an empty answer must not read as "nothing moved" (wave 6). A manifest naming one preset under two markers
+    (only a hand-edited one does) is said too, and its first is compared."""
+    unmatched = []
     for cat_path in catalogs:
         try:
             stamp = json.loads(pathlib.Path(cat_path).read_text(encoding='utf-8-sig'))['stamp']
@@ -469,9 +473,25 @@ def previous_markers(folders, catalogs):
             f = pathlib.Path(folder) / f'{stamp}.json'
             try:
                 templates = json.loads(f.read_text(encoding='utf-8-sig'))['templates']
-                return {str(e['preset']).casefold(): m for m, e in templates.items() if isinstance(e, dict)}, f
+                named = {}
+                for m, e in templates.items():
+                    if not isinstance(e, dict):
+                        continue
+                    key = str(e['preset']).casefold()
+                    if key in named:
+                        if notes is not None:
+                            notes.append(f'{f} names {e["preset"]!r} under two markers ({named[key]}, {m}): the '
+                                         f'first is the one compared')
+                        continue
+                    named[key] = m
+                return named, f
             except (OSError, ValueError, KeyError, TypeError, AttributeError):
                 continue
+        unmatched.append((cat_path, stamp))
+    if notes is not None:
+        for cat_path, stamp in unmatched:
+            notes.append(f'{cat_path} records build stamp {stamp}, but no manifest of that stamp is in '
+                         f'{", ".join(map(str, folders))}: markers that moved since that build cannot be said')
     return {}, None
 
 
@@ -1492,7 +1512,10 @@ def main():
     for n in notes:
         print(f'  note: {n}')
     assign_markers(presets, history)
-    previous, previous_file = previous_markers(folders, [root / CATALOG, args.data / CATALOG])
+    move_notes = []
+    previous, previous_file = previous_markers(folders, [root / CATALOG, args.data / CATALOG], notes=move_notes)
+    for n in move_notes:
+        print(f'  note: {n}')
     moves = marker_moves(presets, previous, history)
     if moves:
         print(f'markers that move from the build {previous_file} records -- bodies of it are read by marker, so '

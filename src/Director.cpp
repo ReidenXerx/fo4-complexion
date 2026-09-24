@@ -1976,6 +1976,11 @@ namespace SH
 			return std::format("Silhouette is not ready: {}", _status);
 		}
 		const auto name = a_name.empty() ? std::format("{:08X}", a_ref) : std::string{ a_name };
+		if (a_base == 0) {
+			// A picking keeps the NPC record it was made for: a created id given to somebody else is told by it
+			// (S-57), and one kept with none would put the previous owner's choice and body on the newcomer.
+			return std::format("{} has no NPC record: there is nobody to pick.", name);
+		}
 		if (_picker.ref == a_ref) {
 			return std::format("{} is already picked: Next / Previous try presets, Keep or Cancel ends it.", _picker.name);
 		}

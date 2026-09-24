@@ -154,5 +154,82 @@ class Wiring(unittest.TestCase):
         self.assertIsInstance(seen[0][1].get('notes'), list)
 
 
+class PreviousMarkers(unittest.TestCase):
+    """What the build a package holds now calls each preset -- and when that cannot be known, saying so (wave 6,
+    lens 3): an empty answer read as "nothing moved"."""
+
+    def test_a_catalog_whose_manifest_is_nowhere_is_said(self):
+        with support.Scratch() as root:
+            cat = root / 'catalog.json'
+            cat.write_text(json.dumps({'stamp': 5}), encoding='utf-8')
+            (root / 'manifests').mkdir()
+            notes = []
+            self.assertEqual(sg.previous_markers([root / 'manifests'], [cat], notes=notes), ({}, None))
+            self.assertEqual(len(notes), 1, notes)
+            self.assertIn('records build stamp 5, but no manifest of that stamp is in', notes[0])
+
+    def test_no_catalog_at_all_is_nothing_to_say(self):
+        with support.Scratch() as root:
+            notes = []
+            self.assertEqual(sg.previous_markers([root], [root / 'catalog.json'], notes=notes), ({}, None))
+            self.assertEqual(notes, [])
+
+    def test_one_preset_under_two_markers_is_said_and_the_first_compared(self):
+        with support.Scratch() as root:
+            cat = root / 'catalog.json'
+            cat.write_text(json.dumps({'stamp': 5}), encoding='utf-8')
+            (root / '5.json').write_text(json.dumps({'stamp': 5, 'templates': {
+                'Silhouette_A': {'preset': 'A'}, 'Silhouette_A_1': {'preset': 'a'}}}), encoding='utf-8')
+            notes = []
+            got, where = sg.previous_markers([root], [cat], notes=notes)
+            self.assertEqual((got, where), ({'a': 'Silhouette_A'}, root / '5.json'))
+            self.assertEqual(len(notes), 1, notes)
+            self.assertIn('under two markers (Silhouette_A, Silhouette_A_1)', notes[0])
+
+
+@support.needs_data
+class MarkerMove(unittest.TestCase):
+    """main() says a marker that moves from the build the package holds now (wave 5 L6, untested until wave 6).
+    The package's build named CBBE Curvy under a suffixed marker; a later manifest records the plain one, which
+    this run takes back -- so every body of the old build is about to be read as another preset's or none."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.scratch = support.Scratch()
+        root = cls.scratch.__enter__()
+        pkg = root / 'pkg'
+        (pkg / sg.CATALOG).parent.mkdir(parents=True)
+        (pkg / sg.CATALOG).write_text(json.dumps({'stamp': 999}), encoding='utf-8')
+        (pkg / sg.MANIFESTS).mkdir(parents=True)
+        (pkg / sg.MANIFESTS / '999.json').write_text(json.dumps({'stamp': 999, 'build': '0000000000aa', 'templates': {
+            'Silhouette_CBBE_Curvy_abc123': {'preset': 'CBBE Curvy', 'gender': 'female', 'values': {}}}}), encoding='utf-8')
+        data = root / 'fakedata'                     # stands in for the game's Data's manifests
+        data.mkdir()
+        (data / '1000.json').write_text(json.dumps({'stamp': 1000, 'build': '0000000000bb', 'templates': {
+            'Silhouette_CBBE_Curvy': {'preset': 'CBBE Curvy', 'gender': 'female', 'values': {}}}}), encoding='utf-8')
+        real = sg.manifest_folders
+
+        def folders(out, game):
+            return [real(out, game)[0], data]
+
+        with mock.patch.object(sg, 'manifest_folders', folders):
+            cls.refusal, cls.out = run_main(sg, ['--write', '--out', pkg, '--psc', root / 'Player.psc', '--data', support.game_data()])
+        got = json.loads((pkg / sg.CATALOG).read_text(encoding='utf-8-sig'))
+        cls.curvy = next((p['marker'] for p in got.get('presets', []) if p['name'] == 'CBBE Curvy'), None)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.scratch.__exit__(None, None, None)
+
+    def test_the_move_is_printed_with_its_votes(self):
+        if self.curvy is None:
+            self.skipTest('no CBBE Curvy preset in this Data')
+        self.assertIsNone(self.refusal, self.out[-2000:])
+        self.assertEqual(self.curvy, 'Silhouette_CBBE_Curvy')
+        self.assertIn('markers that move from the build', self.out)
+        self.assertIn("'CBBE Curvy': Silhouette_CBBE_Curvy_abc123 -> Silhouette_CBBE_Curvy (manifests recording "
+                      "Silhouette_CBBE_Curvy_abc123: 1, Silhouette_CBBE_Curvy: 1)", self.out)
+
+
 if __name__ == '__main__':
     unittest.main()
