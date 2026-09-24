@@ -98,7 +98,8 @@ def editor_ids(path, record_type):
                 index = form_id >> 24
                 owner = masters[index] if index < len(masters) else path.name
                 out[edid] = (owner, form_id & 0xFFFFFF)
-            break                           # one top group per type
+            # no break: a type can have more than one top group -- Fallout4.esm has two of NPC_, LVLN,
+            # WEAP and eleven more (measured 2026-09-24), and the first NPC_ one lacks Piper and Preston
     return out
 
 
