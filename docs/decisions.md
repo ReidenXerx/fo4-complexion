@@ -954,3 +954,16 @@ template.
 The female picker now holds 125 presets of the 128 a Papyrus array allows. A few more installed presets
 and the generator refuses, and its message says how to hold some back
 (`blacklistedPresetsShowInOBodyMenu`).
+
+## S-67 — MCM's "Back to random" is called Reset
+
+Owner decision, 2026-09-24: "back to random should be renamed to reset bc its actually not random if its
+unique companion its back to silhouete ruling this npc". Since S-66 the button's name was wrong. On Piper it
+gives her own body back, not a roll. It forgets the body the player gave them, and Silhouette decides again,
+as if they were met for the first time. That gives a named character their own body, someone under a name
+or faction rule a new draw from that rule (S-60), and anyone else a new roll from the pool (S-65).
+
+Only the label, its help and the message changed. The action is the same (`MenuRandom` →
+`RequestRegenerate`: a new body at once, other mods' keyed morphs kept). The API's Reset (S-27, S-53:
+bare now, a new body at the next load) is a different action with the same word, and MCM does not offer
+it. Earlier entries and the code's comments say "Back to random"; they mean this button.

@@ -137,16 +137,16 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
     had goes back` (S-47), and probes after the load. (Wave 3 failed exactly this: nobody was read after such
     a load.) Then undress a companion through the trade menu: `refit off` within about a second, so the
     equip events still arrive after a load in a running game.
-14. "Back to random" (MCM, The NPC in your sights) on a woman who is not in a scene: a new body within a
+14. "Reset" (MCM, formerly "Reset"; The NPC in your sights) on a woman who is not in a scene: a new body within a
     second, other mods' keyed morphs kept -- the anatomy arousal layer included (fo4-mcp's `bodygen
-    morphs` verb shows its keyword layer before and after). (A Back to random saved before it lands is carried out after the
+    morphs` verb shows its keyword layer before and after). (A Reset saved before it lands is carried out after the
     load, S-59: too quick to catch by hand, the offline tests cover it.)
 
 ## With AAF
 
 15. An AAF scene with a dressed woman showing the refit: it comes off within about a second of the strip
-    and returns after the redress -- also while a "Back to random" on her waits for the scene (wave 3).
-    "Back to random" on someone in the middle of a scene logs `XXXXXXXX: another mod has them busy - the
+    and returns after the redress -- also while a "Reset" on her waits for the scene (wave 3).
+    "Reset" on someone in the middle of a scene logs `XXXXXXXX: another mod has them busy - the
     change waits`, the message box says the new body comes when the scene ends, and the roll lands
     after it (`the change that waited for another mod is done`). No touch-up or roll changes her shapes
     mid-scene. A heavily dressed woman who is aroused keeps her nipples flat once fo4-anatomy reads the

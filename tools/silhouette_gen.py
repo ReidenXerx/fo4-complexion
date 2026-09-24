@@ -824,12 +824,13 @@ def write_mcm(folder, picker, default_index, average, build):
                       'picked, the last NPC you aimed at in the half minute before opening the menu. Their '
                       'own nipple and genital variety comes with it while those switches are on (Settings). '
                       'Close the menu to see it.', 'MenuApply'),
-        bridge_button('Back to random',
-                      'They roll a new body, as if met for the first time: the rules get their say again. '
-                      'Someone a rule by name or faction covers draws again from that rule\'s presets -- a '
-                      'different one whenever the rule lists more than one -- and keeps the new draw. Body '
-                      'morphs other mods keep under their own keyword (AAF, pregnancy) are kept. In the '
-                      'middle of an AAF scene the roll waits for the scene to end.',
+        bridge_button('Reset',
+                      'Forget the body you gave them: Silhouette decides again, as if they were met for the '
+                      'first time. A named character gets their own body back; someone a rule by name or '
+                      'faction covers draws again from that rule\'s presets -- a different one whenever the '
+                      'rule lists more than one -- and keeps the new draw; anyone else rolls a new body from '
+                      'the pool. Body morphs other mods keep under their own keyword (AAF, pregnancy) are '
+                      'kept. In the middle of an AAF scene it waits for the scene to end.',
                       'MenuRandom'),
         bridge_button('Which body do they have?', 'The preset their body carries, and who chose it.',
                       'MenuWhich'),

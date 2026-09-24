@@ -653,7 +653,7 @@ Function MenuRandom()
 	If a && Busy(a)
 		see = " Another mod has them in a scene: the new body comes when it ends."
 	EndIf
-	Debug.MessageBox(Silhouette:DLL.NameOf(target) + " gets a new body, rolled as if met for the first time (a rule with several presets draws again); other mods' body morphs are kept." + see)
+	Debug.MessageBox(Silhouette:DLL.NameOf(target) + " is reset: Silhouette decides their body again, as if met for the first time (their own body if they have one; a rule with several presets draws again). Other mods' body morphs are kept." + see)
 EndFunction
 
 Function MenuWhich()

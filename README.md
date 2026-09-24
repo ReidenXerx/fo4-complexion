@@ -1,7 +1,9 @@
 # Silhouette
 
-OBody NG's body distribution, for Fallout 4. Every NPC gets one of your BodySlide presets the first
-time you meet them, and keeps it.
+OBody NG's body distribution, for Fallout 4. Every NPC gets a body the first time you meet them, and
+keeps it: an ordinary one most often, an unflattering one less often, a conventionally beautiful one
+rarely, from Silhouette's own pool. The Commonwealth's named people -- companions and major NPCs -- each
+have a body of their own.
 
 **Status:** Phase 1 (the generator; LooksMenu's own BodyGen does the work at run time) is in use.
 Phase 2 — `Silhouette.dll`, an F4SE plugin, with `Silhouette.esp` — adds the rules only a running game
@@ -30,11 +32,23 @@ It **measures your install** instead of assuming it.
 It never re-rolls an NPC you have already met, and leaves zeroed presets out of the random pool as
 OBody does.
 
+## Who gets which body
+
+- **Everyone: Silhouette's pool** (`Silhouette Pool.xml`, S-65). 41 bodies a sex, generated and measured
+  rather than hand-picked: 18 ordinary ("Plain"), 17 unflattering ("Rough": very fat, very flat, frail,
+  disproportioned) and 6 conventionally beautiful ("Fine"). A Plain body is listed three times in
+  BodyGen's random line, so the odds are 70 / 22 / 8 per cent. Your installed presets are not random;
+  they stay in the picker.
+- **Named people: their own body** (`Silhouette Characters.xml`, S-66). 41 companions and major NPCs,
+  from Piper to Porter Gage, each given a body that fits who they are. A rule of yours for the same NPC
+  wins.
+- **Your rules** by form id, name, faction, plugin or race, as in OBody (below).
+
 ## Your character
 
-Never randomised. A character with no LooksMenu body sliders gets the **most average** of your
-presets — measured: the one whose body is closest to the mean of them all ("BT - Average" for men,
-which is reassuring). **MCM > Silhouette** lists every preset that fits your character's body:
+Never randomised. A character with no LooksMenu body sliders gets the **most average** body of the
+pool, weighted as NPCs are given it — measured: the one whose body is closest to the mean of them all
+("Plain F01" and "Plain M02"). **MCM > Silhouette** lists every preset that fits your character's body:
 choose one and press *Apply to my character*; *Back to the default* and *Which body do I have?* are
 next to it. No plugin is involved — the menu calls a small script LooksMenu drives.
 
@@ -58,7 +72,7 @@ Without the DLL, everything above keeps working.
   heavy). The plugin reads what the generator compiles from it, not the file: after editing it, run the
   generator and install what it writes. A name is the NPC record's, as OBody reads it. BodyGen carries
   every rule it can (form ids, plugins, races); the plugin applies the rest. Someone a rule gave one of
-  several presets keeps it while the rule still lists it; *Back to random* draws from the rule again.
+  several presets keeps it while the rule still lists it; MCM's *Reset* draws from the rule again.
 - **ORefit** — while someone is dressed: breasts held together and lifted, and nipples flattened under
   heavy clothes -- armour, jackets, coats, told by the item's name (`heavyWords` in the config; items can
   be named heavy or light too). The flattening shows only on outfits whose meshes carry the refit sliders
@@ -68,7 +82,8 @@ Without the DLL, everything above keeps working.
   Nobody in power armour is refit. `<Preset>-Refit` BodySlide presets and OBody's outfit lists work as in
   OBody.
 - **The NPC picker** — MCM hotkeys: aim at someone close enough to talk to, *Pick*, *Next*/*Previous*
-  to try every preset on them live, *Keep* or *Cancel*. The MCM page *The NPC in your sights* gives a preset, a new random body, or names
+  to try every preset on them live, *Keep* or *Cancel*. The MCM page *The NPC in your sights* gives a preset, *Reset* (Silhouette decides
+  their body again: a named character's own body, a rule's draw, or a new roll from the pool), or names
   the one they have. A choice is kept like a rule's, and marked in LooksMenu, so a save made without the
   DLL keeps it (MCM's *Refresh* pressed without the DLL gives the body again without the mark).
 - **Touch-up** — bodies an older build gave get the nipple and genital variety they lack, and lose any
