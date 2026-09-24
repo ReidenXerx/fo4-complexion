@@ -75,6 +75,11 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 DEFAULT_DATA = pathlib.Path(r'D:\GOGGames\Fallout 4 GOTY\Data')
 MANIFESTS = pathlib.Path('F4SE/Plugins/Silhouette/manifests')    # below a mod folder / data root
 CATALOG = pathlib.Path('F4SE/Plugins/Silhouette/catalog.json')
+# Silhouette's own body pool (tools/pool, S-65): the only presets NPCs are drawn from at random, each listed
+# in the random line as many times as its tier's weight. Every other preset stays in the picker.
+POOL_SIDECAR = ROOT / 'tools/pool/pool.json'
+PRESETS = pathlib.Path('Tools/BodySlide/SliderPresets')          # below a mod folder / data root
+LINE_LIMIT = 32766      # bytes the engine's ReadLine gives before it splits a line (docs/bodygen-format.md)
 
 
 def reconfigure_output():
@@ -515,6 +520,35 @@ def body_values(target, morphs):
     never a state, the shaft or fo4-anatomy's build slider -- none of them is written into a body (S-16, S-29,
     S-62), so none of them may pull the average either."""
     return {k: v for k, v in target.items() if k in morphs and not never_in_body(k)}
+
+
+def read_all_presets(folders):
+    """read_presets over several folders, the first folder's preset winning a name (any case): the pool this
+    repo holds is read before the copy a deploy put in the game's Data."""
+    out, seen = [], set()
+    for folder in folders:
+        for p in read_presets(folder):
+            if p['name'].casefold() not in seen:
+                seen.add(p['name'].casefold())
+                out.append(p)
+    return out
+
+
+def load_pool(path=POOL_SIDECAR):
+    """{preset name casefolded: {'name', 'sex', 'tier', 'weight'}} of the pool's sidecar (S-65)."""
+    try:
+        side = json.loads(pathlib.Path(path).read_text(encoding='utf-8'))
+        weights = side['weights']
+        return {n.casefold(): {'name': n, 'sex': p['sex'], 'tier': p['tier'], 'weight': int(weights[p['tier']])}
+                for n, p in side['presets'].items()}
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise SystemExit(f'{path}: not a readable pool sidecar ({exc}) -- run tools/pool/generate.py')
+
+
+def random_line_names(pool_rows, pool):
+    """The template names of one sex's random line, each as many times as its tier's weight: BodyGen picks
+    one entry of the line uniformly, so repetition is the weighting (docs/bodygen-format.md)."""
+    return [n for n, _v, p in pool_rows for _ in range(pool[p['name'].casefold()]['weight'] if pool else 1)]
 
 
 def template_name(preset):
@@ -1472,6 +1506,9 @@ def main():
                     help='write templates relative to what the base has baked in, for a base '
                          'that is NOT zeroed (default: absolute, for a zeroed base - S-5)')
     ap.add_argument('--report', type=pathlib.Path, default=None, help='also write a JSON report')
+    ap.add_argument('--pool', type=pathlib.Path, default=POOL_SIDECAR,
+                    help='the body pool\'s sidecar (tools/pool/generate.py): its presets are the random pool, '
+                         'weighted by tier (S-65)')
     args = ap.parse_args()
     reconfigure_output()
 
@@ -1502,7 +1539,8 @@ def main():
         print(f'{b}: {tri.parent}')
         tris[g] = base_body.read_tri(tri)
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
-    presets = read_presets(args.data / 'Tools/BodySlide/SliderPresets')
+    pool = load_pool(args.pool)
+    presets = read_all_presets([ROOT / 'data' / PRESETS, args.data / PRESETS])
     # The folder the manifests go to, and the game's: every marker either records stays its preset's (L4 F2,
     # wave 4 L6) -- a fresh --out, or a manifest deleted here, must not bring the old renames back. One list,
     # for every reader (wave 5).
@@ -1573,7 +1611,7 @@ def main():
     # ---- the pools
     pools = {'female': [], 'male': []}
     buckets = collections.defaultdict(list)
-    zeroed, held_back = [], []
+    zeroed, held_back, picker_only = [], [], []
     for p in presets:
         if p['kind'] != 'empty':
             p['band'] = band(p, family[p['gender']])
@@ -1590,6 +1628,14 @@ def main():
         g = p['gender']
         b = p['band']
         buckets[f'{g}-{b}'].append(p)
+        if p['name'].casefold() in pool:
+            if b != 'full' or g != pool[p['name'].casefold()]['sex']:
+                raise SystemExit(f'pool preset {p["name"]!r} is a {b} fit of the installed {g} body, not a full '
+                                 f'fit of the {pool[p["name"].casefold()]["sex"]} one -- regenerate the pool '
+                                 f'(tools/pool/generate.py) against the body you have')
+        elif b in ('full', 'partial'):
+            picker_only.append(p)        # S-65: out of random, still in the picker
+            continue
         if not (b == 'full' or (b == 'partial' and not args.no_partial)):
             continue
         if p['name'].casefold() in not_random:
@@ -1630,9 +1676,21 @@ def main():
 
     if held_back:
         print('held back from random distribution by the config: ' + ', '.join(p['name'] for p in held_back))
+    if picker_only:
+        print(f'installed presets in the picker only, never random (S-65): {len(picker_only)}')
+    have = {p['name'].casefold() for p in presets}
+    missing = sorted(e['name'] for k, e in pool.items() if k not in have)
+    if missing:
+        raise SystemExit(f'the pool names presets no SliderPresets folder holds: {", ".join(missing[:6])} -- '
+                         f'data/{PRESETS.as_posix()}/Silhouette Pool.xml and {POOL_SIDECAR.name} are of two runs')
 
     for g in BODIES:
-        print(f'\n{g} random pool: {len(pools[g])} template(s)')
+        names = random_line_names(pools[g], pool)
+        tiers = collections.Counter(pool[p['name'].casefold()]['tier'] for n, _v, p in pools[g]
+                                    for _ in range(pool[p['name'].casefold()]['weight']))
+        print(f'\n{g} random pool: {len(pools[g])} template(s) in {len(names)} entries -- '
+              + ', '.join(f'{t} {100 * c / len(names):.1f}%' for t, c in sorted(tiers.items())) if names else
+              f'\n{g} random pool: empty')
 
     # ---- rule lines, and templates for presets only the rules name
     by_name = {p['name'].casefold(): p for p in presets if p['kind'] != 'empty'}
@@ -1701,7 +1759,9 @@ def main():
         picker[g] = entries
         shape = max(tris[g], key=lambda s: len(tris[g][s]))
         # The average is of the BODIES the pool gives (body_values).
-        pool_values = [(p['name'], body_values(target_values(p, base[g]), morphs_of[g])) for _n, _l, p in pools[g]]
+        # Weighted as the random line weights it (S-65): the mean of the bodies NPCs are actually given.
+        pool_values = [(p['name'], body_values(target_values(p, base[g]), morphs_of[g])) for _n, _l, p in pools[g]
+                       for _ in range(pool[p['name'].casefold()]['weight'])]
         full = [(n, v) for n, v in pool_values
                 if next(p for p in presets if p['name'] == n)['band'] == 'full']
         best = base_body.most_average(pool_values, tris[g][shape], full)
@@ -1759,6 +1819,13 @@ def main():
                              f'(a Papyrus array limit). Hold some back with '
                              f'blacklistedPresetsShowInOBodyMenu=false.')
 
+    for g, label in (('female', 'Female'), ('male', 'Male')):
+        for race in distribute:
+            size = len(f'All|{label}|{race}='.encode('utf-8')) + len('|'.join(random_line_names(pools[g], pool)).encode('utf-8'))
+            if size > LINE_LIMIT:
+                raise SystemExit(f'the {g} random line for {race} is {size} bytes; the engine splits a line past '
+                                 f'{LINE_LIMIT} and the rest would be read as another line')
+
     stamp, build = generation(mode, pools, extra, picker, variety)
     print(f'\nbuild {build}, marker stamp {stamp} ({mode})')
 
@@ -1784,7 +1851,7 @@ def main():
         for g, label in (('female', 'Female'), ('male', 'Male')):
             if pools[g]:
                 for race in distribute:
-                    m.append(f'All|{label}|{race}=' + '|'.join(n for n, _v, _p in pools[g]))
+                    m.append(f'All|{label}|{race}=' + '|'.join(random_line_names(pools[g], pool)))
         if rule_lines:
             m += ['#', '# Rules from Silhouette_presetDistributionConfig.json and includes,',
                   '# lowest priority first: race, plugin, blacklists, FormID, FormID blacklists.']

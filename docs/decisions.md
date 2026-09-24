@@ -893,3 +893,37 @@ another NPC behind the player and a Drifter in front, the pick was the Drifter: 
 faces, not the nearest or the last actor. Not produced there: the menu's 30-second window (the player could
 not be turned away) and a door. The window's logic is the tested trail, and it resolves handles the way the
 crosshair case just proved. The owner then pressed the real hotkey in his own game: "yep it works".
+
+## S-65 — NPCs are drawn from Silhouette's own body pool, ordinary bodies most often
+
+Owner decision, 2026-09-24, by poll. The random pool was every installed preset that fits, which on the
+owner's install meant pin-ups: Rocket Bomb, Blessed and the like, on every woman in the Commonwealth. The
+owner asked for real people instead: an ordinary body most often, an unflattering one ("very flat or very fat
+or disproportional") less often, a conventionally beautiful one rarely, and real variety inside each. Poll
+answers: the odds 70 / 22 / 8; women and men both; the installed presets out of random but still in the
+picker; unique bodies for companions and major named NPCs as a separate step.
+
+The pool is generated, not hand-made: `tools/pool/generate.py` writes
+`data/Tools/BodySlide/SliderPresets/Silhouette Pool.xml` (82 presets, 41 a sex: "Plain" 18, "Rough" 17,
+"Fine" 6) and its sidecar `tools/pool/pool.json` (each preset's tier, archetype, values and measurements).
+Each tier is a set of archetypes given as slider ranges (`tools/pool/archetypes.py`). A candidate is BUILT
+from the installed body without BodySlide (`mesh.py`: the zeroed body is the reference, S-5, and the `.tri`
+holds every slider's diff) and MEASURED (`measure.py`: girths of torso, leg and arm slices, bust and belly
+projection, volume). It is kept only if its measurements put it in its own tier (`tier_of`), and from the
+survivors the most different are chosen, so no two bodies of an archetype look alike. A tier is therefore a
+claim about the body's shape, not about the slider names: CBBE's zeroed woman is already a fantasy hourglass
+(waist/hip 0.60), and a "middle" body has to be moved away from it. `generate.py --check` re-measures the
+committed pool against the installed body and says which body moved tier; `--sheets` draws them.
+
+The odds come from repetition: BodyGen picks one entry of a line uniformly (docs/bodygen-format.md), so a
+"Plain" body is listed 3 times and the others once -- 54 : 17 : 6 entries, 70.1 / 22.1 / 7.8 per cent. The
+line is about 1.6 KB, far under the 32,766 bytes past which the engine splits a line; the generator refuses a
+longer one. Every installed preset that fits stays in the picker and can still be named by a rule; none of
+them is random. A pool preset that is not a full fit of the installed body, or a sidecar naming a preset no
+SliderPresets folder holds, is refused. The pool's own presets are read before Data's, so a stale deployed
+copy cannot shadow the repo's. fo4-anatomy's build slider and the runtime states are left out of the pool's
+XML (S-16, S-29, S-62): BodySlide gives them the set's default, as Silhouette leaves them out of every body.
+
+The player default (S-45) stays "the most average full fit", now of the pool as weighted: `Plain F01` and
+`Plain M02`. The verifier checks that the random presets are the pool's and that every random line lists
+each one exactly its tier's weight; a line with one "Plain" copy short, or one "Fine" copy extra, fails it.

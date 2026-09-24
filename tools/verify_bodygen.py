@@ -23,6 +23,7 @@ the menu, the hotkeys, the picker script and Silhouette.esp.
     python tools/verify_bodygen.py --dir <Loose>  # any other copy
 """
 import argparse
+import collections
 import json
 import math
 import pathlib
@@ -592,6 +593,32 @@ def check_esp(groot, problems):
                         + (f': {"; ".join(why)}' if why else ' -- rebuild it (python tools/make_esp.py data/Silhouette.esp)'))
 
 
+def check_weights(cat, pool_lines, problems):
+    """(2b) S-65: the random presets are the pool's, and each random line lists every one of them as many
+    times as its tier's weight -- repetition is how BodyGen weights (docs/bodygen-format.md)."""
+    try:
+        side = sg.load_pool()
+    except SystemExit as exc:
+        problems.append(f'pool: {exc}')
+        return
+    weight = {}
+    for p in cat.get('presets', []):
+        if not p.get('random'):
+            continue
+        e = side.get(p['name'].casefold())
+        if e is None or e['sex'] != p['sex']:
+            problems.append(f'{p["name"]!r} is a random {p["sex"]} preset outside the body pool (S-65)')
+            continue
+        weight[(p['sex'], p['marker'].casefold())] = e['weight']
+    for n, genders, names in pool_lines:
+        got = collections.Counter(t.casefold() for t in names)
+        want = {m: w for (g, m), w in weight.items() if g in genders}
+        wrong = sorted(f'{m} x{got.get(m, 0)} (weight {w})' for m, w in want.items() if got.get(m, 0) != w)
+        if wrong:
+            problems.append(f'Silhouette_morphs.ini:{n}: the random line lists {len(wrong)} template(s) other than '
+                            f'their tier\'s weight (S-65): {", ".join(wrong[:4])}')
+
+
 def check_lines(args, rules, templates, cat, problems):
     """(2) The random pool: each sex's lines give that sex's presets, never a zeroed one, the catalog's
     random presets exactly, and every race any line names exists in the load order. (7) The catalog's
@@ -608,7 +635,7 @@ def check_lines(args, rules, templates, cat, problems):
                        if (line_kind(form) or ('?',))[0] != 'all' and not own_line(line_kind(form) or ('?',))), None)
     rule_start = min([n for n, raw in engine_lines(args.dir / 'Silhouette_morphs.ini', [])
                       if raw.strip().startswith('# Rules from')] + ([first_rule] if first_rule else []), default=None)
-    races, lines_tiers, pool_races, pool = set(), set(), {}, {}
+    races, lines_tiers, pool_races, pool, pool_lines = set(), set(), {}, {}, []
     for form, groups, n in rules:
         kind = line_kind(form)
         names = [t for grp in groups for t in grp]
@@ -628,6 +655,7 @@ def check_lines(args, rules, templates, cat, problems):
             for g in ([gender] if gender else ['female', 'male']):
                 pool_races.setdefault(g, set()).add(race)
                 pool.setdefault(g, set()).update(t.casefold() for t in names)
+            pool_lines.append((n, [gender] if gender else ['female', 'male'], names))
             for t in names:
                 p = by_marker.get(t.casefold())
                 if p is not None and (p.get('zeroed') or not p.get('random')):
@@ -662,6 +690,7 @@ def check_lines(args, rules, templates, cat, problems):
         if got and pool_races.get(g, set()) != {r.lower() for r in cat['rules'].get('races', [])}:
             problems.append(f'the {g} random pool is given to races {sorted(pool_races.get(g, set()))}, the catalog '
                             f'distributes to {cat["rules"].get("races")} (distributeRaces)')
+    check_weights(cat, pool_lines, problems)
     cat_tiers = set()
     r = cat.get('rules', {})
     for g in ('female', 'male'):
@@ -911,7 +940,8 @@ def main():
     # ---- every template handed out must be fixed-valued and carry its own marker
     tris = {g: base_body.read_tri(body_file[b].with_suffix('.tri')) for g, b in sg.BODIES.items()}
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
-    presets = sg.read_presets(args.data / 'Tools/BodySlide/SliderPresets')
+    # The package's own presets (the body pool, S-65) first, then the game's -- as the generator reads them.
+    presets = sg.read_all_presets([groot / sg.PRESETS, args.data / sg.PRESETS])
     # The markers exactly as the generator derived them: from the manifests beside these files and in the
     # game's Data (L4 F2, wave 4 L6) -- the one folder list the generator reads too (wave 5). A manifest only
     # Data holds that cannot be read is said and skipped, as the generator does: the package is not at fault.
@@ -1037,7 +1067,8 @@ def main():
           'permanent; the player and the character-creation dummies get the default and are never rolled; no '
           'template or catalog preset holds a runtime state, the shaft or fo4-anatomy\'s build slider, and the '
           'catalog and the picker script list all three for the heal; the random pool is the catalog\'s random '
-          'presets, each sex its own, and rolls exactly its catalog ranges; the catalog\'s BodyGen tiers are the '
+          'presets, each sex its own, lists each body of the pool as many times as its tier weighs (S-65), and '
+          'rolls exactly its catalog ranges; the catalog\'s BodyGen tiers are the '
           'lines\'; every manifest is its stamp\'s and the current one names every preset; the menu, the hotkeys, '
           'the picker script and the settings sentinel agree; Silhouette.esp is the one tools/make_esp.py builds; '
           'the plugin gives the same bodies BodyGen does, and every body lands on its preset.')
