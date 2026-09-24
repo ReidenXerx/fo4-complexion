@@ -78,6 +78,8 @@ CATALOG = pathlib.Path('F4SE/Plugins/Silhouette/catalog.json')
 # Silhouette's own body pool (tools/pool, S-65): the only presets NPCs are drawn from at random, each listed
 # in the random line as many times as its tier's weight. Every other preset stays in the picker.
 POOL_SIDECAR = ROOT / 'tools/pool/pool.json'
+# ...and the named people's own bodies (tools/pool/characters.py, S-66), bound to their NPC records.
+CHARACTERS_SIDECAR = ROOT / 'tools/pool/characters.json'
 PRESETS = pathlib.Path('Tools/BodySlide/SliderPresets')          # below a mod folder / data root
 LINE_LIMIT = 32766      # bytes the engine's ReadLine gives before it splits a line (docs/bodygen-format.md)
 
@@ -543,6 +545,31 @@ def load_pool(path=POOL_SIDECAR):
                 for n, p in side['presets'].items()}
     except (OSError, ValueError, KeyError, TypeError) as exc:
         raise SystemExit(f'{path}: not a readable pool sidecar ({exc}) -- run tools/pool/generate.py')
+
+
+def merge_characters(cfg, path=CHARACTERS_SIDECAR):
+    """S-66: each character's body as an npcFormID rule for its records, UNDER the user's own -- a rule the
+    config or an include already has for a record wins, however its form id is written. -> (bound, kept)."""
+    try:
+        side = json.loads(pathlib.Path(path).read_text(encoding='utf-8'))['characters']
+    except (OSError, ValueError, KeyError) as exc:
+        raise SystemExit(f'{path}: not a readable characters sidecar ({exc}) -- run tools/pool/characters.py')
+    bound, kept = 0, []
+    for name, c in side.items():
+        for plugin, _edid, fid in c['forms']:
+            forms = cfg.setdefault('npcFormID', {}).setdefault(plugin, {})
+            theirs = set()
+            for k in forms:
+                try:
+                    theirs.add(int(str(k), 16) & 0xFFFFFF)
+                except ValueError:
+                    pass
+            if int(fid, 16) in theirs:
+                kept.append(f'{name} ({plugin} {fid})')
+                continue
+            forms[fid] = [name]
+            bound += 1
+    return bound, kept
 
 
 def random_line_names(pool_rows, pool):
@@ -1506,6 +1533,8 @@ def main():
                     help='write templates relative to what the base has baked in, for a base '
                          'that is NOT zeroed (default: absolute, for a zeroed base - S-5)')
     ap.add_argument('--report', type=pathlib.Path, default=None, help='also write a JSON report')
+    ap.add_argument('--characters', type=pathlib.Path, default=CHARACTERS_SIDECAR,
+                    help='the characters\' sidecar (tools/pool/characters.py): each named NPC\'s own body (S-66)')
     ap.add_argument('--pool', type=pathlib.Path, default=POOL_SIDECAR,
                     help='the body pool\'s sidecar (tools/pool/generate.py): its presets are the random pool, '
                          'weighted by tier (S-65)')
@@ -1607,6 +1636,9 @@ def main():
     cfg = rules.load(cfg_file, [cfg_file.parent / 'includes',
                                 args.data / 'F4SE/Plugins/Silhouette/includes'], report)
     not_random = {n.casefold() for n in cfg.get('blacklistedPresetsFromRandomDistribution', [])}
+    bound, kept = merge_characters(cfg, args.characters)
+    print(f'characters (S-66): {bound} NPC record(s) given their own body'
+          + (f'; your own rules kept for {", ".join(kept)}' if kept else ''))
 
     # ---- the pools
     pools = {'female': [], 'male': []}

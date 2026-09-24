@@ -927,3 +927,30 @@ XML (S-16, S-29, S-62): BodySlide gives them the set's default, as Silhouette le
 The player default (S-45) stays "the most average full fit", now of the pool as weighted: `Plain F01` and
 `Plain M02`. The verifier checks that the random presets are the pool's and that every random line lists
 each one exactly its tier's weight; a line with one "Plain" copy short, or one "Fine" copy extra, fails it.
+
+## S-66 — The named people get bodies of their own
+
+Owner decision, 2026-09-24, by the same poll as S-65: companions and major named NPCs get a unique body that
+matches who they are, instead of a roll from the pool. The list is a draft for the owner to veto.
+
+`tools/pool/characters.py` holds 41 characters (24 women, 17 men), each a hand-set body in the pool's
+vocabulary, a one-line vibe, and the NPC records it is for: 44 records by plugin, editor id and local form id
+(Kellogg, Curie and Paladin Brandis have two). The ids were read from the plugins themselves, and
+`characters.py --check` reads them again. Reading them found a defect: Fallout4.esm has TWO top groups of
+NPC_ (and of LVLN, WEAP and eleven more types), and `plugin_forms.editor_ids` stopped at the first, where
+Piper and Preston are not. It now reads every group (1ab3b66). Ghouls (Hancock), Nick and the robots are not
+HumanRace; BodyGen's lines name HumanRace, so they are not here. Overture's companions are the vanilla ones
+(Overture.esp defines no NPC); Ivy (CompanionIvy.esm 000803) waits for the owner's description of her.
+
+The bodies are written to `data/Tools/BodySlide/SliderPresets/Silhouette Characters.xml`; the generator reads
+the sidecar `tools/pool/characters.json`. Each record becomes an npcFormID rule UNDER the user's: a rule the
+config or an include already has for that record wins, however its form id is written, and the run says
+whose rule it kept. A shipped include would have been simpler and wrong, because includes override the
+main config (rules.load), and a user's rule for Piper would have lost to ours. A character's body is never
+random (the pool is the only random source, S-65) and is in the picker like any preset. BodyGen follows an
+actor's base up its template chain, so a rule on Cait's own record reaches her even though the record has a
+template.
+
+The female picker now holds 125 presets of the 128 a Papyrus array allows. A few more installed presets
+and the generator refuses, and its message says how to hold some back
+(`blacklistedPresetsShowInOBodyMenu`).

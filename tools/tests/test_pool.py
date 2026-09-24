@@ -32,7 +32,9 @@ class CommittedPool(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.pool = sg.load_pool()
-        cls.xml = {p['name']: p for p in sg.read_presets(POOL_XML.parent)}
+        with support.Scratch() as root:          # the pool's file alone: the folder holds the characters too
+            (root / POOL_XML.name).write_bytes(POOL_XML.read_bytes())
+            cls.xml = {p['name']: p for p in sg.read_presets(root)}
 
     def test_the_odds_per_sex(self):
         for sex in ('female', 'male'):
@@ -110,6 +112,46 @@ class StillItsTier(unittest.TestCase):
 
     def test_every_body_measures_as_its_tier(self):
         self.assertEqual(generate.check(support.game_data()), 0)
+
+
+class Characters(unittest.TestCase):
+    """S-66: the named people's own bodies, bound to their records under the user's own rules."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.side = json.loads(sg.CHARACTERS_SIDECAR.read_text(encoding='utf-8'))['characters']
+
+    def test_a_users_rule_for_the_record_wins_however_it_is_written(self):
+        cfg = {'npcFormID': {'Fallout4.esm': {'0x00002f1e': ['My Piper']}}}
+        bound, kept = sg.merge_characters(cfg)
+        self.assertEqual(cfg['npcFormID']['Fallout4.esm']['0x00002f1e'], ['My Piper'])
+        self.assertNotIn('002F1E', cfg['npcFormID']['Fallout4.esm'])
+        self.assertEqual(kept, ['Piper Wright (Fallout4.esm 002F1E)'])
+        self.assertEqual(bound, sum(len(c['forms']) for c in self.side.values()) - 1)
+
+    def test_every_record_has_its_line_in_the_package(self):
+        lines = (support.PACKAGE / support.LOOSE / 'Silhouette_morphs.ini').read_text(encoding='utf-8').splitlines()
+        for name, c in self.side.items():
+            label = 'Female' if c['sex'] == 'female' else 'Male'
+            for plugin, _edid, fid in c['forms']:
+                self.assertIn(f'{plugin}|{fid}|{label}={sg.plain_marker(name)}', lines, name)
+
+    def test_the_xml_holds_every_character_with_its_values_and_none_is_random(self):
+        xml = {p['name']: p for p in sg.read_presets(POOL_XML.parent) if p['name'] in self.side}
+        self.assertEqual(set(xml), set(self.side))
+        for name, c in self.side.items():
+            got = {s: round(v * 100) for s, v in xml[name]['sliders'].items() if v}
+            self.assertEqual(got, {s: v for s, v in c['values'].items() if v}, name)
+        cat = json.loads((support.PACKAGE / support.CAT).read_text(encoding='utf-8-sig'))
+        random = {p['name'] for p in cat['presets'] if p.get('random')}
+        self.assertEqual(random & set(self.side), set())
+
+
+@support.needs_data
+class CharactersStillTheirRecords(unittest.TestCase):
+    def test_every_record_is_where_it_was(self):
+        import characters
+        self.assertEqual(characters.check(support.game_data()), 0)
 
 
 if __name__ == '__main__':

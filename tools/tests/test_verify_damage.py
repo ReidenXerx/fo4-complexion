@@ -311,10 +311,11 @@ def g6_never_in_body_loses_the_shaft(d):
     restamp(d)
 
 
-@case(lambda: 'catalog.json says BodyGen carries npcFormID female fallout4.esm 002F1E, but no line')
+@case(lambda: 'catalog.json says BodyGen carries npcFormID female fallout4.esm 002F0A, but no line')
 def g7_the_catalog_claims_a_line_there_is_not(d):
+    # Geneva: a record no character's body is bound to (S-66 binds Piper's 002F1E, which this once used)
     edit_json(data(d, support.CAT),
-              lambda doc: doc['rules']['npcFormID']['female'].append({'plugin': 'Fallout4.esm', 'id': 0x2F1E}))
+              lambda doc: doc['rules']['npcFormID']['female'].append({'plugin': 'Fallout4.esm', 'id': 0x2F0A}))
     restamp(d)
 
 

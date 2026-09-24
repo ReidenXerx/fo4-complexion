@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "build": "6c9a825ac11a",
- "stamp": 7117442,
+ "build": "04e965e59d55",
+ "stamp": 321893,
  "mode": "absolute",
  "presets": [
   {
@@ -60,6 +60,92 @@
    "random": false,
    "menu": true,
    "zeroed": true,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Aster",
+   "sex": "female",
+   "marker": "Silhouette_Aster",
+   "values": {
+    "Arms": 0.2,
+    "BreastsSmall": 0.5,
+    "ButtSmall": 0.25,
+    "ChubbyWaist": 0.55,
+    "Hips": -0.15,
+    "LegsThin": 0.25,
+    "SlimThighs": 0.25,
+    "WideWaistLine": 0.4
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Cait",
+   "sex": "female",
+   "marker": "Silhouette_Cait",
+   "values": {
+    "Back": 0.2,
+    "BreastPerkiness": 0.2,
+    "BreastsSmall": 0.4,
+    "ButtSmall": 0.1,
+    "ChestWidth": 0.25,
+    "ChubbyWaist": 0.55,
+    "Hips": -0.1,
+    "MuscularArms": 0.5,
+    "MuscularButt": 0.6,
+    "MuscularLegs": 0.55,
+    "WideWaistLine": 0.35
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Captain Avery",
+   "sex": "female",
+   "marker": "Silhouette_Captain_Avery",
+   "values": {
+    "Back": 0.4,
+    "Belly": 0.2,
+    "BigTorso": 0.25,
+    "BreastGravity2": 0.45,
+    "Breasts": 0.1,
+    "ChestWidth": 0.3,
+    "ChubbyWaist": 0.85,
+    "MuscularArms": 0.25,
+    "Thighs": 0.2,
+    "WideWaistLine": 0.45
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Carla",
+   "sex": "female",
+   "marker": "Silhouette_Carla",
+   "values": {
+    "BreastGravity2": 0.3,
+    "BreastsSmall": 0.3,
+    "ButtSmall": 0.15,
+    "CalfSize": 0.2,
+    "ChubbyWaist": 0.65,
+    "Hips": -0.1,
+    "LegsThin": 0.1,
+    "MuscularLegs": 0.3,
+    "WideWaistLine": 0.45
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
    "fit": "full",
    "family": "Anatomy"
   },
@@ -288,6 +374,132 @@
    "family": "CBBE"
   },
   {
+   "name": "Cricket",
+   "sex": "female",
+   "marker": "Silhouette_Cricket",
+   "values": {
+    "Back": 0.35,
+    "BigTorso": 0.3,
+    "BreastGravity2": 0.4,
+    "Breasts": 0.2,
+    "ChestWidth": 0.3,
+    "ChubbyArms": 0.25,
+    "ChubbyWaist": 0.8,
+    "MuscularArms": 0.3,
+    "Thighs": 0.2,
+    "WideWaistLine": 0.4
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Curie",
+   "sex": "female",
+   "marker": "Silhouette_Curie",
+   "values": {
+    "AppleCheeks": 0.15,
+    "Belly": 0.25,
+    "BreastGravity2": 0.25,
+    "Breasts": 0.15,
+    "ChubbyArms": 0.15,
+    "ChubbyWaist": 0.7,
+    "Hips": 0.05,
+    "Thighs": 0.1
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Desdemona",
+   "sex": "female",
+   "marker": "Silhouette_Desdemona",
+   "values": {
+    "Back": 0.15,
+    "BreastGravity2": 0.35,
+    "BreastsSmall": 0.45,
+    "ButtSmall": 0.3,
+    "ChubbyWaist": 0.75,
+    "HipUpperWidth": 0.3,
+    "Hips": -0.2,
+    "LegsThin": 0.15,
+    "WideWaistLine": 0.55
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Doctor Amari",
+   "sex": "female",
+   "marker": "Silhouette_Doctor_Amari",
+   "values": {
+    "Belly": 0.3,
+    "BreastGravity2": 0.4,
+    "Breasts": 0.1,
+    "ChubbyArms": 0.15,
+    "ChubbyWaist": 0.8,
+    "Thighs": 0.1,
+    "WideWaistLine": 0.4
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Ellie Perkins",
+   "sex": "female",
+   "marker": "Silhouette_Ellie_Perkins",
+   "values": {
+    "Belly": 0.25,
+    "BreastGravity2": 0.25,
+    "Breasts": 0.05,
+    "BreastsSmall": 0.1,
+    "ChubbyArms": 0.1,
+    "ChubbyWaist": 0.7,
+    "HipUpperWidth": 0.25,
+    "WideWaistLine": 0.4
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Fahrenheit",
+   "sex": "female",
+   "marker": "Silhouette_Fahrenheit",
+   "values": {
+    "Back": 0.7,
+    "BigTorso": 0.7,
+    "Breasts": 0.1,
+    "CalfSize": 0.5,
+    "ChestWidth": 0.7,
+    "ChubbyArms": 0.3,
+    "ChubbyWaist": 1.0,
+    "Hips": -0.15,
+    "MuscularArms": 0.7,
+    "MuscularLegs": 0.55,
+    "Thighs": 0.45,
+    "WideWaistLine": 0.7
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
    "name": "Fine F01",
    "sex": "female",
    "marker": "Silhouette_Fine_F01",
@@ -407,6 +619,50 @@
     "Thighs": 0.33
    },
    "random": true,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Glory",
+   "sex": "female",
+   "marker": "Silhouette_Glory",
+   "values": {
+    "Back": 0.55,
+    "BigTorso": 0.35,
+    "BreastsSmall": 0.25,
+    "CalfSize": 0.3,
+    "ChestWidth": 0.55,
+    "ChubbyWaist": 0.6,
+    "MuscularArms": 0.9,
+    "MuscularButt": 0.6,
+    "MuscularLegs": 0.85,
+    "Thighs": 0.3,
+    "WideWaistLine": 0.3
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Haylen",
+   "sex": "female",
+   "marker": "Silhouette_Haylen",
+   "values": {
+    "Belly": 0.55,
+    "BigBelly": 0.2,
+    "BreastGravity2": 0.4,
+    "Breasts": 0.15,
+    "ChubbyArms": 0.45,
+    "ChubbyButt": 0.25,
+    "ChubbyLegs": 0.3,
+    "ChubbyWaist": 0.85,
+    "WideWaistLine": 0.35
+   },
+   "random": false,
    "menu": true,
    "zeroed": false,
    "fit": "full",
@@ -645,6 +901,28 @@
    "family": "CBBE"
   },
   {
+   "name": "Irma",
+   "sex": "female",
+   "marker": "Silhouette_Irma",
+   "values": {
+    "7B Upper": 0.15,
+    "Belly": 0.35,
+    "BigButt": 0.2,
+    "BreastGravity2": 0.65,
+    "Breasts": 0.55,
+    "ChubbyArms": 0.3,
+    "ChubbyButt": 0.3,
+    "ChubbyWaist": 0.8,
+    "Hips": 0.25,
+    "Thighs": 0.3
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
    "name": "Josie CBBE Body 2 (Bustier Nude)",
    "sex": "female",
    "marker": "Silhouette_Josie_CBBE_Body_2_Bustier_Nude",
@@ -770,6 +1048,177 @@
    "family": "AtomicBeauty"
   },
   {
+   "name": "Kasumi Nakano",
+   "sex": "female",
+   "marker": "Silhouette_Kasumi_Nakano",
+   "values": {
+    "Arms": 0.15,
+    "BreastPerkiness": 0.3,
+    "BreastsSmall": 0.35,
+    "ButtSmall": 0.1,
+    "ChubbyWaist": 0.55,
+    "Hips": -0.05,
+    "LegsThin": 0.15,
+    "SlimThighs": 0.2,
+    "WideWaistLine": 0.3
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Madison Li",
+   "sex": "female",
+   "marker": "Silhouette_Madison_Li",
+   "values": {
+    "Arms": 0.25,
+    "Belly": 0.25,
+    "BreastFlatness2": 0.2,
+    "BreastGravity2": 0.5,
+    "BreastsSmall": 0.4,
+    "ButtSmall": 0.35,
+    "ChubbyWaist": 0.8,
+    "Hips": -0.2,
+    "LegsThin": 0.3,
+    "WideWaistLine": 0.5
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Magnolia",
+   "sex": "female",
+   "marker": "Silhouette_Magnolia",
+   "values": {
+    "7B Upper": 0.2,
+    "BreastGravity2": 0.1,
+    "BreastPerkiness": 0.2,
+    "Breasts": 0.35,
+    "Butt": 0.25,
+    "ChubbyWaist": 0.2,
+    "Hips": 0.2,
+    "RoundAss": 0.35,
+    "Thighs": 0.15
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Mags Black",
+   "sex": "female",
+   "marker": "Silhouette_Mags_Black",
+   "values": {
+    "BreastPerkiness": 0.25,
+    "Breasts": 0.05,
+    "BreastsSmall": 0.2,
+    "ChubbyWaist": 0.45,
+    "Hips": 0.05,
+    "LegsThin": 0.1,
+    "RoundAss": 0.2,
+    "SlimThighs": 0.1
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Mama Murphy",
+   "sex": "female",
+   "marker": "Silhouette_Mama_Murphy",
+   "values": {
+    "Arms": 0.7,
+    "Belly": 0.4,
+    "BreastFlatness2": 0.6,
+    "BreastGravity2": 1.0,
+    "Breasts": 0.1,
+    "ButtSmall": 0.7,
+    "ChubbyWaist": 0.85,
+    "Hips": -0.3,
+    "LegsThin": 0.8,
+    "SlimThighs": 0.5,
+    "WideWaistLine": 0.4
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Marcy Long",
+   "sex": "female",
+   "marker": "Silhouette_Marcy_Long",
+   "values": {
+    "Arms": 0.3,
+    "BreastGravity2": 0.45,
+    "BreastsSmall": 0.5,
+    "ButtSmall": 0.4,
+    "ChubbyWaist": 0.75,
+    "Hips": -0.25,
+    "LegsThin": 0.35,
+    "SlimThighs": 0.2,
+    "WideWaistLine": 0.55
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Myrna",
+   "sex": "female",
+   "marker": "Silhouette_Myrna",
+   "values": {
+    "Belly": 0.3,
+    "BreastGravity2": 0.4,
+    "BreastsSmall": 0.3,
+    "ChubbyButt": 0.4,
+    "ChubbyLegs": 0.35,
+    "ChubbyWaist": 0.8,
+    "HipUpperWidth": 0.35,
+    "Hips": 0.35,
+    "Thighs": 0.4
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Nisha",
+   "sex": "female",
+   "marker": "Silhouette_Nisha",
+   "values": {
+    "Arms": 0.25,
+    "BreastsSmall": 0.55,
+    "BreastsSmall2": 0.2,
+    "ButtSmall": 0.3,
+    "ChubbyWaist": 0.5,
+    "Hips": -0.2,
+    "LegsThin": 0.3,
+    "MuscularArms": 0.3,
+    "MuscularLegs": 0.25,
+    "WideWaistLine": 0.4
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
    "name": "OxtonCBBEBody+V6",
    "sex": "female",
    "marker": "Silhouette_OxtonCBBEBody_V6",
@@ -830,6 +1279,27 @@
    "zeroed": false,
    "fit": "partial",
    "family": "ASA1"
+  },
+  {
+   "name": "Piper Wright",
+   "sex": "female",
+   "marker": "Silhouette_Piper_Wright",
+   "values": {
+    "Arms": 0.15,
+    "BreastGravity2": 0.15,
+    "BreastsSmall": 0.35,
+    "ButtSmall": 0.2,
+    "ChubbyWaist": 0.65,
+    "HipUpperWidth": 0.25,
+    "Hips": -0.15,
+    "LegsThin": 0.2,
+    "WideWaistLine": 0.45
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
   },
   {
    "name": "Plain F01",
@@ -1431,6 +1901,29 @@
    "zeroed": false,
    "fit": "partial",
    "family": "CBBE"
+  },
+  {
+   "name": "Ronnie Shaw",
+   "sex": "female",
+   "marker": "Silhouette_Ronnie_Shaw",
+   "values": {
+    "Back": 0.35,
+    "Belly": 0.35,
+    "BigTorso": 0.3,
+    "BreastFlatness2": 0.3,
+    "BreastGravity2": 0.6,
+    "ButtSmall": 0.3,
+    "ChestWidth": 0.25,
+    "ChubbyWaist": 0.95,
+    "Hips": -0.15,
+    "MuscularArms": 0.15,
+    "WideWaistLine": 0.6
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
   },
   {
    "name": "rose2",
@@ -2921,6 +3414,29 @@
    "family": "CBBE"
   },
   {
+   "name": "Trudy",
+   "sex": "female",
+   "marker": "Silhouette_Trudy",
+   "values": {
+    "Back": 0.45,
+    "Belly": 0.95,
+    "BigBelly": 0.3,
+    "BreastGravity2": 0.75,
+    "Breasts": 0.25,
+    "ButtSmall": 0.3,
+    "ChubbyArms": 0.5,
+    "ChubbyWaist": 1.2,
+    "HipUpperWidth": 0.5,
+    "LegsThin": 0.2,
+    "WideWaistLine": 0.6
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
    "name": "TWB",
    "sex": "female",
    "marker": "Silhouette_TWB",
@@ -3648,6 +4164,25 @@
    "family": "Ashara"
   },
   {
+   "name": "Arthur Maxson",
+   "sex": "male",
+   "marker": "Silhouette_Arthur_Maxson",
+   "values": {
+    "BTBack": 0.4,
+    "BTBodyFatv2": 0.1,
+    "BTPectorals": 0.3,
+    "BTShoulders": 0.5,
+    "BTStomachFat": 0.25,
+    "BTTraps": 0.5,
+    "TigerSanBBMale": 0.45
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
    "name": "BT - Average",
    "sex": "male",
    "marker": "Silhouette_BT_Average",
@@ -3858,6 +4393,44 @@
    "family": "BodyTalk - Bodies"
   },
   {
+   "name": "Deacon",
+   "sex": "male",
+   "marker": "Silhouette_Deacon",
+   "values": {
+    "BTChestSmoothing": 0.3,
+    "BTChubbyArm": 0.25,
+    "BTChubbyLeg": 0.2,
+    "BTStomachFat": 0.3,
+    "Hips": 0.15
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Father",
+   "sex": "male",
+   "marker": "Silhouette_Father",
+   "values": {
+    "BTNegBicepMuscle": 0.7,
+    "BTNegChestWidth": 0.6,
+    "BTNegPecMuscle": 0.75,
+    "BTNegScapularMuscle": 0.5,
+    "BTNegShoulder": 0.6,
+    "BTStomachFat": 0.25,
+    "BTTHinCalf": 0.9,
+    "BTThinArm": 0.95,
+    "ThinThigh": 0.9
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
    "name": "Fine M01",
    "sex": "male",
    "marker": "Silhouette_Fine_M01",
@@ -3963,6 +4536,119 @@
     "BTWaist-In": 0.25
    },
    "random": true,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Kellogg",
+   "sex": "male",
+   "marker": "Silhouette_Kellogg",
+   "values": {
+    "BTARYAYDA": 0.35,
+    "BTAbDefinition": 0.35,
+    "BTBiceps": 0.35,
+    "BTShoulders": 0.3,
+    "BTStomachFat": 0.15,
+    "BTThigh": 0.25,
+    "BTTraps": 0.45
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Mayor McDonough",
+   "sex": "male",
+   "marker": "Silhouette_Mayor_McDonough",
+   "values": {
+    "BTBodyFatv2": 0.1,
+    "BTChestSmoothing": 0.45,
+    "BTChubbyArm": 0.4,
+    "BTLowerStomachSize": 0.3,
+    "BTStomachFat": 0.6,
+    "Hips": 0.35
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Moe Cronin",
+   "sex": "male",
+   "marker": "Silhouette_Moe_Cronin",
+   "values": {
+    "BTLowerStomachSize": 0.5,
+    "BTNegPecMuscle": 0.3,
+    "BTStomachFat": 0.9,
+    "BTThinArm": 0.35,
+    "ThinThigh": 0.4
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Old Longfellow",
+   "sex": "male",
+   "marker": "Silhouette_Old_Longfellow",
+   "values": {
+    "BTLowerStomachSize": 0.3,
+    "BTNegPecMuscle": 0.35,
+    "BTNegShoulder": 0.2,
+    "BTStomachFat": 0.55,
+    "BTTHinCalf": 0.35,
+    "BTThinArm": 0.45,
+    "ThinThigh": 0.4
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Paladin Brandis",
+   "sex": "male",
+   "marker": "Silhouette_Paladin_Brandis",
+   "values": {
+    "BTAbDefinition": 0.4,
+    "BTNegBicepMuscle": 0.6,
+    "BTNegPecMuscle": 0.55,
+    "BTNegScapularMuscle": 0.4,
+    "BTNegStomach": 0.45,
+    "BTTHinCalf": 0.6,
+    "BTThinArm": 0.75,
+    "ThinThigh": 0.7
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Paladin Danse",
+   "sex": "male",
+   "marker": "Silhouette_Paladin_Danse",
+   "values": {
+    "BTARYAYDA": 0.4,
+    "BTAbDefinition": 0.3,
+    "BTAryaydaMoreMuscular": 0.45,
+    "BTBack": 0.3,
+    "BTShoulders": 0.4,
+    "BTStomachFat": 0.1,
+    "BTTraps": 0.55,
+    "TigerSanBBMale": 0.3
+   },
+   "random": false,
    "menu": true,
    "zeroed": false,
    "fit": "full",
@@ -4278,6 +4964,62 @@
     "Hips": 0.33
    },
    "random": true,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Porter Gage",
+   "sex": "male",
+   "marker": "Silhouette_Porter_Gage",
+   "values": {
+    "BTBiceps": 0.25,
+    "BTBodyFatv2": 0.25,
+    "BTChubbyLeg": 0.3,
+    "BTShoulders": 0.35,
+    "BTStomachFat": 0.5,
+    "BTThigh": 0.35,
+    "BTTraps": 0.4
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Preston Garvey",
+   "sex": "male",
+   "marker": "Silhouette_Preston_Garvey",
+   "values": {
+    "BTAbDefinition": 0.15,
+    "BTShoulders": 0.1,
+    "BTStomachFat": 0.1,
+    "BTTHinCalf": 0.2,
+    "BTThinArm": 0.3,
+    "ThinThigh": 0.25
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Robert MacCready",
+   "sex": "male",
+   "marker": "Silhouette_Robert_MacCready",
+   "values": {
+    "BTAbDefinition": 0.1,
+    "BTNegChestWidth": 0.35,
+    "BTNegPecMuscle": 0.3,
+    "BTNegShoulder": 0.3,
+    "BTTHinCalf": 0.5,
+    "BTThinArm": 0.6,
+    "ThinThigh": 0.55
+   },
+   "random": false,
    "menu": true,
    "zeroed": false,
    "fit": "full",
@@ -4643,6 +5385,96 @@
    "zeroed": false,
    "fit": "full",
    "family": "BodyTalk3 - Bodies"
+  },
+  {
+   "name": "Sturges",
+   "sex": "male",
+   "marker": "Silhouette_Sturges",
+   "values": {
+    "BTBiceps": 0.25,
+    "BTChubbyArm": 0.2,
+    "BTLowerStomachSize": 0.15,
+    "BTPectorals": 0.2,
+    "BTShoulders": 0.25,
+    "BTStomachFat": 0.4
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Tinker Tom",
+   "sex": "male",
+   "marker": "Silhouette_Tinker_Tom",
+   "values": {
+    "BTChestSmoothing": 0.4,
+    "BTNegShoulder": 0.4,
+    "BTStomachFat": 0.5,
+    "BTThinArm": 0.5,
+    "ThinThigh": 0.45
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Travis Miles",
+   "sex": "male",
+   "marker": "Silhouette_Travis_Miles",
+   "values": {
+    "BTChestSmoothing": 0.5,
+    "BTNegChestWidth": 0.3,
+    "BTNegShoulder": 0.35,
+    "BTStomachFat": 0.4,
+    "BTThinArm": 0.3,
+    "Hips": 0.3
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "Vadim Bobrov",
+   "sex": "male",
+   "marker": "Silhouette_Vadim_Bobrov",
+   "values": {
+    "BTCenterStomachSize": 0.45,
+    "BTChestSmoothing": 0.5,
+    "BTChubbyArm": 0.5,
+    "BTLowerStomachSize": 0.6,
+    "BTStomachFat": 1.0,
+    "Hips": 0.3
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
+  },
+  {
+   "name": "X6-88",
+   "sex": "male",
+   "marker": "Silhouette_X6_88",
+   "values": {
+    "BT2AdonisBelt": 0.4,
+    "BTAbDefinition": 0.6,
+    "BTBiceps": 0.3,
+    "BTCalves": 0.3,
+    "BTPectorals": 0.3,
+    "BTShoulders": 0.35,
+    "BTWaist-In": 0.4
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "BodyTalk - Bodies"
   }
  ],
  "player": {
@@ -4809,8 +5641,186 @@
    "HumanRace"
   ],
   "npcFormID": {
-   "female": [],
-   "male": []
+   "female": [
+    {
+     "plugin": "Fallout4.esm",
+     "id": 12062
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 496201
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 161414
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 1460166
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 140938
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 285393
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 285391
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 384575
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 386623
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 106456
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 106460
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 140822
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 141477
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 238680
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 11455
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 632448
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 1075708
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 139938
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 1244366
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 903478
+    },
+    {
+     "plugin": "DLCNukaWorld.esm",
+     "id": 54251
+    },
+    {
+     "plugin": "DLCNukaWorld.esm",
+     "id": 42210
+    },
+    {
+     "plugin": "DLCCoast.esm",
+     "id": 16074
+    },
+    {
+     "plugin": "DLCCoast.esm",
+     "id": 23680
+    },
+    {
+     "plugin": "DLCCoast.esm",
+     "id": 17982
+    }
+   ],
+   "male": [
+    {
+     "plugin": "Fallout4.esm",
+     "id": 106457
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 161411
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 160782
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 285385
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 410296
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 769766
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 106458
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 638060
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 850199
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 12070
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 12040
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 12028
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 11442
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 172442
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 728495
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 734653
+    },
+    {
+     "plugin": "Fallout4.esm",
+     "id": 285387
+    },
+    {
+     "plugin": "DLCNukaWorld.esm",
+     "id": 34845
+    },
+    {
+     "plugin": "DLCCoast.esm",
+     "id": 28251
+    }
+   ]
   },
   "blacklistedNpcsFormID": [],
   "blacklistedPlugins": {
@@ -4913,5 +5923,5 @@
    "names": []
   }
  },
- "rulesHash": "777ee648cc1f"
+ "rulesHash": "c6d56c9cd355"
 }
