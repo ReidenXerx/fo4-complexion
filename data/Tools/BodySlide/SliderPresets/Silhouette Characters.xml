@@ -4526,22 +4526,22 @@
         <SetSlider name="AnusBack" size="big" value="0"/>
         <SetSlider name="AnusDonut" size="small" value="0"/>
         <SetSlider name="AnusDonut" size="big" value="0"/>
-        <SetSlider name="AppleCheeks" size="small" value="0"/>
-        <SetSlider name="AppleCheeks" size="big" value="0"/>
+        <SetSlider name="AppleCheeks" size="small" value="60"/>
+        <SetSlider name="AppleCheeks" size="big" value="60"/>
         <SetSlider name="ArmpitHeight" size="small" value="0"/>
         <SetSlider name="ArmpitHeight" size="big" value="0"/>
         <SetSlider name="Arms" size="small" value="0"/>
         <SetSlider name="Arms" size="big" value="0"/>
-        <SetSlider name="Back" size="small" value="0"/>
-        <SetSlider name="Back" size="big" value="0"/>
-        <SetSlider name="BackArch" size="small" value="0"/>
-        <SetSlider name="BackArch" size="big" value="0"/>
+        <SetSlider name="Back" size="small" value="30"/>
+        <SetSlider name="Back" size="big" value="30"/>
+        <SetSlider name="BackArch" size="small" value="35"/>
+        <SetSlider name="BackArch" size="big" value="35"/>
         <SetSlider name="Belly" size="small" value="0"/>
         <SetSlider name="Belly" size="big" value="0"/>
         <SetSlider name="BigBelly" size="small" value="0"/>
         <SetSlider name="BigBelly" size="big" value="0"/>
-        <SetSlider name="BigButt" size="small" value="0"/>
-        <SetSlider name="BigButt" size="big" value="0"/>
+        <SetSlider name="BigButt" size="small" value="75"/>
+        <SetSlider name="BigButt" size="big" value="75"/>
         <SetSlider name="BigTorso" size="small" value="0"/>
         <SetSlider name="BigTorso" size="big" value="0"/>
         <SetSlider name="BreastCenter" size="small" value="0"/>
@@ -4576,8 +4576,8 @@
         <SetSlider name="BreastsSmall2" size="big" value="0"/>
         <SetSlider name="BreastsTogether" size="small" value="0"/>
         <SetSlider name="BreastsTogether" size="big" value="0"/>
-        <SetSlider name="Butt" size="small" value="60"/>
-        <SetSlider name="Butt" size="big" value="60"/>
+        <SetSlider name="Butt" size="small" value="100"/>
+        <SetSlider name="Butt" size="big" value="100"/>
         <SetSlider name="ButtCrack" size="small" value="0"/>
         <SetSlider name="ButtCrack" size="big" value="0"/>
         <SetSlider name="ButtNew" size="small" value="0"/>
@@ -4600,40 +4600,40 @@
         <SetSlider name="ChubbyButt" size="big" value="0"/>
         <SetSlider name="ChubbyLegs" size="small" value="0"/>
         <SetSlider name="ChubbyLegs" size="big" value="0"/>
-        <SetSlider name="ChubbyWaist" size="small" value="10"/>
-        <SetSlider name="ChubbyWaist" size="big" value="10"/>
+        <SetSlider name="ChubbyWaist" size="small" value="5"/>
+        <SetSlider name="ChubbyWaist" size="big" value="5"/>
         <SetSlider name="CrotchBack" size="small" value="0"/>
         <SetSlider name="CrotchBack" size="big" value="0"/>
         <SetSlider name="DoubleMelon" size="small" value="0"/>
         <SetSlider name="DoubleMelon" size="big" value="0"/>
         <SetSlider name="FeetFeminine" size="small" value="0"/>
         <SetSlider name="FeetFeminine" size="big" value="0"/>
-        <SetSlider name="ForearmSize" size="small" value="0"/>
-        <SetSlider name="ForearmSize" size="big" value="0"/>
+        <SetSlider name="ForearmSize" size="small" value="25"/>
+        <SetSlider name="ForearmSize" size="big" value="25"/>
         <SetSlider name="Groin" size="small" value="0"/>
         <SetSlider name="Groin" size="big" value="0"/>
-        <SetSlider name="HipBack" size="small" value="0"/>
-        <SetSlider name="HipBack" size="big" value="0"/>
+        <SetSlider name="HipBack" size="small" value="35"/>
+        <SetSlider name="HipBack" size="big" value="35"/>
         <SetSlider name="HipBone" size="small" value="0"/>
         <SetSlider name="HipBone" size="big" value="0"/>
         <SetSlider name="HipUpperWidth" size="small" value="0"/>
         <SetSlider name="HipUpperWidth" size="big" value="0"/>
-        <SetSlider name="Hips" size="small" value="30"/>
-        <SetSlider name="Hips" size="big" value="30"/>
+        <SetSlider name="Hips" size="small" value="45"/>
+        <SetSlider name="Hips" size="big" value="45"/>
         <SetSlider name="KneeHeight" size="small" value="0"/>
         <SetSlider name="KneeHeight" size="big" value="0"/>
         <SetSlider name="LegShape" size="small" value="0"/>
         <SetSlider name="LegShape" size="big" value="0"/>
         <SetSlider name="LegsThin" size="small" value="0"/>
         <SetSlider name="LegsThin" size="big" value="0"/>
-        <SetSlider name="MuscularArms" size="small" value="35"/>
-        <SetSlider name="MuscularArms" size="big" value="35"/>
-        <SetSlider name="MuscularButt" size="small" value="50"/>
-        <SetSlider name="MuscularButt" size="big" value="50"/>
+        <SetSlider name="MuscularArms" size="small" value="70"/>
+        <SetSlider name="MuscularArms" size="big" value="70"/>
+        <SetSlider name="MuscularButt" size="small" value="100"/>
+        <SetSlider name="MuscularButt" size="big" value="100"/>
         <SetSlider name="MuscularChest" size="small" value="0"/>
         <SetSlider name="MuscularChest" size="big" value="0"/>
-        <SetSlider name="MuscularLegs" size="small" value="40"/>
-        <SetSlider name="MuscularLegs" size="big" value="40"/>
+        <SetSlider name="MuscularLegs" size="small" value="65"/>
+        <SetSlider name="MuscularLegs" size="big" value="65"/>
         <SetSlider name="NipBGone" size="small" value="0"/>
         <SetSlider name="NipBGone" size="big" value="0"/>
         <SetSlider name="NippleAreola" size="small" value="0"/>
@@ -4662,22 +4662,22 @@
         <SetSlider name="PregnancyBelly" size="big" value="0"/>
         <SetSlider name="PushUp" size="small" value="20"/>
         <SetSlider name="PushUp" size="big" value="20"/>
-        <SetSlider name="RoundAss" size="small" value="45"/>
-        <SetSlider name="RoundAss" size="big" value="45"/>
+        <SetSlider name="RoundAss" size="small" value="80"/>
+        <SetSlider name="RoundAss" size="big" value="80"/>
         <SetSlider name="ShoulderSmooth" size="small" value="0"/>
         <SetSlider name="ShoulderSmooth" size="big" value="0"/>
         <SetSlider name="ShoulderTweak" size="small" value="0"/>
         <SetSlider name="ShoulderTweak" size="big" value="0"/>
-        <SetSlider name="ShoulderWidth" size="small" value="0"/>
-        <SetSlider name="ShoulderWidth" size="big" value="0"/>
+        <SetSlider name="ShoulderWidth" size="small" value="10"/>
+        <SetSlider name="ShoulderWidth" size="big" value="10"/>
         <SetSlider name="SlimThighs" size="small" value="0"/>
         <SetSlider name="SlimThighs" size="big" value="0"/>
         <SetSlider name="SternumDepth" size="small" value="0"/>
         <SetSlider name="SternumDepth" size="big" value="0"/>
         <SetSlider name="SternumHeight" size="small" value="0"/>
         <SetSlider name="SternumHeight" size="big" value="0"/>
-        <SetSlider name="Thighs" size="small" value="50"/>
-        <SetSlider name="Thighs" size="big" value="50"/>
+        <SetSlider name="Thighs" size="small" value="70"/>
+        <SetSlider name="Thighs" size="big" value="70"/>
         <SetSlider name="TummyTuck" size="small" value="0"/>
         <SetSlider name="TummyTuck" size="big" value="0"/>
         <SetSlider name="VaginaClitSize" size="small" value="0"/>

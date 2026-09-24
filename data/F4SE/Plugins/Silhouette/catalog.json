@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "build": "c6d3bdcccc51",
- "stamp": 13030333,
+ "build": "91ed55994014",
+ "stamp": 9563477,
  "mode": "absolute",
  "presets": [
   {
@@ -928,18 +928,25 @@
    "marker": "Silhouette_Ivy",
    "values": {
     "7B Upper": 0.15,
+    "AppleCheeks": 0.6,
+    "Back": 0.3,
+    "BackArch": 0.35,
+    "BigButt": 0.75,
     "BreastPerkiness": 0.45,
     "Breasts": 0.7,
-    "Butt": 0.6,
+    "Butt": 1.0,
     "ChestWidth": 0.1,
-    "ChubbyWaist": 0.1,
-    "Hips": 0.3,
-    "MuscularArms": 0.35,
-    "MuscularButt": 0.5,
-    "MuscularLegs": 0.4,
+    "ChubbyWaist": 0.05,
+    "ForearmSize": 0.25,
+    "HipBack": 0.35,
+    "Hips": 0.45,
+    "MuscularArms": 0.7,
+    "MuscularButt": 1.0,
+    "MuscularLegs": 0.65,
     "PushUp": 0.2,
-    "RoundAss": 0.45,
-    "Thighs": 0.5
+    "RoundAss": 0.8,
+    "ShoulderWidth": 0.1,
+    "Thighs": 0.7
    },
    "random": false,
    "menu": true,
@@ -5952,5 +5959,5 @@
    "names": []
   }
  },
- "rulesHash": "7a3eaa1207c7"
+ "rulesHash": "6a7936691e87"
 }

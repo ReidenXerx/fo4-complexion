@@ -953,6 +953,10 @@ and hips 10, next to the Rocket Bomb Extra Extra Extra (breasts 142, butt and th
 before. Now a fuller hourglass over the same muscle: breasts 70, butt 60, thighs 50, hips 30, push-up 20,
 7B Upper 15 (build c6d3bdcccc51). A body BodyGen gave keeps the values it was given, so she shows it after a
 Reset on her (or Reset everyone).
+Then, from a render of her now and two proposals, option B: "we was aiming on muscles + sexy ... do u think
+woman with powerful ass muscles could have such a small ass?" -- butt 100, BigButt 75, RoundAss 80, MuscularButt 100,
+AppleCheeks 60, HipBack 35, BackArch 35, hips 45, thighs 70, MuscularLegs 65, MuscularArms 70, ForearmSize 25, Back 30,
+ShoulderWidth 10 (build 91ed55994014). The pool's measure calls her "Rough" now; it sorts only random bodies.
 
 The bodies are written to `data/Tools/BodySlide/SliderPresets/Silhouette Characters.xml`; the generator reads
 the sidecar `tools/pool/characters.json`. Each record becomes an npcFormID rule UNDER the user's: a rule the
