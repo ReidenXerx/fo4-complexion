@@ -1,7 +1,10 @@
 """The pool's archetypes: per sex and tier, slider ranges in percent (lo, hi). Each archetype names how many
 bodies it gives. A slider not named is 0. Ranges were set from the measured effects (effects.json) and the
 calibration run: CBBE's zeroed body is already a fantasy hourglass (waist/hip 0.60), so ordinary women need
-a much thicker waist than the base, and the ugly shapes need strong values to read as what they are."""
+a much thicker waist than the base, and the ugly shapes need strong values to read as what they are.
+
+No woman's bust goes below a small but real one (owner poll, 2026-09-24, from a render and a photo of a
+concave chest the physics folded): Breasts at least 0, BreastsSmall at most 30 -- tests/test_pool.py holds it."""
 
 FEMALE = {
     'beautiful': {
@@ -14,18 +17,18 @@ FEMALE = {
                         'BreastPerkiness': (20, 40), 'ChubbyWaist': (5, 15), 'Hips': (5, 15), 'Butt': (5, 15), 'SlimThighs': (0, 15)}),
         'Voluptuous': (1, {'7B Upper': (25, 45), 'Breasts': (30, 50), 'BreastGravity2': (5, 15), 'Hips': (20, 35),
                            'BigButt': (20, 40), 'Thighs': (20, 35), 'ChubbyWaist': (10, 20), 'ChubbyArms': (5, 15), 'AppleCheeks': (10, 30)}),
-        'Petite': (1, {'BreastsSmall': (20, 40), 'Breasts': (0, 15), 'BreastPerkiness': (20, 40), 'SlimThighs': (10, 25),
+        'Petite': (1, {'BreastsSmall': (20, 30), 'Breasts': (0, 15), 'BreastPerkiness': (20, 40), 'SlimThighs': (10, 25),
                        'Arms': (10, 20), 'LegsThin': (5, 15), 'RoundAss': (20, 40), 'ChubbyWaist': (0, 10), 'Hips': (0, 10)}),
         'Pear': (1, {'BreastsSmall': (10, 25), 'Hips': (25, 40), 'Thighs': (30, 45), 'AppleCheeks': (30, 50), 'Butt': (20, 35),
                      'ChubbyWaist': (5, 15), 'ChubbyButt': (10, 25)}),
     },
     'middle': {
         'Average': (3, {'ChubbyWaist': (60, 90), 'WideWaistLine': (30, 60), 'HipUpperWidth': (20, 40), 'Belly': (20, 45),
-                        'Breasts': (-10, 20), 'BreastGravity2': (20, 40), 'Hips': (-10, 10), 'Butt': (-10, 10), 'Thighs': (0, 15),
+                        'Breasts': (0, 20), 'BreastGravity2': (20, 40), 'Hips': (-10, 10), 'Butt': (-10, 10), 'Thighs': (0, 15),
                         'ChubbyArms': (5, 25), 'BreastsSmall': (0, 25)}),
         'Soft': (3, {'ChubbyWaist': (70, 100), 'Belly': (40, 60), 'BigBelly': (15, 35), 'WideWaistLine': (20, 40), 'ChubbyArms': (25, 45),
                      'ChubbyLegs': (15, 35), 'Breasts': (10, 30), 'BreastGravity2': (30, 50), 'ChubbyButt': (10, 25), 'Back': (15, 30)}),
-        'Lean': (3, {'LegsThin': (10, 30), 'Arms': (10, 25), 'BreastsSmall': (25, 50), 'ButtSmall': (15, 35), 'ChubbyWaist': (55, 80),
+        'Lean': (3, {'LegsThin': (10, 30), 'Arms': (10, 25), 'BreastsSmall': (15, 30), 'ButtSmall': (15, 35), 'ChubbyWaist': (55, 80),
                      'WideWaistLine': (40, 70), 'HipUpperWidth': (20, 40), 'BreastGravity2': (10, 25), 'Hips': (-20, 0)}),
         'Sturdy': (3, {'BigTorso': (20, 35), 'Back': (25, 45), 'ChestWidth': (15, 35), 'ChubbyWaist': (55, 80), 'WideWaistLine': (20, 40),
                        'MuscularLegs': (10, 30), 'MuscularArms': (10, 30), 'Thighs': (10, 25), 'Hips': (-10, 5), 'ButtSmall': (0, 20),
@@ -40,11 +43,11 @@ FEMALE = {
                       'WideWaistLine': (60, 100), 'ChubbyLegs': (80, 110), 'ChubbyArms': (90, 120), 'ChubbyButt': (60, 90),
                       'BigTorso': (40, 70), 'Back': (50, 80), 'Breasts': (40, 60), 'BreastGravity2': (70, 90),
                       'BreastFlatness2': (20, 40), 'Thighs': (40, 60), 'CalfSize': (40, 70)}),
-        'Flat': (3, {'Breasts': (-60, -35), 'BreastsSmall': (80, 100), 'BreastsSmall2': (40, 70), 'BreastFlatness2': (50, 80),
+        'Flat': (3, {'Breasts': (0, 5), 'BreastsSmall': (20, 30), 'BreastsSmall2': (40, 70), 'BreastFlatness2': (50, 80),
                      'ButtSmall': (60, 90), 'Hips': (-50, -35), 'SlimThighs': (20, 40), 'ChubbyWaist': (70, 100),
                      'WideWaistLine': (50, 80), 'HipUpperWidth': (30, 50)}),
-        'Frail': (2, {'LegsThin': (70, 100), 'Arms': (60, 90), 'SlimThighs': (50, 70), 'ButtSmall': (60, 80), 'BreastsSmall': (60, 80),
-                      'Breasts': (-30, -10), 'BreastGravity2': (40, 60), 'Hips': (-40, -25), 'CalfSmooth': (40, 70), 'WideWaistLine': (20, 40)}),
+        'Frail': (2, {'LegsThin': (70, 100), 'Arms': (60, 90), 'SlimThighs': (50, 70), 'ButtSmall': (60, 80), 'BreastsSmall': (20, 30),
+                      'Breasts': (0, 5), 'BreastGravity2': (40, 60), 'Hips': (-40, -25), 'CalfSmooth': (40, 70), 'WideWaistLine': (20, 40)}),
         'Apple': (3, {'BigBelly': (30, 55), 'Belly': (90, 120), 'ChubbyWaist': (110, 140), 'WideWaistLine': (40, 70),
                       'HipUpperWidth': (40, 70), 'Back': (40, 60),
                       'LegsThin': (30, 50), 'ButtSmall': (40, 60), 'SlimThighs': (10, 30), 'Breasts': (10, 30), 'BreastGravity2': (60, 90),
@@ -52,9 +55,9 @@ FEMALE = {
         'Saggy': (2, {'BreastGravity2': (90, 120), 'BreastFlatness2': (60, 90), 'Breasts': (20, 45), 'Belly': (40, 60), 'BigBelly': (20, 40),
                       'ChubbyWaist': (70, 90), 'ButtSmall': (30, 50), 'WideWaistLine': (30, 50)}),
         'BottomHeavy': (2, {'ChubbyLegs': (90, 120), 'Thighs': (60, 90), 'Hips': (50, 70), 'BigButt': (40, 70), 'ChubbyButt': (50, 80),
-                            'BreastsSmall': (70, 100), 'Breasts': (-30, -10), 'Arms': (15, 30), 'ChubbyWaist': (50, 70)}),
+                            'BreastsSmall': (20, 30), 'Breasts': (0, 5), 'Arms': (15, 30), 'ChubbyWaist': (50, 70)}),
         'Boxy': (2, {'BigTorso': (50, 80), 'ChestWidth': (60, 90), 'Back': (50, 80), 'ChubbyWaist': (80, 110), 'WideWaistLine': (70, 100),
-                     'HipUpperWidth': (40, 60), 'Hips': (-55, -40), 'ButtSmall': (50, 70), 'BreastsSmall': (40, 70), 'MuscularArms': (20, 40)}),
+                     'HipUpperWidth': (40, 60), 'Hips': (-55, -40), 'ButtSmall': (50, 70), 'BreastsSmall': (20, 30), 'MuscularArms': (20, 40)}),
     },
 }
 

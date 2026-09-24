@@ -106,6 +106,27 @@ class VerifierWeights(unittest.TestCase):
         self.assertTrue(any('outside the body pool' in s for s in out), out)
 
 
+class BustFloor(unittest.TestCase):
+    """Owner poll 2026-09-24: no woman's bust goes below a small but real one -- the physics folded a concave
+    chest. Breasts at least 0 and BreastsSmall at most 30, in what ships and in what the next run can draw."""
+
+    def test_no_committed_woman_is_below_the_floor(self):
+        side = json.loads(sg.POOL_SIDECAR.read_text(encoding='utf-8'))['presets']
+        for name, p in side.items():
+            if p['sex'] == 'female':
+                with self.subTest(name):
+                    self.assertGreaterEqual(p['values'].get('Breasts', 0), 0)
+                    self.assertLessEqual(p['values'].get('BreastsSmall', 0), 30)
+
+    def test_no_female_archetype_can_draw_below_the_floor(self):
+        import archetypes
+        for tier, kinds in archetypes.FEMALE.items():
+            for kind, (_, ranges) in kinds.items():
+                with self.subTest(f'{tier} {kind}'):
+                    self.assertGreaterEqual(ranges.get('Breasts', (0, 0))[0], 0)
+                    self.assertLessEqual(ranges.get('BreastsSmall', (0, 0))[1], 30)
+
+
 @support.needs_data
 class StillItsTier(unittest.TestCase):
     """generate.py --check: every committed body, rebuilt from the installed body, measures as its tier."""

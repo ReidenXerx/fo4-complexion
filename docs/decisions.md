@@ -928,6 +928,16 @@ The player default (S-45) stays "the most average full fit", now of the pool as 
 `Plain M02`. The verifier checks that the random presets are the pool's and that every random line lists
 each one exactly its tier's weight; a line with one "Plain" copy short, or one "Fine" copy extra, fails it.
 
+**Amended 2026-09-24, by poll: a floor under the bust.** The owner sent a photo of a pool woman whose chest had
+gone concave, and it looked wrong: the breast physics folded a bust that small. From a render of the flattest
+body (Rough F06) at two floors, the owner chose the smaller: a small but real bust. So no woman's archetype
+may draw `Breasts` below 0 or `BreastsSmall` above 30. Flat, Frail, BottomHeavy, Lean, Petite, Boxy and
+Average were narrowed to it. The pool was regenerated with the same seed, and every archetype still found 40
+of 40 candidates in its own tier; Flat and Frail still measure as "ugly". `tests/test_pool.py` (BustFloor)
+holds both the committed bodies and the archetype ranges to the floor. It was proven on the pool before the
+floor, where 20 committed women failed. People who already have a pool body keep it until **Reset everyone**
+(S-68) or a per-NPC Reset gives them a new one.
+
 ## S-66 — The named people get bodies of their own
 
 Owner decision, 2026-09-24, by the same poll as S-65: companions and major named NPCs get a unique body that
