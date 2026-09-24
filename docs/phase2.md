@@ -58,7 +58,7 @@ LooksMenu offers other plugins no C++ interface (its `exports.def` has only F4SE
 points and its message handler answers F4SE alone), so Papyrus is the only door there is.
 
 What an order does is fixed by a protocol number both sides state (`Silhouette:DLL.ProtocolVersion`
-and `Silhouette:Bridge.Protocol`, now 4; `Silhouette:API.Protocol()` too). A DLL and scripts of different releases refuse each other at
+and `Silhouette:Bridge.Protocol`, now 5; `Silhouette:API.Protocol()` too). A DLL and scripts of different releases refuse each other at
 load instead of half-working -- and the bridge then sweeps refits off (S-54, below). The offline tests drive the whole director through a fake bridge that
 does exactly what `RunOrder` does, against a fake LooksMenu that keeps the unkeyed layer, Silhouette's
 keyword layer and another mod's, and shows their maximum — so what a body ends up looking like is what

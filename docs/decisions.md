@@ -1091,3 +1091,21 @@ automatically", knowing that bodies from another mod or sliders set by hand are 
 session, the hand-set body after it, someone with no BodyGen line, the second press, and the record's round
 trip, load-order moves and older bytes. Each guard was proven on a broken build (mutants M1-M9 killed); M10,
 the rule check moved after the roll, is equivalent: the rule's body replaces the extra roll when it lands.
+
+## S-71 — The player is told when a change they asked for waits for another mod, and when it lands
+
+Owner decision, 2026-09-25. The owner pressed Reset on Geneva, an AAF scene took her three seconds later, and
+the new body landed only when the scene ended, five minutes on: it looked like the scene had changed her body.
+Holding a change while another mod has someone busy is right (S-56); saying nothing about it was not: "would be
+good to notify about such things in notifications for being more clear whats happening and when".
+
+When an order in the urgent lane -- the player's own: the picker, MCM's page for the NPC in your sights -- is
+deferred because another mod has the person busy, the plugin queues one line for the screen ("<name>: busy in
+another mod's scene - the change you asked for waits until it ends"), once however often it is tried again, and
+another when it lands ("<name>: the change you asked for is done"). Bulk work (Reset everyone's rolls, the
+regeneration window) and other mods' requests wait without a word: they are not the player's to wait for, and
+a press of Reset everyone would otherwise fill the screen. The bridge takes the lines with the new native
+`NextNotice` on every poll, at most four a poll, and shows each as a notification. Protocol 5.
+
+`tests/main.cpp` covers the line when it waits, told once over several tries, the line when it lands, and
+silence for another mod's request and for bulk work; each was proven on a broken build (N1-N4).

@@ -73,6 +73,7 @@ Int Function EventActor(Int aiEvent) Global Native
 String Function EventPreset(Int aiEvent) Global Native
 Bool Function EventFlag(Int aiEvent) Global Native
 Function EventDone(Int aiEvent) Global Native  ; raised: only now is an announcement remembered as made
+String Function NextNotice() Global Native     ; a line for the player's screen (S-71), "" when none
 
 ; ---- the NPC picker (S-22, S-47) ---------------------------------------------
 Int Function CrosshairActor(Float afRecentSeconds) Global Native  ; main thread

@@ -15,7 +15,8 @@ namespace SH::Papyrus
 		// 3: OrderReadsDone, OrderGone, OrderDefer, EventDone, RequestAdopt; Request* take a lane and
 		// return why they refused ("" = accepted); marker kind 3, the choice marker.
 		// 4: ResetEveryone (S-68), which the bridge's MCM button calls.
-		constexpr std::int32_t kProtocol = 4;
+		// 5: NextNotice (S-71), which the bridge shows on the player's screen.
+		constexpr std::int32_t kProtocol = 5;
 
 		using Str = RE::BSFixedString;
 
@@ -164,6 +165,9 @@ namespace SH::Papyrus
 		// ---- events (data only) ----
 
 		std::int32_t NextEvent(std::monostate) { return static_cast<std::int32_t>(D().NextEvent()); }
+
+		// S-71: a line for the player's screen, "" when none. The director's state only.
+		Str NextNotice(std::monostate) { return Str{ D().NextNotice() }; }
 
 		std::int32_t EventKind(std::monostate, std::int32_t a_event)
 		{
@@ -436,6 +440,7 @@ namespace SH::Papyrus
 		Bind(a_vm, "OrderDefer"sv, OrderDefer, fast);
 
 		Bind(a_vm, "NextEvent"sv, NextEvent, fast);
+		Bind(a_vm, "NextNotice"sv, NextNotice, fast);
 		Bind(a_vm, "EventKind"sv, EventKind, fast);
 		Bind(a_vm, "EventActor"sv, EventActor, fast);
 		Bind(a_vm, "EventPreset"sv, EventPreset, fast);

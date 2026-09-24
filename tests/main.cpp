@@ -1166,16 +1166,26 @@ namespace
 			Check(Drain(d, g) == 1 && d.Pending() == 0 && g.actors[0x961].unkeyed.contains("Silhouette_Slim"),
 				"in another mod's scene: the roll is handed out once and waits, nothing captured -- the drain ends instead of spinning, "
 				"and the bridge does not poll faster for it");
+			{
+				const auto told = d.NextNotice();
+				Check(told.contains("waits until it ends") && d.NextNotice().empty(),
+					std::format("S-71: the player is told the change they asked for waits ({})", told));
+			}
 			now += SH::Director::kDeferWait - std::chrono::seconds(1);
 			Check(d.NextOrder() == 0, "not tried again before the wait is over");
 			now += std::chrono::seconds(1);
 			Check(d.Pending() == 1, "due again once the wait is over");
 			Check(Drain(d, g) == 1 && d.Pending() == 0, "tried again after the wait, still busy: deferred again");
+			Check(d.NextNotice().empty(), "... and told once, not at every try");
 			g.busy.erase(0x961);
 			g.rollsTo = "Silhouette_Athletic";
 			now += SH::Director::kDeferWait;
 			(void)Drain(d, g);
 			Check(g.actors[0x961].unkeyed.contains("Silhouette_Athletic") && g.actors[0x961].other.at("Erection") == 1.0F, "the scene over: the roll lands");
+			{
+				const auto told = d.NextNotice();
+				Check(told.contains("is done") && d.NextNotice().empty(), std::format("... and the player is told it is done ({})", told));
+			}
 
 			// A new decision made while a deferred one waits is tried at once.
 			g.busy.insert(0x961);
@@ -1185,6 +1195,16 @@ namespace
 			Check(d.RequestPreset(0x961, true, 0x00012345, "Curvy", SH::Source::kAPI, kNormal, why) && Drain(d, g) == 1 &&
 					  g.actors[0x961].unkeyed.contains("Silhouette_Curvy"),
 				"a new decision replaces the deferred one and does not wait out its time");
+			Check(d.NextNotice().empty(), "another mod's request that waits is not the player's to be told about");
+
+			// Bulk work (Reset everyone's rolls, the regeneration window) waits without a word.
+			g.busy.insert(0x961);
+			(void)d.RequestRegenerate(0x961, true, 0x00012345, kBackground, why);
+			(void)Drain(d, g);
+			g.busy.erase(0x961);
+			now += SH::Director::kDeferWait;
+			(void)Drain(d, g);
+			Check(d.NextNotice().empty(), "bulk work that waited for a scene is not said, before or after");
 		}
 
 		// The summary line says what the bridge did.

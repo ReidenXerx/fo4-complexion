@@ -49,7 +49,7 @@ Int Property SourcePicker = 3 AutoReadOnly
 Int Property LaneUrgent = 0 AutoReadOnly
 ; What RunOrder below does, and the natives the menu calls. Silhouette.dll says what it
 ; expects; they must agree. 4: ResetEveryone (S-68).
-Int Property Protocol = 4 AutoReadOnly
+Int Property Protocol = 5 AutoReadOnly
 ; "Reset everyone" forgets every body, picks included: a second press within this long
 ; confirms the first. A minute, not ten seconds: the clock runs while the player reads the
 ; first press's message box, and the owner's first try ran out reading it.
@@ -227,6 +227,7 @@ Event OnTimer(Int aiTimerID)
 	Silhouette:DLL.Pump()
 	; Events are raised here only, on this one stack: in the order they happened.
 	RaiseEvents()
+	ShowNotices()
 	; A drain waits on the main thread once per BodyGen call, so it runs on a stack of
 	; its own and this poll returns at once. One drain at a time keeps them few; the
 	; plugin hands an actor to one order at a time either way, so two could not collide.
@@ -440,6 +441,20 @@ EndFunction
 ; taken and not raised would be lost until the actor is next probed. ONE loop raises,
 ; on the bridge's one timer: NextEvent settles every event handed out before, so a
 ; second loop raising at the same time would get the same body announced twice.
+; S-71: what the player should know and cannot see -- a change they asked for waiting for
+; another mod's scene, and landing after it. A few a poll: the screen shows them one by one.
+Function ShowNotices()
+	Int shown = 0
+	String line = Silhouette:DLL.NextNotice()
+	While line != "" && shown < 4
+		Debug.Notification("Silhouette: " + line)
+		shown += 1
+		If shown < 4
+			line = Silhouette:DLL.NextNotice()
+		EndIf
+	EndWhile
+EndFunction
+
 Function RaiseEvents()
 	Int e = Silhouette:DLL.NextEvent()
 	Int raised = 0

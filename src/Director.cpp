@@ -186,8 +186,29 @@ namespace SH
 		_inflight.clear();
 		_busy.clear();
 		_events.clear();
+		_notices.clear();
 		_taken.clear();
 		_picker = {};
+	}
+
+	void Director::Notice(std::uint32_t a_ref, const Session& a_session, std::string_view a_what)
+	{
+		const auto who = a_session.facts.baseName.empty() ? std::format("{:08X}", a_ref) : a_session.facts.baseName;
+		_notices.push_back(std::format("{}: {}", who, a_what));
+		while (_notices.size() > kMaxNotices) {
+			_notices.pop_front();
+		}
+	}
+
+	std::string Director::NextNotice()
+	{
+		std::scoped_lock l{ _lock };
+		if (_notices.empty()) {
+			return {};
+		}
+		auto line = std::move(_notices.front());
+		_notices.pop_front();
+		return line;
 	}
 
 	void Director::RevertRecords()
@@ -1706,6 +1727,10 @@ namespace SH
 				if (!o.writes.empty()) {
 					Log(std::format("{:08X}: {} slider(s) healed or topped up on {}", o.ref, o.writes.size(), PresetNamedBy(session.marker, session.stamp)));
 				}
+				if (session.deferTold) {
+					session.deferTold = false;
+					Notice(o.ref, session, "the change you asked for is done");
+				}
 				if (session.deferNoted) {
 					session.deferNoted = false;
 					Log(std::format("{:08X}: the change that waited for another mod is done", o.ref));
@@ -1768,6 +1793,12 @@ namespace SH
 			s.deferNoted = true;
 			Log(std::format("{:08X}: another mod has them busy - the change waits", o.ref));
 		}
+		// S-71: a change the player asked for, held back where they cannot see why. Bulk work (a Reset
+		// everyone's rolls, the regeneration window) is not the player's to wait for, and is not said.
+		if (o.lane == Lane::kUrgent && !s.deferTold) {
+			s.deferTold = true;
+			Notice(o.ref, s, "busy in another mod's scene - the change you asked for waits until it ends");
+		}
 		// Only this kind of work waits: a refit coming off while she undresses in the scene must not.
 		const auto until = _clock() + kDeferWait;
 		auto&      w = WorkFor(o.ref, Lane::kBackground);
@@ -1815,6 +1846,10 @@ namespace SH
 		auto&       s = _sessions[ref];
 		s.probed = s.probed || a_order.probe;
 		s.pendingBody = false;
+		if (s.deferTold && a_order.body.what != BodyRequest::What::kMark) {
+			s.deferTold = false;
+			Notice(ref, s, "the change you asked for is done");
+		}
 		if (s.deferNoted && a_order.body.what != BodyRequest::What::kMark) {
 			s.deferNoted = false;
 			Log(std::format("{:08X}: the change that waited for another mod is done", ref));

@@ -243,6 +243,10 @@ namespace SH
 
 		// Events for the bridge to raise, oldest first. 0: none. EventDone once it has been raised.
 		[[nodiscard]] std::uint32_t        NextEvent();
+		// S-71: the next line for the player's screen, "" when none. Said when a change the player asked for
+		// (the urgent lane: the picker, MCM's page for the NPC in your sights) waits for another mod, and when
+		// it lands after that.
+		[[nodiscard]] std::string NextNotice();
 		[[nodiscard]] std::optional<Event> EventAt(std::uint32_t a_event) const;
 		void                               EventDone(std::uint32_t a_event);
 
@@ -334,6 +338,7 @@ namespace SH
 			bool marked{ false };          // the choice marker was asked for this session
 			bool announceOnDone{ false };  // Keep on a preview still on its way: announce when it lands
 			bool deferNoted{ false };
+			bool deferTold{ false };  // a change the player asked for waits for another mod: they were told (S-71)
 		};
 
 		struct Picker
@@ -416,6 +421,9 @@ namespace SH
 		std::unordered_map<std::uint32_t, Order>   _inflight;
 		std::unordered_set<std::uint32_t>          _busy;  // references with an order in flight
 		std::deque<Event>                          _events;
+		std::deque<std::string>                    _notices;  // S-71; the oldest go past kMaxNotices
+		static constexpr std::size_t               kMaxNotices = 16;
+		void                                       Notice(std::uint32_t a_ref, const Session& a_session, std::string_view a_what);
 		std::deque<Event>                          _taken;  // the last few handed out, for their details
 		bool                                       _eventsDropped{ false };
 		std::uint32_t                              _nextOrder{ 1 };
