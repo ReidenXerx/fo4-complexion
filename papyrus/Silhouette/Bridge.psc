@@ -51,8 +51,9 @@ Int Property LaneUrgent = 0 AutoReadOnly
 ; expects; they must agree. 4: ResetEveryone (S-68).
 Int Property Protocol = 4 AutoReadOnly
 ; "Reset everyone" forgets every body, picks included: a second press within this long
-; confirms the first.
-Float Property ResetConfirmSeconds = 10.0 AutoReadOnly
+; confirms the first. A minute, not ten seconds: the clock runs while the player reads the
+; first press's message box, and the owner's first try ran out reading it.
+Float Property ResetConfirmSeconds = 60.0 AutoReadOnly
 ; Silhouette.esp's refit keyword (S-40): ORefit's floors live under it, apart from the body.
 Int Property RefitKeywordID = 0x803 AutoReadOnly
 String Property RefitMarker = "Silhouette_Refit" AutoReadOnly
@@ -670,7 +671,7 @@ Function MenuResetEveryone()
 	Float now = Utility.GetCurrentRealTime()
 	If _resetAsked < 0.0 || now - _resetAsked > ResetConfirmSeconds || now < _resetAsked
 		_resetAsked = now
-		Debug.MessageBox("Silhouette: Reset everyone forgets every body Silhouette gave -- the ones you picked too -- and decides them again as if everyone were met for the first time: named characters get their own body, rules draw again, everyone else a new roll from the pool. People around you change at once, everyone else when you next meet them. Other mods' body morphs are kept. Press Reset everyone again within 10 seconds to do it.")
+		Debug.MessageBox("Silhouette: NOTHING HAS CHANGED YET. Press Reset everyone AGAIN (within a minute) to forget every body Silhouette gave, your picks too, and decide them all again: named characters get their own body, everyone else a new roll from the pool. People around you change at once, everyone else when you next meet them.")
 		Return
 	EndIf
 	_resetAsked = -1.0

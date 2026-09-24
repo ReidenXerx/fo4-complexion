@@ -992,7 +992,7 @@ accordingly unique rules built in silhouette and new pool for random bodies". So
 whom one press reaches: "Everyone, as met". Asked about bodies the player picked: wiped too, "who wants
 fresh start rollback to silhouette only experience".
 
-MCM > Silhouette > Bodies > **Reset everyone**, pressed twice within 10 seconds. Everyone is decided again
+MCM > Silhouette > Bodies > **Reset everyone**, pressed twice within a minute (10 seconds at first: the owner's first try ran out while he read the first message box). Everyone is decided again
 as if met for the first time: a roll, then the rules have their say -- a named character's own line, a
 rule by name or faction drawing by id alone (S-60's presses forgotten), the pool for everyone else.
 - **Around the player, at once**: everyone the plugin has seen this session whom Silhouette shapes (a

@@ -30,7 +30,7 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
 
 2. Load the save and stand still for 60 seconds. In `Documents\My Games\Fallout4\F4SE\Silhouette.log`,
    expect, in this order:
-   - `papyrus: Silhouette:DLL bound (protocol 3)`
+   - `papyrus: Silhouette:DLL bound (protocol 4)`
    - `catalog: build <build>, stamp <stamp>, rules <rules>, N presets, N manifest(s), 0 faction rule(s), 1 refit set(s)`
      -- the build, stamp and rules the generator printed last; one manifest per build ever generated
      (five: waves 3 and 4 kept the build and stamp). A `manifest <file> says it is build stamp <n>: not
@@ -177,7 +177,7 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
     about seven in ten Plain, two Rough, one Fine in ten -- a handful of people proves nothing, a town does.
     Nobody new gets an installed preset (Rocket Bomb, Blessed): those are the picker's now.
 20. On a COPY of the save: MCM > Silhouette > Bodies > "Reset everyone". The first press only explains
-    and asks; press it again within 10 seconds. The answer counts who changes now and the picks and rule
+    and asks; press it again within a minute (the first press changes nothing). The answer counts who changes now and the picks and rule
     draws forgotten; within seconds the people around you have new bodies, and Silhouette.log has `Reset
     everyone (build ...): N seen this session get a new body now, M choice(s) or rule draw(s) on record
     forgotten`. Someone you picked a body for earlier has a new one (their pick is gone).
