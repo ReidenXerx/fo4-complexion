@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "build": "5c12bb9cfabb",
- "stamp": 6034107,
+ "build": "c6d3bdcccc51",
+ "stamp": 13030333,
  "mode": "absolute",
  "presets": [
   {
@@ -927,19 +927,19 @@
    "sex": "female",
    "marker": "Silhouette_Ivy",
    "values": {
-    "7B Upper": 0.1,
+    "7B Upper": 0.15,
     "BreastPerkiness": 0.45,
-    "Breasts": 0.25,
-    "Butt": 0.15,
+    "Breasts": 0.7,
+    "Butt": 0.6,
     "ChestWidth": 0.1,
     "ChubbyWaist": 0.1,
-    "Hips": 0.1,
+    "Hips": 0.3,
     "MuscularArms": 0.35,
     "MuscularButt": 0.5,
     "MuscularLegs": 0.4,
-    "PushUp": 0.15,
+    "PushUp": 0.2,
     "RoundAss": 0.45,
-    "Thighs": 0.1
+    "Thighs": 0.5
    },
    "random": false,
    "menu": true,
@@ -5952,5 +5952,5 @@
    "names": []
   }
  },
- "rulesHash": "a293c70e39f8"
+ "rulesHash": "7a3eaa1207c7"
 }

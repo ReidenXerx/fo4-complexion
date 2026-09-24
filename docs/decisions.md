@@ -948,6 +948,11 @@ Deborah, a raider boss ("as deadly as she is sexy", her creator's note; "I think
 that model", of the Coursers). Of three drawn options -- an engineered hourglass over toned muscle, a
 voluptuous showpiece, a lean Courser chassis -- the owner chose the first, which has both halves of what she
 is. It measures "beautiful" (waist/hip 0.60). That makes 42 characters (25 women) and 45 records.
+**Amended again that night, by the owner's poll:** in game she read "too slim" -- breasts 25, butt 15, thighs
+and hips 10, next to the Rocket Bomb Extra Extra Extra (breasts 142, butt and thighs 120) she had rolled
+before. Now a fuller hourglass over the same muscle: breasts 70, butt 60, thighs 50, hips 30, push-up 20,
+7B Upper 15 (build c6d3bdcccc51). A body BodyGen gave keeps the values it was given, so she shows it after a
+Reset on her (or Reset everyone).
 
 The bodies are written to `data/Tools/BodySlide/SliderPresets/Silhouette Characters.xml`; the generator reads
 the sidecar `tools/pool/characters.json`. Each record becomes an npcFormID rule UNDER the user's: a rule the
