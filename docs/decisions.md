@@ -892,4 +892,4 @@ crosshair`. At 300 units: `nothing is under the crosshair within reach`, with no
 another NPC behind the player and a Drifter in front, the pick was the Drifter: it follows where the player
 faces, not the nearest or the last actor. Not produced there: the menu's 30-second window (the player could
 not be turned away) and a door. The window's logic is the tested trail, and it resolves handles the way the
-crosshair case just proved.
+crosshair case just proved. The owner then pressed the real hotkey in his own game: "yep it works".
