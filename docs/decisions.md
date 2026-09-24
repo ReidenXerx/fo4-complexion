@@ -956,7 +956,7 @@ Reset on her (or Reset everyone).
 Then, from a render of her now and two proposals, option B: "we was aiming on muscles + sexy ... do u think
 woman with powerful ass muscles could have such a small ass?" -- butt 100, BigButt 75, RoundAss 80, MuscularButt 100,
 AppleCheeks 60, HipBack 35, BackArch 35, hips 45, thighs 70, MuscularLegs 65, MuscularArms 70, ForearmSize 25, Back 30,
-ShoulderWidth 10 (build 91ed55994014). The pool's measure calls her "Rough" now; it sorts only random bodies.
+ShoulderWidth 10 (build 91ed55994014). The pool's measure calls her "Rough" now; it sorts only random bodies. The owner, in game after a Reset on her: "perfect!"
 
 The bodies are written to `data/Tools/BodySlide/SliderPresets/Silhouette Characters.xml`; the generator reads
 the sidecar `tools/pool/characters.json`. Each record becomes an npcFormID rule UNDER the user's: a rule the
