@@ -67,7 +67,12 @@ namespace SH::Game
 		// none after two loads in the running game; F4MCP's own sink on the same source got 85 events after
 		// a main-menu load and 2 (both created references) after an in-session one, the sink still attached.
 		// For a while after each load, the bridge's polls read every actor the game is simulating, once each.
+		// The while starts at the first poll, not at the load: the bridge polls only while the game runs, and
+		// a player who alt-tabs out at once (bAlwaysActive=0), or a menu, can hold that off past it (wave 5).
 		constexpr std::int64_t            kSweepMs = 30'000;
+		bool                              g_sweepArmed{ false };  // a load happened; the first poll starts the sweep
+		std::int64_t                      g_sweepArmedMs{ 0 };
+		std::int64_t                      g_sweepFirstMs{ 0 };    // that first poll
 		std::int64_t                      g_sweepUntilMs{ 0 };
 		bool                              g_sweepSaid{ true };
 		std::unordered_set<std::uint32_t> g_swept;     // read by the sweep since the load
@@ -83,8 +88,9 @@ namespace SH::Game
 			return std::ranges::any_of(a_list, [&](const std::string& n) { return IEquals(n, a_name); });
 		}
 
-		// A path for the log, whatever it holds: path::string() throws for a name the ANSI code page
-		// cannot hold, and a throw at data load takes the game down.
+		// A path for the log: path::string() throws for a name the ANSI code page cannot hold, and a throw at
+		// data load takes the game down. (An unpaired surrogate throws even here: every caller is inside the
+		// manifest loop's try.)
 		std::string Utf8(const std::filesystem::path& a_path)
 		{
 			const auto u = a_path.generic_u8string();
@@ -434,10 +440,12 @@ namespace SH::Game
 								g_director.Status());
 						} else if (g_askedMs.load() >= loaded) {
 							// Asked by Silhouette's scripts -- the bridge's, or the API's (the regeneration window,
-							// the MCM, another mod) -- so they are there, but the bridge does not poll.
-							logger::warn("Silhouette's scripts answered but the bridge does not poll: its script is missing or from another "
-										 "release than Silhouette.dll, or LooksMenu is not loaded. Install one release's files together; until "
-										 "it polls, nobody is shaped one by one (BodyGen still gives bodies)");
+							// the MCM page, which shows without the esp, another mod) -- so they are there, but the
+							// bridge does not poll.
+							logger::warn("Silhouette's scripts answered but the bridge does not poll: Silhouette.esp is not enabled (its "
+										 "quest runs the bridge), the bridge's script is missing or from another release than Silhouette.dll, "
+										 "or LooksMenu is not loaded. Install one release's files together and enable the esp; until the "
+										 "bridge polls, nobody is shaped one by one (BodyGen still gives bodies)");
 						} else {
 							logger::warn("the bridge has not polled in the minute since the save loaded. If that goes on, check that Silhouette.esp "
 										 "is enabled, its scripts are installed and LooksMenu is loaded: until it polls, nobody is shaped one by one "
@@ -592,8 +600,9 @@ namespace SH::Game
 		g_crosshair.store(0);
 		g_lastAimed.store(0);
 		// Main thread (a load or a new game starting): an item created in the save being left (0xFF)
-		// has an id the next save gives to something else.
-		g_resolved.heavyOf.clear();
+		// has an id the next save gives to something else. Every other id keeps its answer.
+		std::erase_if(g_resolved.heavyOf, [](const auto& a_item) { return (a_item.first >> 24) == 0xFF; });
+		g_sweepArmed = false;
 		g_sweepUntilMs = 0;
 		g_sweepSaid = true;
 		g_swept.clear();
@@ -619,13 +628,21 @@ namespace SH::Game
 	void NoteGameLoaded()
 	{
 		g_loadedMs.store(NowMs());
-		g_sweepUntilMs = NowMs() + kSweepMs;  // main thread, like the pump that reads it
-		g_sweepSaid = false;
-		g_swept.clear();
-		g_reported.clear();
 		if (!g_watching.exchange(true)) {
 			std::thread{ Watch }.detach();
 		}
+	}
+
+	void ArmSweep()
+	{
+		// Main thread, like the pump that reads it.
+		g_sweepArmed = true;
+		g_sweepArmedMs = NowMs();
+		g_sweepFirstMs = 0;
+		g_sweepUntilMs = 0;
+		g_sweepSaid = false;
+		g_swept.clear();
+		g_reported.clear();
 	}
 
 	RE::Actor* ActorFor(std::uint32_t a_ref)
@@ -687,14 +704,24 @@ namespace SH::Game
 		if (dropped != 0) {
 			logger::warn("the bridge fell behind: {} actor event(s) dropped, the oldest first; those actors are read again when they next load", dropped);
 		}
-		if (g_sweepUntilMs != 0) {
-			if (NowMs() < g_sweepUntilMs) {
+		if (g_sweepArmed) {
+			const auto now = NowMs();
+			if (g_sweepUntilMs == 0) {
+				g_sweepFirstMs = now;
+				g_sweepUntilMs = now + kSweepMs;  // from the first poll after the load, however late it came
+			}
+			if (now < g_sweepUntilMs) {
 				g_reported.insert(loaded.begin(), loaded.end());
-				Sweep(loaded);
+				if (g_director.CatalogPtr()) {
+					Sweep(loaded);  // without a catalog nobody is read, so nobody is counted as read
+				}
 			} else if (!g_sweepSaid) {
 				g_sweepSaid = true;
-				const auto told = std::ranges::count_if(g_swept, [](std::uint32_t a_ref) { return g_reported.contains(a_ref); });
-				logger::info("after loading: {} actor(s) around the player read; the game reported {} of them as loaded", g_swept.size(), told);
+				g_sweepArmed = false;
+				const auto told = static_cast<std::size_t>(std::ranges::count_if(g_swept, [](std::uint32_t a_ref) { return g_reported.contains(a_ref); }));
+				logger::info("after loading: {} actor(s) around the player read; the game reported {} of them as loaded, and {} it reported were "
+							 "not among them; the first poll came {:.1f} s after the load",
+					g_swept.size(), told, g_reported.size() - told, static_cast<double>(g_sweepFirstMs - g_sweepArmedMs) / 1000.0);
 			}
 		}
 		const auto catalog = g_director.CatalogPtr();

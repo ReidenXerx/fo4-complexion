@@ -1,6 +1,6 @@
 {
   "name": "silhouette",
-  "version-string": "0.2.0",
+  "version-string": "0.1.0",
   "description": "OBody NG's body distribution for Fallout 4: the F4SE plugin (Phase 2)",
   "supports": "windows & x64",
   "dependencies": [

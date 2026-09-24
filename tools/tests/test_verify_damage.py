@@ -11,7 +11,6 @@ import concurrent.futures
 import json
 import re
 import shutil
-import struct
 import subprocess
 import sys
 import unittest
@@ -62,25 +61,6 @@ def restamp(d):
     for name in ('Silhouette_templates.ini', 'Silhouette_morphs.ini'):
         p = data(d, LOOSE / name)
         p.write_bytes(p.read_bytes().replace(f'rules {old}.'.encode(), f'rules {new}.'.encode()))
-
-
-def esp_without(*form_ids):
-    """make_esp.build() with those records left out, and a group they empty with them -- an older Silhouette.esp."""
-    blob = make_esp.build()
-    (size,) = struct.unpack_from('<I', blob, 4)
-    out, o = bytearray(blob[:24 + size]), 24 + size
-    while o < len(blob):
-        (gsize,) = struct.unpack_from('<I', blob, o + 4)
-        kept, p = b'', o + 24
-        while p < o + gsize:
-            dsize, _flags, form_id = struct.unpack_from('<III', blob, p + 4)
-            if form_id not in form_ids:
-                kept += blob[p:p + 24 + dsize]
-            p += 24 + dsize
-        if kept:
-            out += blob[o:o + 4] + struct.pack('<I', 24 + len(kept)) + blob[o + 8:o + 24] + kept
-        o += gsize
-    return bytes(out)
 
 
 class Package:
@@ -146,7 +126,7 @@ def r8_script_heal_list_loses_the_shaft(d):
 
 @case(lambda: 'it has no FLST 804')
 def r9_esp_of_an_older_build(d):
-    data(d, 'Silhouette.esp').write_bytes(esp_without(make_esp.HEALED_FORMID))
+    data(d, 'Silhouette.esp').write_bytes(support.esp_without(make_esp.build(), make_esp.HEALED_FORMID))
 
 
 @case(lambda: "keybind 'next' calls PickerPrevious, not PickerNext")
@@ -208,10 +188,11 @@ def c5_manifest_values_not_an_object(d):
     edit_json(data(d, MAN / f'{PKG.stamp}.json'), f)
 
 
-@case(lambda: 'fExtra=0.5: not a whole number')
+@case(lambda: 'iExtra=0.5: not a whole number')
 def c6_a_setting_that_is_no_whole_number(d):
+    # An i setting is a whole number to MCM; an f one may be 0.5 (tests/test_settings.py).
     p = data(d, MCM / 'settings.ini')
-    p.write_text(p.read_text(encoding='utf-8') + 'fExtra=0.5\n', encoding='utf-8')
+    p.write_text(p.read_text(encoding='utf-8') + 'iExtra=0.5\n', encoding='utf-8')
 
 
 @case(lambda: "MCM hotkey 'next' has no keybind in keybinds.json")
@@ -221,7 +202,7 @@ def c7_keybinds_missing(d):
 
 @case(lambda: 'it has no refit keyword (KYWD 0x803)')
 def c8_the_phase_1_esp(d):
-    data(d, 'Silhouette.esp').write_bytes(esp_without(make_esp.REFIT_FORMID, make_esp.HEALED_FORMID))
+    data(d, 'Silhouette.esp').write_bytes(support.esp_without(make_esp.build(), make_esp.REFIT_FORMID, make_esp.HEALED_FORMID))
 
 
 @case(lambda: 'Silhouette.esp is not the one tools/make_esp.py builds -- rebuild it')
@@ -241,6 +222,25 @@ def w1_settings_sentinel_removed(d):
 @case(lambda: 'settings.ini has no [Meta] iDefaults=1')
 def w2_settings_sentinel_zero(d):
     edit_text(data(d, MCM / 'settings.ini'), lambda s: s.replace('iDefaults=1', 'iDefaults=0'))
+
+
+@case(lambda: f'manifest {PKG.stamp}.json: its templates are not all a marker naming a preset')
+def c10_current_manifest_value_a_string(d):
+    # A number written as text: the verifier compares the values as numbers (wave 5, lens 3 L7).
+    def f(doc):
+        values = next(e['values'] for e in doc['templates'].values() if e.get('values'))
+        values[next(iter(values))] = '0.5'
+    edit_json(data(d, MAN / f'{PKG.stamp}.json'), f)
+
+
+@case(lambda: f'manifest {PKG.old}.json: its templates are not all a marker naming a preset')
+def c11_old_manifest_value_a_bool(d):
+    PKG.need('old')
+
+    def f(doc):
+        values = next(e['values'] for e in doc['templates'].values() if e.get('values'))
+        values[next(iter(values))] = True
+    edit_json(data(d, MAN / f'{PKG.old}.json'), f)
 
 
 @case(lambda: 'broken.json: not readable as a manifest')
@@ -364,7 +364,7 @@ def verify(d):
     return p.returncode, out, problems
 
 
-@unittest.skipIf(support.bodies_missing(), support.bodies_missing() or '')
+@support.needs_data
 class Damage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

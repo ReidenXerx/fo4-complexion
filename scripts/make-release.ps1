@@ -3,10 +3,19 @@
   Packs a release archive of Silhouette: the Data layout, ready for a mod manager.
 
 .DESCRIPTION
-  Assembles build\release\Silhouette-<version>\ from the same built and generated
+  Assembles build\dist\Silhouette-<version>\ from the same built and generated
   files deploy-dev.ps1 stages, checks they are one generator run, and zips it to
-  build\release\Silhouette-<version>.zip. It does NOT publish anything: uploading
-  is the owner's act, always.
+  build\dist\Silhouette-<version>.zip. It does NOT publish anything: uploading
+  is the owner's act, always. (Not build\release: on NTFS that IS build\Release,
+  where the DLL is built and which a clean build empties.)
+
+  README.md and LICENSE go inside the archive at F4SE\Plugins\Silhouette\, beside
+  the plugin's own files (owner, 2026-09-24): nothing lands loose in Data's root,
+  where every other mod's README would collide with it.
+
+  Before packing, the tools' own tests run with SILHOUETTE_REQUIRE_DATA=1: a test
+  that needs the game's Data fails without it instead of being skipped, so a
+  release never passes with the verifier's refusals untested.
 
   The generated files are the OWNER's build: they carry the presets on this
   machine. A public release needs a build generated from the presets it ships
@@ -22,7 +31,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $root    = Split-Path -Parent $PSScriptRoot
 $version = (Get-Content (Join-Path $root 'VERSION') -TotalCount 1).Trim()
-$out     = Join-Path $root "build\release\Silhouette-$version"
+$out     = Join-Path $root "build\dist\Silhouette-$version"
 $zip     = "$out.zip"
 
 $dll  = Join-Path $root "build\$Config\Silhouette.dll"
@@ -81,6 +90,22 @@ switch ($LASTEXITCODE) {
     1 { throw "A committed manifest was edited or deleted (git diff HEAD -- data/F4SE/Plugins/Silhouette/manifests). Restore it: manifests are only ever added." }
     default { throw "git could not compare the manifests with the last commit (exit $LASTEXITCODE)." }
 }
+# ...and the tools that made and proved all of the above pass their own tests, against this parser, with the
+# game's Data REQUIRED: a skip here would be a release whose verifier was never shown to refuse anything.
+$docs = @('README.md', 'LICENSE') | ForEach-Object { Join-Path $root $_ }
+foreach ($d in $docs) { if (-not (Test-Path $d)) { throw "Missing $d - the archive carries it (the GPL wants the licence shipped)." } }
+$saved = @{ exe = $env:SILHOUETTE_TESTS_EXE; req = $env:SILHOUETTE_REQUIRE_DATA; enc = $env:PYTHONIOENCODING }
+$env:SILHOUETTE_TESTS_EXE = $tests
+$env:SILHOUETTE_REQUIRE_DATA = '1'
+$env:PYTHONIOENCODING = 'utf-8'
+$ErrorActionPreference = 'Continue'    # unittest reports on stderr: that must not turn into a PowerShell error
+& $python -m unittest discover -s (Join-Path $root 'tools\tests')
+$unitExit = $LASTEXITCODE
+$ErrorActionPreference = 'Stop'
+foreach ($pair in @(@('SILHOUETTE_TESTS_EXE', $saved.exe), @('SILHOUETTE_REQUIRE_DATA', $saved.req), @('PYTHONIOENCODING', $saved.enc))) {
+    if ($null -eq $pair[1]) { Remove-Item "Env:\$($pair[0])" -ErrorAction SilentlyContinue } else { Set-Item "Env:\$($pair[0])" $pair[1] }
+}
+if ($unitExit) { throw "the tools' tests failed (tools\tests) - every FAIL and ERROR above; nothing was packed." }
 
 if (Test-Path $out) { Remove-Item -Recurse -Force $out }
 if (Test-Path $zip) { Remove-Item -Force $zip }
@@ -95,9 +120,8 @@ foreach ($f in Get-ChildItem $pex -Filter *.pex) {
     $name = if ($f.Name -ieq 'player.pex') { 'Player.pex' } else { $f.Name }
     Copy-Item $f.FullName (Join-Path $scripts $name) -Force
 }
-foreach ($doc in @('README.md', 'LICENSE')) {
-    $p = Join-Path $root $doc
-    if (Test-Path $p) { Copy-Item $p $out -Force }
+foreach ($d in $docs) {
+    Copy-Item $d (Join-Path $out 'F4SE\Plugins\Silhouette') -Force
 }
 
 Compress-Archive -Path (Join-Path $out '*') -DestinationPath $zip -CompressionLevel Optimal

@@ -361,6 +361,29 @@ namespace SH
 		return b;
 	}
 
+	// A picking ends as a Cancel: the choice behind the body goes back as it was when the picking began. What
+	// was done to bodies meanwhile stays done -- an announcement raised while they were picked is not made
+	// again, nor a touch-up (fifth wave: one body, announced twice).
+	void Director::PutBackChoice(std::uint32_t a_ref, const std::optional<Record>& a_before, std::uint32_t a_base)
+	{
+		const auto* now = _registry.Find(a_ref);
+		const auto  announced = now ? now->announced : 0;
+		const auto  touched = now ? now->touched : 0;
+		if (a_before) {
+			_registry.Get(a_ref) = *a_before;
+		} else {
+			_registry.Erase(a_ref);
+		}
+		if (announced != 0 || touched != 0) {
+			auto& rec = _registry.Get(a_ref);
+			rec.announced = announced;
+			rec.touched = touched;
+			if (rec.base == 0) {
+				rec.base = a_base;
+			}
+		}
+	}
+
 	void Director::PendingRestore(std::uint32_t a_ref, Session& a_session)
 	{
 		const auto it = _registry.pickings.find(a_ref);
@@ -369,11 +392,7 @@ namespace SH
 		}
 		// A picking a save or an unreachable actor left unfinished (S-47): the choice behind the body goes
 		// back now, as a Cancel's does, and the body follows.
-		if (it->second.before) {
-			_registry.Get(a_ref) = *it->second.before;
-		} else {
-			_registry.Erase(a_ref);
-		}
+		PutBackChoice(a_ref, it->second.before, a_session.base);
 		a_session.restoring = true;
 		Log(std::format("{:08X}: a picking left unfinished - the body they had goes back", a_ref));
 		QueueBody(a_ref, RestoreOf(it->second.snapshot, it->second.female), Lane::kUrgent);
@@ -456,6 +475,12 @@ namespace SH
 		if (!rec || rec->source != Source::kReset || a_session.reset) {
 			return;
 		}
+		if (_picker.ref == a_ref || _registry.pickings.contains(a_ref) || a_session.restoring) {
+			// The body on them may be a preview: it is no body BodyGen gave them, and no new body starts under
+			// the picker. This runs again when the picking ends (Resettle). Taking a preview for her body left a
+			// reset owner bare for good (fifth wave).
+			return;
+		}
 		if (rec->stamp == 0) {
 			// S-59: asked for, and a save came before the bridge carried it out -- it is carried out now.
 			if (!Claimed(a_ref, a_session)) {
@@ -493,7 +518,8 @@ namespace SH
 	// Refresh or Reapply was writing again.
 	void Director::FinishPendingBody(std::uint32_t a_ref, Session& a_session)
 	{
-		if (!a_session.pendingBody || !a_session.eligible || Claimed(a_ref, a_session)) {
+		if (!a_session.pendingBody || !a_session.eligible || BodyReplacing(a_ref) || _picker.ref == a_ref || _registry.pickings.contains(a_ref) ||
+			a_session.restoring) {
 			return;
 		}
 		const auto  preset = _catalog->PresetForMarker(a_session.marker, _catalog->stamp).value_or(std::string{});
@@ -508,8 +534,9 @@ namespace SH
 
 	void Director::DecideBody(std::uint32_t a_ref, Session& a_session)
 	{
-		if (!a_session.eligible || !a_session.probed || _picker.ref == a_ref || BodyPending(a_ref) || a_session.restoring) {
-			return;  // not ours, not read yet, the player is choosing, or a change is already on its way
+		if (!a_session.eligible || !a_session.probed || _picker.ref == a_ref || _registry.pickings.contains(a_ref) || BodyPending(a_ref) ||
+			a_session.restoring) {
+			return;  // not ours, not read yet, the player is choosing or a picking waits to be put back, or a change is on its way
 		}
 		const auto& c = *_catalog;
 		auto*       rec = _registry.Find(a_ref);
@@ -637,8 +664,9 @@ namespace SH
 
 	void Director::Reconcile(std::uint32_t a_ref, Session& a_session)
 	{
-		if (!a_session.eligible || _picker.ref == a_ref || BodyPending(a_ref) || a_session.regiven || a_session.restoring) {
-			return;
+		if (!a_session.eligible || _picker.ref == a_ref || _registry.pickings.contains(a_ref) || BodyPending(a_ref) || a_session.regiven ||
+			a_session.restoring) {
+			return;  // a picking waiting to be put back holds a preview: given again, it would spend the one re-give
 		}
 		const auto* rec = _registry.Find(a_ref);
 		if (a_session.stranger && Chosen(a_session.choice) && !(rec && Chosen(rec->source)) && !a_session.marked) {
@@ -687,19 +715,25 @@ namespace SH
 		}
 	}
 
+	// A body that replaces the one on them is queued or being written. A choice marker written beside the body
+	// leaves it as it is: what waits for a new body does not wait for a marker (nothing runs it again when a
+	// marker lands -- the fifth wave found a top-up and a half body's repair held back for the session).
+	bool Director::BodyReplacing(std::uint32_t a_ref) const
+	{
+		const auto replaces = [](const BodyRequest& a_body) { return a_body.what != BodyRequest::What::kMark; };
+		if (const auto it = _work.find(a_ref); it != _work.end() && it->second.body && replaces(*it->second.body)) {
+			return true;
+		}
+		return std::ranges::any_of(_inflight, [&](const auto& p) { return p.second.ref == a_ref && p.second.kind == OrderKind::kBody && replaces(p.second.body); });
+	}
+
 	void Director::AnnounceBody(std::uint32_t a_ref, const Session& a_session)
 	{
 		if (!a_session.eligible || _picker.ref == a_ref || _registry.pickings.contains(a_ref)) {
 			return;  // while picked, the body on them may be a preview: Keep announces the one they keep
 		}
-		// A body about to be replaced is not announced: its replacement is, when it lands. Only a marker
-		// written beside it leaves the body as it is.
-		const auto replaces = [](const BodyRequest& a_body) { return a_body.what != BodyRequest::What::kMark; };
-		if (const auto it = _work.find(a_ref); it != _work.end() && it->second.body && replaces(*it->second.body)) {
-			return;
-		}
-		if (std::ranges::any_of(_inflight, [&](const auto& p) { return p.second.ref == a_ref && p.second.kind == OrderKind::kBody && replaces(p.second.body); })) {
-			return;
+		if (BodyReplacing(a_ref)) {
+			return;  // a body about to be replaced is not announced: its replacement is, when it lands
 		}
 		const auto preset = PresetNamedBy(a_session.marker, a_session.stamp);
 		if (preset.empty()) {
@@ -714,7 +748,7 @@ namespace SH
 
 	void Director::CheckTouch(std::uint32_t a_ref, const Session& a_session)
 	{
-		if (!a_session.eligible || _picker.ref == a_ref || BodyPending(a_ref) || _registry.pickings.contains(a_ref)) {
+		if (!a_session.eligible || _picker.ref == a_ref || BodyReplacing(a_ref) || _registry.pickings.contains(a_ref)) {
 			return;
 		}
 		if (PresetNamedBy(a_session.marker, a_session.stamp).empty()) {
@@ -811,6 +845,16 @@ namespace SH
 		case OrderKind::kBody:
 			if (!w.body) {
 				w.body = std::move(a_order.body);  // a newer decision already waiting wins
+			} else if (w.body->what == BodyRequest::What::kMark && a_order.body.what == BodyRequest::What::kPreset) {
+				// ...but a marker is no body. Keep pressed while the preview was written queued the choice's
+				// marker; the preview coming back is the body kept, and goes out as that choice. (The marker
+				// winning left her old body with the new choice's marker beside it.)
+				const auto choice = w.body->choice;
+				w.body = std::move(a_order.body);
+				w.body->choice = choice;
+				if (Chosen(choice)) {
+					w.body->preview = false;
+				}
 			}
 			break;
 		case OrderKind::kTouch:
@@ -1581,6 +1625,7 @@ namespace SH
 		if (o.kind == OrderKind::kSnapshot) {
 			if (_picker.ref == o.ref) {
 				ClosePicker();
+				Resettle(o.ref);  // like every other end of a picking (the bridge's failed snapshot comes as this)
 			}
 			return;
 		}
@@ -1744,6 +1789,9 @@ namespace SH
 					}
 				}
 				s.hasBody = (!s.marker.empty() && !IEquals(s.marker, kBlacklistMarker) && s.stamp != 0) || !s.own.empty();
+				if (const auto w = _work.find(ref); w != _work.end() && w->second.body && w->second.body->what == BodyRequest::What::kRestore) {
+					break;  // picked again and ended again meanwhile: the restore still queued ends the picking, not this one
+				}
 				s.restoring = false;
 				if (_picker.ref != ref) {
 					_registry.pickings.erase(ref);  // the picking is over
@@ -1835,7 +1883,9 @@ namespace SH
 		std::scoped_lock l{ _lock };
 		// The bridge raises strictly in order and says EventDone before it asks for the next: one handed out
 		// and not done by now was skipped (its actor was not in memory). It is settled -- not remembered as
-		// announced, and no longer standing in the way of the same body announced again.
+		// announced, and no longer standing in the way of the same body announced again. This holds because ONE
+		// loop raises (Bridge.RaiseEvents, on the bridge's one timer): a second raising at the same time would
+		// have its event settled here while still being raised, and the same body could be announced twice.
 		for (auto& e : _taken) {
 			e.done = true;
 		}
@@ -1911,11 +1961,7 @@ namespace SH
 		}
 		// The choice behind the body goes back at once; the body follows with the restore, and the saved
 		// picking stays until that restore is done (S-47).
-		if (entry->second.before) {
-			_registry.Get(ref) = *entry->second.before;
-		} else {
-			_registry.Erase(ref);
-		}
+		PutBackChoice(ref, entry->second.before, _sessions[ref].base);
 		_sessions[ref].restoring = true;
 		QueueBody(ref, RestoreOf(entry->second.snapshot, entry->second.female), Lane::kUrgent);
 		const auto back = _picker.current.empty() ? std::string{ "the body they had" } : _picker.current;
@@ -2095,12 +2141,18 @@ namespace SH
 		std::scoped_lock l{ _lock };
 		const auto*      rec = _registry.Find(a_ref);
 		std::string      out;
+		// What was asked for stays owed while Silhouette does not shape them -- their race left the build, say
+		// (S-59) -- and is carried out once it shapes them again: not "on its way" until then.
+		const auto session = _sessions.find(a_ref);
+		const bool shaped = session == _sessions.end() || !session->second.known || session->second.eligible;
 		if (rec && rec->source == Source::kNameBlacklist) {
 			out = "blacklisted by name: kept bare";
 		} else if (rec && rec->source == Source::kReset) {
-			out = rec->stamp == 0 ? "reset: bare in a moment, a new body at the next load" : "reset: a new body at the next load";
+			out = !shaped             ? "reset, owed: carried out once Silhouette shapes them again"
+			      : rec->stamp == 0 ? "reset: bare in a moment, a new body at the next load"
+			                        : "reset: a new body at the next load";
 		} else if (rec && rec->source == Source::kRoll) {
-			out = "a new body is on its way";
+			out = shaped ? "a new body is on its way" : "a new body, owed: rolled once Silhouette shapes them again";
 		} else if (rec && !rec->preset.empty()) {
 			out = std::format("chosen: {} ({})", rec->preset, SourceName(rec->source));
 		} else {

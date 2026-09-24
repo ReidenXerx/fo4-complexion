@@ -74,6 +74,7 @@ import rules
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DEFAULT_DATA = pathlib.Path(r'D:\GOGGames\Fallout 4 GOTY\Data')
 MANIFESTS = pathlib.Path('F4SE/Plugins/Silhouette/manifests')    # below a mod folder / data root
+CATALOG = pathlib.Path('F4SE/Plugins/Silhouette/catalog.json')
 
 
 def reconfigure_output():
@@ -350,10 +351,17 @@ def plain_marker(name):
     return f'Silhouette_{safe}' if safe else ''
 
 
+def manifest_folders(root, data):
+    """The folders every reader of a build's history takes manifests from, in the order a copy of one name
+    is taken: the output root's own, then the game's Data's -- a build deployed once is a build whose bodies
+    are in saves, even when this run writes somewhere fresh or a manifest was deleted here (wave 4 L6).
+    Computed once and handed to every reader, so no reader can be left looking at one of them (wave 5)."""
+    return [pathlib.Path(root) / MANIFESTS, pathlib.Path(data) / MANIFESTS]
+
+
 def manifest_files(*folders):
     """{file name, casefolded: path} of every manifest in the folders -- the first folder's copy of a name
-    wins. The output root's manifests first, then the game's Data: a build deployed once is a build whose
-    bodies are in saves, even when this run writes somewhere fresh or a manifest was deleted here (L6)."""
+    wins (manifest_folders())."""
     files = {}
     for folder in folders:
         folder = pathlib.Path(folder) if folder else None
@@ -363,20 +371,35 @@ def manifest_files(*folders):
     return files
 
 
-def manifest_history(*folders):
+def unreadable_in_data(path, exc):
+    """What is said of a manifest in the game's Data that cannot be read: it is skipped, not fatal. Only the
+    mod manager puts files there, and the plugin skips such a file too (wave 5)."""
+    return (f'{path}: not a manifest this tool can read ({exc!r}) -- skipped. It is in the game\'s Data, where '
+            f'only the mod manager puts files: remove it, or restore it, in the Silhouette mod\'s staging folder')
+
+
+def manifest_history(*folders, notes=None):
     """{preset name, casefolded: Counter(marker: manifests recording it)} -- what every manifest in the
-    folders (manifest_files) says each preset's marker was. Refuses a manifest it cannot read: without it
-    the markers of that build could not be kept (assign_markers)."""
+    folders (manifest_files) says each preset's marker was. A manifest of the FIRST folder (the output root)
+    that cannot be read is refused: without it the markers of that build could not be kept (assign_markers),
+    and git can restore it. One only the game's Data holds is skipped, and said in `notes`."""
     names = collections.defaultdict(collections.Counter)
+    first = pathlib.Path(folders[0]).resolve() if folders and folders[0] else None
     for _name, f in sorted(manifest_files(*folders).items()):
         try:
             doc = json.loads(f.read_text(encoding='utf-8-sig'))
-            templates = doc['templates']
-            for marker, entry in templates.items():
-                names[str(entry['preset']).casefold()][marker] += 1
+            recorded = collections.Counter()
+            for marker, entry in doc['templates'].items():
+                recorded[(str(entry['preset']).casefold(), marker)] += 1
         except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
+            if first is not None and f.parent.resolve() != first:
+                if notes is not None:
+                    notes.append(unreadable_in_data(f, exc))
+                continue
             raise SystemExit(f'{f}: not a manifest this tool can read ({exc!r}) -- restore it (git), since it '
                              f'says what the bodies of its build are')
+        for (name, marker), n in recorded.items():
+            names[name][marker] += n
     return names
 
 
@@ -431,6 +454,47 @@ def assign_markers(presets, history=None):
                     break
         p['marker'] = m
         taken[fold(m)] = name
+
+
+def previous_markers(folders, catalogs):
+    """({preset name, casefolded: marker}, manifest path) of the build a package holds now: the first of
+    `catalogs` (the output root's catalog.json, then the game's Data's) that names a stamp, read through that
+    stamp's manifest in `folders` (manifest_folders()). ({}, None) when there is none."""
+    for cat_path in catalogs:
+        try:
+            stamp = json.loads(pathlib.Path(cat_path).read_text(encoding='utf-8-sig'))['stamp']
+        except (OSError, ValueError, KeyError, TypeError):
+            continue
+        for folder in folders:
+            f = pathlib.Path(folder) / f'{stamp}.json'
+            try:
+                templates = json.loads(f.read_text(encoding='utf-8-sig'))['templates']
+                return {str(e['preset']).casefold(): m for m, e in templates.items() if isinstance(e, dict)}, f
+            except (OSError, ValueError, KeyError, TypeError, AttributeError):
+                continue
+    return {}, None
+
+
+def marker_moves(presets, previous, history):
+    """[(preset, marker it had, marker it gets, manifests recording each)] for every preset whose marker is not
+    the one the build a package holds now gave it (previous_markers()). A marker is how every body of it is
+    read -- Census, Refresh and "Which body" read the current build's markers -- so a move must be said, not
+    found later: the history votes, and since wave 4 the game's Data votes too (wave 5 L6)."""
+    moves = []
+    for p in presets:
+        name = p['name'].casefold()
+        old, new = previous.get(name), p.get('marker')
+        if old and new and old != new:
+            got = history.get(name, {})
+            moves.append((p['name'], old, new, got.get(old, 0), got.get(new, 0)))
+    return moves
+
+
+def body_values(target, morphs):
+    """What a body of a preset holds, as the "most average" measurement sees it: the sliders the body carries,
+    never a state, the shaft or fo4-anatomy's build slider -- none of them is written into a body (S-16, S-29,
+    S-62), so none of them may pull the average either."""
+    return {k: v for k, v in target.items() if k in morphs and not never_in_body(k)}
 
 
 def template_name(preset):
@@ -1206,12 +1270,15 @@ def first_difference(manifest, templates):
     had = manifest.get('templates') if isinstance(manifest, dict) else None
     if not isinstance(had, dict):
         return 'the manifest names no bodies it can be compared by'
-    for m in sorted(set(had) | set(templates), key=lambda k: (k.casefold(), k)):
+    for m in sorted(set(had) | set(templates), key=lambda k: (str(k).casefold(), str(k))):
         a, b = had.get(m), templates.get(m)
-        if not isinstance(a, dict):
-            return f'this run gives {m} ({b.get("preset")!r}), which the manifest does not name'
         if b is None:
-            return f'the manifest names {m} ({a.get("preset")!r}), which this run no longer gives'
+            what = repr(a.get('preset')) if isinstance(a, dict) else f'{a!r}, no body at all'
+            return f'the manifest names {m} ({what}), which this run no longer gives'
+        if a is None:
+            return f'this run gives {m} ({b.get("preset")!r}), which the manifest does not name'
+        if not isinstance(a, dict):
+            return f'{m} ({b.get("preset")!r}): the manifest holds {a!r} there, not a body'
         if a.get('preset') != b.get('preset'):
             if str(a.get('preset')).casefold() == str(b.get('preset')).casefold():
                 return (f'{m}: the manifest says preset {a.get("preset")!r}, this run {b.get("preset")!r} -- only '
@@ -1220,8 +1287,10 @@ def first_difference(manifest, templates):
         if a.get('gender') != b.get('gender'):
             return f'{m} ({b.get("preset")!r}): the manifest says {a.get("gender")}, this run {b.get("gender")}'
         va, vb = a.get('values') or {}, b.get('values') or {}
+        if not isinstance(va, dict):
+            return f'{m} ({b.get("preset")!r}): the manifest\'s values are {va!r}, not a body\'s sliders'
         if va != vb:
-            morph = next((k for k in sorted(set(va) | set(vb)) if va.get(k) != vb.get(k)), '?')
+            morph = next((k for k in sorted(set(va) | set(vb), key=str) if va.get(k) != vb.get(k)), '?')
             return (f'{m} ({b.get("preset")!r}): {morph} is {va.get(morph)!r} in the manifest, {vb.get(morph)!r} '
                     f'in this run')
     return None
@@ -1232,28 +1301,57 @@ def same_bodies(manifest, templates):
     return first_difference(manifest, templates) is None
 
 
-def refuse_stamp_clash(stamp, build, templates, *folders):
+def refuse_stamp_clash(stamp, build, templates, *folders, notes=None):
     """Refuses, before anything is written, a stamp a manifest in the folders already gives another build, or
     this build with other bodies than `templates` (manifest_templates()). The stamp is 24 bits of the build's
     hash, and a body's marker carries only the stamp: two builds sharing one could never be told apart, and
     this run would overwrite the other's manifest -- the only thing that says what its bodies are. main()
-    passes the output root's manifests and the game's Data's: a build deployed once has bodies in saves."""
-    for folder in folders:
+    passes manifest_folders(): the output root's, then the game's Data's -- a build deployed once has bodies
+    in saves.
+
+    The output root's copy is this build's record: unreadable, or other bodies, is refused. Data's copy is
+    what was deployed: unreadable is said in `notes` and skipped, and one that differs from a root copy that
+    agrees with this run is said too (the next deploy writes the root's over it) -- telling the user to rename
+    a preset back could never satisfy both copies (wave 5)."""
+    copies = []      # (first folder?, path, manifest) of every readable copy of this stamp's manifest
+    for i, folder in enumerate(folders):
         taken = pathlib.Path(folder) / f'{stamp}.json'
         if not taken.exists():
             continue
-        recorded = json.loads(taken.read_text(encoding='utf-8-sig'))
+        try:
+            recorded = json.loads(taken.read_text(encoding='utf-8-sig'))
+            if not isinstance(recorded, dict):
+                raise ValueError(f'a {type(recorded).__name__}, not a manifest')
+        except (OSError, ValueError) as exc:
+            if i == 0:
+                raise SystemExit(f'{taken}: not a manifest this tool can read ({exc!r}) -- restore it (git), since it '
+                                 f'says what the bodies of its build are. Nothing was written.')
+            if notes is not None:
+                notes.append(unreadable_in_data(taken, exc) + '; the next deploy writes this build\'s over it')
+            continue
         other = recorded.get('build')
         if other != build:
             raise SystemExit(f'build {build} has marker stamp {stamp}, and so has build {other} ({taken}): bodies of '
                              f'the two could not be told apart. Change anything in the presets or the ranges '
                              f'(a new build hash), then run this again.')
+        copies.append((i == 0, taken, recorded))
+    root = next((taken for first, taken, _r in copies if first), None)
+    for first, taken, recorded in copies:
         # This build again: its manifest stays as it was (write_manifest), so it must name these bodies.
         why = first_difference(recorded, templates)
-        if why:
-            raise SystemExit(f'{taken} records build {build} with other bodies than this run gives -- {why}. A '
-                             f'manifest is never rewritten, and nothing was written: undo that change, or change '
-                             f'anything in the presets or the ranges to get a new build, then run this again.')
+        if not why:
+            continue
+        if not first and root is not None:
+            if notes is not None:
+                notes.append(f'{taken} and {root} are two manifests of stamp {stamp} that differ -- {why}. This run '
+                             f'agrees with {root}, and the next deploy writes it over the one in Data.')
+            continue
+        agrees = [t for f, t, r in copies if not f and first_difference(r, templates) is None]
+        raise SystemExit(f'{taken} records build {build} with other bodies than this run gives -- {why}. A '
+                         f'manifest is never rewritten, and nothing was written: undo that change'
+                         + (f' ({agrees[0]} names exactly these bodies: restore the checkout\'s copy from it)'
+                            if agrees else '')
+                         + ', or change anything in the presets or the ranges to get a new build, then run this again.')
 
 
 def refuse_foreign_config(out_cfg, cfg_file):
@@ -1263,10 +1361,26 @@ def refuse_foreign_config(out_cfg, cfg_file):
     edited by hand in the belief that it is read -- so it is neither shipped as if compiled nor replaced."""
     if not out_cfg.exists() or (cfg_file.exists() and out_cfg.resolve() == cfg_file.resolve()):
         return
-    if cfg_file.exists() and out_cfg.read_bytes() == cfg_file.read_bytes():
+    source = cfg_file if cfg_file.exists() else 'every key at its default'
+
+    def parsed(path):
+        try:
+            return json.loads(path.read_text(encoding='utf-8-sig'))
+        except (OSError, ValueError):
+            return None
+    # The same settings are the same config, however it is laid out: another line ending (git's autocrlf) or
+    # indent is no hand edit (wave 5).
+    have = parsed(out_cfg)
+    want = parsed(cfg_file) if cfg_file.exists() else json.loads(json.dumps(rules.DEFAULT))
+    if have is not None and have == want:
         return
-    raise SystemExit(f'{out_cfg} is not the config this run compiles '
-                     f'({cfg_file if cfg_file.exists() else "every key at its default"}), and the package ships '
+    if isinstance(have, dict) and isinstance(want, dict):
+        key = next((k for k in sorted(set(have) | set(want)) if have.get(k) != want.get(k)), None)
+        why = f'{key!r} is {have.get(key)!r} there and {want.get(key)!r} in {source}'
+    else:
+        why = 'it is not a JSON object like the one compiled' if have is None or not isinstance(have, dict) else \
+              f'{source} is not a JSON object'
+    raise SystemExit(f'{out_cfg} is not the config this run compiles ({source}) -- {why} -- and the package ships '
                      f'the config it was made from. Pass --config {out_cfg} to compile that one, or move it away '
                      f'to ship the compiled one. Nothing was written.')
 
@@ -1325,11 +1439,13 @@ def main():
                     help='write the BodyGen files, the MCM menu and the picker script')
     ap.add_argument('--out', type=pathlib.Path, default=None,
                     help='the mod folder to write into (default: this repo\'s data/)')
-    ap.add_argument('--psc', type=pathlib.Path, default=ROOT / 'papyrus/Silhouette/Player.psc',
-                    help='where the generated picker script source goes')
+    ap.add_argument('--psc', type=pathlib.Path, default=None,
+                    help='where the generated picker script source goes (default: this repo\'s '
+                         'papyrus/Silhouette/Player.psc; required with --out)')
     ap.add_argument('--config', type=pathlib.Path, default=None,
-                    help='the rules file (default: data/F4SE/Plugins/Silhouette/'
-                         'Silhouette_presetDistributionConfig.json; includes/ beside it)')
+                    help='the rules file (default: the output root\'s own F4SE/Plugins/Silhouette/'
+                         'Silhouette_presetDistributionConfig.json, else this repo\'s data/ one; includes/ '
+                         'beside it)')
     ap.add_argument('--no-partial', action='store_true',
                     help='random pool uses full fits only (owner default: include partial)')
     ap.add_argument('--compensate', action='store_true',
@@ -1338,6 +1454,23 @@ def main():
     ap.add_argument('--report', type=pathlib.Path, default=None, help='also write a JSON report')
     args = ap.parse_args()
     reconfigure_output()
+
+    # Everything that depends only on the arguments is refused here, before anything is measured or written.
+    root = args.out or (ROOT / 'data')
+    if args.write and args.out and args.psc is None:
+        # The package goes elsewhere; the script source would still land in this checkout (wave 5 L11).
+        raise SystemExit(f'--out {args.out} writes the package there, and the picker script source would still '
+                         f'go to {ROOT / "papyrus/Silhouette/Player.psc"} in this checkout: pass --psc <file> too.')
+    psc = args.psc or ROOT / 'papyrus/Silhouette/Player.psc'
+    if args.config and not args.config.is_file():
+        # A config named and not there is a typo, not a wish for the defaults.
+        raise SystemExit(f'--config {args.config}: no such file')
+    # The config a package is made from is its own (S-61): with --out, the output root's when it has one --
+    # the repo's otherwise, copied into it below (wave 5 Q3).
+    out_cfg = root / 'F4SE/Plugins/Silhouette' / rules.CONFIG_NAME
+    cfg_file = args.config or (out_cfg if out_cfg.exists() else ROOT / 'data/F4SE/Plugins/Silhouette' / rules.CONFIG_NAME)
+    if args.write:
+        refuse_foreign_config(out_cfg, cfg_file)
 
     roots = built_roots(args)
     tris = {}
@@ -1351,9 +1484,21 @@ def main():
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
     presets = read_presets(args.data / 'Tools/BodySlide/SliderPresets')
     # The folder the manifests go to, and the game's: every marker either records stays its preset's (L4 F2,
-    # wave 4 L6) -- a fresh --out, or a manifest deleted here, must not bring the old renames back.
-    root = args.out or (ROOT / 'data')
-    assign_markers(presets, manifest_history(root / MANIFESTS, args.data / MANIFESTS))
+    # wave 4 L6) -- a fresh --out, or a manifest deleted here, must not bring the old renames back. One list,
+    # for every reader (wave 5).
+    folders = manifest_folders(root, args.data)
+    notes = []
+    history = manifest_history(*folders, notes=notes)
+    for n in notes:
+        print(f'  note: {n}')
+    assign_markers(presets, history)
+    previous, previous_file = previous_markers(folders, [root / CATALOG, args.data / CATALOG])
+    moves = marker_moves(presets, previous, history)
+    if moves:
+        print(f'markers that move from the build {previous_file} records -- bodies of it are read by marker, so '
+              f'these presets\' bodies will be read as another preset\'s or none:')
+        for name, old, new, n_old, n_new in moves:
+            print(f'  {name!r}: {old} -> {new} (manifests recording {old}: {n_old}, {new}: {n_new})')
 
     for p in presets:
         p.update(classify(p, morphs_of['female'], morphs_of['male']))
@@ -1396,15 +1541,8 @@ def main():
             print(f'     (--compensate cannot help: the baked shape matches no preset on disk.)')
     print()
 
-    # ---- the rules (OBody's config keys; tools/rules.py)
+    # ---- the rules (OBody's config keys; tools/rules.py): cfg_file, chosen at the top
     report = []
-    cfg_file = args.config or (ROOT / 'data/F4SE/Plugins/Silhouette' / rules.CONFIG_NAME)
-    if args.config and not args.config.is_file():
-        # A config named and not there is a typo, not a wish for the defaults.
-        raise SystemExit(f'--config {args.config}: no such file')
-    out_cfg = root / 'F4SE/Plugins/Silhouette' / rules.CONFIG_NAME
-    if args.write:
-        refuse_foreign_config(out_cfg, cfg_file)
     cfg = rules.load(cfg_file, [cfg_file.parent / 'includes',
                                 args.data / 'F4SE/Plugins/Silhouette/includes'], report)
     not_random = {n.casefold() for n in cfg.get('blacklistedPresetsFromRandomDistribution', [])}
@@ -1539,10 +1677,8 @@ def main():
         entries.sort(key=lambda e: e['display'].casefold())
         picker[g] = entries
         shape = max(tris[g], key=lambda s: len(tris[g][s]))
-        # The average is of the BODIES the pool gives: a state, the shaft or a slider fo4-anatomy's build
-        # owns is never written into one (S-16, S-29, S-62), so it never pulls the average either.
-        pool_values = [(p['name'], {k: v for k, v in target_values(p, base[g]).items()
-                                    if k in morphs_of[g] and not never_in_body(k)}) for _n, _l, p in pools[g]]
+        # The average is of the BODIES the pool gives (body_values).
+        pool_values = [(p['name'], body_values(target_values(p, base[g]), morphs_of[g])) for _n, _l, p in pools[g]]
         full = [(n, v) for n, v in pool_values
                 if next(p for p in presets if p['name'] == n)['band'] == 'full']
         best = base_body.most_average(pool_values, tris[g][shape], full)
@@ -1607,9 +1743,11 @@ def main():
         print('\n(measure only - pass --write to produce the BodyGen files)')
     else:
         # A stamp another build holds, or this build with other bodies, in the output root or the game's
-        # Data (wave 4 L6): refused before anything is written.
-        refuse_stamp_clash(stamp, build, manifest_templates(pools, extra, picker), root / MANIFESTS,
-                           args.data / MANIFESTS)
+        # Data (wave 4 L6): refused before anything is written. The same folder list the history read.
+        clash_notes = []
+        refuse_stamp_clash(stamp, build, manifest_templates(pools, extra, picker), *folders, notes=clash_notes)
+        for n in clash_notes:
+            print(f'  note: {n}')
         out = root / 'F4SE/Plugins/F4EE/BodyGen/Loose'
         tfile = out / 'Silhouette_templates.ini'
         mfile = out / 'Silhouette_morphs.ini'
@@ -1746,7 +1884,7 @@ def main():
                 rules.write_default(out_cfg)
                 print(f'wrote {out_cfg} (every key, at its default)')
         write_mcm(root / 'MCM/Config' / MOD, picker, default_index, average, build)
-        write_papyrus(args.psc, picker, default_index, stamp, build)
+        write_papyrus(psc, picker, default_index, stamp, build)
         wrote_manifest = write_manifest(root / MANIFESTS, stamp, build, mode, base, pools, extra, picker,
                                         {g: {'template': chosen[g], 'preset': average.get(g, '')} for g in BODIES})
         catalog.write(root / 'F4SE/Plugins/Silhouette/catalog.json', cat)
@@ -1758,7 +1896,7 @@ def main():
         print(f'wrote {root / "MCM/Config" / MOD}\\config.json + settings.ini')
         print(f'wrote {root / MANIFESTS}\\{stamp}.json' if wrote_manifest else
               f'kept {root / MANIFESTS}\\{stamp}.json as it was: it already records this build, body for body')
-        print(f'wrote {args.psc}  (compile: scripts/build-papyrus.ps1)')
+        print(f'wrote {psc}  (compile: scripts/build-papyrus.ps1)')
 
     if args.report:
         args.report.write_text(json.dumps({

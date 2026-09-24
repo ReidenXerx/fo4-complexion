@@ -115,9 +115,10 @@ All three read the built meshes from Data by default. If BodySlide builds somewh
 `OutputDataPath`), pass `--built <folder>` (repeatable) to check a rebuild **before** it is
 deployed.
 
-Install the `data/` folder as a mod, with every compiled script from `build/papyrus/Silhouette/` under
-`Scripts/Silhouette/` -- the Player, Adopter, Bridge, API and DLL scripts, since `Silhouette.esp`'s quests
-run them (`scripts/deploy-dev.ps1` and `scripts/make-release.ps1` do exactly this). **Run the generator
+Install the `data/` folder as a mod, with `Silhouette.dll` under `F4SE/Plugins/` and every compiled script
+from `build/papyrus/Silhouette/` under `Scripts/Silhouette/` -- the Player, Adopter, Bridge, API and DLL
+scripts, since `Silhouette.esp`'s quests run them. `scripts/deploy-dev.ps1` stages exactly this;
+`scripts/make-release.ps1` packs it, with this README and the licence under `F4SE/Plugins/Silhouette/` (S-63). **Run the generator
 again whenever you add presets, rebuild a body
 in BodySlide, or edit `Silhouette_presetDistributionConfig.json`** -- the game never reads that file
 itself, only what the generator makes of it.

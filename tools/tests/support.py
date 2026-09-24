@@ -9,13 +9,17 @@ The environment can point a run elsewhere:
     SILHOUETTE_DATA        the game's Data folder (default: the generator's)
     SILHOUETTE_TESTS_EXE   SilhouetteTests.exe (default: build/Release)
     SILHOUETTE_TEST_JOBS   how many verifier runs at once (default: half the processors)
+    SILHOUETTE_REQUIRE_DATA=1   a test that needs the game's Data FAILS without it instead of being skipped
+                           (scripts/make-release.ps1: a release never passes with the verifier's refusals untested)
 """
 import os
 import pathlib
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
+import unittest
 
 REPO = pathlib.Path(__file__).resolve().parent.parent.parent
 TOOLS = pathlib.Path(os.environ.get('SILHOUETTE_TOOLS_DIR') or REPO / 'tools').resolve()
@@ -47,7 +51,46 @@ def bodies_missing(data=None):
     for body in silhouette_gen.BODIES.values():
         need += [data / f'Meshes/Actors/Character/CharacterAssets/{body}{ext}' for ext in ('.nif', '.tri')]
     missing = [str(p) for p in need if not p.exists()]
-    return f'no game Data with the bodies here ({", ".join(missing)})' if missing else None
+    return f'{NO_DATA} ({", ".join(missing)})' if missing else None
+
+
+REQUIRE_DATA = os.environ.get('SILHOUETTE_REQUIRE_DATA') == '1'
+# What a skipped class says, word for word: scripts/build-plugin.ps1 looks for it to say so on its last line.
+NO_DATA = 'no game Data with the bodies here'
+
+
+def needs_data(cls):
+    """A test class that needs the game's Data: skipped without it -- or, under SILHOUETTE_REQUIRE_DATA=1, failed."""
+    why = bodies_missing()
+    if not why:
+        return cls
+    if not REQUIRE_DATA:
+        return unittest.skip(why)(cls)
+
+    def refuse(klass):
+        raise AssertionError(f'SILHOUETTE_REQUIRE_DATA=1, and {why}')
+    cls.setUpClass = classmethod(refuse)
+    return cls
+
+
+def esp_without(blob, *form_ids):
+    """The plugin's bytes with those records left out -- a group they leave empty goes too, as the esp of an
+    older Silhouette had no keyword group at all."""
+    (size,) = struct.unpack_from('<I', blob, 4)
+    out = bytearray(blob[:24 + size])
+    o = 24 + size
+    while o < len(blob):
+        (gsize,) = struct.unpack_from('<I', blob, o + 4)
+        kept, p = b'', o + 24
+        while p < o + gsize:
+            dsize, _flags, form_id = struct.unpack_from('<III', blob, p + 4)
+            if form_id not in form_ids:
+                kept += blob[p:p + 24 + dsize]
+            p += 24 + dsize
+        if kept:
+            out += blob[o:o + 4] + struct.pack('<I', 24 + len(kept)) + blob[o + 8:o + 24] + kept
+        o += gsize
+    return bytes(out)
 
 
 def tests_exe():

@@ -102,11 +102,12 @@ def looksmenu_bodies(chunks):
 
 
 def manifests():
+    """{stamp: manifest}. Data's copy of a stamp wins over this checkout's: it is the one the game reads."""
     out = {}
     for d in MANIFESTS:
         for f in d.glob('*.json') if d.exists() else []:
             m = json.loads(f.read_text(encoding='utf-8-sig'))     # a BOM an editor added is not a new format
-            out[int(m['stamp'])] = m
+            out.setdefault(int(m['stamp']), m)
     return out
 
 

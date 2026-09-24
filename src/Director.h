@@ -367,6 +367,8 @@ namespace SH
 		void                      QueueBody(std::uint32_t a_ref, BodyRequest a_body, Lane a_lane);
 		void                      Requeue(Order& a_order, bool a_park);
 		[[nodiscard]] bool        BodyPending(std::uint32_t a_ref) const;
+		[[nodiscard]] bool        BodyReplacing(std::uint32_t a_ref) const;
+		void                      PutBackChoice(std::uint32_t a_ref, const std::optional<Record>& a_before, std::uint32_t a_base);
 		void                      Intend(std::uint32_t a_ref, const Session& a_session, Source a_source, std::string a_preset);
 		[[nodiscard]] BodyRequest RestoreOf(const Morphs& a_snapshot, bool a_female) const;
 		void                      AfterProbe(std::uint32_t a_ref, Session& a_session);

@@ -395,6 +395,12 @@ folders, so every restage left Data half-deployed until the Deploy -- the new es
 scripts. It now stages file by file in place and names the new files that wait for the Deploy. A peer's rule
 worth keeping: a presence check tests the half that cannot go live early (the DLL), never the esp.
 
+**Amended by the fifth microscope wave.** Since every write is live, the copy is the deploy: it refuses before
+the first write unless every file can be written (nothing holds one open, no folder stands where a file goes),
+and a write that still fails names what was written and says Data now mixes two builds. Whether the Deploy
+is needed is read from Data itself, file by file (the same file id as the staged one, or not): a run that
+listed new files and was not followed by a Deploy told the next run that nothing waited.
+
 Agent decision, 2026-09-23, from LooksMenu's source. Reset removes Silhouette's (unkeyed) layer: the NPC
 is bare now, and LooksMenu drops emptied entries when it loads a save (MorphValueMap::Load skips them),
 so BodyGen gives them a body again after the next load. Back to random (GenActor) runs BodyGen at once
@@ -516,7 +522,12 @@ cell change. The game does not report people already around the player after suc
 with a sink of its own on the same event source: 85 loaded events after a load from the main menu, and 2 (both
 created references) after an in-session load of the same crowd, with the sink still attached. For 30 seconds
 after each load the plugin now reads every actor the game is simulating (its high and middle-high process
-lists), once each, and then logs how many of them the game itself reported.
+lists), once each, and then logs how many of them the game itself reported. In game with wave 4 that line
+read 27 of 27 after a load from the main menu and 0 of 27 after an in-session one, and step 13 passed.
+(Fifth wave: the 30 seconds start at the bridge's first poll after the load, not at the load, because the
+bridge polls only while the game runs; a failed load, which has already forgotten everyone, starts the sweep
+too; and the line also counts actors the game reported that the sweep did not find, and says how long the
+first poll took.)
 
 ## S-44 — Top-up: existing bodies get the variety they lack
 
@@ -556,7 +567,9 @@ it is the same preset as before; an announcement handed to the bridge and not ra
 and at most 64 are raised a poll without losing the 65th. While an NPC is being picked nothing about her body
 is announced -- the body on her may be a preview; Keep announces the one she keeps.** **Fourth wave: an
 announcement the bridge skipped (its actor was not in memory) is not remembered as made, and no longer stands
-in the way of the same body announced again later in the session.**
+in the way of the same body announced again later in the session.** **Fifth wave: that rests on ONE loop
+raising the events (the bridge's, on its one timer) -- written down on both sides, since a second raiser would
+announce a body twice; a Cancel no longer forgets an announcement raised while the NPC was picked.**
 
 Agent decision, 2026-09-23. The bridge sends its custom events under the names the compiler gives them,
 "silhouette:bridge_<Event>": sent under the bare name, no listener ever receives them (the vanilla scripts
@@ -591,6 +604,16 @@ from LooksMenu during a picking is what a Cancel puts back. A half-written body 
 so (S-58). An unfinished picking is put back from whichever is seen of them first after a load, an equip event
 included. In game, a save made mid-preview and loaded without quitting stayed on the preview. The co-save
 had kept the picking, but nobody was read after that load. The load sweep (S-43's amendment) is the fix.
+
+**Amended by the fifth microscope wave.** A preview is no body of theirs, and nothing reads it as one: a landed
+Reset (S-53) is not dropped because a preview was on them when a probe came -- with another mod's keyed morph
+on her, that left her bare for good -- and its new body does not start, nor is announced, while she is picked.
+A rule's re-give is not spent on a preview left to restore. Picked again and ended again while the first
+restore was being written, the first to land does not end the picking the second belongs to. Keep pressed
+while the preview was being written, then the NPC out of memory before it landed: the preview comes back as the
+body kept, with its choice (the choice's marker had won, leaving her old body with the new choice beside it).
+A Cancel puts back the choice as it was, and keeps what was announced meanwhile -- one body, one
+OnActorGenerated. A snapshot that comes back gone ends the picking like the rest.
 
 ## S-48 — Heavy is told by the item's name (supersedes S-42's mechanism)
 
@@ -744,6 +767,11 @@ it is put back by S-43 as before. What is left is the one call between the clear
 marker reads as the preset in "Which body" ("being written"), and the no-plugin paths, which only ask whether
 a marker holds a value, read it as the preset too.
 
+**Amended by the fifth microscope wave.** A choice marker on its way is not a body on its way: what waits for
+a new body -- this repair, the top-up (S-44), the first announcement -- does not wait for a marker, since
+nothing ran it again when the marker landed. A reused created id kept a half body for the session while the
+previous owner's choice marker was being taken off.
+
 ## S-59 — What was asked for is owed until it lands
 
 Agent decision, 2026-09-24, from the third microscope wave. Back to random and the regeneration window's
@@ -761,6 +789,10 @@ still queued behind it stays owed, and a Reset asked while the roll was in fligh
 name leaves the name blacklist is owed too. The window remembers a refusal that cannot change (a race
 Silhouette does not shape) and asks no more; a new window looks at everyone again.
 
+**Amended by the fifth microscope wave.** Owed means owed while Silhouette does not shape them, too -- their race
+left the build, say: the roll or reset is carried out once it shapes them again (it is never rolled at every
+load), and "Which body" says it waits for that instead of "on its way".
+
 ## S-60 — Back to random draws the rule again
 
 Owner poll, 2026-09-24: "Re-draw the rule (Recommended)". Under a name or faction rule, S-52 kept the
@@ -770,7 +802,9 @@ her record, into the rule's draw, and lands on another of the rule's presets tha
 one preset has nothing to draw). S-52 keeps the new draw from then on, across saves. Salt 0 is exactly the draw
 by id, so nobody's body changes until they are pressed. OBody's GenActor draws again the same way. (Fourth
 wave: someone asked about before the plugin had seen them this session is read first; without it the rule
-gave back the same preset, and two bodies were announced.)
+gave back the same preset, and two bodies were announced. Fifth wave: that reading needs their body built --
+another mod's GenActor on someone in memory without 3D still reaches the plugin unread, and a rule may then
+give back the same preset once. Accepted: the picker and the MCM page only reach people in sight.)
 
 ## S-61 — The rules file ships with every key, and a race list cannot be empty
 
@@ -783,6 +817,12 @@ and installing its output. On an empty race list: "yes i agree recommended but d
 race so user should deliberately break feature by deleting it from there". An empty `distributeRaces` meant
 ["HumanRace"] without a word; now the generator refuses it and says what the list is for. A missing key is
 still the default.
+
+**Amended by the fourth and fifth microscope waves.** The package ships the config it was compiled from, and
+that is the package's own: a run writing a package elsewhere (`--out`) compiles that folder's config when it has
+one. A config there that the run does not compile is refused, never replaced -- somebody may have edited it by
+hand believing it is read. The same settings in another layout (line endings, key order) count as the same
+config. A test holds the shipped file to exactly the default keys.
 
 ## S-62 — fo4-anatomy's build slider is never part of a body
 
@@ -805,3 +845,10 @@ right runtime value is 0, "as built", so that heal enforces the same contract. I
 keyword Anatomy.esp 0x801 ("AnatomyArousalLayer"), four morphs: NippleLength, NipplePerk2, NippleTip,
 NippleSize; it says so before that changes. (Wave 4 made the "average" measurement ignore these sliders too,
 as this entry had promised; on the owner's install the winners did not change.)
+
+## S-63 — The release archive keeps its docs in the plugin's folder
+
+Owner poll, 2026-09-24: "Plugin folder (Recommended)". The archive held README.md and LICENSE at its root, which
+a mod manager installs into Data's root, where every other mod that does the same collides with them. They go
+to `F4SE/Plugins/Silhouette/`, beside the catalog and the config the plugin already owns. The licence stays in
+the archive: GPL-3.0 wants its text shipped with the DLL.

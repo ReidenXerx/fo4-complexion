@@ -9,26 +9,6 @@ import support
 import make_esp
 
 
-def without(blob, *form_ids):
-    """The plugin's bytes with those records left out -- a group they leave empty goes too, as the esp of an
-    older Silhouette had no keyword group at all."""
-    (size,) = struct.unpack_from('<I', blob, 4)
-    out = bytearray(blob[:24 + size])
-    o = 24 + size
-    while o < len(blob):
-        (gsize,) = struct.unpack_from('<I', blob, o + 4)
-        kept, p = b'', o + 24
-        while p < o + gsize:
-            dsize, _flags, form_id = struct.unpack_from('<III', blob, p + 4)
-            if form_id not in form_ids:
-                kept += blob[p:p + 24 + dsize]
-            p += 24 + dsize
-        if kept:
-            out += blob[o:o + 4] + struct.pack('<I', 24 + len(kept)) + blob[o + 8:o + 24] + kept
-        o += gsize
-    return bytes(out)
-
-
 class Check(unittest.TestCase):
     def check(self, blob):
         with support.Scratch() as root:
@@ -43,14 +23,14 @@ class Check(unittest.TestCase):
         self.assertEqual((support.PACKAGE / 'Silhouette.esp').read_bytes(), make_esp.build())
 
     def test_an_esp_without_the_refit_keyword_is_refused_first(self):
-        problems = self.check(without(make_esp.build(), make_esp.REFIT_FORMID))
+        problems = self.check(support.esp_without(make_esp.build(), make_esp.REFIT_FORMID))
         self.assertTrue(problems)
         self.assertIn('no refit keyword (KYWD 0x803)', problems[0])
         self.assertIn('into her own body at the next load, for good', problems[0])
 
     def test_the_phase_1_esp_is_refused(self):
         # What the game ran before Silhouette 2: no keyword, no list of who the window healed.
-        problems = self.check(without(make_esp.build(), make_esp.REFIT_FORMID, make_esp.HEALED_FORMID))
+        problems = self.check(support.esp_without(make_esp.build(), make_esp.REFIT_FORMID, make_esp.HEALED_FORMID))
         self.assertEqual(len(problems), 2)
         self.assertIn('no refit keyword', problems[0])
         self.assertIn('no FLST 804', problems[1])
@@ -60,7 +40,7 @@ class Check(unittest.TestCase):
                                (make_esp.SEEN_FORMID, 'no FLST 801'), (make_esp.BRIDGE_FORMID, 'no QUST 802 (the bridge)'),
                                (make_esp.HEALED_FORMID, 'no FLST 804')):
             with self.subTest(form_id=f'{form_id:08X}'):
-                problems = self.check(without(make_esp.build(), form_id))
+                problems = self.check(support.esp_without(make_esp.build(), form_id))
                 self.assertTrue(any(words in p for p in problems), problems)
 
     def test_an_esp_not_flagged_light_is_refused(self):
@@ -79,7 +59,7 @@ class Check(unittest.TestCase):
         with support.Scratch() as root:
             good, bad = root / 'good.esp', root / 'bad.esp'
             good.write_bytes(make_esp.build())
-            bad.write_bytes(without(make_esp.build(), make_esp.REFIT_FORMID))
+            bad.write_bytes(support.esp_without(make_esp.build(), make_esp.REFIT_FORMID))
             tool = str(support.TOOLS / 'make_esp.py')
             ok = subprocess.run([sys.executable, tool, '--check', str(good)], capture_output=True, text=True,
                                 env=support.ENV)

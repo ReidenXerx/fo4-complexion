@@ -2604,6 +2604,335 @@ namespace
 			Check(d.TakeSummary().empty(), "a touch-up deferred again, and nothing else: no summary line");
 		}
 	}
+
+	void TestWave5()
+	{
+		std::string why;
+		const auto  generated = [](const std::vector<SH::Event>& a_events, std::uint32_t a_ref, std::string_view a_preset) {
+			return std::ranges::count_if(a_events, [&](const SH::Event& e) { return e.kind == SH::EventKind::kGenerated && e.ref == a_ref && e.preset == a_preset; });
+		};
+		const auto append = [](std::vector<SH::Event>& a_all, const std::vector<SH::Event>& a_more) { a_all.insert(a_all.end(), a_more.begin(), a_more.end()); };
+
+		// Lens 1 M1: a landed Reset on someone another mod's keyed morph keeps in LooksMenu's map; picked before she
+		// is seen, a preview, Cancel -- and she is read before the restore lands. The preview is no body BodyGen gave
+		// her: the reset stays owed, and she gets her new body. (She was left bare for good.)
+		for (int when = 0; when < 3; ++when) {
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			constexpr std::uint32_t A = 0xD00;
+			g.Roll(A, *cat, "Silhouette_Slim", 1234.0F);
+			g.actors[A].other["AnatomyArousal"] = 0.3F;  // LooksMenu keeps her map: BodyGen never runs for her
+			g.Load();
+			d.Seen(See(A, "Somebody"));
+			(void)Drain(d, g);
+			(void)d.RequestReset(A, true, 0x00012345, kNormal, why);
+			(void)Drain(d, g);  // bare; the reset has landed: a new body at the next load (S-53)
+			Reload(d, g);
+			(void)d.PickerStart(A, true, 0x00012345, "Somebody");
+			(void)Drain(d, g);
+			(void)d.PickerStep(1);
+			(void)Drain(d, g);
+			(void)d.PickerCancel();
+			if (when == 0) {
+				d.Seen(See(A, "Somebody"));  // while the restore waits
+			} else {
+				const auto restore = d.NextOrder();  // being written
+				if (when == 1) {
+					d.Seen(See(A, "Somebody"));
+				} else {
+					d.Dressed(See(A, "Somebody", true), false);
+				}
+				RunOrder(d, restore, g);
+			}
+			(void)Drain(d, g);
+			const auto label = when == 0 ? "seen while the restore waits" : when == 1 ? "seen while it is written" : "dressing while it is written";
+			Check(!g.actors[A].unkeyed.empty(), std::format("a landed reset, a cancelled preview, {}: she gets her new body this session", label));
+			Reload(d, g);
+			d.Seen(See(A, "Somebody"));
+			(void)Drain(d, g);
+			Check(!g.actors[A].unkeyed.empty(), std::format("({}) and has a body after the next load", label));
+		}
+
+		// And with her probe queued when she is picked: the reset's new body does not start under the picker, and
+		// nothing is announced while she is picked (S-46); it lands when the picking ends.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			constexpr std::uint32_t A = 0xD04;
+			g.Roll(A, *cat, "Silhouette_Slim", 1234.0F);
+			g.actors[A].other["AnatomyArousal"] = 0.3F;
+			g.Load();
+			d.Seen(See(A, "Somebody"));
+			(void)Drain(d, g);
+			(void)d.RequestReset(A, true, 0x00012345, kNormal, why);
+			(void)Drain(d, g);
+			Reload(d, g);
+			g.rollsTo = "Silhouette_Athletic";
+			d.Seen(See(A, "Somebody"));                            // her probe is queued...
+			(void)d.PickerStart(A, true, 0x00012345, "Somebody");  // ...and the snapshot goes first
+			(void)Drain(d, g);
+			const auto during = Poll(d, g);
+			Check(g.actors[A].unkeyed.empty() && !Has(during, SH::EventKind::kGenerated), "while she is picked, the reset's new body waits, and nothing is announced");
+			(void)d.PickerCancel();
+			(void)Drain(d, g);
+			Check(g.actors[A].unkeyed.contains("Silhouette_Athletic"), "the picking over, the reset's new body lands");
+		}
+
+		// Lens 1 L2: picked again while the Cancel's restore is written, and ended again. The first restore to land
+		// does not end the picking the second belongs to: what the picking held back runs this session.
+		for (int end = 0; end < 3; ++end) {
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			constexpr std::uint32_t A = 0xD10, B = 0xD11;
+			g.Roll(A, *cat, "Silhouette_Slim", 1234.0F);
+			g.Roll(B, *cat, "Silhouette_Slim", 1234.0F);
+			d.Seen(See(A, "Somebody"));
+			(void)Drain(d, g);
+			(void)d.RequestRegenerate(A, true, 0x00012345, kUrgent, why);
+			Reload(d, g);  // the roll is owed (S-59)
+			g.rollsTo = "Silhouette_Athletic";
+			d.Seen(See(A, "Somebody"));
+			d.Seen(See(B, "Somebody"));
+			(void)d.PickerStart(A, true, 0x00012345, "Somebody");
+			(void)Drain(d, g);
+			(void)d.PickerStep(1);
+			(void)Drain(d, g);
+			(void)d.PickerCancel();
+			const auto first = d.NextOrder();                      // the restore, being written
+			(void)d.PickerStart(A, true, 0x00012345, "Somebody");  // picked again meanwhile
+			if (end == 0) {
+				(void)d.PickerCancel();
+			} else if (end == 1) {
+				(void)d.PickerKeep();  // on the preset they had: a Cancel
+			} else {
+				(void)d.PickerStart(B, true, 0x00012345, "Somebody");
+			}
+			RunOrder(d, first, g);
+			(void)Drain(d, g);
+			if (end == 2) {
+				(void)d.PickerCancel();
+				(void)Drain(d, g);
+			}
+			d.Seen(See(A, "Somebody"));
+			(void)Drain(d, g);
+			const auto label = end == 0 ? "cancelled again" : end == 1 ? "kept on the preset they had" : "left for somebody else";
+			Check(g.actors[A].unkeyed.contains("Silhouette_Athletic"), std::format("two restores of one picking ({}): the owed roll lands this session", label));
+		}
+
+		// Lens 1 L4: Keep while the preview is being written, and she leaves memory before it lands: the body comes
+		// back as the choice -- not her old body with the choice's marker beside it.
+		for (const bool dllLess : { false, true }) {
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			constexpr std::uint32_t A = 0xD20;
+			g.Roll(A, *cat, "Silhouette_Slim", 1234.0F);
+			d.Seen(See(A, "Somebody"));
+			(void)Drain(d, g);
+			(void)d.PickerStart(A, true, 0x00012345, "Somebody");
+			(void)Drain(d, g);
+			(void)d.PickerStep(1);
+			const auto preview = d.NextOrder();  // being written
+			(void)d.PickerKeep();
+			g.away.insert(A);
+			RunOrder(d, preview, g);  // gone before it landed
+			g.away.erase(A);
+			d.Seen(See(A, "Somebody"));
+			const auto back = d.NextOrder();
+			Check(d.Peek(back) && d.Peek(back)->kind == SH::OrderKind::kBody && d.Peek(back)->body.what == SH::BodyRequest::What::kPreset &&
+					  !d.Peek(back)->body.preview && d.Peek(back)->body.choice == SH::Source::kPicker,
+				"the body coming back goes out as the choice, its marker with it (a save right after keeps it)");
+			RunOrder(d, back, g);
+			(void)Drain(d, g);
+			const auto  rec = d.RecordOf(A);
+			const auto* kept = rec ? cat->Find(rec->preset, true) : nullptr;
+			Check(rec && rec->source == SH::Source::kPicker && kept && kept->name != "Slim" && g.actors[A].unkeyed.contains(kept->marker) &&
+					  !g.actors[A].unkeyed.contains("Silhouette_Slim"),
+				"Keep while the preview was written, then gone: the kept body lands, with its choice");
+			if (dllLess) {
+				ReloadWithoutRecords(d, g);  // saved without the plugin (S-51's case)
+				d.Seen(See(A, "Somebody"));
+				(void)Drain(d, g);
+				const auto again = d.RecordOf(A);
+				Check(again && kept && again->source == SH::Source::kPicker && again->preset == kept->name,
+					"and a save without the plugin rebuilds that choice, not the old body's");
+			}
+		}
+
+		// Lens 1 L3: an announcement raised while she was picked is not forgotten by the Cancel: one body, one
+		// OnActorGenerated -- this session and at the next load.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			constexpr std::uint32_t A = 0xD30;
+			g.Roll(A, *cat, "Silhouette_Slim", 1234.0F);
+			std::vector<SH::Event> raised;
+			(void)d.RequestPreset(A, true, 0x00012345, "Curvy", SH::Source::kAPI, kNormal, why);  // another mod, before she is seen
+			(void)Drain(d, g);
+			(void)d.PickerStart(A, true, 0x00012345, "Somebody");  // picked within that second
+			(void)Drain(d, g);
+			append(raised, Poll(d, g));  // raised during the picking
+			d.Seen(See(A, "Somebody"));
+			(void)Drain(d, g);
+			(void)d.PickerStep(1);
+			(void)Drain(d, g);
+			append(raised, Poll(d, g));
+			(void)d.PickerCancel();
+			(void)Drain(d, g);
+			append(raised, Poll(d, g));
+			append(raised, Poll(d, g));
+			Check(generated(raised, A, "Curvy") == 1, "announced once, though the picking around it was cancelled");
+			Reload(d, g);
+			d.Seen(See(A, "Somebody"));
+			(void)Drain(d, g);
+			append(raised, Poll(d, g));
+			Check(generated(raised, A, "Curvy") == 1, "and not again at the next load");
+		}
+
+		// Lens 1 L5: a choice marker on its way is not a body on its way: the top-up of a chosen body is not held
+		// back by it, and happens this session (the with-marker case is the control).
+		for (const bool withoutMarker : { false, true }) {
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			constexpr std::uint32_t A = 0xD40;
+			(void)d.RequestPreset(A, true, 0x00012345, "Curvy", SH::Source::kPicker, kUrgent, why);
+			(void)Drain(d, g);
+			auto& a = g.actors[A];
+			a.unkeyed.erase("NippleSize");  // a variety the body lacks: the top-up gives it (S-44)
+			if (withoutMarker) {
+				a.unkeyed.erase("Silhouette_Chosen");  // picked before S-51: no marker beside the body
+			}
+			Reload(d, g);
+			{
+				// ...in a session that wants the touch-up, as for a body an older plugin gave
+				const auto   bytes = d.SaveRecords(nullptr);
+				SH::Registry r;
+				std::string  error;
+				(void)r.Deserialize(bytes, SH::Registry::kVersion, [](std::uint32_t a_id) { return a_id; }, error);
+				r.Get(A).touched = 0;
+				const auto again = r.Serialize(nullptr);
+				d.ForgetWorld();
+				d.RevertRecords();
+				(void)d.LoadRecords(again, SH::Registry::kVersion, [](std::uint32_t a_id) { return a_id; }, error);
+				d.SetCatalog(cat);
+				g.Load();
+			}
+			d.Seen(See(A, "Somebody"));
+			(void)Drain(d, g);
+			for (int i = 0; i < 3; ++i) {
+				d.Seen(See(A, "Somebody"));
+				d.Dressed(See(A, "Somebody", i % 2 == 0), false);
+				(void)Drain(d, g);
+			}
+			Check(a.unkeyed.contains("NippleSize"), std::format("a chosen body {} its marker is topped up this session", withoutMarker ? "without" : "with"));
+		}
+
+		// ...and the first announcement (S-46): a chosen body whose marker is being written back is announced this
+		// session -- the marker leaves the body as it is, and nothing announces it later.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			constexpr std::uint32_t A = 0xD44;
+			(void)d.RequestPreset(A, true, 0x00012345, "Curvy", SH::Source::kPicker, kUrgent, why);
+			(void)Drain(d, g);                        // not raised before the save: nothing announced yet
+			g.actors[A].unkeyed.erase("Silhouette_Chosen");  // picked before S-51: no marker beside the body
+			Reload(d, g);
+			d.Seen(See(A, "Somebody"));
+			(void)Drain(d, g);
+			Check(Has(Poll(d, g), SH::EventKind::kGenerated, "Curvy") && g.actors[A].unkeyed.contains("Silhouette_Chosen"),
+				"a chosen body whose marker is written back is announced this session, and gets its marker");
+		}
+
+		// ...and the half body (S-58): a reused created id whose previous owner's choice marker is being taken off
+		// still gets the half body a save cut short given again whole this session.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			constexpr std::uint32_t A = 0xFF000D70;
+			(void)d.RequestPreset(A, true, 0x00099999, "Curvy", SH::Source::kAPI, kNormal, why);  // the id's previous owner
+			(void)Drain(d, g);
+			Reload(d, g);
+			// The id given to somebody new since, with half a body a save cut short and the old owner's choice
+			// marker beside it.
+			g.actors[A].unkeyed = { { "Silhouette_Slim", 0.25F }, { "Breasts", 0.2F }, { "Silhouette_Chosen", 4.0F } };
+			g.Load();
+			d.Seen(See(A, "Somebody"));  // another NPC record than the one the co-save knew: a stranger (S-57)
+			(void)Drain(d, g);
+			const auto& b = g.actors[A].unkeyed;
+			std::string layer;
+			for (const auto& [m, v] : b) {
+				layer += std::format(" {}={}", m, v);
+			}
+			for (const auto& line : d.TakeLog()) {
+				layer += " | " + line;
+			}
+			Check(b.contains("Silhouette_Slim") && b.at("Silhouette_Slim") == 1234.0F && !b.contains("Silhouette_Chosen"),
+				std::format("a reused id's half body is given again whole this session, and the old owner's choice marker taken off ({})", layer));
+		}
+
+		// Lens 1 N9: the picker's snapshot comes back gone (she left memory): the picking ends, and what the probe
+		// under the picker held back runs as soon as she is back -- not at her next sighting.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			constexpr std::uint32_t A = 0xD50;
+			g.Roll(A, *cat, "Silhouette_Slim", 1234.0F);
+			d.Seen(See(A, "Somebody"));
+			(void)Drain(d, g);
+			(void)d.RequestRegenerate(A, true, 0x00012345, kUrgent, why);
+			Reload(d, g);  // the roll is owed
+			g.rollsTo = "Silhouette_Athletic";
+			d.Seen(See(A, "Somebody"));
+			const auto probe = d.NextOrder();
+			(void)d.PickerStart(A, true, 0x00012345, "Somebody");
+			RunOrder(d, probe, g);  // probed under the picker: the roll waits
+			const auto snapshot = d.NextOrder();
+			g.away.insert(A);
+			RunOrder(d, snapshot, g);  // gone
+			g.away.erase(A);
+			(void)Drain(d, g);
+			Check(!d.PickerReady() && g.actors[A].unkeyed.contains("Silhouette_Athletic"), "a snapshot come back gone ends the picking, and the owed roll lands");
+		}
+
+		// Lens 1 N8: someone Silhouette no longer shapes (their race left the build) keeps what was asked for
+		// (S-59) -- and "Which body" says it waits for that, not that it is on its way.
+		{
+			SH::Director d;
+			FakeGame     g;
+			const auto   cat = Cat(BaseCatalog());
+			d.SetCatalog(cat);
+			constexpr std::uint32_t A = 0xD60;
+			g.Roll(A, *cat, "Silhouette_Slim", 1234.0F);
+			d.Seen(See(A, "Somebody"));
+			(void)Drain(d, g);
+			(void)d.RequestRegenerate(A, true, 0x00012345, kUrgent, why);
+			Reload(d, g);  // the roll is owed
+			auto notShaped = See(A, "Somebody");
+			notShaped.eligible = false;
+			d.Seen(notShaped);
+			(void)Drain(d, g);
+			const auto text = d.Describe(A);
+			Check(text.find("once Silhouette shapes them again") != std::string::npos && d.RecordOf(A) && d.RecordOf(A)->source == SH::Source::kRoll,
+				std::format("an owed roll on someone not shaped stays owed, and says it waits ({})", text));
+		}
+	}
 }
 
 // The generated files themselves, read by the plugin's own parser: what the game would refuse at load
@@ -2716,6 +3045,7 @@ int main(int argc, char** argv)
 	TestPicker();
 	TestWave3();
 	TestWave4();
+	TestWave5();
 	std::cout << g_passed << " passed, " << g_failed << " failed\n";
 	return g_failed;
 }

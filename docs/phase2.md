@@ -44,8 +44,9 @@ Silhouette.dll  (F4SE, CommonLibF4 OG)
     Director  what each actor should have, against what LooksMenu holds; the orders; the lanes
     Registry  co-save: INTENT only -- who chose which body -- and a picking in progress
     Sinks     TESObjectLoadedEvent (who appeared), TESEquipEvent (who dressed or undressed),
-              the crosshair (the picker's target); for 30 s after each load, the process lists
-              too (after a load in a running game the first gave nobody, S-43)
+              the crosshair (the picker's target); from the first poll after each load, for
+              30 s, the process lists too (after a load in a running game the first gives
+              nobody, S-43)
 ```
 
 **The plugin never calls into the Papyrus VM** — dispatching into it from an F4SE task crashed
@@ -239,6 +240,10 @@ given on request, and an announcement a save cut off is made again after the loa
   waits for the scene to end, while the rest of their work goes on (S-56). A load forgets the orders of
   the save being left; what was asked for is still owed (S-59), and a body a save cut short is given
   again whole (S-58).
+- Silhouette.log (Documents\My Games\Fallout4\F4SE) is opened by its path as Windows gives it, so a user
+  name no code page holds (Cyrillic, Polish, Chinese) still gets it -- opening it through a narrow name threw
+  at load, and F4SE disabled the whole plugin (fifth wave). Nothing in writing it may stop the plugin: without
+  the log it still runs.
 - Silhouette.log says every half minute what the bridge did (probes, bodies, refits, touch-ups, failures)
   and what still waits, lane by lane, while there is any of it -- with what a scene holds back and what
   waits for people out of memory.

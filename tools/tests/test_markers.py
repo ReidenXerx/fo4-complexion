@@ -132,15 +132,43 @@ class ManifestFiles(unittest.TestCase):
             self.assertEqual(files['5.json'].parent.name, 'out')
             self.assertEqual(sorted(sg.manifest_history(root / 'out', root / 'data')), ['a', 'c'])
 
-    def test_a_manifest_that_cannot_be_read_is_refused_in_either_folder(self):
-        for where in ('out', 'data'):
-            with self.subTest(where=where), support.Scratch() as root:
+    def test_an_unreadable_manifest_of_the_output_root_is_refused(self):
+        with support.Scratch() as root:
+            write_manifest(root / 'out', 5, {'A': 'Silhouette_A'})
+            (root / 'data').mkdir()
+            (root / 'out' / '9.json').write_text('{"templates": [', encoding='utf-8')
+            with self.assertRaises(SystemExit) as caught:
+                sg.manifest_history(root / 'out', root / 'data', notes=[])
+            self.assertIn('9.json: not a manifest this tool can read', str(caught.exception))
+            self.assertIn('restore it (git)', str(caught.exception))
+
+    def test_an_unreadable_manifest_only_the_game_data_holds_is_skipped_and_said(self):
+        # Only the mod manager puts files in Data, and the plugin skips such a file too: the package is not at
+        # fault, and nothing that reads the history may stop over it (wave 5, lens 3 L3).
+        for junk in ('{"templates": [', '[1, 2]', '{"templates": {"Silhouette_B": "junk"}}'):
+            with self.subTest(junk=junk), support.Scratch() as root:
                 write_manifest(root / 'out', 5, {'A': 'Silhouette_A'})
-                (root / 'data').mkdir()
-                (root / where / '9.json').write_text('{"templates": [', encoding='utf-8')
-                with self.assertRaises(SystemExit) as caught:
-                    sg.manifest_history(root / 'out', root / 'data')
-                self.assertIn('9.json: not a manifest this tool can read', str(caught.exception))
+                write_manifest(root / 'data', 6, {'C': 'Silhouette_C'})
+                (root / 'data' / '9.json').write_text(junk, encoding='utf-8')
+                notes = []
+                history = sg.manifest_history(root / 'out', root / 'data', notes=notes)
+                self.assertEqual(sorted(history), ['a', 'c'])
+                self.assertEqual(len(notes), 1, notes)
+                self.assertIn('9.json: not a manifest this tool can read', notes[0])
+                self.assertIn("in the Silhouette mod's staging folder", notes[0])
+
+    def test_a_manifest_that_fails_half_way_adds_nothing(self):
+        # Its readable entries are no history: a skipped file is skipped whole.
+        with support.Scratch() as root:
+            (root / 'out').mkdir()
+            (root / 'data').mkdir()
+            (root / 'data' / '9.json').write_text(json.dumps({'templates': {'Silhouette_A': {'preset': 'A'},
+                                                                            'Silhouette_B': 'junk'}}), encoding='utf-8')
+            self.assertEqual(dict(sg.manifest_history(root / 'out', root / 'data', notes=[])), {})
+
+    def test_the_folders_every_reader_takes(self):
+        self.assertEqual(sg.manifest_folders('R', 'D'), [sg.pathlib.Path('R') / sg.MANIFESTS,
+                                                         sg.pathlib.Path('D') / sg.MANIFESTS])
 
     def test_a_byte_order_mark_is_not_a_new_format(self):
         with support.Scratch() as root:
@@ -199,6 +227,16 @@ class FirstDifference(unittest.TestCase):
                 self.assertEqual(sg.first_difference(manifest, self.manifest['templates']),
                                  'the manifest names no bodies it can be compared by')
 
+    def test_a_damaged_entry_is_named_never_a_traceback(self):
+        # A damaged copy in the game's Data reaches this (wave 5, lens 3 L4).
+        self.assertEqual(sg.first_difference({'templates': {'Silhouette_X': 'junk'}}, {}),
+                         "the manifest names Silhouette_X ('junk', no body at all), which this run no longer gives")
+        self.assertEqual(sg.first_difference({'templates': {'Silhouette_Zeta': 'junk'}}, {'Silhouette_Zeta': entry('Zeta')}),
+                         "Silhouette_Zeta ('Zeta'): the manifest holds 'junk' there, not a body")
+        damaged = {'templates': {'Silhouette_Zeta': {**entry('Zeta'), 'values': [1, 2]}}}
+        self.assertEqual(sg.first_difference(damaged, {'Silhouette_Zeta': entry('Zeta')}),
+                         "Silhouette_Zeta ('Zeta'): the manifest's values are [1, 2], not a body's sliders")
+
 
 class StampClash(unittest.TestCase):
     templates = {'Silhouette_CBBE_Curvy': entry('CBBE Curvy')}
@@ -237,6 +275,79 @@ class StampClash(unittest.TestCase):
     def test_no_manifest_of_this_stamp_anywhere(self):
         with support.Scratch() as root:
             self.assertIsNone(sg.refuse_stamp_clash(1234, '0004d2abcdef', self.templates, root / 'a', root / 'b'))
+
+    def copies(self, out=None, data=None, templates=None):
+        """(refusal or None, notes) with these texts as the output root's and Data's copies of stamp 1234."""
+        notes = []
+        with support.Scratch() as root:
+            for folder, text in (('out', out), ('data', data)):
+                (root / folder).mkdir()
+                if text is not None:
+                    (root / folder / '1234.json').write_text(text, encoding='utf-8')
+            try:
+                sg.refuse_stamp_clash(1234, '0004d2abcdef', templates or self.templates, root / 'out', root / 'data',
+                                      notes=notes)
+            except SystemExit as exc:
+                return str(exc), notes
+        return None, notes
+
+    def doc(self, templates):
+        return json.dumps({'stamp': 1234, 'build': '0004d2abcdef', 'templates': templates})
+
+    def test_a_damaged_copy_in_data_is_said_never_a_traceback(self):
+        # Scenarios H and I of wave 5's lens 3: a truncated file, a list, an entry that is no body.
+        for text in ('{"stamp": 1234, "templa', '[1, 2]'):
+            with self.subTest(text=text):
+                refusal, notes = self.copies(out=self.doc(self.templates), data=text)
+                self.assertIsNone(refusal)
+                self.assertEqual(len(notes), 1, notes)
+                self.assertIn('the next deploy writes this build\'s over it', notes[0])
+        refusal, _notes = self.copies(data=self.doc({'Silhouette_CBBE_Curvy': 'junk'}))
+        self.assertIn("the manifest holds 'junk' there, not a body", refusal or '')
+
+    def test_a_damaged_copy_in_the_output_root_is_refused(self):
+        refusal, _notes = self.copies(out='{"stamp": 12')
+        self.assertIn('restore it (git)', refusal or '')
+        self.assertIn('Nothing was written', refusal or '')
+
+    def test_copies_that_disagree_are_said_when_the_output_root_agrees_with_this_run(self):
+        # Scenario E: whatever case the preset has, one copy disagrees -- "rename it back" could never help.
+        refusal, notes = self.copies(out=self.doc(self.templates), data=self.doc({'Silhouette_CBBE_Curvy': entry('cbbe curvy')}))
+        self.assertIsNone(refusal)
+        self.assertEqual(len(notes), 1, notes)
+        self.assertIn('are two manifests of stamp 1234 that differ', notes[0])
+        self.assertIn('the next deploy writes it over the one in Data', notes[0])
+
+    def test_the_output_roots_copy_that_disagrees_is_refused_naming_the_copy_that_agrees(self):
+        refusal, _notes = self.copies(out=self.doc({'Silhouette_CBBE_Curvy': entry('cbbe curvy')}),
+                                      data=self.doc(self.templates))
+        self.assertIn('only the case of the name differs, so rename it back', refusal or '')
+        self.assertIn("names exactly these bodies: restore the checkout's copy from it", refusal or '')
+
+
+class MarkerMoves(unittest.TestCase):
+    def test_a_marker_that_moves_is_named_with_its_votes(self):
+        ps = [{'name': 'ALSL Body 1.0', 'marker': 'Silhouette_ALSL_Body_1_0_74a510'},
+              {'name': 'CBBE Curvy', 'marker': 'Silhouette_CBBE_Curvy'}]
+        previous = {'alsl body 1.0': 'Silhouette_ALSL_Body_1_0', 'cbbe curvy': 'Silhouette_CBBE_Curvy'}
+        history = {'alsl body 1.0': {'Silhouette_ALSL_Body_1_0': 5}}
+        self.assertEqual(sg.marker_moves(ps, previous, history),
+                         [('ALSL Body 1.0', 'Silhouette_ALSL_Body_1_0', 'Silhouette_ALSL_Body_1_0_74a510', 5, 0)])
+
+    def test_nothing_moves_nothing_is_said(self):
+        ps = [{'name': 'CBBE Curvy', 'marker': 'Silhouette_CBBE_Curvy'}, {'name': 'New One', 'marker': 'Silhouette_New_One'}]
+        self.assertEqual(sg.marker_moves(ps, {'cbbe curvy': 'Silhouette_CBBE_Curvy'}, {}), [])
+
+    def test_the_build_a_package_holds_now(self):
+        with support.Scratch() as root:
+            write_manifest(root / 'data' / sg.MANIFESTS, 7, {'A': 'Silhouette_A'})
+            (root / 'out' / sg.CATALOG).parent.mkdir(parents=True)
+            (root / 'out' / sg.CATALOG).write_text(json.dumps({'stamp': 7}), encoding='utf-8')
+            folders = sg.manifest_folders(root / 'out', root / 'data')
+            got, where = sg.previous_markers(folders, [root / 'out' / sg.CATALOG, root / 'data' / sg.CATALOG])
+            self.assertEqual(got, {'a': 'Silhouette_A'})
+            self.assertEqual(where, root / 'data' / sg.MANIFESTS / '7.json')
+            self.assertEqual(sg.previous_markers(folders, [root / 'nowhere.json']), ({}, None))
 
 
 if __name__ == '__main__':

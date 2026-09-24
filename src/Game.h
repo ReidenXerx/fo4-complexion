@@ -53,8 +53,13 @@ namespace SH::Game
 	// request about someone not seen yet this session is then decided knowing who they are.
 	void See(RE::Actor* a_actor);
 
-	// A save finished loading (or a new game started): the bridge should poll within a minute. A
-	// thread of ours says so in the log once when it does not -- the one symptom of a missing or
-	// disabled Silhouette.esp that nothing else would report.
+	// A save finished loading: the bridge should poll within a minute. A thread of ours says so in the
+	// log once when it does not -- the one symptom of a missing or disabled Silhouette.esp that nothing
+	// else would report.
 	void NoteGameLoaded();
+
+	// Main thread, after every load, a failed one included (the load that started already forgot
+	// everyone): the bridge's first poll reads every actor the game is simulating, and so do its polls
+	// for 30 seconds after it -- after a load in a running game the game reports none of them (S-43).
+	void ArmSweep();
 }

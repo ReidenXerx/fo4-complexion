@@ -58,15 +58,22 @@ if ($LASTEXITCODE) { throw "the plugin would refuse the generated files in data\
 $python = (Get-Command python -ErrorAction SilentlyContinue).Source
 if (-not $python) { throw "No python: the tools' tests (tools\tests) must pass with the build." }
 $encoding = $env:PYTHONIOENCODING
+$testsExe = $env:SILHOUETTE_TESTS_EXE    # whatever the caller set is put back afterwards, not deleted
 $env:SILHOUETTE_TESTS_EXE = $tests
 $env:PYTHONIOENCODING = 'utf-8'
 $ErrorActionPreference = 'Continue'    # unittest reports on stderr: that must not turn into a PowerShell error
-& $python -m unittest discover -s (Join-Path $root 'tools\tests') -v
+& $python -m unittest discover -s (Join-Path $root 'tools\tests') -v 2>&1 | Tee-Object -Variable unitLog | ForEach-Object { "$_" }
 $unitExit = $LASTEXITCODE
 $ErrorActionPreference = 'Stop'
 $env:PYTHONIOENCODING = $encoding
-Remove-Item Env:\SILHOUETTE_TESTS_EXE
+if ($null -eq $testsExe) { Remove-Item Env:\SILHOUETTE_TESTS_EXE -ErrorAction SilentlyContinue } else { $env:SILHOUETTE_TESTS_EXE = $testsExe }
 if ($unitExit) { throw "the tools' tests failed (tools\tests) - every FAIL and ERROR above." }
+# The words tools\tests\support.py skips a test that needs the game's Data with.
+$noData = @($unitLog | Where-Object { "$_" -match 'no game Data with the bodies here' }).Count -gt 0
 
 $dll = Get-Item (Join-Path $build "$Config\Silhouette.dll")
 Write-Host ("built {0}  {1} bytes  {2:yyyy-MM-dd HH:mm:ss}" -f $dll.FullName, $dll.Length, $dll.LastWriteTime)
+if ($noData) {
+    # Green, and yet the verifier's refusals were never tried: said last, where it cannot scroll away.
+    Write-Host "the verifier's damage tests were SKIPPED: no game Data here -- CLAUDE.md rule 5 is untested on this machine" -ForegroundColor Yellow
+}

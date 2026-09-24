@@ -326,5 +326,93 @@ class ParserParity(unittest.TestCase):
         self.assertLessEqual(ACCEPT | STRICTER | MANIFEST, set(ids))
 
 
+# ---- manifests: the plugin's ParseManifest (src/Catalog.cpp) against the verifier's check_manifests, the same
+# way (wave 5, lens 3 L8). Each case doctors an OLD manifest -- the current one must stay whole for --check.
+def entry0(doc):
+    return next(iter(doc['templates'].values()))
+
+
+def value0(doc, v):
+    values = next(e['values'] for e in doc['templates'].values() if e.get('values'))
+    values[next(iter(values))] = v
+
+
+MCASES = [
+    ('m0', 'untouched', lambda d: None),
+    ('M1', 'gender "Female"', lambda d: entry0(d).update(gender='Female')),
+    ('M2', 'gender 5', lambda d: entry0(d).update(gender=5)),
+    ('M3', 'gender null', lambda d: entry0(d).update(gender=None)),
+    ('M4', 'gender missing', lambda d: entry0(d).pop('gender')),
+    ('M5', 'a preset a number', lambda d: entry0(d).update(preset=5)),
+    ('M6', 'an entry a string', lambda d: d['templates'].update({next(iter(d['templates'])): 'CBBE Curvy'})),
+    ('M7', 'templates a list', lambda d: d.update(templates=[])),
+    ('M8', 'stamp missing', lambda d: d.pop('stamp')),
+    ('M9', 'stamp 0', lambda d: d.update(stamp=0)),
+    ('M10', 'stamp "5"', lambda d: d.update(stamp='5')),
+    ('M11', 'not JSON', lambda d: Raw('{"stamp": 5, "templates": {')),
+    ('M12', 'the top level a list', lambda d: Raw('[1]')),
+    ('M13', 'a preset named with a lone surrogate', lambda d: entry0(d).update(preset='\ud800')),
+    ('M14', 'a value "0.5"', lambda d: value0(d, '0.5')),
+    ('M15', 'values a list', lambda d: entry0(d).update(values=[1, 2])),
+    ('M16', 'build missing', lambda d: d.pop('build')),
+]
+MACCEPT = {'m0', 'M4'}
+# The verifier refuses, the parser takes: it reads only a manifest's markers, presets and sexes, while the
+# verifier compares the values as numbers and a stamp with its build.
+MSTRICTER = {'M14', 'M15', 'M16'}
+
+
+def manifest_expected(cid):
+    if cid in MACCEPT:
+        return 'accept', 'accept'
+    if cid in MSTRICTER:
+        return 'accept', 'refuse'
+    return 'refuse', 'refuse'
+
+
+@unittest.skipIf(support.tests_exe() is None, 'SilhouetteTests.exe is not built (scripts/build-plugin.ps1)')
+class ManifestParity(unittest.TestCase):
+    def test_the_verifier_refuses_whatever_the_parser_refuses(self):
+        import verify_bodygen
+        cat = json.loads((support.PACKAGE / support.CAT).read_text(encoding='utf-8-sig'))
+        olds = sorted(f for f in (support.PACKAGE / support.MANIFESTS).glob('*.json') if f.stem != str(cat['stamp']))
+        if not olds:
+            self.skipTest('the committed package holds no old manifest to doctor')
+        old = olds[0]
+        base = json.loads(old.read_text(encoding='utf-8-sig'))
+        exe = support.tests_exe()
+        with support.Scratch() as scratch:
+            root = scratch / 'm'
+            shutil.copytree(support.PACKAGE / 'F4SE', root / 'F4SE')
+            target = root / support.MANIFESTS / old.name
+            got = {}
+            for cid, what, edit in MCASES:
+                doc = copy.deepcopy(base)
+                raw = edit(doc)
+                text = raw if isinstance(raw, Raw) else json.dumps(doc, indent=1)
+                target.write_text(text + '\n', encoding='utf-8')
+                p = subprocess.run([str(exe), '--check', str(root)], capture_output=True, timeout=120,
+                                   creationflags=support.LOW_PRIORITY)
+                out = (p.stdout + p.stderr).decode('utf-8', 'replace').strip()
+                pv = 'accept' if p.returncode == 0 else 'refuse' if f'CHECK FAIL: manifest {old.name}' in out else 'error'
+                problems = []
+                try:
+                    verify_bodygen.check_manifests(root, cat, cat['stamp'], problems)
+                    vv = 'refuse' if problems else 'accept'
+                except Exception as exc:        # a crash is no refusal
+                    vv, problems = f'crash {type(exc).__name__}', [str(exc)]
+                got[cid] = (what, (pv, vv), out, problems)
+        self.assertEqual(got['m0'][1], ('accept', 'accept'), f'the committed package fails its own check: {got["m0"]}')
+        for cid, what, _edit in MCASES:
+            what_, verdicts, out, problems = got[cid]
+            with self.subTest(case=cid, what=what):
+                self.assertEqual(verdicts, manifest_expected(cid), f'\n  parser: {out[-300:]}\n  verifier: {problems[:2]}')
+
+    def test_every_case_is_named_once(self):
+        ids = [cid for cid, _w, _e in MCASES]
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertLessEqual(MACCEPT | MSTRICTER, set(ids))
+
+
 if __name__ == '__main__':
     unittest.main()

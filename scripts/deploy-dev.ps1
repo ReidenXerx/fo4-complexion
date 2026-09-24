@@ -23,19 +23,26 @@
   fo4-silhouette checkout itself).
 
   Staged IN PLACE, file by file (Copy-Item -Force writes into the existing file and
-  keeps its inode): every file Data already links goes live at once, all together,
-  and only a genuinely NEW file waits for Vortex's Deploy -- listed by name at the
-  end. Removing and re-copying a folder instead made every restage half-deployed
-  until the Deploy: a new esp and DLL beside the old scripts (wave 4). A file an
-  older build shipped and this one does not is removed from staging (manifests
-  excepted: they are only ever added), and the Deploy takes it out of Data.
+  keeps its inode): every file Data already links goes live at once, all together.
+  Removing and re-copying a folder instead made every restage half-deployed until
+  the Deploy: a new esp and DLL beside the old scripts (wave 4). A file an older
+  build shipped and this one does not is removed from staging (manifests excepted:
+  they are only ever added), and the Deploy takes it out of Data. Every write is
+  checked possible BEFORE the first one (a folder where a file goes, a file held
+  open elsewhere), since a stop half-way leaves Data holding two builds.
+
+  At the end, whether the Deploy is needed is read from -GameData: each staged file
+  must be Data's very file (its hardlink), and nothing Silhouette no longer ships may
+  be left there. What waits is listed by name.
 
   ASCII only. Windows PowerShell 5.1 reads a BOM-less UTF-8 script as ANSI.
 #>
 [CmdletBinding()]
 param(
-    [string] $Staging = 'D:\Vortex\fallout4\mods\Silhouette-dev',
-    [string] $Config  = 'Release'
+    [string] $Staging  = 'D:\Vortex\fallout4\mods\Silhouette-dev',
+    [string] $Config   = 'Release',
+    # Read only: whether each staged file is live there is read from it at the end.
+    [string] $GameData = 'D:\GOGGames\Fallout 4 GOTY\Data'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -133,37 +140,83 @@ foreach ($f in Get-ChildItem $pex -Filter *.pex) {
     $ship["Scripts\Silhouette\$name"] = $f.FullName
 }
 
+# Silhouette's own files in a mod folder or in Data (relative paths) that this build does not ship: only
+# Silhouette's own places are looked at, and never a manifest -- an NPC of that build keeps its stamp for the
+# rest of the save.
+$owned = @('F4SE\Plugins\Silhouette', 'F4SE\Plugins\F4EE\BodyGen\Loose', 'MCM\Config\Silhouette', 'Scripts\Silhouette')
+function Get-NotShipped([string] $Base) {
+    $out = @()
+    if (-not (Test-Path -LiteralPath $Base -PathType Container)) { return $out }
+    $baseFull = (Get-Item -LiteralPath $Base).FullName.TrimEnd('\')
+    foreach ($dir in $owned) {
+        $p = Join-Path $Base $dir
+        if (-not (Test-Path -LiteralPath $p -PathType Container)) { continue }
+        foreach ($f in Get-ChildItem -LiteralPath $p -Recurse -File) {
+            $rel = $f.FullName.Substring($baseFull.Length).TrimStart('\')
+            if ($rel -like 'F4SE\Plugins\Silhouette\manifests\*') { continue }
+            if ($rel -like 'F4SE\Plugins\F4EE\BodyGen\Loose\*' -and $f.Name -notlike 'Silhouette_*') { continue }
+            if (-not $ship.Contains($rel)) { $out += $rel }
+        }
+    }
+    foreach ($rel in @('F4SE\Plugins\Silhouette.dll', 'F4SE\Plugins\Silhouette.pdb', 'Silhouette.esp')) {
+        if (-not $ship.Contains($rel) -and (Test-Path -LiteralPath (Join-Path $Base $rel) -PathType Leaf)) { $out += $rel }
+    }
+    return $out
+}
+$stale = @(Get-NotShipped $Staging)
+
+# Refused BEFORE the first write: in place, every write is live in Data at once, so a copy that stops half-way
+# leaves the game a new esp and catalog beside an old DLL and scripts (wave 5, lens 2 M4). Every destination's
+# folders must be folders, the destination must not be one, and a file there -- or one about to be removed --
+# must be free: nothing else may hold it open.
+$refused = @()
+foreach ($rel in @($ship.Keys) + $stale) {
+    $dest = Join-Path $Staging $rel
+    $up = Split-Path -Parent $dest
+    while ($up -and $up.Length -gt $Staging.TrimEnd('\').Length) {
+        if (Test-Path -LiteralPath $up -PathType Leaf) { $refused += "$rel - $up is a file where a folder must be"; break }
+        $up = Split-Path -Parent $up
+    }
+    if (Test-Path -LiteralPath $dest -PathType Container) { $refused += "$rel - a folder stands where the file goes"; continue }
+    if (Test-Path -LiteralPath $dest -PathType Leaf) {
+        $readOnly = (Get-Item -LiteralPath $dest -Force).IsReadOnly    # Copy-Item -Force writes through that
+        try {
+            $access = if ($readOnly) { [System.IO.FileAccess]::Read } else { [System.IO.FileAccess]::Write }
+            [System.IO.File]::Open($dest, [System.IO.FileMode]::Open, $access, [System.IO.FileShare]::None).Close()
+        } catch {
+            $why = if ($_.Exception.InnerException) { $_.Exception.InnerException.Message } else { $_.Exception.Message }
+            $refused += "$rel - in use or not writable: $why"
+        }
+    }
+}
+if ($refused.Count) {
+    $refused | ForEach-Object { Write-Host "  $_" }
+    throw "Nothing was staged: the files above could not all be written, and a deploy that stops half-way leaves Data holding two builds. Close what holds them (a debugger on the PDB, xEdit or the Creation Kit on the esp, a scanner), fix the folders, and run this again."
+}
+
 # In place, file by file: Copy-Item -Force writes INTO an existing file, so its hardlink in Data carries
 # the new bytes at once. A file that did not exist has no link in Data until Vortex's Deploy.
 New-Item -ItemType Directory -Force -Path $Staging | Out-Null
 $new = @()
-foreach ($rel in $ship.Keys) {
-    $dest = Join-Path $Staging $rel
-    if (-not (Test-Path -LiteralPath $dest)) { $new += $rel }
-    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $dest) | Out-Null
-    Copy-Item -LiteralPath $ship[$rel] -Destination $dest -Force
-}
-
-# What an older build shipped and this one does not: out of staging (Vortex's Deploy then takes it out of
-# Data). Only Silhouette's own places are looked at, and never a manifest -- an NPC of that build keeps
-# its stamp for the rest of the save.
-$owned = @('F4SE\Plugins\Silhouette', 'F4SE\Plugins\F4EE\BodyGen\Loose', 'MCM\Config\Silhouette', 'Scripts\Silhouette')
-$stageFull = (Get-Item -LiteralPath $Staging).FullName.TrimEnd('\')
-$stale = @()
-foreach ($dir in $owned) {
-    $p = Join-Path $Staging $dir
-    if (-not (Test-Path $p)) { continue }
-    foreach ($f in Get-ChildItem -LiteralPath $p -Recurse -File) {
-        $rel = $f.FullName.Substring($stageFull.Length).TrimStart('\')
-        if ($rel -like 'F4SE\Plugins\Silhouette\manifests\*') { continue }
-        if ($rel -like 'F4SE\Plugins\F4EE\BodyGen\Loose\*' -and $f.Name -notlike 'Silhouette_*') { continue }
-        if (-not $ship.Contains($rel)) { $stale += $rel; Remove-Item -LiteralPath $f.FullName -Force }
+$written = @()
+try {
+    foreach ($rel in $ship.Keys) {
+        $dest = Join-Path $Staging $rel
+        if (-not (Test-Path -LiteralPath $dest)) { $new += $rel }
+        New-Item -ItemType Directory -Force -Path (Split-Path -Parent $dest) | Out-Null
+        Copy-Item -LiteralPath $ship[$rel] -Destination $dest -Force
+        $written += $rel
     }
-}
-foreach ($rel in @('F4SE\Plugins\Silhouette.dll', 'F4SE\Plugins\Silhouette.pdb', 'Silhouette.esp')) {
-    if (-not $ship.Contains($rel) -and (Test-Path (Join-Path $Staging $rel))) {
-        $stale += $rel; Remove-Item -LiteralPath (Join-Path $Staging $rel) -Force
+    # What an older build shipped and this one does not: out of staging (Vortex's Deploy then takes it out of Data).
+    foreach ($rel in $stale) {
+        Remove-Item -LiteralPath (Join-Path $Staging $rel) -Force
+        $written += "$rel (removed)"
     }
+} catch {
+    Write-Host "Written before the failure:"
+    $written | ForEach-Object { Write-Host "  $_" }
+    Write-Host "Data now mixes two builds: fix the cause and run this again before starting the game."
+    throw
 }
 
 # What landed, from the disk: a deploy that silently did nothing looks exactly like one that worked.
@@ -180,20 +233,73 @@ foreach ($rel in @('F4SE\Plugins\Silhouette.dll', 'F4SE\Plugins\Silhouette\catal
     }
 }
 Write-Host "Staged build $($catalog.build) (stamp $($catalog.stamp)) in $Staging, file by file in place."
-if ($new.Count -eq 0 -and $stale.Count -eq 0) {
-    Write-Host "Every file went live in place through its hardlink: no Deploy is needed."
+if ($new.Count) { Write-Host ("  new in staging: " + ($new -join ', ')) }
+if ($stale.Count) { Write-Host ("  removed from staging: " + ($stale -join ', ')) }
+
+# Whether Data holds the staged files is read from Data, never from what this run did: a run that listed new
+# files, followed by no Deploy, would otherwise tell the next run that nothing waits (wave 5, lens 2 M3). A file
+# is live when Data's entry IS the staged file -- the same volume and file id, the hardlink Vortex made.
+if (-not ('SilhouetteDeploy.FileId' -as [type])) {
+    Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
+
+namespace SilhouetteDeploy
+{
+    public static class FileId
+    {
+        // BY_HANDLE_FILE_INFORMATION. A FILETIME is two DWORDs: Pack = 4 keeps the longs where Windows puts them.
+        [StructLayout(LayoutKind.Sequential, Pack = 4)]
+        struct Info
+        {
+            public uint Attributes;
+            public long Created, Accessed, Written;
+            public uint Volume, SizeHigh, SizeLow, Links, IndexHigh, IndexLow;
+        }
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        static extern SafeFileHandle CreateFileW(string name, uint access, uint share, IntPtr security, uint disposition, uint flags, IntPtr template);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool GetFileInformationByHandle(SafeFileHandle handle, out Info info);
+
+        // "volume:index" of a file -- no access asked, every share allowed, so a file held open elsewhere still
+        // answers -- or null when there is no such file.
+        public static string Of(string path)
+        {
+            using (SafeFileHandle h = CreateFileW(path, 0, 7, IntPtr.Zero, 3, 0, IntPtr.Zero))
+            {
+                Info i;
+                if (h.IsInvalid || !GetFileInformationByHandle(h, out i)) return null;
+                return i.Volume.ToString("X8") + ":" + i.IndexHigh.ToString("X8") + i.IndexLow.ToString("X8");
+            }
+        }
+    }
+}
+'@
+}
+if (Test-Path -LiteralPath $GameData -PathType Container) {
+    $waits = @()
+    foreach ($rel in $ship.Keys) {
+        $inData = [SilhouetteDeploy.FileId]::Of((Join-Path $GameData $rel))
+        if (-not $inData -or $inData -ne [SilhouetteDeploy.FileId]::Of((Join-Path $Staging $rel))) { $waits += $rel }
+    }
+    $removes = @(Get-NotShipped $GameData)
+    if ($waits.Count -eq 0 -and $removes.Count -eq 0) {
+        Write-Host "Every file is live in Data through its hardlink ($GameData): no Deploy is needed."
+    } else {
+        if ($waits.Count) {
+            Write-Host "In Data, not yet the staged file (missing, or another copy) -- waits for Vortex's Deploy:"
+            $waits | ForEach-Object { Write-Host "  $_" }
+        }
+        if ($removes.Count) {
+            Write-Host "In Data, and no longer shipped -- Vortex's Deploy removes it:"
+            $removes | ForEach-Object { Write-Host "  $_" }
+        }
+        Write-Host "Press Deploy in Vortex BEFORE starting the game: until then Data is not this build."
+    }
 } else {
-    if ($new.Count) {
-        Write-Host "NEW in staging -- no hardlink in Data until Vortex's Deploy:"
-        $new | ForEach-Object { Write-Host "  $_" }
-    }
-    if ($stale.Count) {
-        Write-Host "No longer shipped, removed from staging -- still in Data until Vortex's Deploy:"
-        $stale | ForEach-Object { Write-Host "  $_" }
-    }
-    $until = @()
-    if ($new.Count) { $until += 'lacks the new files' }
-    if ($stale.Count) { $until += 'still holds the removed ones' }
-    Write-Host ("Press Deploy in Vortex BEFORE starting the game: until then Data " + ($until -join ' and ') + " listed above.")
+    Write-Host "No game Data at $GameData (-GameData): whether Vortex's Deploy is needed was NOT checked - press Deploy before starting the game."
 }
 Write-Host "Silhouette.esp must be ENABLED for the bridge."

@@ -296,6 +296,46 @@ def script_function(text, header):
     return m.group(1) if m else None
 
 
+def parse_settings(text, problems):
+    """({"<key>:<section>": value}, sBuild) from an MCM settings.ini, each value read as MCM types it -- by the
+    key's first letter: i a whole number, b 0 or 1, f any number, s text (wave 5 L9). A value MCM cannot read as
+    its type is a problem: MCM would read that setting as 0."""
+    defaults, menu_build, section = {}, None, None
+    for line in text.splitlines():
+        line = line.strip()
+        if line.startswith('[') and line.endswith(']'):
+            section = line[1:-1]
+            continue
+        if '=' not in line or line.startswith(';'):
+            continue
+        k, v = (s.strip() for s in line.split('=', 1))
+        if k == 'sBuild':
+            menu_build = v
+            continue
+        kind = k[:1]
+        try:
+            if kind == 'i':
+                value = int(v)
+            elif kind == 'b':
+                value = int(v)
+                if value not in (0, 1):
+                    raise ValueError(v)
+            elif kind == 'f':
+                value = float(v)
+            elif kind == 's':
+                value = v
+            else:
+                problems.append(f'settings.ini [{section}] {k}={v}: MCM types a setting by its first letter (i, b, f '
+                                f'or s), and this one has none of them')
+                continue
+        except ValueError:
+            want = {'i': 'a whole number', 'b': '0 or 1', 'f': 'a number'}[kind]
+            problems.append(f'settings.ini [{section}] {k}={v}: not {want} -- MCM would read the setting as 0')
+            continue
+        defaults[f'{k}:{section}'] = value
+    return defaults, menu_build
+
+
 def check_picker(args, templates, player, problems, stamp, cat):
     cat_by_marker = {p['marker'].casefold(): p for p in (cat or {}).get('presets', [])}
     mcm = args.dir.parent.parent.parent.parent.parent / 'MCM/Config/Silhouette'
@@ -313,22 +353,7 @@ def check_picker(args, templates, player, problems, stamp, cat):
                 buttons.append(c['action'])
             if c.get('type') == 'hotkey':
                 hotkeys.append(c['id'])
-    # MCM ids are "<key>:<section>", as settings.ini is laid out
-    defaults, menu_build, section = {}, None, None
-    for line in (mcm / 'settings.ini').read_text(encoding='utf-8-sig').splitlines():
-        line = line.strip()
-        if line.startswith('[') and line.endswith(']'):
-            section = line[1:-1]
-        elif '=' in line and not line.startswith(';'):
-            k, v = line.split('=', 1)
-            if k.strip() == 'sBuild':
-                menu_build = v.strip()
-                continue
-            try:
-                defaults[f'{k.strip()}:{section}'] = int(v)
-            except ValueError:
-                problems.append(f'settings.ini [{section}] {k.strip()}={v.strip()}: not a whole number -- MCM would '
-                                f'read the setting as 0')
+    defaults, menu_build = parse_settings((mcm / 'settings.ini').read_text(encoding='utf-8-sig'), problems)
     text = psc.read_text(encoding='utf-8')
     m = re.search(r'String Function Build\(\) Global\s+Return "([^"]*)"', text)
     script_build = m.group(1) if m else None
@@ -501,6 +526,9 @@ def check_manifests(groot, cat, stamp, problems):
     for f in sorted(folder.glob('*.json')) if folder.is_dir() else []:
         try:
             doc = json.loads(f.read_text(encoding='utf-8-sig'))
+            # Text that is no Unicode (a lone surrogate, written escaped): Python reads it, the plugin's parser
+            # refuses the whole file (wave 5, lens 3 L8 -- tools/tests/test_parser_parity.py M13).
+            json.dumps(doc, ensure_ascii=False).encode('utf-8')
             st, build = doc['stamp'], doc['build']
             templates = doc['templates']
         except (OSError, ValueError, KeyError, TypeError) as exc:
@@ -525,6 +553,14 @@ def check_manifests(groot, cat, stamp, problems):
                 for m, e in templates.items()):
             problems.append(f'manifest {f.name}: its templates are not all a marker naming a preset and its values -- '
                             f'the bodies of its build could not be named or healed')
+            continue
+        # The plugin's parser (Catalog.cpp ParseManifest) reads a gender, where there is one, as exactly "female"
+        # or "male", and skips the whole file on anything else (wave 5 L8).
+        wrong = sorted(m for m, e in templates.items() if 'gender' in e and e['gender'] not in ('female', 'male'))
+        if wrong:
+            problems.append(f'manifest {f.name}: {wrong[0]} has gender {templates[wrong[0]]["gender"]!r} -- the plugin reads '
+                            f'only "female" or "male" and skips the whole file, so the bodies of its build could not be '
+                            f'named or healed')
             continue
         if st in found:
             problems.append(f'manifests {found[st][0].name} and {f.name} both say stamp {st}: the plugin keeps one, '
@@ -877,12 +913,16 @@ def main():
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
     presets = sg.read_presets(args.data / 'Tools/BodySlide/SliderPresets')
     # The markers exactly as the generator derived them: from the manifests beside these files and in the
-    # game's Data (L4 F2, wave 4 L6).
+    # game's Data (L4 F2, wave 4 L6) -- the one folder list the generator reads too (wave 5). A manifest only
+    # Data holds that cannot be read is said and skipped, as the generator does: the package is not at fault.
+    notes = []
     try:
-        history = sg.manifest_history(groot / sg.MANIFESTS, args.data / sg.MANIFESTS)
+        history = sg.manifest_history(*sg.manifest_folders(groot, args.data), notes=notes)
     except SystemExit as exc:
         problems.append(f'manifests: {exc}')
         history = {}
+    for n in notes:
+        print(f'note: {n}')
     sg.assign_markers(presets, history)
     for p in presets:
         p.update(sg.classify(p, morphs_of['female'], morphs_of['male']))

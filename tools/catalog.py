@@ -76,11 +76,16 @@ def resolve_races(cfg, data, report):
         # and which load order it was looked for in. Without a plugins.txt (Mod Organizer, Proton, no
         # LOCALAPPDATA) only the base game and Creation Club plugins count as loaded.
         inactive = plugin_forms.find_inactive(data, txt, 'RACE', unknown)
-        order = (f'the load order in {txt}' if txt and txt.exists() else
-                 f'the load order: no plugins.txt was found ({txt or "LOCALAPPDATA is not set"}), so only the base '
-                 f'game\'s and Creation Club plugins count as loaded')
-        why = [f'{w!r} is defined by {inactive[w]}, which is not active in {order} -- enable it, or take the race '
-               f'out of the rules' if w in inactive else
+        if txt and txt.exists():
+            enable = f'which is not active in the load order in {txt} -- enable it, or take the race out of the rules'
+        else:
+            # Without a plugins.txt the plugin may well be enabled -- where this tool did not look: Mod Organizer
+            # keeps the load order in its profile and shows it only to programs it starts (wave 5 N14).
+            enable = (f'and no plugins.txt was found ({txt or "LOCALAPPDATA is not set"}) to say it is enabled, so only '
+                      f'the base game\'s and Creation Club plugins counted as loaded. Under Mod Organizer, run this '
+                      f'from Mod Organizer, which shows it the profile\'s load order; otherwise enable the plugin, or '
+                      f'take the race out of the rules')
+        why = [f'{w!r} is defined by {inactive[w]}, {enable}' if w in inactive else
                f'{w!r}: no plugin in Data defines a race of that editor id -- check the spelling '
                f'(HumanRace, GhoulRace, ...)' for w in unknown]
         raise SystemExit('rules: a race the rules name matches nobody in the load order:\n  ' + '\n  '.join(why))

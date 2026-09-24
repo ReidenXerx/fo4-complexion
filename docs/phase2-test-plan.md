@@ -19,9 +19,10 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
    catalog and BodyGen files of two generator runs, a Player.pex compiled from another run, files the
    verifier fails, an edited committed manifest, and a Silhouette.esp without the refit keyword (whether
    the bridge's scripts and the DLL are of one release is checked by the bridge at every load). It
-   stages the Silhouette-dev mod's files in place: every file Data already has goes live at once, and it
-   lists by name the NEW files, which wait for Vortex's Deploy -- press Deploy before launching whenever
-   it lists any. Silhouette.esp (two quests, two form lists, a keyword: well over the Phase-1 file's 304
+   stages the Silhouette-dev mod's files in place, refusing before the first write if any of them is held
+   open: every file Data already links goes live at once. Then it reads Data itself and lists by name every
+   file Data does not hold as the staged one yet, which waits for Vortex's Deploy -- press Deploy before
+   launching whenever it lists any. Silhouette.esp (two quests, two form lists, a keyword: well over the Phase-1 file's 304
    bytes) is already enabled. Set `f4ee.ini` `iLogLevel=3`, and in `Fallout4Custom.ini`
    `[Papyrus] bEnableLogging=1, bEnableTrace=1`.
 
@@ -37,12 +38,18 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
    - `events: TESObjectLoadedEvent attached (holder scan, ...)` and `events: TESEquipEvent attached (holder scan, ...)`
    - `after loading: N record(s); loaded: yes, equip: yes, crosshair: ...`
    - `bridge: bridge connected - ready: build ...`
-   - about 30 seconds after the load, `after loading: N actor(s) around the player read; the game reported M
-     of them as loaded`, with N about the number of people, creatures and robots nearby. M is large after a
-     load from the main menu and small after one in a running game: the game reports only the first (S-43's
-     amendment), and N is what makes up for it.
+   - about 30 seconds after the bridge's first poll, `after loading: N actor(s) around the player read; the
+     game reported M of them as loaded, and K it reported were not among them; the first poll came T s after
+     the load`, with N about the number of people, creatures and robots nearby. M is large after a load from
+     the main menu and 0 after one in a running game (27 and 0 in wave 4's run): the game reports only the
+     first (S-43's amendment), and N is what makes up for it. K near 0 says the sweep finds whom the game
+     reports. With `bAlwaysActive=0`, load in the running game and alt-tab out for 40 seconds at once: T
+     reads about 40, and the line and step 13's restore still come.
 
    What a failure means:
+   - no Silhouette.log at all -- the plugin did not load: F4SE's own `f4se.log` says why (another runtime,
+     or "disabled, fatal error occurred while loading plugin"). Before the fifth wave, a Documents path with
+     a Cyrillic, Polish or Chinese user name did exactly that, and looked like a plugin that never ran.
    - `catalog refused` -- files of two generator runs. Regenerate and deploy them together.
    - `equip: no` in the after-loading line -- ORefit will not follow undressing. Stop. (An earlier
      `events: no source for TESEquipEvent yet - ...` is only a warning that the source was attached

@@ -431,7 +431,9 @@ EndFunction
 ; asks for "<script>_<event>" (S-46). Each raised event is told back to the plugin:
 ; one handed out but not raised before a save is made again after the load. At most
 ; 64 a poll, and the next one is only taken while there is room to raise it: one
-; taken and not raised would be lost until the actor is next probed.
+; taken and not raised would be lost until the actor is next probed. ONE loop raises,
+; on the bridge's one timer: NextEvent settles every event handed out before, so a
+; second loop raising at the same time would get the same body announced twice.
 Function RaiseEvents()
 	Int e = Silhouette:DLL.NextEvent()
 	Int raised = 0

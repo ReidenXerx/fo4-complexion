@@ -5,29 +5,58 @@
 
 namespace
 {
+	// The log file, opened by its path as it is. spdlog's own file sink takes a NARROW name, and
+	// path::string() throws for a folder the ANSI code page cannot hold -- a Cyrillic, Polish or Chinese
+	// user name, a localized OneDrive Documents -- and a throw at load makes F4SE disable the whole plugin
+	// (wave 5, measured with F4SE's own loader). A short (8.3) name is no way round it: a name short enough
+	// to be one, like "Łukasz", gets no ASCII short name (measured).
+	class FileSink final : public spdlog::sinks::base_sink<std::mutex>
+	{
+	public:
+		explicit FileSink(const std::filesystem::path& a_path) :
+			_out(a_path, std::ios::binary | std::ios::trunc)
+		{}
+
+	protected:
+		void sink_it_(const spdlog::details::log_msg& a_msg) override
+		{
+			spdlog::memory_buf_t text;
+			formatter_->format(a_msg, text);
+			_out.write(text.data(), static_cast<std::streamsize>(text.size()));
+		}
+
+		void flush_() override { _out.flush(); }
+
+	private:
+		std::ofstream _out;
+	};
+
 	// After F4SE::Init: log_directory() is built from the save folder name, which Init fills in.
 	// The previous run's log is kept as Silhouette.prev.log -- the run that follows a crash is the
-	// run that would otherwise erase the only record of it (Rapport's scar).
+	// run that would otherwise erase the only record of it (Rapport's scar). Nothing here may throw:
+	// without a log the plugin still runs.
 	void InitLogging()
 	{
-		auto path = logger::log_directory();
-		if (!path) {
-			return;
+		try {
+			auto path = logger::log_directory();
+			if (!path) {
+				return;
+			}
+			std::error_code ec;
+			std::filesystem::create_directories(*path, ec);
+			*path /= SH_PROJECT_NAME ".log"sv;
+			auto previous = *path;
+			previous.replace_extension(".prev.log");
+			std::filesystem::remove(previous, ec);
+			std::filesystem::rename(*path, previous, ec);
+
+			auto log = std::make_shared<spdlog::logger>("global log"s, std::make_shared<FileSink>(*path));
+			log->set_level(spdlog::level::info);
+			log->flush_on(spdlog::level::info);
+			spdlog::set_default_logger(std::move(log));
+			spdlog::set_pattern("[%H:%M:%S.%e] [%l] %v"s);
+		} catch (const std::exception&) {
 		}
-		*path /= SH_PROJECT_NAME ".log"sv;
-
-		std::error_code ec;
-		auto            previous = *path;
-		previous.replace_extension(".prev.log");
-		std::filesystem::remove(previous, ec);
-		std::filesystem::rename(*path, previous, ec);
-
-		auto sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true);
-		auto log = std::make_shared<spdlog::logger>("global log"s, std::move(sink));
-		log->set_level(spdlog::level::info);
-		log->flush_on(spdlog::level::info);
-		spdlog::set_default_logger(std::move(log));
-		spdlog::set_pattern("[%H:%M:%S.%e] [%l] %v"s);
 	}
 
 	void MessageHandler(F4SE::MessagingInterface::Message* a_message)
@@ -59,8 +88,10 @@ namespace
 			SH::Sinks::Attach();
 			break;
 		case F4SE::MessagingInterface::kPostLoadGame:
-			// data: whether the load succeeded. A failed one leaves the game where it was.
+			// data: whether the load succeeded. A failed one leaves the game where it was -- and
+			// kPreLoadGame already forgot everyone in it, so the sweep reads them again either way.
 			SH::Sinks::Attach();
+			SH::Game::ArmSweep();
 			if (a_message->data) {
 				SH::Game::NoteGameLoaded();
 			}
