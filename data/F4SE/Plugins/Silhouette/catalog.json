@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "build": "04e965e59d55",
- "stamp": 321893,
+ "build": "5c12bb9cfabb",
+ "stamp": 6034107,
  "mode": "absolute",
  "presets": [
   {
@@ -915,6 +915,31 @@
     "ChubbyWaist": 0.8,
     "Hips": 0.25,
     "Thighs": 0.3
+   },
+   "random": false,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Ivy",
+   "sex": "female",
+   "marker": "Silhouette_Ivy",
+   "values": {
+    "7B Upper": 0.1,
+    "BreastPerkiness": 0.45,
+    "Breasts": 0.25,
+    "Butt": 0.15,
+    "ChestWidth": 0.1,
+    "ChubbyWaist": 0.1,
+    "Hips": 0.1,
+    "MuscularArms": 0.35,
+    "MuscularButt": 0.5,
+    "MuscularLegs": 0.4,
+    "PushUp": 0.15,
+    "RoundAss": 0.45,
+    "Thighs": 0.1
    },
    "random": false,
    "menu": true,
@@ -5741,6 +5766,10 @@
     {
      "plugin": "DLCCoast.esm",
      "id": 17982
+    },
+    {
+     "plugin": "CompanionIvy.esm",
+     "id": 2051
     }
    ],
    "male": [
@@ -5923,5 +5952,5 @@
    "names": []
   }
  },
- "rulesHash": "c6d56c9cd355"
+ "rulesHash": "a293c70e39f8"
 }

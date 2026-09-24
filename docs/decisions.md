@@ -940,7 +940,14 @@ vocabulary, a one-line vibe, and the NPC records it is for: 44 records by plugin
 NPC_ (and of LVLN, WEAP and eleven more types), and `plugin_forms.editor_ids` stopped at the first, where
 Piper and Preston are not. It now reads every group (1ab3b66). Ghouls (Hancock), Nick and the robots are not
 HumanRace; BodyGen's lines name HumanRace, so they are not here. Overture's companions are the vanilla ones
-(Overture.esp defines no NPC); Ivy (CompanionIvy.esm 000803) waits for the owner's description of her.
+(Overture.esp defines no NPC).
+
+**Amended the same day: Ivy (CompanionIvy.esm 000803), by the owner's poll.** Her lore, read from her own
+plugin and her LoversLab page: an NX-2C pleasure bot built on a Courser combat chassis, carrying the brain of
+Deborah, a raider boss ("as deadly as she is sexy", her creator's note; "I think my body was roughly based on
+that model", of the Coursers). Of three drawn options -- an engineered hourglass over toned muscle, a
+voluptuous showpiece, a lean Courser chassis -- the owner chose the first, which has both halves of what she
+is. It measures "beautiful" (waist/hip 0.60). That makes 42 characters (25 women) and 45 records.
 
 The bodies are written to `data/Tools/BodySlide/SliderPresets/Silhouette Characters.xml`; the generator reads
 the sidecar `tools/pool/characters.json`. Each record becomes an npcFormID rule UNDER the user's: a rule the
@@ -951,7 +958,7 @@ random (the pool is the only random source, S-65) and is in the picker like any 
 actor's base up its template chain, so a rule on Cait's own record reaches her even though the record has a
 template.
 
-The female picker now holds 125 presets of the 128 a Papyrus array allows. A few more installed presets
+The female picker now holds 126 presets of the 128 a Papyrus array allows. A few more installed presets
 and the generator refuses, and its message says how to hold some back
 (`blacklistedPresetsShowInOBodyMenu`).
 

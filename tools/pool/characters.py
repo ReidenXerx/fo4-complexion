@@ -133,6 +133,12 @@ CHARACTERS = [
      'Acadia\'s synth: willowy and flat',
      {'LegsThin': 25, 'Arms': 20, 'BreastsSmall': 50, 'ChubbyWaist': 55, 'WideWaistLine': 40, 'Hips': -15,
       'ButtSmall': 25, 'SlimThighs': 25}),
+    ('Ivy', 'female', [('CompanionIvy.esm', 'IVYCOMP', '000803')],
+     'NX-2C pleasure bot on a Courser combat chassis, a raider boss\'s brain: an engineered hourglass over '
+     'toned muscle (the owner\'s pick, option A, 2026-09-24)',
+     {'Breasts': 25, '7B Upper': 10, 'BreastPerkiness': 45, 'PushUp': 15, 'MuscularArms': 35, 'MuscularLegs': 40,
+      'MuscularButt': 50, 'RoundAss': 45, 'Butt': 15, 'Hips': 10, 'ChestWidth': 10, 'ChubbyWaist': 10,
+      'Thighs': 10}),
     # ---- men
     ('Preston Garvey', 'male', [(F4, 'PrestonGarvey', '019FD9')],
      'earnest Minuteman: lean, a little gaunt from hard years',

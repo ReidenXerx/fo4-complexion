@@ -16,9 +16,9 @@
         },
         {
           "type": "dropdown",
-          "id": "iFemale_af946c19:Player",
+          "id": "iFemale_f193abda:Player",
           "text": "If your character is female",
-          "help": "125 presets that fit your female body. Nothing changes until you press \"Apply to my character\".",
+          "help": "126 presets that fit your female body. Nothing changes until you press \"Apply to my character\".",
           "valueOptions": {
             "sourceType": "ModSettingInt",
             "options": [
@@ -54,6 +54,7 @@
               "Imitation - UNP #2",
               "Imitation - UNP Skinny",
               "Irma",
+              "Ivy",
               "Josie CBBE Body 2 (Bustier Nude)",
               "Josie CBBE Body 2 (Nude)",
               "Josie+3DBoobs",
@@ -342,9 +343,9 @@
         },
         {
           "type": "dropdown",
-          "id": "iNpcFemale_af946c19:Picker",
+          "id": "iNpcFemale_f193abda:Picker",
           "text": "If they are female",
-          "help": "125 presets that fit a female body. Nothing changes until you press \"Give them this preset\".",
+          "help": "126 presets that fit a female body. Nothing changes until you press \"Give them this preset\".",
           "valueOptions": {
             "sourceType": "ModSettingInt",
             "options": [
@@ -380,6 +381,7 @@
               "Imitation - UNP #2",
               "Imitation - UNP Skinny",
               "Irma",
+              "Ivy",
               "Josie CBBE Body 2 (Bustier Nude)",
               "Josie CBBE Body 2 (Nude)",
               "Josie+3DBoobs",
