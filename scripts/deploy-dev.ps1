@@ -153,6 +153,9 @@ function Get-NotShipped([string] $Base) {
         if (-not (Test-Path -LiteralPath $p -PathType Container)) { continue }
         foreach ($f in Get-ChildItem -LiteralPath $p -Recurse -File) {
             $rel = $f.FullName.Substring($baseFull.Length).TrimStart('\')
+            # Vortex marks every folder it deploys into with this file: it is Vortex's, never ours, and a Deploy
+            # keeps it (the first real run of the Data check called three of them stale -- wave 6).
+            if ($f.Name -ieq '__folder_managed_by_vortex') { continue }
             if ($rel -like 'F4SE\Plugins\Silhouette\manifests\*') { continue }
             if ($rel -like 'F4SE\Plugins\F4EE\BodyGen\Loose\*' -and $f.Name -notlike 'Silhouette_*') { continue }
             if (-not $ship.Contains($rel)) { $out += $rel }
