@@ -14,8 +14,9 @@
 namespace SH::Events
 {
 	// The crosshair: the view caster's pick, a BSTValueEvent<ViewCasterUpdateData> -- a BSTOptional of the
-	// data, with its flag after it. Layout from the CommonLibF4 fork Papyrus Common Library builds on
-	// (LucaDotGit/CommonLibF4, ViewCasterUpdateData.hpp), whose GetCurrentCrosshairRef reads activatePickRef.
+	// data, with its flag after it. Layout from LucaDotGit/CommonLibF4 (ViewCasterUpdateData.hpp), the fork
+	// Papyrus Common Library builds on; PCL's GetCurrentCrosshairRef reads activatePickRef. Verified in game
+	// 2026-09-24: an NPC at 74 units squared up is picked, nobody at 300 (S-64).
 	//
 	// Not PickRefStateChangedEvent, which Silhouette read until 2026-09-24 as F4MCP did: that one is a
 	// BSTValueEvent<bool>, two bytes -- the HUD's "update the activate prompt" flag -- and the "ref at +08"

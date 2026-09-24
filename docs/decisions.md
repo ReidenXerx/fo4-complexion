@@ -882,5 +882,14 @@ last 64 picks, each with the time the crosshair left it, so the sink's thread ne
 were actors. When a Pick finds nobody, the log says what the crosshair was on: nothing within reach, a named
 object, or someone Silhouette never shapes.
 
-The dialogue pick (`dialoguePickRef`) is logged, not used: what it holds, and how far it reaches, is
-unmeasured.
+The dialogue pick (`dialoguePickRef`) is logged, not used. It reaches no further than the activate pick:
+at 300 units it was empty too.
+
+Verified in game by fo4-mcp the same day, with each stance proved from the actors themselves (F4MCP's
+crosshair string being the broken one above). The source attached after a main-menu load and stayed
+attached across an in-session one. At 74 units, squared up: `pick: Randall Chase (001D1F49), under the
+crosshair`. At 300 units: `nothing is under the crosshair within reach`, with no dialogue-pick tail. With
+another NPC behind the player and a Drifter in front, the pick was the Drifter: it follows where the player
+faces, not the nearest or the last actor. Not produced there: the menu's 30-second window (the player could
+not be turned away) and a door. The window's logic is the tested trail, and it resolves handles the way the
+crosshair case just proved.
