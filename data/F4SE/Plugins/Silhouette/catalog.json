@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "build": "b2df55364054",
- "stamp": 11722581,
+ "build": "ab3bc714ed2f",
+ "stamp": 11221959,
  "mode": "absolute",
  "presets": [
   {
@@ -619,6 +619,28 @@
     "Thighs": 0.33
    },
    "random": true,
+   "menu": true,
+   "zeroed": false,
+   "fit": "full",
+   "family": "Anatomy"
+  },
+  {
+   "name": "Geneva",
+   "sex": "female",
+   "marker": "Silhouette_Geneva",
+   "values": {
+    "7B Upper": 0.15,
+    "AppleCheeks": 0.3,
+    "BreastPerkiness": 0.45,
+    "Breasts": 0.35,
+    "Butt": 0.3,
+    "ChubbyWaist": 0.1,
+    "Hips": 0.15,
+    "PushUp": 0.2,
+    "RoundAss": 0.55,
+    "Thighs": 0.1
+   },
+   "random": false,
    "menu": true,
    "zeroed": false,
    "fit": "full",
@@ -5754,6 +5776,10 @@
      "id": 903478
     },
     {
+     "plugin": "Fallout4.esm",
+     "id": 12042
+    },
+    {
      "plugin": "DLCNukaWorld.esm",
      "id": 54251
     },
@@ -5958,5 +5984,5 @@
    "names": []
   }
  },
- "rulesHash": "eedf4a2b5865"
+ "rulesHash": "f78da39eb9cc"
 }

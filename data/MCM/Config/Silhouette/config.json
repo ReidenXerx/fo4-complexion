@@ -16,9 +16,9 @@
         },
         {
           "type": "dropdown",
-          "id": "iFemale_f193abda:Player",
+          "id": "iFemale_3d5fd1cc:Player",
           "text": "If your character is female",
-          "help": "126 presets that fit your female body. Nothing changes until you press \"Apply to my character\".",
+          "help": "127 presets that fit your female body. Nothing changes until you press \"Apply to my character\".",
           "valueOptions": {
             "sourceType": "ModSettingInt",
             "options": [
@@ -47,6 +47,7 @@
               "Fine F04",
               "Fine F05",
               "Fine F06",
+              "Geneva",
               "Glory",
               "Haylen",
               "Imitation - Dream Girl",
@@ -354,9 +355,9 @@
         },
         {
           "type": "dropdown",
-          "id": "iNpcFemale_f193abda:Picker",
+          "id": "iNpcFemale_3d5fd1cc:Picker",
           "text": "If they are female",
-          "help": "126 presets that fit a female body. Nothing changes until you press \"Give them this preset\".",
+          "help": "127 presets that fit a female body. Nothing changes until you press \"Give them this preset\".",
           "valueOptions": {
             "sourceType": "ModSettingInt",
             "options": [
@@ -385,6 +386,7 @@
               "Fine F04",
               "Fine F05",
               "Fine F06",
+              "Geneva",
               "Glory",
               "Haylen",
               "Imitation - Dream Girl",

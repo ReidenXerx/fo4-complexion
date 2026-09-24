@@ -981,6 +981,12 @@ The female picker now holds 126 presets of the 128 a Papyrus array allows. A few
 and the generator refuses, and its message says how to hold some back
 (`blacklistedPresetsShowInOBodyMenu`). *Superseded by S-69: the picker has no cap.*
 
+**Amended 2026-09-25, by a rendered poll: Geneva gets her own body.** The mayor's secretary is famous among players
+for being hot, and the pool had rolled her a Boxy one (Rough F16). From three renders (bombshell, sleek secretary,
+pin-up) the owner chose the sleek secretary: a perky bust, a slim waist, a high round bottom. Her record is
+`Fallout4.esm` `Geneva` 0x2F0A; the body measures "beautiful". Like every character's, it reaches her when BodyGen
+next gives her a body: a per-NPC Reset, or Reset everyone.
+
 ## S-67 — MCM's "Back to random" is called Reset
 
 Owner decision, 2026-09-24: "back to random should be renamed to reset bc its actually not random if its

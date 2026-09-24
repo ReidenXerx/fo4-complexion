@@ -555,7 +555,7 @@
      "000803"
     ]
    ],
-   "vibe": "NX-2C pleasure bot on a Courser combat chassis, a raider boss's brain: an engineered hourglass over toned muscle (the owner's pick, option A, 2026-09-24; made fuller by his poll the same night: \"too slim\" at breasts 25 / butt 15; then, by a rendered poll, option B: a big powerful glute shelf, \"a woman with powerful ass muscles\" cannot have a small one, and a more muscled back and arms)",
+   "vibe": "NX-2C pleasure bot on a Courser combat chassis, a raider boss's brain: an engineered hourglass over toned muscle (the owner's pick, option A, 2026-09-24; made fuller by their poll the same night: \"too slim\" at breasts 25 / butt 15; then, by a rendered poll, option B: a big powerful glute shelf, \"a woman with powerful ass muscles\" cannot have a small one, and a more muscled back and arms)",
    "values": {
     "Breasts": 70,
     "7B Upper": 15,
@@ -577,6 +577,29 @@
     "Hips": 45,
     "Thighs": 70,
     "MuscularLegs": 65
+   }
+  },
+  "Geneva": {
+   "sex": "female",
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Geneva",
+     "002F0A"
+    ]
+   ],
+   "vibe": "the mayor's secretary, famous among players for being hot: sleek and office-neat -- a perky bust, a slim waist, a high round bottom (the owner's pick from three renders, option B, 2026-09-25; the pool had rolled her a Boxy body)",
+   "values": {
+    "Breasts": 35,
+    "7B Upper": 15,
+    "BreastPerkiness": 45,
+    "PushUp": 20,
+    "Hips": 15,
+    "Butt": 30,
+    "RoundAss": 55,
+    "AppleCheeks": 30,
+    "Thighs": 10,
+    "ChubbyWaist": 10
    }
   },
   "Preston Garvey": {

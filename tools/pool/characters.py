@@ -135,13 +135,19 @@ CHARACTERS = [
       'ButtSmall': 25, 'SlimThighs': 25}),
     ('Ivy', 'female', [('CompanionIvy.esm', 'IVYCOMP', '000803')],
      'NX-2C pleasure bot on a Courser combat chassis, a raider boss\'s brain: an engineered hourglass over '
-     'toned muscle (the owner\'s pick, option A, 2026-09-24; made fuller by his poll the same night: '
+     'toned muscle (the owner\'s pick, option A, 2026-09-24; made fuller by their poll the same night: '
      '"too slim" at breasts 25 / butt 15; then, by a rendered poll, option B: a big powerful glute shelf, '
      '"a woman with powerful ass muscles" cannot have a small one, and a more muscled back and arms)',
      {'Breasts': 70, '7B Upper': 15, 'BreastPerkiness': 45, 'PushUp': 20, 'ChestWidth': 10,
       'MuscularArms': 70, 'ForearmSize': 25, 'Back': 30, 'ShoulderWidth': 10, 'ChubbyWaist': 5,
       'Butt': 100, 'BigButt': 75, 'RoundAss': 80, 'MuscularButt': 100, 'AppleCheeks': 60, 'HipBack': 35,
       'BackArch': 35, 'Hips': 45, 'Thighs': 70, 'MuscularLegs': 65}),
+    ('Geneva', 'female', [(F4, 'Geneva', '002F0A')],
+     'the mayor\'s secretary, famous among players for being hot: sleek and office-neat -- a perky bust, a slim '
+     'waist, a high round bottom (the owner\'s pick from three renders, option B, 2026-09-25; the pool had '
+     'rolled her a Boxy body)',
+     {'Breasts': 35, '7B Upper': 15, 'BreastPerkiness': 45, 'PushUp': 20, 'Hips': 15, 'Butt': 30, 'RoundAss': 55,
+      'AppleCheeks': 30, 'Thighs': 10, 'ChubbyWaist': 10}),
     # ---- men
     ('Preston Garvey', 'male', [(F4, 'PrestonGarvey', '019FD9')],
      'earnest Minuteman: lean, a little gaunt from hard years',
