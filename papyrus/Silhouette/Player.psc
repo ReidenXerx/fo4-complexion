@@ -63,9 +63,9 @@ String Function NpcChoice(Bool female) Global
         Return ""
     EndIf
     If female
-        Return FemaleNames()[index]
+        Return At(index, FemaleNames0())
     EndIf
-    Return MaleNames()[index]
+    Return At(index, MaleNames0())
 EndFunction
 
 Int Function Count(Bool female) Global
@@ -140,7 +140,7 @@ EndFunction
 ; "" when it holds no body sliders at all, or "*" when it holds sliders that
 ; Silhouette did not set. A marker counts only while it holds a value: removing
 ; a keyword empties a morph but leaves its name listed until the next load.
-String Function PresetOf(Actor akActor, Bool female, String[] markers, String[] names) Global
+String Function PresetOf(Actor akActor, Bool female, String[] m0, String[] n0) Global
     String[] morphs = BodyGen.GetMorphs(akActor, female)
     Int count = 0
     If morphs
@@ -151,13 +151,59 @@ String Function PresetOf(Actor akActor, Bool female, String[] markers, String[] 
     EndIf
     Int i = 0
     While i < count
-        Int k = markers.Find(morphs[i], 0)
+        Int k = Locate(morphs[i], m0)
         If k >= 0 && BodyGen.GetMorph(akActor, female, morphs[i], None) > 0.0
-            Return names[k]
+            Return At(k, n0)
         EndIf
         i += 1
     EndWhile
     Return "*"
+EndFunction
+
+; The picker's lists come in 1 part(s) of at most 128: the Papyrus VM grows no array
+; past that. Part p holds the entries from p * 128 on; every part but the last is full.
+Int Function Locate(String s, String[] a0) Global
+    Int k = -1
+    k = a0.Find(s, 0)
+    If k >= 0
+        Return 0 + k
+    EndIf
+    Return -1
+EndFunction
+
+; Entry `k` of a list given in parts, "" past its end.
+String Function At(Int k, String[] a0) Global
+    If k < 0
+        Return ""
+    ElseIf k < 128
+        If k - 0 < a0.Length
+            Return a0[k - 0]
+        EndIf
+        Return ""
+    EndIf
+    Return ""
+EndFunction
+
+; The first of `morphs` that is one of this build's markers, "" for none. The regeneration
+; window's heal without Silhouette.dll (Silhouette:Adopter, S-16) asks it.
+String Function MarkerAmong(Bool female, String[] morphs) Global
+    If !morphs
+        Return ""
+    EndIf
+    String[] m0
+    If female
+        m0 = FemaleMarkers0()
+    Else
+        m0 = MaleMarkers0()
+    EndIf
+    Int i = 0
+    While i < morphs.Length
+        If Locate(morphs[i], m0) >= 0
+            Return morphs[i]
+        EndIf
+        i += 1
+    EndWhile
+    Return ""
 EndFunction
 
 Function ShowCurrent() Global
@@ -165,9 +211,9 @@ Function ShowCurrent() Global
     Bool female = IsFemale(player)
     String preset = ""
     If female
-        preset = PresetOf(player, True, FemaleMarkers(), FemaleNames())
+        preset = PresetOf(player, True, FemaleMarkers0(), FemaleNames0())
     Else
-        preset = PresetOf(player, False, MaleMarkers(), MaleNames())
+        preset = PresetOf(player, False, MaleMarkers0(), MaleNames0())
     EndIf
     If preset == ""
         Debug.MessageBox("Your character has no body sliders: the bare body you built in BodySlide.")
@@ -234,10 +280,10 @@ EndFunction
 ; <F|M> <preset>"). From the console: cgf "Silhouette:Player.Census"
 Function Census() Global
     Actor[] people = Nearby()
-    String[] fm = FemaleMarkers()
-    String[] fn = FemaleNames()
-    String[] mm = MaleMarkers()
-    String[] mn = MaleNames()
+    String[] fm0 = FemaleMarkers0()
+    String[] fn0 = FemaleNames0()
+    String[] mm0 = MaleMarkers0()
+    String[] mn0 = MaleNames0()
     Int shaped = 0
     Int own = 0
     String[] distinct = new String[0]
@@ -248,10 +294,10 @@ Function Census() Global
         String preset = ""
         String sex = "M"
         If female
-            preset = PresetOf(a, True, fm, fn)
+            preset = PresetOf(a, True, fm0, fn0)
             sex = "F"
         Else
-            preset = PresetOf(a, False, mm, mn)
+            preset = PresetOf(a, False, mm0, mn0)
         EndIf
         Debug.Trace("Silhouette census: " + a.GetFormID() + " " + sex + " " + preset, 0)
         If preset == "*"
@@ -273,10 +319,10 @@ EndFunction
 ; or with its catalog refused -- the preset alone is written, and the rolled variety is lost.
 Function Refresh() Global
     Actor[] people = Nearby()
-    String[] fm = FemaleMarkers()
-    String[] fn = FemaleNames()
-    String[] mm = MaleMarkers()
-    String[] mn = MaleNames()
+    String[] fm0 = FemaleMarkers0()
+    String[] fn0 = FemaleNames0()
+    String[] mm0 = MaleMarkers0()
+    String[] mn0 = MaleNames0()
     Bool plugin = Silhouette:API.IsReady()
     Int done = 0
     Int i = 0
@@ -286,11 +332,11 @@ Function Refresh() Global
         String preset = ""
         Int index = -1
         If female
-            preset = PresetOf(a, True, fm, fn)
-            index = fn.Find(preset, 0)
+            preset = PresetOf(a, True, fm0, fn0)
+            index = Locate(preset, fn0)
         Else
-            preset = PresetOf(a, False, mm, mn)
-            index = mn.Find(preset, 0)
+            preset = PresetOf(a, False, mm0, mn0)
+            index = Locate(preset, mn0)
         EndIf
         If index >= 0
             If plugin
@@ -337,7 +383,7 @@ Function Reroll() Global
     EndIf
 EndFunction
 
-String[] Function FemaleMarkers() Global
+String[] Function FemaleMarkers0() Global
     String[] a = new String[0]
     a.Add("Silhouette_ALSL_Body_1_0", 1)
     a.Add("Silhouette_Anatomy_Zero", 1)
@@ -468,7 +514,7 @@ String[] Function FemaleMarkers() Global
     Return a
 EndFunction
 
-String[] Function FemaleNames() Global
+String[] Function FemaleNames0() Global
     String[] a = new String[0]
     a.Add("ALSL Body 1.0", 1)
     a.Add("Anatomy Zero", 1)
@@ -3663,7 +3709,7 @@ String Function ApplyFemale(Actor a, Int index) Global
     Return ""
 EndFunction
 
-String[] Function MaleMarkers() Global
+String[] Function MaleMarkers0() Global
     String[] a = new String[0]
     a.Add("Silhouette_Arthur_Maxson", 1)
     a.Add("Silhouette_BT_Average", 1)
@@ -3734,7 +3780,7 @@ String[] Function MaleMarkers() Global
     Return a
 EndFunction
 
-String[] Function MaleNames() Global
+String[] Function MaleNames0() Global
     String[] a = new String[0]
     a.Add("Arthur Maxson", 1)
     a.Add("BT - Average", 1)

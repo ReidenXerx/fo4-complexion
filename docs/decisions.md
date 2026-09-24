@@ -979,7 +979,7 @@ template.
 
 The female picker now holds 126 presets of the 128 a Papyrus array allows. A few more installed presets
 and the generator refuses, and its message says how to hold some back
-(`blacklistedPresetsShowInOBodyMenu`).
+(`blacklistedPresetsShowInOBodyMenu`). *Superseded by S-69: the picker has no cap.*
 
 ## S-67 — MCM's "Back to random" is called Reset
 
@@ -1006,7 +1006,7 @@ accordingly unique rules built in silhouette and new pool for random bodies". So
 whom one press reaches: "Everyone, as met". Asked about bodies the player picked: wiped too, "who wants
 fresh start rollback to silhouette only experience".
 
-MCM > Silhouette > Bodies > **Reset everyone**, pressed twice within a minute (10 seconds at first: the owner's first try ran out while he read the first message box). Everyone is decided again
+MCM > Silhouette > Bodies > **Reset everyone**, pressed twice within a minute (10 seconds at first: the owner's first try ran out while they read the first message box). Everyone is decided again
 as if met for the first time: a roll, then the rules have their say -- a named character's own line, a
 rule by name or faction drawing by id alone (S-60's presses forgotten), the pool for everyone else.
 - **Around the player, at once**: everyone the plugin has seen this session whom Silhouette shapes (a
@@ -1030,3 +1030,26 @@ The press lives in the co-save as a record of its own ('RST1', written only once
 of the records: the record list refuses bytes after its last picking, so a block appended there would have
 made every older plugin drop every record. An older plugin skips 'RST1' and simply does not follow the
 reset. Protocol 4 (the bridge calls the new native).
+
+## S-69 — The player picker has no cap: its lists come in parts of 128
+
+Owner decision, 2026-09-24, by poll. The female picker stood at 126 of 128 presets, and the generator
+refused a 129th. The cap is the Papyrus VM's: it grows no array past 128 entries, whether by `new` or by
+`Add` (arrays a native returns are not capped). Asked what to do about it, the owner chose to lift it:
+"Lists from the DLL", accepting that without Silhouette.dll the picker would show only the first 128.
+
+It was done in Papyrus alone instead, so nothing is lost without the DLL either. `Silhouette:Player` lists
+each sex's markers and names in PARTS of 128 (`FemaleMarkers0`, `FemaleMarkers1`, ...; both sexes have
+the same number of parts, the shorter one's trailing parts empty). `Locate()` finds an entry across the
+parts and `At()` reads one back; both count part p as the entries from p * 128 on, so every part but the
+last one holding anything must be full. Census, Refresh, Show current and the NPC page's choice pass the
+parts down; the regeneration window's heal without the DLL (Adopter.Heal) asks `MarkerAmong()`, and it
+asks only for a body that holds a state at all, since building the parts costs one Add per preset.
+
+`verify_bodygen.py` reads the parts back in order and refuses a part over 128 (the VM would drop its
+tail), a short part before the last and a gap in the numbering: each would lose a preset or read one as
+another. `tests/test_picker_parts.py` builds a 300-preset script and checks that it comes back whole; each
+of its checks was proven on a broken generator or verifier (9 of 9). A 300-preset script compiles.
+
+Left as it was: the MCM dropdown lists every preset in one list, and the census counts at most 128
+different presets (a count, nothing is applied from it).

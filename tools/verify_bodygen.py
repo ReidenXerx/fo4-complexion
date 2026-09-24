@@ -253,17 +253,20 @@ def error(a, b):
 
 
 def parse_picker_script(path):
-    """{gender: {'markers': [...], 'names': [...], 'apply': {index: {morph: value}}}}
-    read back out of the generated Silhouette:Player source."""
+    """{gender: {'markers': [...], 'names': [...], 'parts': {'markers': [len, ...], 'names': [...]},
+    'apply': {index: {morph: value}}}} read back out of the generated Silhouette:Player source. The
+    lists come in parts (FemaleMarkers0, FemaleMarkers1, ...), joined here in part order."""
     out = {'female': {'markers': [], 'names': [], 'apply': {}},
            'male': {'markers': [], 'names': [], 'apply': {}}}
+    part_lists = {(g, k): {} for g in ('female', 'male') for k in ('markers', 'names')}
     current, branch = None, None
     for line in path.read_text(encoding='utf-8').splitlines():
         s = line.strip()
         if s.startswith('String[] Function') or s.startswith('String Function Apply'):
-            m = re.match(r'String\[\] Function (Female|Male)(Markers|Names)\(', s)
+            m = re.match(r'String\[\] Function (Female|Male)(Markers|Names)(\d+)\(', s)
             if m:
-                current = (m.group(1).lower(), m.group(2).lower())
+                current = (m.group(1).lower(), m.group(2).lower(), int(m.group(3)))
+                part_lists[current[:2]][current[2]] = []
                 continue
             m = re.match(r'String Function Apply(Female|Male)\(', s)
             current = (m.group(1).lower(), 'apply') if m else None
@@ -274,11 +277,11 @@ def parse_picker_script(path):
             continue
         if not current:
             continue
-        g, kind = current
+        g, kind = current[:2]
         if kind in ('markers', 'names'):
             m = re.match(r'a\.Add\("(.*)", 1\)$', s)
             if m:
-                out[g][kind].append(papyrus_unescape(m.group(1)))
+                part_lists[current[:2]][current[2]].append(papyrus_unescape(m.group(1)))
         else:
             m = re.match(r'(?:If|ElseIf) index == (\d+)$', s)
             if m:
@@ -288,6 +291,26 @@ def parse_picker_script(path):
             m = re.match(r'BodyGen\.SetMorph\(a, (True|False), "(.*)", None, (\S+)\)$', s)
             if m and branch is not None:
                 out[g]['apply'][branch][papyrus_unescape(m.group(2))] = float(m.group(3))
+    for (g, kind), by_part in part_lists.items():
+        ordered = [by_part[p] for p in sorted(by_part)]
+        out[g].setdefault('parts', {})[kind] = [len(x) for x in ordered]
+        out[g].setdefault('partNumbers', {})[kind] = sorted(by_part)
+        out[g][kind] = [x for part in ordered for x in part]
+    return out
+
+
+def picker_part_problems(g, s):
+    """The VM grows no array past 128 (a longer part silently loses its tail), and Locate()/At() read part p
+    as the entries from p * 128 on: parts numbered from 0 without a gap, none over 128, and every part but the
+    last one holding anything full. `s` is one sex of parse_picker_script()."""
+    out = []
+    for kind, sizes in s['parts'].items():
+        filled = [n for n in sizes if n]
+        if s['partNumbers'][kind] != list(range(len(sizes))) or any(n > sg.ARRAY_LIMIT for n in sizes) or \
+                any(n != sg.ARRAY_LIMIT for n in filled[:-1]) or sizes[:len(filled)] != filled:
+            out.append(f'{g} picker script: the {kind} parts hold {sizes} (parts {s["partNumbers"][kind]}) -- '
+                       f'each at most {sg.ARRAY_LIMIT}, every one before the last full, or a preset is lost or '
+                       f'read as another')
     return out
 
 
@@ -402,6 +425,7 @@ def check_picker(args, templates, player, problems, stamp, cat):
         if len(s['markers']) != len(s['names']) or sorted(s['apply']) != list(range(len(s['names']))):
             problems.append(f'{g} picker script: markers, names and branches do not line up')
             continue
+        problems += picker_part_problems(g, s)
         d = defaults.get(sid)
         if d is None or not 0 <= d < len(s['names']):
             problems.append(f'MCM default {sid}={d} is not an entry of the menu')

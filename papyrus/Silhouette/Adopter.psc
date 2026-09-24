@@ -130,12 +130,8 @@ Function Scan()
 	Actor[] people = Silhouette:Player.Nearby()
 	Bool plugin = Silhouette:API.IsReady()
 	String[] states = new String[0]
-	String[] femaleMarkers = new String[0]
-	String[] maleMarkers = new String[0]
 	If !plugin
 		states = Silhouette:Player.StateMorphs()
-		femaleMarkers = Silhouette:Player.FemaleMarkers()
-		maleMarkers = Silhouette:Player.MaleMarkers()
 	EndIf
 	Int i = 0
 	While i < people.Length
@@ -147,11 +143,7 @@ Function Scan()
 				Bool female = Silhouette:Player.IsFemale(a)
 				String[] morphs = BodyGen.GetMorphs(a, female)
 				If !plugin && !isLooked
-					If female
-						Heal(a, female, morphs, states, femaleMarkers, looked)
-					Else
-						Heal(a, female, morphs, states, maleMarkers, looked)
-					EndIf
+					Heal(a, female, morphs, states, looked)
 				EndIf
 				If !isSeen
 					Int kind = Kind(a, female, morphs)
@@ -183,9 +175,10 @@ EndFunction
 ; at 100%, so two men kept one for good. Only the unkeyed value goes -- SetMorph with
 ; 0 erases exactly that key -- and only on a body Silhouette gave: a state another mod
 ; keeps under its own keyword, or one set by hand on a body that is not ours, stays.
-; Names first (one call, compared as strings): most bodies hold none of these at all.
-; Each person is looked at once, so a value set by hand afterwards stays.
-Function Heal(Actor a, Bool female, String[] morphs, String[] states, String[] markers, FormList looked)
+; Names first (one call, compared as strings): most bodies hold none of these at all, and
+; only for one that does is the marker looked for. Each person is looked at once, so a value
+; set by hand afterwards stays.
+Function Heal(Actor a, Bool female, String[] morphs, String[] states, FormList looked)
 	If looked
 		looked.AddForm(a)
 	EndIf
@@ -193,17 +186,18 @@ Function Heal(Actor a, Bool female, String[] morphs, String[] states, String[] m
 		Return
 	EndIf
 	String[] found = new String[0]
-	String marker = ""
 	Int i = 0
 	While i < morphs.Length
 		If states.Find(morphs[i], 0) >= 0
 			found.Add(morphs[i], 1)
-		ElseIf marker == "" && markers.Find(morphs[i], 0) >= 0
-			marker = morphs[i]
 		EndIf
 		i += 1
 	EndWhile
-	If found.Length == 0 || marker == ""
+	If found.Length == 0
+		Return
+	EndIf
+	String marker = Silhouette:Player.MarkerAmong(female, morphs)
+	If marker == ""
 		Return
 	EndIf
 	; A marker counts only while it holds a value: an emptied name is listed until a load.
