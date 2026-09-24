@@ -782,19 +782,26 @@ namespace SH::Game
 
 	std::uint32_t CrosshairActor(float a_recentSeconds)
 	{
-		const auto    recentMs = a_recentSeconds > 0.0F ? static_cast<std::int64_t>(a_recentSeconds * 1000.0F) : std::int64_t{ 0 };
-		std::uint32_t found = 0;
-		(void)g_trail.Choose(recentMs, NowMs(), [&](std::uint32_t a_handle) {
-			const auto ref = RefFor(a_handle);
-			auto*      actor = ref ? ActorFor(ref->GetFormID()) : nullptr;
+		const auto recentMs = a_recentSeconds > 0.0F ? static_cast<std::int64_t>(a_recentSeconds * 1000.0F) : std::int64_t{ 0 };
+		RE::NiPointer<RE::TESObjectREFR> chosen;
+		const auto handle = g_trail.Choose(recentMs, NowMs(), [&](std::uint32_t a_handle) {
+			auto  ref = RefFor(a_handle);
+			auto* actor = ref ? ActorFor(ref->GetFormID()) : nullptr;
 			if (!actor || NeverShaped(actor) || !actor->GetNPC()) {
 				return false;
 			}
-			found = actor->GetFormID();
+			chosen = std::move(ref);
 			return true;
 		});
-		if (found == 0) {
-			// The one question a player cannot answer from the screen: what did the game say was there.
+		// Pick and the menu ask only when the player acts, so every answer is written: the log says what the
+		// game reported there either way.
+		if (chosen) {
+			logger::info("pick: {}, {}", Described(chosen.get()),
+				handle == g_trail.Current() ? std::string{ "under the crosshair" } : std::format("aimed at within the last {:.0f} s", a_recentSeconds));
+			return chosen->GetFormID();
+		}
+		{
+			// The one question a player cannot answer from the screen: what did the game report there.
 			const auto current = g_trail.Current();
 			const auto ref = RefFor(current);
 			auto*      actor = ref ? ActorFor(ref->GetFormID()) : nullptr;
@@ -817,7 +824,7 @@ namespace SH::Game
 			}
 			logger::info("pick: nobody to pick - {}", what);
 		}
-		return found;
+		return 0;
 	}
 
 	void FlushLog()
