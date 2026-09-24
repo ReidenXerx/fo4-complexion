@@ -45,8 +45,13 @@ namespace SH::Game
 	// items, belongs to the save being left.
 	void ForgetInbox();
 
-	// The bridge asked for the protocol (its Connect): it is there, whether or not it then polls.
+	// Silhouette's scripts asked for the protocol (the bridge's Connect, or API.Loaded): they are there,
+	// whether or not the bridge then polls.
 	void NoteAsked();
+
+	// Main thread: what the game shows of them now, told to the director (as their 3D loading would). A
+	// request about someone not seen yet this session is then decided knowing who they are.
+	void See(RE::Actor* a_actor);
 
 	// A save finished loading (or a new game started): the bridge should poll within a minute. A
 	// thread of ours says so in the log once when it does not -- the one symptom of a missing or

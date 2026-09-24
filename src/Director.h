@@ -349,7 +349,9 @@ namespace SH
 		{
 			std::size_t probes{ 0 }, bodies{ 0 }, refits{ 0 }, touches{ 0 }, snapshots{ 0 }, failed{ 0 }, gone{ 0 }, deferred{ 0 };
 
-			[[nodiscard]] bool Any() const { return probes || bodies || refits || touches || snapshots || failed || gone || deferred; }
+			// Deferring again, and nothing else, is not news: a scene that never ends would print a line every
+			// half minute. The count still goes out with the next line that has something to say.
+			[[nodiscard]] bool Any() const { return probes || bodies || refits || touches || snapshots || failed || gone; }
 		};
 
 		// all of these expect the lock held
@@ -370,6 +372,7 @@ namespace SH
 		void                      AfterProbe(std::uint32_t a_ref, Session& a_session);
 		void                      RebuildChoice(std::uint32_t a_ref, Session& a_session);
 		[[nodiscard]] bool        Claimed(std::uint32_t a_ref, const Session& a_session) const;
+		void                      Resettle(std::uint32_t a_ref);
 		void                      FollowReset(std::uint32_t a_ref, Session& a_session);
 		void                      FollowRoll(std::uint32_t a_ref, Session& a_session);
 		void                      FinishPendingBody(std::uint32_t a_ref, Session& a_session);

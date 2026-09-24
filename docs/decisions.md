@@ -333,7 +333,10 @@ the one the game shows until a script renames the reference.
 **Amended by the third microscope wave: MCM is found by the name it registers with F4SE, "F4MCM" (f4se.log
 shows `mcm.dll (00000001 F4MCM 01020000)`), not by its file name. Wave 2 asked for "MCM", which never
 answers, so no MCM switch reached the plugin and the API's setters never wrote MCM's settings. The bridge
-and `Silhouette:API.McmInstalled` ask for both names.**
+and `Silhouette:API.McmInstalled` ask for both names.** **Amended by the fourth microscope wave: MCM answers
+False for a key it never read, which would switch ORefit off for everyone, so the bridge trusts MCM's values
+only while a sentinel key in settings.ini (`[Meta] iDefaults=1`, on no control) says they were read; and it
+pushes them only when they change, so a read made just before another mod's switch cannot undo it.**
 
 Agent decision, 2026-09-23. `Silhouette:API` offers global functions named as in OBodyNative. The
 bridge raises the events as custom events that any script can register for: OnActorGenerated,
@@ -385,6 +388,12 @@ esp (Phase 1's has no 0x803): it removes Silhouette entirely, or keeps the new S
 and removes only Silhouette.dll (S-54 then sweeps the refits off). `scripts/deploy-dev.ps1` and
 `scripts/make-release.ps1` refuse a Silhouette.esp that lacks KYWD 0x803. The same holds for any mod that
 keeps a keyed layer (fo4-anatomy's 0x801 was told).
+
+**Amended by the fourth microscope wave (restaging).** Vortex deploys by hardlink: a staged file written in
+place is live at once, a new one waits for the Deploy. `scripts/deploy-dev.ps1` removed and re-copied its
+folders, so every restage left Data half-deployed until the Deploy -- the new esp and DLL beside the old
+scripts. It now stages file by file in place and names the new files that wait for the Deploy. A peer's rule
+worth keeping: a presence check tests the half that cannot go live early (the DLL), never the esp.
 
 Agent decision, 2026-09-23, from LooksMenu's source. Reset removes Silhouette's (unkeyed) layer: the NPC
 is bare now, and LooksMenu drops emptied entries when it loads a save (MorphValueMap::Load skips them),
@@ -499,6 +508,16 @@ non-persistent NPC whose morphs LooksMenu drops at load, a reroll that goes arou
 - A rule decides after the first probe, knowing the body she has (wave 2): a choice LooksMenu mirrors
   (S-51) is rebuilt first, so a rule never replaces a body somebody chose.
 
+**Amended in game, 2026-09-24 (fo4-mcp ran the test plan on wave 3).** "The first order in a session" waited
+for the game to say who was loaded, and after a load in a running game nobody was read. Across three loads in
+one session, 19 people were probed after the first and none after the other two. So a picking saved mid-preview
+was never put back (S-47), and everything else owed to the first sighting after a load waited for the next
+cell change. The game does not report people already around the player after such a load. fo4-mcp measured it
+with a sink of its own on the same event source: 85 loaded events after a load from the main menu, and 2 (both
+created references) after an in-session load of the same crowd, with the sink still attached. For 30 seconds
+after each load the plugin now reads every actor the game is simulating (its high and middle-high process
+lists), once each, and then logs how many of them the game itself reported.
+
 ## S-44 — Top-up: existing bodies get the variety they lack
 
 **Amended by the second microscope wave: a body is touched once per build of what is wanted of it -- its
@@ -508,7 +527,8 @@ off afterwards is not put back). Presence is read from her own layer: another mo
 slider is not hers. A body Silhouette gives or rolls counts as touched when it lands.** **Amended by the
 third microscope wave: a touch-up waits while AAF has her in a scene (S-56), and a body given again -- a new
 build's values for a choice, a rule's body put back -- keeps the variety she has, the variety a picked body
-was picked with included.**
+was picked with included.** **Fourth wave: so does a rule's body a new build gives again, when the rule's
+preset is the one already on her (her variety was BodyGen's roll, and was being drawn anew).**
 
 Owner poll, 2026-09-23 ("i aggree with recommended, but force regen on 24h function ofc will override
 it"). The first time the plugin sees a Silhouette body that lacks a variety slider the current build rolls
@@ -534,7 +554,9 @@ again after the load. A listener compiled against the decompiled base sources re
 blacklisted NPC rolled) announces only the body she ends with; the body after a Reset is announced even when
 it is the same preset as before; an announcement handed to the bridge and not raised yet is not made twice;
 and at most 64 are raised a poll without losing the 65th. While an NPC is being picked nothing about her body
-is announced -- the body on her may be a preview; Keep announces the one she keeps.**
+is announced -- the body on her may be a preview; Keep announces the one she keeps.** **Fourth wave: an
+announcement the bridge skipped (its actor was not in memory) is not remembered as made, and no longer stands
+in the way of the same body announced again later in the session.**
 
 Agent decision, 2026-09-23. The bridge sends its custom events under the names the compiler gives them,
 "silhouette:bridge_<Event>": sent under the bare name, no listener ever receives them (the vanilla scripts
@@ -561,6 +583,14 @@ picking a save left unfinished: the body on them is a preview, and given again i
 order pickings arrived in is saved, so the cap drops the oldest after a load too. Picking someone nothing
 had probed yet is the session's probe: what a probe settles (a choice rebuilt, a body announced) is settled
 at their first sighting.
+
+**Amended by the fourth microscope wave.** What a probe settles waits while they are picked -- a roll or
+reset owed, a half-written body, a heal, a first announcement -- and is done when the picking ends (Keep,
+Cancel, the restore landing, or a snapshot the bridge could not take), not at the next load. A choice rebuilt
+from LooksMenu during a picking is what a Cancel puts back. A half-written body a Cancel puts back still says
+so (S-58). An unfinished picking is put back from whichever is seen of them first after a load, an equip event
+included. In game, a save made mid-preview and loaded without quitting stayed on the preview. The co-save
+had kept the picking, but nobody was read after that load. The load sweep (S-43's amendment) is the fix.
 
 ## S-48 — Heavy is told by the item's name (supersedes S-42's mechanism)
 
@@ -590,7 +620,8 @@ config names three Eli_Armour_Compendium.esp armours built as shirts light (1002
 Institute Courser Uniform heavy (100014). Two limits stand: names are read as the game shows them, so on a
 localized Fallout4.esm (German, French, Russian ...) no vanilla item's name holds an English word -- add your
 language's words to `heavyWords`; and a refit flattens nipples only on a garment whose mesh carries the refit
-sliders -- no vanilla or DLC outfit does, mod outfits built with them do (Mercenary, Clothing Of The
+sliders -- no vanilla or DLC HEAVY garment does (the two vanilla clothes that carry NipBGone are light, and
+light clothes are never flattened), mod outfits built with them do (Mercenary, Clothing Of The
 Commonwealth). The power armour rule now also covers the events: climbing into a frame raises no
 OnActorNaked or OnActorRemovingClothes, and a piece put down is not clothing coming off.
 
@@ -681,7 +712,8 @@ scene held back everything else for that actor, so a woman undressed in the scen
 anatomy mod held her arousal flat) until it ended. A refit coming off, a probe and the picker now go out
 meanwhile. Touch-ups wait out a scene too, and the roll is asked again right before it is made (a scene can
 start while its keyed values are read). The bridge polls faster only for work it can be handed now; the
-half-minute summary says what is held back by a scene and what waits for people out of memory.
+half-minute summary says what is held back by a scene and what waits for people out of memory. (Fourth
+wave: deferring again, and nothing else, prints no summary: a scene that never ends filled the log.)
 
 ## S-57 — A created reference's id handed to someone new
 
@@ -696,7 +728,9 @@ plain draw): a record that holds intent -- a choice, a roll or reset owed (S-59)
 -- and every saved picking are written whatever the game says of the reference at the save. A created NPC
 whose cell is unloaded is not in memory, and is not gone: dropping them lost a picked settler's choice, and
 then nothing flagged the stranger who got the id later, whose body the old marker pinned. The next sighting
-sorts it out, as above. Intent grows only with what the player and other mods do.
+sorts it out, as above. Intent grows only with what the player and other mods do. (Fourth wave, the bound:
+a thousand created NPCs pressed once and then deleted leave a thousand records, about 33 KB, that are never
+pruned. At a save, a deleted created NPC and one whose cell is unloaded look the same. Accepted.)
 
 ## S-58 — A body being written says so
 
@@ -721,6 +755,12 @@ older plugin reads the new source as nobody's choice. The regeneration window ha
 when the plugin accepts; a refusal is asked again at its next scan, and anyone with a body of their own is not
 read again.
 
+**Amended by the fourth microscope wave.** A roll that lands clears only what it was: a second Back to random
+still queued behind it stays owed, and a Reset asked while the roll was in flight stays owed until it lands
+(it was being erased, and with another mod's keyed morph on her she stayed bare for good). The roll after a
+name leaves the name blacklist is owed too. The window remembers a refusal that cannot change (a race
+Silhouette does not shape) and asks no more; a new window looks at everyone again.
+
 ## S-60 — Back to random draws the rule again
 
 Owner poll, 2026-09-24: "Re-draw the rule (Recommended)". Under a name or faction rule, S-52 kept the
@@ -728,7 +768,9 @@ preset a person drew for good, so Back to random rolled BodyGen and the rule put
 -- 16 raiders pressed 6 times each came back to their preset every time. Now each press mixes a salt, kept in
 her record, into the rule's draw, and lands on another of the rule's presets than the body she has (a rule with
 one preset has nothing to draw). S-52 keeps the new draw from then on, across saves. Salt 0 is exactly the draw
-by id, so nobody's body changes until they are pressed. OBody's GenActor draws again the same way.
+by id, so nobody's body changes until they are pressed. OBody's GenActor draws again the same way. (Fourth
+wave: someone asked about before the plugin had seen them this session is read first; without it the rule
+gave back the same preset, and two bodies were announced.)
 
 ## S-61 — The rules file ships with every key, and a race list cannot be empty
 
@@ -754,3 +796,12 @@ a body: never written into a template, the picker, the catalog or a refit set, n
 "average", and a base whose only baked values are such sliders counts as zeroed. Its runtime value stays 0:
 the body as built. fo4-anatomy also moved the 50% into its base mesh and made the slider an extra with
 default 0, so nothing that honours defaults can double it; this entry is the second guard.
+
+The contract this makes, told to fo4-anatomy: it never writes such a slider into the UNKEYED layer. Like the
+states, an unkeyed value of it on a body Silhouette gave is healed away by the regeneration window when the
+plugin is not there (the plugin's own touch-up heals only what a body's template wrote, which it never was).
+fo4-anatomy's answer, 2026-09-24: it never sets `AnatomyOpening` at run time at all, keyed or unkeyed -- its
+right runtime value is 0, "as built", so that heal enforces the same contract. Its only runtime layer is
+keyword Anatomy.esp 0x801 ("AnatomyArousalLayer"), four morphs: NippleLength, NipplePerk2, NippleTip,
+NippleSize; it says so before that changes. (Wave 4 made the "average" measurement ignore these sliders too,
+as this entry had promised; on the owner's install the winners did not change.)

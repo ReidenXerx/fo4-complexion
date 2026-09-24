@@ -46,20 +46,36 @@ $pexText = [System.Text.Encoding]::GetEncoding(28591).GetString([System.IO.File]
 if (-not $pexText.Contains($catalog.build)) {
     throw "$pexFile was not compiled from build $($catalog.build) - run scripts\build-papyrus.ps1."
 }
-# ...and the files do what they claim.
 $python = (Get-Command python -ErrorAction SilentlyContinue).Source
 if (-not $python) { throw "No python: the verifier (tools\verify_bodygen.py) must pass before a release." }
-& $python (Join-Path $root 'tools\verify_bodygen.py') --dir $data --psc (Join-Path $root 'papyrus\Silhouette\Player.psc') | Select-Object -Last 3
-if ($LASTEXITCODE) { throw "tools\verify_bodygen.py fails these files - see its output." }
 # Never pack a Silhouette.esp without the refit keyword (0x803): LooksMenu resolves a keyed morph by the
 # plugin's NAME only, so such an esp turns every refit value into her own body for good (wave 3 L5-H1).
+# First, so its plain reason is the one shown -- the verifier refuses the same esp among everything else.
 & $python (Join-Path $root 'tools\make_esp.py') --check (Join-Path $data 'Silhouette.esp')
 if ($LASTEXITCODE) { throw "data\Silhouette.esp must not be packed - see the line above." }
+# ...and the files do what they claim. On a failure every line is shown, not a tail.
+$verify = @(& $python (Join-Path $root 'tools\verify_bodygen.py') --dir $data --psc (Join-Path $root 'papyrus\Silhouette\Player.psc'))
+if ($LASTEXITCODE) {
+    $verify | ForEach-Object { Write-Host $_ }
+    throw "tools\verify_bodygen.py fails these files - every line above."
+}
+$verify | Select-Object -Last 3 | ForEach-Object { Write-Host $_ }
 # ...nor a committed manifest edited or deleted: it is what the bodies of its build are, in every save.
 $git = (Get-Command git -ErrorAction SilentlyContinue).Source
 if (-not $git) { throw "No git: the committed manifests cannot be checked before a release." }
+# Only from this checkout itself: a copy without .git cannot be compared, and a copy inside another
+# repository would be compared with THAT repository's commit and pass whatever it holds.
+$ErrorActionPreference = 'Continue'    # git's stderr must not turn into a PowerShell error here
+$top = & $git -C $root rev-parse --show-toplevel 2>$null
+$topExit = $LASTEXITCODE
+$ErrorActionPreference = 'Stop'
+if ($topExit -or -not $top -or ([System.IO.Path]::GetFullPath(($top | Select-Object -First 1).Trim()).TrimEnd('\') -ine
+                                  [System.IO.Path]::GetFullPath($root).TrimEnd('\'))) {
+    throw "Run this from the fo4-silhouette git checkout: the manifest guard compares data\F4SE\Plugins\Silhouette\manifests with the last commit, and $root is not the top of a git work tree of its own."
+}
 # Modified or deleted only: a new manifest, staged or not yet, is how a new build is meant to arrive.
-& $git -C $root diff --quiet --diff-filter=MD HEAD -- 'data/F4SE/Plugins/Silhouette/manifests'
+# --no-renames: a manifest renamed is one deleted, whatever git would call it.
+& $git -C $root diff --quiet --no-renames --diff-filter=MD HEAD -- 'data/F4SE/Plugins/Silhouette/manifests'
 switch ($LASTEXITCODE) {
     0 { }
     1 { throw "A committed manifest was edited or deleted (git diff HEAD -- data/F4SE/Plugins/Silhouette/manifests). Restore it: manifests are only ever added." }

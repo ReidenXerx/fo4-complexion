@@ -1,7 +1,7 @@
 # Phase 2 — the Silhouette plugin
 
 What the F4SE plugin adds to Phase 1, how it does it, and why it is shaped this way. The decisions
-behind it are S-18 to S-29 and S-40 to S-57 in [decisions.md](decisions.md); this is the map. The first
+behind it are S-18 to S-29 and S-40 to S-62 in [decisions.md](decisions.md); this is the map. The first
 in-game session follows [phase2-test-plan.md](phase2-test-plan.md).
 
 ## What stays as it is
@@ -44,7 +44,8 @@ Silhouette.dll  (F4SE, CommonLibF4 OG)
     Director  what each actor should have, against what LooksMenu holds; the orders; the lanes
     Registry  co-save: INTENT only -- who chose which body -- and a picking in progress
     Sinks     TESObjectLoadedEvent (who appeared), TESEquipEvent (who dressed or undressed),
-              the crosshair (the picker's target)
+              the crosshair (the picker's target); for 30 s after each load, the process lists
+              too (after a load in a running game the first gave nobody, S-43)
 ```
 
 **The plugin never calls into the Papyrus VM** — dispatching into it from an F4SE task crashed
@@ -144,8 +145,9 @@ heavy or listed item once, with its reason, and "Which body" names the item. A m
 `Silhouette:API.IsHeavilyDressed`, or the marker read from LooksMenu directly.
 
 What the flattening shows depends on the garment: NipBGone moves a nipple only where the outfit's own
-mesh carries the slider. No vanilla or DLC garment does; mod outfits built with the refit sliders do
-(Mercenary's jackets, Clothing Of The Commonwealth's coats). Names are read as the game shows them, so on
+mesh carries the slider. No vanilla or DLC heavy garment does (two light vanilla clothes carry it, and light
+clothes are never flattened); mod outfits built with the refit sliders do (Mercenary's jackets, Clothing
+Of The Commonwealth's coats). Names are read as the game shows them, so on
 a localized Fallout4.esm no vanilla item is heavy until `heavyWords` holds that language's words.
 
 Refit: every clothed woman of a distributed race who HAS a body — a Silhouette body, another BodyGen

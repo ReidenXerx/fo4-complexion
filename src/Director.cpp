@@ -315,6 +315,7 @@ namespace SH
 		if (knew && was && !session.clothed && !a_sighting.powerArmor) {
 			Push(EventKind::kNaked, ref);
 		}
+		PendingRestore(ref, session);  // the first thing seen of them after a load can be an equip event
 		if (!session.probed) {
 			WorkFor(ref, Lane::kNormal).probe = true;  // first contact while dressing: the refit follows the probe
 			return;
@@ -396,7 +397,9 @@ namespace SH
 			ReconcileRefit(a_ref);
 			return;
 		}
-		a_session.settled = true;
+		// While the player is picking them, or a picking is being put back, most of what follows waits: it
+		// runs again when that ends (Resettle), not at the next load.
+		a_session.settled = !(_picker.ref == a_ref || _registry.pickings.contains(a_ref) || a_session.restoring);
 		RebuildChoice(a_ref, a_session);
 		FollowReset(a_ref, a_session);
 		FollowRoll(a_ref, a_session);
@@ -406,6 +409,15 @@ namespace SH
 		AnnounceBody(a_ref, a_session);
 		CheckTouch(a_ref, a_session);
 		ReconcileRefit(a_ref);
+	}
+
+	// The picker let go of them: what AfterProbe held back while they were picked is done now. A Seen
+	// would do it too, but one comes only when their 3D loads again.
+	void Director::Resettle(std::uint32_t a_ref)
+	{
+		if (const auto it = _sessions.find(a_ref); it != _sessions.end() && it->second.probed && !it->second.settled) {
+			AfterProbe(a_ref, it->second);
+		}
 	}
 
 	// A change to their body is on its way, or the player is choosing it: nothing else starts one.
@@ -430,6 +442,9 @@ namespace SH
 		}
 		Intend(a_ref, a_session, a_session.choice, preset);
 		_registry.Get(a_ref).stamp = a_session.stamp;  // the build the body has: a newer one re-gives it
+		if (const auto p = _registry.pickings.find(a_ref); p != _registry.pickings.end()) {
+			p->second.before = *_registry.Find(a_ref);  // picked meanwhile: a Cancel puts the choice back, not the lost record
+		}
 		Log(std::format("{:08X}: {} ({}) rebuilt from the choice LooksMenu keeps beside the body", a_ref, preset, SourceName(a_session.choice)));
 	}
 
@@ -553,7 +568,9 @@ namespace SH
 					break;  // that body is on them already: only the record was missing
 				}
 				Log(std::format("{:08X} \"{}\": {}", a_ref, a_session.facts.baseName, v.why));
-				QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = p->name }, Lane::kNormal);
+				// The same preset again (a new build's values): the variety she has stays, as for a choice.
+				QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = p->name, .keepVariety = IEquals(a_session.marker, p->marker) },
+					Lane::kNormal);
 				break;
 			}
 		case Tier::kNameBlacklist:
@@ -572,7 +589,7 @@ namespace SH
 				Intend(a_ref, a_session, Source::kNone, {});
 			} else if (rec && rec->source == Source::kNameBlacklist) {
 				Log(std::format("{:08X} \"{}\": no longer blacklisted - BodyGen rolls them", a_ref, a_session.facts.baseName));
-				Intend(a_ref, a_session, Source::kNone, {});
+				Intend(a_ref, a_session, Source::kRoll, {});  // owed until it lands (S-59)
 				QueueBody(a_ref, BodyRequest{ .what = BodyRequest::What::kRegenerate }, Lane::kNormal);
 			}
 			break;
@@ -942,11 +959,13 @@ namespace SH
 				return false;
 			}
 			const auto* rec = _registry.Find(a_ref);
-			if (rec && (rec->source == Source::kRoll || rec->source == Source::kReset)) {
-				a_why = rec->source == Source::kRoll ? "a new body is already on its way" : "they were reset: a new body comes at the next load";
+			if (rec && (rec->source == Source::kRoll || rec->source == Source::kReset || rec->source == Source::kNameBlacklist)) {
+				a_why = rec->source == Source::kRoll    ? "a new body is already on its way"
+				      : rec->source == Source::kReset   ? "they were reset: a new body comes at the next load"
+				                                        : "they are blacklisted by name: kept bare";
 				return false;
 			}
-			const bool ours = rec && !rec->preset.empty() && rec->source != Source::kNameBlacklist && rec->source != Source::kReset;
+			const bool ours = rec && !rec->preset.empty();
 			const auto  source = ours ? rec->source : Source::kNone;
 			const auto* p = _catalog->Find(ours ? std::string_view{ rec->preset } : a_markerPreset, a_female);
 			if (!ours && a_markerPreset.empty()) {
@@ -1298,6 +1317,12 @@ namespace SH
 					}
 					const bool keeping = o->body.keepVariety || !o->body.keepFrom.empty();
 					auto       body = BodyFor(c, *p, o->ref, _settings.variety, keeping ? &keep : nullptr);
+					if (const auto* rec = _registry.Find(o->ref);
+						!o->body.preview && !Chosen(o->body.choice) && rec && Chosen(rec->source) && IEquals(rec->preset, p->name)) {
+						// A choice recorded since the request was made (a probe rebuilt it meanwhile, S-51): the
+						// body of that choice goes out with its marker.
+						o->body.choice = rec->source;
+					}
 					if (o->body.keepVariety && !Chosen(o->body.choice)) {
 						// A choice marker on a body nothing is recorded for: the co-save lost the choice (a
 						// save made without the plugin), LooksMenu kept it (S-51). Given again, it stays --
@@ -1463,6 +1488,7 @@ namespace SH
 			Log(std::format("{:08X}: order {} (kind {}) not completed by the bridge", o.ref, o.id, static_cast<int>(o.kind)));
 			if (o.kind == OrderKind::kSnapshot && _picker.ref == o.ref) {
 				ClosePicker();  // without the snapshot a Cancel could not put them back
+				Resettle(o.ref);
 			}
 			if (o.kind == OrderKind::kBody && o.body.what == BodyRequest::What::kRestore) {
 				if (auto s = _sessions.find(o.ref); s != _sessions.end()) {
@@ -1701,6 +1727,8 @@ namespace SH
 						if (v > 0.0F) {
 							s.marker = m;
 							s.stamp = Stamp(v);
+							// The body put back was itself half written (S-58): it still says so.
+							s.pendingBody = v < 0.9F && !IEquals(m, kBlacklistMarker);
 						}
 						break;
 					case MarkerKind::kChoice:
@@ -1719,6 +1747,7 @@ namespace SH
 				s.restoring = false;
 				if (_picker.ref != ref) {
 					_registry.pickings.erase(ref);  // the picking is over
+					Resettle(ref);                  // and what it held back is done now
 				}
 				break;
 			}
@@ -1726,8 +1755,12 @@ namespace SH
 			{
 				OnProbed(ref, a_order);
 				s.reset = false;
-				if (const auto* rec = _registry.Find(ref); rec && (rec->source == Source::kReset || rec->source == Source::kRoll)) {
-					Intend(ref, s, Source::kNone, {});  // the roll owed has landed (S-59)
+				// The roll owed has landed (S-59) -- unless another is still queued behind it. A reset asked
+				// while this roll was in flight has not landed (its stamp is 0) and stays owed: cleared here, it
+				// would leave her bare with nothing remembered.
+				if (const auto* rec = _registry.Find(ref);
+					rec && ((rec->source == Source::kRoll && !BodyPending(ref)) || (rec->source == Source::kReset && rec->stamp != 0))) {
+					Intend(ref, s, Source::kNone, {});
 				}
 				// Generated as if new: the rules get their say first -- a body they replace at once is not
 				// the one to announce; its replacement is, when it lands.
@@ -1800,6 +1833,12 @@ namespace SH
 	std::uint32_t Director::NextEvent()
 	{
 		std::scoped_lock l{ _lock };
+		// The bridge raises strictly in order and says EventDone before it asks for the next: one handed out
+		// and not done by now was skipped (its actor was not in memory). It is settled -- not remembered as
+		// announced, and no longer standing in the way of the same body announced again.
+		for (auto& e : _taken) {
+			e.done = true;
+		}
 		if (_events.empty()) {
 			return 0;
 		}
@@ -1867,6 +1906,7 @@ namespace SH
 			if (entry != _registry.pickings.end()) {
 				_registry.pickings.erase(entry);
 			}
+			Resettle(ref);  // what the picking held back is done now
 			return a_message.empty() ? std::format("{} keeps the body they had.", name) : std::string{ a_message };
 		}
 		// The choice behind the body goes back at once; the body follows with the restore, and the saved
@@ -2009,6 +2049,7 @@ namespace SH
 		}
 		_registry.pickings.erase(ref);
 		ClosePicker();
+		Resettle(ref);  // what the picking held back (a heal, a first announcement) is done now
 		return std::format("{} keeps {}.", name, preset);
 	}
 

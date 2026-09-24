@@ -105,12 +105,18 @@ def manifests():
     out = {}
     for d in MANIFESTS:
         for f in d.glob('*.json') if d.exists() else []:
-            m = json.loads(f.read_text(encoding='utf-8'))
+            m = json.loads(f.read_text(encoding='utf-8-sig'))     # a BOM an editor added is not a new format
             out[int(m['stamp'])] = m
     return out
 
 
 def main():
+    # A preset or NPC name the console's code page cannot hold must not end the census (L4 F6).
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(errors='backslashreplace')
+        except (AttributeError, ValueError):
+            pass
     path = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else max(SAVES.glob('*.f4se'), key=lambda p: p.stat().st_mtime)
     plugins = read_cosave(path)
     if 'F4EE' not in plugins:

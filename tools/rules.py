@@ -97,8 +97,9 @@ def is_player_form(plugin, fid):
     return str(plugin).lower() == 'fallout4.esm' and fid in PLAYER_FORMS
 
 
-EMPTY_RACES = ('distributeRaces is empty: no race would get a random body. The default is ["HumanRace"] -- '
-               'put it back, or list the races (by editor id) that wear the human body')
+EMPTY_RACES = ('distributeRaces is empty: Silhouette would shape nobody -- no random bodies, no rules by name or '
+               'faction, no refits. The default is ["HumanRace"]: put it back, or list the races (by editor id) '
+               'that wear the human body')
 
 
 def distribute_races(cfg):
@@ -139,7 +140,8 @@ def encodable(text):
 
 def validate(cfg, source):
     """Refuses, naming the key, any value that is not the shape OBody's config gives it -- and any
-    empty name or plugin, or text the plugin could not read back."""
+    empty name or plugin, or text the plugin could not read back. The shape is checked first:
+    "distributeRaces": "" is a string where a list belongs, which says more than "an empty name"."""
     def bad(key, what):
         raise SystemExit(f'{source}: {key} must be {what}')
 
@@ -158,13 +160,6 @@ def validate(cfg, source):
                 yield from texts(x)
 
     for key, v in cfg.items():
-        for t in texts(v):
-            if not isinstance(t, str):
-                continue
-            if not encodable(t):
-                bad(key, f'text the plugin can read (found {t!r}, which is not valid Unicode)')
-            if not t.strip() and key not in ('blacklistedPresetsShowInOBodyMenu',):
-                bad(key, 'free of empty names, plugins and form ids')
         if key in PRESET_MAPS:
             if not isinstance(v, dict) or not all(isinstance(k, str) and names(x) for k, x in v.items()):
                 bad(key, 'an object of "name": ["preset", ...]')
@@ -188,6 +183,13 @@ def validate(cfg, source):
         elif key == 'blacklistedPresetsShowInOBodyMenu':
             if not isinstance(v, bool):
                 bad(key, 'true or false')
+        for t in texts(v):
+            if not isinstance(t, str):
+                continue
+            if not encodable(t):
+                bad(key, f'text the plugin can read (found {t!r}, which is not valid Unicode)')
+            if not t.strip() and key not in ('blacklistedPresetsShowInOBodyMenu',):
+                bad(key, 'free of empty names, plugins and form ids')
         if key == 'heavyWords':
             for w in v:
                 if not has_word(w):
@@ -272,8 +274,8 @@ def form_key(text, light=False):
     lands in another plugin's range (OBody's DiscardFormDigits keeps 3 digits for
     light mods too). An xEdit-style 'FE00A801' is local id 801.
 
-    Strict: 1 to 8 hex digits and nothing else. Python's int() would also take '+12', '1_2'
-    and ' 12 ', none of which OBody or LooksMenu reads as that id."""
+    Strict: 1 to 8 hex digits after an optional 0x, and nothing else but the spaces around them.
+    Python's int() would also take '+12' and '1_2' as 0x12, which is no form id as OBody writes one."""
     t = str(text).strip().lower().removeprefix('0x')
     if not re.fullmatch(r'[0-9a-f]{1,8}', t):
         return None

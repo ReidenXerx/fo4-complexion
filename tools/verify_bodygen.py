@@ -323,8 +323,12 @@ def check_picker(args, templates, player, problems, stamp, cat):
             k, v = line.split('=', 1)
             if k.strip() == 'sBuild':
                 menu_build = v.strip()
-            else:
+                continue
+            try:
                 defaults[f'{k.strip()}:{section}'] = int(v)
+            except ValueError:
+                problems.append(f'settings.ini [{section}] {k.strip()}={v.strip()}: not a whole number -- MCM would '
+                                f'read the setting as 0')
     text = psc.read_text(encoding='utf-8')
     m = re.search(r'String Function Build\(\) Global\s+Return "([^"]*)"', text)
     script_build = m.group(1) if m else None
@@ -482,6 +486,10 @@ def check_picker(args, templates, player, problems, stamp, cat):
     for key in ('bORefit:General', 'bNippleRand:General', 'bGenitalRand:General'):
         if key not in defaults:
             problems.append(f'settings.ini has no default for {key}: MCM would read it as off')
+    # The sentinel the bridge reads before it believes MCM at all (a key MCM never loaded reads as 0).
+    if defaults.get('iDefaults:Meta') != 1:
+        problems.append('settings.ini has no [Meta] iDefaults=1: the bridge would never trust MCM\'s switches, and '
+                        'the settings in the menu would do nothing')
 
 
 def check_manifests(groot, cat, stamp, problems):
@@ -507,9 +515,17 @@ def check_manifests(groot, cat, stamp, problems):
                             f'one would stand for another build than its name says')
         if not (isinstance(build, str) and re.fullmatch(r'[0-9a-f]{12}', build) and (int(build[:6], 16) or 1) == st):
             problems.append(f'manifest {f.name}: stamp {st} is not the first 24 bits of its build {build!r}')
+        # Everything read below reads it as {marker: {preset, values: {morph: number}}}: one of another shape is
+        # said once and left out, not read into a traceback (wave 4 L4).
         if not isinstance(templates, dict) or not all(
-                isinstance(e, dict) and isinstance(e.get('preset'), str) for e in templates.values()):
-            problems.append(f'manifest {f.name}: its templates do not all name a preset')
+                isinstance(m, str) and isinstance(e, dict) and isinstance(e.get('preset'), str)
+                and isinstance(e.get('values', {}), dict)
+                and all(isinstance(k, str) and isinstance(v, (int, float)) and not isinstance(v, bool)
+                        for k, v in e.get('values', {}).items())
+                for m, e in templates.items()):
+            problems.append(f'manifest {f.name}: its templates are not all a marker naming a preset and its values -- '
+                            f'the bodies of its build could not be named or healed')
+            continue
         if st in found:
             problems.append(f'manifests {found[st][0].name} and {f.name} both say stamp {st}: the plugin keeps one, '
                             f'and the bodies of the other build would be named and healed by the wrong one')
@@ -860,9 +876,10 @@ def main():
     tris = {g: base_body.read_tri(body_file[b].with_suffix('.tri')) for g, b in sg.BODIES.items()}
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
     presets = sg.read_presets(args.data / 'Tools/BodySlide/SliderPresets')
-    # The markers exactly as the generator derived them: from the manifests beside these files (L4 F2).
+    # The markers exactly as the generator derived them: from the manifests beside these files and in the
+    # game's Data (L4 F2, wave 4 L6).
     try:
-        history = sg.manifest_history(groot / sg.MANIFESTS)
+        history = sg.manifest_history(groot / sg.MANIFESTS, args.data / sg.MANIFESTS)
     except SystemExit as exc:
         problems.append(f'manifests: {exc}')
         history = {}
@@ -974,14 +991,16 @@ def main():
         for pr in problems:
             print(f'  {pr}')
         return 1
-    print('PASS - LooksMenu parses every template and line and every name resolves; every roll is permanent; the '
-          'player and the character-creation dummies get the default and are never rolled; no template or catalog '
-          'preset holds a runtime state, the shaft or fo4-anatomy\'s build slider, and the catalog and the picker '
-          'script refuse all three; the random '
-          'pool is the catalog\'s random presets, each sex its own, and rolls exactly its catalog ranges; the '
-          'catalog\'s BodyGen tiers are the lines\'; every manifest is its stamp\'s and the current one names every '
-          'preset; the menu, the hotkeys and the picker script agree; Silhouette.esp is this build\'s; the plugin gives '
-          'the same bodies BodyGen does, and every body lands on its preset.')
+    # Only what was checked above (wave 4 L7): the plugin names and form ids on a line are NOT looked up.
+    print('PASS - LooksMenu parses every template and line, every template a line names exists, and every race a '
+          'line names is in the load order (a line\'s plugin names and form ids are not looked up); every roll is '
+          'permanent; the player and the character-creation dummies get the default and are never rolled; no '
+          'template or catalog preset holds a runtime state, the shaft or fo4-anatomy\'s build slider, and the '
+          'catalog and the picker script list all three for the heal; the random pool is the catalog\'s random '
+          'presets, each sex its own, and rolls exactly its catalog ranges; the catalog\'s BodyGen tiers are the '
+          'lines\'; every manifest is its stamp\'s and the current one names every preset; the menu, the hotkeys, '
+          'the picker script and the settings sentinel agree; Silhouette.esp is the one tools/make_esp.py builds; '
+          'the plugin gives the same bodies BodyGen does, and every body lands on its preset.')
     return 0
 
 

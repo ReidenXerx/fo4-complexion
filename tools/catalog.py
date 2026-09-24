@@ -68,13 +68,19 @@ def resolve_races(cfg, data, report):
     for key in ('raceFemale', 'raceMale'):
         wanted.update(cfg.get(key, {}))
     missing = []
-    found = plugin_forms.resolve(data, plugins_txt(), 'RACE', wanted, missing)
+    txt = plugins_txt()
+    found = plugin_forms.resolve(data, txt, 'RACE', wanted, missing)
     unknown = sorted(w for w in wanted if w not in found)
     if unknown:
-        # A race a disabled plugin defines is not a typo: say which plugin, not "check the spelling".
-        inactive = plugin_forms.find_inactive(data, plugins_txt(), 'RACE', unknown)
-        why = [f'{w!r} is defined by {inactive[w]}, which is not active in your load order (plugins.txt) -- '
-               f'enable it, or take the race out of the rules' if w in inactive else
+        # A race a disabled plugin defines is not a typo: say which plugin, not "check the spelling" --
+        # and which load order it was looked for in. Without a plugins.txt (Mod Organizer, Proton, no
+        # LOCALAPPDATA) only the base game and Creation Club plugins count as loaded.
+        inactive = plugin_forms.find_inactive(data, txt, 'RACE', unknown)
+        order = (f'the load order in {txt}' if txt and txt.exists() else
+                 f'the load order: no plugins.txt was found ({txt or "LOCALAPPDATA is not set"}), so only the base '
+                 f'game\'s and Creation Club plugins count as loaded')
+        why = [f'{w!r} is defined by {inactive[w]}, which is not active in {order} -- enable it, or take the race '
+               f'out of the rules' if w in inactive else
                f'{w!r}: no plugin in Data defines a race of that editor id -- check the spelling '
                f'(HumanRace, GhoulRace, ...)' for w in unknown]
         raise SystemExit('rules: a race the rules name matches nobody in the load order:\n  ' + '\n  '.join(why))

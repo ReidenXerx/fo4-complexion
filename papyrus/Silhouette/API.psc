@@ -133,7 +133,7 @@ EndFunction
 
 ; What their marker names, read from LooksMenu now.
 String Function MarkerPreset(Actor akActor) Global
-	If !akActor || !Loaded()
+	If !akActor || !Loaded() || !LooksMenuLoaded()
 		Return ""
 	EndIf
 	Bool female = IsFemale(akActor)

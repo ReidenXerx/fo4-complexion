@@ -11,15 +11,18 @@ rebuilds FemaleBody (fo4-anatomy does), regenerate after it, not before.
 
 **Never load an older Silhouette.esp over this one** -- not the Phase-1 file, not an earlier build. One
 without the refit keyword (0x803) turns every refit on anyone into her own body for good (decisions S-27).
-To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 16).
+To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
 
 ## Setup
 
 1. **Game closed.** Back up the save's `.fos` and `.f4se`. Run `scripts\deploy-dev.ps1` -- it refuses a
-   catalog, BodyGen files, scripts or a DLL of different builds, and a Silhouette.esp without the refit
-   keyword -- then Deploy in Vortex. It replaces the files of the Silhouette-dev mod in place: the new
-   Silhouette.esp (two quests, two form lists, a keyword: well over the Phase-1 file's 304 bytes) is
-   already enabled. Set `f4ee.ini` `iLogLevel=3`, and in `Fallout4Custom.ini`
+   catalog and BodyGen files of two generator runs, a Player.pex compiled from another run, files the
+   verifier fails, an edited committed manifest, and a Silhouette.esp without the refit keyword (whether
+   the bridge's scripts and the DLL are of one release is checked by the bridge at every load). It
+   stages the Silhouette-dev mod's files in place: every file Data already has goes live at once, and it
+   lists by name the NEW files, which wait for Vortex's Deploy -- press Deploy before launching whenever
+   it lists any. Silhouette.esp (two quests, two form lists, a keyword: well over the Phase-1 file's 304
+   bytes) is already enabled. Set `f4ee.ini` `iLogLevel=3`, and in `Fallout4Custom.ini`
    `[Papyrus] bEnableLogging=1, bEnableTrace=1`.
 
 ## First load
@@ -29,25 +32,33 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 16).
    - `papyrus: Silhouette:DLL bound (protocol 3)`
    - `catalog: build <build>, stamp <stamp>, rules <rules>, N presets, N manifest(s), 0 faction rule(s), 1 refit set(s)`
      -- the build, stamp and rules the generator printed last; one manifest per build ever generated
-     (six after wave 3). A `manifest <file> says it is build stamp <n>: not read` means a manifest was
-     renamed by hand.
+     (five: waves 3 and 4 kept the build and stamp). A `manifest <file> says it is build stamp <n>: not
+     read` means a manifest was renamed by hand.
    - `events: TESObjectLoadedEvent attached (holder scan, ...)` and `events: TESEquipEvent attached (holder scan, ...)`
    - `after loading: N record(s); loaded: yes, equip: yes, crosshair: ...`
    - `bridge: bridge connected - ready: build ...`
+   - about 30 seconds after the load, `after loading: N actor(s) around the player read; the game reported M
+     of them as loaded`, with N about the number of people, creatures and robots nearby. M is large after a
+     load from the main menu and small after one in a running game: the game reports only the first (S-43's
+     amendment), and N is what makes up for it.
 
    What a failure means:
    - `catalog refused` -- files of two generator runs. Regenerate and deploy them together.
    - `equip: no` in the after-loading line -- ORefit will not follow undressing. Stop. (An earlier
-     `no source for TESEquipEvent ... yet` is only a warning that the source was attached later.)
+     `events: no source for TESEquipEvent yet - ...` is only a warning that the source was attached
+     later.)
    - `the bridge has not polled in the minute since the save loaded` -- Silhouette.esp disabled, its
-     scripts missing, or LooksMenu missing. `the bridge checked in but does not poll` -- scripts from
-     another release. `nobody is shaped one by one this session - <why>` -- the catalog was refused.
+     scripts missing, or LooksMenu missing. `Silhouette's scripts answered but the bridge does not
+     poll` -- the bridge's script missing or of another release, or LooksMenu missing. `nobody is shaped
+     one by one this session - <why>` -- the catalog was refused.
    - a notification "Silhouette.dll and its scripts are from different releases" -- stale .pex files.
    - a notification "LooksMenu is not loaded" -- F4EE is missing; nothing can be shaped.
 3. `f4ee.log`: the Silhouette templates load and their targets are acquired. LooksMenu's
    `template <name> not found.` means a template was dropped (the verifier would have failed that build).
 4. MCM > Silhouette > Settings > "How is Silhouette doing?" at about 10 and 60 seconds: "order(s)
-   waiting" reaches 0 by 60. Every half minute while there is work, Silhouette.log says what was done:
+   waiting" reaches 0 by 60. Every half minute when something was done or can be done, Silhouette.log
+   says what (work only held back by a scene, or waiting for people out of memory, is said with the next
+   line that has news):
    `bridge: N probe(s), N body order(s), N refit(s), N touch-up(s), N snapshot(s); N failed, N out of
    reach, N deferred; N waiting (N urgent, N normal, N background)`, then `N held while another mod has
    them busy` and `N for people out of memory` when there are. A waiting count that never falls means
@@ -80,8 +91,8 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 16).
 9. Heavy clothes (S-48), told by the item's name:
    - A combat armour chest piece over her outfit: the log has, once, `clothing XXXXXXXX "Combat Armor
      Chest Piece" (Fallout4.esm): heavy - the name says "armor"`, and "Which body" says `dressed
-     heavily (Combat Armor Chest Piece), refit on`. Nothing shows: no vanilla or DLC garment's mesh
-     carries the refit sliders.
+     heavily (Combat Armor Chest Piece), refit on`. Nothing shows: no vanilla or DLC heavy garment's
+     mesh carries the refit sliders (two light vanilla clothes carry NipBGone; they are never flattened).
    - Where it shows: a mod outfit built with them. Mercenary.esp 000941 "Merc Combat Jacket A", or
      Clothing Of The Commonwealth.esp 000896 "Western Coat": heavy, nipples flat under it. The light
      control, Mercenary.esp 000938 "Rebel Shirt": nipples as they are.
@@ -109,11 +120,14 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 16).
     press MCM's Refresh with a crowd around, and at once Pick someone and press Next -- the preview
     still lands within about a second.
 12. Pick another NPC, Next twice, Cancel: exactly her previous body, her own hand edits included.
-13. Pick someone, Next, and SAVE with the preview on her; load that save: she is back on her own body,
-    and Silhouette.log has `a picking left unfinished - the body they had goes back` (S-47).
+13. Pick someone, Next, and SAVE with the preview on her; load that save from the pause menu, without
+    quitting: she is back on her own body, and Silhouette.log has `a picking left unfinished - the body they
+    had goes back` (S-47), and probes after the load. (Wave 3 failed exactly this: nobody was read after such
+    a load.) Then undress a companion through the trade menu: `refit off` within about a second, so the
+    equip events still arrive after a load in a running game.
 14. "Back to random" (MCM, The NPC in your sights) on a woman who is not in a scene: a new body within a
-    second, other mods' keyed morphs kept -- the anatomy arousal layer included (`bodygen morphs` shows
-    its keyword layer before and after). (A Back to random saved before it lands is carried out after the
+    second, other mods' keyed morphs kept -- the anatomy arousal layer included (fo4-mcp's `bodygen
+    morphs` verb shows its keyword layer before and after). (A Back to random saved before it lands is carried out after the
     load, S-59: too quick to catch by hand, the offline tests cover it.)
 
 ## With AAF

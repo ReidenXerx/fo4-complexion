@@ -225,7 +225,8 @@ namespace SH
 				item.Rec(save->ref, *save->before);
 			}
 			// Appended after the fields version 2 began with: the arrival order the cap goes by, then the
-			// salt of the record the picking would put back.
+			// salt of the record the picking would put back -- written only when there is one. A field added
+			// later goes after both, and its reader follows the same condition.
 			item.Put(save->seq);
 			if (save->before) {
 				item.Put(save->before->salt);

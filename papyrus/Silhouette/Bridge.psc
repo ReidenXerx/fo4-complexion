@@ -71,6 +71,9 @@ Keyword _aafBusy
 Keyword _aafLocked
 ; Form ids, not actors: an Actor held in a script variable is kept in memory with it.
 Int[] _swept
+; The switches last pushed to the plugin (ORefit 1, nipples 2, genitals 4), -1 for none this
+; load: MCM's values are pushed only when they change.
+Int _pushed = -1
 
 ;---------------------------------------------------------------------------
 ; Startup: on quest start and on every load. This script's variables live in the
@@ -92,6 +95,7 @@ Function Connect()
 	_plugin = False
 	_sweeping = False
 	_swept = new Int[0]
+	_pushed = -1    ; the plugin starts from its defaults every launch
 	; Cancel first: a timer started before the save may still be counting down.
 	CancelTimer(kPollTimer)
 	_refitKeyword = Game.GetFormFromFile(RefitKeywordID, "Silhouette.esp") as Keyword
@@ -147,6 +151,11 @@ EndFunction
 
 ; The MCM's switches, when MCM is there. Without it the plugin keeps what it has --
 ; its defaults, or what another mod set through Silhouette:API.
+; MCM answers False for a key it never read (settings.ini missing or unread), which
+; would switch ORefit off for everyone: its values count only while the sentinel key
+; it reads with them, on no control, says they were read. And a value unchanged since
+; the last push is not pushed again: a read made just before another mod's switch
+; (Silhouette:API, MCM first, then the plugin) must not undo it.
 Function PushSettings()
 	If !_mcm && _refitKeyword
 		Return
@@ -154,15 +163,31 @@ Function PushSettings()
 	Bool orefit = True
 	Bool nipples = True
 	Bool genitals = True
-	If _mcm
+	If _mcm && MCM.GetModSettingInt(ModName, "iDefaults:Meta") == 1
 		orefit = MCM.GetModSettingBool(ModName, "bORefit:General")
 		nipples = MCM.GetModSettingBool(ModName, "bNippleRand:General")
 		genitals = MCM.GetModSettingBool(ModName, "bGenitalRand:General")
+	ElseIf _refitKeyword
+		Return
 	EndIf
 	If !_refitKeyword
 		; Nowhere to put a refit but the body's own layer: none at all instead.
 		orefit = False
 	EndIf
+	Int now = 0
+	If orefit
+		now += 1
+	EndIf
+	If nipples
+		now += 2
+	EndIf
+	If genitals
+		now += 4
+	EndIf
+	If now == _pushed
+		Return
+	EndIf
+	_pushed = now
 	Silhouette:DLL.Configure(orefit, nipples, genitals)
 EndFunction
 
@@ -626,7 +651,7 @@ Function MenuRandom()
 	If a && Busy(a)
 		see = " Another mod has them in a scene: the new body comes when it ends."
 	EndIf
-	Debug.MessageBox(Silhouette:DLL.NameOf(target) + " gets a new body, rolled as if met for the first time (a rule that covers them draws again); other mods' body morphs are kept." + see)
+	Debug.MessageBox(Silhouette:DLL.NameOf(target) + " gets a new body, rolled as if met for the first time (a rule with several presets draws again); other mods' body morphs are kept." + see)
 EndFunction
 
 Function MenuWhich()

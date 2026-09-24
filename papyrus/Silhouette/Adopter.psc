@@ -69,6 +69,12 @@ EndFunction
 
 Function OpenWindow()
 	openedAt = Utility.GetCurrentGameTime()
+	; A new window looks at everyone again: an id the game has since handed to someone
+	; new would otherwise keep the old person's place on the list.
+	FormList seen = Game.GetFormFromFile(0x801, "Silhouette.esp") as FormList
+	If seen
+		seen.Revert()
+	EndIf
 	Debug.Trace("Silhouette adopter: window opened at game day " + openedAt, 0)
 	StartTimer(ScanSeconds, ScanTimer)
 EndFunction
@@ -263,6 +269,14 @@ EndFunction
 ; again at the next scan -- once they have a body of their own, Kind says so.
 Function Adopt(Actor a, Bool female, FormList seen, Bool abPlugin)
 	If abPlugin
+		If !Silhouette:DLL.CanShape(a.GetFormID())
+			; Never Silhouette's (a race it does not shape): a refusal that will not change, so
+			; they are not asked about again for the rest of the window.
+			If seen
+				seen.AddForm(a)
+			EndIf
+			Return
+		EndIf
 		String why = Silhouette:DLL.RequestAdopt(a.GetFormID())
 		If why == ""
 			If seen

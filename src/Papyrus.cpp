@@ -331,6 +331,9 @@ namespace SH::Papyrus
 		Str RequestRegenerate(std::monostate, std::int32_t a_actor, std::int32_t a_lane)
 		{
 			return Request(a_actor, [&](RE::Actor* a, std::string& why) {
+				// A rule draws again only for someone the director knows (S-60): one asked about before the
+				// pump saw them load would get the rule's same preset back.
+				Game::See(a);
 				return D().RequestRegenerate(Ref(a_actor), Game::IsFemale(a), Game::BaseOf(a), LaneOf(a_lane), why);
 			});
 		}

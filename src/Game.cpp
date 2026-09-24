@@ -61,6 +61,18 @@ namespace SH::Game
 		std::atomic<bool>          g_watching{ false };
 		std::int64_t               g_summaryMs{ 0 };  // main thread: the last summary line
 
+		// Main thread: the load sweep. After a load in a running game the game does not report the people
+		// already around the player as loaded, so nobody was read and a picking saved mid-preview was never
+		// put back (S-47). Measured 2026-09-24: Silhouette read 19 people after a load from the main menu and
+		// none after two loads in the running game; F4MCP's own sink on the same source got 85 events after
+		// a main-menu load and 2 (both created references) after an in-session one, the sink still attached.
+		// For a while after each load, the bridge's polls read every actor the game is simulating, once each.
+		constexpr std::int64_t            kSweepMs = 30'000;
+		std::int64_t                      g_sweepUntilMs{ 0 };
+		bool                              g_sweepSaid{ true };
+		std::unordered_set<std::uint32_t> g_swept;     // read by the sweep since the load
+		std::unordered_set<std::uint32_t> g_reported;  // reported loaded by the game since the load
+
 		std::int64_t NowMs()
 		{
 			return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
@@ -71,17 +83,25 @@ namespace SH::Game
 			return std::ranges::any_of(a_list, [&](const std::string& n) { return IEquals(n, a_name); });
 		}
 
+		// A path for the log, whatever it holds: path::string() throws for a name the ANSI code page
+		// cannot hold, and a throw at data load takes the game down.
+		std::string Utf8(const std::filesystem::path& a_path)
+		{
+			const auto u = a_path.generic_u8string();
+			return { reinterpret_cast<const char*>(u.data()), u.size() };
+		}
+
 		std::optional<nlohmann::json> ReadJson(const std::filesystem::path& a_path, std::string& a_error)
 		{
 			std::ifstream in(a_path, std::ios::binary);
 			if (!in) {
-				a_error = std::format("{} is missing", a_path.generic_string());
+				a_error = std::format("{} is missing", Utf8(a_path));
 				return std::nullopt;
 			}
 			try {
 				return nlohmann::json::parse(in);
 			} catch (const std::exception& e) {
-				a_error = std::format("{} is not valid JSON: {}", a_path.generic_string(), e.what());
+				a_error = std::format("{} is not valid JSON: {}", Utf8(a_path), e.what());
 				return std::nullopt;
 			}
 		}
@@ -135,6 +155,25 @@ namespace SH::Game
 		{
 			const auto& biped = a_actor->biped;
 			return biped && biped->root;
+		}
+
+		// Everyone the game is simulating around the player (the two lists Rapport's ActorScan reads on this
+		// runtime) whose body is built and whom the sweep has not read since the load.
+		void Sweep(std::deque<std::uint32_t>& a_loaded)
+		{
+			const auto lists = RE::ProcessLists::GetSingleton();
+			if (!lists) {
+				return;
+			}
+			for (const auto* handles : { &lists->highActorHandles, &lists->middleHighActorHandles }) {
+				for (const auto& handle : *handles) {
+					const auto ptr = handle.get();
+					auto*      actor = ptr.get();
+					if (actor && Has3D(actor) && g_swept.insert(actor->GetFormID()).second) {
+						a_loaded.push_back(actor->GetFormID());
+					}
+				}
+			}
 		}
 
 		// TESObjectARMO has GetFilledSlots twice over (two of its bases); the biped object form's is
@@ -390,11 +429,15 @@ namespace SH::Game
 					// The bridge only sweeps when this plugin cannot be used (S-54): say why, not "check the esp".
 					if (g_loadedMs.compare_exchange_strong(loaded, 0)) {
 						if (!g_director.Ready()) {
-							logger::warn("nobody is shaped one by one this session - {}. The bridge only takes refits off (BodyGen still gives bodies)",
+							logger::warn("nobody is shaped one by one this session - {}. The bridge, where Silhouette.esp and its scripts are "
+										 "there, only takes refits off (BodyGen still gives bodies)",
 								g_director.Status());
 						} else if (g_askedMs.load() >= loaded) {
-							logger::warn("the bridge checked in but does not poll: its scripts are from another release than Silhouette.dll. Install "
-										 "one release's files together; until then nobody is shaped one by one (BodyGen still gives bodies)");
+							// Asked by Silhouette's scripts -- the bridge's, or the API's (the regeneration window,
+							// the MCM, another mod) -- so they are there, but the bridge does not poll.
+							logger::warn("Silhouette's scripts answered but the bridge does not poll: its script is missing or from another "
+										 "release than Silhouette.dll, or LooksMenu is not loaded. Install one release's files together; until "
+										 "it polls, nobody is shaped one by one (BodyGen still gives bodies)");
 						} else {
 							logger::warn("the bridge has not polled in the minute since the save loaded. If that goes on, check that Silhouette.esp "
 										 "is enabled, its scripts are installed and LooksMenu is loaded: until it polls, nobody is shaped one by one "
@@ -451,26 +494,32 @@ namespace SH::Game
 		std::size_t     manifests = 0;
 		std::error_code ec;
 		for (std::filesystem::directory_iterator it{ std::filesystem::path{ kFolder } / "manifests", ec }, end; !ec && it != end; it.increment(ec)) {
-			const auto& path = it->path();
-			if (path.extension() != ".json") {
-				continue;
+			// One file at a time, and nothing it does may throw out of here: a name the ANSI code page
+			// cannot hold makes path::string() throw, and so would anything that formats it.
+			try {
+				const auto& path = it->path();
+				if (path.extension() != ".json") {
+					continue;
+				}
+				const auto  name = Utf8(path.filename());
+				std::string merror;
+				const auto  m = ReadJson(path, merror);
+				auto        parsed = m ? ParseManifest(*m, merror) : std::nullopt;
+				if (!parsed) {
+					logger::warn("manifest {}: {}", name, merror);
+					continue;
+				}
+				// A build's manifest is <stamp>.json: one under another name (copied, renamed by hand) would
+				// replace the real one's meaning for every body of that build.
+				if (path.stem().wstring() != std::to_wstring(parsed->first)) {
+					logger::warn("manifest {} says it is build stamp {}: not read (a manifest is named for its stamp)", name, parsed->first);
+					continue;
+				}
+				catalog->AddManifest(parsed->first, std::move(parsed->second));
+				++manifests;
+			} catch (const std::exception& e) {
+				logger::warn("manifests: a file could not be read ({}) - skipped", e.what());
 			}
-			std::string merror;
-			const auto  m = ReadJson(path, merror);
-			auto        parsed = m ? ParseManifest(*m, merror) : std::nullopt;
-			if (!parsed) {
-				logger::warn("manifest {}: {}", path.filename().string(), merror);
-				continue;
-			}
-			// A build's manifest is <stamp>.json: one under another name (copied, renamed by hand) would
-			// replace the real one's meaning for every body of that build.
-			if (path.stem().string() != std::to_string(parsed->first)) {
-				logger::warn("manifest {} says it is build stamp {}: not read (a manifest is named for its stamp)", path.filename().string(),
-					parsed->first);
-				continue;
-			}
-			catalog->AddManifest(parsed->first, std::move(parsed->second));
-			++manifests;
 		}
 		if (ec) {
 			logger::warn("manifests: {} - bodies of older builds may not be named or healed", ec.message());
@@ -545,6 +594,10 @@ namespace SH::Game
 		// Main thread (a load or a new game starting): an item created in the save being left (0xFF)
 		// has an id the next save gives to something else.
 		g_resolved.heavyOf.clear();
+		g_sweepUntilMs = 0;
+		g_sweepSaid = true;
+		g_swept.clear();
+		g_reported.clear();
 	}
 
 	void NoteAsked()
@@ -552,9 +605,24 @@ namespace SH::Game
 		g_askedMs.store(NowMs());
 	}
 
+	void See(RE::Actor* a_actor)
+	{
+		const auto catalog = g_director.CatalogPtr();
+		if (!catalog || !a_actor || !Has3D(a_actor)) {
+			return;
+		}
+		if (const auto s = Read(a_actor, *catalog, nullptr, false, nullptr)) {
+			g_director.Seen(*s);
+		}
+	}
+
 	void NoteGameLoaded()
 	{
 		g_loadedMs.store(NowMs());
+		g_sweepUntilMs = NowMs() + kSweepMs;  // main thread, like the pump that reads it
+		g_sweepSaid = false;
+		g_swept.clear();
+		g_reported.clear();
 		if (!g_watching.exchange(true)) {
 			std::thread{ Watch }.detach();
 		}
@@ -618,6 +686,16 @@ namespace SH::Game
 		}
 		if (dropped != 0) {
 			logger::warn("the bridge fell behind: {} actor event(s) dropped, the oldest first; those actors are read again when they next load", dropped);
+		}
+		if (g_sweepUntilMs != 0) {
+			if (NowMs() < g_sweepUntilMs) {
+				g_reported.insert(loaded.begin(), loaded.end());
+				Sweep(loaded);
+			} else if (!g_sweepSaid) {
+				g_sweepSaid = true;
+				const auto told = std::ranges::count_if(g_swept, [](std::uint32_t a_ref) { return g_reported.contains(a_ref); });
+				logger::info("after loading: {} actor(s) around the player read; the game reported {} of them as loaded", g_swept.size(), told);
+			}
 		}
 		const auto catalog = g_director.CatalogPtr();
 		if (catalog) {

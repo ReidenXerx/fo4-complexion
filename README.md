@@ -53,15 +53,16 @@ LooksMenu, a moment after they are made (LooksMenu is reached through Papyrus, a
 Without the DLL, everything above keeps working.
 
 - **Rules by name and faction, and a name blacklist** — OBody's keys and OBody's priority, in
-  `F4SE/Plugins/Silhouette/Silhouette_presetDistributionConfig.json`, which lists every key with its
-  default. The plugin reads what the generator compiles from it, not the file: after editing it, run the
+  `F4SE/Plugins/Silhouette/Silhouette_presetDistributionConfig.json`, which lists every key, written out:
+  the defaults, plus a few entries for known mods (Eli's armour compendium: which of its armours count as
+  heavy). The plugin reads what the generator compiles from it, not the file: after editing it, run the
   generator and install what it writes. A name is the NPC record's, as OBody reads it. BodyGen carries
   every rule it can (form ids, plugins, races); the plugin applies the rest. Someone a rule gave one of
   several presets keeps it while the rule still lists it; *Back to random* draws from the rule again.
 - **ORefit** — while someone is dressed: breasts held together and lifted, and nipples flattened under
   heavy clothes -- armour, jackets, coats, told by the item's name (`heavyWords` in the config; items can
   be named heavy or light too). The flattening shows only on outfits whose meshes carry the refit sliders
-  (mod outfits built with them; no vanilla outfit does). It only ever raises a slider, under a keyword of
+  (mod outfits built with them; no vanilla heavy outfit does). It only ever raises a slider, under a keyword of
   its own: the moment they undress they are exactly their own body. Removing `Silhouette.esp` takes every
   clothed shape off by itself, and without a working DLL the bridge takes them off the people around you.
   Nobody in power armour is refit. `<Preset>-Refit` BodySlide presets and OBody's outfit lists work as in
@@ -79,9 +80,10 @@ Without the DLL, everything above keeps working.
 
 Requirements, in addition: Fallout 4 **1.10.163** with F4SE 0.6.23 (the plugin refuses other
 runtimes), the **Microsoft Visual C++ 2015-2022 Redistributable 14.40 or newer** (x64), `Silhouette.esp`
-enabled (light, no load-order slot), MCM for the picker. Build: `scripts/build-plugin.ps1` (the DLL, 360+
-offline tests, and the plugin's own parser run on the generated files), `scripts/build-papyrus.ps1`, then
-`scripts/deploy-dev.ps1` with the game closed. MCM > Silhouette > *How is Silhouette doing?* says what is
+enabled (light, no load-order slot), MCM for the picker. Build: `scripts/build-plugin.ps1` (the DLL, 400+
+offline tests, the tools' own tests, and the plugin's own parser run on the generated files),
+`scripts/build-papyrus.ps1`, then `scripts/deploy-dev.ps1` with the game closed -- it stages in place and
+names any new file that waits for Vortex's Deploy. MCM > Silhouette > *How is Silhouette doing?* says what is
 loaded and what is missing; the plugin logs to `Documents\My Games\Fallout4\F4SE\Silhouette.log`.
 
 Removing it: disable `Silhouette.esp` and remove the files. Bodies stay as they are (they are
@@ -113,8 +115,10 @@ All three read the built meshes from Data by default. If BodySlide builds somewh
 `OutputDataPath`), pass `--built <folder>` (repeatable) to check a rebuild **before** it is
 deployed.
 
-Install the `data/` folder as a mod, with `build/papyrus/Silhouette/Player.pex` as
-`Scripts/Silhouette/Player.pex`. **Run the generator again whenever you add presets, rebuild a body
+Install the `data/` folder as a mod, with every compiled script from `build/papyrus/Silhouette/` under
+`Scripts/Silhouette/` -- the Player, Adopter, Bridge, API and DLL scripts, since `Silhouette.esp`'s quests
+run them (`scripts/deploy-dev.ps1` and `scripts/make-release.ps1` do exactly this). **Run the generator
+again whenever you add presets, rebuild a body
 in BodySlide, or edit `Silhouette_presetDistributionConfig.json`** -- the game never reads that file
 itself, only what the generator makes of it.
 

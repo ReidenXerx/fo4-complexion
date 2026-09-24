@@ -14,9 +14,10 @@ Float Function Stamp() Global
     Return 3265056.0
 EndFunction
 
-; Never part of a Silhouette body: the morphs other mods drive at runtime (decision
-; S-16) and the shaft (S-29). Without Silhouette.dll the regeneration window takes them
-; out of bodies an older build gave; with it, the plugin does.
+; Never part of a Silhouette body: the morphs other mods drive at runtime (S-16), the
+; shaft (S-29) and fo4-anatomy's build slider (S-62). Without Silhouette.dll the
+; regeneration window takes them out of bodies Silhouette gave; with it, the plugin heals
+; what a body's template once wrote.
 String[] Function StateMorphs() Global
     String[] out = new String[20]
     out[0] = "Erection"
