@@ -23,9 +23,10 @@ Scriptname Silhouette:API Hidden
 
  Every argument is passed explicitly: the base sources carry no default values.}
 
-; The order protocol these scripts were built for (Silhouette:Bridge.Protocol).
+; The order protocol these scripts were built for (Silhouette:Bridge.Protocol, the DLL's
+; kProtocol): all three move together -- tools/tests/test_protocol.py holds them to it.
 Int Function Protocol() Global
-	Return 3
+	Return 4
 EndFunction
 
 ; Other mods' requests wait behind the player's own actions and go before bulk work (S-55).
