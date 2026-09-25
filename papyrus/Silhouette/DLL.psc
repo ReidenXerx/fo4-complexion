@@ -100,6 +100,7 @@ String Function RequestReapply(Int aiActor, String asMarkerPreset, Int aiLane) G
 String Function RequestAdopt(Int aiActor) Global Native  ; the regeneration window (S-15), bulk lane
 ; MCM's "Reset everyone" (S-68): a fresh start, picks included. Answers what happened, or "not done: <why>".
 String Function ResetEveryone() Global Native
+String Function FreshStart() Global Native  ; S-70: Reset everyone for a save new to Silhouette; "" = done, else why not
 Bool Function IsORefitEnabled() Global Native
 Bool Function IsORefitApplied(Int aiActor) Global Native  ; what this session has seen; the API reads LooksMenu
 Function SetORefit(Bool abOn) Global Native

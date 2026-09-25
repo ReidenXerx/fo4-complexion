@@ -2,7 +2,7 @@
 
 #include "Plan.h"
 
-#include <unordered_set>
+#include <unordered_map>
 
 // What the plugin remembers per reference between saves (S-25, S-43): INTENT -- who chose which body --
 // and what it has already done to that body. Never the body itself: that is LooksMenu's, and every
@@ -96,10 +96,14 @@ namespace SH
 		// current at the press, and each newer one since. Empty: never pressed.
 		std::vector<std::uint32_t> resetStamps;
 
-		// S-70: everyone looked at since the press. A body Silhouette did not make cannot be dated, so it is
-		// decided again at the first sighting after the press and only then: sliders set by hand, or another
-		// mod's body, put on someone after that are theirs to keep.
-		std::unordered_set<std::uint32_t> resetMet;
+		// S-70: everyone looked at since the press, reference -> NPC record (0: not known). A body Silhouette
+		// did not make cannot be dated, so it is decided again at the first sighting since the press and only
+		// then: sliders set by hand, or another mod's body, put on someone after that are theirs to keep. The
+		// record tells a created (0xFF) reference handed to somebody new from the person it was (S-57).
+		std::unordered_map<std::uint32_t, std::uint32_t> resetMet;
+		// The met list's form in the record, after its count's place: a tag, then (reference, record) pairs.
+		// Without the tag, the list is references alone (the first build of S-70 wrote that).
+		static constexpr std::uint32_t kMetPairs = 0x3254454D;  // "MET2"
 
 		// The press, for everyone on record wherever they are: a choice (the picker's, another mod's) or a
 		// picking in progress becomes a roll owed (S-59 carries it to their next sighting), and a rule's draw

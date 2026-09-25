@@ -39,7 +39,7 @@ OBody does.
   disproportioned) and 6 conventionally beautiful ("Fine"). A Plain body is listed three times in
   BodyGen's random line, so the odds are 70 / 22 / 8 per cent. Your installed presets are not random;
   they stay in the picker.
-- **Named people: their own body** (`Silhouette Characters.xml`, S-66). 41 companions and major NPCs,
+- **Named people: their own body** (`Silhouette Characters.xml`, S-66). 43 companions and major NPCs,
   from Piper to Porter Gage, each given a body that fits who they are. A rule of yours for the same NPC
   wins.
 - **Your rules** by form id, name, faction, plugin or race, as in OBody (below).
@@ -94,7 +94,8 @@ Without the DLL, everything above keeps working.
   before it was installed, or another mod's), each once: at the first sighting since the press.
 - **A save that has never had Silhouette** gets *Reset everyone* by itself, once, on its first load with
   Silhouette: without it, everyone you had already met would keep the body they had before, since a body is
-  given only to someone who has none.
+  given only to someone who has none. Like the button, it replaces other mods' bodies and sliders set by hand
+  on the people it reaches; a notification says when it has been done.
 - **Touch-up** — bodies an older build gave get the nipple and genital variety they lack, and lose any
   shaft slider (never part of a body); a value you take off afterwards stays off.
 - **API** — `Silhouette:API`, OBody NG's function names (`GetPresetAssignedToActor`,
@@ -111,7 +112,8 @@ names any new file that waits for Vortex's Deploy. MCM > Silhouette > *How is Si
 loaded and what is missing; the plugin logs to `Documents\My Games\Fallout4\F4SE\Silhouette.log`.
 
 Removing it: disable `Silhouette.esp` and remove the files. Bodies stay as they are (they are
-LooksMenu's); every clothed shape goes with the esp. **Never go back by installing an older
+LooksMenu's); every clothed shape goes with the esp. Adding `Silhouette.esp` back to that save later makes it
+a save new to Silhouette again: *Reset everyone* runs by itself once more, your picks included. **Never go back by installing an older
 `Silhouette.esp`**: one without the refit keyword makes LooksMenu keep every clothed shape as the body
 itself, for good. Remove Silhouette entirely instead, or remove only `Silhouette.dll` (the bridge then
 takes the clothed shapes off).

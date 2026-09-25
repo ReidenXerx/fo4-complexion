@@ -549,8 +549,13 @@ namespace SH
 		if (Claimed(a_ref, a_session)) {
 			return;
 		}
-		// S-70: the first sighting since the press. What they wear is looked at now and not again.
-		const bool first = _registry.resetMet.insert(a_ref).second;
+		// S-70: the first sighting since the press. What they wear is looked at now and not again -- unless a
+		// created reference's id has since been handed to somebody else (S-57): that is a first sighting too.
+		auto [met, first] = _registry.resetMet.try_emplace(a_ref, a_session.base);
+		if (!first && a_session.base != 0 && met->second != a_session.base) {
+			first = met->second != 0 && (a_ref >> 24) == 0xFF;
+			met->second = a_session.base;
+		}
 		if (const auto* rec = _registry.Find(a_ref);
 			rec && (rec->source == Source::kRoll || rec->source == Source::kReset || rec->source == Source::kNameBlacklist)) {
 			return;  // a new body is owed already, or they are kept bare by name
@@ -900,6 +905,7 @@ namespace SH
 
 	void Director::QueueBody(std::uint32_t a_ref, BodyRequest a_body, Lane a_lane)
 	{
+		a_body.asked = a_body.asked || a_lane == Lane::kUrgent;
 		auto& w = WorkFor(a_ref, a_lane);
 		w.body = std::move(a_body);  // the latest decision wins
 		w.bodyNotBefore = {};        // and is tried at once, not after the one it replaced was deferred
@@ -1165,7 +1171,7 @@ namespace SH
 				if (!s.known || !s.eligible) {
 					continue;
 				}
-				_registry.resetMet.insert(ref);  // decided here, whatever they wear (S-70)
+				_registry.resetMet[ref] = s.base;  // decided here, whatever they wear (S-70)
 				const bool ours = KindOf(s.marker) == MarkerKind::kBody && !IEquals(s.marker, kBlacklistMarker);
 				s.facts.salt = 0;  // a rule draws by id alone, as for someone met the first time
 				s.verdict = Decide(*_catalog, s.facts);
@@ -1727,10 +1733,6 @@ namespace SH
 				if (!o.writes.empty()) {
 					Log(std::format("{:08X}: {} slider(s) healed or topped up on {}", o.ref, o.writes.size(), PresetNamedBy(session.marker, session.stamp)));
 				}
-				if (session.deferTold) {
-					session.deferTold = false;
-					Notice(o.ref, session, "the change you asked for is done");
-				}
 				if (session.deferNoted) {
 					session.deferNoted = false;
 					Log(std::format("{:08X}: the change that waited for another mod is done", o.ref));
@@ -1794,8 +1796,9 @@ namespace SH
 			Log(std::format("{:08X}: another mod has them busy - the change waits", o.ref));
 		}
 		// S-71: a change the player asked for, held back where they cannot see why. Bulk work (a Reset
-		// everyone's rolls, the regeneration window) is not the player's to wait for, and is not said.
-		if (o.lane == Lane::kUrgent && !s.deferTold) {
+		// everyone's rolls, the regeneration window), a touch-up and another mod's request are not the player's
+		// to wait for, and are not said -- whatever lane the actor's work drifted to beside them.
+		if (o.kind == OrderKind::kBody && o.body.asked && !s.deferTold) {
 			s.deferTold = true;
 			Notice(o.ref, s, "busy in another mod's scene - the change you asked for waits until it ends");
 		}
@@ -1848,7 +1851,9 @@ namespace SH
 		s.pendingBody = false;
 		if (s.deferTold && a_order.body.what != BodyRequest::What::kMark) {
 			s.deferTold = false;
-			Notice(ref, s, "the change you asked for is done");
+			if (a_order.body.asked) {
+				Notice(ref, s, "the change you asked for is done");
+			}  // else another mod's change took its place before it landed: that one is not the player's
 		}
 		if (s.deferNoted && a_order.body.what != BodyRequest::What::kMark) {
 			s.deferNoted = false;

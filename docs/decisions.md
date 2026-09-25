@@ -1109,3 +1109,37 @@ a press of Reset everyone would otherwise fill the screen. The bridge takes the 
 
 `tests/main.cpp` covers the line when it waits, told once over several tries, the line when it lands, and
 silence for another mod's request and for bulk work; each was proven on a broken build (N1-N4).
+
+## Seventh wave (pre-release review, 2026-09-25)
+
+Five lenses on everything since d83d733, run on Sonnet by the owner's standing rule; each finding was traced
+in the code and, where it held, fixed against a test that failed first.
+
+- **A notice belongs to the change the player asked for (S-71 amended).** An actor's work takes the most
+  urgent lane of everything it holds, so an order's lane cannot say whose change it is: a refit coming off as
+  she undressed made a Reset everyone roll queued beside it read as the player's, and a scene then showed
+  "the change you asked for waits". The body request now carries `asked`, set by the lane of the call that
+  queued it (the urgent lane is the player's own); only such a body is said when it waits, and "done" is said
+  only when that body lands -- another mod's change that took its place before it landed is not the player's.
+  A touch-up is never said.
+- **The met list keeps each person's NPC record (S-70 amended).** A created (0xFF) reference's id handed to
+  somebody new (S-57) was taken for the person it had been, so the newcomer's body was never decided again.
+  `resetMet` maps reference to record; a different record on a created reference is a first sighting. In
+  `RST1` the list is now a tag ("MET2") and (reference, record) pairs; the first S-70 build's list of
+  references alone is still read, with no record known.
+- **The fresh start reads its own answer (S-70 amended).** `Adopter.FreshStart` compared the answer with
+  `"not done: " + LastError()`, and LastError is shared by every caller: another script's call in between made a
+  refusal read as done, and a save new to Silhouette was never reset. The new native `FreshStart` (protocol 5,
+  not yet released) returns "" when done or why not, and logs the press itself. Its notification now says that
+  other mods' bodies are replaced too.
+- **The release ships the BodySlide presets.** `make-release.ps1` packed F4SE, MCM, the esp and the scripts but
+  not `Tools/BodySlide/SliderPresets` (the pool and the named people), though the README said it packs the
+  whole package; it now copies `Tools` and refuses to pack without both preset files.
+- **Docs.** The README counted 41 named people (43 now) and did not say that adding `Silhouette.esp` back to a
+  save runs the fresh start again, picks included.
+
+Checked and sound: every native in DLL.psc is bound (69 of 69) and the three protocol numbers agree; the
+crosshair's event layout and main-thread lookups; the picker's parts, their order against the menu, and all
+45 character records; rolls owed across a save; the Adopter's timer after a load; new script variables on
+old saves. Left as they are: a `RST1` newer than this plugin is not kept byte for byte as `REC1` is (the
+record stays version 1 for good, so it cannot arise); VERSION is the owner's to set at release.

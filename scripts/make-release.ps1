@@ -94,6 +94,10 @@ switch ($LASTEXITCODE) {
 # game's Data REQUIRED: a skip here would be a release whose verifier was never shown to refuse anything.
 $docs = @('README.md', 'LICENSE') | ForEach-Object { Join-Path $root $_ }
 foreach ($d in $docs) { if (-not (Test-Path $d)) { throw "Missing $d - the archive carries it (the GPL wants the licence shipped)." } }
+# The body pool and the named people's bodies (S-65, S-66) as BodySlide presets: the picker names them, and
+# BodySlide users build outfits and refits for them. The BodyGen files carry the numbers; these carry the names.
+$presets = @('Silhouette Pool.xml', 'Silhouette Characters.xml') | ForEach-Object { Join-Path $data "Tools\BodySlide\SliderPresets\$_" }
+foreach ($f in $presets) { if (-not (Test-Path $f)) { throw "Missing $f - run tools\pool\generate.py and tools\pool\characters.py." } }
 $saved = @{ exe = $env:SILHOUETTE_TESTS_EXE; req = $env:SILHOUETTE_REQUIRE_DATA; enc = $env:PYTHONIOENCODING }
 $env:SILHOUETTE_TESTS_EXE = $tests
 $env:SILHOUETTE_REQUIRE_DATA = '1'
@@ -113,6 +117,7 @@ New-Item -ItemType Directory -Force -Path $out | Out-Null
 Copy-Item (Join-Path $data 'F4SE') $out -Recurse -Force
 Copy-Item (Join-Path $data 'MCM') $out -Recurse -Force
 Copy-Item (Join-Path $data 'Silhouette.esp') $out -Force
+Copy-Item (Join-Path $data 'Tools') $out -Recurse -Force
 Copy-Item $dll (Join-Path $out 'F4SE\Plugins\Silhouette.dll') -Force
 $scripts = Join-Path $out 'Scripts\Silhouette'
 New-Item -ItemType Directory -Force -Path $scripts | Out-Null

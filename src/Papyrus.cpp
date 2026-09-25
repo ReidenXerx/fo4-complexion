@@ -15,7 +15,8 @@ namespace SH::Papyrus
 		// 3: OrderReadsDone, OrderGone, OrderDefer, EventDone, RequestAdopt; Request* take a lane and
 		// return why they refused ("" = accepted); marker kind 3, the choice marker.
 		// 4: ResetEveryone (S-68), which the bridge's MCM button calls.
-		// 5: NextNotice (S-71), which the bridge shows on the player's screen.
+		// 5: NextNotice (S-71), which the bridge shows on the player's screen; FreshStart (S-70), which the
+		// regeneration window presses once for a save new to Silhouette.
 		constexpr std::int32_t kProtocol = 5;
 
 		using Str = RE::BSFixedString;
@@ -376,6 +377,19 @@ namespace SH::Papyrus
 			return Str{ done ? said : "not done: " + said };
 		}
 
+		// S-70: Reset everyone for a save new to Silhouette, pressed by the regeneration window's first scans.
+		// "" when it is done, else why not -- this call's own answer, never a LastError another script may
+		// have set between two calls (seventh wave): a wrong "done" would never ask again.
+		Str FreshStart(std::monostate)
+		{
+			std::string said;
+			if (!D().RequestResetEveryone(said)) {
+				return Str{ said.empty() ? std::string{ "not done" } : said };
+			}
+			logger::info("a save new to Silhouette: Reset everyone pressed for it (S-70) - {}", said);
+			return Str{};
+		}
+
 		Str NameOf(std::monostate, std::int32_t a_actor) { return Str{ Game::NameOf(Game::ActorFor(Ref(a_actor))) }; }
 
 		// Binds a_fn. a_fast: callable from tasklets, so a call costs no frame -- set on our own
@@ -475,6 +489,7 @@ namespace SH::Papyrus
 		Bind(a_vm, "RequestReapply"sv, RequestReapply, main);
 		Bind(a_vm, "RequestAdopt"sv, RequestAdopt, main);
 		Bind(a_vm, "ResetEveryone"sv, ResetEveryone, fast);
+		Bind(a_vm, "FreshStart"sv, FreshStart, fast);
 		Bind(a_vm, "NameOf"sv, NameOf, main);
 
 		logger::info("papyrus: {} bound (protocol {})", kScript, kProtocol);

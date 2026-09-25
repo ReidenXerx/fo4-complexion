@@ -1205,6 +1205,31 @@ namespace
 			now += SH::Director::kDeferWait;
 			(void)Drain(d, g);
 			Check(d.NextNotice().empty(), "bulk work that waited for a scene is not said, before or after");
+
+			// ... nor when something urgent the player did not ask for is queued beside it: undressing takes the
+			// refit off in the urgent lane, and the actor's work takes the most urgent lane of what it holds.
+			d.Seen(See(0x961, "Somebody", true));
+			(void)Drain(d, g);
+			Check(g.actors[0x961].refit.contains("Silhouette_Refit"), "(set-up) dressed: the refit is on");
+			g.busy.insert(0x961);
+			(void)d.RequestRegenerate(0x961, true, 0x00012345, kBackground, why);
+			d.Seen(See(0x961, "Somebody", false));
+			(void)Drain(d, g);
+			(void)Drain(d, g);
+			g.busy.erase(0x961);
+			now += SH::Director::kDeferWait;
+			(void)Drain(d, g);
+			Check(d.NextNotice().empty(), "a bulk roll that shares its turn with an urgent refit is still not the player's to be told about");
+
+			// The player's own change replaced by another mod's before it lands: no "done" for the other mod's change.
+			g.busy.insert(0x961);
+			(void)d.RequestRegenerate(0x961, true, 0x00012345, kUrgent, why);
+			(void)Drain(d, g);
+			Check(d.NextNotice().contains("waits until it ends"), "(set-up) the player's change waits");
+			g.busy.erase(0x961);
+			Check(d.RequestPreset(0x961, true, 0x00012345, "Slim", SH::Source::kAPI, kNormal, why), "(set-up) another mod's choice takes its place");
+			(void)Drain(d, g);
+			Check(d.NextNotice().empty(), "another mod's change landing is not the player's change being done");
 		}
 
 		// The summary line says what the bridge did.
@@ -3292,6 +3317,25 @@ static void TestResetEveryone()
 		(void)Drain(d, g);
 		Check(g.actors[0xC20].unkeyed.contains("Silhouette_Athletic") && g.actors[0xC40].unkeyed.contains("Silhouette_Athletic"),
 			"a new press reaches everyone's body again when met, a hand-set one looked at after the last press too");
+
+		// A created reference's id handed to somebody new (S-57) is a first sighting, across a save too; the same
+		// person seen again is not.
+		foreign(0xFF000C60, 0.4F);
+		d.Seen(See(0xFF000C60, "Somebody"));
+		(void)Drain(d, g);
+		Check(g.actors[0xFF000C60].unkeyed.contains("Silhouette_Athletic"), "(set-up) a created actor met since the press is decided again");
+		Reload(d, g);
+		foreign(0xFF000C60, 0.6F);
+		auto newcomer = See(0xFF000C60, "Somebody Else");
+		newcomer.base = 0x00054321;
+		d.Seen(newcomer);
+		(void)Drain(d, g);
+		Check(g.actors[0xFF000C60].unkeyed.contains("Silhouette_Athletic"), "the id handed to somebody new: their body is decided again, the list notwithstanding");
+		foreign(0xFF000C60, 0.7F);
+		Reload(d, g);
+		d.Seen(newcomer);
+		(void)Drain(d, g);
+		Check((g.actors[0xFF000C60].unkeyed == Layer{ { "Breasts", 0.7F } }), "... and once: the same newcomer seen again keeps what was put on them");
 	}
 	{
 		SH::Registry r;
@@ -3306,10 +3350,10 @@ static void TestResetEveryone()
 		longer.insert(longer.end(), { std::byte{ 7 }, std::byte{ 7 } });
 		Check(back.DeserializeReset(longer, SH::Registry::kResetVersion, error) == SH::Registry::Loaded::kOk && back.resetStamps == r.resetStamps,
 			"fields a later version appends are skipped");
-		Check(bytes.size() == 2 + 2 * 4 + 4, "the reset record is a count and its stamps, then who was met since (nobody)");
+		Check(bytes.size() == 2 + 2 * 4 + 4 + 4, "the reset record is a count and its stamps, then who was met since: the tag, and nobody");
 
 		// S-70: who was met since the press follows the stamps, in form ids resolved for this session.
-		r.resetMet = { 0x0A000001, 0x0B000002, 0x00000C03 };
+		r.resetMet = { { 0x0A000001, 0x0A000800 }, { 0x0B000002, 0x0B000801 }, { 0x00000C03, 0x00000C04 } };
 		const auto withMet = r.SerializeReset();
 		SH::Registry met;
 		const auto   moved = [](std::uint32_t a_id) -> std::uint32_t {
@@ -3319,13 +3363,26 @@ static void TestResetEveryone()
 			return a_id >> 24 == 0x0B ? 0 : a_id;  // that plugin is gone
 		};
 		Check(met.DeserializeReset(withMet, SH::Registry::kResetVersion, error, moved) == SH::Registry::Loaded::kOk &&
-				  met.resetStamps == r.resetStamps && (met.resetMet == std::unordered_set<std::uint32_t>{ 0x0C000001, 0x00000C03 }),
+				  met.resetStamps == r.resetStamps && (met.resetMet == std::unordered_map<std::uint32_t, std::uint32_t>{ { 0x0C000001, 0x0C000800 }, { 0x00000C03, 0x00000C04 } }),
 			"who was met since the press reads back, resolved: moved ids follow, gone ones drop");
 		SH::Registry old;
-		old.resetMet = { 99 };
+		old.resetMet = { { 99, 1 } };
 		Check(old.DeserializeReset(std::span{ withMet }.first(2 + 2 * 4), SH::Registry::kResetVersion, error) == SH::Registry::Loaded::kOk &&
 				  old.resetStamps == r.resetStamps && old.resetMet.empty(),
 			"a record from before S-70 (the stamps alone): nobody met since the press yet");
+		{
+			// The first build of S-70 wrote references alone after the stamps, no tag: read, with no record known.
+			auto refsOnly = std::vector<std::byte>(withMet.begin(), withMet.begin() + 2 + 2 * 4);
+			for (const std::uint32_t v : { 2u, 0x00000C03u, 0x00000C05u }) {
+				for (int i = 0; i < 4; ++i) {
+					refsOnly.push_back(static_cast<std::byte>((v >> (8 * i)) & 0xFF));
+				}
+			}
+			SH::Registry early;
+			Check(early.DeserializeReset(refsOnly, SH::Registry::kResetVersion, error) == SH::Registry::Loaded::kOk &&
+					  (early.resetMet == std::unordered_map<std::uint32_t, std::uint32_t>{ { 0x00000C03, 0 }, { 0x00000C05, 0 } }),
+				"the first S-70 build's list (references alone) is read, each with its record unknown");
+		}
 		r.resetMet.clear();
 		SH::Registry cut;
 		cut.resetStamps = { 42 };

@@ -47,6 +47,10 @@ namespace SH
 		Morphs      keepFrom;              // picker previews: keep the variety of the body they had at Pick
 		Morphs      restore;
 		Source      choice{ Source::kNone };  // picker or API: the choice marker goes with the body (S-51)
+		// The player asked for it: queued in the urgent lane by their own request (the picker, MCM's page for
+		// the NPC in your sights). An actor's work takes the most urgent lane of everything it holds, so the
+		// lane an order goes out in cannot say whose change it is; this can (S-71).
+		bool asked{ false };
 	};
 
 	// What the game side read about an actor, on the main thread.

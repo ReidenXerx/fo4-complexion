@@ -145,14 +145,14 @@ Function FreshStart()
 	If !Silhouette:API.IsReady()
 		Return    ; still starting, or not installed: asked again at the next scan
 	EndIf
-	String said = Silhouette:DLL.ResetEveryone()
-	If said == "not done: " + Silhouette:DLL.LastError()
-		Debug.Trace("Silhouette adopter: a save new to Silhouette - Reset everyone waits (" + said + ")", 0)
+	; The call's own answer: a LastError read afterwards could be another script's (seventh wave).
+	String why = Silhouette:DLL.FreshStart()
+	If why != ""
+		Debug.Trace("Silhouette adopter: a save new to Silhouette - Reset everyone waits (" + why + ")", 0)
 		Return    ; a picking in progress: asked again at the next scan
 	EndIf
 	freshSave = False
-	Silhouette:DLL.Log("a save new to Silhouette: Reset everyone pressed for it (S-70) - " + said)
-	Debug.Notification("Silhouette is new to this save: everyone you have met gets a Silhouette body.")
+	Debug.Notification("Silhouette is new to this save: everyone you have met gets a new body, other mods' bodies included.")
 EndFunction
 
 Function Scan()

@@ -229,11 +229,13 @@ namespace SH
 			w.Put(resetStamps[i]);
 		}
 		// S-70, after the stamps: the plugin that first wrote this record stops reading there.
-		std::vector<std::uint32_t> met(resetMet.begin(), resetMet.end());
+		std::vector<std::pair<std::uint32_t, std::uint32_t>> met(resetMet.begin(), resetMet.end());
 		std::ranges::sort(met);
+		w.Put(kMetPairs);
 		w.Put(static_cast<std::uint32_t>(met.size()));
-		for (const auto ref : met) {
+		for (const auto& [ref, base] : met) {
 			w.Put(ref);
+			w.Put(base);
 		}
 		return w.Take();
 	}
@@ -261,13 +263,17 @@ namespace SH
 				stamps.push_back(s);
 			}
 			// Who was looked at since the press (S-70). A record from before it ends at the stamps: nobody yet.
-			std::unordered_set<std::uint32_t> met;
+			std::unordered_map<std::uint32_t, std::uint32_t> met;
 			if (!r.AtEnd()) {
-				const auto n = r.Get<std::uint32_t>();
+				const auto first = r.Get<std::uint32_t>();
+				const bool pairs = first == kMetPairs;  // a count that large is no count: the tag
+				const auto n = pairs ? r.Get<std::uint32_t>() : first;
+				const auto resolve = [&](std::uint32_t a_saved) { return a_resolve ? a_resolve(a_saved) : a_saved; };
 				for (std::uint32_t i = 0; i < n; ++i) {
-					const auto saved = r.Get<std::uint32_t>();
-					if (const auto ref = a_resolve ? a_resolve(saved) : saved; ref != 0) {
-						met.insert(ref);
+					const auto ref = resolve(r.Get<std::uint32_t>());
+					const auto base = pairs ? resolve(r.Get<std::uint32_t>()) : 0u;
+					if (ref != 0) {
+						met[ref] = base;
 					}
 				}
 			}
