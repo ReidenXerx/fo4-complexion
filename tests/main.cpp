@@ -3350,6 +3350,47 @@ static void TestResetEveryone()
 		d.Seen(newcomer);
 		(void)Drain(d, g);
 		Check((g.actors[0xFF000C60].unkeyed == Layer{ { "Breasts", 0.7F } }), "... and once: the same newcomer seen again keeps what was put on them");
+
+		// A NEW GAME started after that save, in the same session: main.cpp's kNewGame forgets the world and
+		// reverts the records (CoSave::Revert). Nothing of the pressed save may reach the new one.
+		d.ForgetWorld();
+		d.RevertRecords();
+		foreign(0xC70, 0.5F);
+		d.Seen(See(0xC70, "Somebody"));
+		(void)Drain(d, g);
+		Check((g.actors[0xC70].unkeyed == Layer{ { "Breasts", 0.5F } }) && d.SaveReset().empty(),
+			"a new game carries no press of the save played before it");
+
+		// S-70 on a new game: the regeneration window's quest starts with the game and presses Reset everyone
+		// before anyone is seen -- during character creation. Another new game, so nobody is seen yet.
+		d.ForgetWorld();
+		d.RevertRecords();
+		said.clear();
+		const bool freshStart = d.RequestResetEveryone(said);
+		Check(freshStart && said.starts_with("0 around you"),
+			std::format("a new game's fresh start is accepted with nobody seen yet ({}: {})", freshStart, said));
+		// The player and the character-creation dummies (whose body LooksMenu clones onto the player) are
+		// never shaped: not by the press, not by what follows it (S-13, S-45).
+		auto player = See(0x14, "Player");
+		player.eligible = false;
+		auto dummy = See(0x0A7D35, "MQ101PlayerSpouseFemale");
+		dummy.eligible = false;
+		g.actors[0x14].unkeyed = { { "Breasts", 0.3F } };
+		g.actors[0x14].listed = { "Breasts" };
+		g.actors[0x0A7D35].unkeyed = { { "Breasts", 0.3F } };
+		g.actors[0x0A7D35].listed = { "Breasts" };
+		d.Seen(player);
+		d.Seen(dummy);
+		const auto drained = Drain(d, g);
+		Check(drained == 0 && (g.actors[0x14].unkeyed == Layer{ { "Breasts", 0.3F } }) &&
+				  (g.actors[0x0A7D35].unkeyed == Layer{ { "Breasts", 0.3F } }),
+			std::format("on a new game the fresh start never reaches the player nor a character-creation dummy ({} orders; player {}, dummy {})",
+				drained, g.actors[0x14].unkeyed.size(), g.actors[0x0A7D35].unkeyed.size()));
+		// ...while the first NPC met after it, wearing a body Silhouette did not make, is decided as for any save.
+		foreign(0xC80, 0.6F);
+		d.Seen(See(0xC80, "Somebody"));
+		(void)Drain(d, g);
+		Check(g.actors[0xC80].unkeyed.contains("Silhouette_Athletic"), "a new game's fresh start reaches the people met afterwards");
 	}
 	{
 		SH::Registry r;
