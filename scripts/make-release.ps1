@@ -94,9 +94,9 @@ switch ($LASTEXITCODE) {
 # game's Data REQUIRED: a skip here would be a release whose verifier was never shown to refuse anything.
 $docs = @('README.md', 'LICENSE') | ForEach-Object { Join-Path $root $_ }
 foreach ($d in $docs) { if (-not (Test-Path $d)) { throw "Missing $d - the archive carries it (the GPL wants the licence shipped)." } }
-# The body pool and the named people's bodies (S-65, S-66) as BodySlide presets: the picker names them, and
+# The body pool, the named people's and the factions' bodies (S-65, S-66, S-72) as BodySlide presets: the picker names them, and
 # BodySlide users build outfits and refits for them. The BodyGen files carry the numbers; these carry the names.
-$presets = @('Silhouette Pool.xml', 'Silhouette Characters.xml') | ForEach-Object { Join-Path $data "Tools\BodySlide\SliderPresets\$_" }
+$presets = @('Silhouette Pool.xml', 'Silhouette Characters.xml', 'Silhouette Factions.xml') | ForEach-Object { Join-Path $data "Tools\BodySlide\SliderPresets\$_" }
 foreach ($f in $presets) { if (-not (Test-Path $f)) { throw "Missing $f - run tools\pool\generate.py and tools\pool\characters.py." } }
 $saved = @{ exe = $env:SILHOUETTE_TESTS_EXE; req = $env:SILHOUETTE_REQUIRE_DATA; enc = $env:PYTHONIOENCODING }
 $env:SILHOUETTE_TESTS_EXE = $tests

@@ -108,13 +108,15 @@ def build(*, stamp, build_id, mode, presets, player, states, never_in_body, vari
     resolve_races(cfg, data, report)
     have = {(p['sex'], p['name'].casefold()): p['name'] for p in presets}
 
-    def names_for(sex, wanted, what):
+    def names_for(sex, wanted, what, repeats=False):
+        # repeats: a faction rule keeps a preset listed twice, as twice as likely -- the plugin picks one entry
+        # of the list (Rules.cpp Pick), which is how the factions' pools weigh their tiers (S-72).
         out = []
         for n in wanted if isinstance(wanted, list) else [wanted]:
             got = have.get((sex, str(n).casefold()))
             if got is None:
                 report.append(f'catalog: {what} names {n!r}, which is not a {sex} preset of this build - left out')
-            elif got not in out:
+            elif repeats or got not in out:
                 out.append(got)
         return out
 
@@ -183,7 +185,7 @@ def build(*, stamp, build_id, mode, presets, player, states, never_in_body, vari
         for edid, wanted in cfg.get(key, {}).items():
             if edid not in found:
                 continue
-            got = names_for(sex, wanted, f'{key} {edid!r}')
+            got = names_for(sex, wanted, f'{key} {edid!r}', repeats=True)
             if got:
                 plugin, local = found[edid]
                 faction.append({'plugin': plugin, 'id': local, 'editorID': edid, 'sex': sex, 'presets': got})

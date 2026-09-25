@@ -1149,3 +1149,35 @@ record stays version 1 for good, so it cannot arise); VERSION is the owner's to 
   50. Asked, the owner chose "Apply it to them": each is capped at 30, the pool's small-but-real bust, and
   `tests/test_pool.py` (BustFloor) holds `characters.json` to it as it holds the pool (it failed on exactly those
   eight first).
+
+## S-72 — Each faction draws from a body pool of its own
+
+Owner decision, 2026-09-25, by poll: "do separate pools per faction for they still be diverse but hold faction
+specifics". Poll answers: the military (Brotherhood of Steel, Minutemen, Gunners), the outlaws (raiders,
+Nuka-World's Disciples, Operators and Pack, the Triggermen) and the Institute & co (the Institute, the Railroad,
+the Children of Atom -- the Commonwealth's and Far Harbor's); not the towns and settlers; women and men; ten
+bodies per faction and sex; the faction's look with the main pool's mix inside.
+
+- `tools/pool/factions.py` builds each pool exactly as the main pool is built (generate.py, which now takes a
+  faction's archetypes): the main pool's archetypes in the faction's own proportions, some shifted toward its
+  look -- muscle for the Brotherhood and the Pack, harder bodies for Gunners and Railroad agents, thinner limbs
+  for raiders, the Disciples and the Children of Atom, softer ones for the Institute and the Triggermen. Every
+  candidate is built from the installed body, measured, and kept only if it measures as its tier; the most
+  different survivors are chosen. 6 plain, 3 rough, 1 fine per sex; the bust floor (S-65) holds for every range.
+  220 bodies in `Silhouette Factions.xml`, named "Gunner Plain F03", "Raider Rough M01"...
+- Each faction becomes a faction rule (OBody's `factionFemale` / `factionMale`, applied by the plugin, S-23),
+  merged UNDER the user's own: a rule of theirs for the same faction and sex wins. The rule lists a plain body 3
+  times and a rough or fine one twice -- 18 : 6 : 2 entries, 69 / 23 / 8 per cent -- since the plugin picks one
+  entry by the person's id; the catalog now keeps a faction rule's repeats (it used to fold them). The gangs and
+  the Triggermen come before the raiders, as the first rule whose faction the NPC carries is theirs.
+- A faction rule outranks the random pool, plugin and race rules and loses to per-NPC rules, so the named
+  people -- Danse, Preston, Cait -- keep their own bodies (S-66). People already met get their faction's body
+  as the rule reaches them (DecideBody gives a rule's body to anyone it names), or at once with Reset everyone.
+- The picker lists them like the pool's (237 women, 176 men now; S-69's parts hold any number).
+  `make-release.ps1` refuses to pack without `Silhouette Factions.xml`.
+
+`tests/test_factions.py` holds the sidecar and the XML to one run, 6/3/1 per faction and sex, the floor, the
+names, the weights and order of the rules, a user's rule winning, and the shipped catalog's repeats;
+`test_generator_main` holds a fresh catalog to them, which failed when the catalog folded the repeats.
+`factions.py --check` re-measures every body and looks every faction up in its plugin, without case, as the
+game does (Far Harbor's is `DLC03ChildrenofAtomFaction`).

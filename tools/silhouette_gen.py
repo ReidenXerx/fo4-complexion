@@ -80,6 +80,8 @@ CATALOG = pathlib.Path('F4SE/Plugins/Silhouette/catalog.json')
 POOL_SIDECAR = ROOT / 'tools/pool/pool.json'
 # ...and the named people's own bodies (tools/pool/characters.py, S-66), bound to their NPC records.
 CHARACTERS_SIDECAR = ROOT / 'tools/pool/characters.json'
+# ...and the factions' own pools (tools/pool/factions.py, S-72), each a faction rule weighted by repetition.
+FACTIONS_SIDECAR = ROOT / 'tools/pool/factions.json'
 PRESETS = pathlib.Path('Tools/BodySlide/SliderPresets')          # below a mod folder / data root
 LINE_LIMIT = 32766      # bytes the engine's ReadLine gives before it splits a line (docs/bodygen-format.md)
 
@@ -570,6 +572,45 @@ def merge_characters(cfg, path=CHARACTERS_SIDECAR):
             forms[fid] = [name]
             bound += 1
     return bound, kept
+
+
+def merge_factions(cfg, path=FACTIONS_SIDECAR):
+    """S-72: each faction's pool as its faction rule (factionFemale / factionMale), UNDER the user's own -- a
+    rule the config or an include already has for the faction and sex wins. Each body is listed as many times
+    as its tier weighs: the rule picks one entry by the person's id (src/Rules.cpp Pick), so repetition is the
+    weighting, as in BodyGen's random line. The rules go in the sidecar's order, after the user's: the first
+    rule whose faction the NPC carries is theirs. -> (rules added, [faction (sex) kept for the user's rule])."""
+    try:
+        side = json.loads(pathlib.Path(path).read_text(encoding='utf-8'))
+        weights = side['weights']
+        lists = collections.defaultdict(list)
+        for name, p in side['presets'].items():
+            lists[(p['faction'], p['sex'])] += [name] * int(weights[p['tier']])
+        factions = side['factions']
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise SystemExit(f'{path}: not a readable factions sidecar ({exc}) -- run tools/pool/factions.py')
+    added, kept = 0, []
+    for key, f in factions.items():
+        for sex, cfg_key in (('female', 'factionFemale'), ('male', 'factionMale')):
+            names = lists.get((key, sex))
+            if not names:
+                continue
+            rules_of = cfg.setdefault(cfg_key, {})
+            for _plugin, edid in f['factions']:
+                if any(str(k).casefold() == edid.casefold() for k in rules_of):
+                    kept.append(f'{edid} ({sex})')
+                    continue
+                rules_of[edid] = list(names)
+                added += 1
+    return added, kept
+
+
+def faction_preset_names(path=FACTIONS_SIDECAR):
+    """Every preset the factions' sidecar names (S-72); none when there is no sidecar."""
+    try:
+        return list(json.loads(pathlib.Path(path).read_text(encoding='utf-8'))['presets'])
+    except (OSError, ValueError, KeyError):
+        return []
 
 
 def random_line_names(pool_rows, pool):
@@ -1603,6 +1644,8 @@ def main():
     ap.add_argument('--report', type=pathlib.Path, default=None, help='also write a JSON report')
     ap.add_argument('--characters', type=pathlib.Path, default=CHARACTERS_SIDECAR,
                     help='the characters\' sidecar (tools/pool/characters.py): each named NPC\'s own body (S-66)')
+    ap.add_argument('--factions', type=pathlib.Path, default=FACTIONS_SIDECAR,
+                    help='the factions\' sidecar (tools/pool/factions.py): each faction\'s own pool, as its rule (S-72)')
     ap.add_argument('--pool', type=pathlib.Path, default=POOL_SIDECAR,
                     help='the body pool\'s sidecar (tools/pool/generate.py): its presets are the random pool, '
                          'weighted by tier (S-65)')
@@ -1707,6 +1750,9 @@ def main():
     bound, kept = merge_characters(cfg, args.characters)
     print(f'characters (S-66): {bound} NPC record(s) given their own body'
           + (f'; your own rules kept for {", ".join(kept)}' if kept else ''))
+    faction_rules, faction_kept = merge_factions(cfg, args.factions)
+    print(f'factions (S-72): {faction_rules} faction rule(s) drawing from their own pool'
+          + (f'; your own rules kept for {", ".join(faction_kept)}' if faction_kept else ''))
 
     # ---- the pools
     pools = {'female': [], 'male': []}
@@ -1783,6 +1829,10 @@ def main():
     if missing:
         raise SystemExit(f'the pool names presets no SliderPresets folder holds: {", ".join(missing[:6])} -- '
                          f'data/{PRESETS.as_posix()}/Silhouette Pool.xml and {POOL_SIDECAR.name} are of two runs')
+    missing = sorted(n for n in faction_preset_names(args.factions) if n.casefold() not in have)
+    if missing:
+        raise SystemExit(f'the factions\' pools name presets no SliderPresets folder holds: {", ".join(missing[:6])} -- '
+                         f'data/{PRESETS.as_posix()}/Silhouette Factions.xml and {FACTIONS_SIDECAR.name} are of two runs')
 
     for g in BODIES:
         names = random_line_names(pools[g], pool)

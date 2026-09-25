@@ -42,6 +42,11 @@ OBody does.
 - **Named people: their own body** (`Silhouette Characters.xml`, S-66). 43 companions and major NPCs,
   from Piper to Porter Gage, each given a body that fits who they are. A rule of yours for the same NPC
   wins.
+- **Factions: a pool of their own** (`Silhouette Factions.xml`, S-72). The Brotherhood, the Minutemen,
+  the Gunners, the raiders and Nuka-World's three gangs, the Triggermen, the Institute, the Railroad and the
+  Children of Atom each draw from ten bodies per sex in their own look -- drilled soldiers, lean mercenaries,
+  underfed raiders, soft scientists -- with the pool's odds inside: mostly plain, some rough, a rare fine
+  one. The named people keep their own; a faction rule of yours wins.
 - **Your rules** by form id, name, faction, plugin or race, as in OBody (below).
 
 ## Your character

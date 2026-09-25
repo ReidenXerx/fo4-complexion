@@ -132,6 +132,15 @@ class Wiring(unittest.TestCase):
         self.assertIn('junk.json: not a manifest this tool can read', self.out)
         self.assertIn("in the Silhouette mod's staging folder", self.out)
 
+    def test_every_faction_pool_reaches_the_catalog_with_its_weights(self):
+        # S-72: a faction rule keeps each body as many times as its tier weighs; the catalog must not fold them.
+        got = json.loads((self.pkg / support.CAT).read_text(encoding='utf-8-sig'))
+        rules = got['rules']['faction']
+        self.assertEqual(len(rules), 24)
+        for r in rules:
+            with self.subTest(f'{r["editorID"]} {r["sex"]}'):
+                self.assertEqual((len(r['presets']), len(set(r['presets']))), (26, 10))
+
     def test_the_package_is_made_from_its_own_config(self):
         got = json.loads((self.pkg / support.CAT).read_text(encoding='utf-8-sig'))
         self.assertIn(WORD, got['orefit']['heavy']['words'])

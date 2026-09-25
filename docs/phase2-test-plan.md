@@ -1,6 +1,6 @@
 # Phase 2 — the first in-game session
 
-Twenty-three steps for the first session with Silhouette.dll, each with what to expect and what a failure
+Twenty-four steps for the first session with Silhouette.dll, each with what to expect and what a failure
 means. Written from the second and third microscope waves' measurements of the owner's own install (809
 plugins, 1,609 built .tri files, the saves that hold Silhouette bodies); the log lines are quoted from the
 code. Everything the offline tests cannot reach is here: LooksMenu itself, the engine's events, the frame
@@ -193,6 +193,11 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
     before: each gets one as you meet them (`<id> "<name>": a body Silhouette did not make, met since Reset
     everyone - a new body`). Save, load, meet them again: nothing more. Load a save that already had
     Silhouette: no notification, nobody changes.
+24. Faction pools (S-72): on a COPY of a save, press Reset everyone near a group of one faction -- Gunners at
+    a camp, raiders, a Brotherhood patrol, Nuka-World's gangs -- and look at them. Each has a body of the
+    faction's pool: MCM > The NPC in your sights > "Which body do they have?" names one like `Gunner Plain F03`,
+    and Silhouette.log says `faction GunnerFaction -> Gunner Plain F03`. Mostly Plain, some Rough, a rare Fine.
+    A named character of the faction (Danse, Preston) keeps their own body.
 
 ## Not checked offline
 

@@ -74,10 +74,12 @@ def _distance(a, b, scale):
     return math.sqrt(sum(((a[k] - b[k]) / scale[k]) ** 2 for k in FEATURES))
 
 
-def generate(body, sex, seed, candidates=40, log=print):
+def generate(body, sex, seed, candidates=40, log=print, archetypes=None):
+    """archetypes: {tier: {archetype: (count, ranges)}} for this sex; the pool's own by default (a faction's
+    pool, S-72, passes its own)."""
     rng = random.Random(f'{seed}:{sex}')
     chosen = []
-    for tier, arcs in ARCHETYPES[sex].items():
+    for tier, arcs in (archetypes or ARCHETYPES[sex]).items():
         for arc, (count, ranges) in arcs.items():
             pool = []
             for _ in range(candidates):
