@@ -16,7 +16,7 @@ namespace SH::Papyrus
 		// return why they refused ("" = accepted); marker kind 3, the choice marker.
 		// 4: ResetEveryone (S-68), which the bridge's MCM button calls.
 		// 5: NextNotice (S-71), which the bridge shows on the player's screen; FreshStart (S-70), which the
-		// regeneration window presses once for a save new to Silhouette.
+		// regeneration window presses once for a save new to Silhouette; Configure's faction pools (S-73).
 		constexpr std::int32_t kProtocol = 5;
 
 		using Str = RE::BSFixedString;
@@ -68,9 +68,10 @@ namespace SH::Papyrus
 			return Str{ c ? c->build : std::string{} };
 		}
 
-		void Configure(std::monostate, bool a_orefit, bool a_nipples, bool a_genitals)
+		void Configure(std::monostate, bool a_orefit, bool a_nipples, bool a_genitals, bool a_factionPools)
 		{
-			D().Configure(Settings{ .orefit = a_orefit, .variety = { .nipples = a_nipples, .genitals = a_genitals } });
+			D().Configure(Settings{ .orefit = a_orefit, .variety = { .nipples = a_nipples, .genitals = a_genitals },
+				.factionPools = a_factionPools });
 		}
 
 		std::int32_t Pending(std::monostate) { return static_cast<std::int32_t>(D().Pending()); }

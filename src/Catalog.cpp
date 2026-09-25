@@ -492,6 +492,10 @@ namespace SH
 				rule.editorID = Str(At(r, "editorID", "rules.faction"), "rules.faction");
 				rule.female = Sex(At(r, "sex", "rules.faction"), "rules.faction");
 				rule.presets = Strings(At(r, "presets", "rules.faction"), "rules.faction");
+				// Optional, so a catalog from before S-73 reads as it did: none of its rules is a pool.
+				if (const auto p = r.find("pool"); p != r.end() && p->is_boolean()) {
+					rule.pool = p->get<bool>();
+				}
 				c.factionRules.push_back(std::move(rule));
 			}
 

@@ -80,6 +80,9 @@ Int[] _swept
 ; The switches last pushed to the plugin (ORefit 1, nipples 2, genitals 4), -1 for none this
 ; load: MCM's values are pushed only when they change.
 Int _pushed = -1
+; S-73: MCM's "Tell me when a change I asked for waits" off. False (the default a variable added to a script
+; has in a save made before it) is on: the notices show unless the player switched them off.
+Bool _hideNotices = False
 
 ;---------------------------------------------------------------------------
 ; Startup: on quest start and on every load. This script's variables live in the
@@ -169,10 +172,13 @@ Function PushSettings()
 	Bool orefit = True
 	Bool nipples = True
 	Bool genitals = True
+	Bool factionPools = True
 	If _mcm && MCM.GetModSettingInt(ModName, "iDefaults:Meta") == 1
 		orefit = MCM.GetModSettingBool(ModName, "bORefit:General")
 		nipples = MCM.GetModSettingBool(ModName, "bNippleRand:General")
 		genitals = MCM.GetModSettingBool(ModName, "bGenitalRand:General")
+		factionPools = MCM.GetModSettingBool(ModName, "bFactionPools:General")
+		_hideNotices = !MCM.GetModSettingBool(ModName, "bNotices:General")
 	ElseIf _refitKeyword
 		Return
 	EndIf
@@ -190,11 +196,14 @@ Function PushSettings()
 	If genitals
 		now += 4
 	EndIf
+	If factionPools
+		now += 8
+	EndIf
 	If now == _pushed
 		Return
 	EndIf
 	_pushed = now
-	Silhouette:DLL.Configure(orefit, nipples, genitals)
+	Silhouette:DLL.Configure(orefit, nipples, genitals, factionPools)
 EndFunction
 
 ;---------------------------------------------------------------------------
@@ -447,7 +456,9 @@ Function ShowNotices()
 	Int shown = 0
 	String line = Silhouette:DLL.NextNotice()
 	While line != "" && shown < 4
-		Debug.Notification("Silhouette: " + line)
+		If !_hideNotices    ; switched off (S-73): taken all the same, so none waits to show later
+			Debug.Notification("Silhouette: " + line)
+		EndIf
 		shown += 1
 		If shown < 4
 			line = Silhouette:DLL.NextNotice()

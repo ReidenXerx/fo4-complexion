@@ -8,7 +8,7 @@
       "content": [
         {
           "type": "text",
-          "text": "Every NPC gets one of your BodySlide presets the first time you meet them, and keeps it. Your own character gets the most average of them unless you choose one here."
+          "text": "Every NPC gets a body the first time you meet them, and keeps it: most people one of Silhouette's own pool (mostly ordinary, some rough, a rare fine one), the named characters their own, and the Brotherhood, raiders, Gunners and the other factions one of their faction's pool. Your own BodySlide presets are all in the lists below. Your character gets the most average body of the pool unless you choose one here."
         },
         {
           "type": "section",
@@ -463,7 +463,7 @@
         {
           "type": "button",
           "text": "Back to the default",
-          "help": "The most average body of your presets: Plain F01 / Plain M02.",
+          "help": "The most average body of the pool: Plain F01 / Plain M02.",
           "action": {
             "type": "CallGlobalFunction",
             "script": "Silhouette:Player",
@@ -1119,6 +1119,37 @@
           "id": "bGenitalRand:General",
           "text": "Genital variety",
           "help": "Each woman her own genital shape, each man his own ball size. Never the shaft.",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          }
+        },
+        {
+          "type": "section",
+          "text": "What Silhouette does by itself"
+        },
+        {
+          "type": "switcher",
+          "id": "bFreshStart:General",
+          "text": "Fresh start for saves new to Silhouette",
+          "help": "The first time a save loads with Silhouette, everyone you already met still has the body they had before, since a body is only given to someone who has none. On, Silhouette presses Reset everyone for that save by itself, once -- replacing other mods' bodies and sliders set by hand on the people it reaches too. Off, they keep them until you press Reset everyone yourself; switched on in the save's first 24 in-game hours, it still happens. Needs Silhouette.dll and Silhouette.esp.",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          }
+        },
+        {
+          "type": "switcher",
+          "id": "bFactionPools:General",
+          "text": "Faction bodies",
+          "help": "The Brotherhood, the Minutemen, Gunners, raiders, Nuka-World's gangs, the Triggermen, the Institute, the Railroad and the Children of Atom each draw from a pool of their own, in their own look. Off, they draw from the same pool as everyone else; your own faction rules apply either way. It decides who is given a body from now on: a faction body someone already has stays until Reset. Needs Silhouette.dll and Silhouette.esp.",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          }
+        },
+        {
+          "type": "switcher",
+          "id": "bNotices:General",
+          "text": "Tell me when a change I asked for waits",
+          "help": "When a change you asked for -- a Reset, a preset given, a picker try -- has to wait because another mod has them busy in a scene, a notification says so, and another when it is done. Needs Silhouette.dll and Silhouette.esp.",
           "valueOptions": {
             "sourceType": "ModSettingBool"
           }

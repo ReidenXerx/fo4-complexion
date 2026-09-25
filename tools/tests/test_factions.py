@@ -97,6 +97,24 @@ class Rules(unittest.TestCase):
         for gang in ('DLC04GangDisciplesFaction', 'DLC04GangOperatorsFaction', 'DLC04GangPackFaction', 'TriggermanFaction'):
             self.assertLess(order.index(gang), order.index('RaiderFaction'), gang)
 
+    def test_the_catalog_marks_the_pools_and_only_them(self):
+        # S-73: MCM's "Faction bodies" leaves out the rules marked as Silhouette's own pools, never a user's.
+        cat = json.loads((support.PACKAGE / support.CAT).read_text(encoding='utf-8'))
+        ours = {f[1].casefold() for f in (x for v in side()['factions'].values() for x in v['factions'])}
+        for r in cat['rules']['faction']:
+            with self.subTest(f'{r["editorID"]} {r["sex"]}'):
+                self.assertEqual(r.get('pool', False), r['editorID'].casefold() in ours)
+
+    def test_the_menu_has_the_switches_with_their_defaults_on(self):
+        mcm = support.PACKAGE / 'MCM/Config/Silhouette'
+        cfg = json.loads((mcm / 'config.json').read_text(encoding='utf-8-sig'))
+        ids = {c.get('id') for p in cfg['pages'] for c in p['content'] if c.get('type') == 'switcher'}
+        ini = (mcm / 'settings.ini').read_text(encoding='utf-8-sig')
+        for key in ('bFreshStart', 'bFactionPools', 'bNotices'):
+            with self.subTest(key):
+                self.assertIn(f'{key}:General', ids)
+                self.assertIn(f'{key}=1', ini)
+
     def test_the_shipped_catalog_keeps_the_repeats(self):
         cat = json.loads((support.PACKAGE / support.CAT).read_text(encoding='utf-8'))
         rules = [r for r in cat['rules']['faction'] if r['editorID'] == 'GunnerFaction']

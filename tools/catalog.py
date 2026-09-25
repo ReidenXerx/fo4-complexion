@@ -93,7 +93,7 @@ def resolve_races(cfg, data, report):
 
 
 def build(*, stamp, build_id, mode, presets, player, states, never_in_body, variety, cfg, data,
-          refit_presets, body_morphs, baked, report):
+          refit_presets, body_morphs, baked, report, pool_factions=frozenset()):
     """The catalog as a dict, without its rulesHash (rules_hash() below, once the BodyGen lines exist).
 
     presets:  [{name, sex, marker, values: [(morph, v)], random, menu, zeroed, fit, family}] in
@@ -188,7 +188,10 @@ def build(*, stamp, build_id, mode, presets, player, states, never_in_body, vari
             got = names_for(sex, wanted, f'{key} {edid!r}', repeats=True)
             if got:
                 plugin, local = found[edid]
-                faction.append({'plugin': plugin, 'id': local, 'editorID': edid, 'sex': sex, 'presets': got})
+                rule = {'plugin': plugin, 'id': local, 'editorID': edid, 'sex': sex, 'presets': got}
+                if (edid.casefold(), sex) in pool_factions:
+                    rule['pool'] = True  # one of Silhouette's own pools (S-72): MCM's switch can leave it out (S-73)
+                faction.append(rule)
 
     # ---- ORefit (S-20, S-40, S-42), OBody's keys and Silhouette's heavy/light lists
     def refs(key):
@@ -492,7 +495,9 @@ def check(doc):
             if (sex, ifold(n)) not in seen:
                 fail(f'{where} names {n!r}, not a {sex} preset of this build')
     for rule in need(at(r, 'faction', 'rules'), list, 'rules.faction'):
-        only(rule, ('plugin', 'id', 'editorID', 'sex', 'presets'), 'rules.faction')
+        only(rule, ('plugin', 'id', 'editorID', 'sex', 'presets', 'pool'), 'rules.faction')
+        if 'pool' in rule:
+            need(rule['pool'], bool, 'rules.faction.pool')  # optional (S-73): the plugin reads it only when true/false
         ref(rule, 'rules.faction')
         where = f'rules.faction {need(at(rule, "editorID", "rules.faction"), str, "rules.faction.editorID")!r}'
         sex = sex_of(at(rule, 'sex', where), where)

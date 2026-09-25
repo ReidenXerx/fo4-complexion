@@ -10376,7 +10376,8 @@
      "BoS Rough F02",
      "BoS Rough F03",
      "BoS Rough F03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -10410,7 +10411,8 @@
      "Minutemen Rough F02",
      "Minutemen Rough F03",
      "Minutemen Rough F03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -10444,7 +10446,8 @@
      "Gunner Rough F02",
      "Gunner Rough F03",
      "Gunner Rough F03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "DLCNukaWorld.esm",
@@ -10478,7 +10481,8 @@
      "Disciple Rough F02",
      "Disciple Rough F03",
      "Disciple Rough F03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "DLCNukaWorld.esm",
@@ -10512,7 +10516,8 @@
      "Operator Rough F02",
      "Operator Rough F03",
      "Operator Rough F03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "DLCNukaWorld.esm",
@@ -10546,7 +10551,8 @@
      "Pack Rough F02",
      "Pack Rough F03",
      "Pack Rough F03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -10580,7 +10586,8 @@
      "Triggerman Rough F02",
      "Triggerman Rough F03",
      "Triggerman Rough F03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -10614,7 +10621,8 @@
      "Raider Rough F02",
      "Raider Rough F03",
      "Raider Rough F03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -10648,7 +10656,8 @@
      "Institute Rough F02",
      "Institute Rough F03",
      "Institute Rough F03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -10682,7 +10691,8 @@
      "Railroad Rough F02",
      "Railroad Rough F03",
      "Railroad Rough F03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -10716,7 +10726,8 @@
      "Atom Rough F02",
      "Atom Rough F03",
      "Atom Rough F03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "DLCCoast.esm",
@@ -10750,7 +10761,8 @@
      "Atom Rough F02",
      "Atom Rough F03",
      "Atom Rough F03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -10784,7 +10796,8 @@
      "BoS Rough M02",
      "BoS Rough M03",
      "BoS Rough M03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -10818,7 +10831,8 @@
      "Minutemen Rough M02",
      "Minutemen Rough M03",
      "Minutemen Rough M03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -10852,7 +10866,8 @@
      "Gunner Rough M02",
      "Gunner Rough M03",
      "Gunner Rough M03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "DLCNukaWorld.esm",
@@ -10886,7 +10901,8 @@
      "Disciple Rough M02",
      "Disciple Rough M03",
      "Disciple Rough M03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "DLCNukaWorld.esm",
@@ -10920,7 +10936,8 @@
      "Operator Rough M02",
      "Operator Rough M03",
      "Operator Rough M03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "DLCNukaWorld.esm",
@@ -10954,7 +10971,8 @@
      "Pack Rough M02",
      "Pack Rough M03",
      "Pack Rough M03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -10988,7 +11006,8 @@
      "Triggerman Rough M02",
      "Triggerman Rough M03",
      "Triggerman Rough M03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -11022,7 +11041,8 @@
      "Raider Rough M02",
      "Raider Rough M03",
      "Raider Rough M03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -11056,7 +11076,8 @@
      "Institute Rough M02",
      "Institute Rough M03",
      "Institute Rough M03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -11090,7 +11111,8 @@
      "Railroad Rough M02",
      "Railroad Rough M03",
      "Railroad Rough M03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "Fallout4.esm",
@@ -11124,7 +11146,8 @@
      "Atom Rough M02",
      "Atom Rough M03",
      "Atom Rough M03"
-    ]
+    ],
+    "pool": true
    },
    {
     "plugin": "DLCCoast.esm",
@@ -11158,7 +11181,8 @@
      "Atom Rough M02",
      "Atom Rough M03",
      "Atom Rough M03"
-    ]
+    ],
+    "pool": true
    }
   ]
  },
@@ -11250,5 +11274,5 @@
    "names": []
   }
  },
- "rulesHash": "f7d14fc61a92"
+ "rulesHash": "4ba252b597b2"
 }

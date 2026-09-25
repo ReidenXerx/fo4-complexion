@@ -73,6 +73,7 @@ namespace SH
 		std::string              editorID;  // what the config said, for the log
 		bool                     female{ false };
 		std::vector<std::string> presets;
+		bool                     pool{ false };  // one of Silhouette's own faction pools (S-72): MCM can switch it off (S-73)
 	};
 
 	// refitOutfitPresetsFemale / refitOutfitPresetsMale: an outfit, by its in-game name, that brings

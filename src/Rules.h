@@ -37,7 +37,9 @@ namespace SH
 		bool        bodyGen{ false };      // BodyGen gives them a body: their form-id line, or the roll (S-68)
 	};
 
-	[[nodiscard]] Verdict Decide(const Catalog& a_catalog, const ActorFacts& a_actor);
+	// a_factionPools: Silhouette's own faction pools take part (S-72); MCM's switch can leave them out (S-73),
+	// and then a faction is drawn from the random pool like everyone else. A user's faction rule applies either way.
+	[[nodiscard]] Verdict Decide(const Catalog& a_catalog, const ActorFacts& a_actor, bool a_factionPools = true);
 
 	[[nodiscard]] std::string_view TierName(Tier a_tier);
 }

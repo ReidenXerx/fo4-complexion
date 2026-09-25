@@ -151,6 +151,7 @@ namespace SH
 	{
 		bool            orefit{ true };  // MCM, and SetORefit (S-24)
 		VarietySwitches variety;
+		bool            factionPools{ true };  // MCM: Silhouette's own faction pools (S-72, S-73)
 	};
 
 	enum class Switch

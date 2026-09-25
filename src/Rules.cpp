@@ -53,7 +53,7 @@ namespace SH
 		return "?"sv;
 	}
 
-	Verdict Decide(const Catalog& a_catalog, const ActorFacts& a_actor)
+	Verdict Decide(const Catalog& a_catalog, const ActorFacts& a_actor, bool a_factionPools)
 	{
 		const int sex = a_actor.female ? 1 : 0;
 
@@ -93,6 +93,9 @@ namespace SH
 
 		// 4. faction -- the first rule, in the config's order, whose faction the NPC record carries.
 		for (const auto& rule : a_catalog.factionRules) {
+			if (rule.pool && !a_factionPools) {
+				continue;  // switched off in MCM (S-73): the faction is drawn from the random pool
+			}
 			if (rule.female == a_actor.female && Listed(a_actor.factions, rule.faction)) {
 				auto preset = Pick(rule.presets, a_actor.seed, a_actor.salt);
 				return { Tier::kFaction, preset, rule.presets, std::format("faction {} -> {}", rule.editorID, preset) };

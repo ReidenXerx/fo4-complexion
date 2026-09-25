@@ -1181,3 +1181,25 @@ names, the weights and order of the rules, a user's rule winning, and the shippe
 `test_generator_main` holds a fresh catalog to them, which failed when the catalog folded the repeats.
 `factions.py --check` re-measures every body and looks every faction up in its plugin, without case, as the
 game does (Far Harbor's is `DLC03ChildrenofAtomFaction`).
+
+## S-73 — MCM switches for the fresh start, the faction pools and the notices
+
+Owner decision, 2026-09-25, by poll at release preparation: three things Silhouette does by itself get a switch
+in MCM > Settings, "What Silhouette does by itself", each on by default.
+
+- **Fresh start for saves new to Silhouette** (`bFreshStart`, S-70). Read by `Silhouette:Adopter.FreshStart`
+  before it presses: off, it waits and is asked again at every scan, so switching it on while the save's first
+  24-hour window is open still presses it. MCM's value counts only while its sentinel (`iDefaults:Meta`) says it
+  was read, as for every switch: an unread key reads False and would have switched it off.
+- **Faction bodies** (`bFactionPools`, S-72). The catalog marks the rules of Silhouette's own faction pools
+  (`"pool": true`, optional: a catalog from before reads as none), the bridge pushes the switch with the others
+  (`Configure` takes it: protocol 5, not yet released), and `Decide` leaves the marked rules out when it is off --
+  the faction is then drawn from the random pool; a user's faction rule applies either way. It decides who is
+  given a body from then on: a faction body already given stays until Reset.
+- **Tell me when a change I asked for waits** (`bNotices`, S-71). The bridge still takes every notice from the
+  plugin, so none waits to show later, and shows them only while it is on. Stored as `_hideNotices`: a variable
+  added to a script is False in a save made before it, and False is "shown".
+
+The MCM's texts were brought up to date at the same time: the Bodies page said every NPC gets "one of your
+BodySlide presets" (S-65 made the pool the only random source) and the default "the most average body of your
+presets"; they now name the pool, the named people and the factions' pools.

@@ -145,6 +145,14 @@ Function FreshStart()
 	If !Silhouette:API.IsReady()
 		Return    ; still starting, or not installed: asked again at the next scan
 	EndIf
+	; S-73: MCM's "Fresh start for saves new to Silhouette". Off, it waits: asked again at the next scan,
+	; so switching it on while this save's first window is open still presses it. MCM's values count only
+	; while its sentinel says they were read (an unread key reads False).
+	If MCM.IsInstalled() && MCM.GetModSettingInt("Silhouette", "iDefaults:Meta") == 1
+		If !MCM.GetModSettingBool("Silhouette", "bFreshStart:General")
+			Return
+		EndIf
+	EndIf
 	; The call's own answer: a LastError read afterwards could be another script's (seventh wave).
 	String why = Silhouette:DLL.FreshStart()
 	If why != ""

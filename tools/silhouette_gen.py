@@ -574,7 +574,7 @@ def merge_characters(cfg, path=CHARACTERS_SIDECAR):
     return bound, kept
 
 
-def merge_factions(cfg, path=FACTIONS_SIDECAR):
+def merge_factions(cfg, path=FACTIONS_SIDECAR, pools=None):
     """S-72: each faction's pool as its faction rule (factionFemale / factionMale), UNDER the user's own -- a
     rule the config or an include already has for the faction and sex wins. Each body is listed as many times
     as its tier weighs: the rule picks one entry by the person's id (src/Rules.cpp Pick), so repetition is the
@@ -602,6 +602,8 @@ def merge_factions(cfg, path=FACTIONS_SIDECAR):
                     continue
                 rules_of[edid] = list(names)
                 added += 1
+                if pools is not None:
+                    pools.add((edid.casefold(), sex))  # the catalog marks it one of Silhouette's own (S-73)
     return added, kept
 
 
@@ -790,9 +792,12 @@ def write_mcm(folder, picker, default_index, average, build):
 
     needs = ' Needs Silhouette.dll and Silhouette.esp.'
     content = [
-        {'type': 'text', 'text': 'Every NPC gets one of your BodySlide presets the first time you '
-                                 'meet them, and keeps it. Your own character gets the most average '
-                                 'of them unless you choose one here.'},
+        {'type': 'text', 'text': 'Every NPC gets a body the first time you meet them, and keeps it: most '
+                                 'people one of Silhouette\'s own pool (mostly ordinary, some rough, a rare '
+                                 'fine one), the named characters their own, and the Brotherhood, raiders, '
+                                 'Gunners and the other factions one of their faction\'s pool. Your own '
+                                 'BodySlide presets are all in the lists below. Your character gets the most '
+                                 'average body of the pool unless you choose one here.'},
         {'type': 'section', 'text': 'Your character'},
     ]
     for g, label in (('female', 'If your character is female'), ('male', 'If your character is male')):
@@ -812,7 +817,7 @@ def write_mcm(folder, picker, default_index, average, build):
                'sliders LooksMenu and BodyGen set, including ones you set in LooksMenu yourself; '
                'body morphs other mods add are left alone. Close the menu to see it.',
                'ApplyChosen'),
-        button('Back to the default', f'The most average body of your presets: {avg}.', 'ApplyDefault'),
+        button('Back to the default', f'The most average body of the pool: {avg}.', 'ApplyDefault'),
         button('Which body do I have?', 'Names the preset Silhouette last gave your character.',
                'ShowCurrent'),
         {'type': 'section', 'text': 'Everyone else'},
@@ -918,6 +923,26 @@ def write_mcm(folder, picker, default_index, average, build):
         {'type': 'switcher', 'id': 'bGenitalRand:General', 'text': 'Genital variety',
          'help': 'Each woman her own genital shape, each man his own ball size. Never the shaft.',
          'valueOptions': {'sourceType': 'ModSettingBool'}},
+        {'type': 'section', 'text': 'What Silhouette does by itself'},
+        {'type': 'switcher', 'id': 'bFreshStart:General', 'text': 'Fresh start for saves new to Silhouette',
+         'help': 'The first time a save loads with Silhouette, everyone you already met still has the body they '
+                 'had before, since a body is only given to someone who has none. On, Silhouette presses Reset '
+                 'everyone for that save by itself, once -- replacing other mods\' bodies and sliders set by hand '
+                 'on the people it reaches too. Off, they keep them until you press Reset everyone yourself; '
+                 'switched on in the save\'s first 24 in-game hours, it still happens.' + needs,
+         'valueOptions': {'sourceType': 'ModSettingBool'}},
+        {'type': 'switcher', 'id': 'bFactionPools:General', 'text': 'Faction bodies',
+         'help': 'The Brotherhood, the Minutemen, Gunners, raiders, Nuka-World\'s gangs, the Triggermen, the '
+                 'Institute, the Railroad and the Children of Atom each draw from a pool of their own, in their '
+                 'own look. Off, they draw from the same pool as everyone else; your own faction rules apply '
+                 'either way. It decides who is given a body from now on: a faction body someone already has '
+                 'stays until Reset.' + needs,
+         'valueOptions': {'sourceType': 'ModSettingBool'}},
+        {'type': 'switcher', 'id': 'bNotices:General', 'text': 'Tell me when a change I asked for waits',
+         'help': 'When a change you asked for -- a Reset, a preset given, a picker try -- has to wait because '
+                 'another mod has them busy in a scene, a notification says so, and another when it is done.'
+                 + needs,
+         'valueOptions': {'sourceType': 'ModSettingBool'}},
         {'type': 'section', 'text': 'Silhouette'},
         {'type': 'button', 'text': 'How is Silhouette doing?',
          'help': 'Which build is loaded, what it is listening to, and how much work is waiting -- and '
@@ -944,7 +969,8 @@ def write_mcm(folder, picker, default_index, average, build):
     ini += ['[Picker]']
     ini += [f'{npc_setting_id(g, picker[g])}={default_index.get(g, 0)}' for g in ('female', 'male')
             if picker[g]]
-    ini += ['[General]', 'bORefit=1', 'bNippleRand=1', 'bGenitalRand=1']
+    ini += ['[General]', 'bORefit=1', 'bNippleRand=1', 'bGenitalRand=1', 'bFreshStart=1', 'bFactionPools=1',
+            'bNotices=1']
     # A key on NO control: MCM answers false/0 for a key it never loaded, so the bridge believes MCM's
     # switches only when this reads 1 -- this file was read, and every answer is a setting, not a gap
     # (wave 4 lens 2 L3; the "settings read" sentinel of mcm-settings-not-globals).
@@ -1750,7 +1776,8 @@ def main():
     bound, kept = merge_characters(cfg, args.characters)
     print(f'characters (S-66): {bound} NPC record(s) given their own body'
           + (f'; your own rules kept for {", ".join(kept)}' if kept else ''))
-    faction_rules, faction_kept = merge_factions(cfg, args.factions)
+    pool_factions = set()
+    faction_rules, faction_kept = merge_factions(cfg, args.factions, pool_factions)
     print(f'factions (S-72): {faction_rules} faction rule(s) drawing from their own pool'
           + (f'; your own rules kept for {", ".join(faction_kept)}' if faction_kept else ''))
 
@@ -2026,7 +2053,7 @@ def main():
             variety={g: [(mm, lo, hi, ranges[g][mm][2]) for mm, (lo, hi) in variety[g]] for g in BODIES},
             cfg=cfg, data=args.data,
             refit_presets=refit_sets(buckets.get('refit', []), base, baked, morphs_of),
-            body_morphs=morphs_of, baked=baked, report=cat_report)
+            body_morphs=morphs_of, baked=baked, report=cat_report, pool_factions=pool_factions)
         rules_id = catalog.rules_hash(cat, m)
         cat['rulesHash'] = rules_id
         catalog.check(cat)

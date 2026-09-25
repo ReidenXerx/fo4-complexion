@@ -255,6 +255,20 @@ namespace
 		a.factions = { { "Fallout4.esm", 3000 } };
 		v = SH::Decide(*c, a);
 		Check(v.tier == SH::Tier::kFaction && v.preset == "Athletic", "faction rule");
+		Check(SH::Decide(*c, a, false).tier == SH::Tier::kFaction,
+			"S-73: the switch leaves out only Silhouette's own pools: a rule the catalog does not mark as one stays");
+		{
+			auto doc = BaseCatalog();
+			doc["rules"]["faction"][0]["pool"] = true;
+			const auto pools = Cat(doc);
+			Check(SH::Decide(*pools, a).tier == SH::Tier::kFaction, "S-72: a faction's own pool draws like any faction rule");
+			v = SH::Decide(*pools, a, false);
+			Check(v.tier == SH::Tier::kNone && !v.blacklisted,
+				"S-73: faction bodies switched off, the faction is drawn from the random pool (BodyGen's roll)");
+			auto raider = Npc();
+			raider.factions = { { "Fallout4.esm", 3001 } };
+			Check(SH::Decide(*pools, raider, false).tier == SH::Tier::kFaction, "... while another faction rule still applies");
+		}
 		a.baseName = "Piper";
 		Check(SH::Decide(*c, a).preset == "Curvy", "a name rule outranks a faction rule");
 		a = Npc();
