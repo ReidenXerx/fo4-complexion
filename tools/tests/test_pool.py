@@ -118,6 +118,15 @@ class BustFloor(unittest.TestCase):
                     self.assertGreaterEqual(p['values'].get('Breasts', 0), 0)
                     self.assertLessEqual(p['values'].get('BreastsSmall', 0), 30)
 
+    def test_no_named_woman_is_below_the_floor(self):
+        # Owner poll 2026-09-25 (seventh wave): the named people's hand-set bodies are held to it too.
+        side = json.loads(sg.CHARACTERS_SIDECAR.read_text(encoding='utf-8'))['characters']
+        for name, c in side.items():
+            if c['sex'] == 'female':
+                with self.subTest(name):
+                    self.assertGreaterEqual(c['values'].get('Breasts', 0), 0)
+                    self.assertLessEqual(c['values'].get('BreastsSmall', 0), 30)
+
     def test_no_female_archetype_can_draw_below_the_floor(self):
         import archetypes
         for tier, kinds in archetypes.FEMALE.items():

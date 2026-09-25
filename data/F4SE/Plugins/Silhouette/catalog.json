@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "build": "ab3bc714ed2f",
- "stamp": 11221959,
+ "build": "5a67bac168f6",
+ "stamp": 5924794,
  "mode": "absolute",
  "presets": [
   {
@@ -69,7 +69,7 @@
    "marker": "Silhouette_Aster",
    "values": {
     "Arms": 0.2,
-    "BreastsSmall": 0.5,
+    "BreastsSmall": 0.3,
     "ButtSmall": 0.25,
     "ChubbyWaist": 0.55,
     "Hips": -0.15,
@@ -90,7 +90,7 @@
    "values": {
     "Back": 0.2,
     "BreastPerkiness": 0.2,
-    "BreastsSmall": 0.4,
+    "BreastsSmall": 0.3,
     "ButtSmall": 0.1,
     "ChestWidth": 0.25,
     "ChubbyWaist": 0.55,
@@ -422,7 +422,7 @@
    "values": {
     "Back": 0.15,
     "BreastGravity2": 0.35,
-    "BreastsSmall": 0.45,
+    "BreastsSmall": 0.3,
     "ButtSmall": 0.3,
     "ChubbyWaist": 0.75,
     "HipUpperWidth": 0.3,
@@ -1108,7 +1108,7 @@
    "values": {
     "Arms": 0.15,
     "BreastPerkiness": 0.3,
-    "BreastsSmall": 0.35,
+    "BreastsSmall": 0.3,
     "ButtSmall": 0.1,
     "ChubbyWaist": 0.55,
     "Hips": -0.05,
@@ -1131,7 +1131,7 @@
     "Belly": 0.25,
     "BreastFlatness2": 0.2,
     "BreastGravity2": 0.5,
-    "BreastsSmall": 0.4,
+    "BreastsSmall": 0.3,
     "ButtSmall": 0.35,
     "ChubbyWaist": 0.8,
     "Hips": -0.2,
@@ -1215,7 +1215,7 @@
    "values": {
     "Arms": 0.3,
     "BreastGravity2": 0.45,
-    "BreastsSmall": 0.5,
+    "BreastsSmall": 0.3,
     "ButtSmall": 0.4,
     "ChubbyWaist": 0.75,
     "Hips": -0.25,
@@ -1256,7 +1256,7 @@
    "marker": "Silhouette_Nisha",
    "values": {
     "Arms": 0.25,
-    "BreastsSmall": 0.55,
+    "BreastsSmall": 0.3,
     "BreastsSmall2": 0.2,
     "ButtSmall": 0.3,
     "ChubbyWaist": 0.5,
@@ -1341,7 +1341,7 @@
    "values": {
     "Arms": 0.15,
     "BreastGravity2": 0.15,
-    "BreastsSmall": 0.35,
+    "BreastsSmall": 0.3,
     "ButtSmall": 0.2,
     "ChubbyWaist": 0.65,
     "HipUpperWidth": 0.25,
@@ -5984,5 +5984,5 @@
    "names": []
   }
  },
- "rulesHash": "f78da39eb9cc"
+ "rulesHash": "6a6f2b20b0c3"
 }

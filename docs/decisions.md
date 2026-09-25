@@ -1143,3 +1143,9 @@ crosshair's event layout and main-thread lookups; the picker's parts, their orde
 45 character records; rolls owed across a save; the Adopter's timer after a load; new script variables on
 old saves. Left as they are: a `RST1` newer than this plugin is not kept byte for byte as `REC1` is (the
 record stays version 1 for good, so it cannot arise); VERSION is the owner's to set at release.
+- **The bust floor holds for the named people too (S-65 and S-66 amended, owner poll).** The floor covered the
+  pool's archetypes only, and eight hand-set women drew BreastsSmall past it -- the slider whose concave chest
+  the physics folded: Piper 35, Cait 40, Desdemona 45, Madison Li 40, Marcy Long 50, Nisha 55, Kasumi 35, Aster
+  50. Asked, the owner chose "Apply it to them": each is capped at 30, the pool's small-but-real bust, and
+  `tests/test_pool.py` (BustFloor) holds `characters.json` to it as it holds the pool (it failed on exactly those
+  eight first).

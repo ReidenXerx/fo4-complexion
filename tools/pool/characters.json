@@ -14,7 +14,7 @@
    "values": {
     "LegsThin": 20,
     "Arms": 15,
-    "BreastsSmall": 35,
+    "BreastsSmall": 30,
     "BreastGravity2": 15,
     "ChubbyWaist": 65,
     "WideWaistLine": 45,
@@ -39,7 +39,7 @@
     "MuscularButt": 60,
     "ChestWidth": 25,
     "Back": 20,
-    "BreastsSmall": 40,
+    "BreastsSmall": 30,
     "BreastPerkiness": 20,
     "ChubbyWaist": 55,
     "WideWaistLine": 35,
@@ -106,7 +106,7 @@
    ],
    "vibe": "Railroad leader, middle-aged and severe: long, flat and square",
    "values": {
-    "BreastsSmall": 45,
+    "BreastsSmall": 30,
     "BreastGravity2": 35,
     "ChubbyWaist": 75,
     "WideWaistLine": 55,
@@ -176,7 +176,7 @@
    "values": {
     "LegsThin": 30,
     "Arms": 25,
-    "BreastsSmall": 40,
+    "BreastsSmall": 30,
     "BreastGravity2": 50,
     "BreastFlatness2": 20,
     "ChubbyWaist": 80,
@@ -223,7 +223,7 @@
    "values": {
     "LegsThin": 35,
     "Arms": 30,
-    "BreastsSmall": 50,
+    "BreastsSmall": 30,
     "BreastGravity2": 45,
     "ChubbyWaist": 75,
     "WideWaistLine": 55,
@@ -316,7 +316,7 @@
     "Arms": 25,
     "MuscularArms": 30,
     "MuscularLegs": 25,
-    "BreastsSmall": 55,
+    "BreastsSmall": 30,
     "BreastsSmall2": 20,
     "ChubbyWaist": 50,
     "WideWaistLine": 40,
@@ -335,7 +335,7 @@
    ],
    "vibe": "young runaway: small, slight, girlish",
    "values": {
-    "BreastsSmall": 35,
+    "BreastsSmall": 30,
     "BreastPerkiness": 30,
     "SlimThighs": 20,
     "Arms": 15,
@@ -538,7 +538,7 @@
    "values": {
     "LegsThin": 25,
     "Arms": 20,
-    "BreastsSmall": 50,
+    "BreastsSmall": 30,
     "ChubbyWaist": 55,
     "WideWaistLine": 40,
     "Hips": -15,
