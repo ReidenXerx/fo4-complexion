@@ -219,6 +219,12 @@ def w1_settings_sentinel_removed(d):
     edit_text(data(d, MCM / 'settings.ini'), lambda s: re.sub(r'\[Meta\]\r?\niDefaults=1\r?\n', '', s))
 
 
+@case(lambda: 'settings.ini has no default for bFactionPools:General')
+def w3_a_new_switch_without_its_default(d):
+    # S-73: every switch of the menu needs its default, the ones added after the verifier's first list too.
+    edit_text(data(d, MCM / 'settings.ini'), lambda s: re.sub(r'bFactionPools=1\r?\n', '', s))
+
+
 @case(lambda: 'settings.ini has no [Meta] iDefaults=1')
 def w2_settings_sentinel_zero(d):
     edit_text(data(d, MCM / 'settings.ini'), lambda s: s.replace('iDefaults=1', 'iDefaults=0'))

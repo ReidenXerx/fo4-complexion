@@ -5,11 +5,13 @@ keeps it: an ordinary one most often, an unflattering one less often, a conventi
 rarely, from Silhouette's own pool. The Commonwealth's named people -- companions and major NPCs -- each
 have a body of their own.
 
-**Status:** Phase 1 (the generator; LooksMenu's own BodyGen does the work at run time) is in use.
-Phase 2 — `Silhouette.dll`, an F4SE plugin, with `Silhouette.esp` — adds the rules only a running game
-can see, ORefit, the NPC picker, the touch-up and an API with OBody's names. It is built and tested
-offline; its first in-game session ([docs/phase2-test-plan.md](docs/phase2-test-plan.md)) is next. What
-maps where: [docs/obody-feature-map.md](docs/obody-feature-map.md); how Phase 2 works:
+**Status:** 0.1.0, the first public release. Phase 1 (the generator; LooksMenu's own BodyGen does the
+work at run time) and Phase 2 -- `Silhouette.dll`, an F4SE plugin, with `Silhouette.esp` -- which adds the
+rules only a running game can see, ORefit, the NPC picker, the touch-up, faction pools and an API with
+OBody's names. Everything is tested offline (over 540 plugin tests and 140 tool tests) and has been played in the
+author's game; the in-game checklist is [docs/phase2-test-plan.md](docs/phase2-test-plan.md). Please report
+what you see. Every feature: [docs/FEATURES.md](docs/FEATURES.md). What maps where:
+[docs/obody-feature-map.md](docs/obody-feature-map.md); how Phase 2 works:
 [docs/phase2.md](docs/phase2.md).
 
 ## What it does that a hand-written BodyGen file does not
@@ -86,8 +88,9 @@ Without the DLL, everything above keeps working.
   clothed shape off by itself, and without a working DLL the bridge takes them off the people around you.
   Nobody in power armour is refit. `<Preset>-Refit` BodySlide presets and OBody's outfit lists work as in
   OBody.
-- **The NPC picker** — MCM hotkeys: aim at someone close enough to talk to, *Pick*, *Next*/*Previous*
-  to try every preset on them live, *Keep* or *Cancel*. The MCM page *The NPC in your sights* gives a preset, *Reset* (Silhouette decides
+- **The NPC picker** — MCM hotkeys (unbound until you set them in MCM > Silhouette > *The NPC in your
+  sights*): aim at someone close enough to talk to, *Pick*, *Next*/*Previous* to try every preset on them
+  live, *Keep* or *Cancel*. The MCM page *The NPC in your sights* gives a preset, *Reset* (Silhouette decides
   their body again: a named character's own body, a rule's draw, or a new roll from the pool), or names
   the one they have. A choice is kept like a rule's, and marked in LooksMenu, so a save made without the
   DLL keeps it (MCM's *Refresh* pressed without the DLL gives the body again without the mark).
@@ -101,6 +104,12 @@ Without the DLL, everything above keeps working.
   Silhouette: without it, everyone you had already met would keep the body they had before, since a body is
   given only to someone who has none. Like the button, it replaces other mods' bodies and sliders set by hand
   on the people it reaches; a notification says when it has been done.
+- **Notifications** — when a change you asked for (a Reset, a preset given, a picker try) has to wait
+  because another mod has them busy in a scene, a notification says so, and another when it is done.
+- **Switches** (MCM > Silhouette > Settings, *What Silhouette does by itself*, each on by default): the fresh
+  start for saves new to Silhouette, the faction bodies, and the notifications. Off, a new save keeps its
+  old bodies until you press *Reset everyone*; factions draw from the common pool (your own faction rules
+  apply either way); changes wait without a word.
 - **Touch-up** — bodies an older build gave get the nipple and genital variety they lack, and lose any
   shaft slider (never part of a body); a value you take off afterwards stays off.
 - **API** — `Silhouette:API`, OBody NG's function names (`GetPresetAssignedToActor`,
@@ -157,6 +166,26 @@ itself, only what the generator makes of it.
 Options: `--no-partial` hands out only presets that fit fully; `--compensate` writes templates
 relative to a base that is not zeroed; `--data` points at another `Data` folder; `--report file.json`
 writes the full classification.
+
+## Building from source
+
+The release archive is everything a player needs; this is for building it yourself.
+
+- **Windows**, **Visual Studio 2022 Build Tools** with the C++ workload (it brings CMake), and
+  **[vcpkg](https://github.com/microsoft/vcpkg)** with `VCPKG_ROOT` pointing at it.
+- The CommonLibF4 submodule: `git submodule update --init --recursive`.
+- **Python 3** (the generator and its tests use the standard library; the body-pool tools in `tools/pool`
+  also need Pillow for their review sheets).
+- The **Papyrus compiler** from the Creation Kit, and the base game's script sources.
+
+```
+powershell scripts/build-plugin.ps1     # Silhouette.dll, the offline tests, the tools' tests
+powershell scripts/build-papyrus.ps1 -Base <script sources> -Compiler <PapyrusCompiler.exe>
+powershell scripts/make-release.ps1     # the archive (refuses to pack unless every check passes)
+```
+
+The scripts' default paths (the game's `Data`, the compiler, the staging folder) are the author's; pass
+your own with the parameters each script lists at its top, or `--data` to the Python tools.
 
 ## How it decides
 

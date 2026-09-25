@@ -368,11 +368,13 @@ def check_picker(args, templates, player, problems, stamp, cat):
         problems.append(f'picker files missing ({mcm}\\config.json or {psc})')
         return
     config = json.loads((mcm / 'config.json').read_text(encoding='utf-8-sig'))
-    options, buttons, hotkeys = {}, [], []
+    options, buttons, hotkeys, switches = {}, [], [], []
     for page in config['pages']:
         for c in page['content']:
             if c.get('type') == 'dropdown':
                 options[c['id']] = c['valueOptions']['options']
+            if c.get('type') == 'switcher':
+                switches.append(c['id'])
             if c.get('type') == 'button':
                 buttons.append(c['action'])
             if c.get('type') == 'hotkey':
@@ -533,7 +535,8 @@ def check_picker(args, templates, player, problems, stamp, cat):
             problems.append(f'MCM default {nid}={d} is not an entry of the menu')
         if f'"{nid}")' not in text:
             problems.append(f'Silhouette:Player.NpcChoice does not read {nid}')
-    for key in ('bORefit:General', 'bNippleRand:General', 'bGenitalRand:General'):
+    # Every switch the menu shows, read from the menu itself: a switch added later cannot miss its default (S-73).
+    for key in switches:
         if key not in defaults:
             problems.append(f'settings.ini has no default for {key}: MCM would read it as off')
     # The sentinel the bridge reads before it believes MCM at all (a key MCM never loaded reads as 0).

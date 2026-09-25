@@ -77,7 +77,7 @@ Keyword _aafBusy
 Keyword _aafLocked
 ; Form ids, not actors: an Actor held in a script variable is kept in memory with it.
 Int[] _swept
-; The switches last pushed to the plugin (ORefit 1, nipples 2, genitals 4), -1 for none this
+; The switches last pushed to the plugin (ORefit 1, nipples 2, genitals 4, faction bodies 8), -1 for none this
 ; load: MCM's values are pushed only when they change.
 Int _pushed = -1
 ; S-73: MCM's "Tell me when a change I asked for waits" off. False (the default a variable added to a script

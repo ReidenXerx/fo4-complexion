@@ -1,6 +1,6 @@
 # Phase 2 — the first in-game session
 
-Twenty-four steps for the first session with Silhouette.dll, each with what to expect and what a failure
+Twenty-five steps for the first session with Silhouette.dll, each with what to expect and what a failure
 means. Written from the second and third microscope waves' measurements of the owner's own install (809
 plugins, 1,609 built .tri files, the saves that hold Silhouette bodies); the log lines are quoted from the
 code. Everything the offline tests cannot reach is here: LooksMenu itself, the engine's events, the frame
@@ -198,6 +198,12 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
     faction's pool: MCM > The NPC in your sights > "Which body do they have?" names one like `Gunner Plain F03`,
     and Silhouette.log says `faction GunnerFaction -> Gunner Plain F03`. Mostly Plain, some Rough, a rare Fine.
     A named character of the faction (Danse, Preston) keeps their own body.
+25. The switches (S-73), MCM > Settings > "What Silhouette does by itself". Turn *Faction bodies* off, press
+    Reset on a Gunner: they roll from the common pool (`Silhouette.log`: `faction bodies off by the settings`,
+    then no `faction GunnerFaction -> ...` for them); turn it back on and Reset again: a Gunner body. Turn
+    *Tell me when a change I asked for waits* off, Reset someone AAF has busy: no notification, the change
+    still lands after the scene. On a COPY of a save that never had Silhouette, turn *Fresh start* off first:
+    nobody changes on the load; turn it on within the first in-game day: the reset happens then.
 
 ## Not checked offline
 
