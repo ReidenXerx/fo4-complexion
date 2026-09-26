@@ -1286,6 +1286,12 @@ Database's `.trace` / `.mapping` diagnostics; the Main file stays the OG build u
   the Anniversary LooksMenu (1.7) registers its F4SE plugin as "Fallout 4 Engine Extender", old-gen's as "F4EE",
   and the scripts asked for "F4EE" only. `API.LooksMenuLoaded()` accepts either and every script asks there.
   MCM registers "F4MCM" on both. A name by which a plugin registers is part of the runtime too.
+- **Verified on AE** with 0.2.1 (fallout-collection, 1.11.240): the layout line, 4 own presets, 39 probes with
+  0 failed, the picker's steps, refits off and on around scenes, no errors.
+- **Amended 2026-09-27 (owner):** 0.2.1 is the Main file, for OG and AE; 0.1.1 stays among the old files for
+  OG players who will not install Runtime Database. Next-gen is not a supported target -- "nobody use next
+  gen ... its pointless version" -- so no tester call and no claim for it. The build still declares NG's
+  layouts to F4SE because RD costs nothing there, and the layout guard would still turn a mismatch off.
 
 ## S-76 — The player's own presets, read in game: the try-on, never random
 
