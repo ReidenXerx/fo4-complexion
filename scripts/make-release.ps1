@@ -62,8 +62,9 @@ if (-not $python) { throw "No python: the verifier (tools\verify_bodygen.py) mus
 # First, so its plain reason is the one shown -- the verifier refuses the same esp among everything else.
 & $python (Join-Path $root 'tools\make_esp.py') --check (Join-Path $data 'Silhouette.esp')
 if ($LASTEXITCODE) { throw "data\Silhouette.esp must not be packed - see the line above." }
-# ...and the files do what they claim. On a failure every line is shown, not a tail.
-$verify = @(& $python (Join-Path $root 'tools\verify_bodygen.py') --dir $data --psc (Join-Path $root 'papyrus\Silhouette\Player.psc'))
+# ...and the files do what they claim, as a public build (S-74: no preset but Silhouette's own and CBBE's and
+# BodyTalk's stock - never the presets of the machine it was generated on). On a failure every line is shown.
+$verify = @(& $python (Join-Path $root 'tools\verify_bodygen.py') --dir $data --psc (Join-Path $root 'papyrus\Silhouette\Player.psc') --release)
 if ($LASTEXITCODE) {
     $verify | ForEach-Object { Write-Host $_ }
     throw "tools\verify_bodygen.py fails these files - every line above."
@@ -128,6 +129,10 @@ foreach ($f in Get-ChildItem $pex -Filter *.pex) {
 foreach ($d in $docs) {
     Copy-Item $d (Join-Path $out 'F4SE\Plugins\Silhouette') -Force
 }
+# The manifests of builds made with this machine's own presets hold their values: they are the author's saves',
+# never a player's, and stay in the repo but not in the archive (S-74). The current build's must be clean.
+& $python (Join-Path $root 'tools\release_manifests.py') (Join-Path $out 'F4SE\Plugins\Silhouette\manifests') --current $catalog.stamp
+if ($LASTEXITCODE) { throw "tools\release_manifests.py refused - see the line above; nothing was packed." }
 
 Compress-Archive -Path (Join-Path $out '*') -DestinationPath $zip -CompressionLevel Optimal
 $item = Get-Item $zip

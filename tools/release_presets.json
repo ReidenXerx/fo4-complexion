@@ -1,0 +1,13 @@
+{
+ "about": "S-74: what a public build may carry besides Silhouette's own presets -- only the presets CBBE and BodyTalk themselves ship, so a release never carries the presets of the machine it was built on. Names as the mods' own files spell them: CBBE's Tools/BodySlide/SliderPresets/CBBE.xml (Caliente's Beautiful Bodies Enhancer 2.7.2, Nexus 15) and BodyTalk's BT-*.xml (BodyTalk 3.8, Nexus 72310). Their '(Outfit)' variants are left out by the generator anyway.",
+ "stock": {
+  "CBBE": [
+   "CBBE Zeroed Sliders", "CBBE Curvy", "CBBE Slim", "CBBE Petite", "CBBE Chubby", "CBBE Vanilla", "CBBE Athletic",
+   "Imitation - UNP #1", "Imitation - UNP #2", "Imitation - UNP Skinny", "Imitation - Dream Girl",
+   "SevenBase", "SevenBase Slim", "SevenBase Upper", "SevenBase Lower"
+  ],
+  "BodyTalk": [
+   "BT - Zero", "BT - Average", "BT - Bodybuilder", "BT - Chubby", "BT - Muscular", "BT - Swimmer", "BT - Thin"
+  ]
+ }
+}

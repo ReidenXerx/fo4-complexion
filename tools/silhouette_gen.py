@@ -83,6 +83,8 @@ CHARACTERS_SIDECAR = ROOT / 'tools/pool/characters.json'
 # ...and the factions' own pools (tools/pool/factions.py, S-72), each a faction rule weighted by repetition.
 FACTIONS_SIDECAR = ROOT / 'tools/pool/factions.json'
 PRESETS = pathlib.Path('Tools/BodySlide/SliderPresets')          # below a mod folder / data root
+# A public build's only presets besides the package's own: CBBE's and BodyTalk's stock (S-74).
+RELEASE_PRESETS = ROOT / 'tools/release_presets.json'
 LINE_LIMIT = 32766      # bytes the engine's ReadLine gives before it splits a line (docs/bodygen-format.md)
 
 
@@ -526,15 +528,27 @@ def body_values(target, morphs):
     return {k: v for k, v in target.items() if k in morphs and not never_in_body(k)}
 
 
-def read_all_presets(folders):
+def release_stock():
+    """The presets a public build may carry besides the package's own (S-74), casefolded: the ones CBBE and
+    BodyTalk themselves ship (tools/release_presets.json)."""
+    d = json.loads(RELEASE_PRESETS.read_text(encoding='utf-8'))
+    return {n.casefold() for names in d['stock'].values() for n in names}
+
+
+def read_all_presets(folders, release=False):
     """read_presets over several folders, the first folder's preset winning a name (any case): the pool this
-    repo holds is read before the copy a deploy put in the game's Data."""
+    repo holds is read before the copy a deploy put in the game's Data. With release (S-74), the other folders
+    give only CBBE's and BodyTalk's stock presets: a public build never carries the presets of the machine it
+    was made on."""
+    stock = release_stock() if release else None
     out, seen = [], set()
-    for folder in folders:
+    for i, folder in enumerate(folders):
         for p in read_presets(folder):
-            if p['name'].casefold() not in seen:
-                seen.add(p['name'].casefold())
-                out.append(p)
+            key = p['name'].casefold()
+            if key in seen or (stock is not None and i > 0 and key not in stock):
+                continue
+            seen.add(key)
+            out.append(p)
     return out
 
 
@@ -1675,6 +1689,9 @@ def main():
     ap.add_argument('--pool', type=pathlib.Path, default=POOL_SIDECAR,
                     help='the body pool\'s sidecar (tools/pool/generate.py): its presets are the random pool, '
                          'weighted by tier (S-65)')
+    ap.add_argument('--release', action='store_true',
+                    help='a public build: besides the package\'s own presets, only the stock ones CBBE and BodyTalk '
+                         'ship (tools/release_presets.json, S-74) -- never the presets installed on this machine')
     args = ap.parse_args()
     reconfigure_output()
 
@@ -1706,7 +1723,7 @@ def main():
         tris[g] = base_body.read_tri(tri)
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
     pool = load_pool(args.pool)
-    presets = read_all_presets([ROOT / 'data' / PRESETS, args.data / PRESETS])
+    presets = read_all_presets([ROOT / 'data' / PRESETS, args.data / PRESETS], release=args.release)
     # The folder the manifests go to, and the game's: every marker either records stays its preset's (L4 F2,
     # wave 4 L6) -- a fresh --out, or a manifest deleted here, must not bring the old renames back. One list,
     # for every reader (wave 5).

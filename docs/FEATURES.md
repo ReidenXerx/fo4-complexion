@@ -17,8 +17,11 @@ order. Each item names where it is settled: `S-#` is a decision in [decisions.md
   are chosen, so no two look alike.
 - A **bust floor** keeps every woman's bust small but real (no concave chest the breast physics would fold),
   in the pool, the faction pools and the named characters alike (S-65 amendment, seventh wave).
-- Your installed BodySlide presets are **never random** but stay in every picker; zeroed presets (`CBBE
-  Zeroed Sliders`, `BT - Zero`) are left out of random, told by their measured values (S-8).
+- The pickers hold Silhouette's own bodies and the presets CBBE and BodyTalk themselves ship (CBBE Curvy,
+  Slim, Athletic ..., the Imitation and SevenBase presets; BT - Average, Muscular ...): 192 for women, 175 for
+  men. Your other installed BodySlide presets join them when you run the generator yourself (S-74); none is
+  ever random. Zeroed presets (`CBBE Zeroed Sliders`, `BT - Zero`) are left out of random, told by their
+  measured values (S-8).
 - Presets whose sliders your body's `.tri` does not have are left out (they would do nothing); partial fits
   count only for the body family they declare (S-4). `--no-partial` keeps only full fits.
 - Your built base body is measured on every run; a body not built zeroed is named exactly (for example "CBBE

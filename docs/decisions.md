@@ -1203,3 +1203,30 @@ in MCM > Settings, "What Silhouette does by itself", each on by default.
 The MCM's texts were brought up to date at the same time: the Bodies page said every NPC gets "one of your
 BodySlide presets" (S-65 made the pool the only random source) and the default "the most average body of your
 presets"; they now name the pool, the named people and the factions' pools.
+
+## S-74 — A release carries Silhouette's own presets and CBBE's and BodyTalk's stock ones, nothing else
+
+Owner decision, 2026-09-26, by poll, after 0.1.0's first archive was found to carry 68 presets installed on the
+author's machine -- The Rocket Bomb Body, Josie, ALSL, PLP, Oxton, That Gym Booty and more, from other pages --
+baked into the templates, the catalog, every picker and every earlier build's manifest. None was ever random
+(S-65), but their values were redistributed, and a player would have seen presets they never installed.
+`make-release.ps1`'s own header had warned against exactly this; nothing enforced it. Asked what a release
+should ship: "Own + CBBE/BodyTalk stock" -- the presets that ship with CBBE and BodyTalk themselves, which
+nearly every player has.
+
+- **The allowlist** is `tools/release_presets.json`, by origin, not by look: CBBE's own `CBBE.xml` (its stock
+  bodies, the Imitation UNP and Dream Girl presets and the SevenBase ones -- all four families ship in that one
+  file) and BodyTalk's `BT-*.xml`. Measured on the author's install: which mod folder each XML came from.
+- **`silhouette_gen.py --write --release`** reads the package's own presets and, from the game's folders, only
+  the allowlisted ones. Without `--release` it takes everything installed, as before: that is the author's
+  own game, and anyone who wants their presets in the pickers.
+- **`verify_bodygen.py --release`** fails a catalog holding any other preset, and `make-release.ps1` always
+  passes it: a release generated without `--release` cannot be packed.
+- **Manifests.** Every build's manifest holds the values of the bodies it could give (S-6, S-12). The 14 of
+  the builds before this one carry the author's presets; they stay in the repo (the author's saves need them)
+  and `tools/release_manifests.py` leaves them out of the archive. No player has a save from those builds. It
+  refuses to pack if the current build's own manifest carries any.
+- The pickers now hold 192 presets for women (177 of Silhouette's, 15 of CBBE's) and 175 for men (168 and 7).
+
+The repo's history keeps the earlier generated files; this stops them from shipping, not from having been
+committed.

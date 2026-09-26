@@ -744,6 +744,18 @@ def check_lines(args, rules, templates, cat, problems):
                         f'lines match nobody')
 
 
+def release_problems(cat, own, stock):
+    """S-74: a public build carries the package's own presets and CBBE's and BodyTalk's stock ones, nothing
+    else -- the catalog of one generated on a machine with other presets installed would ship theirs."""
+    foreign = [p['name'] for p in (cat or {}).get('presets', [])
+               if p['name'] not in own and p['name'].casefold() not in stock]
+    if not foreign:
+        return []
+    more = f' and {len(foreign) - 8} more' if len(foreign) > 8 else ''
+    return [f'a release would carry presets that are neither Silhouette\'s own nor CBBE\'s or BodyTalk\'s stock: '
+            f'{", ".join(foreign[:8])}{more} -- regenerate with silhouette_gen.py --write --release (S-74)']
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('--data', type=pathlib.Path, default=sg.DEFAULT_DATA)
@@ -755,6 +767,9 @@ def main():
                          'folder above it, where F4SE/Plugins/F4EE/BodyGen/Loose is looked for')
     ap.add_argument('--psc', type=pathlib.Path, default=sg.ROOT / 'papyrus/Silhouette/Player.psc',
                     help='the generated picker script source to check against the menu')
+    ap.add_argument('--release', action='store_true',
+                    help='a public build (S-74): read the presets as silhouette_gen.py --release does, and fail any '
+                         'catalog preset that is neither the package\'s own nor CBBE\'s or BodyTalk\'s stock')
     args = ap.parse_args()
     sg.reconfigure_output()
     roots = sg.built_roots(args)
@@ -968,7 +983,10 @@ def main():
     tris = {g: base_body.read_tri(body_file[b].with_suffix('.tri')) for g, b in sg.BODIES.items()}
     morphs_of = {g: set().union(*t.values()) for g, t in tris.items()}
     # The package's own presets (the body pool, S-65) first, then the game's -- as the generator reads them.
-    presets = sg.read_all_presets([groot / sg.PRESETS, args.data / sg.PRESETS])
+    presets = sg.read_all_presets([groot / sg.PRESETS, args.data / sg.PRESETS], release=args.release)
+    if args.release:
+        own = {p['name'] for p in sg.read_presets(groot / sg.PRESETS)}
+        problems.extend(release_problems(cat, own, sg.release_stock()))
     # The markers exactly as the generator derived them: from the manifests beside these files and in the
     # game's Data (L4 F2, wave 4 L6) -- the one folder list the generator reads too (wave 5). A manifest only
     # Data holds that cannot be read is said and skipped, as the generator does: the package is not at fault.

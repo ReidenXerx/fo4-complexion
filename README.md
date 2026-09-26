@@ -136,12 +136,24 @@ takes the clothed shapes off).
 
 - Fallout 4 with F4SE and **LooksMenu**, BodyGen enabled in `Data/F4SE/Plugins/f4ee.ini`
   (`[BodyMorph] bEnable=1`, `bEnableBodyGen=1` — the default).
-- **BodySlide**, with your body — and your outfits — built from a **zeroed** preset ("CBBE Zeroed
-  Sliders", "BT - Zero") with **Build Morphs** ticked. The generator checks and tells you if not.
-- **MCM** (Mod Configuration Menu) for the character picker.
-- Python 3 to run the generator (standard library only).
+- **BodySlide**, with your body — CBBE for women, BodyTalk for men — and your outfits built from a
+  **zeroed** preset ("CBBE Zeroed Sliders", "BT - Zero") with **Build Morphs** ticked.
+- **MCM** (Mod Configuration Menu) for the settings and the pickers.
+- Python 3 only to run the generator yourself (standard library only) -- never to play.
 
-## Use
+## Install
+
+1. Build your body and your outfits in BodySlide from a zeroed preset, with Build Morphs ticked.
+2. Install the release archive with your mod manager and enable `Silhouette.esp` (a light plugin).
+3. Load a save. A save that never had Silhouette gets *Reset everyone* by itself once, with a notification; a
+   new game needs nothing.
+4. Optional: set the picker hotkeys in MCM > Silhouette > *The NPC in your sights*.
+
+The archive is generated ready to play: Silhouette's own bodies, and in the pickers also the presets CBBE and
+BodyTalk ship (S-74). You need the generator below only to put your other installed presets in the pickers,
+to change the rules in `Silhouette_presetDistributionConfig.json`, or for a body you cannot build zeroed.
+
+## Use (the generator)
 
 ```
 python tools/silhouette_gen.py                 # measure and report, write nothing
@@ -162,6 +174,10 @@ scripts, since `Silhouette.esp`'s quests run them. `scripts/deploy-dev.ps1` stag
 again whenever you add presets, rebuild a body
 in BodySlide, or edit `Silhouette_presetDistributionConfig.json`** -- the game never reads that file
 itself, only what the generator makes of it.
+
+A build for release is `--write --release`: besides Silhouette's own presets, only the stock ones CBBE and
+BodyTalk ship (`tools/release_presets.json`), never the ones installed on the machine that made it;
+`make-release.ps1` refuses anything else (S-74).
 
 Options: `--no-partial` hands out only presets that fit fully; `--compensate` writes templates
 relative to a base that is not zeroed; `--data` points at another `Data` folder; `--report file.json`
