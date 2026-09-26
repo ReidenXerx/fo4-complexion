@@ -1,0 +1,48 @@
+=== STICKY: How Silhouette works inside (1/2): bodies ===
+[b]Two halves[/b]
+Phase 1 is a generator: it writes LooksMenu's own BodyGen files, so the game's BodyGen hands out the bodies. Phase 2 is [font=Courier New]Silhouette.dll[/font] (F4SE) with [font=Courier New]Silhouette.esp[/font] and a Papyrus bridge: the rules only a running game can see, the picker, ORefit and the API. Everything the DLL decides is carried out by the bridge through LooksMenu's own Papyrus functions, one value per frame.
+
+[b]A measured pool, not a preset folder[/b]
+The random bodies are generated, not hand-picked. [font=Courier New]tools/pool[/font] builds each candidate on the real body mesh with its sliders applied, then measures it from horizontal slices of the skin: bust, waist, hip, thigh and arm girths, bust and belly projection, overall size. A body is kept only if it measures as its tier (Plain, Rough, Fine), and the most different candidates are chosen, so no two land close together. The odds come from repetition on BodyGen's random line: 18 Plain listed three times, 17 Rough and 6 Fine once, 77 entries for 41 bodies, 70 / 22 / 8 %. The faction pools and the 43 named bodies are measured the same way.
+
+[b]The marker morph: why a roll is permanent[/b]
+BodyGen rolls a body only for someone with no body morphs stored. Every Silhouette template ends with one extra morph named after its preset, [font=Courier New]Silhouette_<Preset>[/font], whose value is the build's stamp. LooksMenu stores it with the body in the save, so:
+[list]
+[*]a body, once given, is never rolled again;
+[*]the plugin reads the marker to know which preset gave it, and which build;
+[*]each build's manifest names every body it can give, and old manifests are kept, so a body from an older build is still known and can be touched up.
+[/list]
+While a body is being written the marker is set first to 0.25 ("pending") and last to the stamp: a save made mid-write is found at the next load and finished.
+
+[b]Who decides[/b]
+The priority is OBody NG's:
+[list]
+[*]a per-NPC blacklist;
+[*]then a per-NPC preset (form id, name);
+[*]then the plugin and race blacklists;
+[*]then faction, plugin and race rules;
+[*]and last the random pool.
+[/list]
+Silhouette's own bodies slot in underneath yours: a named character's body is a per-NPC rule that any rule of yours for the same record replaces, and the faction pools are faction rules that yours outrank. What BodyGen can express (race, plugin, form id) is compiled into its files and works without the plugin; names, factions and the name blacklist are decided by the DLL the first time it sees someone. A rule with several presets draws one per person and keeps it.
+
+[b]Reset everyone and the fresh start[/b]
+Reset everyone records the press and the build in the co-save. The people around you are re-decided at once, everyone else the first time they are seen after it, once each. A save that never had Silhouette gets the same press by itself, once, from the regeneration window's quest.
+
+=== STICKY: How Silhouette works inside (2/2): clothes, saves, safety ===
+[b]ORefit: a layer of its own[/b]
+LooksMenu keeps morphs per keyword. Silhouette writes the clothed shape under [font=Courier New]Silhouette.esp[/font]'s own keyword, never under the body's: breasts together at least 0.3, push-up at least 0.2, and under heavy clothes NipBGone 1.0. They are floors, never lowered: a higher value anywhere else wins, which is also why ORefit cannot flatten what another layer raises. When someone undresses, that one keyword is cleared and they are exactly their own body. Removing [font=Courier New]Silhouette.esp[/font] removes the keyword, and every clothed shape with it.
+
+[b]Heavy is a word in the name[/b]
+Which clothes flatten the nipples is decided by the item's name: armour, jacket, coat, duster and 20 more, whole words only, plus lists by form id. Slots and armour ratings were tried first and flattened bras and shirts: measured on a large load order, the old rule flattened 137 garments and the name rule flattens 35, all coats, jackets and armour. The flattening only shows on outfits whose mesh carries the slider; no vanilla heavy armour does.
+
+[b]The co-save holds intent, not bodies[/b]
+The bodies are LooksMenu's data, saved by LooksMenu. Silhouette's co-save keeps only who chose what: picks, API choices, a rule's draw, a picking in progress, the Reset everyone press. On every load the plugin reads the truth from LooksMenu (the markers) and reconciles: a roll or reset asked for before a save is carried out after it, and a created NPC's id reused for somebody new is not mistaken for the person it was.
+
+[b]Waiting its turn[/b]
+Work goes in three lanes: your own actions first, then other mods' requests, then bulk work. Anyone in an AAF scene, busy or locked, waits, and the change lands when the scene ends; with notifications on, you are told both times.
+
+[b]The protocol check[/b]
+The DLL and the scripts carry one protocol number, currently 5, in three places kept together by a test. If they do not match, a plugin from one release with scripts from another, Silhouette refuses to half-work and says why in "How is Silhouette doing?", instead of calling natives that no longer mean what the scripts think.
+
+[b]Tested offline[/b]
+The DLL's decisions are a pure state machine, driven in over 550 tests through a fake game and a fake LooksMenu, new games and old saves included. The generator's output is rebuilt body by body and checked by [font=Courier New]verify_bodygen.py[/font], and the release script refuses to pack anything that fails it. Source: [url=https://github.com/ReidenXerx/fo4-silhouette]GitHub[/url], GPL-3.0.

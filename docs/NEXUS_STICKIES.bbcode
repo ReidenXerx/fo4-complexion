@@ -1,0 +1,137 @@
+=== STICKY: Every feature ===
+[b]Silhouette: every feature[/b]
+The full list, each item as the code does it. Decision numbers (S-#) point into [url=https://github.com/ReidenXerx/fo4-silhouette/blob/master/docs/decisions.md]decisions.md[/url].
+
+[b]Bodies for everyone[/b]
+[list]
+[*]Every NPC gets a body the first time you meet them, and keeps it for the rest of the save.
+[*]Random bodies come from Silhouette's own pool: 41 per sex, generated and measured into three tiers. 18 Plain, 17 Rough (very fat, very flat, frail, disproportioned), 6 Fine. Odds 70 / 22 / 8 % (S-65).
+[*]A bust floor keeps every woman's bust small but real: no concave chest for the breast physics to fold.
+[*]Which races get bodies is a config key (HumanRace by default).
+[/list]
+[b]The named people[/b]
+[list]
+[*]43 companions and major NPCs (26 women, 17 men) each have a body that fits who they are: Piper, Cait, Curie, Magnolia, Ivy, Geneva, Preston, Danse, MacCready, Deacon and more (S-66). A rule of yours for the same NPC wins.
+[/list]
+[b]Factions[/b]
+[list]
+[*]Eleven factions draw from ten bodies per sex in their own look (S-72): the Brotherhood, Minutemen, Gunners, raiders, the Disciples, Operators and Pack, the Triggermen, the Institute, the Railroad and the Children of Atom.
+[*]A faction outranks the random pool and loses to per-NPC rules. Your own faction rule wins. A switch in MCM turns it off.
+[/list]
+[b]Your rules[/b]
+[list]
+[*]OBody NG's own JSON keys and priority, including blacklists, per-NPC, plugin, race and faction rules, and includes/*.json. See the Settings sticky.
+[/list]
+[b]Picking bodies in game[/b]
+[list]
+[*]Your character is never randomised: an average pool body unless you choose one in MCM.
+[*]The NPC picker: five hotkeys, unbound until you set them. Pick the NPC you aim at, Next / Previous to try each preset on them live, Keep, or Cancel back to exactly what they had (S-22).
+[*]A picking survives a save (a save mid-try loads as a Cancel); up to 64 people keep their way back.
+[*]The pickers hold Silhouette's own bodies and the presets CBBE and BodyTalk ship: 192 for women, 175 for men. Your other presets join them if you run the generator yourself (S-74).
+[/list]
+[b]The people around you[/b]
+[list]
+[*]Count the bodies around me, Refresh the people around me, Give the people around me new bodies.
+[*]Reset on one NPC: a named character gets their own body back, anyone else rolls again. Other mods' keyed morphs (AAF, pregnancy) stay.
+[*]Reset everyone: a fresh start for the whole save, your picks included; the people around you change at once, everyone else when met.
+[*]Fresh start: a save that never had Silhouette gets Reset everyone by itself on its first load, with a notification. A switch turns it off (S-70).
+[/list]
+[b]Clothing (ORefit)[/b]
+[list]
+[*]While someone is dressed: breasts held together and lifted. Under heavy clothes (armour, jacket, coat, duster... told by the item's name) the nipples are flattened (S-48).
+[*]It only raises sliders, under a keyword of its own: undressed, they are exactly their own body again.
+[/list]
+[b]Variety[/b]
+[list]
+[*]Every person their own nipples and, on bodies that have the sliders, genital shape for women and ball size for men. Never the shaft, never a runtime state. Two MCM switches.
+[/list]
+[b]Other mods[/b]
+[list]
+[*]AAF-aware: anyone in a scene waits; the change lands when the scene ends. Notifications say so (S-71).
+[*]A 24-hour regeneration window gives a body to people another mod marked first, keeping that mod's morphs.
+[*]An API with OBody NG's names, and events (see the mod-authors sticky).
+[/list]
+[b]Safe saves[/b]
+[list]
+[*]The co-save keeps only intent (who chose what); the bodies are LooksMenu's. A body cut short by a save is finished at the next load.
+[/list]
+
+=== STICKY: Settings: MCM, hotkeys and the config file ===
+[b]MCM > Silhouette[/b]
+
+[b]Bodies[/b]
+[list]
+[*][i]Your character[/i]: a preset for a female and for a male character, Apply to my character, Back to the default, Which body do I have?
+[*][i]Everyone else[/i]: Count the bodies around me, Refresh the people around me, Give the people around me new bodies, Reset everyone (press twice).
+[*][i]Regeneration window[/i]: how it is doing, and Open a new 24-hour window.
+[/list]
+[b]The NPC in your sights[/b]
+[list]
+[*]Aim at someone and open this page, or Pick them with the hotkey: a preset for them, Give them this preset, Reset, Which body do they have?
+[*]Hotkeys, all unbound by default: Pick, Next, Previous, Keep, Cancel. Pick reaches someone close enough to talk to.
+[/list]
+[b]Settings[/b]
+[list]
+[*]ORefit (the clothed shape).
+[*]Nipple variety, Genital variety.
+[*]Fresh start for saves new to Silhouette, Faction bodies, Tell me when a change I asked for waits. All on by default.
+[*]How is Silhouette doing?: the build loaded, what it listens to, the work waiting.
+[/list]
+
+[b]The rules file (OBody NG's format)[/b]
+[font=Courier New]Data/F4SE/Plugins/Silhouette/Silhouette_presetDistributionConfig.json[/font]
+The same keys and priority as OBody NG: per-NPC blacklist, then per-NPC preset, then plugin and race blacklists, then faction, plugin, race, and last the random pool.
+[list]
+[*][font=Courier New]npcFormID[/font], [font=Courier New]npc[/font] (by name): a preset for one NPC.
+[*][font=Courier New]factionFemale / factionMale[/font], [font=Courier New]npcPluginFemale / npcPluginMale[/font], [font=Courier New]raceFemale / raceMale[/font].
+[*][font=Courier New]blacklistedNpcs[/font], [font=Courier New]blacklistedNpcsFormID[/font], [font=Courier New]blacklistedNpcsPluginFemale / Male[/font], [font=Courier New]blacklistedRacesFemale / Male[/font].
+[*][font=Courier New]blacklistedPresetsFromRandomDistribution[/font], [font=Courier New]blacklistedPresetsShowInOBodyMenu[/font].
+[*]ORefit: [font=Courier New]blacklistedOutfitsFromORefit[/font] (+FormID, +Plugin), [font=Courier New]outfitsForceRefit[/font] (+FormID), [font=Courier New]refitOutfitPresetsFemale / Male[/font].
+[*]Silhouette's own: [font=Courier New]distributeRaces[/font] (HumanRace by default; an empty list is refused), [font=Courier New]heavyWords[/font], [font=Courier New]heavyOutfits[/font] / [font=Courier New]lightOutfits[/font] (+FormID).
+[*][font=Courier New]includes/*.json[/font] beside it, applied in name order.
+[/list]
+[b]Keys that work without the plugin[/b] (compiled into LooksMenu's BodyGen files): race, plugin, per-NPC form id and every form-id, plugin and race blacklist. By name, by faction and the name blacklist need Silhouette.dll.
+
+[b]Changing the file[/b]: the game never reads it directly. Run [font=Courier New]tools/silhouette_gen.py --write[/font] (Python 3) after editing it; the source is on [url=https://github.com/ReidenXerx/fo4-silhouette]GitHub[/url]. The same goes for putting your own installed BodySlide presets in the pickers.
+
+=== STICKY: For mod authors: the API and events ===
+[b]Silhouette:API[/b]: global functions with OBody NG's names. Every one is safe to call whatever is installed: without Silhouette.dll they do nothing and say so through their return value. Full comments in [url=https://github.com/ReidenXerx/fo4-silhouette/blob/master/papyrus/Silhouette/API.psc]API.psc[/url].
+
+[b]Is it there?[/b]
+[list]
+[*][font=Courier New]Loaded()[/font], [font=Courier New]IsReady()[/font], [font=Courier New]LooksMenuLoaded()[/font], [font=Courier New]McmInstalled()[/font], [font=Courier New]Protocol()[/font], [font=Courier New]LastError()[/font], [font=Courier New]ShowStatus()[/font]
+[/list]
+[b]Reading[/b]
+[list]
+[*][font=Courier New]GetPresetAssignedToActor(akActor)[/font]: the preset Silhouette decided, even before the body is on them.
+[*][font=Courier New]MarkerPreset(akActor)[/font]: what their body's marker names in LooksMenu now.
+[*][font=Courier New]GetAllPossiblePresets(akActor)[/font]: every preset that fits them, as the pickers offer them.
+[*][font=Courier New]IsFemale(akActor)[/font]
+[/list]
+[b]Changing a body[/b]
+[list]
+[*][font=Courier New]AssignPresetToActor(akActor, asPreset)[/font] / [font=Courier New]ApplyPresetByName[/font]: kept like a picker choice; rules do not override it.
+[*][font=Courier New]GenActor(akActor)[/font]: a new body, as if met for the first time; other mods' keyed morphs stay.
+[*][font=Courier New]ResetActorMorphs[/font] / [font=Courier New]ResetActorOBodyMorphs[/font]: take Silhouette's body off.
+[*][font=Courier New]ReapplyActorMorphs[/font] / [font=Courier New]ReapplyActorOBodyMorphs[/font]: the same body again with this build's values.
+[/list]
+[b]Clothing and variety[/b]
+[list]
+[*][font=Courier New]SetORefit(bool)[/font], [font=Courier New]IsORefitEnabled()[/font], [font=Courier New]IsORefitApplied(akActor)[/font], [font=Courier New]RefitMarkerValue(akActor)[/font]
+[*][font=Courier New]IsHeavilyDressed(akActor)[/font]: they wear something heavy and ORefit has flattened their nipples. A mod raising nipples (arousal) should hold them flat while this is true.
+[*][font=Courier New]SetNippleRand(bool)[/font], [font=Courier New]SetGenitalRand(bool)[/font]
+[/list]
+A change asked for here is carried out by the bridge a moment later, not inside the call: LooksMenu is reached through Papyrus. Other mods' requests wait behind the player's own and go before bulk work ([font=Courier New]LaneOtherMods()[/font]). A body change waits while AAF has them in a scene.
+
+[b]Events[/b], on the bridge quest [font=Courier New]Silhouette:API.Bridge()[/font]:
+[list]
+[*][font=Courier New]OnActorGenerated[/font] [Actor, String preset]: the body is on them.
+[*][font=Courier New]OnActorNaked[/font] [Actor], [font=Courier New]OnActorRemovingClothes[/font] [Actor]
+[*][font=Courier New]OnORefitChanged[/font] [Actor, Bool applied]
+[/list]
+Built against the decompiled base sources (F4SE's, most setups), register the mangled name:
+[font=Courier New]RegisterForCustomEvent(Silhouette:API.Bridge(), "silhouette:bridge_OnActorGenerated")[/font]
+Built against the Creation Kit's own sources, the plain name [font=Courier New]"OnActorGenerated"[/font] is what compiles. Either way:
+[font=Courier New]Event Silhouette:Bridge.OnActorGenerated(Silhouette:Bridge akSender, Var[] akArgs)[/font]
+
+Every argument is passed explicitly: the base sources carry no default values.
