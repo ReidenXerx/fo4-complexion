@@ -1223,9 +1223,24 @@ nearly every player has.
 - **`verify_bodygen.py --release`** fails a catalog holding any other preset, and `make-release.ps1` always
   passes it: a release generated without `--release` cannot be packed.
 - **Manifests.** Every build's manifest holds the values of the bodies it could give (S-6, S-12). The 14 of
-  the builds before this one carry the author's presets; they stay in the repo (the author's saves need them)
-  and `tools/release_manifests.py` leaves them out of the archive. No player has a save from those builds. It
+  the builds before this one carry the author's presets; they stay whole in the repo, and
+  `tools/release_manifests.py` strips those presets' entries from the archive's copies and keeps the rest. It
   refuses to pack if the current build's own manifest carries any.
+  **Amended the same day** by a dev-against-release comparison (publisher-bud, after an Anatomy regression of
+  the same shape): the first cut dropped the 14 manifests whole. `Catalog::PresetForMarker` names a body only
+  through its build's manifest (or the current catalog, for the current stamp), so every body an earlier
+  build gave became unnamed -- no "Which body", no touch-up, no heal. The author's save held 47 such bodies,
+  all of Silhouette's own presets (build 11221959). No published collection ever carried Silhouette, so no
+  player had one; stripping instead of dropping keeps them named anyway. Measured against the author's tested
+  dev deploy at the same time: the 348 templates, the 52 BodyGen lines, the catalog's rules, variety, ORefit
+  and player sections are identical apart from the marker's value (the build stamp); ORefit falls back to the
+  built-in set for an unnamed body, as for every body in dev. Checked against the author's save: the
+  published archive named 0 of its 47 bodies, the stripped one all 47. An early manifest's `player` record
+  also named a preset of the author's (S-10's first medoid): foreign names go from it too.
+  `make-release.ps1 -Built <folder>` proves the package against a zeroed body there, passed to the verifier
+  and to the tools' tests (`SILHOUETTE_BUILT`): the day the author deployed Anatomy's own rebuilt body (25,299
+  vertices in its CBBE shape, against the CBBE reference's 22,708), no reference on disk matched it, and a
+  release could not be verified against Data at all.
 - The pickers now hold 192 presets for women (177 of Silhouette's, 15 of CBBE's) and 175 for men (168 and 7).
 
 The repo's history keeps the earlier generated files; this stops them from shipping, not from having been

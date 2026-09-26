@@ -58,19 +58,45 @@ class ReleaseCheck(unittest.TestCase):
 class ReleaseManifests(unittest.TestCase):
     STOCK = {'cbbe curvy'}
 
-    def write(self, folder, stamp, presets):
+    def write(self, folder, stamp, presets, player=None):
         templates = {f'Silhouette_{i}': {'gender': 'female', 'preset': p, 'values': {}} for i, p in enumerate(presets)}
-        (folder / f'{stamp}.json').write_text(json.dumps({'stamp': stamp, 'templates': templates}), encoding='utf-8')
+        doc = {'stamp': stamp, 'templates': templates, 'player': player or {}}
+        (folder / f'{stamp}.json').write_text(json.dumps(doc), encoding='utf-8')
 
-    def test_an_old_build_with_this_machines_presets_is_left_out_and_the_rest_kept(self):
+    def test_an_old_players_default_of_this_machine_goes_too(self):
         import release_manifests
         with tempfile.TemporaryDirectory() as t:
             folder = pathlib.Path(t)
-            self.write(folder, 1, ['Plain F01', 'The Rocket Bomb Body CBBE'])
+            player = {'female': {'preset': 'xy - Type 3DCG', 'template': 'Silhouette_PlayerFemale'},
+                      'male': {'preset': 'Plain M02', 'template': 'Silhouette_PlayerMale'}}
+            self.write(folder, 1, ['Plain M02', 'xy - Type 3DCG'], player)
+            release_manifests.strip(folder, 2, {'Plain M02'}, self.STOCK)
+            text = (folder / '1.json').read_text(encoding='utf-8')
+            self.assertNotIn('xy - Type', text)
+            self.assertEqual(list(json.loads(text)['player']), ['male'])
+
+    def test_an_older_player_record_of_names_alone_is_read_too(self):
+        import release_manifests
+        with tempfile.TemporaryDirectory() as t:
+            folder = pathlib.Path(t)
+            self.write(folder, 1, ['Plain M02', 'xy - Type 3DCG'], {'female': 'xy - Type 3DCG', 'male': 'Plain M02'})
+            release_manifests.strip(folder, 2, {'Plain M02'}, self.STOCK)
+            self.assertEqual(json.loads((folder / '1.json').read_text(encoding='utf-8'))['player'], {'male': 'Plain M02'})
+
+    def test_an_old_build_keeps_its_own_bodies_named_and_loses_this_machines_presets(self):
+        # The owner's save held 47 bodies of build 11221959, all Silhouette's own presets: dropping that manifest
+        # left every one of them unnamed (Catalog::PresetForMarker). Only the foreign entries go.
+        import release_manifests
+        with tempfile.TemporaryDirectory() as t:
+            folder = pathlib.Path(t)
+            self.write(folder, 1, ['Plain F01', 'The Rocket Bomb Body CBBE', 'CBBE Curvy'])
             self.write(folder, 2, ['Plain F01', 'CBBE Curvy'])
-            left = release_manifests.prune(folder, 2, {'Plain F01'}, self.STOCK)
-            self.assertEqual([n for n, _ in left], ['1.json'])
-            self.assertEqual(sorted(f.name for f in folder.iterdir()), ['2.json'])
+            done = release_manifests.strip(folder, 2, {'Plain F01'}, self.STOCK)
+            self.assertEqual(done, [('1.json', 1, 2)])
+            old = json.loads((folder / '1.json').read_text(encoding='utf-8'))
+            self.assertEqual(sorted(t['preset'] for t in old['templates'].values()), ['CBBE Curvy', 'Plain F01'])
+            self.assertEqual(old['stamp'], 1)
+            self.assertEqual(sorted(f.name for f in folder.iterdir()), ['1.json', '2.json'])
 
     def test_a_current_build_with_this_machines_presets_is_refused(self):
         import release_manifests
@@ -78,8 +104,8 @@ class ReleaseManifests(unittest.TestCase):
             folder = pathlib.Path(t)
             self.write(folder, 3, ['The Rocket Bomb Body CBBE'])
             with self.assertRaises(SystemExit):
-                release_manifests.prune(folder, 3, set(), self.STOCK)
-            self.assertTrue((folder / '3.json').exists())
+                release_manifests.strip(folder, 3, set(), self.STOCK)
+            self.assertEqual(len(json.loads((folder / '3.json').read_text(encoding='utf-8'))['templates']), 1)
 
 
 class CommittedPackage(unittest.TestCase):

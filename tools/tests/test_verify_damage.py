@@ -362,7 +362,7 @@ def fresh(where):
 def verify(d):
     """(exit code, whole output, problem lines)"""
     p = subprocess.run([sys.executable, str(support.TOOLS / 'verify_bodygen.py'), '--data', str(support.game_data()),
-                        '--dir', str(data(d, LOOSE)), '--psc', str(d / 'Player.psc')],
+                        '--dir', str(data(d, LOOSE)), '--psc', str(d / 'Player.psc'), *support.built_args()],
                        capture_output=True, text=True, encoding='utf-8', errors='replace', env=support.ENV,
                        creationflags=support.LOW_PRIORITY, timeout=900)
     out = p.stdout + p.stderr

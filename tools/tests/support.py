@@ -7,6 +7,7 @@ The environment can point a run elsewhere:
     SILHOUETTE_TOOLS_DIR   another copy of tools/ -- a deliberately broken one, to see a test fail (GP-2);
                            its parent must hold papyrus/Silhouette/{API,Bridge}.psc, which the verifier reads
     SILHOUETTE_DATA        the game's Data folder (default: the generator's)
+    SILHOUETTE_BUILT       folders BodySlide built into, passed to the verifier as --built (os.pathsep-separated)
     SILHOUETTE_TESTS_EXE   SilhouetteTests.exe (default: build/Release)
     SILHOUETTE_TEST_JOBS   how many verifier runs at once (default: half the processors)
     SILHOUETTE_REQUIRE_DATA=1   a test that needs the game's Data FAILS without it instead of being skipped
@@ -41,6 +42,12 @@ LOW_PRIORITY = getattr(subprocess, 'BELOW_NORMAL_PRIORITY_CLASS', 0)
 
 def game_data():
     return pathlib.Path(os.environ.get('SILHOUETTE_DATA') or silhouette_gen.DEFAULT_DATA)
+
+
+def built_args():
+    """--built for every folder in SILHOUETTE_BUILT (os.pathsep-separated): where the verifier finds a zeroed body
+    when the one deployed in Data cannot be measured (scripts/make-release.ps1 -Built)."""
+    return [a for f in (os.environ.get('SILHOUETTE_BUILT') or '').split(os.pathsep) if f for a in ('--built', f)]
 
 
 def bodies_missing(data=None):

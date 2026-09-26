@@ -25,7 +25,11 @@
 #>
 [CmdletBinding()]
 param(
-    [string] $Config = 'Release'
+    [string] $Config = 'Release',
+    # Folders BodySlide built into, searched before Data for the body meshes (verify_bodygen.py --built): the
+    # package is proven against a zeroed body there when the one deployed in Data cannot be measured -- another
+    # mod's rebuilt body, say, with its own topology.
+    [string[]] $Built = @()
 )
 
 $ErrorActionPreference = 'Stop'
@@ -64,7 +68,8 @@ if (-not $python) { throw "No python: the verifier (tools\verify_bodygen.py) mus
 if ($LASTEXITCODE) { throw "data\Silhouette.esp must not be packed - see the line above." }
 # ...and the files do what they claim, as a public build (S-74: no preset but Silhouette's own and CBBE's and
 # BodyTalk's stock - never the presets of the machine it was generated on). On a failure every line is shown.
-$verify = @(& $python (Join-Path $root 'tools\verify_bodygen.py') --dir $data --psc (Join-Path $root 'papyrus\Silhouette\Player.psc') --release)
+$builtArgs = @($Built | ForEach-Object { '--built'; $_ })
+$verify = @(& $python (Join-Path $root 'tools\verify_bodygen.py') --dir $data --psc (Join-Path $root 'papyrus\Silhouette\Player.psc') --release @builtArgs)
 if ($LASTEXITCODE) {
     $verify | ForEach-Object { Write-Host $_ }
     throw "tools\verify_bodygen.py fails these files - every line above."
@@ -99,15 +104,16 @@ foreach ($d in $docs) { if (-not (Test-Path $d)) { throw "Missing $d - the archi
 # BodySlide users build outfits and refits for them. The BodyGen files carry the numbers; these carry the names.
 $presets = @('Silhouette Pool.xml', 'Silhouette Characters.xml', 'Silhouette Factions.xml') | ForEach-Object { Join-Path $data "Tools\BodySlide\SliderPresets\$_" }
 foreach ($f in $presets) { if (-not (Test-Path $f)) { throw "Missing $f - run tools\pool\generate.py and tools\pool\characters.py." } }
-$saved = @{ exe = $env:SILHOUETTE_TESTS_EXE; req = $env:SILHOUETTE_REQUIRE_DATA; enc = $env:PYTHONIOENCODING }
+$saved = @{ exe = $env:SILHOUETTE_TESTS_EXE; req = $env:SILHOUETTE_REQUIRE_DATA; enc = $env:PYTHONIOENCODING; built = $env:SILHOUETTE_BUILT }
 $env:SILHOUETTE_TESTS_EXE = $tests
 $env:SILHOUETTE_REQUIRE_DATA = '1'
 $env:PYTHONIOENCODING = 'utf-8'
+if ($Built.Count) { $env:SILHOUETTE_BUILT = $Built -join [IO.Path]::PathSeparator }   # the tests' verifier runs see -Built too
 $ErrorActionPreference = 'Continue'    # unittest reports on stderr: that must not turn into a PowerShell error
 & $python -m unittest discover -s (Join-Path $root 'tools\tests')
 $unitExit = $LASTEXITCODE
 $ErrorActionPreference = 'Stop'
-foreach ($pair in @(@('SILHOUETTE_TESTS_EXE', $saved.exe), @('SILHOUETTE_REQUIRE_DATA', $saved.req), @('PYTHONIOENCODING', $saved.enc))) {
+foreach ($pair in @(@('SILHOUETTE_TESTS_EXE', $saved.exe), @('SILHOUETTE_REQUIRE_DATA', $saved.req), @('PYTHONIOENCODING', $saved.enc), @('SILHOUETTE_BUILT', $saved.built))) {
     if ($null -eq $pair[1]) { Remove-Item "Env:\$($pair[0])" -ErrorAction SilentlyContinue } else { Set-Item "Env:\$($pair[0])" $pair[1] }
 }
 if ($unitExit) { throw "the tools' tests failed (tools\tests) - every FAIL and ERROR above; nothing was packed." }
@@ -129,8 +135,9 @@ foreach ($f in Get-ChildItem $pex -Filter *.pex) {
 foreach ($d in $docs) {
     Copy-Item $d (Join-Path $out 'F4SE\Plugins\Silhouette') -Force
 }
-# The manifests of builds made with this machine's own presets hold their values: they are the author's saves',
-# never a player's, and stay in the repo but not in the archive (S-74). The current build's must be clean.
+# The manifests of builds made with this machine's own presets hold their values: those entries are stripped from
+# the archive's copy, the rest kept, so a body of Silhouette's own from any build stays named (S-74; the repo keeps
+# them whole). The current build's must be clean.
 & $python (Join-Path $root 'tools\release_manifests.py') (Join-Path $out 'F4SE\Plugins\Silhouette\manifests') --current $catalog.stamp
 if ($LASTEXITCODE) { throw "tools\release_manifests.py refused - see the line above; nothing was packed." }
 
