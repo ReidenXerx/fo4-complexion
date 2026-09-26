@@ -5,7 +5,7 @@ keeps it: an ordinary one most often, an unflattering one less often, a conventi
 rarely, from Silhouette's own pool. The Commonwealth's named people -- companions and major NPCs -- each
 have a body of their own.
 
-**Status:** 0.1.0, the first public release. Phase 1 (the generator; LooksMenu's own BodyGen does the
+**Status:** 0.1.1. The first public release was 0.1.0. Phase 1 (the generator; LooksMenu's own BodyGen does the
 work at run time) and Phase 2 -- `Silhouette.dll`, an F4SE plugin, with `Silhouette.esp` -- which adds the
 rules only a running game can see, ORefit, the NPC picker, the touch-up, faction pools and an API with
 OBody's names. Everything is tested offline (over 540 plugin tests and 140 tool tests) and has been played in the
