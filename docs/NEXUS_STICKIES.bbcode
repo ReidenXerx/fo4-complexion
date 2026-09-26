@@ -1,6 +1,13 @@
 === STICKY: Every feature ===
-[b]Silhouette: every feature[/b]
+[b]Silhouette 0.2.1: every feature[/b]
 The full list, each item as the code does it. Decision numbers (S-#) point into [url=https://github.com/ReidenXerx/fo4-silhouette/blob/master/docs/decisions.md]decisions.md[/url].
+
+[b]Game versions[/b]
+[list]
+[*]One DLL for old-gen 1.10.163 and Anniversary 1.11.x, through [url=https://www.nexusmods.com/fallout4/mods/108394]Runtime Database[/url], which finds the game's functions on each. Verified in game on both (Anniversary on 1.11.240) (S-75).
+[*]If the game's classes are laid out differently from what the plugin reads, it switches itself off with one log line, never half on. BodyGen still gives every body.
+[*]Old-gen without Runtime Database: 0.1.1, in Old files.
+[/list]
 
 [b]Bodies for everyone[/b]
 [list]
@@ -27,7 +34,8 @@ The full list, each item as the code does it. Decision numbers (S-#) point into 
 [*]Your character is never randomised: an average pool body unless you choose one in MCM.
 [*]The NPC picker: five hotkeys, unbound until you set them. Pick the NPC you aim at, Next / Previous to try each preset on them live, Keep, or Cancel back to exactly what they had (S-22).
 [*]A picking survives a save (a save mid-try loads as a Cancel); up to 64 people keep their way back.
-[*]The pickers hold Silhouette's own bodies and the presets CBBE and BodyTalk ship: 192 for women, 175 for men. Your other presets join them if you run the generator yourself (S-74).
+[*]The pickers hold Silhouette's own bodies and the presets CBBE and BodyTalk ship: 192 for women, 175 for men (S-74).
+[*]Your own BodySlide presets join the NPC picker by themselves: the plugin reads them from BodySlide's SliderPresets folder at every start, the way the generator would. No Python, no build step. They are for trying on, never the random pool (S-76).
 [/list]
 [b]The people around you[/b]
 [list]
@@ -92,7 +100,7 @@ The same keys and priority as OBody NG: per-NPC blacklist, then per-NPC preset, 
 [/list]
 [b]Keys that work without the plugin[/b] (compiled into LooksMenu's BodyGen files): race, plugin, per-NPC form id and every form-id, plugin and race blacklist. By name, by faction and the name blacklist need Silhouette.dll.
 
-[b]Changing the file[/b]: the game never reads it directly. Run [font=Courier New]tools/silhouette_gen.py --write[/font] (Python 3) after editing it; the source is on [url=https://github.com/ReidenXerx/fo4-silhouette]GitHub[/url]. The same goes for putting your own installed BodySlide presets in the pickers.
+[b]Changing the file[/b]: the game never reads it directly. Run [font=Courier New]tools/silhouette_gen.py --write[/font] (Python 3) after editing it; the source is on [url=https://github.com/ReidenXerx/fo4-silhouette]GitHub[/url]. Your own BodySlide presets need no step: the plugin reads them in game (S-76).
 
 === STICKY: For mod authors: the API and events ===
 [b]Silhouette:API[/b]: global functions with OBody NG's names. Every one is safe to call whatever is installed: without Silhouette.dll they do nothing and say so through their return value. Full comments in [url=https://github.com/ReidenXerx/fo4-silhouette/blob/master/papyrus/Silhouette/API.psc]API.psc[/url].
