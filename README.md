@@ -44,8 +44,9 @@ OBody does.
   disproportioned) and 6 conventionally beautiful ("Fine"). A Plain body is listed three times in
   BodyGen's random line, so the odds are 70 / 22 / 8 per cent. Your installed presets are not random;
   they stay in the picker.
-- **Named people: their own body** (`Silhouette Characters.xml`, S-66). 43 companions and major NPCs,
-  from Piper to Porter Gage, each given a body that fits who they are. A rule of yours for the same NPC
+- **Named people: their own body** (`Silhouette Characters.xml`, S-66). 60 companions and named NPCs,
+  from Piper to Porter Gage, each given a body that fits who they are -- the Diamond City pack's
+  cheerfully sardonic (S-77): the mayor is enormous. A rule of yours for the same NPC
   wins.
 - **Factions: a pool of their own** (`Silhouette Factions.xml`, S-72). The Brotherhood, the Minutemen,
   the Gunners, the raiders and Nuka-World's three gangs, the Triggermen, the Institute, the Railroad and the

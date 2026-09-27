@@ -18,7 +18,7 @@ order. Each item names where it is settled: `S-#` is a decision in [decisions.md
 - A **bust floor** keeps every woman's bust small but real (no concave chest the breast physics would fold),
   in the pool, the faction pools and the named characters alike (S-65 amendment, seventh wave).
 - The pickers hold Silhouette's own bodies and the presets CBBE and BodyTalk themselves ship (CBBE Curvy,
-  Slim, Athletic ..., the Imitation and SevenBase presets; BT - Average, Muscular ...): 192 for women, 175 for
+  Slim, Athletic ..., the Imitation and SevenBase presets; BT - Average, Muscular ...): 196 for women, 188 for
   men (S-74). Your other installed BodySlide presets join the NPC picker's Next / Previous by themselves
   (S-76); in the MCM dropdowns only when you run the generator yourself. None is ever random. Zeroed presets (`CBBE Zeroed Sliders`, `BT - Zero`) are left out of random, told by their
   measured values (S-8).
@@ -34,13 +34,18 @@ order. Each item names where it is settled: `S-#` is a decision in [decisions.md
 
 ## The named people
 
-- **43 companions and major NPCs** (26 women, 17 men) each have a body of their own that fits who they are
+- **60 companions and named NPCs** (30 women, 30 men) each have a body of their own that fits who they are
   (S-66): Piper, Cait, Curie, Magnolia, Desdemona, Glory, Haylen, Madison Li, Mama Murphy, Marcy Long,
   Fahrenheit, Irma, Mags Black, Nisha, Kasumi Nakano, Ronnie Shaw, Myrna, Doctor Amari, Trudy, Ellie Perkins,
-  Cricket, Carla, Captain Avery, Aster, **Ivy** (CompanionIvy) and **Geneva**; Preston Garvey, Paladin Danse,
+  Cricket, Carla, Captain Avery, Aster, **Ivy** (CompanionIvy), **Geneva**, Polly, Cathy, Becky Fallon and
+  Scarlett; Preston Garvey, Paladin Danse,
   MacCready, Deacon, Arthur Maxson, X6-88, Old Longfellow, Porter Gage, Sturges, Kellogg, Travis Miles, Mayor
-  McDonough, Vadim Bobrov, Moe Cronin, Father, Paladin Brandis and Tinker Tom.
-- Bound to their NPC records by plugin and form id (46 records: Curie, Kellogg and Brandis have two each);
+  McDonough, Vadim Bobrov, Moe Cronin, Father, Paladin Brandis, Tinker Tom, John, Arturo Rodriguez, Solomon, Doctor Sun, Abbot,
+  Sheffield, Malcolm Latimer, Finn, Wayne Delancy, Parker Quinn, Winlock, Barnes and Rufus Rubins.
+- **The Diamond City pack** (S-77): the people the author's saves meet most, each drawn from their story and
+  allowed to be sardonic -- the mayor of "Mankind for McDonough" grossly obese, Sheffield's ruined liver on
+  stick limbs, Becky Fallon's "basement", a con man all chest on chicken legs.
+- Bound to their NPC records by plugin and form id (64 records: Curie, Kellogg, Brandis and Malcolm Latimer have two each);
   a rule of yours for the same record wins.
 - Ghouls (Hancock), synths of the old models (Nick) and robots are not HumanRace and have none.
 

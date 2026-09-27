@@ -1319,3 +1319,33 @@ Silhouette's own bodies and CBBE's and BodyTalk's stock ones (S-74).
   Their values come from the player's own files, so nothing is redistributed (S-74).
 - Names and markers the catalog already has stay the catalog's. A body given one of them and saved stays
   named for as long as the preset stays installed; removed, the body stays as it is, unnamed.
+
+## S-77 — The Diamond City pack: the people you meet, sardonic on purpose
+
+Owner poll, 2026-09-27, "which NPC pack next": the Diamond City pack, "and rest save for future updates" --
+with a direction for every named body from now on: "we need make some of unique npcs TRULY unique memorable
+bodies it could also be sardonic to their stories/characters. for ex mayour of dc which is quite unpleasant
+could very very fat". From renders of each body, the owner: "Ship as is".
+
+- **Who.** Not a list from memory: the unique HumanRace people the author's last 12 saves hold bodies for.
+  LooksMenu keys a body by the actor REFERENCE, so each reference was mapped through its ACHR record to the
+  NPC_ it places, in the masters themselves: 46 unique people met, 7 already named. The pack is the named ones
+  of the rest (Diamond City's "Resident F01"-style uniques are left to a future town pool): Polly, Cathy,
+  Becky Fallon, Scarlett, John, Arturo Rodriguez, Solomon, Doctor Sun, Abbot, Sheffield, Malcolm Latimer
+  (and his quest photo's record), Finn, Wayne Delancy, Parker Quinn, Winlock, Barnes, Rufus Rubins. Every
+  record was read from Fallout4.esm; `characters.py --check` holds them.
+- **What.** Each body is the character's story made visible, from the Fallout wiki's own words (gathered
+  verbatim, 2026-09-27): McDonough ("Mankind for McDonough", threw out the ghouls) grossly obese -- volume 540
+  against 340-445 for every other body; Sheffield ("doctors said I shot my liver") a swollen gut on stick
+  limbs; Abbot, keeper of "the great, green guardian", a wall himself; Becky Fallon of Fallon's Basement a
+  small bust over enormous hips; Parker Quinn the charge-card con man all chest on chicken legs; Malcolm
+  Latimer, who pays the mayor and hires his dirty work, a pampered pear; Solomon ("balance you out") the
+  least balanced man in the market; Winlock and Barnes a boss and his soft sidekick; Rufus Rubins, who works
+  for room and board, the one honest wiry body in Goodneighbor. Parker Quinn's face is modelled on a real
+  person, Fallout 4's lead designer; his body's joke is the scam, not the man.
+- **Mayor McDonough reworked** from "well-fed and soft" (stomach 60) to the owner's "very very fat".
+- **Limits, measured:** the BodyTalk thin sliders are weak, so the scrawny men (John, Solomon, Doctor Sun,
+  Finn) read as scrawny rather than as themselves; the owner shipped them so. A body BodyGen already gave keeps
+  its values: an NPC shows the new body after Reset on them (or Reset everyone), as S-66 found for Ivy.
+- 60 named people (30 women, 30 men), 64 records; the pickers hold 196 for women and 188 for men. Build
+  09f9637ce99e, stamp 653667; its manifest joins the others (S-12).

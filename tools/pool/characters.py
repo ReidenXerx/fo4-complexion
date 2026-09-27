@@ -148,6 +148,30 @@ CHARACTERS = [
      'rolled her a Boxy body)',
      {'Breasts': 35, '7B Upper': 15, 'BreastPerkiness': 45, 'PushUp': 20, 'Hips': 15, 'Butt': 30, 'RoundAss': 55,
       'AppleCheeks': 30, 'Thighs': 10, 'ChubbyWaist': 10}),
+    # ---- the Diamond City pack (owner's poll, 2026-09-27: the unique people his saves actually meet, drawn from
+    # their stories and allowed to be SARDONIC -- "TRULY unique memorable bodies ... sardonic to their
+    # stories/characters"). Lore from the Fallout wiki, quoted in docs/decisions.md S-77.
+    ('Polly', 'female', [(F4, 'Polly', '002CD4')],
+     'the Choice Chops butcher who secretly writes poems about dancing in the dark: a butcher\'s meaty arms, '
+     'shoulders and belly, and under them a dancer\'s round bottom',
+     {'MuscularArms': 60, 'ChubbyArms': 70, 'ForearmSize': 60, 'Back': 60, 'ShoulderWidth': 45, 'BigTorso': 35,
+      'Breasts': 60, 'BreastGravity2': 60, 'ChubbyWaist': 105, 'Belly': 70, 'WideWaistLine': 40, 'Hips': 20,
+      'Butt': 40, 'RoundAss': 60, 'Thighs': 40, 'MuscularLegs': 30}),
+    ('Cathy', 'female', [(F4, 'Cathy', '002CCF')],
+     'the salon gossip who greets you with "You look terrible": bloodshot, graying -- and a wreck herself, '
+     'skinny-fat and sagging',
+     {'BreastGravity2': 120, 'BreastFlatness2': 90, 'Breasts': 20, 'Belly': 90, 'BigBelly': 45,
+      'ChubbyWaist': 105, 'WideWaistLine': 45, 'LegsThin': 60, 'Arms': 55, 'ButtSmall': 70, 'Hips': -35}),
+    ('Becky Fallon', 'female', [(F4, 'BeckyFallon', '002CC6')],
+     'Fallon\'s Basement, "quality and affordability": everything has sunk to the basement -- a small bust over '
+     'enormous hips, thighs and bottom',
+     {'BreastsSmall': 30, 'Breasts': 0, 'ChubbyWaist': 65, 'Hips': 85, 'Thighs': 105, 'ChubbyLegs': 110,
+      'BigButt': 85, 'ChubbyButt': 95, 'HipUpperWidth': 55, 'AppleCheeks': 35, 'Arms': 25}),
+    ('Scarlett', 'female', [(F4, 'Scarlett', '04B240')],
+     'the Dugout Inn waitress, "hopefully nothing will poison ya": she never eats what she serves -- bony, '
+     'run off her feet',
+     {'LegsThin': 85, 'Arms': 80, 'SlimThighs': 70, 'ButtSmall': 85, 'BreastsSmall': 30, 'Breasts': 0,
+      'BreastFlatness2': 45, 'Hips': -45, 'ChubbyWaist': 45, 'WideWaistLine': 35, 'CalfSmooth': 60}),
     # ---- men
     ('Preston Garvey', 'male', [(F4, 'PrestonGarvey', '019FD9')],
      'earnest Minuteman: lean, a little gaunt from hard years',
@@ -192,9 +216,10 @@ CHARACTERS = [
      {'BTNegShoulder': 35, 'BTNegChestWidth': 30, 'BTChestSmoothing': 50, 'BTStomachFat': 40, 'BTThinArm': 30,
       'Hips': 30}),
     ('Mayor McDonough', 'male', [(F4, 'MayorMcDonough', '002F08')],
-     'smooth politician: well-fed and soft',
-     {'BTStomachFat': 60, 'BTLowerStomachSize': 30, 'BTChestSmoothing': 45, 'BTChubbyArm': 40, 'Hips': 35,
-      'BTBodyFatv2': 10}),
+     'the fat cat of "Mankind for McDonough", who threw the ghouls out and smiles a mile-long smile: grossly obese, '
+     'soft all over (the owner, 2026-09-27: "quite unpleasant, could very very fat"; was: well-fed and soft)',
+     {'BTBodyFatv2': 100, 'BTStomachFat': 135, 'BTLowerStomachSize': 95, 'BTCenterStomachSize': 70,
+      'BTChubbyArm': 100, 'BTChubbyLeg': 90, 'BTChestSmoothing': 100, 'Hips': 95}),
     ('Vadim Bobrov', 'male', [(F4, 'VadimBobrov', '002EFC')],
      'barkeep: a big beer belly, heavy arms',
      {'BTStomachFat': 100, 'BTLowerStomachSize': 60, 'BTCenterStomachSize': 45, 'BTChubbyArm': 50,
@@ -213,6 +238,71 @@ CHARACTERS = [
     ('Tinker Tom', 'male', [(F4, 'TinkerTom', '045ACB')],
      'paranoid tinkerer: skinny-fat',
      {'BTStomachFat': 50, 'BTThinArm': 50, 'ThinThigh': 45, 'BTNegShoulder': 40, 'BTChestSmoothing': 40}),
+    # ---- the Diamond City pack, men (see the women's note above)
+    ('John', 'male', [(F4, 'John', '002CCB')],
+     'Cathy\'s son at the Super Salon, "practically deaf in this ear" from ma\'s yelling: henpecked -- narrow '
+     'shoulders, soft, a mama\'s boy\'s hips',
+     {'BTNegShoulder': 85, 'BTNegChestWidth': 70, 'BTChestSmoothing': 80, 'BTStomachFat': 60, 'BTThinArm': 75,
+      'Hips': 95, 'BTButt': 50}),
+    ('Arturo Rodriguez', 'male', [(F4, 'ArturoRodriguez', '002CB7')],
+     'Commonwealth Weaponry, "the real secret is in the mods": an ordinary dad body with over-modded arms',
+     {'BTBiceps': 100, 'BTShoulders': 80, 'BTTraps': 75, 'BTPectorals': 45, 'BTStomachFat': 85,
+      'BTLowerStomachSize': 50, 'ThinThigh': 45, 'Hips': 15}),
+    ('Solomon', 'male', [(F4, 'Solomon', '002CBB')],
+     'Chem-I-Care, slightly stoned: "all the chems you need to ... balance you out" -- and nothing about him is '
+     'balanced: sunken chest, stick limbs, a soft little gut',
+     {'BTStomachFat': 95, 'BTLowerStomachSize': 45, 'BTThinArm': 100, 'ThinThigh': 90, 'BTTHinCalf': 80,
+      'BTNegShoulder': 85, 'BTNegChestWidth': 85, 'BTNegPecMuscle': 85, 'BTChestSmoothing': 60}),
+    ('Doctor Sun', 'male', [(F4, 'DoctorSun', '020B8E')],
+     'the doctor who "can cure just about anything" and scorns facial surgery as not real medicine: a hollow, '
+     'bony ascetic who forgets to eat',
+     {'BTNegStomach': 90, 'BTThinArm': 90, 'ThinThigh': 85, 'BTTHinCalf': 80, 'BTNegPecMuscle': 80,
+      'BTNegBicepMuscle': 70, 'BTNegShoulder': 55, 'BTNegScapularMuscle': 55, 'BTNegChestWidth': 40}),
+    ('Abbot', 'male', [(F4, 'Abbot', '002F28')],
+     'one of the oldest citizens, keeper of the Wall ("the great, green guardian"): he has become one -- old, '
+     'broad, square and barrel-bellied',
+     {'BTBack': 70, 'BTShoulders': 55, 'BTTraps': 45, 'BTBodyFatv2': 35, 'BTStomachFat': 80,
+      'BTCenterStomachSize': 55, 'BTChubbyArm': 45, 'BTChubbyLeg': 40, 'BTChestSmoothing': 50}),
+    ('Sheffield', 'male', [(F4, 'Sheffield', '002F06')],
+     'the market\'s former alcoholic, "doctors said I shot my liver", begging for Nuka-Cola: stick limbs and a '
+     'swollen gut',
+     {'BTStomachFat': 125, 'BTLowerStomachSize': 85, 'BTCenterStomachSize': 80, 'BTThinArm': 90, 'ThinThigh': 90,
+      'BTTHinCalf': 80, 'BTNegPecMuscle': 70, 'BTNegShoulder': 55, 'BTNegChestWidth': 50}),
+    ('Malcolm Latimer', 'male', [(F4, 'MalcolmLatimer', '002F10'), (F4, 'MS13Photo_MalcolmLatimer', '218F14')],
+     'the rich man who "practically runs Diamond City", pays the mayor and hires others for his dirty work, '
+     'confidence "Cowardly": a pampered pear that never lifted anything',
+     {'Hips': 110, 'BTButt': 100, 'BTThighWidth': 100, 'BTOuterUpperThighSize': 90, 'BTNegShoulder': 85,
+      'BTNegChestWidth': 70, 'BTStomachFat': 70, 'BTChestSmoothing': 80, 'BTChubbyArm': 50}),
+    ('Finn', 'male', [(F4, 'Finn', '033585')],
+     'Goodneighbor\'s "insurance" man, confidence "Foolhardy", who tells Hancock there will be a new mayor: all '
+     'mouth -- a scrawny runt',
+     {'BTThinArm': 100, 'ThinThigh': 100, 'BTTHinCalf': 95, 'BTNegShoulder': 90, 'BTNegChestWidth': 90,
+      'BTNegPecMuscle': 90, 'BTNegBicepMuscle': 85, 'BTNegScapularMuscle': 70}),
+    ('Wayne Delancy', 'male', [(F4, 'MS04WayneDelancy', '03FEC8')],
+     'the Goodneighbor hitman who killed Miss Selmy and her child for two caps and calls drifters "meat": gaunt, '
+     'sinewy and hungry',
+     {'BTNegStomach': 90, 'BTThinArm': 70, 'ThinThigh': 70, 'BTTHinCalf': 60, 'BTNegPecMuscle': 55,
+      'BTAbDefinition': 30, 'BTWaist-In': 60, 'BTTraps': 45, 'BTNegChestWidth': 30}),
+    ('Parker Quinn', 'male', [(F4, 'ParkerQuinn', '0843E6')],
+     'the charge-card con man of South Boston: all show, like his card -- a pumped chest and arms on chicken legs '
+     '(the joke is the scam; his face is modelled on a real person, his body is not)',
+     {'BTPectorals': 100, 'BTBiceps': 95, 'BTShoulders': 85, 'BTTraps': 80, 'TigerSanBBMale': 35,
+      'ThinThigh': 100, 'BTTHinCalf': 100, 'BTStomachFat': 30}),
+    ('Winlock', 'male', [(F4, 'GunnerWinlock', '03467F')],
+     'the Gunner who tells MacCready "we know how to play the game", O-positive tattooed on his forehead: the big, '
+     'broad boss of the pair',
+     {'TigerSanBBMale': 90, 'BTShoulders': 85, 'BTTraps': 85, 'BTBack': 75, 'BTPectorals': 55, 'BTBiceps': 60,
+      'BTStomachFat': 35, 'BTThigh': 50}),
+    ('Barnes', 'male', [(F4, 'GunnerBarnes', '034680')],
+     'Winlock\'s sidekick: "Winlock, tell me we don\'t have to listen to this shit..." -- short-armed, soft and '
+     'narrow beside him',
+     {'BTStomachFat': 95, 'BTLowerStomachSize': 65, 'BTChestSmoothing': 75, 'BTChubbyArm': 60,
+      'BTNegShoulder': 65, 'BTNegChestWidth': 55, 'Hips': 70, 'BTChubbyLeg': 40}),
+    ('Rufus Rubins', 'male', [(F4, 'RufusRubins', '01A255')],
+     'the Hotel Rexford handyman who works for room and board and waits politely for Magnolia to finish singing: '
+     'the one honest body in Goodneighbor -- wiry and work-strong',
+     {'BTAbDefinition': 25, 'BTThinArm': 25, 'BTBiceps': 40, 'BTShoulders': 20, 'BTStomach': 20, 'ThinThigh': 30,
+      'BTTraps': 20}),
 ]
 
 
