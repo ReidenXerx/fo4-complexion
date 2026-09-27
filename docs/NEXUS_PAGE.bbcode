@@ -99,6 +99,17 @@ No Python and no generator for any of this. [b]For power users:[/b] the generato
 [b]Needs:[/b] Fallout 4 old-gen 1.10.163 (F4SE 0.6.23) or Anniversary 1.11.x (its F4SE), [url=https://www.nexusmods.com/fallout4/mods/108394]Runtime Database[/url], LooksMenu with BodyGen on, MCM, and the Visual C++ 2015-2022 Redistributable 14.40 or newer. Your body and outfits built in BodySlide from a zeroed preset ("CBBE Zeroed Sliders", "BT - Zero") with Build Morphs ticked. [font=Courier New]Silhouette.esp[/font] is a light plugin: no load-order slot.
 [/quote]
 
+[size=5][b][color=#e8b99c]Incompatibilities[/color][/b][/size]
+
+Known conflicts, from real reports and the code. Found another one? Tell us in the Bugs tab.
+[list]
+[*][b]Other BodyGen randomizers (any mod shipping its own morphs.ini/templates.ini for HumanRace)[/b]: LooksMenu merges every BodyGen file, so their bodies get mixed into Silhouette's distribution. Keep one body distributor.[/*]
+[*][b]Bodies or outfits built in BodySlide with a preset baked in (not "Zeroed sliders")[/b]: every Silhouette body is added on top of the baked shape, so everyone comes out doubled. Rebuild the body and outfits zeroed, with "Build Morphs" ticked.[/*]
+[*][b]Outfits built without "Build Morphs"[/b]: the clothes don't follow the body, and the clothed shape (ORefit) can't apply. Rebuild them with Build Morphs.[/*]
+[*][b]LooksMenu with BodyGen turned off (f4ee.ini bEnableBodyGen=0)[/b]: no random bodies at all. Set it to 1 (the default).[/*]
+[*][b]Next-gen 1.10.984[/b]: not supported. On old-gen without Runtime Database, use 0.1.1 from Old files.[/*]
+[/list]
+
 [size=5][b][color=#e8b99c]FAQ[/color][/b][/size]
 
 [b]Is it tested?[/b]
