@@ -49,7 +49,7 @@ Int Property SourcePicker = 3 AutoReadOnly
 Int Property LaneUrgent = 0 AutoReadOnly
 ; What RunOrder below does, and the natives the menu calls. Silhouette.dll says what it
 ; expects; they must agree. 4: ResetEveryone (S-68).
-Int Property Protocol = 5 AutoReadOnly
+Int Property Protocol = 6 AutoReadOnly
 ; "Reset everyone" forgets every body, picks included: a second press within this long
 ; confirms the first. A minute, not ten seconds: the clock runs while the player reads the
 ; first press's message box, and the owner's first try ran out reading it.
@@ -149,6 +149,11 @@ Function Connect()
 		Debug.Notification("Silhouette: " + Silhouette:DLL.Status())
 		StartSweeping()
 		Return
+	EndIf
+	; A sex with no body Silhouette supports is left alone: said once a launch, in a box.
+	String bodies = Silhouette:DLL.BodyWarning()
+	If bodies != ""
+		Debug.MessageBox("Silhouette: " + bodies)
 	EndIf
 	PushSettings()
 	String menu = Silhouette:Player.Build()

@@ -3611,6 +3611,30 @@ static void TestCrosshairTrail()
 		cut.resize(cut.size() - 3);
 		Check(P::TriMorphs(cut).empty() && P::TriMorphs(std::vector<std::byte>(8)).empty(), "presets: a cut or foreign .tri reads as no body");
 
+		// ---- a supported body (the owner, 2026-09-30): under half of the pool's sliders, and that sex is left alone
+		{
+			const auto base = Cat(BaseCatalog());  // female pool: Breasts, Butt, NippleSize, Waist ; male: BTChest
+			const auto none = P::MeasureBody(*base, true, {});
+			Check(!none.supported && none.used == 4 && none.found == 0, "bodies: no .tri - the sex is not shaped");
+			Check(!P::MeasureBody(*base, true, { "FGBreasts", "FGWaist", "Breasts" }).supported, "bodies: another family's body (one name of four in common) is not shaped");
+			const auto half = P::MeasureBody(*base, true, { "Breasts", "Waist", "Arms" });
+			Check(half.supported && half.found == 2, "bodies: half of the pool's sliders is enough");
+			Check(P::MeasureBody(*base, true, { "Breasts", "Butt", "NippleSize", "Waist", "Arms" }).supported, "bodies: the pool's own family is shaped");
+			Check(!P::MeasureBody(*base, false, { "Breasts", "Waist" }).supported && P::MeasureBody(*base, false, { "BTChest" }).supported,
+				"bodies: each sex is measured on its own pool");
+			// The gate: a sex with no supported body is not eligible -- not probed, not ruled, nothing recorded.
+			auto off = std::make_shared<SH::Catalog>(*base);
+			off->bodySupported[See(0, "").facts.female ? 1 : 0] = false;
+			SH::Director d;
+			FakeGame     g;
+			d.SetCatalog(off);
+			g.Roll(0x900, *off, "Silhouette_Slim", 1234.0F);
+			const auto before = g.actors[0x900].unkeyed;
+			d.Seen(See(0x900, "Piper"));  // a name rule would give her Curvy
+			Check(Drain(d, g) == 0 && !d.RecordOf(0x900) && g.actors[0x900].unkeyed == before,
+				"bodies: someone of a sex with no supported body is left alone, a name rule and all");
+		}
+
 		// ---- resolving: the generator's classify, band and resolve
 		auto doc = BaseCatalog();
 		doc["sliderSets"] = nlohmann::json::parse(R"({"female": {"set": "CBBE Body", "sliders": {

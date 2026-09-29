@@ -1349,3 +1349,22 @@ could very very fat". From renders of each body, the owner: "Ship as is".
   its values: an NPC shows the new body after Reset on them (or Reset everyone), as S-66 found for Ivy.
 - 60 named people (30 women, 30 men), 64 records; the pickers hold 196 for women and 188 for men. Build
   09f9637ce99e, stamp 653667; its manifest joins the others (S-12).
+
+## S-78 — A sex with no body Silhouette supports is left alone, and the player is told once
+
+A request (2026-09-30): Silhouette with one body mod installed, CBBE without BodyTalk or the other way round.
+The owner's rule, word for word: "if we don't see the user's proper supported body we just do nothing on this
+sex, and warn it in logs", and "better show popup in game with button OK".
+
+- **Measured at load** (`Presets::MeasureBody`, called by `Game::CheckBodies`): the loose
+  `FemaleBody.tri` / `MaleBody.tri` against the distinct sliders Silhouette's random pool sets for that sex.
+  Under half carried, or no loose `.tri` with morphs, and that sex has no supported body. Another family's
+  body (Fusion Girl under CBBE presets) shares a few names at most, so it lands under half; the owner's
+  install carries 31 of 34 female and 25 of 34 male.
+- **Left alone like a race Silhouette does not distribute to:** `Catalog::bodySupported[sex]` gates
+  eligibility (`Distributed`), so nobody of that sex is probed, ruled, rolled, reset, refit or touched up.
+  The NPC picker and the API refuse them and say why (`Shapeable`).
+- **Told:** one `warn` line a sex in Silhouette.log with the count or the missing file, and a
+  `Debug.MessageBox` (OK) once a launch from the bridge's Connect (`BodyWarning`, protocol 6).
+- **Not in reach:** LooksMenu still reads Silhouette's BodyGen lines for that sex. Their sliders are ones
+  the body does not have, so nothing moves; a body that shares a few of them could move a little.

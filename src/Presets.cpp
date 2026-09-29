@@ -395,7 +395,7 @@ namespace SH::Presets
 		Read                            out;
 		std::unordered_set<std::string> morphs[2];
 		for (const int s : { 0, 1 }) {
-			morphs[s] = TriMorphs(ReadBytes(a_data / "Meshes/Actors/Character/CharacterAssets" / (s ? "FemaleBody.tri" : "MaleBody.tri")));
+			morphs[s] = BodyMorphs(a_data, s == 1);
 			out.body[s] = !morphs[s].empty();
 		}
 		std::vector<std::filesystem::path> files;
@@ -419,6 +419,30 @@ namespace SH::Presets
 			std::ranges::move(found, std::back_inserter(all));
 		}
 		out.installed = Resolve(a_catalog, all, morphs);
+		return out;
+	}
+
+	std::unordered_set<std::string> BodyMorphs(const std::filesystem::path& a_data, bool a_female)
+	{
+		return TriMorphs(ReadBytes(a_data / "Meshes/Actors/Character/CharacterAssets" / (a_female ? "FemaleBody.tri" : "MaleBody.tri")));
+	}
+
+	BodyFit MeasureBody(const Catalog& a_catalog, bool a_female, const std::unordered_set<std::string>& a_morphs)
+	{
+		BodyFit                         out;
+		std::unordered_set<std::string> used;
+		for (const auto& p : a_catalog.presets) {
+			if (p.female != a_female || !p.random || p.installed) {
+				continue;
+			}
+			for (const auto& [m, v] : p.values) {
+				used.insert(m);
+			}
+		}
+		out.used = used.size();
+		out.found = static_cast<std::size_t>(std::ranges::count_if(used, [&](const std::string& m) { return a_morphs.contains(m); }));
+		// A pool that sets nothing cannot tell: it moves no body either way, so it is not what turns a sex off.
+		out.supported = out.used == 0 || (!a_morphs.empty() && out.found * 2 >= out.used);
 		return out;
 	}
 }

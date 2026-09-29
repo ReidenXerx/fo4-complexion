@@ -30,7 +30,7 @@ To go back, remove Silhouette entirely, or remove only Silhouette.dll (step 17).
 
 2. Load the save and stand still for 60 seconds. In `Documents\My Games\Fallout4\F4SE\Silhouette.log`,
    expect, in this order:
-   - `papyrus: Silhouette:DLL bound (protocol 5)`
+   - `papyrus: Silhouette:DLL bound (protocol 6)`
    - `catalog: build <build>, stamp <stamp>, rules <rules>, N presets, N manifest(s), 0 faction rule(s), 1 refit set(s)`
      -- the build, stamp and rules the generator printed last; one manifest per build ever generated
      (five: waves 3 and 4 kept the build and stamp). A `manifest <file> says it is build stamp <n>: not

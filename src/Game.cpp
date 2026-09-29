@@ -619,6 +619,41 @@ namespace SH::Game
 
 	namespace
 	{
+		std::mutex  g_bodyWarningLock;
+		std::string g_bodyWarning;
+
+		// The owner's rule (2026-09-30): a sex with no body Silhouette supports -- no loose .tri, or one carrying
+		// under half of the sliders the pool sets (another body family's) -- is left alone: never probed, rolled,
+		// refit or picked. Said in the log, and once on the player's screen through the bridge. LooksMenu still
+		// reads Silhouette's BodyGen lines for them; their sliders are ones that body does not have.
+		void CheckBodies(Catalog& a_catalog)
+		{
+			std::vector<std::string> off;
+			for (const int s : { 1, 0 }) {
+				const bool  female = s == 1;
+				const auto  sex = female ? "female"sv : "male"sv;
+				const auto  tri = female ? "FemaleBody.tri"sv : "MaleBody.tri"sv;
+				const auto  morphs = Presets::BodyMorphs("Data", female);
+				const auto  fit = Presets::MeasureBody(a_catalog, female, morphs);
+				const auto  family = female ? "CBBE"sv : "BodyTalk"sv;  // what Silhouette's bodies are made for
+				a_catalog.bodySupported[s] = fit.supported;
+				if (fit.supported) {
+					logger::info("bodies: {} carries {} of the {} {} sliders Silhouette's pool sets - {} NPCs are shaped", tri, fit.found, fit.used, sex, sex);
+					continue;
+				}
+				const auto why = morphs.empty()
+				                     ? std::format("no loose Meshes\\Actors\\Character\\CharacterAssets\\{} with morphs (build {} in BodySlide with Build Morphs on)", tri, family)
+				                     : std::format("{} carries only {} of the {} {} sliders Silhouette's pool sets (its bodies are made for {})", tri, fit.found, fit.used, sex, family);
+				logger::warn("bodies: no {} body Silhouette supports - {}. Silhouette leaves every {} NPC alone.", sex, why, sex);
+				off.push_back(std::format("no {} body it supports was found, so {} NPCs are left alone: {}.", sex, sex, why));
+			}
+			std::scoped_lock l{ g_bodyWarningLock };
+			g_bodyWarning.clear();
+			for (const auto& line : off) {
+				g_bodyWarning += (g_bodyWarning.empty() ? "" : "\n\n") + line;
+			}
+		}
+
 		// S-76: the player's own BodySlide presets join the pickers (never random), resolved through the slider
 		// set each body was built with, as the generator would have resolved them (Presets::ReadInstalled).
 		// Absolute mode only: in a compensated build every value is relative to what the base has baked in,
@@ -658,6 +693,12 @@ namespace SH::Game
 		}
 	}
 
+	std::string TakeBodyWarning()
+	{
+		std::scoped_lock l{ g_bodyWarningLock };
+		return std::exchange(g_bodyWarning, {});
+	}
+
 	void Load()
 	{
 		std::string error;
@@ -674,6 +715,7 @@ namespace SH::Game
 			return;
 		}
 		AddInstalledPresets(*catalog);
+		CheckBodies(*catalog);
 
 		// The catalog and the BodyGen files come from one generator run, or neither can be trusted: a
 		// marker would name a preset of another build (S-19), or the runtime would apply rules the

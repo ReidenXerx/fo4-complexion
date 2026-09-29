@@ -134,6 +134,10 @@ namespace SH
 		std::vector<VarietyRange> variety[2];
 		std::optional<BodySliderSet> sliderSets[2];  // S-76, [0] male, [1] female; absent in an older catalog
 
+		// [0] male, [1] female: an installed body Silhouette can shape (Presets::MeasureBody, set at load). A sex
+		// without one is left alone like a race Silhouette does not distribute to.
+		bool bodySupported[2]{ true, true };
+
 		// Tiers BodyGen already carries -- the plugin must know them to leave those NPCs alone.
 		std::vector<std::string> races;  // distributeRaces, editor ids
 		std::vector<FormRef>     npcFormIDRules[2];

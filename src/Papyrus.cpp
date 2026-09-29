@@ -17,7 +17,8 @@ namespace SH::Papyrus
 		// 4: ResetEveryone (S-68), which the bridge's MCM button calls.
 		// 5: NextNotice (S-71), which the bridge shows on the player's screen; FreshStart (S-70), which the
 		// regeneration window presses once for a save new to Silhouette; Configure's faction pools (S-73).
-		constexpr std::int32_t kProtocol = 5;
+		// 6: BodyWarning, which the bridge shows once a launch when a sex has no body Silhouette supports.
+		constexpr std::int32_t kProtocol = 6;
 
 		using Str = RE::BSFixedString;
 
@@ -170,6 +171,8 @@ namespace SH::Papyrus
 
 		// S-71: a line for the player's screen, "" when none. The director's state only.
 		Str NextNotice(std::monostate) { return Str{ D().NextNotice() }; }
+		// Which sex has no body Silhouette supports (Game::CheckBodies), once a launch: the bridge shows it in a box.
+		Str BodyWarning(std::monostate) { return Str{ Game::TakeBodyWarning() }; }
 
 		std::int32_t EventKind(std::monostate, std::int32_t a_event)
 		{
@@ -295,6 +298,11 @@ namespace SH::Papyrus
 			const auto race = Game::RaceOf(actor);
 			if (race.empty() || std::ranges::none_of(c->races, [&](const std::string& r) { return IEquals(r, race); })) {
 				a_why = std::format("{} is of a race Silhouette does not shape ({})", Game::NameOf(actor), race.empty() ? "?" : race);
+				return nullptr;
+			}
+			if (const bool female = Game::IsFemale(actor); !c->bodySupported[female ? 1 : 0]) {
+				a_why = std::format("no {} body Silhouette supports is installed, so it leaves {} alone (Silhouette.log says why)",
+					female ? "female" : "male", female ? "women" : "men");
 				return nullptr;
 			}
 			return actor;
@@ -465,6 +473,7 @@ namespace SH::Papyrus
 
 		Bind(a_vm, "NextEvent"sv, NextEvent, fast);
 		Bind(a_vm, "NextNotice"sv, NextNotice, fast);
+		Bind(a_vm, "BodyWarning"sv, BodyWarning, fast);
 		Bind(a_vm, "EventKind"sv, EventKind, fast);
 		Bind(a_vm, "EventActor"sv, EventActor, fast);
 		Bind(a_vm, "EventPreset"sv, EventPreset, fast);

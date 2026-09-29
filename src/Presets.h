@@ -55,4 +55,19 @@ namespace SH::Presets
 		bool        body[2]{ false, false };  // [0] male, [1] female: a .tri with morphs was found
 	};
 	[[nodiscard]] Read ReadInstalled(const Catalog& a_catalog, const std::filesystem::path& a_data);
+
+	// The loose body .tri of one sex under a Data folder: its morph names; empty when there is none, or it is
+	// not a .tri.
+	[[nodiscard]] std::unordered_set<std::string> BodyMorphs(const std::filesystem::path& a_data, bool a_female);
+
+	// Whether Silhouette can shape one sex on this body: the share of the distinct sliders its random pool sets
+	// that the body's .tri carries. Under half -- no .tri at all, or another body family's -- and Silhouette
+	// leaves that sex alone (the owner, 2026-09-30: "if we don't see a supported body, do nothing on this sex").
+	struct BodyFit
+	{
+		std::size_t used{ 0 };   // the pool's distinct sliders for the sex
+		std::size_t found{ 0 };  // of them, in the .tri
+		bool        supported{ false };
+	};
+	[[nodiscard]] BodyFit MeasureBody(const Catalog& a_catalog, bool a_female, const std::unordered_set<std::string>& a_morphs);
 }

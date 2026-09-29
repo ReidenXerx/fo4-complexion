@@ -14,6 +14,10 @@ namespace SH::Game
 	// kGameDataReady: the catalog, every manifest, and the forms the catalog names.
 	void Load();
 
+	// Which sex Load found no body for that Silhouette supports, as one line for the player's screen -- given
+	// once a launch, "" after that and when both bodies are fine.
+	[[nodiscard]] std::string TakeBodyWarning();
+
 	// From the event sinks, on whatever thread the game sends them: queued, nothing read yet.
 	void NoteLoaded(std::uint32_t a_ref);
 	void NoteEquip(std::uint32_t a_ref, std::uint32_t a_item, bool a_equipped);

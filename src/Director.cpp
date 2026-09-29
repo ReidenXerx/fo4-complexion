@@ -12,7 +12,8 @@ namespace SH
 
 		bool Distributed(const Catalog& a_catalog, const ActorFacts& a_facts)
 		{
-			return std::ranges::any_of(a_catalog.races, [&](const std::string& r) { return IEquals(r, a_facts.race); });
+			return a_catalog.bodySupported[a_facts.female ? 1 : 0] &&
+			       std::ranges::any_of(a_catalog.races, [&](const std::string& r) { return IEquals(r, a_facts.race); });
 		}
 
 		// Ids start somewhere new each launch: a script stack a save resumed may still hold an id from
