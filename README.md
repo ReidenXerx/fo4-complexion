@@ -5,8 +5,10 @@ keeps it: an ordinary one most often, an unflattering one less often, a conventi
 rarely, from Silhouette's own pool. The Commonwealth's named people -- companions and major NPCs -- each
 have a body of their own.
 
-**Status:** 0.2.1: one plugin for old-gen 1.10.163 and Anniversary 1.11.x through Runtime Database (S-75),
-proved in game on both (Anniversary 1.11.240); and your own BodySlide presets in the NPC picker (S-76).
+**Status:** 0.2.3: one plugin for old-gen 1.10.163 and Anniversary 1.11.x through Runtime Database (S-75),
+proved in game on both (Anniversary 1.11.240); your own BodySlide presets in the NPC picker (S-76); the
+Diamond City pack (S-77); one body mod is enough -- a sex with no body Silhouette supports is left alone,
+and you are told (S-78).
 Next-gen 1.10.984 is not supported: nobody plays it. The last release without Runtime Database is 0.1.1
 (old-gen only). Phase 1 (the generator; LooksMenu's own BodyGen does the
 work at run time) and Phase 2 -- `Silhouette.dll`, an F4SE plugin, with `Silhouette.esp` -- which adds the
@@ -143,7 +145,8 @@ takes the clothed shapes off).
 - **LooksMenu**, BodyGen enabled in `Data/F4SE/Plugins/f4ee.ini`
   (`[BodyMorph] bEnable=1`, `bEnableBodyGen=1` — the default).
 - **BodySlide**, with your body — CBBE for women, BodyTalk for men — and your outfits built from a
-  **zeroed** preset ("CBBE Zeroed Sliders", "BT - Zero") with **Build Morphs** ticked.
+  **zeroed** preset ("CBBE Zeroed Sliders", "BT - Zero") with **Build Morphs** ticked. One of the two is
+  enough: a sex without its body is left alone, and Silhouette.log and a message box say so (S-78).
 - **MCM** (Mod Configuration Menu) for the settings and the pickers.
 - Python 3 only to run the generator yourself (standard library only) -- never to play.
 

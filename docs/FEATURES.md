@@ -104,7 +104,8 @@ order. Each item names where it is settled: `S-#` is a decision in [decisions.md
   from the pool; other mods' keyed morphs (AAF, pregnancy) stay (S-67).
 - **Reset everyone**: a fresh start for the whole save, your picks included; the people around you change at
   once, everyone else when met; the save remembers it, and a later update does not set it off again; it
-  reaches bodies Silhouette did not make, once each. Two presses within a minute (S-68, S-70).
+  reaches bodies Silhouette did not make, once each. Two presses within a minute (S-68, S-70). The log
+  names each person: what they wore, what decides them, the body they got, and who waits for another mod.
 - **Fresh start**: a save that never had Silhouette gets *Reset everyone* by itself on its first load, with a
   notification; a switch in MCM turns it off (S-70, S-73).
 
@@ -172,6 +173,10 @@ order. Each item names where it is settled: `S-#` is a decision in [decisions.md
   every body. **LooksMenu** with BodyGen on, **MCM**, the Visual C++ 2015-2022 Redistributable 14.40 or newer, and your body and outfits built in
   **BodySlide** from a zeroed preset with Build Morphs ticked. `Silhouette.esp` is a light plugin (no
   load-order slot).
+- **One body mod is enough** (S-78). Silhouette's women are made for CBBE, its men for BodyTalk. A sex whose
+  body Silhouette does not support -- no BodySlide-built `.tri`, or one carrying under half of the pool's
+  sliders (another body family's) -- is left alone: no rolls, rules, resets, refits or picks. Silhouette.log
+  says why, and a message box says it once a launch.
 
 ## Limits
 

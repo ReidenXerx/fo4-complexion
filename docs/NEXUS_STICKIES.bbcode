@@ -1,5 +1,5 @@
 === STICKY: Every feature ===
-[b]Silhouette 0.2.2: every feature[/b]
+[b]Silhouette 0.2.3: every feature[/b]
 The full list, each item as the code does it. Decision numbers (S-#) point into [url=https://github.com/ReidenXerx/fo4-silhouette/blob/master/docs/decisions.md]decisions.md[/url].
 
 [b]Game versions[/b]
@@ -15,6 +15,7 @@ The full list, each item as the code does it. Decision numbers (S-#) point into 
 [*]Random bodies come from Silhouette's own pool: 41 per sex, generated and measured into three tiers. 18 Plain, 17 Rough (very fat, very flat, frail, disproportioned), 6 Fine. Odds 70 / 22 / 8 % (S-65).
 [*]A bust floor keeps every woman's bust small but real: no concave chest for the breast physics to fold.
 [*]Which races get bodies is a config key (HumanRace by default).
+[*]One body mod is enough: a sex with no body Silhouette supports (CBBE for women, BodyTalk for men, built in BodySlide) is left alone, with a log line and one message box a launch (S-78).
 [/list]
 [b]The named people[/b]
 [list]
@@ -41,7 +42,7 @@ The full list, each item as the code does it. Decision numbers (S-#) point into 
 [list]
 [*]Count the bodies around me, Refresh the people around me, Give the people around me new bodies.
 [*]Reset on one NPC: a named character gets their own body back, anyone else rolls again. Other mods' keyed morphs (AAF, pregnancy) stay.
-[*]Reset everyone: a fresh start for the whole save, your picks included; the people around you change at once, everyone else when met.
+[*]Reset everyone: a fresh start for the whole save, your picks included; the people around you change at once, everyone else when met. The log names each person and the body they got.
 [*]Fresh start: a save that never had Silhouette gets Reset everyone by itself on its first load, with a notification. A switch turns it off (S-70).
 [/list]
 [b]Clothing (ORefit)[/b]
