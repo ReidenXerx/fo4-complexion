@@ -408,6 +408,7 @@ namespace SH
 		[[nodiscard]] Want        WantRefit(const Session& a_session) const;
 		void                      ReconcileRefit(std::uint32_t a_ref);
 		[[nodiscard]] std::string PresetNamedBy(std::string_view a_marker, std::uint32_t a_stamp) const;
+		[[nodiscard]] std::string BodyNamed(std::string_view a_marker, std::uint32_t a_stamp) const;
 		void                      FinishBody(Order& a_order);
 		void                      FinishRefit(Order& a_order);
 		void                      ClosePicker();

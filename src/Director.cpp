@@ -707,6 +707,18 @@ namespace SH
 		return _catalog->PresetForMarker(a_marker, a_stamp).value_or(std::string{});
 	}
 
+	// For the log: the preset a marker names, with the build that made it -- the raw marker when no manifest
+	// names it, "no Silhouette body" without one.
+	std::string Director::BodyNamed(std::string_view a_marker, std::uint32_t a_stamp) const
+	{
+		if (a_marker.empty()) {
+			return "no Silhouette body";
+		}
+		const auto preset = PresetNamedBy(a_marker, a_stamp);
+		const auto build = a_stamp == _catalog->stamp ? "this build" : std::format("build stamp {}", a_stamp);
+		return std::format("{} ({})", preset.empty() ? std::string{ a_marker } : preset, build);
+	}
+
 	void Director::OnProbed(std::uint32_t a_ref, const Order& a_order)
 	{
 		auto& s = _sessions[a_ref];
@@ -1188,8 +1200,12 @@ namespace SH
 				const bool  owed = rec && rec->source == Source::kRoll;
 				if (!owed &&
 					(v.tier == Tier::kNameBlacklist || (!ours && !v.bodyGen && v.tier != Tier::kName && v.tier != Tier::kFaction))) {
+					Log(std::format("{:08X} \"{}\": Reset everyone leaves them - {}", ref, s.facts.baseName, v.why));
 					continue;  // kept bare by name (DecideBody sees to it), or not Silhouette's and nothing to give
 				}
+				// One line a person: who wore what at the press, and what decides them now -- the roll's own
+				// line comes when it lands (FinishBody), a hold when another mod has them busy (Defer).
+				Log(std::format("{:08X} \"{}\": Reset everyone - wore {}; {}", ref, s.facts.baseName, BodyNamed(s.marker, s.stamp), v.why));
 				Retire(ref);
 				s.reset = false;
 				Intend(ref, s, Source::kRoll, {});  // owed until it lands (S-59)
@@ -1797,7 +1813,7 @@ namespace SH
 		auto& s = _sessions[o.ref];
 		if (!s.deferNoted) {
 			s.deferNoted = true;
-			Log(std::format("{:08X}: another mod has them busy - the change waits", o.ref));
+			Log(std::format("{:08X} \"{}\": another mod has them busy (AAF's busy or locked keyword) - the change waits", o.ref, s.facts.baseName));
 		}
 		// S-71: a change the player asked for, held back where they cannot see why. Bulk work (a Reset
 		// everyone's rolls, the regeneration window), a touch-up and another mod's request are not the player's
@@ -1968,6 +1984,8 @@ namespace SH
 				// Generated as if new: the rules get their say first -- a body they replace at once is not
 				// the one to announce; its replacement is, when it lands.
 				DecideBody(ref, s);
+				Log(std::format("{:08X} \"{}\": rolled again - BodyGen gave {}{}", ref, s.facts.baseName, BodyNamed(s.marker, s.stamp),
+					BodyPending(ref) ? "; a rule's body follows" : ""));
 				if (const auto preset = PresetNamedBy(s.marker, s.stamp); !preset.empty() && !BodyPending(ref)) {
 					// Announced like every body given on request (S-46), whether or not this session has seen them yet.
 					Push(EventKind::kGenerated, ref, preset, false, BodyHash(s.marker, s.stamp));
