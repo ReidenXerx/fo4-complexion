@@ -306,6 +306,8 @@ the BT penis sliders) and AnusBack.
 
 ## S-22 — The NPC picker is hotkeys and an MCM page
 
+**Superseded in part by S-79 (2026-09-30): a Scaleform window, built without CommonLibF4's menu code.**
+
 Owner poll, 2026-09-23. Aim at an NPC and press Pick: they become the target. Next and Previous
 cycle every preset that fits their body, live, with the name shown. Keep records the choice; Cancel
 restores exactly what they had. The MCM page shows the target with a dropdown of every preset,
@@ -1368,3 +1370,20 @@ sex, and warn it in logs", and "better show popup in game with button OK".
   `Debug.MessageBox` (OK) once a launch from the bridge's Connect (`BodyWarning`, protocol 6).
 - **Not in reach:** LooksMenu still reads Silhouette's BodyGen lines for that sex. Their sliders are ones
   the body does not have, so nothing moves; a body that shares a few of them could move a little.
+
+## S-79 — The picker window: Scaleform, live on the character, with thumbnails
+
+Owner poll, 2026-09-30, three answers: "a full featured window with even preview render characters with
+selected shapes before apply them", picked from the options below.
+
+- **Scaleform**, a native FO4 menu (LooksMenu's and SAM's kind): mouse and controller, OG and AE, no new
+  dependency. It is built on F4SE's own menu API, not CommonLibF4's IMenu code, whose `VisitMembers` crash
+  on 1.10.163 is why S-22 had no window. Dear Modding UI (ImGui, OG support unknown) and PrismaUI (a
+  Chromium overlay) were offered and not chosen.
+- **Preview: live on the character, plus thumbnails.** A grid of pre-rendered, non-explicit silhouette
+  thumbnails for Silhouette's and the stock presets (the player's own presets get a plain card); choosing
+  one puts it on the real character live, with the camera on them; Apply keeps it, Cancel restores exactly
+  what they had -- the S-22 picker's Keep/Cancel machinery. A rendered 3D copy inside the window was offered
+  and not chosen: FO4 has no ready offscreen render of a clone.
+- **One window for NPCs and the player's character.** It replaces the MCM dropdowns and the hotkey
+  cycling as the way to choose; the hotkeys stay as a shortcut.

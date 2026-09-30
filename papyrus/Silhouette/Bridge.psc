@@ -163,6 +163,69 @@ Function Connect()
 	StartTimer(PollSeconds, kPollTimer)
 EndFunction
 
+;---------------------------------------------------------------------------
+; S-79 spike: the picker window. F4SE opens Interface\SilhouetteMenu.swf as a custom
+; menu -- F4SE's own menu, none of CommonLibF4's menu code, whose crash on 1.10.163 is
+; why S-22 had no window. The window asks for its presets once it is ready and tells
+; the bridge what was clicked. Neither the menu nor the event registrations survive a
+; load, so opening registers again. For now the console opens it:
+;   cgf "Silhouette:API.OpenWindow"
+;---------------------------------------------------------------------------
+String Property WindowMenu = "SilhouetteMenu" AutoReadOnly
+
+Function OpenWindow()
+	If !UI.IsMenuRegistered(WindowMenu)
+		UI:MenuData data = new UI:MenuData
+		data.menuFlags = 0x8018496  ; ScreenArcherMenu's: cursor, modal, the game running behind it
+		data.extendedFlags = 3      ; inherit colours, drop the cursor for a gamepad
+		If !UI.RegisterCustomMenu(WindowMenu, "SilhouetteMenu", "root1.Menu_mc", data)
+			Debug.MessageBox("Silhouette: the picker window could not be registered. Is Interface/SilhouetteMenu.swf installed?")
+			Return
+		EndIf
+	EndIf
+	RegisterForExternalEvent("Silhouette_WindowReady", "OnWindowReady")
+	RegisterForExternalEvent("Silhouette_WindowPick", "OnWindowPick")
+	RegisterForExternalEvent("Silhouette_WindowClose", "OnWindowClose")
+	UI.OpenMenu(WindowMenu)
+EndFunction
+
+Function OnWindowReady()
+	If !_plugin
+		WindowItems("", "Silhouette.dll is not loaded: no presets to list")
+		Return
+	EndIf
+	String joined = ""
+	Int n = Silhouette:DLL.PresetCount(True)
+	Int i = 0
+	While i < n
+		If i > 0
+			joined += "|"
+		EndIf
+		joined += Silhouette:DLL.PresetName(True, i)
+		i += 1
+	EndWhile
+	WindowItems(joined, n + " female presets - click one")
+	Silhouette:DLL.Log("window: open, " + n + " female presets listed")
+EndFunction
+
+Function WindowItems(String asJoined, String asStatus)
+	Var[] args = new Var[2]
+	args[0] = asJoined
+	args[1] = asStatus
+	UI.Invoke(WindowMenu, "root1.Menu_mc.SetItems", args)
+EndFunction
+
+Function OnWindowPick(String asPreset)
+	Debug.Notification("Silhouette window: " + asPreset)
+	If _plugin
+		Silhouette:DLL.Log("window: clicked " + asPreset)
+	EndIf
+EndFunction
+
+Function OnWindowClose()
+	UI.CloseMenu(WindowMenu)
+EndFunction
+
 ; The MCM's switches, when MCM is there. Without it the plugin keeps what it has --
 ; its defaults, or what another mod set through Silhouette:API.
 ; MCM answers False for a key it never read (settings.ini missing or unread), which

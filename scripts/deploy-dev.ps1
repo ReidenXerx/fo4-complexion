@@ -139,6 +139,9 @@ foreach ($f in Get-ChildItem $pex -Filter *.pex) {
     $name = if ($f.Name -ieq 'player.pex') { 'Player.pex' } else { $f.Name }
     $ship["Scripts\Silhouette\$name"] = $f.FullName
 }
+# S-79: the picker window, scriptsuild-interface.ps1. F4SE opens it from Interface\ by its name.
+$swf = Join-Path $root 'build\interface\SilhouetteMenu.swf'
+if (Test-Path $swf) { $ship['Interface\SilhouetteMenu.swf'] = $swf }
 
 # Silhouette's own files in a mod folder or in Data (relative paths) that this build does not ship: only
 # Silhouette's own places are looked at, and never a manifest -- an NPC of that build keeps its stamp for the

@@ -291,3 +291,11 @@ Function SetGenitalRand(Bool abEnabled) Global
 	EndIf
 	Silhouette:DLL.SetGenitalRand(abEnabled)
 EndFunction
+
+; S-79 spike: opens the picker window. From the console: cgf "Silhouette:API.OpenWindow"
+Function OpenWindow() Global
+	Silhouette:Bridge b = Bridge()
+	If b
+		b.OpenWindow()
+	EndIf
+EndFunction

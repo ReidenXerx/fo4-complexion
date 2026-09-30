@@ -20,6 +20,11 @@
 [CmdletBinding()]
 param(
     [string] $Base     = 'D:\F4CustomMods\PapyrusBase\Source\Base',
+    # The base's ScriptObject.psc plus F4SE's two external-event natives (RegisterForExternalEvent, S-79),
+    # searched before the base. Not F4SE's whole ScriptObject.psc: it declares SendCustomEvent the way the
+    # real base does, and the bridge's custom events stop compiling. Kept outside the public repo, as the
+    # base is.
+    [string] $F4se     = 'D:\F4CustomMods\PapyrusBase\Source\F4SE',
     [string] $Compiler = 'D:\GOGGames\Fallout 4 GOTY\Papyrus Compiler\PapyrusCompiler.exe'
 )
 
@@ -35,6 +40,9 @@ if (-not (Test-Path $Compiler)) {
 if (-not (Test-Path (Join-Path $Base 'Institute_Papyrus_Flags.flg'))) {
     throw "No Institute_Papyrus_Flags.flg in $Base."
 }
+if (-not (Test-Path (Join-Path $F4se 'ScriptObject.psc'))) {
+    throw "No ScriptObject.psc in $F4se - copy the base's and append RegisterForExternalEvent and UnregisterForExternalEvent from F4SE's (the game's Data\Scripts\Source)."
+}
 if (-not (Test-Path (Join-Path $sources 'Silhouette\Player.psc'))) {
     throw "No papyrus\Silhouette\Player.psc - run: python tools/silhouette_gen.py --write"
 }
@@ -46,7 +54,7 @@ Write-Host "Compiling $($scripts.Count) script(s) against $Base"
 # Batch mode, not file by file: a namespaced script (Silhouette:Player) compiled by
 # path fails with "filename does not match script name". The namespace has to come
 # from the import paths, which -all does and a single file path cannot.
-$output = & $Compiler $sources -all -f="Institute_Papyrus_Flags.flg" -i="$Base;$sources;$stubs" -o="$out" 2>&1
+$output = & $Compiler $sources -all -f="Institute_Papyrus_Flags.flg" -i="$F4se;$Base;$sources;$stubs" -o="$out" 2>&1
 
 # Print everything the compiler said: a filtered view once hid the only line that
 # explained a failure.
