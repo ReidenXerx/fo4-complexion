@@ -262,6 +262,7 @@ namespace SH
 		[[nodiscard]] std::string   PickerPresets() const;                 // "name<TAB>kind|...", kind y / p / o
 		[[nodiscard]] std::int32_t  PickerIndex() const;                   // the preset tried on, -1 none
 		[[nodiscard]] std::string   PickerCurrent() const;                 // what they had at Pick, "" not read yet
+		[[nodiscard]] bool          PickerFemale() const;                  // the sex the picking lists presets for
 		std::string                 PickerKeep();
 		std::string                 PickerCancel();
 		[[nodiscard]] std::uint32_t PickerTarget() const;

@@ -1593,6 +1593,7 @@ namespace
 		(void)Drain(d, g);
 		Check(d.PickerPresets() == "Curvy\tp|Slim\tp|Athletic\tp", std::format("window: every preset with its kind ({})", d.PickerPresets()));
 		Check(d.PickerCurrent() == "Slim" && d.PickerIndex() == 1, "window: what she had at Pick, and where the picking stands");
+		Check(d.PickerFemale(), "window: the picking's sex, which picks the pictures");
 		msg = d.PickerShow("curvy");
 		(void)Drain(d, g);
 		Check(msg == "Cait: Curvy (1/3)" && d.PickerIndex() == 0 && g.actors[0x100].unkeyed.contains("Silhouette_Curvy"),

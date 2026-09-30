@@ -99,7 +99,7 @@ Event Actor.OnPlayerLoadGame(Actor akSender)
 EndEvent
 
 Function Connect()
-	WindowRelease()
+	WindowForget()
 	_drainStarted = -1.0
 	_polls = 0
 	_plugin = False
@@ -175,21 +175,33 @@ EndFunction
 ; Neither the menu nor the event registrations survive a load: opening registers again.
 ; The hotkey opens it at once; MCM's buttons open it when the pause menu closes (MCM
 ; lives inside it); the console: cgf "Silhouette:API.OpenWindow".
+;
+; Every call into LooksMenu or the plugin can hand this script to another thread, so the
+; window's work runs in SESSIONS (microscope wave 1): opening, closing and the Them / Me
+; switch each start a new one, and work of an older session -- a load still reading a
+; body, a camera still switching -- stops at its next step and takes back what it did.
+; Tries run one at a time, the latest asked for last.
 ;---------------------------------------------------------------------------
 String Property WindowMenu = "SilhouetteMenu" AutoReadOnly
 Float Property WindowAimSeconds = 10.0 AutoReadOnly  ; the console takes the crosshair: an NPC aimed at this recently still counts
 
-Int _winThem = 0          ; the NPC aimed at when the window opened, 0 for none
-Bool _winMe = False       ; the window is on the player
-Bool _winApplied = False  ; Apply was pressed: the close keeps what is on
-Bool _winTried = False    ; the player tries a preset on: the close puts the snapshot back
-String[] _winMorphs       ; the player's body before the first try: morph names ...
-Float[] _winValues        ; ... and values, the unkeyed layer only
+Int _winThem = 0            ; the NPC aimed at when the window opened, 0 for none
+Bool _winMe = False         ; the window is on the player
+Bool _winApplied = False    ; Apply was pressed: the close keeps what is on
+Bool _winTried = False      ; the player tries a preset on: the close puts the snapshot back
+String[] _winMorphs         ; the player's body before the first try: morph names ...
+Float[] _winValues          ; ... and values, the unkeyed layer only
 Bool _winAfterMenu = False  ; an MCM button asked for the window: it opens when the pause menu closes
 ; The NPC the window holds in place (SetRestrained), 0 for none. Lives in the save: a save made while the
 ; window was open still lets them go at the next load (Connect).
 Int _winHeld = 0
 Int _winAfterTarget = 0     ; ... on this NPC, 0 for the player
+Int _winSession = 0         ; bumped by every open, close and switch: older work stops
+Bool _winOpen = False       ; the window is open (between OpenWindowOn and its close event)
+Bool _winClosing = False    ; the close is putting things back: no new window until it is done
+Bool _winPicking = False    ; a try is being put on
+Int _winWantIndex = -1      ; the latest try asked for, -1 none ...
+String _winWantName = ""    ; ... and its name
 
 ; The hotkey: the NPC in the player's sights (or aimed at in the last seconds), else the player.
 Function OpenWindow()
@@ -205,6 +217,9 @@ Function MenuOpenWindow()
 	Int target = 0
 	If _plugin
 		target = Silhouette:DLL.CrosshairActor(30.0)
+	EndIf
+	If target == 0
+		Debug.Notification("Silhouette: nobody was in your sights before the menu opened - the window opens on you.")
 	EndIf
 	OpenWindowAfterMenu(target)
 EndFunction
@@ -222,12 +237,26 @@ Function OpenWindowAfterMenu(Int aiTarget)
 EndFunction
 
 Function OpenWindowOn(Int aiTarget)
-	If UI.IsMenuOpen(WindowMenu)
+	If UI.IsMenuOpen(WindowMenu) || _winOpen
+		Return
+	EndIf
+	If _winClosing
+		Debug.Notification("Silhouette: the window is still putting things back - a moment.")
+		Return
+	EndIf
+	If !_looksMenu
+		Debug.MessageBox("Silhouette: LooksMenu is not loaded, so no body can be shaped: its BodyGen is what gives every body.")
+		Return
+	EndIf
+	If Game.GetPlayer().IsInCombat()
+		Debug.Notification("Silhouette: not in combat.")
 		Return
 	EndIf
 	If !UI.IsMenuRegistered(WindowMenu)
 		UI:MenuData data = new UI:MenuData
-		data.menuFlags = 0x8018496  ; ScreenArcherMenu's: cursor, modal, the game running behind it
+		; ScreenArcherMenu's flags (cursor, modal, the game running behind it) and the menu input context
+		; (0x8), which turns the keyboard's and the gamepad's menu keys into ProcessUserEvent calls.
+		data.menuFlags = 0x801849E
 		data.extendedFlags = 3      ; inherit colours, drop the cursor for a gamepad
 		If !UI.RegisterCustomMenu(WindowMenu, "SilhouetteMenu", "root1.Menu_mc", data)
 			Debug.MessageBox("Silhouette: the picker window could not be registered. Is Interface/SilhouetteMenu.swf installed?")
@@ -240,41 +269,57 @@ Function OpenWindowOn(Int aiTarget)
 	RegisterForExternalEvent("Silhouette_WindowCancel", "OnWindowCancel")
 	RegisterForExternalEvent("Silhouette_WindowTarget", "OnWindowTarget")
 	RegisterForMenuOpenCloseEvent(WindowMenu)
+	_winSession += 1
+	_winOpen = True
 	_winThem = aiTarget
 	_winMe = _winThem == 0
 	_winApplied = False
 	_winTried = False
+	_winWantIndex = -1
 	UI.OpenMenu(WindowMenu)
 EndFunction
 
-Function OnWindowReady()
-	WindowLoad()
+; Work of session aiSession may go on: the window is open and nothing has moved on since.
+Bool Function WindowLive(Int aiSession)
+	Return _winOpen && aiSession == _winSession
 EndFunction
 
-Function WindowLoad()
+Function OnWindowReady()
+	WindowLoad(_winSession)
+EndFunction
+
+Function WindowLoad(Int aiSession)
 	If _winMe
-		WindowLoadMe()
+		WindowLoadMe(aiSession)
 	Else
-		WindowLoadThem()
+		WindowLoadThem(aiSession)
 	EndIf
 EndFunction
 
-Function WindowLoadThem()
+Function WindowLoadThem(Int aiSession)
 	String said = Silhouette:DLL.PickerStart(_winThem)
 	String name = Silhouette:DLL.NameOf(_winThem)
-	WindowTarget(name, "them", Silhouette:Player.IsFemale(Game.GetForm(_winThem) as Actor))
+	If !WindowLive(aiSession)
+		WindowDropPicking()
+		Return
+	EndIf
+	WindowTarget(name, "them", Silhouette:DLL.PickerFemale(), Silhouette:DLL.Build())
 	If Silhouette:DLL.PickerTarget() != _winThem
 		WindowItems("", said, -1)
 		Return
 	EndIf
 	WindowItems(Silhouette:DLL.PickerPresets(), "Reading " + name + "'s body...", Silhouette:DLL.PickerIndex())
-	WindowHold(Game.GetForm(_winThem) as Actor)
-	WindowFrame(Game.GetForm(_winThem) as Actor)
+	Actor them = Game.GetForm(_winThem) as Actor
+	WindowHold(them, aiSession)
+	WindowFrame(them, aiSession)
 	Int i = 0
-	While i < 40 && !Silhouette:DLL.PickerReady()
+	While i < 40 && !Silhouette:DLL.PickerReady() && WindowLive(aiSession)
 		Utility.WaitMenuMode(0.1)
 		i += 1
 	EndWhile
+	If !WindowLive(aiSession)
+		Return
+	EndIf
 	If !Silhouette:DLL.PickerReady()
 		WindowStatus("Still reading " + name + "'s body: presets try on once it is in.")
 		Return
@@ -287,9 +332,15 @@ Function WindowLoadThem()
 	WindowSelected(Silhouette:DLL.PickerIndex())
 EndFunction
 
-Function WindowLoadMe()
+Function WindowLoadMe(Int aiSession)
 	Actor player = Game.GetPlayer()
 	Bool female = Silhouette:Player.IsFemale(player)
+	WindowTarget("You", "me", female, Silhouette:Player.Build())
+	If _plugin && !Silhouette:DLL.BodySupported(female)
+		; S-78: no body Silhouette supports for this sex -- its presets would change nothing.
+		WindowItems("", "No " + WindowSex(female) + " body Silhouette supports is installed, so it leaves yours alone (Silhouette.log says why).", -1)
+		Return
+	EndIf
 	String[] n0
 	String[] n1
 	String[] m0
@@ -316,48 +367,93 @@ Function WindowLoadMe()
 		i += 1
 	EndWhile
 	String had = Silhouette:Player.PresetOf(player, female, m0, n0, m1, n1)
+	If !WindowLive(aiSession)
+		Return
+	EndIf
 	Int at = -1
 	If had != "" && had != "*"
 		at = Silhouette:Player.Locate(had, n0, n1)
-	ElseIf had == "*"
-		had = "sliders Silhouette did not set"
-	Else
-		had = "the bare body built in BodySlide"
 	EndIf
-	WindowTarget("You", "me", female)
-	WindowItems(joined, "You have " + had + ". Click a preset to try it on.", at)
+	WindowItems(joined, "You have " + WindowBodyName(had) + ". Click a preset to try it on.", at)
 	Game.ForceThirdPerson()  ; the free camera shows the body the third-person view has
-	WindowFrame(player)
+	WindowFrame(player, aiSession)
 EndFunction
 
+String Function WindowSex(Bool abFemale)
+	If abFemale
+		Return "female"
+	EndIf
+	Return "male"
+EndFunction
+
+; What Silhouette:Player.PresetOf says, as words.
+String Function WindowBodyName(String asPresetOf)
+	If asPresetOf == "*"
+		Return "sliders Silhouette did not set"
+	ElseIf asPresetOf == ""
+		Return "the bare body built in BodySlide"
+	EndIf
+	Return asPresetOf
+EndFunction
+
+; One try at a time, the latest asked for last: a key held down or fast clicks ask for many, and only the
+; one the player stops on matters.
 Function OnWindowPick(String asPreset, Int aiIndex)
+	_winWantName = asPreset
+	_winWantIndex = aiIndex
+	If _winPicking
+		Return
+	EndIf
+	_winPicking = True
+	Int session = _winSession
+	While _winWantIndex >= 0 && WindowLive(session)
+		Int index = _winWantIndex
+		String preset = _winWantName
+		_winWantIndex = -1
+		WindowTry(preset, index, session)
+	EndWhile
+	_winWantIndex = -1
+	_winPicking = False
+EndFunction
+
+Function WindowTry(String asPreset, Int aiIndex, Int aiSession)
 	If _winMe
 		Actor player = Game.GetPlayer()
 		Bool female = Silhouette:Player.IsFemale(player)
 		If !_winTried
+			_winTried = True  ; before the snapshot: the close waits for this try, then puts it back
 			WindowSnapshotMe(player, female)
-			_winTried = True
+		EndIf
+		If !WindowLive(aiSession)
+			Return
 		EndIf
 		String name = Silhouette:Player.Give(player, female, aiIndex)
 		WindowStatus("Trying " + name + ". Apply keeps it; Cancel puts yours back.")
 	ElseIf _winThem != 0 && Silhouette:DLL.PickerTarget() == _winThem
 		WindowStatus(Silhouette:DLL.PickerShow(asPreset))
+		WindowSelected(Silhouette:DLL.PickerIndex())  ; the card follows what is really on them
 	EndIf
 EndFunction
 
 Function OnWindowApply()
+	If !_winOpen || _winApplied
+		Return
+	EndIf
 	_winApplied = True
+	WindowSettle()
 	If _winMe
 		_winTried = False
 		_winMorphs = None
 		_winValues = None
 		Actor player = Game.GetPlayer()
 		Bool female = Silhouette:Player.IsFemale(player)
-		String had = Silhouette:Player.PresetOf(player, female, Silhouette:Player.FemaleMarkers0(), Silhouette:Player.FemaleNames0(), Silhouette:Player.FemaleMarkers1(), Silhouette:Player.FemaleNames1())
-		If !female
+		String had
+		If female
+			had = Silhouette:Player.PresetOf(player, female, Silhouette:Player.FemaleMarkers0(), Silhouette:Player.FemaleNames0(), Silhouette:Player.FemaleMarkers1(), Silhouette:Player.FemaleNames1())
+		Else
 			had = Silhouette:Player.PresetOf(player, female, Silhouette:Player.MaleMarkers0(), Silhouette:Player.MaleNames0(), Silhouette:Player.MaleMarkers1(), Silhouette:Player.MaleNames1())
 		EndIf
-		Debug.Notification("Silhouette: your body is now " + had + ".")
+		Debug.Notification("Silhouette: your body is now " + WindowBodyName(had) + ".")
 	ElseIf _winThem != 0 && Silhouette:DLL.PickerTarget() == _winThem
 		Debug.Notification("Silhouette: " + Silhouette:DLL.PickerKeep())
 	EndIf
@@ -368,13 +464,22 @@ Function OnWindowCancel()
 	UI.CloseMenu(WindowMenu)
 EndFunction
 
-; The Them / Me switch: what was tried on the one being left is put back first.
+; The Them / Me switch: a new session; what was tried on the one being left is put back first.
 Function OnWindowTarget(String asMode)
-	WindowUndo()
+	If !_winOpen
+		Return
+	EndIf
+	_winSession += 1
+	Int session = _winSession
+	WindowSettle()
 	WindowRelease()
 	WindowUnframe()  ; framed again for the other one
+	WindowUndo()
+	If !WindowLive(session)
+		Return
+	EndIf
 	_winMe = asMode == "me" || _winThem == 0
-	WindowLoad()
+	WindowLoad(session)
 EndFunction
 
 Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
@@ -386,28 +491,54 @@ Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
 		EndIf
 		Return
 	EndIf
-	If asMenuName != WindowMenu || abOpening
+	If asMenuName != WindowMenu || abOpening || !_winOpen
 		Return
 	EndIf
+	; Everything the window started is put back, the camera and the hold first (the player sees them at
+	; once), then the body -- once any try still being put on has landed.
+	_winOpen = False
+	_winSession += 1
+	_winClosing = True
+	WindowRelease()
+	WindowUnframe()
+	WindowSettle()
 	If !_winApplied
 		WindowUndo()
 	EndIf
 	_winApplied = False
-	WindowRelease()
-	WindowUnframe()
+	_winClosing = False
 EndEvent
+
+; Waits for a try still being put on (at most 5 seconds): what is put back must come after it.
+Function WindowSettle()
+	Int i = 0
+	While _winPicking && i < 100
+		Utility.WaitMenuMode(0.05)
+		i += 1
+	EndWhile
+EndFunction
+
+; A picking the window started for a session that is already over (the window closed while it began).
+Function WindowDropPicking()
+	If _winThem != 0 && _plugin && Silhouette:DLL.PickerTarget() == _winThem
+		Silhouette:DLL.PickerCancel()
+	EndIf
+EndFunction
 
 ; Held in place while they are picked: SetRestrained, the game's own "cannot move" -- their AI keeps running,
 ; so quests, companion routines and dialogue go on, and they carry on walking once let go. Nobody is held
 ; whose movement another mod or the game may be holding already (the game cannot say who is restrained):
 ; not in a scene, in combat, dead, or busy in AAF.
-Function WindowHold(Actor akActor)
+Function WindowHold(Actor akActor, Int aiSession)
 	WindowRelease()
-	If !akActor || akActor.IsDead() || akActor.IsInCombat() || akActor.IsInScene() || Busy(akActor)
+	If !WindowLive(aiSession) || !akActor || akActor.IsDead() || akActor.IsInCombat() || akActor.IsInScene() || Busy(akActor)
 		Return
 	EndIf
 	akActor.SetRestrained(True)
 	_winHeld = akActor.GetFormID()
+	If !WindowLive(aiSession)
+		WindowRelease()  ; the window closed while they were being held
+	EndIf
 EndFunction
 
 Function WindowRelease()
@@ -424,11 +555,14 @@ EndFunction
 ; The camera in front of them, the window beside them (Silhouette:DLL.CameraFrame: the game's free camera,
 ; switched off again when the window closes). Without the plugin, or where the camera cannot be moved, the
 ; window works as it is and the log says why.
-Function WindowFrame(Actor akActor)
-	If !_plugin || !akActor
+Function WindowFrame(Actor akActor, Int aiSession)
+	If !_plugin || !akActor || !WindowLive(aiSession)
 		Return
 	EndIf
 	WindowCameraWait(Silhouette:DLL.CameraFrame(akActor.GetPositionX(), akActor.GetPositionY(), akActor.GetPositionZ(), akActor.GetAngleZ(), akActor.GetHeight()))
+	If !WindowLive(aiSession)
+		WindowUnframe()  ; the window closed or switched while the camera came on
+	EndIf
 EndFunction
 
 Function WindowUnframe()
@@ -454,48 +588,70 @@ Function WindowUndo()
 		WindowRestoreMe()
 		_winTried = False
 	EndIf
-	If _winThem != 0 && _plugin && Silhouette:DLL.PickerTarget() == _winThem
-		Silhouette:DLL.PickerCancel()
-	EndIf
+	WindowDropPicking()
 EndFunction
 
 ; The player's unkeyed body as it is, the first 128 values: a Papyrus array holds no more.
 Function WindowSnapshotMe(Actor akPlayer, Bool abFemale)
-	_winMorphs = new String[0]
-	_winValues = new Float[0]
+	String[] names = new String[0]
+	Float[] values = new Float[0]
 	String[] morphs = BodyGen.GetMorphs(akPlayer, abFemale)
 	Int i = 0
-	While morphs && i < morphs.Length && _winMorphs.Length < 128
+	While morphs && i < morphs.Length && names.Length < 128
 		Float v = BodyGen.GetMorph(akPlayer, abFemale, morphs[i], None)
 		If v != 0.0
-			_winMorphs.Add(morphs[i], 1)
-			_winValues.Add(v, 1)
+			names.Add(morphs[i], 1)
+			values.Add(v, 1)
 		EndIf
 		i += 1
 	EndWhile
+	_winMorphs = names
+	_winValues = values
 EndFunction
 
 Function WindowRestoreMe()
 	Actor player = Game.GetPlayer()
 	Bool female = Silhouette:Player.IsFemale(player)
+	String[] names = _winMorphs
+	Float[] values = _winValues
+	_winMorphs = None
+	_winValues = None
 	BodyGen.RemoveMorphsByKeyword(player, female, None)
 	Int i = 0
-	While _winMorphs && i < _winMorphs.Length
-		BodyGen.SetMorph(player, female, _winMorphs[i], None, _winValues[i])
+	While names && i < names.Length
+		BodyGen.SetMorph(player, female, names[i], None, values[i])
 		i += 1
 	EndWhile
 	BodyGen.UpdateMorphs(player)
-	_winMorphs = None
-	_winValues = None
 EndFunction
 
-; The sex picks the atlas of pictures the window shows (tools/thumbnails.py).
-Function WindowTarget(String asName, String asMode, Bool abFemale)
-	Var[] args = new Var[4]
+; A load forgets the window: the menu is gone, and nothing of it may carry into the save just loaded.
+Function WindowForget()
+	WindowRelease()
+	_winSession += 1
+	_winOpen = False
+	_winClosing = False
+	_winPicking = False
+	_winWantIndex = -1
+	_winApplied = False
+	_winTried = False
+	_winMorphs = None
+	_winValues = None
+	If _winAfterMenu
+		_winAfterMenu = False
+		UnregisterForMenuOpenCloseEvent("PauseMenu")
+	EndIf
+EndFunction
+
+; The sex picks the atlas of pictures the window shows (tools/thumbnails.py), and the build names it: an
+; atlas of another build is not found, and the cards show no picture rather than the wrong one.
+Function WindowTarget(String asName, String asMode, Bool abFemale, String asBuild)
+	Var[] args = new Var[5]
 	args[0] = asName
 	args[1] = _winThem != 0
 	args[2] = asMode
 	args[3] = abFemale
+	args[4] = asBuild
 	UI.Invoke(WindowMenu, "root1.Menu_mc.SetTarget", args)
 EndFunction
 

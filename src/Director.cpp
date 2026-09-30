@@ -715,6 +715,9 @@ namespace SH
 		if (a_marker.empty()) {
 			return "no Silhouette body";
 		}
+		if (!_catalog) {
+			return std::format("{} (build stamp {})", a_marker, a_stamp);
+		}
 		const auto preset = PresetNamedBy(a_marker, a_stamp);
 		const auto build = a_stamp == _catalog->stamp ? "this build" : std::format("build stamp {}", a_stamp);
 		return std::format("{} ({})", preset.empty() ? std::string{ a_marker } : preset, build);
@@ -2286,6 +2289,12 @@ namespace SH
 	{
 		std::scoped_lock l{ _lock };
 		return _picker.ref != 0 ? _picker.index : -1;
+	}
+
+	bool Director::PickerFemale() const
+	{
+		std::scoped_lock l{ _lock };
+		return _picker.female;
 	}
 
 	std::string Director::PickerCurrent() const

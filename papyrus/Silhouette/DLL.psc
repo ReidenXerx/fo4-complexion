@@ -90,6 +90,8 @@ String Function PickerShow(String asPreset) Global Native   ; S-79: try this pre
 String Function PickerPresets() Global Native               ; "name<TAB>kind|..." (y yours, p pool, o other)
 Int Function PickerIndex() Global Native                    ; the preset tried on, -1 none
 String Function PickerCurrent() Global Native               ; what they had at Pick, "" not read yet
+Bool Function PickerFemale() Global Native                  ; the sex the picking lists presets for
+Bool Function BodySupported(Bool abFemale) Global Native    ; S-78: a body Silhouette supports is installed for the sex
 String Function PickerKeep() Global Native
 String Function PickerCancel() Global Native
 Int Function PickerTarget() Global Native

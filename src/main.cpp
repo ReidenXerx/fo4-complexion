@@ -1,3 +1,4 @@
+#include "Camera.h"
 #include "CoSave.h"
 #include "Game.h"
 #include "Papyrus.h"
@@ -77,6 +78,7 @@ namespace
 			// save: the same number over there is somebody else.
 			SH::Game::ForgetInbox();
 			SH::Game::TheDirector().ForgetWorld();
+			SH::Camera::Reset();
 			break;
 		case F4SE::MessagingInterface::kNewGame:
 			// A new game from the main menu sends no kPreLoadGame, and has no records to keep -- nor the
@@ -85,6 +87,7 @@ namespace
 			SH::Game::ForgetInbox();
 			SH::Game::TheDirector().ForgetWorld();
 			SH::CoSave::Revert();
+			SH::Camera::Reset();
 			SH::Sinks::Attach();
 			break;
 		case F4SE::MessagingInterface::kPostLoadGame:

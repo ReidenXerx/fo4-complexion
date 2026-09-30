@@ -143,19 +143,34 @@ foreach ($f in Get-ChildItem $pex -Filter *.pex) {
 if ($LASTEXITCODE) { throw "scripts\strip-pex.py refused - see the line above; nothing was packed." }
 # S-79: the picker window (scripts\build-interface.ps1) and its pictures (tools\thumbnails.py), loose: F4SE opens
 # the window from Interface\ and mounts only loose textures.
+# The window must be compiled from the sources as they are: an older .swf would ship another window.
 $swf = Join-Path $root 'build\interface\SilhouetteMenu.swf'
 if (-not (Test-Path $swf)) { throw "Missing $swf - run scripts\build-interface.ps1." }
+$newest = Get-ChildItem (Join-Path $root 'interface\src') -Filter *.as | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+if ($newest.LastWriteTime -gt (Get-Item $swf).LastWriteTime) { throw "$($newest.Name) is newer than $swf - run scripts\build-interface.ps1." }
 New-Item -ItemType Directory -Force -Path (Join-Path $out 'Interface') | Out-Null
 Copy-Item $swf (Join-Path $out 'Interface\SilhouetteMenu.swf') -Force
+# The pictures: of this build (a cell is found by its place in this build's lists), cut as the window cuts them,
+# and the very files tools\thumbnails.py wrote.
 $index = Join-Path $root 'build\thumbnails\index.json'
 if (-not (Test-Path $index)) { throw "Missing $index - run python tools\thumbnails.py." }
-$drawn = (Get-Content $index -Raw | ConvertFrom-Json).build
-if ($drawn -ne $catalog.build) { throw "The thumbnails were drawn for build $drawn, the catalog is $($catalog.build) - run python tools\thumbnails.py." }
+$drawn = Get-Content $index -Raw | ConvertFrom-Json
+if ($drawn.build -ne $catalog.build) { throw "The thumbnails were drawn for build $($drawn.build), the catalog is $($catalog.build) - run python tools\thumbnails.py." }
+$panel = Get-Content (Join-Path $root 'interface\src\Panel.as') -Raw
+$geometry = @{ CELL_W = $drawn.cell[0]; CELL_H = $drawn.cell[1]; ATLAS_COLS = $drawn.cols }
+foreach ($name in $geometry.Keys) {
+    if ($panel -notmatch "const $name`:\w+ = (\d+)" -or [int]$Matches[1] -ne [int]$geometry[$name]) {
+        throw "interface\src\Panel.as $name is not the $($geometry[$name]) the thumbnails were cut to - the window would crop them wrong."
+    }
+}
 $thumbs = Join-Path $out 'Textures\Silhouette'
 New-Item -ItemType Directory -Force -Path $thumbs | Out-Null
-foreach ($sex in @('Female', 'Male')) {
-    $atlas = Join-Path $root "build\textures\Silhouette\Thumbs$sex.dds"
+$atlases = @($drawn.atlases.PSObject.Properties)
+if ($atlases.Count -ne 2) { throw "$index names $($atlases.Count) atlases, not one a sex - run python tools\thumbnails.py." }
+foreach ($a in $atlases) {
+    $atlas = Join-Path $root "build\textures\Silhouette\$($a.Name)"
     if (-not (Test-Path $atlas)) { throw "Missing $atlas - run python tools\thumbnails.py." }
+    if ((Get-FileHash -Algorithm SHA256 $atlas).Hash -ne $a.Value.ToUpper()) { throw "$atlas is not the atlas $index describes - run python tools\thumbnails.py." }
     Copy-Item $atlas $thumbs -Force
 }
 foreach ($d in $docs) {
@@ -168,6 +183,18 @@ foreach ($d in $docs) {
 if ($LASTEXITCODE) { throw "tools\release_manifests.py refused - see the line above; nothing was packed." }
 
 Compress-Archive -Path (Join-Path $out '*') -DestinationPath $zip -CompressionLevel Optimal
+# What a player unpacks: the window and both atlases must be in it, where the game looks for them.
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
+try {
+    $entries = @($archive.Entries | ForEach-Object { $_.FullName.Replace('\', '/') })
+} finally {
+    $archive.Dispose()
+}
+$wanted = @('Interface/SilhouetteMenu.swf') + @($atlases | ForEach-Object { "Textures/Silhouette/$($_.Name)" })
+foreach ($w in $wanted) {
+    if ($entries -notcontains $w) { Remove-Item -Force $zip; throw "The archive has no $w - nothing was packed." }
+}
 $item = Get-Item $zip
 Write-Host ("packed {0}  {1} bytes: build {2}, stamp {3}" -f $item.FullName, $item.Length, $catalog.build, $catalog.stamp)
 # The PDB stays out of the archive (twenty times the DLL) but beside it: a user's crash log is read

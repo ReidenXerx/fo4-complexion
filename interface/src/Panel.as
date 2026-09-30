@@ -24,17 +24,17 @@ package {
 	public dynamic class Panel extends MovieClip {
 		private static const MENU:String = "SilhouetteMenu";
 		private static const X:Number = 780;
-		private static const Y:Number = 14;
+		private static const Y:Number = 10;
 		private static const W:Number = 484;
 		private static const COLS:int = 5;
 		private static const ROWS:int = 3;
 		private static const CELL_W:Number = 96;     // one cell of the atlas, in pixels
 		private static const CELL_H:Number = 160;
 		private static const ATLAS_COLS:int = 21;    // 2048 / 96
-		private static const PIC:Number = 0.82;      // cells drawn at this scale
+		private static const PIC:Number = 0.75;      // cells drawn at this scale
 		private static const CARD_W:Number = 90;
-		private static const CARD_H:Number = 160;
-		private static const GRID_Y:Number = Y + 170;
+		private static const CARD_H:Number = 154;
+		private static const GRID_Y:Number = Y + 172;
 		private static const GAME_FONT:String = "$MAIN_Font";
 		private static const FILTERS:Array = ["All", "People", "Plain", "Rough", "Fine", "Yours"];
 
@@ -49,6 +49,9 @@ package {
 		private var _canThem:Boolean = false;
 		private var _mode:String = "";
 		private var _atlas:String = "";     // img:// of the atlas of the target's sex, "" none mounted
+		private var _busy:Boolean = false;  // a Them / Me switch is loading: clicks wait for its list
+		private var _closing:Boolean = false;   // Apply or Cancel was sent: nothing more is
+		private var _userEvents:Boolean = false;  // the game sends its menu controls: raw keys are not needed
 
 		private var _title:TextField;
 		private var _status:TextField;
@@ -59,22 +62,24 @@ package {
 		private var _me:Sprite;
 
 		public function Panel() {
-			var h:Number = GRID_Y - Y + ROWS * (CARD_H + 6) + 56;
+			var h:Number = GRID_Y - Y + ROWS * (CARD_H + 6) + 48;
 			graphics.lineStyle(2, 0xFFFFFF, 0.6);
 			graphics.beginFill(0x000000, 0.85);
 			graphics.drawRect(X, Y, W, h);
 			graphics.endFill();
 
-			_title = Text(this, 26, X + 16, Y + 8, W - 32);
+			_title = Text(this, 26, X + 16, Y + 6, W - 32);
 			_title.text = "Silhouette";
-			_status = Text(this, 15, X + 16, Y + 46, W - 32);
+			_status = Text(this, 15, X + 16, Y + 42, W - 32);
+			_status.multiline = _status.wordWrap = true;
+			_status.height = 40;
 
-			_them = Button("Them", X + 16, Y + 78, 110, function ():void { Target("them"); });
-			_me = Button("Me", X + 134, Y + 78, 110, function ():void { Target("me"); });
-			_count = Text(this, 15, X + 262, Y + 86, W - 278);
+			_them = Button("Them", X + 16, Y + 86, 110, function ():void { Target("them"); });
+			_me = Button("Me", X + 134, Y + 86, 110, function ():void { Target("me"); });
+			_count = Text(this, 15, X + 262, Y + 94, W - 278);
 
 			for (var c:int = 0; c < FILTERS.length; c++) {
-				_chips.push(Button(FILTERS[c], X + 16 + c * 76, Y + 124, 70, Filter(c), 15));
+				_chips.push(Button(FILTERS[c], X + 16 + c * 76, Y + 128, 70, Filter(c), 15));
 			}
 
 			for (var i:int = 0; i < COLS * ROWS; i++) {
@@ -99,16 +104,19 @@ package {
 				var none:TextField = Text(card, 13, 4, 40, CARD_W - 8);  // a preset with no picture
 				none.multiline = none.wordWrap = true;
 				none.height = 60;
-				var label:TextField = Text(card, 13, 2, CELL_H * PIC + 4, CARD_W - 4);
+				// Two lines: the tier and number that tell "Triggerman Plain F04" from F05 come last.
+				var label:TextField = Text(card, 12, 2, CELL_H * PIC + 3, CARD_W - 4);
+				label.multiline = label.wordWrap = true;
+				label.height = 30;
 				card.addEventListener(MouseEvent.CLICK, OnCardClick);
 				card.addEventListener(MouseEvent.ROLL_OVER, OnCardOver);
 				card.addEventListener(MouseEvent.ROLL_OUT, OnCardOut);
 				addChild(card);
 				_cards.push({ card: card, loader: loader, none: none, label: label, cell: -2 });
 			}
-			var bottom:Number = Y + h - 46;
-			Button("Apply", X + 16, bottom, 140, function ():void { Send("Silhouette_WindowApply"); });
-			Button("Cancel", X + W - 156, bottom, 140, function ():void { Send("Silhouette_WindowCancel"); });
+			var bottom:Number = Y + h - 40;
+			Button("Apply", X + 16, bottom, 140, Apply);
+			Button("Cancel", X + W - 156, bottom, 140, Cancel);
 
 			addEventListener(MouseEvent.MOUSE_WHEEL, function (e:MouseEvent):void { Scroll(e.delta > 0 ? -COLS : COLS); });
 			addEventListener(Event.ADDED_TO_STAGE, OnStage);
@@ -123,13 +131,17 @@ package {
 			Ready();
 		}
 
-		// Whose body: a name to show, whether an NPC was aimed at ("Them" works), "them" or "me", and their sex,
-		// which picks the atlas.
-		public function SetTarget(a_name:String, a_canThem:Boolean, a_mode:String, a_female:Boolean):void {
+		// Whose body: a name to show, whether an NPC was aimed at ("Them" works), "them" or "me", their sex, which
+		// picks the atlas, and the build of the list, which names it: an atlas drawn for another build is not
+		// there to mount, and the cards show no picture rather than the wrong one.
+		public function SetTarget(a_name:String, a_canThem:Boolean, a_mode:String, a_female:Boolean, a_build:String):void {
 			_title.text = a_name;
 			_canThem = a_canThem;
 			_mode = a_mode;
-			Mount(a_female ? "Female" : "Male");
+			if (_mode == "me" && FILTERS[_filter] == "Yours") {
+				_filter = 0;  // the player's own presets are offered for NPCs only
+			}
+			Mount(a_female ? "Female" : "Male", a_build);
 			Paint();
 		}
 
@@ -146,6 +158,8 @@ package {
 			}
 			_selected = a_selected;
 			_status.text = a_status;
+			_busy = false;
+			alpha = 1.0;
 			Refilter();
 		}
 
@@ -159,20 +173,27 @@ package {
 			Redraw();
 		}
 
-		// What vanilla menus receive for the game's own controls: a gamepad's B is "Cancel", A "Accept".
+		// The game's menu controls, as vanilla menus receive them (the window asks for the menu input context):
+		// the keyboard's and the gamepad's Accept, Cancel and directions, the bumpers turning pages and the
+		// triggers the filter. Acted on when pressed; the release of a control acted on is ours too, so the
+		// game does nothing more with it.
 		public function ProcessUserEvent(a_control:String, a_pressed:Boolean):Boolean {
-			if (a_pressed) {
-				return false;
+			_userEvents = true;
+			var ours:Boolean = true;
+			switch (a_control) {
+				case "Cancel":   if (a_pressed) { Cancel(); } break;
+				case "Accept":   if (a_pressed) { Apply(); } break;
+				case "Up":       if (a_pressed) { Step(-COLS); } break;
+				case "Down":     if (a_pressed) { Step(COLS); } break;
+				case "Left":     if (a_pressed) { Step(-1); } break;
+				case "Right":    if (a_pressed) { Step(1); } break;
+				case "LShoulder": if (a_pressed) { Scroll(-COLS * ROWS); } break;
+				case "RShoulder": if (a_pressed) { Scroll(COLS * ROWS); } break;
+				case "LTrigger": if (a_pressed) { NextFilter(-1); } break;
+				case "RTrigger": if (a_pressed) { NextFilter(1); } break;
+				default:         ours = false;
 			}
-			if (a_control == "Cancel") {
-				Send("Silhouette_WindowCancel");
-				return true;
-			}
-			if (a_control == "Accept") {
-				Send("Silhouette_WindowApply");
-				return true;
-			}
-			return false;
+			return ours;
 		}
 
 		// ---- inside
@@ -204,14 +225,14 @@ package {
 
 		// The atlas of a sex, for img://. The path is relative to Data/Textures, as F4SE's own mods pass it; the
 		// Textures-rooted spelling is tried too. Unmounted by F4SE when the menu closes.
-		private function Mount(a_sex:String):void {
-			var name:String = "SilhouetteThumbs" + a_sex;
+		private function Mount(a_sex:String, a_build:String):void {
+			var name:String = "SilhouetteThumbs" + a_sex + a_build;
 			if (_atlas == "img://" + name) {
 				return;
 			}
 			_atlas = "";
-			if (_f4se && _f4se.MountImage != null) {
-				var file:String = "Silhouette/Thumbs" + a_sex + ".dds";
+			if (_f4se && _f4se.MountImage != null && a_build.length > 0) {
+				var file:String = "Silhouette/Thumbs" + a_sex + "_" + a_build + ".dds";
 				if (_f4se.MountImage(MENU, file, name) || _f4se.MountImage(MENU, "Textures/" + file, name)) {
 					_atlas = "img://" + name;
 				}
@@ -221,14 +242,19 @@ package {
 			}
 		}
 
+		// Raw keys, for when the game sends no menu controls. Once it does, the keys it maps (Esc, Tab, Enter,
+		// the arrows) come through ProcessUserEvent and are not handled twice; the page keys stay here.
 		private function OnKey(e:KeyboardEvent):void {
+			if (_userEvents && (e.keyCode == 27 || e.keyCode == 9 || e.keyCode == 13 || (e.keyCode >= 37 && e.keyCode <= 40))) {
+				return;
+			}
 			switch (e.keyCode) {
 				case 27:  // Esc
 				case 9:   // Tab
-					Send("Silhouette_WindowCancel");
+					Cancel();
 					break;
 				case 13:  // Enter
-					Send("Silhouette_WindowApply");
+					Apply();
 					break;
 				case 37:  // Left, Right, Up, Down: the preset there goes on
 					Step(-1);
@@ -251,18 +277,50 @@ package {
 			}
 		}
 
+		// Apply and Cancel are sent once: a key and a click, or a press seen twice, must not keep twice.
+		private function Apply():void {
+			if (!_closing) {
+				_closing = true;
+				Send("Silhouette_WindowApply");
+			}
+		}
+
+		private function Cancel():void {
+			if (!_closing) {
+				_closing = true;
+				Send("Silhouette_WindowCancel");
+			}
+		}
+
 		private function Target(a_mode:String):void {
-			if (a_mode == _mode || (a_mode == "them" && !_canThem)) {
+			if (_busy || _closing || a_mode == _mode || (a_mode == "them" && !_canThem)) {
 				return;
 			}
+			_busy = true;  // until the other one's list arrives: a click now would name a card of this list
+			alpha = 0.6;
 			Send("Silhouette_WindowTarget", a_mode);
+		}
+
+		private function FilterUsable(a_index:int):Boolean {
+			return !(FILTERS[a_index] == "Yours" && _mode == "me");
 		}
 
 		private function Filter(a_index:int):Function {
 			return function ():void {
-				_filter = a_index;
-				Refilter();
+				if (FilterUsable(a_index)) {
+					_filter = a_index;
+					Refilter();
+				}
 			};
+		}
+
+		private function NextFilter(a_by:int):void {
+			var f:int = _filter;
+			do {
+				f = (f + a_by + FILTERS.length) % FILTERS.length;
+			} while (!FilterUsable(f));
+			_filter = f;
+			Refilter();
 		}
 
 		private function Passes(a_i:int):Boolean {
@@ -312,12 +370,17 @@ package {
 			if (_shown.length == 0) {
 				return;
 			}
-			var at:int = _shown.indexOf(_selected);
-			at = at < 0 ? (a_by > 0 ? 0 : _shown.length - 1) : Math.max(0, Math.min(at + a_by, _shown.length - 1));
-			Pick(_shown[at]);
+			var was:int = _shown.indexOf(_selected);
+			var at:int = was < 0 ? (a_by > 0 ? 0 : _shown.length - 1) : Math.max(0, Math.min(was + a_by, _shown.length - 1));
+			if (at != was) {
+				Pick(_shown[at]);  // at an edge the same preset is not put on again
+			}
 		}
 
 		private function Pick(a_i:int):void {
+			if (_busy || _closing) {
+				return;
+			}
 			_selected = a_i;
 			Reveal();
 			Redraw();
@@ -331,7 +394,7 @@ package {
 
 		private function Paint():void {
 			for (var c:int = 0; c < _chips.length; c++) {
-				Mark(_chips[c], c == _filter, true);
+				Mark(_chips[c], c == _filter, FilterUsable(c));
 			}
 			Mark(_them, _mode == "them", _canThem);
 			Mark(_me, _mode == "me", true);

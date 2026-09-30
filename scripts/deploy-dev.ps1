@@ -139,12 +139,24 @@ foreach ($f in Get-ChildItem $pex -Filter *.pex) {
     $name = if ($f.Name -ieq 'player.pex') { 'Player.pex' } else { $f.Name }
     $ship["Scripts\Silhouette\$name"] = $f.FullName
 }
-# S-79: the picker window, scripts\build-interface.ps1. F4SE opens it from Interface\ by its name.
+# S-79: the picker window, scripts\build-interface.ps1. F4SE opens it from Interface\ by its name. Missing or older
+# than its sources, it is said out loud: this is the build tested in game.
 $swf = Join-Path $root 'build\interface\SilhouetteMenu.swf'
-if (Test-Path $swf) { $ship['Interface\SilhouetteMenu.swf'] = $swf }
-# Its pictures, tools\thumbnails.py: one atlas a sex, loose in Data\Textures (F4SE mounts only loose files).
-foreach ($f in Get-ChildItem (Join-Path $root 'build\textures\Silhouette') -Filter *.dds -ErrorAction SilentlyContinue) {
+if (Test-Path $swf) {
+    $ship['Interface\SilhouetteMenu.swf'] = $swf
+    $newest = Get-ChildItem (Join-Path $root 'interface\src') -Filter *.as | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if ($newest.LastWriteTime -gt (Get-Item $swf).LastWriteTime) { Write-Warning "$($newest.Name) is newer than SilhouetteMenu.swf - run scripts\build-interface.ps1." }
+} else {
+    Write-Warning "No build\interface\SilhouetteMenu.swf: the picker window is not staged - run scripts\build-interface.ps1."
+}
+# Its pictures, tools\thumbnails.py: one atlas a sex, named by the build, loose in Data\Textures (F4SE mounts only
+# loose files). Pictures of another build are staged but the window never mounts them: said out loud.
+$drawn = Get-ChildItem (Join-Path $root 'build\textures\Silhouette') -Filter *.dds -ErrorAction SilentlyContinue
+foreach ($f in $drawn) {
     $ship["Textures\Silhouette\$($f.Name)"] = $f.FullName
+}
+if (-not ($drawn | Where-Object { $_.Name -like "*_$($catalog.build).dds" })) {
+    Write-Warning "No thumbnails of build $($catalog.build): the window shows no pictures - run python tools\thumbnails.py."
 }
 
 # Silhouette's own files in a mod folder or in Data (relative paths) that this build does not ship: only

@@ -21,4 +21,7 @@ namespace SH::Camera
 
 	// One more step towards what was last asked (Frame or Restore), with the same answers.
 	[[nodiscard]] std::string Step();
+
+	// A load or a new game: the camera the window knew is gone, and nothing asked for before it is waited on.
+	void Reset();
 }

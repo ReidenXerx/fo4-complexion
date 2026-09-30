@@ -1,7 +1,13 @@
 """The picker window's thumbnails (S-79): every preset the pickers offer, drawn front and side on the installed
-body, one 2048x2048 atlas per sex, BC1 DDS for Data/Textures/Silhouette.
+body, one 2048x2048 atlas per sex, BC1 DDS for Data/Textures/Silhouette/Thumbs<Sex>_<build>.dds.
 
-    python tools/thumbnails.py [--data <game Data>] [--jobs 4]
+    python tools/thumbnails.py [--data <game Data>] [--jobs 4] [--texconv <texconv.exe>]
+
+The build is in the file name: the window mounts the atlas of the build its list comes from, so an atlas of
+another build is simply not found, and the cards show no picture rather than the wrong one. Atlases of other
+builds are removed from the output folder. index.json records the build, the cell geometry the window's
+constants must match (interface/src/Panel.as), and each atlas's SHA-256 -- scripts/make-release.ps1 checks all
+three.
 
 Cell k of a sex's atlas is the k-th preset the catalog offers that sex in its menu (its order in catalog.json),
 which is also the k-th entry of the NPC picker's list and of Silhouette:Player's: the window finds a preset's
@@ -28,6 +34,7 @@ CATALOG = ROOT / 'data' / 'F4SE' / 'Plugins' / 'Silhouette' / 'catalog.json'
 PLAYER = ROOT / 'papyrus' / 'Silhouette' / 'Player.psc'
 OUT = ROOT / 'build' / 'textures' / 'Silhouette'
 WORK = ROOT / 'build' / 'thumbnails'
+# texconv (DirectXTex): --texconv, else on PATH, else where xEdit and DynDOLOD keep a copy on the author's machine.
 TEXCONV = [pathlib.Path(r'D:\xEdit.4.1.5f\Edit Scripts\Texconvx64.exe'),
            pathlib.Path(r'D:\DynDOLOD\Edit Scripts\Texconvx64.exe')]
 
@@ -36,7 +43,7 @@ ATLAS = 2048
 COLS, ROWS = ATLAS // CELL_W, ATLAS // CELL_H
 BACK = (22, 22, 26)
 SKIN = (214, 176, 156)
-FILE = {'female': 'ThumbsFemale', 'male': 'ThumbsMale'}
+FILE = {'female': 'ThumbsFemale', 'male': 'ThumbsMale'}  # + "_<build>.dds"
 
 _body = {}
 
@@ -111,11 +118,19 @@ def render(job):
     return sex, index, buf.getvalue()
 
 
-def texconv():
+def texconv(given):
+    import shutil
+    if given:
+        return pathlib.Path(given)
+    for name in ('texconv', 'texconv.exe', 'Texconvx64.exe'):
+        found = shutil.which(name)
+        if found:
+            return pathlib.Path(found)
     for t in TEXCONV:
         if t.exists():
             return t
-    sys.exit('no texconv: install DirectXTex texconv, or point TEXCONV at it')
+    sys.exit('no texconv: get it from https://github.com/microsoft/DirectXTex/releases and pass --texconv, or put it '
+             'on PATH')
 
 
 def main():
@@ -124,7 +139,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--data', default=str(generate.DATA))
     ap.add_argument('--jobs', type=int, default=4)
+    ap.add_argument('--texconv', help='texconv.exe (DirectXTex); default: on PATH')
     a = ap.parse_args()
+    tool = texconv(a.texconv)
 
     catalog = json.loads(CATALOG.read_text(encoding='utf-8'))
     jobs, lists = [], {}
@@ -154,21 +171,28 @@ def main():
             atlas[sex].paste(Image.open(io.BytesIO(png)), ((i % COLS) * CELL_W, (i // COLS) * CELL_H))
             if n % 50 == 0:
                 print(f'  {n}/{len(jobs)}', flush=True)
-    tool = texconv()
+    import hashlib
+    build = catalog['build']
+    for old in OUT.glob('Thumbs*'):
+        old.unlink()  # another build's pictures: the window would never mount them
+    hashes = {}
     for sex, img in atlas.items():
-        png = WORK / f'{FILE[sex]}.png'
+        stem = f'{FILE[sex]}_{build}'
+        png = WORK / f'{stem}.png'
         img.save(png)
         # BC1, one mip: the window shows each cell at about its own size, and Scaleform does no mip selection.
         subprocess.run([str(tool), '-nologo', '-y', '-f', 'BC1_UNORM', '-m', '1', '-o', str(OUT), str(png)],
                        check=True, stdout=subprocess.DEVNULL)
-        written = OUT / f'{FILE[sex]}.DDS'  # texconv keeps the case it likes; the game's paths are lower-case
-        if written.exists():
-            written.replace(OUT / f'{FILE[sex]}.dds')
-        print(f'{sex}: {len(lists[sex])} thumbnails -> {OUT / (FILE[sex] + ".dds")}')
-    # The build the pictures were drawn from: a release refuses them for any other (scripts/make-release.ps1),
-    # since a cell is found by its place in that build's lists.
-    (WORK / 'index.json').write_text(json.dumps({'build': catalog['build'], 'cell': [CELL_W, CELL_H], 'cols': COLS,
-                                                 'lists': lists}, indent=1), encoding='utf-8')
+        written = next((f for f in OUT.iterdir() if f.name.lower() == f'{stem}.dds'.lower()), None)
+        if written is None:
+            sys.exit(f'texconv wrote no {stem}.dds')
+        dds = OUT / f'{stem}.dds'
+        written.replace(dds)  # texconv keeps the case it likes
+        hashes[dds.name] = hashlib.sha256(dds.read_bytes()).hexdigest()
+        print(f'{sex}: {len(lists[sex])} thumbnails -> {dds}')
+    # Written last: a run that fails before this keeps the last index, which names the atlases it made.
+    (WORK / 'index.json').write_text(json.dumps({'build': build, 'cell': [CELL_W, CELL_H], 'cols': COLS,
+                                                 'atlases': hashes, 'lists': lists}, indent=1), encoding='utf-8')
 
 
 if __name__ == '__main__':
