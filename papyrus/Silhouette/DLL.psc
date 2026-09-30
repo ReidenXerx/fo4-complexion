@@ -78,6 +78,10 @@ String Function BodyWarning() Global Native    ; which sex has no supported body
 
 ; ---- the NPC picker (S-22, S-47) ---------------------------------------------
 Int Function CrosshairActor(Float afRecentSeconds) Global Native  ; main thread
+; S-79: the free camera in front of someone (their feet, heading in degrees, height), "" when it is there;
+; and back to the player's camera. Main thread.
+String Function CameraFrame(Float afX, Float afY, Float afZ, Float afAngle, Float afHeight) Global Native
+Function CameraRestore() Global Native
 String Function PickerStart(Int aiActor) Global Native            ; main thread
 String Function PickerStep(Int aiStep) Global Native
 String Function PickerShow(String asPreset) Global Native   ; S-79: try this preset on, by name

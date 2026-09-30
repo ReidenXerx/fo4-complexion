@@ -39,6 +39,8 @@ endif()
 
 set(SOURCES
 	"src/PCH.h"
+	"src/Camera.h"
+	"src/Camera.cpp"
 	"src/Catalog.h"
 	"src/Catalog.cpp"
 	"src/CoSave.h"
@@ -59,6 +61,8 @@ set(SOURCES
 	"src/Registry.cpp"
 	"src/Rules.h"
 	"src/Rules.cpp"
+	"src/Shot.h"
+	"src/Shot.cpp"
 	"src/Sinks.h"
 	"src/Sinks.cpp"
 	"src/main.cpp"
@@ -104,6 +108,7 @@ add_executable(
 	"src/Presets.cpp"
 	"src/Registry.cpp"
 	"src/Rules.cpp"
+	"src/Shot.cpp"
 )
 target_compile_features(SilhouetteTests PRIVATE cxx_std_23)
 target_compile_definitions(SilhouetteTests PRIVATE SH_OFFLINE_TESTS=1)

@@ -264,6 +264,7 @@ Function WindowLoadThem()
 		Return
 	EndIf
 	WindowItems(Silhouette:DLL.PickerPresets(), "Reading " + name + "'s body...", Silhouette:DLL.PickerIndex())
+	WindowFrame(Game.GetForm(_winThem) as Actor)
 	Int i = 0
 	While i < 40 && !Silhouette:DLL.PickerReady()
 		Utility.WaitMenuMode(0.1)
@@ -320,6 +321,8 @@ Function WindowLoadMe()
 	EndIf
 	WindowTarget("You", "me", female)
 	WindowItems(joined, "You have " + had + ". Click a preset to try it on.", at)
+	Game.ForceThirdPerson()  ; the free camera shows the body the third-person view has
+	WindowFrame(player)
 EndFunction
 
 Function OnWindowPick(String asPreset, Int aiIndex)
@@ -363,6 +366,9 @@ EndFunction
 ; The Them / Me switch: what was tried on the one being left is put back first.
 Function OnWindowTarget(String asMode)
 	WindowUndo()
+	If _plugin
+		Silhouette:DLL.CameraRestore()  ; framed again for the other one
+	EndIf
 	_winMe = asMode == "me" || _winThem == 0
 	WindowLoad()
 EndFunction
@@ -383,7 +389,20 @@ Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
 		WindowUndo()
 	EndIf
 	_winApplied = False
+	If _plugin
+		Silhouette:DLL.CameraRestore()
+	EndIf
 EndEvent
+
+; The camera in front of them, the window beside them (Silhouette:DLL.CameraFrame: the game's free camera,
+; switched off again when the window closes). Without the plugin, or where the camera cannot be moved, the
+; window works as it is and the log says why.
+Function WindowFrame(Actor akActor)
+	If !_plugin || !akActor
+		Return
+	EndIf
+	Silhouette:DLL.CameraFrame(akActor.GetPositionX(), akActor.GetPositionY(), akActor.GetPositionZ(), akActor.GetAngleZ(), akActor.GetHeight())
+EndFunction
 
 Function WindowUndo()
 	If _winTried

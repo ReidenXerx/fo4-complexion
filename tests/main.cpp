@@ -13,9 +13,12 @@
 
 #include "PCH.h"
 
+#include <numbers>
+
 #include "Catalog.h"
 #include "Crosshair.h"
 #include "Director.h"
+#include "Shot.h"
 #include "Plan.h"
 #include "Presets.h"
 #include "Registry.h"
@@ -3625,6 +3628,22 @@ static void TestCrosshairTrail()
 		auto cut = tri;
 		cut.resize(cut.size() - 3);
 		Check(P::TriMorphs(cut).empty() && P::TriMorphs(std::vector<std::byte>(8)).empty(), "presets: a cut or foreign .tri reads as no body");
+
+		// ---- S-79: the window's camera, in front of them and turned so they stand left of the window
+		{
+			const auto pi = std::numbers::pi_v<float>;
+			const auto close = [](float a_lhs, float a_rhs) { return std::abs(a_lhs - a_rhs) < 1e-3F; };
+			const auto north = SH::Shot::Aim(0.0F, 0.0F, 0.0F, 0.0F, 128.0F);
+			Check(close(north.x, 0.0F) && close(north.y, 198.4F) && close(north.z, 66.56F),
+				std::format("camera: in front of someone facing +y, level with their middle ({}, {}, {})", north.x, north.y, north.z));
+			Check(close(north.yaw, pi + std::atan(0.33F)) && north.pitch == 0.0F,
+				std::format("camera: looking back at them, turned right so they stand left of centre ({})", north.yaw));
+			const auto east = SH::Shot::Aim(100.0F, 50.0F, 10.0F, 90.0F, 0.0F);
+			Check(close(east.x, 100.0F + 198.4F) && close(east.y, 50.0F) && close(east.z, 10.0F + 66.56F) &&
+					  close(east.yaw, 1.5F * pi + std::atan(0.33F)),
+				std::format("camera: someone facing +x, height unread (a human's), from anywhere ({}, {}, {}, {})", east.x, east.y, east.z, east.yaw));
+			Check(close(SH::Shot::Aim(0.0F, 0.0F, 0.0F, 0.0F, 60.0F).y, 170.0F), "camera: never closer than 170 units, a child included");
+		}
 
 		// ---- a supported body (the owner, 2026-09-30): under half of the pool's sliders, and that sex is left alone
 		{

@@ -1,5 +1,6 @@
 #include "Papyrus.h"
 
+#include "Camera.h"
 #include "Game.h"
 #include "Sinks.h"
 
@@ -18,7 +19,8 @@ namespace SH::Papyrus
 		// 5: NextNotice (S-71), which the bridge shows on the player's screen; FreshStart (S-70), which the
 		// regeneration window presses once for a save new to Silhouette; Configure's faction pools (S-73).
 		// 6: BodyWarning, which the bridge shows once a launch when a sex has no body Silhouette supports.
-		// 7: PickerShow, PickerPresets, PickerIndex, PickerCurrent -- the picker window (S-79).
+		// 7: PickerShow, PickerPresets, PickerIndex, PickerCurrent, CameraFrame, CameraRestore -- the picker
+		// window (S-79).
 		constexpr std::int32_t kProtocol = 7;
 
 		using Str = RE::BSFixedString;
@@ -288,6 +290,17 @@ namespace SH::Papyrus
 
 		std::int32_t CrosshairActor(std::monostate, float a_recentSeconds) { return static_cast<std::int32_t>(Game::CrosshairActor(a_recentSeconds)); }
 
+		// S-79, the picker window's camera: the free camera in front of them, and back. "" when it is there.
+		Str CameraFrame(std::monostate, float a_x, float a_y, float a_z, float a_angle, float a_height)
+		{
+			auto why = Camera::Frame(a_x, a_y, a_z, a_angle, a_height);
+			if (!why.empty()) {
+				logger::info("window: camera - {}", why);
+			}
+			return Str{ why };
+		}
+		void CameraRestore(std::monostate) { Camera::Restore(); }
+
 		// An NPC Silhouette shapes: not the player, not a character-creation dummy (S-13), a distributed race.
 		RE::Actor* Shapeable(std::int32_t a_actor, std::string& a_why)
 		{
@@ -510,6 +523,8 @@ namespace SH::Papyrus
 
 		Bind(a_vm, "Pump"sv, Pump, main);
 		Bind(a_vm, "CrosshairActor"sv, CrosshairActor, main);
+		Bind(a_vm, "CameraFrame"sv, CameraFrame, main);
+		Bind(a_vm, "CameraRestore"sv, CameraRestore, main);
 		Bind(a_vm, "CanShape"sv, CanShape, main);
 		Bind(a_vm, "PickerStart"sv, PickerStart, main);
 		Bind(a_vm, "RequestPreset"sv, RequestPreset, main);
