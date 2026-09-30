@@ -19,7 +19,7 @@ namespace SH::Papyrus
 		// 5: NextNotice (S-71), which the bridge shows on the player's screen; FreshStart (S-70), which the
 		// regeneration window presses once for a save new to Silhouette; Configure's faction pools (S-73).
 		// 6: BodyWarning, which the bridge shows once a launch when a sex has no body Silhouette supports.
-		// 7: PickerShow, PickerPresets, PickerIndex, PickerCurrent, CameraFrame, CameraRestore -- the picker
+		// 7: PickerShow, PickerPresets, PickerIndex, PickerCurrent, CameraFrame, CameraRestore, CameraStep -- the picker
 		// window (S-79).
 		constexpr std::int32_t kProtocol = 7;
 
@@ -290,16 +290,21 @@ namespace SH::Papyrus
 
 		std::int32_t CrosshairActor(std::monostate, float a_recentSeconds) { return static_cast<std::int32_t>(Game::CrosshairActor(a_recentSeconds)); }
 
-		// S-79, the picker window's camera: the free camera in front of them, and back. "" when it is there.
+		// S-79, the picker window's camera: the free camera in front of them, and back. "" when it is there,
+		// "wait" while the game carries out the toggle (the bridge asks CameraStep again), else why not.
+		Str CameraSaid(std::string a_said)
+		{
+			if (!a_said.empty() && a_said != Camera::kWait) {
+				logger::info("window: camera - {}", a_said);
+			}
+			return Str{ a_said };
+		}
 		Str CameraFrame(std::monostate, float a_x, float a_y, float a_z, float a_angle, float a_height)
 		{
-			auto why = Camera::Frame(a_x, a_y, a_z, a_angle, a_height);
-			if (!why.empty()) {
-				logger::info("window: camera - {}", why);
-			}
-			return Str{ why };
+			return CameraSaid(Camera::Frame(a_x, a_y, a_z, a_angle, a_height));
 		}
-		void CameraRestore(std::monostate) { Camera::Restore(); }
+		Str CameraRestore(std::monostate) { return CameraSaid(Camera::Restore()); }
+		Str CameraStep(std::monostate) { return CameraSaid(Camera::Step()); }
 
 		// An NPC Silhouette shapes: not the player, not a character-creation dummy (S-13), a distributed race.
 		RE::Actor* Shapeable(std::int32_t a_actor, std::string& a_why)
@@ -525,6 +530,7 @@ namespace SH::Papyrus
 		Bind(a_vm, "CrosshairActor"sv, CrosshairActor, main);
 		Bind(a_vm, "CameraFrame"sv, CameraFrame, main);
 		Bind(a_vm, "CameraRestore"sv, CameraRestore, main);
+		Bind(a_vm, "CameraStep"sv, CameraStep, main);
 		Bind(a_vm, "CanShape"sv, CanShape, main);
 		Bind(a_vm, "PickerStart"sv, PickerStart, main);
 		Bind(a_vm, "RequestPreset"sv, RequestPreset, main);

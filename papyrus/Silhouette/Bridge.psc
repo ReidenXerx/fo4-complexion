@@ -366,9 +366,7 @@ EndFunction
 ; The Them / Me switch: what was tried on the one being left is put back first.
 Function OnWindowTarget(String asMode)
 	WindowUndo()
-	If _plugin
-		Silhouette:DLL.CameraRestore()  ; framed again for the other one
-	EndIf
+	WindowUnframe()  ; framed again for the other one
 	_winMe = asMode == "me" || _winThem == 0
 	WindowLoad()
 EndFunction
@@ -389,9 +387,7 @@ Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
 		WindowUndo()
 	EndIf
 	_winApplied = False
-	If _plugin
-		Silhouette:DLL.CameraRestore()
-	EndIf
+	WindowUnframe()
 EndEvent
 
 ; The camera in front of them, the window beside them (Silhouette:DLL.CameraFrame: the game's free camera,
@@ -401,7 +397,25 @@ Function WindowFrame(Actor akActor)
 	If !_plugin || !akActor
 		Return
 	EndIf
-	Silhouette:DLL.CameraFrame(akActor.GetPositionX(), akActor.GetPositionY(), akActor.GetPositionZ(), akActor.GetAngleZ(), akActor.GetHeight())
+	WindowCameraWait(Silhouette:DLL.CameraFrame(akActor.GetPositionX(), akActor.GetPositionY(), akActor.GetPositionZ(), akActor.GetAngleZ(), akActor.GetHeight()))
+EndFunction
+
+Function WindowUnframe()
+	If _plugin
+		WindowCameraWait(Silhouette:DLL.CameraRestore())
+	EndIf
+EndFunction
+
+; The game carries out "tfc" a frame or more after it is typed (measured: a camera checked at once had not
+; changed, came on anyway and outlived the window). The plugin answers "wait" until it has, and gives up by
+; itself after 3 seconds.
+Function WindowCameraWait(String asSaid)
+	Int i = 0
+	While asSaid == "wait" && i < 80
+		Utility.WaitMenuMode(0.05)
+		asSaid = Silhouette:DLL.CameraStep()
+		i += 1
+	EndWhile
 EndFunction
 
 Function WindowUndo()
