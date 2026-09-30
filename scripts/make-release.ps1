@@ -141,6 +141,23 @@ foreach ($f in Get-ChildItem $pex -Filter *.pex) {
 # archive's copies get neutral ones (the dll's paths are trimmed in CMakeLists.txt).
 & $python (Join-Path $PSScriptRoot 'strip-pex.py') $scripts 'Silhouette'
 if ($LASTEXITCODE) { throw "scripts\strip-pex.py refused - see the line above; nothing was packed." }
+# S-79: the picker window (scripts\build-interface.ps1) and its pictures (tools\thumbnails.py), loose: F4SE opens
+# the window from Interface\ and mounts only loose textures.
+$swf = Join-Path $root 'build\interface\SilhouetteMenu.swf'
+if (-not (Test-Path $swf)) { throw "Missing $swf - run scripts\build-interface.ps1." }
+New-Item -ItemType Directory -Force -Path (Join-Path $out 'Interface') | Out-Null
+Copy-Item $swf (Join-Path $out 'Interface\SilhouetteMenu.swf') -Force
+$index = Join-Path $root 'build\thumbnails\index.json'
+if (-not (Test-Path $index)) { throw "Missing $index - run python tools\thumbnails.py." }
+$drawn = (Get-Content $index -Raw | ConvertFrom-Json).build
+if ($drawn -ne $catalog.build) { throw "The thumbnails were drawn for build $drawn, the catalog is $($catalog.build) - run python tools\thumbnails.py." }
+$thumbs = Join-Path $out 'Textures\Silhouette'
+New-Item -ItemType Directory -Force -Path $thumbs | Out-Null
+foreach ($sex in @('Female', 'Male')) {
+    $atlas = Join-Path $root "build\textures\Silhouette\Thumbs$sex.dds"
+    if (-not (Test-Path $atlas)) { throw "Missing $atlas - run python tools\thumbnails.py." }
+    Copy-Item $atlas $thumbs -Force
+}
 foreach ($d in $docs) {
     Copy-Item $d (Join-Path $out 'F4SE\Plugins\Silhouette') -Force
 }

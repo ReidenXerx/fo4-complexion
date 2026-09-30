@@ -139,14 +139,18 @@ foreach ($f in Get-ChildItem $pex -Filter *.pex) {
     $name = if ($f.Name -ieq 'player.pex') { 'Player.pex' } else { $f.Name }
     $ship["Scripts\Silhouette\$name"] = $f.FullName
 }
-# S-79: the picker window, scriptsuild-interface.ps1. F4SE opens it from Interface\ by its name.
+# S-79: the picker window, scripts\build-interface.ps1. F4SE opens it from Interface\ by its name.
 $swf = Join-Path $root 'build\interface\SilhouetteMenu.swf'
 if (Test-Path $swf) { $ship['Interface\SilhouetteMenu.swf'] = $swf }
+# Its pictures, tools\thumbnails.py: one atlas a sex, loose in Data\Textures (F4SE mounts only loose files).
+foreach ($f in Get-ChildItem (Join-Path $root 'build\textures\Silhouette') -Filter *.dds -ErrorAction SilentlyContinue) {
+    $ship["Textures\Silhouette\$($f.Name)"] = $f.FullName
+}
 
 # Silhouette's own files in a mod folder or in Data (relative paths) that this build does not ship: only
 # Silhouette's own places are looked at, and never a manifest -- an NPC of that build keeps its stamp for the
 # rest of the save.
-$owned = @('F4SE\Plugins\Silhouette', 'F4SE\Plugins\F4EE\BodyGen\Loose', 'MCM\Config\Silhouette', 'Scripts\Silhouette')
+$owned = @('F4SE\Plugins\Silhouette', 'F4SE\Plugins\F4EE\BodyGen\Loose', 'MCM\Config\Silhouette', 'Scripts\Silhouette', 'Textures\Silhouette')
 function Get-NotShipped([string] $Base) {
     $out = @()
     if (-not (Test-Path -LiteralPath $Base -PathType Container)) { return $out }

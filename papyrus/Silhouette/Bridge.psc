@@ -258,7 +258,7 @@ EndFunction
 Function WindowLoadThem()
 	String said = Silhouette:DLL.PickerStart(_winThem)
 	String name = Silhouette:DLL.NameOf(_winThem)
-	WindowTarget(name, "them")
+	WindowTarget(name, "them", Silhouette:Player.IsFemale(Game.GetForm(_winThem) as Actor))
 	If Silhouette:DLL.PickerTarget() != _winThem
 		WindowItems("", said, -1)
 		Return
@@ -318,7 +318,7 @@ Function WindowLoadMe()
 	Else
 		had = "the bare body built in BodySlide"
 	EndIf
-	WindowTarget("You", "me")
+	WindowTarget("You", "me", female)
 	WindowItems(joined, "You have " + had + ". Click a preset to try it on.", at)
 EndFunction
 
@@ -425,11 +425,13 @@ Function WindowRestoreMe()
 	_winValues = None
 EndFunction
 
-Function WindowTarget(String asName, String asMode)
-	Var[] args = new Var[3]
+; The sex picks the atlas of pictures the window shows (tools/thumbnails.py).
+Function WindowTarget(String asName, String asMode, Bool abFemale)
+	Var[] args = new Var[4]
 	args[0] = asName
 	args[1] = _winThem != 0
 	args[2] = asMode
+	args[3] = abFemale
 	UI.Invoke(WindowMenu, "root1.Menu_mc.SetTarget", args)
 EndFunction
 
