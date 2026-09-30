@@ -99,6 +99,7 @@ Event Actor.OnPlayerLoadGame(Actor akSender)
 EndEvent
 
 Function Connect()
+	WindowRelease()
 	_drainStarted = -1.0
 	_polls = 0
 	_plugin = False
@@ -185,6 +186,9 @@ Bool _winTried = False    ; the player tries a preset on: the close puts the sna
 String[] _winMorphs       ; the player's body before the first try: morph names ...
 Float[] _winValues        ; ... and values, the unkeyed layer only
 Bool _winAfterMenu = False  ; an MCM button asked for the window: it opens when the pause menu closes
+; The NPC the window holds in place (SetRestrained), 0 for none. Lives in the save: a save made while the
+; window was open still lets them go at the next load (Connect).
+Int _winHeld = 0
 Int _winAfterTarget = 0     ; ... on this NPC, 0 for the player
 
 ; The hotkey: the NPC in the player's sights (or aimed at in the last seconds), else the player.
@@ -264,6 +268,7 @@ Function WindowLoadThem()
 		Return
 	EndIf
 	WindowItems(Silhouette:DLL.PickerPresets(), "Reading " + name + "'s body...", Silhouette:DLL.PickerIndex())
+	WindowHold(Game.GetForm(_winThem) as Actor)
 	WindowFrame(Game.GetForm(_winThem) as Actor)
 	Int i = 0
 	While i < 40 && !Silhouette:DLL.PickerReady()
@@ -366,6 +371,7 @@ EndFunction
 ; The Them / Me switch: what was tried on the one being left is put back first.
 Function OnWindowTarget(String asMode)
 	WindowUndo()
+	WindowRelease()
 	WindowUnframe()  ; framed again for the other one
 	_winMe = asMode == "me" || _winThem == 0
 	WindowLoad()
@@ -387,8 +393,33 @@ Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
 		WindowUndo()
 	EndIf
 	_winApplied = False
+	WindowRelease()
 	WindowUnframe()
 EndEvent
+
+; Held in place while they are picked: SetRestrained, the game's own "cannot move" -- their AI keeps running,
+; so quests, companion routines and dialogue go on, and they carry on walking once let go. Nobody is held
+; whose movement another mod or the game may be holding already (the game cannot say who is restrained):
+; not in a scene, in combat, dead, or busy in AAF.
+Function WindowHold(Actor akActor)
+	WindowRelease()
+	If !akActor || akActor.IsDead() || akActor.IsInCombat() || akActor.IsInScene() || Busy(akActor)
+		Return
+	EndIf
+	akActor.SetRestrained(True)
+	_winHeld = akActor.GetFormID()
+EndFunction
+
+Function WindowRelease()
+	If _winHeld == 0
+		Return
+	EndIf
+	Actor held = Game.GetForm(_winHeld) as Actor
+	_winHeld = 0
+	If held
+		held.SetRestrained(False)
+	EndIf
+EndFunction
 
 ; The camera in front of them, the window beside them (Silhouette:DLL.CameraFrame: the game's free camera,
 ; switched off again when the window closes). Without the plugin, or where the camera cannot be moved, the
