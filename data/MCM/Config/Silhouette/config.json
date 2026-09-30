@@ -422,6 +422,17 @@
         },
         {
           "type": "button",
+          "text": "Try presets on in the picker window",
+          "help": "Every preset that fits your body, with filters; a click puts one on you live, Apply keeps it, Cancel puts back what you had. It opens when you close this menu.",
+          "action": {
+            "type": "CallFunction",
+            "form": "Silhouette.esp|802",
+            "function": "MenuOpenWindowMe",
+            "params": []
+          }
+        },
+        {
+          "type": "button",
           "text": "Apply to my character",
           "help": "Gives your character the preset chosen above for their sex. It replaces the body sliders LooksMenu and BodyGen set, including ones you set in LooksMenu yourself; body morphs other mods add are left alone. Close the menu to see it.",
           "action": {
@@ -539,6 +550,21 @@
         {
           "type": "text",
           "text": "Aim at someone, then open this menu -- or Pick them with the hotkey below and open it any time. Anyone you give a preset keeps it: the rules by name and faction no longer change them. Needs Silhouette.dll and Silhouette.esp."
+        },
+        {
+          "type": "section",
+          "text": "The picker window"
+        },
+        {
+          "type": "button",
+          "text": "Open the picker window",
+          "help": "On the NPC you aimed at in the half minute before opening this menu, or on you when you aimed at nobody. A window beside them lists every preset that fits their body, with filters; a click puts one on them live, Apply keeps it, Cancel puts back what they had. It opens when you close this menu. The hotkey below opens it at once. Needs Silhouette.dll and Silhouette.esp.",
+          "action": {
+            "type": "CallFunction",
+            "form": "Silhouette.esp|802",
+            "function": "MenuOpenWindow",
+            "params": []
+          }
         },
         {
           "type": "section",
@@ -990,6 +1016,12 @@
         {
           "type": "text",
           "text": "Pick someone, then Next and Previous put each preset on them in turn (a second or so each: LooksMenu is reached through Papyrus, one value a frame, and the picker goes before any other work). Keep makes it theirs; Cancel puts back exactly what they had."
+        },
+        {
+          "type": "hotkey",
+          "id": "window",
+          "text": "Open the picker window on the NPC in your sights, or on you",
+          "help": "Open the picker window on the NPC in your sights, or on you. Needs Silhouette.dll and Silhouette.esp."
         },
         {
           "type": "hotkey",

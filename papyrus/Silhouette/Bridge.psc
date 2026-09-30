@@ -172,7 +172,8 @@ EndFunction
 ; preset on live; Apply keeps it; anything else that closes the window puts back what
 ; they had -- the one place that happens is the menu's close event.
 ; Neither the menu nor the event registrations survive a load: opening registers again.
-; For now the console opens it: cgf "Silhouette:API.OpenWindow"
+; The hotkey opens it at once; MCM's buttons open it when the pause menu closes (MCM
+; lives inside it); the console: cgf "Silhouette:API.OpenWindow".
 ;---------------------------------------------------------------------------
 String Property WindowMenu = "SilhouetteMenu" AutoReadOnly
 Float Property WindowAimSeconds = 10.0 AutoReadOnly  ; the console takes the crosshair: an NPC aimed at this recently still counts
@@ -183,8 +184,40 @@ Bool _winApplied = False  ; Apply was pressed: the close keeps what is on
 Bool _winTried = False    ; the player tries a preset on: the close puts the snapshot back
 String[] _winMorphs       ; the player's body before the first try: morph names ...
 Float[] _winValues        ; ... and values, the unkeyed layer only
+Bool _winAfterMenu = False  ; an MCM button asked for the window: it opens when the pause menu closes
+Int _winAfterTarget = 0     ; ... on this NPC, 0 for the player
 
+; The hotkey: the NPC in the player's sights (or aimed at in the last seconds), else the player.
 Function OpenWindow()
+	Int target = 0
+	If _plugin
+		target = Silhouette:DLL.CrosshairActor(WindowAimSeconds)
+	EndIf
+	OpenWindowOn(target)
+EndFunction
+
+; MCM's button on the NPC page: whoever was aimed at in the half minute before the menu opened.
+Function MenuOpenWindow()
+	Int target = 0
+	If _plugin
+		target = Silhouette:DLL.CrosshairActor(30.0)
+	EndIf
+	OpenWindowAfterMenu(target)
+EndFunction
+
+; MCM's button on the Bodies page: the player.
+Function MenuOpenWindowMe()
+	OpenWindowAfterMenu(0)
+EndFunction
+
+Function OpenWindowAfterMenu(Int aiTarget)
+	_winAfterMenu = True
+	_winAfterTarget = aiTarget
+	RegisterForMenuOpenCloseEvent("PauseMenu")
+	Debug.Notification("Silhouette: the picker window opens when you close the menu.")
+EndFunction
+
+Function OpenWindowOn(Int aiTarget)
 	If UI.IsMenuOpen(WindowMenu)
 		Return
 	EndIf
@@ -203,10 +236,7 @@ Function OpenWindow()
 	RegisterForExternalEvent("Silhouette_WindowCancel", "OnWindowCancel")
 	RegisterForExternalEvent("Silhouette_WindowTarget", "OnWindowTarget")
 	RegisterForMenuOpenCloseEvent(WindowMenu)
-	_winThem = 0
-	If _plugin
-		_winThem = Silhouette:DLL.CrosshairActor(WindowAimSeconds)
-	EndIf
+	_winThem = aiTarget
 	_winMe = _winThem == 0
 	_winApplied = False
 	_winTried = False
@@ -338,6 +368,14 @@ Function OnWindowTarget(String asMode)
 EndFunction
 
 Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
+	If asMenuName == "PauseMenu"
+		If !abOpening && _winAfterMenu
+			_winAfterMenu = False
+			UnregisterForMenuOpenCloseEvent("PauseMenu")
+			OpenWindowOn(_winAfterTarget)
+		EndIf
+		Return
+	EndIf
 	If asMenuName != WindowMenu || abOpening
 		Return
 	EndIf

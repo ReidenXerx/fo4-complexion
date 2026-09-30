@@ -2,6 +2,16 @@
   "modName": "Silhouette",
   "keybinds": [
     {
+      "id": "window",
+      "desc": "Silhouette: open the picker window on the NPC in your sights, or on you",
+      "action": {
+        "type": "CallFunction",
+        "form": "Silhouette.esp|802",
+        "function": "OpenWindow",
+        "params": []
+      }
+    },
+    {
       "id": "pick",
       "desc": "Silhouette: pick the NPC in your sights",
       "action": {

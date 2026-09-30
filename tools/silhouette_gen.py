@@ -776,8 +776,10 @@ def setting_id(g, entries):
 
 BRIDGE_FORM = 'Silhouette.esp|802'   # tools/make_esp.py: the quest that runs Silhouette:Bridge
 
-# The NPC picker's hotkeys (S-22): MCM keybind id -> (what it does, Silhouette:Bridge function).
+# The NPC picker's hotkeys (S-22) and the picker window's (S-79): MCM keybind id -> (what it does,
+# Silhouette:Bridge function).
 HOTKEYS = (
+    ('window', 'Open the picker window on the NPC in your sights, or on you', 'OpenWindow'),
     ('pick', 'Pick the NPC in your sights', 'PickerPick'),
     ('next', 'Try the next preset on them', 'PickerNext'),
     ('previous', 'Try the previous preset on them', 'PickerPrevious'),
@@ -824,6 +826,10 @@ def write_mcm(folder, picker, default_index, average, build):
             'valueOptions': {'sourceType': 'ModSettingInt',
                              'options': [e['display'] for e in picker[g]]},
         })
+    content.append(bridge_button(
+        'Try presets on in the picker window',
+        'Every preset that fits your body, with filters; a click puts one on you live, Apply keeps it, Cancel '
+        'puts back what you had. It opens when you close this menu.', 'MenuOpenWindowMe'))
     avg = ' / '.join(average[g] for g in ('female', 'male') if average.get(g))
     content += [
         button('Apply to my character',
@@ -872,10 +878,18 @@ def write_mcm(folder, picker, default_index, average, build):
                'Starts another 24 in-game hours of giving bodies to people other mods marked first. '
                'People it already handled are not handled twice.', 'OpenRegenerationWindow'),
     ]
+    window_help = ('A window beside them lists every preset that fits their body, with filters; a click puts one '
+                   'on them live, Apply keeps it, Cancel puts back what they had. It opens when you close this '
+                   'menu.')
     npcs = [
         {'type': 'text', 'text': 'Aim at someone, then open this menu -- or Pick them with the hotkey below '
                                  'and open it any time. Anyone you give a preset keeps it: the rules by name '
                                  'and faction no longer change them.' + needs},
+        {'type': 'section', 'text': 'The picker window'},
+        bridge_button('Open the picker window',
+                      'On the NPC you aimed at in the half minute before opening this menu, or on you when you '
+                      'aimed at nobody. ' + window_help + ' The hotkey below opens it at once.' + needs,
+                      'MenuOpenWindow'),
         {'type': 'section', 'text': 'Their body'},
     ]
     for g, label in (('female', 'If they are female'), ('male', 'If they are male')):
