@@ -49,7 +49,7 @@ Int Property SourcePicker = 3 AutoReadOnly
 Int Property LaneUrgent = 0 AutoReadOnly
 ; What RunOrder below does, and the natives the menu calls. Silhouette.dll says what it
 ; expects; they must agree. 4: ResetEveryone (S-68).
-Int Property Protocol = 6 AutoReadOnly
+Int Property Protocol = 7 AutoReadOnly
 ; "Reset everyone" forgets every body, picks included: a second press within this long
 ; confirms the first. A minute, not ten seconds: the clock runs while the player reads the
 ; first press's message box, and the owner's first try ran out reading it.
@@ -164,16 +164,30 @@ Function Connect()
 EndFunction
 
 ;---------------------------------------------------------------------------
-; S-79 spike: the picker window. F4SE opens Interface\SilhouetteMenu.swf as a custom
-; menu -- F4SE's own menu, none of CommonLibF4's menu code, whose crash on 1.10.163 is
-; why S-22 had no window. The window asks for its presets once it is ready and tells
-; the bridge what was clicked. Neither the menu nor the event registrations survive a
-; load, so opening registers again. For now the console opens it:
-;   cgf "Silhouette:API.OpenWindow"
+; S-79: the picker window. F4SE opens Interface\SilhouetteMenu.swf as a custom menu --
+; F4SE's own menu, none of CommonLibF4's menu code, whose crash on 1.10.163 is why S-22
+; had no window. Whose body: the NPC the player aimed at in the last seconds ("them",
+; the plugin's picker does the work: a preview, Keep, Cancel), or the player ("me",
+; Silhouette:Player's presets, with a snapshot of the body to put back). A click tries a
+; preset on live; Apply keeps it; anything else that closes the window puts back what
+; they had -- the one place that happens is the menu's close event.
+; Neither the menu nor the event registrations survive a load: opening registers again.
+; For now the console opens it: cgf "Silhouette:API.OpenWindow"
 ;---------------------------------------------------------------------------
 String Property WindowMenu = "SilhouetteMenu" AutoReadOnly
+Float Property WindowAimSeconds = 10.0 AutoReadOnly  ; the console takes the crosshair: an NPC aimed at this recently still counts
+
+Int _winThem = 0          ; the NPC aimed at when the window opened, 0 for none
+Bool _winMe = False       ; the window is on the player
+Bool _winApplied = False  ; Apply was pressed: the close keeps what is on
+Bool _winTried = False    ; the player tries a preset on: the close puts the snapshot back
+String[] _winMorphs       ; the player's body before the first try: morph names ...
+Float[] _winValues        ; ... and values, the unkeyed layer only
 
 Function OpenWindow()
+	If UI.IsMenuOpen(WindowMenu)
+		Return
+	EndIf
 	If !UI.IsMenuRegistered(WindowMenu)
 		UI:MenuData data = new UI:MenuData
 		data.menuFlags = 0x8018496  ; ScreenArcherMenu's: cursor, modal, the game running behind it
@@ -185,45 +199,220 @@ Function OpenWindow()
 	EndIf
 	RegisterForExternalEvent("Silhouette_WindowReady", "OnWindowReady")
 	RegisterForExternalEvent("Silhouette_WindowPick", "OnWindowPick")
-	RegisterForExternalEvent("Silhouette_WindowClose", "OnWindowClose")
+	RegisterForExternalEvent("Silhouette_WindowApply", "OnWindowApply")
+	RegisterForExternalEvent("Silhouette_WindowCancel", "OnWindowCancel")
+	RegisterForExternalEvent("Silhouette_WindowTarget", "OnWindowTarget")
+	RegisterForMenuOpenCloseEvent(WindowMenu)
+	_winThem = 0
+	If _plugin
+		_winThem = Silhouette:DLL.CrosshairActor(WindowAimSeconds)
+	EndIf
+	_winMe = _winThem == 0
+	_winApplied = False
+	_winTried = False
 	UI.OpenMenu(WindowMenu)
 EndFunction
 
 Function OnWindowReady()
-	If !_plugin
-		WindowItems("", "Silhouette.dll is not loaded: no presets to list")
+	WindowLoad()
+EndFunction
+
+Function WindowLoad()
+	If _winMe
+		WindowLoadMe()
+	Else
+		WindowLoadThem()
+	EndIf
+EndFunction
+
+Function WindowLoadThem()
+	String said = Silhouette:DLL.PickerStart(_winThem)
+	String name = Silhouette:DLL.NameOf(_winThem)
+	WindowTarget(name, "them")
+	If Silhouette:DLL.PickerTarget() != _winThem
+		WindowItems("", said, -1)
 		Return
 	EndIf
+	WindowItems(Silhouette:DLL.PickerPresets(), "Reading " + name + "'s body...", Silhouette:DLL.PickerIndex())
+	Int i = 0
+	While i < 40 && !Silhouette:DLL.PickerReady()
+		Utility.WaitMenuMode(0.1)
+		i += 1
+	EndWhile
+	If !Silhouette:DLL.PickerReady()
+		WindowStatus("Still reading " + name + "'s body: presets try on once it is in.")
+		Return
+	EndIf
+	String had = Silhouette:DLL.PickerCurrent()
+	If had == ""
+		had = "a body Silhouette did not give"
+	EndIf
+	WindowStatus("Wears " + had + ". Click a preset to try it on.")
+	WindowSelected(Silhouette:DLL.PickerIndex())
+EndFunction
+
+Function WindowLoadMe()
+	Actor player = Game.GetPlayer()
+	Bool female = Silhouette:Player.IsFemale(player)
+	String[] n0
+	String[] n1
+	String[] m0
+	String[] m1
+	If female
+		n0 = Silhouette:Player.FemaleNames0()
+		n1 = Silhouette:Player.FemaleNames1()
+		m0 = Silhouette:Player.FemaleMarkers0()
+		m1 = Silhouette:Player.FemaleMarkers1()
+	Else
+		n0 = Silhouette:Player.MaleNames0()
+		n1 = Silhouette:Player.MaleNames1()
+		m0 = Silhouette:Player.MaleMarkers0()
+		m1 = Silhouette:Player.MaleMarkers1()
+	EndIf
+	Int n = Silhouette:Player.Count(female)
 	String joined = ""
-	Int n = Silhouette:DLL.PresetCount(True)
 	Int i = 0
 	While i < n
 		If i > 0
 			joined += "|"
 		EndIf
-		joined += Silhouette:DLL.PresetName(True, i)
+		joined += Silhouette:Player.At(i, n0, n1)
 		i += 1
 	EndWhile
-	WindowItems(joined, n + " female presets - click one")
-	Silhouette:DLL.Log("window: open, " + n + " female presets listed")
+	String had = Silhouette:Player.PresetOf(player, female, m0, n0, m1, n1)
+	Int at = -1
+	If had != "" && had != "*"
+		at = Silhouette:Player.Locate(had, n0, n1)
+	ElseIf had == "*"
+		had = "sliders Silhouette did not set"
+	Else
+		had = "the bare body built in BodySlide"
+	EndIf
+	WindowTarget("You", "me")
+	WindowItems(joined, "You have " + had + ". Click a preset to try it on.", at)
 EndFunction
 
-Function WindowItems(String asJoined, String asStatus)
-	Var[] args = new Var[2]
-	args[0] = asJoined
-	args[1] = asStatus
-	UI.Invoke(WindowMenu, "root1.Menu_mc.SetItems", args)
-EndFunction
-
-Function OnWindowPick(String asPreset)
-	Debug.Notification("Silhouette window: " + asPreset)
-	If _plugin
-		Silhouette:DLL.Log("window: clicked " + asPreset)
+Function OnWindowPick(String asPreset, Int aiIndex)
+	If _winMe
+		Actor player = Game.GetPlayer()
+		Bool female = Silhouette:Player.IsFemale(player)
+		If !_winTried
+			WindowSnapshotMe(player, female)
+			_winTried = True
+		EndIf
+		String name = Silhouette:Player.Give(player, female, aiIndex)
+		WindowStatus("Trying " + name + ". Apply keeps it; Cancel puts yours back.")
+	ElseIf _winThem != 0 && Silhouette:DLL.PickerTarget() == _winThem
+		WindowStatus(Silhouette:DLL.PickerShow(asPreset))
 	EndIf
 EndFunction
 
-Function OnWindowClose()
+Function OnWindowApply()
+	_winApplied = True
+	If _winMe
+		_winTried = False
+		_winMorphs = None
+		_winValues = None
+		Actor player = Game.GetPlayer()
+		Bool female = Silhouette:Player.IsFemale(player)
+		String had = Silhouette:Player.PresetOf(player, female, Silhouette:Player.FemaleMarkers0(), Silhouette:Player.FemaleNames0(), Silhouette:Player.FemaleMarkers1(), Silhouette:Player.FemaleNames1())
+		If !female
+			had = Silhouette:Player.PresetOf(player, female, Silhouette:Player.MaleMarkers0(), Silhouette:Player.MaleNames0(), Silhouette:Player.MaleMarkers1(), Silhouette:Player.MaleNames1())
+		EndIf
+		Debug.Notification("Silhouette: your body is now " + had + ".")
+	ElseIf _winThem != 0 && Silhouette:DLL.PickerTarget() == _winThem
+		Debug.Notification("Silhouette: " + Silhouette:DLL.PickerKeep())
+	EndIf
 	UI.CloseMenu(WindowMenu)
+EndFunction
+
+Function OnWindowCancel()
+	UI.CloseMenu(WindowMenu)
+EndFunction
+
+; The Them / Me switch: what was tried on the one being left is put back first.
+Function OnWindowTarget(String asMode)
+	WindowUndo()
+	_winMe = asMode == "me" || _winThem == 0
+	WindowLoad()
+EndFunction
+
+Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
+	If asMenuName != WindowMenu || abOpening
+		Return
+	EndIf
+	If !_winApplied
+		WindowUndo()
+	EndIf
+	_winApplied = False
+EndEvent
+
+Function WindowUndo()
+	If _winTried
+		WindowRestoreMe()
+		_winTried = False
+	EndIf
+	If _winThem != 0 && _plugin && Silhouette:DLL.PickerTarget() == _winThem
+		Silhouette:DLL.PickerCancel()
+	EndIf
+EndFunction
+
+; The player's unkeyed body as it is, the first 128 values: a Papyrus array holds no more.
+Function WindowSnapshotMe(Actor akPlayer, Bool abFemale)
+	_winMorphs = new String[0]
+	_winValues = new Float[0]
+	String[] morphs = BodyGen.GetMorphs(akPlayer, abFemale)
+	Int i = 0
+	While morphs && i < morphs.Length && _winMorphs.Length < 128
+		Float v = BodyGen.GetMorph(akPlayer, abFemale, morphs[i], None)
+		If v != 0.0
+			_winMorphs.Add(morphs[i], 1)
+			_winValues.Add(v, 1)
+		EndIf
+		i += 1
+	EndWhile
+EndFunction
+
+Function WindowRestoreMe()
+	Actor player = Game.GetPlayer()
+	Bool female = Silhouette:Player.IsFemale(player)
+	BodyGen.RemoveMorphsByKeyword(player, female, None)
+	Int i = 0
+	While _winMorphs && i < _winMorphs.Length
+		BodyGen.SetMorph(player, female, _winMorphs[i], None, _winValues[i])
+		i += 1
+	EndWhile
+	BodyGen.UpdateMorphs(player)
+	_winMorphs = None
+	_winValues = None
+EndFunction
+
+Function WindowTarget(String asName, String asMode)
+	Var[] args = new Var[3]
+	args[0] = asName
+	args[1] = _winThem != 0
+	args[2] = asMode
+	UI.Invoke(WindowMenu, "root1.Menu_mc.SetTarget", args)
+EndFunction
+
+Function WindowItems(String asJoined, String asStatus, Int aiSelected)
+	Var[] args = new Var[3]
+	args[0] = asJoined
+	args[1] = asStatus
+	args[2] = aiSelected
+	UI.Invoke(WindowMenu, "root1.Menu_mc.SetItems", args)
+EndFunction
+
+Function WindowStatus(String asStatus)
+	Var[] args = new Var[1]
+	args[0] = asStatus
+	UI.Invoke(WindowMenu, "root1.Menu_mc.SetStatus", args)
+EndFunction
+
+Function WindowSelected(Int aiSelected)
+	Var[] args = new Var[1]
+	args[0] = aiSelected
+	UI.Invoke(WindowMenu, "root1.Menu_mc.SetSelected", args)
 EndFunction
 
 ; The MCM's switches, when MCM is there. Without it the plugin keeps what it has --

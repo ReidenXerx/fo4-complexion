@@ -26,7 +26,7 @@ Scriptname Silhouette:API Hidden
 ; The order protocol these scripts were built for (Silhouette:Bridge.Protocol, the DLL's
 ; kProtocol): all three move together -- tools/tests/test_protocol.py holds them to it.
 Int Function Protocol() Global
-	Return 6
+	Return 7
 EndFunction
 
 ; Other mods' requests wait behind the player's own actions and go before bulk work (S-55).
@@ -292,7 +292,8 @@ Function SetGenitalRand(Bool abEnabled) Global
 	Silhouette:DLL.SetGenitalRand(abEnabled)
 EndFunction
 
-; S-79 spike: opens the picker window. From the console: cgf "Silhouette:API.OpenWindow"
+; S-79: opens the picker window on the NPC aimed at, or on the player. From the console:
+; cgf "Silhouette:API.OpenWindow"
 Function OpenWindow() Global
 	Silhouette:Bridge b = Bridge()
 	If b

@@ -1584,6 +1584,21 @@ namespace
 		Check(g.actors[0x100].unkeyed == before, std::format("Cancel puts back exactly what she had ({})", msg));
 		Check(d.PickerTarget() == 0 && !d.HasPicking(0x100), "and ends the picking");
 
+		// S-79, the window: the list with each preset's kind, a preset by name, what she had, Cancel as ever.
+		(void)d.PickerStart(0x100, true, 0x00012345, "Cait");
+		Check(d.PickerShow("Curvy").find("Still reading") != std::string::npos, "window: a preset by name waits for the snapshot too");
+		(void)Drain(d, g);
+		Check(d.PickerPresets() == "Curvy\tp|Slim\tp|Athletic\tp", std::format("window: every preset with its kind ({})", d.PickerPresets()));
+		Check(d.PickerCurrent() == "Slim" && d.PickerIndex() == 1, "window: what she had at Pick, and where the picking stands");
+		msg = d.PickerShow("curvy");
+		(void)Drain(d, g);
+		Check(msg == "Cait: Curvy (1/3)" && d.PickerIndex() == 0 && g.actors[0x100].unkeyed.contains("Silhouette_Curvy"),
+			std::format("window: a preset by name, in any case, goes on her as a preview ({})", msg));
+		Check(d.PickerShow("Nope").find("is not a preset") != std::string::npos && d.PickerIndex() == 0, "window: a name not in the list changes nothing");
+		(void)d.PickerCancel();
+		(void)Drain(d, g);
+		Check(g.actors[0x100].unkeyed == before && d.PickerPresets().empty(), "window: Cancel puts her back, and the list goes with the picking");
+
 		// Next then Previous back to her own preset, then Keep: exactly her body, hand edit included (L1 F9).
 		(void)d.PickerStart(0x100, true, 0x00012345, "Cait");
 		(void)Drain(d, g);

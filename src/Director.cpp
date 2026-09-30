@@ -2230,12 +2230,68 @@ namespace SH
 		} else {
 			_picker.index = ((_picker.index + a_step) % n + n) % n;
 		}
+		return TryOn(entry->second.snapshot);
+	}
+
+	// S-79: the picker window names the preset instead of stepping to it.
+	std::string Director::PickerShow(std::string_view a_preset)
+	{
+		std::scoped_lock l{ _lock };
+		if (_picker.ref == 0) {
+			return "Pick an NPC first: aim at them and press Pick.";
+		}
+		const auto entry = _registry.pickings.find(_picker.ref);
+		if (!_picker.snapped || entry == _registry.pickings.end()) {
+			return std::format("Still reading {}'s body - a moment.", _picker.name);
+		}
+		const auto it = std::ranges::find_if(_picker.presets, [&](const std::string& a_p) { return IEquals(a_p, a_preset); });
+		if (it == _picker.presets.end()) {
+			return std::format("{} is not a preset for {}.", a_preset, _picker.name);
+		}
+		_picker.index = static_cast<std::int32_t>(it - _picker.presets.begin());
+		return TryOn(entry->second.snapshot);
+	}
+
+	// The picker's preset at its index goes on them as a preview. Called under the lock.
+	std::string Director::TryOn(const Morphs& a_snapshot)
+	{
 		const auto& preset = _picker.presets[static_cast<std::size_t>(_picker.index)];
 		_picker.tried = true;
 		// Their own variety comes along: previews differ only in the preset (S-21).
-		QueueBody(_picker.ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = preset, .preview = true, .keepFrom = entry->second.snapshot },
+		QueueBody(_picker.ref, BodyRequest{ .what = BodyRequest::What::kPreset, .preset = preset, .preview = true, .keepFrom = a_snapshot },
 			Lane::kUrgent);
-		return std::format("{}: {} ({}/{})", _picker.name, preset, _picker.index + 1, n);
+		return std::format("{}: {} ({}/{})", _picker.name, preset, _picker.index + 1, _picker.presets.size());
+	}
+
+	// S-79: the picker's presets for the window, "name<TAB>kind" joined by "|" -- kind y for the player's own
+	// (S-76), p for the random pool, o for the rest (named people, factions, CBBE's and BodyTalk's stock).
+	std::string Director::PickerPresets() const
+	{
+		std::scoped_lock l{ _lock };
+		std::string out;
+		for (const auto& name : _picker.presets) {
+			const auto* p = _catalog ? _catalog->Find(name, _picker.female) : nullptr;
+			const char  kind = p && p->installed ? 'y' : p && p->random ? 'p' : 'o';
+			if (!out.empty()) {
+				out += '|';
+			}
+			out += name;
+			out += '	';
+			out += kind;
+		}
+		return out;
+	}
+
+	std::int32_t Director::PickerIndex() const
+	{
+		std::scoped_lock l{ _lock };
+		return _picker.ref != 0 ? _picker.index : -1;
+	}
+
+	std::string Director::PickerCurrent() const
+	{
+		std::scoped_lock l{ _lock };
+		return _picker.ref != 0 ? _picker.current : std::string{};
 	}
 
 	std::string Director::PickerKeep()

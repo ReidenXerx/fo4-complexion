@@ -18,7 +18,8 @@ namespace SH::Papyrus
 		// 5: NextNotice (S-71), which the bridge shows on the player's screen; FreshStart (S-70), which the
 		// regeneration window presses once for a save new to Silhouette; Configure's faction pools (S-73).
 		// 6: BodyWarning, which the bridge shows once a launch when a sex has no body Silhouette supports.
-		constexpr std::int32_t kProtocol = 6;
+		// 7: PickerShow, PickerPresets, PickerIndex, PickerCurrent -- the picker window (S-79).
+		constexpr std::int32_t kProtocol = 7;
 
 		using Str = RE::BSFixedString;
 
@@ -213,6 +214,11 @@ namespace SH::Papyrus
 		}
 
 		Str          PickerStep(std::monostate, std::int32_t a_step) { return Str{ Said(std::format("step {}", a_step), D().PickerStep(a_step)) }; }
+		// S-79, the picker window: a preset by name, the list with each one's kind, and where the picking is.
+		Str          PickerShow(std::monostate, Str a_preset) { return Str{ Said(std::format("show {}", a_preset.c_str()), D().PickerShow(a_preset.c_str())) }; }
+		Str          PickerPresets(std::monostate) { return Str{ D().PickerPresets() }; }
+		std::int32_t PickerIndex(std::monostate) { return D().PickerIndex(); }
+		Str          PickerCurrent(std::monostate) { return Str{ D().PickerCurrent() }; }
 		Str          PickerKeep(std::monostate) { return Str{ Said("keep", D().PickerKeep()) }; }
 		Str          PickerCancel(std::monostate) { return Str{ Said("cancel", D().PickerCancel()) }; }
 		std::int32_t PickerTarget(std::monostate) { return static_cast<std::int32_t>(D().PickerTarget()); }
@@ -481,6 +487,10 @@ namespace SH::Papyrus
 		Bind(a_vm, "EventDone"sv, EventDone, fast);
 
 		Bind(a_vm, "PickerStep"sv, PickerStep, fast);
+		Bind(a_vm, "PickerShow"sv, PickerShow, fast);
+		Bind(a_vm, "PickerPresets"sv, PickerPresets, fast);
+		Bind(a_vm, "PickerIndex"sv, PickerIndex, fast);
+		Bind(a_vm, "PickerCurrent"sv, PickerCurrent, fast);
 		Bind(a_vm, "PickerKeep"sv, PickerKeep, fast);
 		Bind(a_vm, "PickerCancel"sv, PickerCancel, fast);
 		Bind(a_vm, "PickerTarget"sv, PickerTarget, fast);

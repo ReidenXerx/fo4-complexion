@@ -258,6 +258,10 @@ namespace SH
 		// --- the NPC picker (S-22, S-47) ---
 		std::string                 PickerStart(std::uint32_t a_ref, bool a_female, std::uint32_t a_base, std::string_view a_name);
 		std::string                 PickerStep(std::int32_t a_step);
+		std::string                 PickerShow(std::string_view a_preset);  // S-79: the window names the preset
+		[[nodiscard]] std::string   PickerPresets() const;                 // "name<TAB>kind|...", kind y / p / o
+		[[nodiscard]] std::int32_t  PickerIndex() const;                   // the preset tried on, -1 none
+		[[nodiscard]] std::string   PickerCurrent() const;                 // what they had at Pick, "" not read yet
 		std::string                 PickerKeep();
 		std::string                 PickerCancel();
 		[[nodiscard]] std::uint32_t PickerTarget() const;
@@ -413,6 +417,7 @@ namespace SH
 		void                      FinishRefit(Order& a_order);
 		void                      ClosePicker();
 		std::string               CancelPicking(std::string_view a_message = {});
+		std::string               TryOn(const Morphs& a_snapshot);  // under the lock
 
 		mutable std::mutex _lock;
 

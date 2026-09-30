@@ -80,6 +80,10 @@ String Function BodyWarning() Global Native    ; which sex has no supported body
 Int Function CrosshairActor(Float afRecentSeconds) Global Native  ; main thread
 String Function PickerStart(Int aiActor) Global Native            ; main thread
 String Function PickerStep(Int aiStep) Global Native
+String Function PickerShow(String asPreset) Global Native   ; S-79: try this preset on, by name
+String Function PickerPresets() Global Native               ; "name<TAB>kind|..." (y yours, p pool, o other)
+Int Function PickerIndex() Global Native                    ; the preset tried on, -1 none
+String Function PickerCurrent() Global Native               ; what they had at Pick, "" not read yet
 String Function PickerKeep() Global Native
 String Function PickerCancel() Global Native
 Int Function PickerTarget() Global Native
