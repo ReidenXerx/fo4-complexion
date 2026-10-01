@@ -1387,3 +1387,25 @@ selected shapes before apply them", picked from the options below.
   and not chosen: FO4 has no ready offscreen render of a clone.
 - **One window for NPCs and the player's character.** It replaces the MCM dropdowns and the hotkey
   cycling as the way to choose; the hotkeys stay as a shortcut.
+
+**S-79 as built (0.3.0).** The window is `interface/src/*.as`, compiled from code with Apache Flex's mxmlc (no
+Animate), registered with `UI.RegisterCustomMenu` (ScreenArcherMenu's flags plus the menu input context, 0x8) and
+driven by `Silhouette:Bridge` through `UI.Invoke` and F4SE's external events; the plugin adds the picker's list,
+"show this preset" and the camera. Measured in game and fixed: "tfc" is carried out a frame or more after it is
+typed, so the camera moves towards what the window wants, one toggle at a time, and the bridge waits ("wait"
+answers); Papyrus hands the script to another thread at every LooksMenu or plugin call, so the window works in
+sessions -- open, close and Them/Me each start one, and older work stops and takes back a hold or a camera that
+landed late. The NPC is held with `SetRestrained` (their AI keeps running), released on every close, switch and
+load. The pictures are two atlases named by the build (`Thumbs<Sex>_<build>.dds`), mounted through F4SE's
+`MountImage`; cell k is the k-th preset of the list, and an atlas of another build is never mounted. Six review
+lenses before release (microscope S-79 wave 1).
+
+## S-80 — The installer: the house FOMOD standard, first in 0.3.0
+
+Owner, 2026-10-01: every mod's next release ships a FOMOD to `nexus-tools/docs/FOMOD-STANDARD.md`. For
+Silhouette, `tools/fomod_pack.py` writes it into the release folder: the install is refused unless LooksMenu.esp
+is active and the game is 1.10.163 or newer (the only requirements a FOMOD can see in both Vortex and MO2);
+every top-level entry of the release is installed as it is, read from the folder; one step shows what Silhouette
+does, a card each; a note appears only when AAF is missing. It is validated against the 5.0 schema Vortex itself
+uses. F4SE, Runtime Database and MCM cannot be seen by a FOMOD: the plugin and the bridge say so in game, and the
+Nexus page lists them. Manual installs are not supported.

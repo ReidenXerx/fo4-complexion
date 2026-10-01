@@ -5,10 +5,10 @@ keeps it: an ordinary one most often, an unflattering one less often, a conventi
 rarely, from Silhouette's own pool. The Commonwealth's named people -- companions and major NPCs -- each
 have a body of their own.
 
-**Status:** 0.2.3: one plugin for old-gen 1.10.163 and Anniversary 1.11.x through Runtime Database (S-75),
-proved in game on both (Anniversary 1.11.240); your own BodySlide presets in the NPC picker (S-76); the
-Diamond City pack (S-77); one body mod is enough -- a sex with no body Silhouette supports is left alone,
-and you are told (S-78).
+**Status:** 0.3.0: the picker window (S-79) -- choose anyone's body, or your own, from a grid of pictures,
+live on them while the camera frames them. One plugin for old-gen 1.10.163 and Anniversary 1.11.x through
+Runtime Database (S-75); your own BodySlide presets in the picker (S-76); the Diamond City pack (S-77); one
+body mod is enough (S-78).
 Next-gen 1.10.984 is not supported: nobody plays it. The last release without Runtime Database is 0.1.1
 (old-gen only). Phase 1 (the generator; LooksMenu's own BodyGen does the
 work at run time) and Phase 2 -- `Silhouette.dll`, an F4SE plugin, with `Silhouette.esp` -- which adds the
@@ -94,8 +94,16 @@ Without the DLL, everything above keeps working.
   clothed shape off by itself, and without a working DLL the bridge takes them off the people around you.
   Nobody in power armour is refit. `<Preset>-Refit` BodySlide presets and OBody's outfit lists work as in
   OBody.
-- **The NPC picker** — MCM hotkeys (unbound until you set them in MCM > Silhouette > *The NPC in your
-  sights*): aim at someone close enough to talk to, *Pick*, *Next*/*Previous* to try every preset on them
+- **The picker window** (S-79) — aim at someone and press its hotkey (MCM > Silhouette > *The NPC in your
+  sights*), or use the button on that page (aimed at in the half minute before) or on the *Bodies* page (you):
+  a window beside them shows every preset that fits their body as a grid of pictures, filtered (People,
+  Plain, Rough, Fine, Yours). A click, or the arrows, puts one on them live while the camera frames them and
+  they stand still (their AI keeps running: quests and companions carry on); *Apply* keeps it, *Cancel* or
+  closing puts back exactly what they had. Mouse, keyboard and gamepad (Accept, Cancel, the directions,
+  bumpers for pages, triggers for the filter). *Them* / *Me* switches to your own body. The pictures show
+  each preset on the author's zeroed bodies, one scale a sex; the live try-on shows yours.
+- **The NPC picker hotkeys** — unbound until you set them in MCM > Silhouette > *The NPC in your
+  sights*: aim at someone close enough to talk to, *Pick*, *Next*/*Previous* to try every preset on them
   live, *Keep* or *Cancel*. The MCM page *The NPC in your sights* gives a preset, *Reset* (Silhouette decides
   their body again: a named character's own body, a rule's draw, or a new roll from the pool), or names
   the one they have. A choice is kept like a rule's, and marked in LooksMenu, so a save made without the
@@ -148,6 +156,8 @@ takes the clothed shapes off).
   **zeroed** preset ("CBBE Zeroed Sliders", "BT - Zero") with **Build Morphs** ticked. One of the two is
   enough: a sex without its body is left alone, and Silhouette.log and a message box say so (S-78).
 - **MCM** (Mod Configuration Menu) for the settings and the pickers.
+- **Vortex or Mod Organizer 2.** The archive has an installer that refuses to install without LooksMenu;
+  manual installs are not supported.
 - Python 3 only to run the generator yourself (standard library only) -- never to play.
 
 ## Install
@@ -157,7 +167,8 @@ takes the clothed shapes off).
    `Silhouette.esp` (a light plugin).
 3. Load a save. A save that never had Silhouette gets *Reset everyone* by itself once, with a notification; a
    new game needs nothing.
-4. Optional: set the picker hotkeys in MCM > Silhouette > *The NPC in your sights*.
+4. Set the picker window's hotkey (and, if you like, the old picker hotkeys) in MCM > Silhouette > *The NPC
+   in your sights*.
 
 The archive is generated ready to play: Silhouette's own bodies, and in the pickers also the presets CBBE and
 BodyTalk ship (S-74); your other installed presets join the NPC picker by themselves (S-76). You need the
@@ -203,12 +214,20 @@ The release archive is everything a player needs; this is for building it yourse
 - The CommonLibF4 submodule: `git submodule update --init --recursive`.
 - **Python 3** (the generator and its tests use the standard library; the body-pool tools in `tools/pool`
   also need Pillow for their review sheets).
-- The **Papyrus compiler** from the Creation Kit, and the base game's script sources.
+- The **Papyrus compiler** from the Creation Kit, and the base game's script sources. Beside them, a folder
+  (`-F4se`) holding the base's `ScriptObject.psc` with F4SE's `RegisterForExternalEvent` and
+  `UnregisterForExternalEvent` appended -- the picker window's events need them; F4SE's whole
+  `ScriptObject.psc` does not work in its place (the bridge's custom events stop compiling).
+- For the picker window: **Apache Flex SDK 4.16.1** on **Java**, with `playerglobal.swc` for Flash Player 11.2
+  (setup in `scripts/build-interface.ps1`); **Pillow** and **texconv** (DirectXTex) for its pictures; **lxml**
+  for the installer's schema check.
 
 ```
 powershell scripts/build-plugin.ps1     # Silhouette.dll, the offline tests, the tools' tests
-powershell scripts/build-papyrus.ps1 -Base <script sources> -Compiler <PapyrusCompiler.exe>
-powershell scripts/make-release.ps1     # the archive (refuses to pack unless every check passes)
+powershell scripts/build-papyrus.ps1 -Base <script sources> -F4se <that folder> -Compiler <PapyrusCompiler.exe>
+powershell scripts/build-interface.ps1  # the picker window, build/interface/SilhouetteMenu.swf
+python tools/thumbnails.py              # its pictures, one atlas a sex (--texconv if it is not on PATH)
+powershell scripts/make-release.ps1     # the archive and its installer (refuses to pack unless every check passes)
 ```
 
 The scripts' default paths (the game's `Data`, the compiler, the staging folder) are the author's; pass

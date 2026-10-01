@@ -79,6 +79,24 @@ order. Each item names where it is settled: `S-#` is a decision in [decisions.md
 
 ## Picking bodies in game
 
+- **The picker window** (S-79): opened by a hotkey on the NPC in your sights, by MCM's buttons (on the NPC
+  aimed at in the half minute before, or on you), or from the console (`cgf "Silhouette:API.OpenWindow"`).
+  A grid of pictures of every preset that fits them -- Silhouette's, CBBE's and BodyTalk's stock ones, yours
+  as plain cards -- with filters (All, People, Plain, Rough, Fine, Yours). A click or the arrows tries one on
+  live; *Apply* keeps it, *Cancel* or any other close puts back exactly what they had. *Them* / *Me* switches
+  between the NPC and your own body.
+  - The camera: the game's free camera stands in front of them, the window beside them, and goes back when it
+    closes. A free camera you already had on is left alone; where the camera's fields do not check out on a
+    game version, it is not moved at all (S-75's rule).
+  - The NPC stands still while picked (the game's own "restrained": their AI keeps running, so quests and
+    companion routines go on) -- not someone in a scene, in combat or busy in AAF; let go on every close,
+    switch and load.
+  - Input: mouse, keyboard and gamepad (Accept, Cancel, the directions, bumpers for pages, triggers for the
+    filter).
+  - The pictures: every preset drawn front and side on the author's zeroed bodies, one scale a sex, two
+    2048x2048 atlases named by the build -- an atlas of another build shows no picture rather than the wrong
+    one. The live try-on shows your own body.
+
 - **Your own BodySlide presets** join the NPC picker's Next / Previous by themselves, read from BodySlide's
   SliderPresets folder when the game starts, exactly as BodySlide builds them for your body -- no Python, no
   generator (S-76). They are never random. `Silhouette.log` says how many joined and which were left out, and
@@ -166,6 +184,9 @@ order. Each item names where it is settled: `S-#` is a decision in [decisions.md
 
 ## Requirements
 
+- **Vortex or Mod Organizer 2**: the archive's installer refuses to install without LooksMenu active; manual
+  installs are not supported.
+
 - Fallout 4 **old-gen 1.10.163 or Anniversary 1.11.x** with the F4SE for that version, and
   **Runtime Database** (Nexus 108394), which finds the game's functions on each (S-75). Proved in game on
   old-gen 1.10.163 and Anniversary 1.11.240. Next-gen 1.10.984 is not supported (nobody plays it). A version whose classes are laid out differently
@@ -183,4 +204,6 @@ order. Each item names where it is settled: `S-#` is a decision in [decisions.md
 - ORefit only raises a slider; it cannot lower one (LooksMenu keeps the highest value per keyword).
 - Heavy clothes are told by English names; a localized game needs its words added to `heavyWords`.
 - Faction rules read an NPC record's own factions, as OBody does, not its templates' (S-23).
-- No custom menu: the picker is MCM and hotkeys, to stay clear of a known plugin-menu crash on 1.10.163.
+- The picker window is a Scaleform menu opened through F4SE's own custom-menu support -- none of CommonLibF4's menu
+  code, whose crash on 1.10.163 is why there was none before (S-22, S-79). The camera can frame someone inside a
+  wall in a tight room: it is placed in front of them without a collision test.

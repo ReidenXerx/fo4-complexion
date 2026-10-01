@@ -181,9 +181,13 @@ foreach ($d in $docs) {
 # them whole). The current build's must be clean.
 & $python (Join-Path $root 'tools\release_manifests.py') (Join-Path $out 'F4SE\Plugins\Silhouette\manifests') --current $catalog.stamp
 if ($LASTEXITCODE) { throw "tools\release_manifests.py refused - see the line above; nothing was packed." }
+# The installer (nexus-tools/docs/FOMOD-STANDARD.md, mandatory from 0.3.0): written last, from what the folder holds,
+# and validated against Vortex's own 5.0 schema.
+& $python (Join-Path $root 'tools\fomod_pack.py') $out $version
+if ($LASTEXITCODE) { throw "tools\fomod_pack.py refused - see the line above; nothing was packed." }
 
 Compress-Archive -Path (Join-Path $out '*') -DestinationPath $zip -CompressionLevel Optimal
-# What a player unpacks: the window and both atlases must be in it, where the game looks for them.
+# What a player unpacks: the installer, the window and both atlases must be in it, where they are looked for.
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
 try {
@@ -191,7 +195,7 @@ try {
 } finally {
     $archive.Dispose()
 }
-$wanted = @('Interface/SilhouetteMenu.swf') + @($atlases | ForEach-Object { "Textures/Silhouette/$($_.Name)" })
+$wanted = @('fomod/ModuleConfig.xml', 'fomod/info.xml', 'Interface/SilhouetteMenu.swf') + @($atlases | ForEach-Object { "Textures/Silhouette/$($_.Name)" })
 foreach ($w in $wanted) {
     if ($entries -notcontains $w) { Remove-Item -Force $zip; throw "The archive has no $w - nothing was packed." }
 }

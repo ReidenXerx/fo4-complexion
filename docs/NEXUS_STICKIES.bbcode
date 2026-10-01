@@ -1,18 +1,18 @@
 === STICKY: Every feature ===
-[b]Silhouette 0.2.3: every feature[/b]
+[b]Silhouette 0.3.0: every feature[/b]
 The full list, each item as the code does it. Decision numbers (S-#) point into [url=https://github.com/ReidenXerx/fo4-silhouette/blob/master/docs/decisions.md]decisions.md[/url].
 
 [b]Game versions[/b]
 [list]
-[*]One DLL for old-gen 1.10.163 and Anniversary 1.11.x, through [url=https://www.nexusmods.com/fallout4/mods/108394]Runtime Database[/url], which finds the game's functions on each. Verified in game on both (Anniversary on 1.11.240) (S-75).
-[*]If the game's classes are laid out differently from what the plugin reads, it switches itself off with one log line, never half on. BodyGen still gives every body.
+[*]One DLL for old-gen 1.10.163 and Anniversary 1.11.x, through [url=https://www.nexusmods.com/fallout4/mods/108394]Runtime Database[/url]. Verified in game on both (S-75).
+[*]Classes laid out differently than the plugin reads: it switches itself off with one log line, never half on.
 [*]Old-gen without Runtime Database: 0.1.1, in Old files.
 [/list]
 
 [b]Bodies for everyone[/b]
 [list]
 [*]Every NPC gets a body the first time you meet them, and keeps it for the rest of the save.
-[*]Random bodies come from Silhouette's own pool: 41 per sex, generated and measured into three tiers. 18 Plain, 17 Rough (very fat, very flat, frail, disproportioned), 6 Fine. Odds 70 / 22 / 8 % (S-65).
+[*]Random bodies come from Silhouette's own pool: 41 per sex, 18 Plain, 17 Rough, 6 Fine. Odds 70 / 22 / 8 % (S-65).
 [*]A bust floor keeps every woman's bust small but real: no concave chest for the breast physics to fold.
 [*]Which races get bodies is a config key (HumanRace by default).
 [*]One body mod is enough: a sex with no body Silhouette supports (CBBE for women, BodyTalk for men, built in BodySlide) is left alone, with a log line and one message box a launch (S-78).
@@ -32,11 +32,10 @@ The full list, each item as the code does it. Decision numbers (S-#) point into 
 [/list]
 [b]Picking bodies in game[/b]
 [list]
-[*]Your character is never randomised: an average pool body unless you choose one in MCM.
-[*]The NPC picker: five hotkeys, unbound until you set them. Pick the NPC you aim at, Next / Previous to try each preset on them live, Keep, or Cancel back to exactly what they had (S-22).
-[*]A picking survives a save (a save mid-try loads as a Cancel); up to 64 people keep their way back.
-[*]The pickers hold Silhouette's own bodies and the presets CBBE and BodyTalk ship: 196 for women, 188 for men (S-74).
-[*]Your own BodySlide presets join the NPC picker by themselves: the plugin reads them from BodySlide's SliderPresets folder at every start, the way the generator would. No Python, no build step. They are for trying on, never the random pool (S-76).
+[*]The picker window: aim at someone (or no one, for yourself) and press its hotkey, or use MCM. A grid of pictures of every preset that fits them, with filters; a click puts one on them live while the camera frames them and they stand still. Apply keeps it, Cancel puts back exactly what they had. Mouse, keyboard, gamepad (S-79).
+[*]Your character is never randomised: an average pool body unless you choose one.
+[*]The old picker hotkeys stay: Pick, Next / Previous, Keep, Cancel (S-22).
+[*]The pickers hold Silhouette's own bodies and CBBE's and BodyTalk's stock presets: 196 women, 188 men (S-74). Your own BodySlide presets join by themselves, never random (S-76).
 [/list]
 [b]The people around you[/b]
 [list]
@@ -62,7 +61,8 @@ The full list, each item as the code does it. Decision numbers (S-#) point into 
 [/list]
 [b]Safe saves[/b]
 [list]
-[*]The co-save keeps only intent (who chose what); the bodies are LooksMenu's. A body cut short by a save is finished at the next load.
+[*]The co-save keeps only intent; the bodies are LooksMenu's. A body cut short by a save is finished at the next load.
+[*]Install with Vortex or MO2: the installer refuses without LooksMenu. Manual installs are not supported.
 [/list]
 
 === STICKY: Settings: MCM, hotkeys and the config file ===
@@ -70,14 +70,16 @@ The full list, each item as the code does it. Decision numbers (S-#) point into 
 
 [b]Bodies[/b]
 [list]
-[*][i]Your character[/i]: a preset for a female and for a male character, Apply to my character, Back to the default, Which body do I have?
+[*][i]Your character[/i]: Try presets on in the picker window (it opens on you when you close the menu); a preset for a female and for a male character, Apply to my character, Back to the default, Which body do I have?
 [*][i]Everyone else[/i]: Count the bodies around me, Refresh the people around me, Give the people around me new bodies, Reset everyone (press twice).
 [*][i]Regeneration window[/i]: how it is doing, and Open a new 24-hour window.
 [/list]
 [b]The NPC in your sights[/b]
 [list]
+[*]Open the picker window: on the NPC you aimed at in the half minute before opening the menu, or on you; it opens when you close the menu.
 [*]Aim at someone and open this page, or Pick them with the hotkey: a preset for them, Give them this preset, Reset, Which body do they have?
-[*]Hotkeys, all unbound by default: Pick, Next, Previous, Keep, Cancel. Pick reaches someone close enough to talk to.
+[*]Hotkeys, all unbound by default: the picker window (on the NPC in your sights, or on you), Pick, Next, Previous, Keep, Cancel. Pick and the window reach someone close enough to talk to.
+[*]In the window: mouse; keyboard arrows, Enter, Esc; gamepad D-pad, A, B, bumpers for pages, triggers for the filter.
 [/list]
 [b]Settings[/b]
 [list]
