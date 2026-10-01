@@ -10,6 +10,7 @@ package {
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
+	import flash.utils.getTimer;
 
 	// S-79: the picker window's panel. Whose body (an NPC the player aimed at, or the player), a grid of the
 	// presets that fit them -- each with its picture, filtered -- and the one being tried on. A click tries it
@@ -51,6 +52,8 @@ package {
 		private var _atlas:String = "";     // img:// of the atlas of the target's sex, "" none mounted
 		private var _busy:Boolean = false;  // a Them / Me switch is loading: clicks wait for its list
 		private var _closing:Boolean = false;   // Apply or Cancel was sent: nothing more is
+		private var _closingAt:int = 0;         // ... at this time: a close that never comes stops blocking
+		private var _readyAt:int = 0;           // when the window was ready: the key that opened it is not a Cancel
 		private var _userEvents:Boolean = false;  // the game sends its own directions: raw arrows are not needed
 
 		private var _title:TextField;
@@ -121,6 +124,7 @@ package {
 			addEventListener(MouseEvent.MOUSE_WHEEL, function (e:MouseEvent):void { Scroll(e.delta > 0 ? -COLS : COLS); });
 			addEventListener(Event.ADDED_TO_STAGE, OnStage);
 			addEventListener(Event.ENTER_FRAME, OnFrame);
+			addEventListener(Event.ENTER_FRAME, OnWatch);
 			Paint();
 		}
 
@@ -178,6 +182,17 @@ package {
 		// of a control acted on is ours too. They only ADD to the mouse and the raw keys below -- never switch
 		// them off (0.3.1: a window whose input depended on them took none at all for a player).
 		public function ProcessUserEvent(a_control:String, a_pressed:Boolean):Boolean {
+			if (a_pressed) {
+				Note("control " + a_control);
+			}
+			// A Cancel or Accept the window gets as it opens is the key that opened it (the hotkey, Esc leaving
+			// MCM), not the player's answer: taken as one, it left the window waiting for a close that never came,
+			// deaf to every click (0.3.0 and the owner's test of 0.3.1, 2026-10-01).
+			var early:Boolean = !_ready || getTimer() - _readyAt < 400;
+			if (early && (a_control == "Cancel" || a_control == "Accept")) {
+				Note(a_control + " ignored: the window had only just opened");
+				return true;
+			}
 			var ours:Boolean = true;
 			switch (a_control) {
 				case "Cancel":   if (a_pressed) { Cancel(); } break;
@@ -199,6 +214,23 @@ package {
 
 		private function OnStage(e:Event):void {
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, OnKey);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, function (e:MouseEvent):void {
+				Note("mouse down at " + int(e.stageX) + "," + int(e.stageY) + " on " + (e.target ? e.target.name : "nothing"));
+			});
+		}
+
+		// Apply or Cancel was sent and the window is still open well after: that close is not coming, and the
+		// window must not stay deaf waiting for it.
+		private function OnWatch(e:Event):void {
+			if (_closing && getTimer() - _closingAt > 1500) {
+				_closing = false;
+				Note("the close asked for did not come: the window takes clicks again");
+			}
+		}
+
+		// What the window received, into Silhouette.log through the bridge: the evidence for an input problem.
+		private function Note(a_line:String):void {
+			Send("Silhouette_WindowNote", a_line);
 		}
 
 		// An F4SE older than 0.6.8 never calls onF4SEObjCreated: the object is on the root by the first frames.
@@ -218,6 +250,7 @@ package {
 		private function Ready():void {
 			if (!_ready) {
 				_ready = true;
+				_readyAt = getTimer();
 				Send("Silhouette_WindowReady");
 			}
 		}
@@ -280,6 +313,7 @@ package {
 		private function Apply():void {
 			if (!_closing) {
 				_closing = true;
+				_closingAt = getTimer();
 				Send("Silhouette_WindowApply");
 			}
 		}
@@ -287,6 +321,7 @@ package {
 		private function Cancel():void {
 			if (!_closing) {
 				_closing = true;
+				_closingAt = getTimer();
 				Send("Silhouette_WindowCancel");
 			}
 		}
@@ -378,6 +413,7 @@ package {
 
 		private function Pick(a_i:int):void {
 			if (_busy || _closing) {
+				Note("pick of " + _names[a_i] + " ignored: " + (_busy ? "a Them/Me switch is loading" : "the window is closing"));
 				return;
 			}
 			_selected = a_i;
@@ -442,6 +478,7 @@ package {
 
 		private function OnCardClick(e:MouseEvent):void {
 			var index:int = CardIndex(e.currentTarget);
+			Note("card click: " + (index >= 0 ? _names[index] : "an empty card"));
 			if (index >= 0) {
 				Pick(index);
 			}

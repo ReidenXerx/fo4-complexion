@@ -280,6 +280,7 @@ Function OpenWindowOn(Int aiTarget)
 	RegisterForExternalEvent("Silhouette_WindowApply", "OnWindowApply")
 	RegisterForExternalEvent("Silhouette_WindowCancel", "OnWindowCancel")
 	RegisterForExternalEvent("Silhouette_WindowTarget", "OnWindowTarget")
+	RegisterForExternalEvent("Silhouette_WindowNote", "OnWindowNote")
 	RegisterForMenuOpenCloseEvent(WindowMenu)
 	_winSession += 1
 	_winOpen = True
@@ -314,6 +315,13 @@ EndFunction
 ; Work of session aiSession may go on: the window is open and nothing has moved on since.
 Bool Function WindowLive(Int aiSession)
 	Return _winOpen && aiSession == _winSession
+EndFunction
+
+; What the window received (a control, a mouse press, a click it ignored and why), into Silhouette.log.
+Function OnWindowNote(String asNote)
+	If _plugin
+		Silhouette:DLL.Log("window: " + asNote)
+	EndIf
 EndFunction
 
 Function OnWindowReady()
