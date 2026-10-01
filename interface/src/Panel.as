@@ -54,6 +54,8 @@ package {
 		private var _closing:Boolean = false;   // Apply or Cancel was sent: nothing more is
 		private var _closingAt:int = 0;         // ... at this time: a close that never comes stops blocking
 		private var _readyAt:int = 0;           // when the window was ready: the key that opened it is not a Cancel
+		private var _clickables:Array = [];     // {s: sprite, f: action} -- what a click under the cursor may hit
+		private var _mouseDownAt:int = -1000;   // the last real mouse press Scaleform delivered
 		private var _userEvents:Boolean = false;  // the game sends its own directions: raw arrows are not needed
 
 		private var _title:TextField;
@@ -112,6 +114,7 @@ package {
 				label.multiline = label.wordWrap = true;
 				label.height = 30;
 				card.addEventListener(MouseEvent.CLICK, OnCardClick);
+				_clickables.push({ s: card, f: CardAction(card) });
 				card.addEventListener(MouseEvent.ROLL_OVER, OnCardOver);
 				card.addEventListener(MouseEvent.ROLL_OUT, OnCardOut);
 				addChild(card);
@@ -182,6 +185,20 @@ package {
 		// of a control acted on is ours too. They only ADD to the mouse and the raw keys below -- never switch
 		// them off (0.3.1: a window whose input depended on them took none at all for a player).
 		public function ProcessUserEvent(a_control:String, a_pressed:Boolean):Boolean {
+			// With the free camera on, the game never delivers a mouse click to the menu: it turns the left button
+			// into the free camera's "WorldZUp" control (the right one into "WorldZDown") and sends that here --
+			// measured in the owner's log, 2026-10-02, no mouse press ever reaching the window. ScreenArcherMenu
+			// handles its clicks itself for the same reason. So the left button clicks whatever is under the
+			// cursor; the right one does nothing.
+			if (a_control == "WorldZUp") {
+				if (a_pressed) {
+					ClickAtCursor();
+				}
+				return true;
+			}
+			if (a_control == "WorldZDown") {
+				return true;
+			}
 			if (a_pressed) {
 				Note("control " + a_control);
 			}
@@ -215,6 +232,7 @@ package {
 		private function OnStage(e:Event):void {
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, OnKey);
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, function (e:MouseEvent):void {
+				_mouseDownAt = getTimer();
 				Note("mouse down at " + int(e.stageX) + "," + int(e.stageY) + " on " + (e.target ? e.target.name : "nothing"));
 			});
 		}
@@ -226,6 +244,33 @@ package {
 				_closing = false;
 				Note("the close asked for did not come: the window takes clicks again");
 			}
+		}
+
+		// The click the game sent as a camera control: whatever button or card is under the cursor. Not when
+		// Scaleform delivered the press itself just now -- that one clicks through its own events.
+		private function ClickAtCursor():void {
+			if (!stage || getTimer() - _mouseDownAt < 200) {
+				return;
+			}
+			var x:Number = stage.mouseX;
+			var y:Number = stage.mouseY;
+			for (var i:int = 0; i < _clickables.length; i++) {
+				var c:Object = _clickables[i];
+				if (c.s.visible && c.s.alpha > 0.45 && c.s.hitTestPoint(x, y, true)) {
+					c.f();
+					return;
+				}
+			}
+		}
+
+		private function CardAction(a_card:Sprite):Function {
+			return function ():void {
+				var index:int = CardIndex(a_card);
+				Note("card click: " + (index >= 0 ? _names[index] : "an empty card"));
+				if (index >= 0) {
+					Pick(index);
+				}
+			};
 		}
 
 		// What the window received, into Silhouette.log through the bridge: the evidence for an input problem.
@@ -540,6 +585,7 @@ package {
 			t.y = a_size > 16 ? 5 : 6;
 			b.addChild(t);
 			b.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void { a_click(); });
+			_clickables.push({ s: b, f: a_click });
 			addChild(b);
 			Mark(b, false, true);
 			return b;
