@@ -35,7 +35,7 @@ FEATURES = [
     ('The picker window', 'window.jpg',
      'Aim at anyone, or pick yourself, and choose a body from a grid of pictures: it goes on them live while the '
      'camera frames them and they stand still. Apply keeps it; Cancel puts back exactly what they had. Open it with '
-     'its hotkey or from MCM; mouse, keyboard and gamepad.'),
+     'its hotkey or from MCM, and pick with the mouse.'),
     ('Bodies for everyone', 'pool.jpg',
      'Every NPC gets a body the first time you meet them, and keeps it: Silhouette\'s own pool, 41 bodies a sex -- '
      'mostly ordinary, some rough, a rare fine one.'),

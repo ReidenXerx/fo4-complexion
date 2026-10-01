@@ -91,8 +91,12 @@ order. Each item names where it is settled: `S-#` is a decision in [decisions.md
   - The NPC stands still while picked (the game's own "restrained": their AI keeps running, so quests and
     companion routines go on) -- not someone in a scene, in combat or busy in AAF; let go on every close,
     switch and load.
-  - Input: mouse, keyboard and gamepad (Accept, Cancel, the directions, bumpers for pages, triggers for the
-    filter).
+  - Input: the mouse. Under the free camera the game delivers no mouse click to a menu -- it turns the left
+    button into the camera's "WorldZUp" control -- so the window clicks whatever is under the cursor itself
+    (as ScreenArcherMenu does). The player's own controls are off while it is open (an InputEnableLayer), and
+    the free camera's own input too. Closed by Cancel, the window's hotkey again, or the console
+    (`cgf "Silhouette:API.CloseWindow"`). Every opening starts from nothing (F4SE keeps the window between
+    openings).
   - The pictures: every preset drawn front and side on the author's zeroed bodies, one scale a sex, two
     2048x2048 atlases named by the build -- an atlas of another build shows no picture rather than the wrong
     one. The live try-on shows your own body.

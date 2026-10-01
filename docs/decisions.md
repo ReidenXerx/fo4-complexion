@@ -1409,3 +1409,13 @@ every top-level entry of the release is installed as it is, read from the folder
 does, a card each; a note appears only when AAF is missing. It is validated against the 5.0 schema Vortex itself
 uses. F4SE, Runtime Database and MCM cannot be seen by a FOMOD: the plugin and the bridge say so in game, and the
 Nexus page lists them. Manual installs are not supported.
+
+**S-79 amended (0.3.1, 2026-10-02): the window's input, measured in game.** 0.3.0 shipped review-wave input
+changes untested and the window took no click for a tester (Alt-F4 to get out). Fixed from the owner's tests
+and the window's own log: (1) a custom menu does not take the game's controls -- an InputEnableLayer turns the
+player's off while it is open; (2) the free camera handles the mouse itself -- its input is muted while held;
+(3) under the free camera the game delivers NO mouse click to a menu, it turns the left button into "WorldZUp"
+-- the window clicks what is under the cursor itself, as ScreenArcherMenu does; (4) F4SE keeps the window's
+movie between openings -- every opening starts it again (Panel.Begin). The menu input context (0x8) and the
+gamepad's cursor removal (extended flag 2) are gone; the gamepad is not claimed. Ways out: Cancel, the window's
+hotkey again, `cgf "Silhouette:API.CloseWindow"`. The window logs what it receives ("window:" lines).
