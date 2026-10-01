@@ -203,8 +203,13 @@ Bool _winPicking = False    ; a try is being put on
 Int _winWantIndex = -1      ; the latest try asked for, -1 none ...
 String _winWantName = ""    ; ... and its name
 
-; The hotkey: the NPC in the player's sights (or aimed at in the last seconds), else the player.
+; The hotkey: the NPC in the player's sights (or aimed at in the last seconds), else the player. Pressed
+; while the window is open, it closes it (as Cancel): a way out whatever the window's own input does.
 Function OpenWindow()
+	If UI.IsMenuOpen(WindowMenu)
+		CloseWindow()
+		Return
+	EndIf
 	Int target = 0
 	If _plugin
 		target = Silhouette:DLL.CrosshairActor(WindowAimSeconds)
@@ -254,10 +259,13 @@ Function OpenWindowOn(Int aiTarget)
 	EndIf
 	If !UI.IsMenuRegistered(WindowMenu)
 		UI:MenuData data = new UI:MenuData
-		; ScreenArcherMenu's flags (cursor, modal, the game running behind it) and the menu input context
-		; (0x8), which turns the keyboard's and the gamepad's menu keys into ProcessUserEvent calls.
-		data.menuFlags = 0x801849E
-		data.extendedFlags = 3      ; inherit colours, drop the cursor for a gamepad
+		; ScreenArcherMenu's flags (cursor, modal, the game running behind it) -- the ones the owner's test in
+		; game (2026-09-30) clicked through. 0.3.0 added the menu input context (0x8) for the gamepad, and a
+		; player could click nothing, not even Esc, and had to quit the game (0.3.1).
+		data.menuFlags = 0x8018496
+		; Inherit the HUD's colours, and keep the cursor even with a gamepad plugged in: F4SE's "check for
+		; gamepad" (2) takes the cursor away, and the window is then out of reach of the mouse.
+		data.extendedFlags = 1
 		If !UI.RegisterCustomMenu(WindowMenu, "SilhouetteMenu", "root1.Menu_mc", data)
 			Debug.MessageBox("Silhouette: the picker window could not be registered. Is Interface/SilhouetteMenu.swf installed?")
 			Return
@@ -462,6 +470,14 @@ EndFunction
 
 Function OnWindowCancel()
 	UI.CloseMenu(WindowMenu)
+EndFunction
+
+; Closes the window as Cancel does (what was tried is put back): the hotkey again, or the console --
+; cgf "Silhouette:API.CloseWindow".
+Function CloseWindow()
+	If UI.IsMenuOpen(WindowMenu)
+		UI.CloseMenu(WindowMenu)
+	EndIf
 EndFunction
 
 ; The Them / Me switch: a new session; what was tried on the one being left is put back first.

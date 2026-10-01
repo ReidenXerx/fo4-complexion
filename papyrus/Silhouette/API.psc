@@ -300,3 +300,12 @@ Function OpenWindow() Global
 		b.OpenWindow()
 	EndIf
 EndFunction
+
+; S-79: closes the picker window as Cancel does. From the console, if the window ever takes no input:
+; cgf "Silhouette:API.CloseWindow"
+Function CloseWindow() Global
+	Silhouette:Bridge b = Bridge()
+	If b
+		b.CloseWindow()
+	EndIf
+EndFunction

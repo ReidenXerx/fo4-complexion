@@ -51,7 +51,7 @@ package {
 		private var _atlas:String = "";     // img:// of the atlas of the target's sex, "" none mounted
 		private var _busy:Boolean = false;  // a Them / Me switch is loading: clicks wait for its list
 		private var _closing:Boolean = false;   // Apply or Cancel was sent: nothing more is
-		private var _userEvents:Boolean = false;  // the game sends its menu controls: raw keys are not needed
+		private var _userEvents:Boolean = false;  // the game sends its own directions: raw arrows are not needed
 
 		private var _title:TextField;
 		private var _status:TextField;
@@ -173,20 +173,19 @@ package {
 			Redraw();
 		}
 
-		// The game's menu controls, as vanilla menus receive them (the window asks for the menu input context):
-		// the keyboard's and the gamepad's Accept, Cancel and directions, the bumpers turning pages and the
-		// triggers the filter. Acted on when pressed; the release of a control acted on is ours too, so the
-		// game does nothing more with it.
+		// The game's menu controls, when it sends them: the gamepad's (and keyboard's) Accept, Cancel and
+		// directions, the bumpers turning pages and the triggers the filter. Acted on when pressed; the release
+		// of a control acted on is ours too. They only ADD to the mouse and the raw keys below -- never switch
+		// them off (0.3.1: a window whose input depended on them took none at all for a player).
 		public function ProcessUserEvent(a_control:String, a_pressed:Boolean):Boolean {
-			_userEvents = true;
 			var ours:Boolean = true;
 			switch (a_control) {
 				case "Cancel":   if (a_pressed) { Cancel(); } break;
 				case "Accept":   if (a_pressed) { Apply(); } break;
-				case "Up":       if (a_pressed) { Step(-COLS); } break;
-				case "Down":     if (a_pressed) { Step(COLS); } break;
-				case "Left":     if (a_pressed) { Step(-1); } break;
-				case "Right":    if (a_pressed) { Step(1); } break;
+				case "Up":       if (a_pressed) { _userEvents = true; Step(-COLS); } break;
+				case "Down":     if (a_pressed) { _userEvents = true; Step(COLS); } break;
+				case "Left":     if (a_pressed) { _userEvents = true; Step(-1); } break;
+				case "Right":    if (a_pressed) { _userEvents = true; Step(1); } break;
 				case "LShoulder": if (a_pressed) { Scroll(-COLS * ROWS); } break;
 				case "RShoulder": if (a_pressed) { Scroll(COLS * ROWS); } break;
 				case "LTrigger": if (a_pressed) { NextFilter(-1); } break;
@@ -242,10 +241,10 @@ package {
 			}
 		}
 
-		// Raw keys, for when the game sends no menu controls. Once it does, the keys it maps (Esc, Tab, Enter,
-		// the arrows) come through ProcessUserEvent and are not handled twice; the page keys stay here.
+		// Raw keys: always Esc, Tab and Enter (Apply and Cancel go out once whichever way they come); the arrows
+		// only while the game sends no directions of its own, so a step is not taken twice.
 		private function OnKey(e:KeyboardEvent):void {
-			if (_userEvents && (e.keyCode == 27 || e.keyCode == 9 || e.keyCode == 13 || (e.keyCode >= 37 && e.keyCode <= 40))) {
+			if (_userEvents && e.keyCode >= 37 && e.keyCode <= 40) {
 				return;
 			}
 			switch (e.keyCode) {
