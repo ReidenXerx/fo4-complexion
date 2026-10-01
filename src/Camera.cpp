@@ -31,6 +31,7 @@ namespace SH::Camera
 		bool       g_foreign = false;  // the free camera was on before the window asked: the player's (or
 		                               // ScreenArcherMenu's) -- left where it is and left on
 		bool       g_placed = false;   // g_view was written into the free camera
+		bool       g_muted = false;    // the free camera's own input was switched off (Mute)
 		bool       g_pending = false;  // a toggle was asked for and the camera has not changed since
 		bool       g_wasFree = false;  // the state the pending toggle is to change
 		std::chrono::steady_clock::time_point g_asked;     // when it was asked for
@@ -53,6 +54,31 @@ namespace SH::Camera
 			g_wasFree = a_free;
 			g_asked = std::chrono::steady_clock::now();
 			RE::Console::ExecuteCommand("tfc");
+		}
+
+		// The free camera listens to the mouse itself -- left button up, right button down -- and took the clicks
+		// meant for the window (the owner's test, 2026-10-01). Its own input switch, BSInputEventUser's
+		// inputEventHandlingEnabled (every camera state is one, the same on every runtime), is turned off while
+		// Silhouette holds the camera, and back on before it lets go. A value that is not a bool is not touched.
+		void Mute(RE::TESCameraState* a_state, bool a_mute)
+		{
+			if (!a_state) {
+				return;
+			}
+			const auto raw = *reinterpret_cast<const std::uint8_t*>(&a_state->inputEventHandlingEnabled);
+			if (raw > 1) {
+				return;
+			}
+			a_state->inputEventHandlingEnabled = !a_mute;
+			g_muted = a_mute;
+		}
+
+		void Unmute(RE::PlayerCamera* a_camera)
+		{
+			if (g_muted && a_camera) {
+				Mute(a_camera->cameraStates[RE::CameraState::kFree].get(), false);
+			}
+			g_muted = false;
 		}
 
 		bool Near(float a_x, float a_y, float a_z, float b_x, float b_y, float b_z)
@@ -92,6 +118,7 @@ namespace SH::Camera
 			free->pitch = g_view.pitch;
 			free->yaw = g_view.yaw;
 			g_placed = true;
+			Mute(a_camera->currentState.get(), true);
 			return {};
 		}
 	}
@@ -154,6 +181,7 @@ namespace SH::Camera
 			return Place(camera);
 		}
 		g_foreign = false;
+		Unmute(camera);  // before anything else: a free camera left mute would never answer the player again
 		// Back: only a free camera Silhouette switched on goes off; one the player had on stays.
 		if (free && g_ours) {
 			Toggle(true);
@@ -166,6 +194,7 @@ namespace SH::Camera
 
 	void Reset()
 	{
+		Unmute(Camera());
 		g_want = g_ours = g_foreign = g_placed = g_pending = g_wasFree = false;
 	}
 }
