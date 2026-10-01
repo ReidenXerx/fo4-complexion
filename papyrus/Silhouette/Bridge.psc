@@ -201,6 +201,7 @@ Bool _winOpen = False       ; the window is open (between OpenWindowOn and its c
 Bool _winClosing = False    ; the close is putting things back: no new window until it is done
 Bool _winPicking = False    ; a try is being put on
 Int _winWantIndex = -1      ; the latest try asked for, -1 none ...
+Int _winLoaded = 0          ; the session whose contents were sent: the window's two "ready"s load it once
 ; The player's controls, off while the window is open: a custom menu does not take them by itself, and the mouse
 ; and keys went on moving, aiming and looking behind it (the owner's test of 0.3.1, 2026-10-01; ScreenArcherMenu
 ; does the same with an InputEnableLayer).
@@ -291,6 +292,18 @@ Function OpenWindowOn(Int aiTarget)
 	_winWantIndex = -1
 	WindowLockControls()
 	UI.OpenMenu(WindowMenu)
+	; F4SE keeps the window's movie between openings, with all it held: once it is open, it is told to start
+	; again (Panel.Begin), and it asks for its contents. A first opening also says so by itself; that one is
+	; loaded once (_winLoaded).
+	Int session = _winSession
+	Int i = 0
+	While !UI.IsMenuOpen(WindowMenu) && i < 40
+		Utility.WaitMenuMode(0.05)
+		i += 1
+	EndWhile
+	If WindowLive(session)
+		UI.Invoke(WindowMenu, "root1.Menu_mc.Begin")
+	EndIf
 EndFunction
 
 ; Movement, fighting, looking, the camera switch, sneaking, activating, the journal, VATS, favourites, running and
@@ -325,6 +338,10 @@ Function OnWindowNote(String asNote)
 EndFunction
 
 Function OnWindowReady()
+	If !_winOpen || _winLoaded == _winSession
+		Return
+	EndIf
+	_winLoaded = _winSession
 	WindowLoad(_winSession)
 EndFunction
 
@@ -527,6 +544,7 @@ Function OnWindowTarget(String asMode)
 		Return
 	EndIf
 	_winMe = asMode == "me" || _winThem == 0
+	_winLoaded = session
 	WindowLoad(session)
 EndFunction
 

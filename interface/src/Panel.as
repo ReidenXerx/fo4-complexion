@@ -170,6 +170,33 @@ package {
 			Refilter();
 		}
 
+		// A new opening. F4SE keeps the movie between openings (measured, the owner's log 2026-10-02: a second
+		// opening came up still closing from the last Apply, with the last list, and never said it was ready), and
+		// it unmounts the pictures when the window closes. So each opening starts from nothing, here, and asks
+		// the bridge for its contents again.
+		public function Begin():void {
+			_closing = false;
+			_busy = false;
+			_userEvents = false;
+			alpha = 1.0;
+			_names = [];
+			_kinds = [];
+			_shown = [];
+			_selected = -1;
+			_first = 0;
+			_atlas = "";
+			for (var i:int = 0; i < _cards.length; i++) {
+				_cards[i].cell = -2;
+				_cards[i].loader.name = "";
+			}
+			_title.text = "Silhouette";
+			_status.text = "";
+			_ready = true;
+			_readyAt = getTimer();
+			Paint();
+			Send("Silhouette_WindowReady");
+		}
+
 		public function SetStatus(a_status:String):void {
 			_status.text = a_status;
 		}
