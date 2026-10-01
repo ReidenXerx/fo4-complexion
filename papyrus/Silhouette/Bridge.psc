@@ -201,6 +201,10 @@ Bool _winOpen = False       ; the window is open (between OpenWindowOn and its c
 Bool _winClosing = False    ; the close is putting things back: no new window until it is done
 Bool _winPicking = False    ; a try is being put on
 Int _winWantIndex = -1      ; the latest try asked for, -1 none ...
+; The player's controls, off while the window is open: a custom menu does not take them by itself, and the mouse
+; and keys went on moving, aiming and looking behind it (the owner's test of 0.3.1, 2026-10-01; ScreenArcherMenu
+; does the same with an InputEnableLayer).
+InputEnableLayer _winInput
 String _winWantName = ""    ; ... and its name
 
 ; The hotkey: the NPC in the player's sights (or aimed at in the last seconds), else the player. Pressed
@@ -284,7 +288,27 @@ Function OpenWindowOn(Int aiTarget)
 	_winApplied = False
 	_winTried = False
 	_winWantIndex = -1
+	WindowLockControls()
 	UI.OpenMenu(WindowMenu)
+EndFunction
+
+; Movement, fighting, looking, the camera switch, sneaking, activating, the journal, VATS, favourites, running and
+; jumping: off. The pause menu is left as it is -- the window's own flags keep it shut while it is open.
+Function WindowLockControls()
+	If _winInput
+		Return
+	EndIf
+	_winInput = InputEnableLayer.Create()
+	_winInput.DisablePlayerControls(True, True, True, True, True, False, True, True, True, True, True)
+	_winInput.EnableJumping(False)
+EndFunction
+
+Function WindowUnlockControls()
+	If _winInput
+		InputEnableLayer layer = _winInput
+		_winInput = None
+		layer.Delete()
+	EndIf
 EndFunction
 
 ; Work of session aiSession may go on: the window is open and nothing has moved on since.
@@ -515,6 +539,7 @@ Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
 	_winOpen = False
 	_winSession += 1
 	_winClosing = True
+	WindowUnlockControls()
 	WindowRelease()
 	WindowUnframe()
 	WindowSettle()
@@ -643,6 +668,7 @@ EndFunction
 
 ; A load forgets the window: the menu is gone, and nothing of it may carry into the save just loaded.
 Function WindowForget()
+	WindowUnlockControls()
 	WindowRelease()
 	_winSession += 1
 	_winOpen = False
