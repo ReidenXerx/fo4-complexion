@@ -19,14 +19,18 @@
           "id": "bEnabled:General",
           "text": "Hand out overlays",
           "help": "Off: nobody new gets overlays from Complexion. People who already have theirs keep them.",
-          "valueOptions": { "sourceType": "ModSettingBool" }
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          }
         },
         {
           "type": "switcher",
           "id": "bAdult:General",
           "text": "Adult and degrading pieces",
           "help": "Slave stamps and barcodes, chains, sexual tattoos: on raiders' captives, and on raiders and the Nuka-World gangs at low odds. Off: nobody gets them. Takes effect for people met from now on (Roll everyone again to change everyone).",
-          "valueOptions": { "sourceType": "ModSettingBool" }
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          }
         },
         {
           "type": "section",
@@ -36,13 +40,38 @@
           "type": "button",
           "text": "Roll everyone again",
           "help": "Forgets every look Complexion gave and decides everyone anew as you meet them. Their old Complexion overlays are replaced; overlays other mods put on them are kept.",
-          "action": { "type": "CallFunction", "form": "Complexion.esp|800", "function": "MenuRollAgain", "params": [] }
+          "action": {
+            "type": "CallFunction",
+            "form": "Complexion.esp|800",
+            "function": "MenuRollAgain",
+            "params": []
+          }
         },
         {
           "type": "button",
           "text": "Clear every overlay",
           "help": "For moving from Random Overlay Framework: LooksMenu forgets every overlay on everyone, ROF's leftovers included (and any you set by hand on NPCs). Complexion then puts its own looks back as you meet people. Do it outside of any AAF scene, then save and load.",
-          "action": { "type": "CallFunction", "form": "Complexion.esp|800", "function": "MenuClearAll", "params": [] }
+          "action": {
+            "type": "CallFunction",
+            "form": "Complexion.esp|800",
+            "function": "MenuClearAll",
+            "params": []
+          }
+        },
+        {
+          "type": "section",
+          "text": "Look closer"
+        },
+        {
+          "type": "button",
+          "text": "What do the people around me wear?",
+          "help": "Every overlay LooksMenu holds on each person within about 20 metres, Complexion's marked, and what Complexion decided for them, written to Complexion.log (Documents\\My Games\\Fallout4\\F4SE).",
+          "action": {
+            "type": "CallFunction",
+            "form": "Complexion.esp|800",
+            "function": "MenuDescribe",
+            "params": []
+          }
         }
       ]
     }

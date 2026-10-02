@@ -40,9 +40,14 @@ BGEM_HEAD = bytes.fromhex(
     '4247454d020000000300000000000000000000000000803f0000803f0000803f01060000000700000000010101010000000000000000'
     '000000000000803f00')
 BGEM_MID = bytes.fromhex('01000000000100000000')
+# The tail after the normal map: the empty envmap-mask string (5), then six flags -- blood, EFFECT LIGHTING,
+# falloff, falloff colour, greyscale-to-palette alpha, soft -- then the base colour (3 floats) and its scale,
+# falloff start/stop angle and opacity (4 floats), LIGHTING INFLUENCE, envmap min LOD (1 byte), soft depth.
+# INVB's has effect lighting off: an effect material is then unlit, and anything pale glows in the dark.
 BGEM_TAIL = bytes.fromhex(
-    '01000000000000000000000000803f0000803f0000803f0000803f00000000000000000000000000000000000000000000000000')
-assert len(BGEM_HEAD) == 63
+    '0100000000' '000100000000' '0000803f0000803f0000803f' '0000803f' '00000000000000000000000000000000'
+    '0000803f' '00' '00000000')
+assert len(BGEM_HEAD) == 63 and len(BGEM_TAIL) == 52
 
 # id, sex, painter, args, texture size, tags
 MARKS = []

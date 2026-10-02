@@ -256,6 +256,52 @@ EndFunction
 ; MCM buttons
 ;---------------------------------------------------------------------------
 
+; Every entry LooksMenu holds on each human around the player (about 20 m), Complexion's marked by their negative
+; priority, into Complexion.log -- tells Complexion's overlays from other mods' and from leftovers without guessing.
+Function MenuDescribe()
+	Keyword human = Game.GetFormFromFile(0x02CB72, "Fallout4.esm") as Keyword
+	ObjectReference[] near = None
+	If human
+		near = Game.GetPlayer().FindAllReferencesWithKeyword(human, 1400.0)
+	EndIf
+	Int people = 0
+	Int k = 0
+	While near && k < near.Length
+		Actor a = near[k] as Actor
+		If a && a != Game.GetPlayer() && a.Is3DLoaded()
+			people += 1
+			Describe(a)
+		EndIf
+		k += 1
+	EndWhile
+	Debug.MessageBox("Complexion: " + people + " people around you; what each wears is in Complexion.log.")
+EndFunction
+
+Function Describe(Actor a)
+	Bool female = a.GetLeveledActorBase().GetSex() == 1
+	Overlays:Entry[] all = Overlays.GetAll(a, female)
+	Int n = 0
+	If all
+		n = all.Length
+	EndIf
+	String decided = Complexion:DLL.Decided(a.GetFormID())
+	If decided == ""
+		decided = "nothing yet"
+	EndIf
+	Complexion:DLL.Log(Complexion:DLL.NameOf(a.GetFormID()) + ": LooksMenu holds " + n + " overlay(s); Complexion decided " + decided)
+	Int i = 0
+	While i < n
+		If all[i]
+			String mark = "another mod or a leftover"
+			If all[i].priority < 0
+				mark = "Complexion"
+			EndIf
+			Complexion:DLL.Log("    " + all[i].template + " @" + all[i].priority + " - " + mark)
+		EndIf
+		i += 1
+	EndWhile
+EndFunction
+
 ; Everyone is decided anew as they are seen; their old Complexion overlays are replaced (a rebuild keeps others').
 Function MenuRollAgain()
 	If !_plugin

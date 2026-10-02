@@ -14,6 +14,13 @@ Function Configure(Bool abEnabled, Bool abAdult) Native Global
 ; missing. "" when there is nothing to say.
 String Function Warning() Native Global
 
+; A line into Complexion.log.
+Function Log(String asLine) Native Global
+; What Complexion decided for an actor: "group: id, id", "" when nothing yet.
+String Function Decided(Int aiActor) Native Global
+; "Name (form id)" of an actor, for the log.
+String Function NameOf(Int aiActor) Native Global
+
 ; MCM "Roll everyone again": every decision forgotten; whoever is seen next is decided anew.
 Function ResetAll() Native Global
 ; MCM "Clear every overlay", after Overlays.ClearAll(): every decision kept, put back on people as they are seen.

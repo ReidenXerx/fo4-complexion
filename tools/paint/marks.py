@@ -54,12 +54,12 @@ class Painter:
         self.p = m.position
         self.n = m.normal
         self.h = m.height()
-        self.cov = m.covered
+        self.cov = m.covered & (m.region != REGIONS.index('genital'))
         lo, hi = m.bounds
         self.lo, self.hi = lo, hi
         self.region = m.region
         if not hasattr(m, '_zorder'):
-            flat = np.flatnonzero(m.covered)
+            flat = np.flatnonzero(m.covered & (m.region != REGIONS.index('genital')))
             z = m.position.reshape(-1, 3)[flat, 2]
             order = np.argsort(z)
             m._zorder, m._zsorted = flat[order], z[order]

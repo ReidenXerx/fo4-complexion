@@ -122,11 +122,16 @@ def read_shape(path, shape_name):
     raise ValueError(f'{path}: no shape {shape_name!r} (it has {found})')
 
 
-REGIONS = ['torso', 'arm', 'hand', 'leg', 'foot', 'head']
+REGIONS = ['torso', 'arm', 'hand', 'leg', 'foot', 'head', 'genital']
 
 
 def region_of(bone):
     low = bone.lower()
+    # Anatomy's genitals are part of the body shape (Penis_*, Penis_Balls_*, Anus_*, AnatAnus_*): measured
+    # 2026-10-03, pubic hair painted by position landed on the shaft. Every painter leaves them out.
+    if any(k in low for k in ('penis', 'anus', 'anat', 'vagina', 'labia', 'clit', 'scrot', 'testic')):
+        return 'genital'
+
     if any(k in low for k in ('hand', 'finger', 'thumb', 'wrist')):
         return 'hand'
     if any(k in low for k in ('arm', 'elbow', 'shoulder', 'clavicle')):

@@ -43,6 +43,23 @@ namespace CX::Papyrus
 
 		Str Warning(std::monostate) { return Str{ Game::TakeWarning() }; }
 
+		// A line from the bridge into Complexion.log (the "what is on them" button).
+		void Log(std::monostate, Str a_line) { logger::info("bridge: {}", a_line.c_str() ? a_line.c_str() : ""); }
+
+		// What Complexion decided for an actor, for the same button: "group: id, id" or "" when nothing yet.
+		Str Decided(std::monostate, std::int32_t a_ref)
+		{
+			const auto r = D().RecordFor(static_cast<std::uint32_t>(a_ref));
+			if (!r) {
+				return Str{};
+			}
+			std::string list;
+			for (const auto& p : r->picks) {
+				list += (list.empty() ? "" : ", ") + p.id;
+			}
+			return Str{ std::format("{}{}: {}", r->group, r->applied ? "" : " (not yet on them)", list.empty() ? "nothing" : list) };
+		}
+
 		// MCM "Roll everyone again".
 		void ResetAll(std::monostate)
 		{
@@ -55,6 +72,13 @@ namespace CX::Papyrus
 		{
 			D().Unapply();
 			Game::ArmSweep();
+		}
+
+		// Main thread: reads the actor.
+		Str NameOf(std::monostate, std::int32_t a_ref)
+		{
+			const auto id = static_cast<std::uint32_t>(a_ref);
+			return Str{ std::format("{} ({:08X})", Game::NameOf(Game::ActorFor(id)), id) };
 		}
 
 		// ---- the pump (main thread: it reads actors) ----
@@ -139,6 +163,9 @@ namespace CX::Papyrus
 		Bind(a_vm, "Pending"sv, Pending, fast);
 		Bind(a_vm, "Configure"sv, Configure, fast);
 		Bind(a_vm, "Warning"sv, Warning, fast);
+		Bind(a_vm, "Log"sv, Log, fast);
+		Bind(a_vm, "Decided"sv, Decided, fast);
+		Bind(a_vm, "NameOf"sv, NameOf, main);
 		Bind(a_vm, "ResetAll"sv, ResetAll, main);  // arms the sweep: main-thread state
 		Bind(a_vm, "Unapply"sv, Unapply, main);
 		Bind(a_vm, "Pump"sv, Pump, main);
