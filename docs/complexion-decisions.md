@@ -76,6 +76,29 @@ database does not know is never handed out at random (fail-closed); a player can
 in an include file. A tool runs the same composition over thousands of rolls to prove the odds, caps and
 variety rules hold.
 
+## C-9: Complexion paints its own rough marks and men's basics (2026-10-02, from C-5 and C-7)
+
+tools/paint/ paints them on the body in 3D and bakes them into the body's own UV map, read straight out of the
+NIF the game loads (FemaleBody.nif shape CBBE, MaleBody.nif shape BaseMaleBody:0): every texel knows the 3D point
+and normal it lands on, so a bruise is a blob around a point on the body, crossing UV seams whole, and whip marks
+cross the back. No guessed layout. Templates: fresh and fading bruises, light and heavy grime, dried blood with
+drips and spatter, fresh whip welts and healed lash scars, spank marks (a handprint), and for men moles, scars
+(plain and stitched) and pubic hair (full, trimmed, with a trail). BC3 with mipmaps, 1024 for soft marks and
+2048 for fine ones; the material is a BGEM the game already draws (INVB's), its paths swapped. LooksMenu loads them
+from Overlays\Complexion.esp\overlays.json.
+
+The profiles gain a feature kind `rough` (bruises, welts and spank marks, dried blood) for raiders, the gangs,
+captives and Gunners -- weights taken from their other kinds, so each group's feature COUNT stays as approved --
+and men get the universal layer women have: pubic hair 60%, moles 30% (C-2's "generic" overlays).
+
+## C-10: Named characters get looks of their own (2026-10-02, from C-2)
+
+The 60 named characters Silhouette knows (its tools/pool/characters.json, record by record) each have a look in
+data/profiles.json "characters": their own count, kinds, styles and emblems, drawn from their lore (Cait scarred
+and bruised from the Combat Zone, Piper all but plain, Danse scarred under the Brotherhood's mark, Fahrenheit
+inked). A character is matched by NPC record, or any template up its chain, BEFORE any faction. Ivy is left
+untouched -- the owner's own companion, whose bud owns her look.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

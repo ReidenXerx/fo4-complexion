@@ -29,6 +29,8 @@ namespace CX
 			std::uint32_t id{ 0 };  // the local form id, resolved offline (tools/make_data.py): no faction keeps its editor id at run time
 		};
 		std::vector<Faction>                      factions;
+		std::vector<Faction>                      members;    // a named character: their NPC record(s)
+		bool                                      untouched{ false };  // nothing at all, not even the universal layer
 		std::array<int, 5>                        count{};
 		std::vector<std::pair<std::string, int>>  kinds;  // in file order
 		std::vector<std::string>                  styles;

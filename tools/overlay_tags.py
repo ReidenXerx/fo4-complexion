@@ -42,6 +42,12 @@ def main():
     scan = json.loads(a.scan.read_text(encoding='utf-8'))
     wanted = {('f:' if t['female'] else 'm:') + t['id']: t for t in scan['templates']
               if t['drawable'] and t.get('playable', True)}
+    # Complexion's own templates (tools/paint/make_marks.py) ship with it: wanted whether or not this machine's Data
+    # has them deployed yet.
+    own = ROOT / 'data' / 'F4SE' / 'Plugins' / 'F4EE' / 'Overlays' / 'Complexion.esp' / 'overlays.json'
+    if own.exists():
+        for e in json.loads(own.read_text(encoding='utf-8')):
+            wanted.setdefault(('f:' if e['gender'] >= 1 else 'm:') + e['id'], {'pack': 'Complexion.esp'})
     tags, errors = {}, []
     for f in sorted(TAGS.glob('*.json')):
         for k, v in json.loads(f.read_text(encoding='utf-8')).items():

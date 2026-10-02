@@ -98,13 +98,34 @@ namespace CX
 		p.regionsUnique = r.at("regions_unique").get<bool>();
 		p.fallback = j.at("default").get<std::string>();
 
-		auto order = Strings(j.at("order"));
-		order.push_back(p.fallback);
-		for (const auto& name : order) {
-			const auto& g = j.at("groups").at(name);
+		// The faction groups in their order, then the named characters, then the default.
+		std::vector<std::pair<std::string, const nlohmann::ordered_json*>> order;
+		for (const auto& name : Strings(j.at("order"))) {
+			order.emplace_back(name, &j.at("groups").at(name));
+		}
+		if (j.contains("characters")) {
+			for (const auto& [name, c] : j.at("characters").items()) {
+				order.emplace_back("npc:" + name, &c);
+			}
+		}
+		order.emplace_back(p.fallback, &j.at("groups").at(p.fallback));
+		for (const auto& [name, gp] : order) {
+			const auto& g = *gp;
 			Group out;
 			out.name = name;
-			for (const auto& f : g.at("factions")) {
+			if (g.contains("forms")) {
+				for (const auto& f : g.at("forms")) {
+					out.members.push_back({ f.at(0).get<std::string>(), f.at(1).get<std::string>(), f.at(2).get<std::uint32_t>() });
+				}
+			}
+			if (g.value("untouched", false)) {
+				out.untouched = true;
+				out.count = { 100, 0, 0, 0, 0 };
+				out.hair = "any";
+				p.groups.push_back(std::move(out));
+				continue;
+			}
+			for (const auto& f : g.value("factions", nlohmann::ordered_json::array())) {
 				out.factions.push_back({ f.at(0).get<std::string>(), f.at(1).get<std::string>(), f.size() > 2 ? f.at(2).get<std::uint32_t>() : 0u });
 			}
 			const auto count = g.at("count");
@@ -179,6 +200,9 @@ namespace CX
 	std::vector<Pick> Compose(const Profiles& a_profiles, const std::vector<Template>& a_catalog, bool a_female, const Group& a_group,
 		std::uint64_t a_seed, bool a_adultAllowed)
 	{
+		if (a_group.untouched) {
+			return {};
+		}
 		Rng                             rng(a_seed);
 		std::vector<const Template*>    mine;
 		for (const auto& t : a_catalog) {

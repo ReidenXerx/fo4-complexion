@@ -39,6 +39,15 @@ $files = [ordered]@{
     'MCM\Config\Complexion\settings.ini'          = 'data\MCM\Config\Complexion\settings.ini'
 }
 
+# Complexion's own overlays (tools\paint\make_marks.py): every file under these folders, as it is.
+foreach ($tree in 'Textures\Overlays\Complexion', 'Materials\Overlays\Complexion', 'F4SE\Plugins\F4EE\Overlays\Complexion.esp') {
+    $dir = Join-Path $root "data\$tree"
+    if (-not (Test-Path $dir)) { throw "missing data\$tree - run python tools\paint\make_marks.py" }
+    Get-ChildItem $dir -File -Recurse | ForEach-Object {
+        $files[$_.FullName.Substring((Join-Path $root 'data').Length + 1)] = $_.FullName.Substring($root.Length + 1)
+    }
+}
+
 & python (Join-Path $root 'tools\make_esp.py') --check (Join-Path $root 'data\Complexion.esp')
 if ($LASTEXITCODE) { throw 'Complexion.esp is refused: rebuild it with tools\make_esp.py' }
 

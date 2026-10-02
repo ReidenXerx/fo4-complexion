@@ -64,8 +64,22 @@ def adultish(t):
     return t['adult'] or 'degrading' in t['style'] or 'sexual' in t['style']
 
 
+def group_def(profiles, name):
+    """A faction group, or a named character ("npc:<name>", data/profiles.json "characters")."""
+    if name.startswith('npc:'):
+        return profiles['characters'][name[4:]]
+    return profiles['groups'][name]
+
+
+def group_names(profiles):
+    """Every group in the order the plugin keeps them: the faction groups, the characters, the default last."""
+    return profiles['order'] + ['npc:' + n for n in profiles.get('characters', {})] + [profiles['default']]
+
+
 def compose(profiles, catalog, female, group, seed, adult_allowed=True):
-    g = profiles['groups'][group]
+    g = group_def(profiles, group)
+    if g.get('untouched'):
+        return []
     rules = profiles['rules']
     rng = Rng(seed)
     mine = [t for t in catalog if t['female'] == female]
@@ -168,7 +182,7 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True):
 
 def simulate(profiles, catalog, rolls):
     bad = 0
-    for group in profiles['groups']:
+    for group in group_names(profiles):
         for female in (True, False):
             counts, kinds, sizes = collections.Counter(), collections.Counter(), collections.Counter()
             violations = collections.Counter()
@@ -202,14 +216,14 @@ def main():
     profiles = json.loads(a.profiles.read_text(encoding='utf-8'))
     catalog = load_catalog(a.tags)
     if a.dump:
-        order = profiles['order'] + [profiles['default']]
-        for group in order:
+        for group in group_names(profiles):
             for female in (True, False):
                 for s in range(a.dump):
                     seed = (s * 0x9E3779B97F4A7C15 + 12345) & MASK
                     for adult in (True, False):
                         picks = compose(profiles, catalog, female, group, seed, adult)
-                        print(f'{group} {"f" if female else "m"} {seed} {int(adult)} ' +
+                        # Tab-separated: group names ("npc:Piper Wright") and template ids have spaces.
+                        print(f'{group}\t{"f" if female else "m"}\t{seed}\t{int(adult)}\t' +
                               ','.join(f'{p["key"]}@{p["priority"]}' for p in picks))
         return
     if a.simulate:

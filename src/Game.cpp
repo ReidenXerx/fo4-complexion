@@ -24,8 +24,9 @@ namespace CX::Game
 
 		struct GroupFactions
 		{
-			std::string                    group;
-			std::vector<RE::TESFaction*>   factions;
+			std::string                       group;
+			std::vector<RE::TESFaction*>      factions;
+			std::unordered_set<std::uint32_t> members;  // a named character's NPC records, runtime form ids
 		};
 
 		struct Inbox
@@ -336,6 +337,19 @@ namespace CX::Game
 				f.skip = "race " + race;
 				return f;
 			}
+			// A named character first: their record, or any template up its chain.
+			for (const auto& g : g_groups) {
+				if (g.members.empty()) {
+					continue;
+				}
+				int depth = 0;
+				for (auto* n = npc; n && depth < 16; n = n->faceNPC, ++depth) {
+					if (g.members.contains(n->GetFormID())) {
+						f.group = g.group;
+						return f;
+					}
+				}
+			}
 			// The record's own factions, as Silhouette's faction pools read them (a template's are carried by
 			// the record it builds).
 			for (const auto& g : g_groups) {
@@ -433,7 +447,13 @@ namespace CX::Game
 		auto* dh = RE::TESDataHandler::GetSingleton();
 		g_groups.clear();
 		for (const auto& g : profiles.groups) {
-			GroupFactions gf{ g.name, {} };
+			GroupFactions gf{ g.name, {}, {} };
+			for (const auto& f : g.members) {
+				auto* form = dh && f.id ? dh->LookupForm(f.id, f.plugin) : nullptr;
+				if (form && form->Is(RE::ENUM_FORM_ID::kNPC_)) {
+					gf.members.insert(form->GetFormID());
+				}
+			}
 			for (const auto& f : g.factions) {
 				auto* form = dh && f.id ? dh->LookupForm(f.id, f.plugin) : nullptr;
 				if (form && form->Is(RE::ENUM_FORM_ID::kFACT)) {

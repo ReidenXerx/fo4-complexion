@@ -2,26 +2,79 @@
  "about": "Who gets which overlays (docs/complexion-profiles.md, approved by the owner 2026-10-02 as C-7). count = percent chance of 0/1/2/3/4 features; kinds = percent weights of the feature kinds; styles = the tattoo styles a person's style is drawn from; emblems = the emblems members may wear (only members, C-7); sizes = the sizes tattoos may have; hair = pubic hair sizes; adult = chance a feature may be an adult or degrading piece (0 = never; the MCM switch turns all of it off).",
  "cap": 6,
  "kinds": {
-  "tattoo": ["tattoo"],
-  "scar": ["scar", "wound", "burn"],
-  "dirt": ["dirt"],
-  "brand": ["brand"],
-  "nails": ["nails"]
+  "tattoo": [
+   "tattoo"
+  ],
+  "scar": [
+   "scar",
+   "wound",
+   "burn"
+  ],
+  "dirt": [
+   "dirt"
+  ],
+  "brand": [
+   "brand"
+  ],
+  "nails": [
+   "nails"
+  ],
+  "rough": [
+   "bruise",
+   "marks",
+   "blood"
+  ]
  },
  "hair": {
-  "wild": ["medium", "large", "full"],
-  "trim": ["tiny", "small"],
-  "any": ["tiny", "small", "medium", "large", "full"]
+  "wild": [
+   "medium",
+   "large",
+   "full"
+  ],
+  "trim": [
+   "tiny",
+   "small"
+  ],
+  "any": [
+   "tiny",
+   "small",
+   "medium",
+   "large",
+   "full"
+  ]
  },
  "universal": {
   "female": [
-   {"kind": "pubic_hair", "percent": 75},
-   {"kind": "mole", "percent": 40},
-   {"kind": "nipple", "percent": 35},
-   {"kind": "acne", "percent": 8}
+   {
+    "kind": "pubic_hair",
+    "percent": 75
+   },
+   {
+    "kind": "mole",
+    "percent": 40
+   },
+   {
+    "kind": "nipple",
+    "percent": 35
+   },
+   {
+    "kind": "acne",
+    "percent": 8
+   }
   ],
   "male": [
-   {"kind": "body_hair", "percent": 40}
+   {
+    "kind": "pubic_hair",
+    "percent": 60
+   },
+   {
+    "kind": "body_hair",
+    "percent": 40
+   },
+   {
+    "kind": "mole",
+    "percent": 30
+   }
   ]
  },
  "rules": {
@@ -34,134 +87,2319 @@
  "groups": {
   "settlers": {
    "factions": [],
-   "count": [55, 30, 12, 3, 0],
-   "kinds": {"tattoo": 80, "scar": 20},
-   "styles": ["floral", "animal", "script", "geometric"],
+   "count": [
+    55,
+    30,
+    12,
+    3,
+    0
+   ],
+   "kinds": {
+    "tattoo": 75,
+    "scar": 20,
+    "dirt": 5
+   },
+   "styles": [
+    "floral",
+    "animal",
+    "script",
+    "geometric"
+   ],
    "emblems": [],
-   "sizes": ["tiny", "small", "medium"],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
    "hair": "any",
    "adult": 0
   },
   "captives": {
-   "factions": [["Fallout4.esm", "CaptiveFaction"], ["Fallout4.esm", "BoundCaptiveFaction"]],
-   "count": [10, 30, 35, 20, 5],
-   "kinds": {"brand": 45, "scar": 30, "dirt": 25},
-   "styles": ["degrading", "script", "crude"],
+   "factions": [
+    [
+     "Fallout4.esm",
+     "CaptiveFaction"
+    ],
+    [
+     "Fallout4.esm",
+     "BoundCaptiveFaction"
+    ]
+   ],
+   "count": [
+    10,
+    30,
+    35,
+    20,
+    5
+   ],
+   "kinds": {
+    "brand": 40,
+    "scar": 20,
+    "dirt": 20,
+    "rough": 20
+   },
+   "styles": [
+    "degrading",
+    "script",
+    "crude"
+   ],
    "emblems": [],
-   "sizes": ["tiny", "small", "medium"],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
    "hair": "any",
    "adult": 60
   },
   "raiders": {
-   "factions": [["Fallout4.esm", "RaiderFaction"]],
-   "count": [5, 15, 35, 30, 15],
-   "kinds": {"tattoo": 55, "scar": 25, "dirt": 15, "brand": 5},
-   "styles": ["crude", "skull", "tribal"],
-   "emblems": ["raiders"],
-   "sizes": ["tiny", "small", "medium", "large", "full"],
+   "factions": [
+    [
+     "Fallout4.esm",
+     "RaiderFaction"
+    ]
+   ],
+   "count": [
+    5,
+    15,
+    35,
+    30,
+    15
+   ],
+   "kinds": {
+    "tattoo": 50,
+    "scar": 20,
+    "dirt": 15,
+    "rough": 10,
+    "brand": 5
+   },
+   "styles": [
+    "crude",
+    "skull",
+    "tribal"
+   ],
+   "emblems": [
+    "raiders"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large",
+    "full"
+   ],
    "hair": "wild",
    "adult": 10
   },
   "disciples": {
-   "factions": [["DLCNukaWorld.esm", "DLC04GangDisciplesFaction"]],
-   "count": [5, 15, 30, 30, 20],
-   "kinds": {"tattoo": 45, "scar": 40, "dirt": 15},
-   "styles": ["skull", "script", "crude"],
+   "factions": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04GangDisciplesFaction"
+    ]
+   ],
+   "count": [
+    5,
+    15,
+    30,
+    30,
+    20
+   ],
+   "kinds": {
+    "tattoo": 40,
+    "scar": 35,
+    "dirt": 10,
+    "rough": 15
+   },
+   "styles": [
+    "skull",
+    "script",
+    "crude"
+   ],
    "emblems": [],
-   "sizes": ["tiny", "small", "medium", "large", "full"],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large",
+    "full"
+   ],
    "hair": "wild",
    "adult": 10
   },
   "pack": {
-   "factions": [["DLCNukaWorld.esm", "DLC04GangPackFaction"]],
-   "count": [5, 20, 35, 30, 10],
-   "kinds": {"tattoo": 70, "scar": 20, "dirt": 10},
-   "styles": ["animal", "tribal"],
+   "factions": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04GangPackFaction"
+    ]
+   ],
+   "count": [
+    5,
+    20,
+    35,
+    30,
+    10
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 15,
+    "dirt": 10,
+    "rough": 15
+   },
+   "styles": [
+    "animal",
+    "tribal"
+   ],
    "emblems": [],
-   "sizes": ["small", "medium", "large", "full"],
+   "sizes": [
+    "small",
+    "medium",
+    "large",
+    "full"
+   ],
    "hair": "wild",
    "adult": 5
   },
   "operators": {
-   "factions": [["DLCNukaWorld.esm", "DLC04GangOperatorsFaction"]],
-   "count": [20, 45, 30, 5, 0],
-   "kinds": {"tattoo": 70, "nails": 30},
-   "styles": ["pinup", "geometric", "realistic_art", "script"],
+   "factions": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04GangOperatorsFaction"
+    ]
+   ],
+   "count": [
+    20,
+    45,
+    30,
+    5,
+    0
+   ],
+   "kinds": {
+    "tattoo": 70,
+    "nails": 30
+   },
+   "styles": [
+    "pinup",
+    "geometric",
+    "realistic_art",
+    "script"
+   ],
    "emblems": [],
-   "sizes": ["tiny", "small", "medium", "large"],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large"
+   ],
    "hair": "trim",
    "adult": 10
   },
   "gunners": {
-   "factions": [["Fallout4.esm", "GunnerFaction"]],
-   "count": [25, 45, 25, 5, 0],
-   "kinds": {"tattoo": 60, "scar": 40},
-   "styles": ["military", "skull"],
-   "emblems": ["gunners"],
-   "sizes": ["tiny", "small", "medium"],
+   "factions": [
+    [
+     "Fallout4.esm",
+     "GunnerFaction"
+    ]
+   ],
+   "count": [
+    25,
+    45,
+    25,
+    5,
+    0
+   ],
+   "kinds": {
+    "tattoo": 55,
+    "scar": 35,
+    "rough": 10
+   },
+   "styles": [
+    "military",
+    "skull"
+   ],
+   "emblems": [
+    "gunners"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
    "hair": "any",
    "adult": 0
   },
   "triggermen": {
-   "factions": [["Fallout4.esm", "TriggermanFaction"]],
-   "count": [30, 45, 20, 5, 0],
-   "kinds": {"tattoo": 80, "scar": 20},
-   "styles": ["script", "pinup", "crude"],
+   "factions": [
+    [
+     "Fallout4.esm",
+     "TriggermanFaction"
+    ]
+   ],
+   "count": [
+    30,
+    45,
+    20,
+    5,
+    0
+   ],
+   "kinds": {
+    "tattoo": 80,
+    "scar": 20
+   },
+   "styles": [
+    "script",
+    "pinup",
+    "crude"
+   ],
    "emblems": [],
-   "sizes": ["tiny", "small", "medium"],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
    "hair": "any",
    "adult": 0
   },
   "bos": {
-   "factions": [["Fallout4.esm", "BrotherhoodofSteelFaction"]],
-   "count": [70, 25, 5, 0, 0],
-   "kinds": {"scar": 50, "tattoo": 50},
-   "styles": ["military"],
-   "emblems": ["bos"],
-   "sizes": ["tiny", "small", "medium"],
+   "factions": [
+    [
+     "Fallout4.esm",
+     "BrotherhoodofSteelFaction"
+    ]
+   ],
+   "count": [
+    70,
+    25,
+    5,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 50,
+    "tattoo": 50
+   },
+   "styles": [
+    "military"
+   ],
+   "emblems": [
+    "bos"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
    "hair": "trim",
    "adult": 0
   },
   "minutemen": {
-   "factions": [["Fallout4.esm", "MinutemenFaction"]],
-   "count": [55, 35, 10, 0, 0],
-   "kinds": {"tattoo": 75, "scar": 25},
-   "styles": ["military", "script", "floral"],
-   "emblems": ["minutemen"],
-   "sizes": ["tiny", "small", "medium"],
+   "factions": [
+    [
+     "Fallout4.esm",
+     "MinutemenFaction"
+    ]
+   ],
+   "count": [
+    55,
+    35,
+    10,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 75,
+    "scar": 25
+   },
+   "styles": [
+    "military",
+    "script",
+    "floral"
+   ],
+   "emblems": [
+    "minutemen"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
    "hair": "any",
    "adult": 0
   },
   "railroad": {
-   "factions": [["Fallout4.esm", "RailroadFaction"]],
-   "count": [65, 30, 5, 0, 0],
-   "kinds": {"tattoo": 80, "scar": 20},
-   "styles": ["geometric"],
-   "emblems": ["railroad"],
-   "sizes": ["tiny", "small"],
+   "factions": [
+    [
+     "Fallout4.esm",
+     "RailroadFaction"
+    ]
+   ],
+   "count": [
+    65,
+    30,
+    5,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 80,
+    "scar": 20
+   },
+   "styles": [
+    "geometric"
+   ],
+   "emblems": [
+    "railroad"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
    "hair": "any",
    "adult": 0
   },
   "atom": {
-   "factions": [["Fallout4.esm", "ChildrenOfAtomFaction"], ["DLCCoast.esm", "DLC03ChildrenofAtomFaction"]],
-   "count": [20, 50, 25, 5, 0],
-   "kinds": {"tattoo": 60, "scar": 40},
-   "styles": ["religious", "geometric"],
-   "emblems": ["atom"],
-   "sizes": ["tiny", "small", "medium", "large"],
+   "factions": [
+    [
+     "Fallout4.esm",
+     "ChildrenOfAtomFaction"
+    ],
+    [
+     "DLCCoast.esm",
+     "DLC03ChildrenofAtomFaction"
+    ]
+   ],
+   "count": [
+    20,
+    50,
+    25,
+    5,
+    0
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 40
+   },
+   "styles": [
+    "religious",
+    "geometric"
+   ],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large"
+   ],
    "hair": "any",
    "adult": 0
   },
   "institute": {
-   "factions": [["Fallout4.esm", "InstituteFaction"]],
-   "count": [95, 5, 0, 0, 0],
-   "kinds": {"tattoo": 50, "nails": 50},
+   "factions": [
+    [
+     "Fallout4.esm",
+     "InstituteFaction"
+    ]
+   ],
+   "count": [
+    95,
+    5,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 50,
+    "nails": 50
+   },
    "styles": [],
-   "emblems": ["institute"],
-   "sizes": ["tiny"],
+   "emblems": [
+    "institute"
+   ],
+   "sizes": [
+    "tiny"
+   ],
    "hair": "trim",
    "adult": 0
   }
  },
- "order": ["captives", "disciples", "operators", "pack", "triggermen", "raiders", "gunners", "bos", "minutemen", "railroad", "atom", "institute"]
+ "order": [
+  "captives",
+  "disciples",
+  "operators",
+  "pack",
+  "triggermen",
+  "raiders",
+  "gunners",
+  "bos",
+  "minutemen",
+  "railroad",
+  "atom",
+  "institute"
+ ],
+ "characters": {
+  "Piper Wright": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "CompanionPiper",
+     12062
+    ]
+   ],
+   "count": [
+    70,
+    30,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 40
+   },
+   "styles": [
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "a reporter: a small inked word at most"
+  },
+  "Cait": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "CompanionCait",
+     496201
+    ]
+   ],
+   "count": [
+    0,
+    10,
+    40,
+    40,
+    10
+   ],
+   "kinds": {
+    "tattoo": 40,
+    "scar": 35,
+    "rough": 25
+   },
+   "styles": [
+    "tribal",
+    "crude",
+    "skull"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large",
+    "full"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "why": "Combat Zone cage fighter: scarred, bruised, crude ink"
+  },
+  "Curie": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "CompanionCurie",
+     161414
+    ],
+    [
+     "Fallout4.esm",
+     "EncCurieSynth",
+     1460166
+    ]
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "a new synth body: nothing on it yet"
+  },
+  "Magnolia": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Magnolia",
+     140938
+    ]
+   ],
+   "count": [
+    40,
+    60,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [
+    "floral",
+    "pinup"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "lounge singer: one small pretty piece"
+  },
+  "Desdemona": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Desdemona",
+     285393
+    ]
+   ],
+   "count": [
+    80,
+    20,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "severe Railroad leader: an old scar"
+  },
+  "Glory": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Glory",
+     285391
+    ]
+   ],
+   "count": [
+    0,
+    30,
+    50,
+    20,
+    0
+   ],
+   "kinds": {
+    "tattoo": 50,
+    "scar": 50
+   },
+   "styles": [
+    "geometric",
+    "tribal"
+   ],
+   "emblems": [
+    "railroad"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "the Railroad's heavy: scars and the lantern mark"
+  },
+  "Haylen": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSScribeHaylen",
+     384575
+    ]
+   ],
+   "count": [
+    90,
+    10,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [
+    "military"
+   ],
+   "emblems": [
+    "bos"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "a scribe: clean"
+  },
+  "Madison Li": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "MadisonLi",
+     386623
+    ]
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "a scientist: clean"
+  },
+  "Mama Murphy": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "MamaMurphy",
+     106456
+    ]
+   ],
+   "count": [
+    0,
+    40,
+    50,
+    10,
+    0
+   ],
+   "kinds": {
+    "dirt": 50,
+    "scar": 30,
+    "tattoo": 20
+   },
+   "styles": [
+    "floral",
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "old chem-worn seer: grime, old ink"
+  },
+  "Marcy Long": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "MarcyLong",
+     106460
+    ]
+   ],
+   "count": [
+    20,
+    50,
+    30,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 60,
+    "dirt": 40
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "hard survivor: scars and dirt"
+  },
+  "Fahrenheit": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Fahrenheit",
+     140822
+    ]
+   ],
+   "count": [
+    0,
+    0,
+    30,
+    50,
+    20
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 40
+   },
+   "styles": [
+    "tribal",
+    "skull",
+    "crude"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large",
+    "full"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "why": "Hancock's bodyguard: inked and scarred"
+  },
+  "Irma": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Irma",
+     141477
+    ]
+   ],
+   "count": [
+    30,
+    70,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [
+    "floral",
+    "pinup"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "faded glamour: one pretty piece"
+  },
+  "Mags Black": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04MagsBlack",
+     54251
+    ]
+   ],
+   "count": [
+    10,
+    60,
+    30,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 70,
+    "nails": 30
+   },
+   "styles": [
+    "pinup",
+    "geometric",
+    "realistic_art",
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "the Operators' boss: styled ink, painted nails"
+  },
+  "Nisha": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04Nisha",
+     42210
+    ]
+   ],
+   "count": [
+    0,
+    0,
+    30,
+    40,
+    30
+   ],
+   "kinds": {
+    "tattoo": 35,
+    "scar": 35,
+    "rough": 30
+   },
+   "styles": [
+    "skull",
+    "script",
+    "crude"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large",
+    "full"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "why": "the Disciples' leader: knives leave marks"
+  },
+  "Kasumi Nakano": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03KasumiNakano",
+     16074
+    ]
+   ],
+   "count": [
+    60,
+    40,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [
+    "geometric",
+    "animal"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "a young runaway: one small rebel tattoo"
+  },
+  "Ronnie Shaw": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "RonnieShaw",
+     238680
+    ]
+   ],
+   "count": [
+    0,
+    40,
+    60,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 70,
+    "tattoo": 30
+   },
+   "styles": [
+    "military"
+   ],
+   "emblems": [
+    "minutemen"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "old Minutemen veteran: scars, the old emblem"
+  },
+  "Myrna": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Myrna",
+     11455
+    ]
+   ],
+   "count": [
+    80,
+    20,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "sour shopkeeper: plain"
+  },
+  "Doctor Amari": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DoctorAmari",
+     632448
+    ]
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "a neuroscientist: clean"
+  },
+  "Trudy": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Trudy",
+     1075708
+    ]
+   ],
+   "count": [
+    50,
+    50,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "dirt": 50,
+    "scar": 50
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "diner owner: kitchen grime"
+  },
+  "Ellie Perkins": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "ElliePerkins",
+     139938
+    ]
+   ],
+   "count": [
+    90,
+    10,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [
+    "floral"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "a secretary: plain"
+  },
+  "Cricket": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Cricket",
+     1244366
+    ]
+   ],
+   "count": [
+    0,
+    30,
+    50,
+    20,
+    0
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 40
+   },
+   "styles": [
+    "military",
+    "skull"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "arms dealer: tough, scarred, inked"
+  },
+  "Carla": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Carla",
+     903478
+    ]
+   ],
+   "count": [
+    20,
+    50,
+    30,
+    0,
+    0
+   ],
+   "kinds": {
+    "dirt": 60,
+    "scar": 40
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "caravan trader: road dirt"
+  },
+  "Captain Avery": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03CaptainAvery",
+     23680
+    ]
+   ],
+   "count": [
+    30,
+    50,
+    20,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 60,
+    "tattoo": 40
+   },
+   "styles": [
+    "animal",
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "Far Harbor's leader: a fisherwoman's scars"
+  },
+  "Aster": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03Aster",
+     17982
+    ]
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "Acadia's synth: clean"
+  },
+  "Ivy": {
+   "forms": [
+    [
+     "CompanionIvy.esm",
+     "IVYCOMP",
+     2051
+    ]
+   ],
+   "untouched": true,
+   "why": "the owner's own companion: her bud owns her look"
+  },
+  "Geneva": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Geneva",
+     12042
+    ]
+   ],
+   "count": [
+    80,
+    20,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [
+    "floral",
+    "pinup"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "the mayor's secretary: polished"
+  },
+  "Polly": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Polly",
+     11476
+    ]
+   ],
+   "count": [
+    60,
+    40,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [
+    "floral",
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "the butcher who writes poems: a small secret"
+  },
+  "Cathy": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Cathy",
+     11471
+    ]
+   ],
+   "count": [
+    40,
+    60,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "dirt": 70,
+    "scar": 30
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "the grubby salon gossip"
+  },
+  "Becky Fallon": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BeckyFallon",
+     11462
+    ]
+   ],
+   "count": [
+    60,
+    40,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 50,
+    "dirt": 50
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "worn shopkeeper"
+  },
+  "Scarlett": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Scarlett",
+     307776
+    ]
+   ],
+   "count": [
+    50,
+    50,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [
+    "crude",
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "Dugout waitress: a cheap tattoo"
+  },
+  "Preston Garvey": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "PrestonGarvey",
+     106457
+    ]
+   ],
+   "count": [
+    30,
+    70,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "earnest Minuteman: a scar from Quincy"
+  },
+  "Paladin Danse": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSPaladinDanse",
+     161411
+    ]
+   ],
+   "count": [
+    0,
+    40,
+    60,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 60,
+    "tattoo": 40
+   },
+   "styles": [
+    "military"
+   ],
+   "emblems": [
+    "bos"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "Brotherhood paladin: scars and the emblem"
+  },
+  "Robert MacCready": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "CompanionMacCready",
+     160782
+    ]
+   ],
+   "count": [
+    10,
+    50,
+    40,
+    0,
+    0
+   ],
+   "kinds": {
+    "dirt": 50,
+    "scar": 30,
+    "tattoo": 20
+   },
+   "styles": [
+    "crude",
+    "skull"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "young merc, ex-Gunner: grime, a cheap skull"
+  },
+  "Deacon": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "CompanionDeacon",
+     285385
+    ]
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "the spy nobody remembers: nothing to remember"
+  },
+  "Arthur Maxson": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSElderMaxson",
+     410296
+    ]
+   ],
+   "count": [
+    0,
+    30,
+    70,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "the young Elder: battle scars"
+  },
+  "X6-88": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "CompanionX6-88",
+     769766
+    ]
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "a Courser: built to spec"
+  },
+  "Old Longfellow": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03_CompanionOldLongfellow",
+     28251
+    ]
+   ],
+   "count": [
+    0,
+    30,
+    50,
+    20,
+    0
+   ],
+   "kinds": {
+    "tattoo": 50,
+    "scar": 30,
+    "dirt": 20
+   },
+   "styles": [
+    "animal",
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large",
+    "full"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "old hunter: sailor ink, scars"
+  },
+  "Porter Gage": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04Gage",
+     34845
+    ]
+   ],
+   "count": [
+    0,
+    10,
+    40,
+    40,
+    10
+   ],
+   "kinds": {
+    "tattoo": 50,
+    "scar": 35,
+    "rough": 15
+   },
+   "styles": [
+    "crude",
+    "skull",
+    "tribal"
+   ],
+   "emblems": [
+    "raiders"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large",
+    "full"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "why": "raider lieutenant"
+  },
+  "Sturges": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Sturges",
+     106458
+    ]
+   ],
+   "count": [
+    30,
+    50,
+    20,
+    0,
+    0
+   ],
+   "kinds": {
+    "dirt": 70,
+    "scar": 30
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "mechanic: grease"
+  },
+  "Kellogg": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Kellogg",
+     638060
+    ],
+    [
+     "Fallout4.esm",
+     "MQ101Kellogg",
+     850199
+    ]
+   ],
+   "count": [
+    0,
+    20,
+    50,
+    30,
+    0
+   ],
+   "kinds": {
+    "scar": 60,
+    "tattoo": 40
+   },
+   "styles": [
+    "military",
+    "skull"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "mercenary: a career of scars"
+  },
+  "Travis Miles": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "TravisMiles",
+     12070
+    ]
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "nervous DJ: an indoor body"
+  },
+  "Mayor McDonough": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "MayorMcDonough",
+     12040
+    ]
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "a polished politician (a synth)"
+  },
+  "Vadim Bobrov": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "VadimBobrov",
+     12028
+    ]
+   ],
+   "count": [
+    0,
+    40,
+    40,
+    20,
+    0
+   ],
+   "kinds": {
+    "tattoo": 80,
+    "scar": 20
+   },
+   "styles": [
+    "script",
+    "crude"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "barkeep: old prison-style ink"
+  },
+  "Moe Cronin": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "MoeCronin",
+     11442
+    ]
+   ],
+   "count": [
+    40,
+    60,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 40
+   },
+   "styles": [
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "Swatters' owner: a ball player's scars"
+  },
+  "Father": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "shaun",
+     172442
+    ]
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "the Institute's director: clean"
+  },
+  "Paladin Brandis": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSM01_PaladinBrandis",
+     728495
+    ],
+    [
+     "Fallout4.esm",
+     "BoSM01_PaladinBrandis_Postquest",
+     734653
+    ]
+   ],
+   "count": [
+    0,
+    30,
+    50,
+    20,
+    0
+   ],
+   "kinds": {
+    "scar": 50,
+    "dirt": 50
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "why": "hermit survivor: dirt and old wounds"
+  },
+  "Tinker Tom": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "TinkerTom",
+     285387
+    ]
+   ],
+   "count": [
+    40,
+    60,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "dirt": 70,
+    "tattoo": 30
+   },
+   "styles": [
+    "geometric"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "paranoid tinkerer: grease"
+  },
+  "John": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "John",
+     11467
+    ]
+   ],
+   "count": [
+    80,
+    20,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "deaf in one ear from the war"
+  },
+  "Arturo Rodriguez": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "ArturoRodriguez",
+     11447
+    ]
+   ],
+   "count": [
+    40,
+    60,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 60,
+    "dirt": 40
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "gunsmith: burns and grease"
+  },
+  "Solomon": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Solomon",
+     11451
+    ]
+   ],
+   "count": [
+    50,
+    50,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "dirt": 40
+   },
+   "styles": [
+    "geometric"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "chem seller, slightly stoned"
+  },
+  "Doctor Sun": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DoctorSun",
+     134030
+    ]
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "the doctor: clean"
+  },
+  "Abbot": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Abbot",
+     12072
+    ]
+   ],
+   "count": [
+    60,
+    40,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "one of the oldest citizens"
+  },
+  "Sheffield": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Sheffield",
+     12038
+    ]
+   ],
+   "count": [
+    0,
+    40,
+    60,
+    0,
+    0
+   ],
+   "kinds": {
+    "dirt": 70,
+    "scar": 30
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "why": "a beggar: grime"
+  },
+  "Malcolm Latimer": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "MalcolmLatimer",
+     12048
+    ],
+    [
+     "Fallout4.esm",
+     "MS13Photo_MalcolmLatimer",
+     2199316
+    ]
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "the rich man: clean"
+  },
+  "Finn": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Finn",
+     210309
+    ]
+   ],
+   "count": [
+    0,
+    40,
+    40,
+    20,
+    0
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 40
+   },
+   "styles": [
+    "crude",
+    "skull",
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "Goodneighbor's insurance man: thug ink"
+  },
+  "Wayne Delancy": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "MS04WayneDelancy",
+     261832
+    ]
+   ],
+   "count": [
+    0,
+    30,
+    50,
+    20,
+    0
+   ],
+   "kinds": {
+    "tattoo": 50,
+    "scar": 50
+   },
+   "styles": [
+    "skull",
+    "crude"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "a hitman"
+  },
+  "Parker Quinn": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "ParkerQuinn",
+     541670
+    ]
+   ],
+   "count": [
+    70,
+    30,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [
+    "pinup",
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "why": "a con man: all show"
+  },
+  "Winlock": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "GunnerWinlock",
+     214655
+    ]
+   ],
+   "count": [
+    0,
+    40,
+    60,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 40
+   },
+   "styles": [
+    "military",
+    "skull"
+   ],
+   "emblems": [
+    "gunners"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "a Gunner"
+  },
+  "Barnes": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "GunnerBarnes",
+     214656
+    ]
+   ],
+   "count": [
+    0,
+    40,
+    60,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 40
+   },
+   "styles": [
+    "military",
+    "skull"
+   ],
+   "emblems": [
+    "gunners"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "a Gunner"
+  },
+  "Rufus Rubins": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "RufusRubins",
+     107093
+    ]
+   ],
+   "count": [
+    60,
+    40,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "dirt": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "why": "the hotel handyman"
+  }
+ }
 }

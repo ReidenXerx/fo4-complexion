@@ -1,0 +1,525 @@
+{
+ "f:Complexion_BruiseFresh_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "bruise",
+  "regions": [],
+  "size": "small",
+  "note": "fresh bruises"
+ },
+ "f:Complexion_BruiseFresh_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "bruise",
+  "regions": [],
+  "size": "small",
+  "note": "fresh bruises"
+ },
+ "f:Complexion_BruiseFresh_F03": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "bruise",
+  "regions": [],
+  "size": "small",
+  "note": "fresh bruises"
+ },
+ "m:Complexion_BruiseFresh_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "bruise",
+  "regions": [],
+  "size": "small",
+  "note": "fresh bruises"
+ },
+ "m:Complexion_BruiseFresh_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "bruise",
+  "regions": [],
+  "size": "small",
+  "note": "fresh bruises"
+ },
+ "m:Complexion_BruiseFresh_M03": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "bruise",
+  "regions": [],
+  "size": "small",
+  "note": "fresh bruises"
+ },
+ "f:Complexion_BruiseOld_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "bruise",
+  "regions": [],
+  "size": "small",
+  "note": "fading yellow bruises"
+ },
+ "f:Complexion_BruiseOld_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "bruise",
+  "regions": [],
+  "size": "small",
+  "note": "fading yellow bruises"
+ },
+ "m:Complexion_BruiseOld_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "bruise",
+  "regions": [],
+  "size": "small",
+  "note": "fading yellow bruises"
+ },
+ "m:Complexion_BruiseOld_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "bruise",
+  "regions": [],
+  "size": "small",
+  "note": "fading yellow bruises"
+ },
+ "f:Complexion_GrimeLight_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "dirt",
+  "regions": [],
+  "size": "medium",
+  "note": "light ground-in dirt"
+ },
+ "f:Complexion_GrimeLight_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "dirt",
+  "regions": [],
+  "size": "medium",
+  "note": "light ground-in dirt"
+ },
+ "m:Complexion_GrimeLight_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "dirt",
+  "regions": [],
+  "size": "medium",
+  "note": "light ground-in dirt"
+ },
+ "m:Complexion_GrimeLight_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "dirt",
+  "regions": [],
+  "size": "medium",
+  "note": "light ground-in dirt"
+ },
+ "f:Complexion_GrimeHeavy_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "dirt",
+  "regions": [],
+  "size": "medium",
+  "note": "heavy grime"
+ },
+ "f:Complexion_GrimeHeavy_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "dirt",
+  "regions": [],
+  "size": "medium",
+  "note": "heavy grime"
+ },
+ "m:Complexion_GrimeHeavy_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "dirt",
+  "regions": [],
+  "size": "medium",
+  "note": "heavy grime"
+ },
+ "m:Complexion_GrimeHeavy_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "dirt",
+  "regions": [],
+  "size": "medium",
+  "note": "heavy grime"
+ },
+ "f:Complexion_Blood_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "blood",
+  "regions": [],
+  "size": "medium",
+  "note": "dried blood, drips, spatter"
+ },
+ "f:Complexion_Blood_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "blood",
+  "regions": [],
+  "size": "medium",
+  "note": "dried blood, drips, spatter"
+ },
+ "f:Complexion_Blood_F03": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "blood",
+  "regions": [],
+  "size": "medium",
+  "note": "dried blood, drips, spatter"
+ },
+ "m:Complexion_Blood_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "blood",
+  "regions": [],
+  "size": "medium",
+  "note": "dried blood, drips, spatter"
+ },
+ "m:Complexion_Blood_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "blood",
+  "regions": [],
+  "size": "medium",
+  "note": "dried blood, drips, spatter"
+ },
+ "m:Complexion_Blood_M03": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "blood",
+  "regions": [],
+  "size": "medium",
+  "note": "dried blood, drips, spatter"
+ },
+ "f:Complexion_LashesFresh_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "marks",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "note": "fresh whip welts"
+ },
+ "f:Complexion_LashesFresh_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "marks",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "note": "fresh whip welts"
+ },
+ "m:Complexion_LashesFresh_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "marks",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "note": "fresh whip welts"
+ },
+ "m:Complexion_LashesFresh_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "marks",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "note": "fresh whip welts"
+ },
+ "f:Complexion_LashesHealed_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "scar",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "note": "healed whip scars"
+ },
+ "m:Complexion_LashesHealed_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "scar",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "note": "healed whip scars"
+ },
+ "f:Complexion_Spank_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "marks",
+  "regions": [
+   "butt"
+  ],
+  "size": "medium",
+  "note": "reddened buttocks, handprints"
+ },
+ "f:Complexion_Spank_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "marks",
+  "regions": [
+   "butt"
+  ],
+  "size": "medium",
+  "note": "reddened buttocks, handprints"
+ },
+ "m:Complexion_Spank_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "marks",
+  "regions": [
+   "butt"
+  ],
+  "size": "medium",
+  "note": "reddened buttocks, handprints"
+ },
+ "m:Complexion_Spank_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "marks",
+  "regions": [
+   "butt"
+  ],
+  "size": "medium",
+  "note": "reddened buttocks, handprints"
+ },
+ "m:Complexion_Moles_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "mole",
+  "regions": [],
+  "size": "tiny",
+  "note": "moles"
+ },
+ "m:Complexion_Moles_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "mole",
+  "regions": [],
+  "size": "tiny",
+  "note": "moles"
+ },
+ "m:Complexion_Moles_M03": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "mole",
+  "regions": [],
+  "size": "tiny",
+  "note": "moles"
+ },
+ "m:Complexion_Scar_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "scar",
+  "regions": [],
+  "size": "small",
+  "note": "healed scars"
+ },
+ "m:Complexion_Scar_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "scar",
+  "regions": [],
+  "size": "small",
+  "note": "healed scars"
+ },
+ "m:Complexion_ScarStitched_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "scar",
+  "regions": [],
+  "size": "small",
+  "note": "stitched scars"
+ },
+ "m:Complexion_ScarStitched_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "scar",
+  "regions": [],
+  "size": "small",
+  "note": "stitched scars"
+ },
+ "m:Complexion_PubicFull_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "large",
+  "note": "full pubic hair"
+ },
+ "m:Complexion_PubicFull_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "large",
+  "note": "full pubic hair"
+ },
+ "m:Complexion_PubicTrim_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "note": "trimmed pubic hair"
+ },
+ "m:Complexion_PubicTrail_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "medium",
+  "note": "pubic hair and a trail"
+ }
+}

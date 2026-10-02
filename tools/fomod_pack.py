@@ -1,5 +1,5 @@
-"""Silhouette's FOMOD installer, written into a release folder (nexus-tools/docs/FOMOD-STANDARD.md, the owner's
-house standard of 2026-10-01; Silhouette 0.3.0 is the first release under it).
+"""Complexion's FOMOD installer, written into a release folder (nexus-tools/docs/FOMOD-STANDARD.md, the owner's
+house standard of 2026-10-01; Complexion 0.1.0 is built under it).
 
     python tools/fomod_pack.py <release folder> <version>
 
@@ -15,7 +15,7 @@ What it writes, in <release folder>/fomod/:
 - info.xml, images/*.jpg (the cards at 1000 px), and screenshot.png (MO2 shows that, not moduleImage).
 
 Then it validates ModuleConfig.xml against tools/fomod/ModuleConfig5.0.xsd -- the schema Vortex itself validates
-with (Nexus-Mods/fomod-installer, XmlScript5.0.xsd, GPL-3.0 like Silhouette; one stray space in a type name,
+with (Nexus-Mods/fomod-installer, XmlScript5.0.xsd, GPL-3.0; one stray space in a type name,
 type=" xs:string", taken out: .NET reads past it, lxml does not) -- and checks that every image and
 every source the installer names exists. Any failure exits non-zero: scripts/make-release.ps1 packs nothing.
 """
@@ -30,46 +30,41 @@ XSD = ROOT / 'tools' / 'fomod' / 'ModuleConfig5.0.xsd'
 IMG = ROOT / 'docs' / 'img'
 SCHEMA = 'http://qconsulting.ca/fo3/ModConfig5.0.xsd'  # exactly: Vortex reads the version out of this text
 
-# What Silhouette does: (name, picture in docs/img, plain-text description). Facts as docs/FEATURES.md has them.
+# What Complexion does: (name, picture in docs/img, plain-text description). Facts as README.md has them.
 FEATURES = [
-    ('The picker window', 'window.jpg',
-     'Aim at anyone, or pick yourself, and choose a body from a grid of pictures: it goes on them live while the '
-     'camera frames them and they stand still. Apply keeps it; Cancel puts back exactly what they had. Open it with '
-     'its hotkey or from MCM, and pick with the mouse.'),
-    ('Bodies for everyone', 'pool.jpg',
-     'Every NPC gets a body the first time you meet them, and keeps it: Silhouette\'s own pool, 41 bodies a sex -- '
-     'mostly ordinary, some rough, a rare fine one.'),
-    ('The named people', 'gallery.jpg',
-     '60 named people have a body of their own, drawn from their stories; the Diamond City pack is sardonic on '
-     'purpose.'),
-    ('Faction bodies', 'factions.jpg',
-     'The Brotherhood, the Minutemen, Gunners, raiders, the Institute and the other factions each draw from a pool '
-     'in their own look. A switch in MCM turns it off.'),
-    ('Clothes: ORefit', 'cloth.jpg',
-     'While someone is dressed, the body is held together and lifted; under heavy clothes it is flattened. The '
-     'moment they undress they are exactly their own body again.'),
-    ('Variety', 'variety.jpg',
-     'Every person their own small details within measured ranges, as OBody does. Two switches in MCM.'),
-    ('Your own presets', 'ownpresets.jpg',
-     'Your BodySlide presets join the picker by themselves, read the way BodySlide builds them. They are never '
-     'handed out at random.'),
-    ('One file for Old-Gen and Anniversary', 'runtimes.jpg',
-     'One plugin for Fallout 4 1.10.163 and Anniversary 1.11.x, through Runtime Database. Old saves get a fresh '
-     'start by themselves.'),
+    ('Who they are decides', 'groups.jpg',
+     'Every NPC gets skin overlays the first time you meet them, and keeps them, chosen for who they are: raiders '
+     'inked, scarred and grimy; settlers mostly plain; the Brotherhood clean but for a scar and its own mark; the '
+     'Institute almost untouched. Twelve faction groups and everyone else, each with its own odds and styles.'),
+    ('One look, not a pile', 'composition.jpg',
+     'Never more than six overlays on anyone, one style per person, never three of a kind, no two tattoos on one '
+     'spot, and a faction emblem only on its own people. Lore-breaking and poor pieces are never handed out.'),
+    ('The named people', 'characters.jpg',
+     '59 named characters have a look of their own, from their stories: Cait scarred from the Combat Zone, Piper '
+     'all but plain, Danse under the Brotherhood\'s mark, Fahrenheit inked.'),
+    ('Its own marks', 'marks.jpg',
+     'Bruises, grime, dried blood, whip welts and spank marks, painted for the CBBE and male bodies; moles, scars '
+     'and pubic hair for men, whom most packs forget.'),
+    ('Your packs, read the way LooksMenu reads them', 'packs.jpg',
+     'Complexion ships no other author\'s overlays: it hands out the ones you installed. About 1,900 templates of '
+     '16 popular packs are tagged from their pictures; a pack it does not know is left alone.'),
+    ('Cheap, and kind to other mods', 'cheap.jpg',
+     'One decision per NPC, one rebuild, ever: no cloak, no waits, no faction scans in Papyrus. Overlays other mods '
+     'put on someone (AAF, Rapport) are kept and draw on top; nobody is touched in an AAF scene; the player, the '
+     'dead and children never.'),
 ]
 # Rule 4a: every requirement on one option, so the whole list shows at once. "found" is plain fact on this page: the
 # install is refused before it when LooksMenu is missing.
 SETUP = ('Your setup',
-         'LooksMenu: found -- its BodyGen gives every body.\n'
+         'LooksMenu: found -- its overlays are what Complexion hands out.\n'
          'F4SE: check this yourself -- runs every DLL mod (f4se.silverlock.org).\n'
-         'Runtime Database: check this yourself -- finds the game\'s functions on old-gen and Anniversary (Nexus 108394).\n'
-         'MCM: check this yourself -- the settings, the hotkeys and the picker buttons.\n'
-         'BodySlide: check this yourself -- your body (CBBE for women, BodyTalk for men; one is enough) and your '
-         'outfits built from a zeroed preset with Build Morphs ticked.\n'
-         'Silhouette checks the rest in game and says what is missing.')
+         'Runtime Database: check this yourself -- finds the game\'s functions on old-gen, next-gen and Anniversary (Nexus 108394).\n'
+         'MCM: check this yourself -- the switches and the buttons.\n'
+         'LooksMenu overlay packs: check this yourself -- tattoos, skin detail, hair; Complexion hands out the ones you have.\n'
+         'Random Overlay Framework: uninstall it -- both would hand out overlays. Then MCM > Complexion > Clear every overlay, once.\n'
+         'Complexion checks the rest in game and says what is missing.')
 AAF_NOTE = ('AAF is not active',
-            'Without AAF, Silhouette cannot tell when someone is in an AAF scene, so a body change asked for then is '
-            'not held back until the scene ends. Everything else works.')
+            'Without AAF there are no AAF scenes to wait for; everything works.')
 
 
 def esc(text):
@@ -112,8 +107,8 @@ def module_config(entries):
     return f'''<?xml version="1.0" encoding="UTF-8"?>
 <!-- GENERATED by tools/fomod_pack.py (nexus-tools/docs/FOMOD-STANDARD.md). Edit the tool, not this file. -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="{SCHEMA}">
-  <moduleName>Silhouette</moduleName>
-  <moduleImage path="fomod\\images\\window.jpg"/>
+  <moduleName>Complexion</moduleName>
+  <moduleImage path="fomod\\images\\groups.jpg"/>
   <moduleDependencies operator="And">
     <gameDependency version="1.10.163.0"/>
     <fileDependency file="LooksMenu.esp" state="Active"/>
@@ -143,17 +138,17 @@ def main():
             sys.exit(f'no picture {src}')
         pic = Image.open(src).convert('RGB')
         pic.resize((1000, round(1000 * pic.height / pic.width)), Image.LANCZOS).save(fomod / 'images' / image, quality=86)
-    Image.open(IMG / 'window.jpg').convert('RGB').resize((1000, 563), Image.LANCZOS).save(fomod / 'screenshot.png')
+    Image.open(IMG / 'groups.jpg').convert('RGB').resize((1000, 563), Image.LANCZOS).save(fomod / 'screenshot.png')
     config = module_config(entries)
     # UTF-8 with a BOM: both managers read it (Vortex detects it, MO2 retries encodings).
     (fomod / 'ModuleConfig.xml').write_text(config, encoding='utf-8-sig')
     (fomod / 'info.xml').write_text(f'''<?xml version="1.0" encoding="UTF-8"?>
 <fomod>
-  <Name>Silhouette</Name>
+  <Name>Complexion</Name>
   <Author>Dudu'sButt</Author>
   <Version>{esc(version)}</Version>
-  <Website>https://www.nexusmods.com/fallout4/mods/109439</Website>
-  <Description>OBody NG's body distribution for Fallout 4.</Description>
+  <Website>https://www.nexusmods.com/fallout4</Website>
+  <Description>Skin overlays for every NPC, chosen for who they are.</Description>
 </fomod>
 ''', encoding='utf-8-sig')
 

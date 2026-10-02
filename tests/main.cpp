@@ -56,12 +56,25 @@ namespace
 			if (!line.empty() && line.back() == '\r') {
 				line.pop_back();
 			}
-			std::istringstream s(line);
-			std::string        group, sex, picks;
-			std::uint64_t      seed = 0;
-			int                adult = 0;
-			s >> group >> sex >> seed >> adult;
-			std::getline(s >> std::ws, picks);
+			// Tab-separated: group names ("npc:Piper Wright") and template ids have spaces.
+			std::vector<std::string> cols;
+			for (std::size_t at = 0;;) {
+				const auto tab = line.find('\t', at);
+				cols.push_back(line.substr(at, tab == std::string::npos ? std::string::npos : tab - at));
+				if (tab == std::string::npos) {
+					break;
+				}
+				at = tab + 1;
+			}
+			if (cols.size() != 5) {
+				std::println("bad line: {}", line);
+				return 1;
+			}
+			const auto&   group = cols[0];
+			const auto&   sex = cols[1];
+			const auto    seed = std::stoull(cols[2]);
+			const int     adult = std::stoi(cols[3]);
+			const auto&   picks = cols[4];
 			const auto* g = profiles.Find(group);
 			if (!g) {
 				std::println("no group {}", group);
