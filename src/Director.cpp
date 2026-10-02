@@ -119,9 +119,9 @@ namespace CX
 		_adult = a_adult;
 	}
 
-	std::uint64_t Director::SeedFor(const Facts& a_facts) const
+	std::uint64_t Director::SeedFor(std::uint32_t a_ref, std::uint32_t a_base) const
 	{
-		return Mix(_salt ^ (static_cast<std::uint64_t>(a_facts.ref) << 32 | a_facts.base));
+		return Mix(_salt ^ (static_cast<std::uint64_t>(a_ref) << 32 | a_base));
 	}
 
 	void Director::Seen(const Facts& a_facts)
@@ -144,8 +144,9 @@ namespace CX
 			}
 			Record r;
 			r.female = a_facts.female;
+			r.base = a_facts.base;
 			r.group = group->name;
-			r.picks = Compose(_profiles, _catalog, a_facts.female, *group, SeedFor(a_facts), _adult);
+			r.picks = Compose(_profiles, _catalog, a_facts.female, *group, SeedFor(a_facts.ref, a_facts.base), _adult);
 			std::string list;
 			for (const auto& p : r.picks) {
 				list += (list.empty() ? "" : ", ") + p.id;
@@ -218,6 +219,47 @@ namespace CX
 		_inflight.erase(a_id);
 	}
 
+	bool Director::Regroup(std::uint32_t a_id, std::string_view a_group)
+	{
+		std::scoped_lock l{ _lock };
+		const auto o = _inflight.find(a_id);
+		// Papyrus hands strings back in whichever case was interned first: "captives" can arrive as "Captives".
+		const Group* group = nullptr;
+		for (const auto& g : _profiles.groups) {
+			if (g.name.size() == a_group.size() && std::ranges::equal(g.name, a_group, [](char x, char y) {
+					return std::tolower(static_cast<unsigned char>(x)) == std::tolower(static_cast<unsigned char>(y));
+				})) {
+				group = &g;
+			}
+		}
+		if (o == _inflight.end() || !group) {
+			return false;
+		}
+		const auto r = _records.find(o->second.ref);
+		if (r == _records.end() || r->second.applied) {
+			return false;
+		}
+		if (r->second.group == group->name) {
+			return true;
+		}
+		r->second.picks = Compose(_profiles, _catalog, r->second.female, *group, SeedFor(o->second.ref, r->second.base), _adult);
+		Log(std::format("{:08X}: {} after all (a faction on the reference), now: {} overlay(s)", o->second.ref, group->name, r->second.picks.size()));
+		r->second.group = group->name;
+		o->second.picks = r->second.picks;
+		return true;
+	}
+
+	std::string Director::GroupOf(std::uint32_t a_id) const
+	{
+		std::scoped_lock l{ _lock };
+		const auto o = _inflight.find(a_id);
+		if (o == _inflight.end()) {
+			return {};
+		}
+		const auto r = _records.find(o->second.ref);
+		return r == _records.end() ? std::string{} : r->second.group;
+	}
+
 	void Director::ResetAll()
 	{
 		std::scoped_lock l{ _lock };
@@ -278,6 +320,7 @@ namespace CX
 			w.U32(ref);
 			w.U8(r.female ? 1 : 0);
 			w.U8(r.applied ? 1 : 0);
+			w.U32(r.base);
 			w.Str(r.group);
 			w.U32(static_cast<std::uint32_t>(r.picks.size()));
 			for (const auto& p : r.picks) {
@@ -305,7 +348,7 @@ namespace CX
 			std::uint32_t ref = 0, picks = 0;
 			std::uint8_t  female = 0, applied = 0;
 			Record        rec;
-			if (!r.U32(ref) || !r.U8(female) || !r.U8(applied) || !r.Str(rec.group) || !r.U32(picks) || picks > 64) {
+			if (!r.U32(ref) || !r.U8(female) || !r.U8(applied) || !r.U32(rec.base) || !r.Str(rec.group) || !r.U32(picks) || picks > 64) {
 				return false;
 			}
 			rec.female = female != 0;

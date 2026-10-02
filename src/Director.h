@@ -26,6 +26,7 @@ namespace CX
 	struct Record
 	{
 		bool              female{ false };
+		std::uint32_t     base{ 0 };  // the NPC record, part of the seed
 		std::string       group;
 		std::vector<Pick> picks;
 		bool              applied{ false };  // the bridge confirmed every entry landed
@@ -59,6 +60,11 @@ namespace CX
 		void Done(std::uint32_t a_id, bool a_landed);
 		// Not loaded, dead now, or busy in another mod's scene: the work waits for the next sighting.
 		void Gone(std::uint32_t a_id);
+		// The bridge saw a faction the record does not carry (a raider's captive is put in CaptiveFaction on the
+		// reference at run time): the look is composed again for a_group, with the same seed, before it is put on.
+		// False when the order or the group is unknown. Only for a look not yet confirmed on them.
+		bool Regroup(std::uint32_t a_id, std::string_view a_group);
+		[[nodiscard]] std::string GroupOf(std::uint32_t a_id) const;
 
 		// MCM "Roll everyone again": a new salt, every record forgotten; whoever is seen next is decided anew
 		// (the bridge replaces our old entries, which it knows by their negative priority).
@@ -86,7 +92,7 @@ namespace CX
 
 	private:
 		void Log(std::string a_line);
-		[[nodiscard]] std::uint64_t SeedFor(const Facts& a_facts) const;
+		[[nodiscard]] std::uint64_t SeedFor(std::uint32_t a_ref, std::uint32_t a_base) const;
 
 		mutable std::mutex                                 _lock;
 		Profiles                                           _profiles;

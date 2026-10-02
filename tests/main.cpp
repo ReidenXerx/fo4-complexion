@@ -160,6 +160,18 @@ namespace
 			Check(d.NextOrder() != 0, "seen again: ordered again");
 		}
 
+		// A captive the record could not see: composed again for the captives, same seed, before it is put on.
+		CX::Facts held{ 0x4444, 0x5555, true, "raiders", "Captive", "" };
+		d.Seen(held);
+		if (const auto o = d.NextOrder(); o) {
+			Check(d.GroupOf(o) == "raiders", "the record's group first");
+			Check(d.Regroup(o, "Captives") && d.GroupOf(o) == "captives", "regrouped as a captive, whatever case Papyrus hands the name in");
+			const auto again = CX::Compose(a_profiles, a_catalog, true, *a_profiles.Find("captives"), 0, true);
+			Check(d.GetOrder(o)->picks.size() == d.RecordFor(0x4444)->picks.size(), "the order carries the new look");
+			Check(!d.Regroup(o, "nobody"), "an unknown group is refused");
+			(void)again;
+		}
+
 		// Left alone.
 		d.Seen({ 0x9999, 0x1, true, "raiders", "Corpse", "dead" });
 		Check(!d.RecordFor(0x9999), "the dead get no decision");

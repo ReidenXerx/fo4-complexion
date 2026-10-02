@@ -105,6 +105,13 @@ namespace CX::Papyrus
 
 		void OrderGone(std::monostate, std::int32_t a_id) { D().Gone(Id(a_id)); }
 
+		Str OrderGroup(std::monostate, std::int32_t a_id) { return Str{ D().GroupOf(Id(a_id)) }; }
+
+		bool OrderRegroup(std::monostate, std::int32_t a_id, Str a_group)
+		{
+			return D().Regroup(Id(a_id), a_group.c_str() ? std::string_view{ a_group.c_str() } : std::string_view{});
+		}
+
 		// Only functions that touch nothing but the director's state (its own lock) may be fast; anything that
 		// reads the game stays on the main thread. Set on the function object, as Silhouette does.
 		template <class F>
@@ -143,6 +150,8 @@ namespace CX::Papyrus
 		Bind(a_vm, "OrderPriority"sv, OrderPriority, fast);
 		Bind(a_vm, "OrderDone"sv, OrderDone, fast);
 		Bind(a_vm, "OrderGone"sv, OrderGone, fast);
+		Bind(a_vm, "OrderGroup"sv, OrderGroup, fast);
+		Bind(a_vm, "OrderRegroup"sv, OrderRegroup, fast);
 		logger::info("papyrus: {} natives bound, protocol {}", kScript, kProtocol);
 		return true;
 	}

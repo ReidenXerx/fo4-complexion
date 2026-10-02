@@ -18,6 +18,10 @@ String Property ModName = "Complexion" AutoReadOnly
 ; AAF's own keywords for an actor in a scene, or locked by another mod (AAF.esm).
 Int Property AAFActorBusy = 0x00915A AutoReadOnly
 Int Property AAFActorLocked = 0x017CEA AutoReadOnly
+; Raiders' captives are put in these on the reference at run time (Fallout4.esm), where the plugin, reading the
+; NPC record, cannot see them.
+Int Property CaptiveFactionID = 0x03E0C8 AutoReadOnly
+Int Property BoundCaptiveFactionID = 0x058610 AutoReadOnly
 
 Float _drainStarted = -1.0
 Int _polls = 0
@@ -25,6 +29,8 @@ Bool _plugin = False
 Bool _mcm = False
 Keyword _aafBusy
 Keyword _aafLocked
+Faction _captive
+Faction _boundCaptive
 
 Event OnQuestInit()
 	RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")
@@ -46,6 +52,8 @@ Function Connect()
 		_aafBusy = Game.GetFormFromFile(AAFActorBusy, "AAF.esm") as Keyword
 		_aafLocked = Game.GetFormFromFile(AAFActorLocked, "AAF.esm") as Keyword
 	EndIf
+	_captive = Game.GetFormFromFile(CaptiveFactionID, "Fallout4.esm") as Faction
+	_boundCaptive = Game.GetFormFromFile(BoundCaptiveFactionID, "Fallout4.esm") as Faction
 	; By the names plugins register with F4SE, not their file names: MCM is "F4MCM"; LooksMenu "F4EE", or
 	; "Fallout 4 Engine Extender" on AE.
 	_mcm = F4SE.GetPluginVersion("F4MCM") > 0 || F4SE.GetPluginVersion("MCM") > 0
@@ -134,12 +142,19 @@ Bool Function Busy(Actor a)
 	Return False
 EndFunction
 
+Bool Function Captive(Actor a)
+	Return (_captive && a.IsInFaction(_captive)) || (_boundCaptive && a.IsInFaction(_boundCaptive))
+EndFunction
+
 Function RunOrder(Int aiOrder)
 	Actor a = Game.GetForm(Complexion:DLL.OrderActor(aiOrder)) as Actor
 	; A form still resolves after its actor is gone: Is3DLoaded is the check that holds.
 	If !a || !a.Is3DLoaded() || a.IsDead() || a.IsChild() || Busy(a)
 		Complexion:DLL.OrderGone(aiOrder)
 		Return
+	EndIf
+	If Captive(a) && Complexion:DLL.OrderGroup(aiOrder) != "captives"
+		Complexion:DLL.OrderRegroup(aiOrder, "captives")
 	EndIf
 	Bool female = Complexion:DLL.OrderFemale(aiOrder)
 	Int count = Complexion:DLL.OrderCount(aiOrder)

@@ -33,3 +33,7 @@ Int Function OrderPriority(Int aiOrder, Int aiIndex) Native Global
 Function OrderDone(Int aiOrder, Bool abLanded) Native Global
 ; Not loaded, dead, a child, or busy in another mod's scene: tried again when they are next seen.
 Function OrderGone(Int aiOrder) Native Global
+; The profile group the look was composed for ("raiders", "settlers", ...).
+String Function OrderGroup(Int aiOrder) Native Global
+; A faction on the reference the plugin cannot see (a raider's captive): compose the look again for that group.
+Bool Function OrderRegroup(Int aiOrder, String asGroup) Native Global
