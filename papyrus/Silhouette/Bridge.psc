@@ -354,6 +354,15 @@ Function WindowLoad(Int aiSession)
 EndFunction
 
 Function WindowLoadThem(Int aiSession)
+	Actor dead = Game.GetForm(_winThem) as Actor
+	If dead && dead.IsDead()
+		If !WindowLive(aiSession)
+			Return
+		EndIf
+		WindowTarget(Silhouette:DLL.NameOf(_winThem), "them", Silhouette:Player.IsFemale(dead), Silhouette:DLL.Build())
+		WindowItems("", "Silhouette leaves the dead alone: they keep the body they have.", -1)
+		Return
+	EndIf
 	String said = Silhouette:DLL.PickerStart(_winThem)
 	String name = Silhouette:DLL.NameOf(_winThem)
 	If !WindowLive(aiSession)
@@ -872,7 +881,17 @@ Function RunOrder(Int aiOrder)
 	EndIf
 	Bool female = Silhouette:DLL.OrderFemale(aiOrder)
 
-	If Silhouette:DLL.OrderKind(aiOrder) == 5 && Busy(a)
+	; The dead are left as BodyGen gave them when they loaded (2026-10-02: reports of invisible bodies on pre-placed
+	; corpses, only head and hands showing). A body, a refit or a touch-up would re-apply a ragdolled corpse's
+	; geometry, a known way for Fallout 4 corpses to lose parts; reading them (a probe, a snapshot) changes
+	; nothing. The work waits as for someone out of reach.
+	Int orderKind = Silhouette:DLL.OrderKind(aiOrder)
+	If orderKind != 1 && orderKind != 4 && a.IsDead()
+		Silhouette:DLL.OrderGone(aiOrder)
+		Return
+	EndIf
+
+	If orderKind == 5 && Busy(a)
 		; A touch-up can wait: it would change her shapes in the middle of the scene.
 		Silhouette:DLL.OrderDefer(aiOrder)
 		Return
@@ -1164,8 +1183,21 @@ Function PickerPick()
 		Debug.Notification("Silhouette: aim at an NPC close enough to talk to, then Pick.")
 		Return
 	EndIf
+	If LeftDead(target)
+		Return
+	EndIf
 	Debug.Notification(Silhouette:DLL.PickerStart(target))
 	Act()
+EndFunction
+
+; The dead are not shaped (RunOrder): a picker or a menu button on one says so instead of promising a change.
+Bool Function LeftDead(Int aiTarget)
+	Actor a = Game.GetForm(aiTarget) as Actor
+	If a && a.IsDead()
+		Debug.Notification("Silhouette leaves the dead alone: " + Silhouette:DLL.NameOf(aiTarget) + " keeps their body.")
+		Return True
+	EndIf
+	Return False
 EndFunction
 
 Function PickerNext()
@@ -1235,6 +1267,9 @@ Function MenuApply()
 		Debug.MessageBox("Silhouette: aim at an NPC before opening the menu, or Pick one with the hotkey.")
 		Return
 	EndIf
+	If LeftDead(target)
+		Return
+	EndIf
 	Bool female = a.GetLeveledActorBase().GetSex() == 1
 	String preset = Silhouette:Player.NpcChoice(female)
 	If preset == ""
@@ -1257,6 +1292,9 @@ Function MenuRandom()
 	Int target = MenuTarget()
 	If target == 0
 		Debug.MessageBox("Silhouette: aim at an NPC before opening the menu, or Pick one with the hotkey.")
+		Return
+	EndIf
+	If LeftDead(target)
 		Return
 	EndIf
 	String why = Silhouette:DLL.RequestRegenerate(target, LaneUrgent)
