@@ -40,7 +40,7 @@ $files = [ordered]@{
 }
 
 # Complexion's own overlays (tools\paint\make_marks.py): every file under these folders, as it is.
-foreach ($tree in 'Textures\Overlays\Complexion', 'Materials\Overlays\Complexion', 'F4SE\Plugins\F4EE\Overlays\Complexion.esp') {
+foreach ($tree in 'Textures\Overlays\Complexion', 'Materials\Overlays\Complexion', 'F4SE\Plugins\F4EE\Overlays\Complexion.esp', 'F4SE\Plugins\RobCo_Patcher\race') {
     $dir = Join-Path $root "data\$tree"
     if (-not (Test-Path $dir)) { throw "missing data\$tree - run python tools\paint\make_marks.py" }
     Get-ChildItem $dir -File -Recurse | ForEach-Object {

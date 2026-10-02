@@ -48,6 +48,9 @@ namespace CX::Game
 		std::mutex                 g_warningLock;
 		std::string                g_warning;
 
+		bool                              g_rofLoaded{ false };
+		bool                              g_rofChecked{ false };
+
 		bool                              g_sweepArmed{ false };
 		std::int64_t                      g_sweepUntilMs{ 0 };
 		std::unordered_set<std::uint32_t> g_swept;
@@ -465,11 +468,9 @@ namespace CX::Game
 			g_groups.push_back(std::move(gf));
 		}
 
-		if (std::ranges::any_of(plugins, [](const std::string& p) { return IEquals(p, "INVB_OverlayFramework.esp"); })) {
-			logger::warn("Random Overlay Framework is loaded: it hands out overlays too, and stacks them on every load");
-			Warn("Random Overlay Framework is loaded. It hands out overlays as well, and stacks them on every load: "
-				 "uninstall it, then use MCM > Complexion > Clear every overlay once, so Complexion starts from clean skin.");
-		}
+		// C-11: ROF stays for its tattoo packs; Complexion's RobCo ini switches its distributor off. Checked at the
+		// first poll, once RobCo Patcher has surely patched the races.
+		g_rofLoaded = std::ranges::any_of(plugins, [](const std::string& p) { return IEquals(p, "INVB_OverlayFramework.esp"); });
 		g_director.SetData(std::move(profiles), std::move(catalog));
 	}
 
@@ -549,6 +550,46 @@ namespace CX::Game
 		return Compat::DisplayName(a_actor);
 	}
 
+	namespace
+	{
+		// The Human race carries ROF's three "already done" keywords (data/.../RobCo_Patcher/race/Complexion_ROF.ini):
+		// ROF takes its own exit for everyone. Members only: the race's keyword list.
+		void CheckROF()
+		{
+			if (!g_rofLoaded || g_rofChecked) {
+				return;
+			}
+			g_rofChecked = true;
+			auto* dh = RE::TESDataHandler::GetSingleton();
+			auto* raceForm = dh ? dh->LookupForm(0x013746, "Fallout4.esm") : nullptr;
+			std::size_t found = 0;
+			if (raceForm && raceForm->Is(RE::ENUM_FORM_ID::kRACE)) {
+				const auto* kw = static_cast<const RE::BGSKeywordForm*>(static_cast<RE::TESRace*>(raceForm));
+				for (const std::uint32_t local : { 0x0052BDu, 0x000DCFu, 0x0055A7u }) {
+					auto* want = dh->LookupForm(local, "INVB_OverlayFramework.esp");
+					for (std::uint32_t i = 0; want && kw->keywords && i < kw->numKeywords && i < 512; ++i) {
+						if (kw->keywords[i] == want) {
+							++found;
+							break;
+						}
+					}
+				}
+			}
+			if (found == 3) {
+				logger::info("Random Overlay Framework is loaded for its tattoo packs; its distributor is switched off (its own done-keywords on "
+							 "the Human race, from Complexion_ROF.ini). Its old overlays stay until MCM > Complexion > Clear every overlay");
+				Warn("Random Overlay Framework is installed: Complexion has switched its distributor off, and uses its tattoo packs. "
+					 "To remove the overlays ROF already put on people, press MCM > Complexion > Clear every overlay once.");
+			} else {
+				logger::warn("Random Overlay Framework is loaded and still hands out overlays: {} of its 3 done-keywords are on the Human race "
+							 "(RobCo Patcher missing, or F4SE/Plugins/RobCo_Patcher/race/Complexion_ROF.ini not installed)",
+					found);
+				Warn("Random Overlay Framework is loaded and still hands out overlays: Complexion could not switch it off (RobCo Patcher "
+					 "is needed). Its overlays will stack on top of Complexion's. Install RobCo Patcher, or uninstall ROF.");
+			}
+		}
+	}
+
 	void Pump()
 	{
 		g_pumpedMs.store(NowMs());
@@ -556,6 +597,7 @@ namespace CX::Game
 		if (g_layout == Layout::kBad) {
 			return;
 		}
+		CheckROF();
 		std::deque<std::uint32_t> loaded;
 		std::size_t               dropped = 0;
 		{

@@ -99,6 +99,19 @@ and bruised from the Combat Zone, Piper all but plain, Danse scarred under the B
 inked). A character is matched by NPC record, or any template up its chain, BEFORE any faction. Ivy is left
 untouched -- the owner's own companion, whose bud owns her look.
 
+## C-11: ROF stays for its tattoo packs; Complexion switches its distributor off (owner, 2026-10-02)
+
+Invictusblade's tattoo pack (~990 templates, the biggest) has INVB_OverlayFramework.esp as a master, and LooksMenu
+loads a pack's overlays only while its plugin is loaded: uninstalling ROF loses them. So ROF stays installed and
+Complexion turns its hands off, without touching its files or anything a save depends on: a RobCo Patcher ini
+(F4SE/Plugins/RobCo_Patcher/race/Complexion_ROF.ini) adds ROF's own "already done" keywords to the Human and Ghoul
+races -- kw_SpellWorked (Spread_Overlays' guard) and kw_Overlay_1 + kw_Overlay_2 (Overlay_Manager's full skip,
+corpses included). An actor answers HasKeyword for its race's keywords, so ROF exits for everyone after one wait.
+Rejected: emptying ROF's ability's effects in memory, or removing it from the races -- a save that already holds
+the ability's active effect stores which effect runs, and could find none. What remains of ROF: 119 idle quests,
+its MCM pages, and a load-time update routine that its own Performance Settings limit to new versions. The plugin
+checks at the first poll that the three keywords are on the Human race and says so either way.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

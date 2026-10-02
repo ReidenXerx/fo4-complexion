@@ -107,6 +107,11 @@ Event OnTimer(Int aiTimerID)
 		PushSettings()
 	EndIf
 	Complexion:DLL.Pump()
+	; A line for the player, once: some are only known after the first poll (Random Overlay Framework switched off).
+	String said = Complexion:DLL.Warning()
+	If said != ""
+		Debug.MessageBox("Complexion: " + said)
+	EndIf
 	; One drain at a time, on a stack of its own: LooksMenu's natives return at once, and the plugin hands an
 	; actor to one order at a time either way.
 	Float now = Utility.GetCurrentRealTime()

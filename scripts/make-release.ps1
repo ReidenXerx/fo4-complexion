@@ -34,7 +34,7 @@ $files = [ordered]@{
     'MCM\Config\Complexion\config.json'      = 'data\MCM\Config\Complexion\config.json'
     'MCM\Config\Complexion\settings.ini'     = 'data\MCM\Config\Complexion\settings.ini'
 }
-foreach ($tree in 'Textures\Overlays\Complexion', 'Materials\Overlays\Complexion', 'F4SE\Plugins\F4EE\Overlays\Complexion.esp') {
+foreach ($tree in 'Textures\Overlays\Complexion', 'Materials\Overlays\Complexion', 'F4SE\Plugins\F4EE\Overlays\Complexion.esp', 'F4SE\Plugins\RobCo_Patcher\race') {
     Get-ChildItem (Join-Path $root "data\$tree") -File -Recurse | ForEach-Object {
         $files[$_.FullName.Substring((Join-Path $root 'data').Length + 1)] = $_.FullName.Substring($root.Length + 1)
     }
