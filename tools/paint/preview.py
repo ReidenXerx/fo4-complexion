@@ -36,6 +36,22 @@ def view(m, rgb, alpha, side='front', height=520):
     colour = (SKIN * (1 - a) + col * a) * shade
     img = np.full((height, width, 3), 0.16)
     img[sy[order], sx[order]] = colour[order]
+    # Where the UV map is stretched (the backs of the thighs) too few texels land per pixel and the background
+    # shows through in rows of dots: a pixel missed but mostly surrounded by body takes its neighbours' mean.
+    filled = np.zeros((height, width), bool)
+    filled[sy, sx] = True
+    for _ in range(2):
+        acc = np.zeros_like(img)
+        cnt = np.zeros((height, width))
+        for dy in (-1, 0, 1):
+            for dx in (-1, 0, 1):
+                if dy or dx:
+                    sh = np.roll(filled, (dy, dx), (0, 1))
+                    acc += np.roll(img, (dy, dx), (0, 1)) * sh[..., None]
+                    cnt += sh
+        hole = ~filled & (cnt >= 5)
+        img[hole] = acc[hole] / cnt[hole][:, None]
+        filled |= hole
     return Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8))
 
 
