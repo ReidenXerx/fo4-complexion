@@ -11,7 +11,7 @@
 // the sinks registered on them -- the VM's own handler listens to every TES event, so every member
 // has at least that one. Global sources (the crosshair) are found in BSTGlobalEvent's registry.
 
-namespace SH::Events
+namespace CX::Events
 {
 	// The crosshair: the view caster's pick, a BSTValueEvent<ViewCasterUpdateData> -- a BSTOptional of the
 	// data, with its flag after it. Layout from LucaDotGit/CommonLibF4 (ViewCasterUpdateData.hpp), the fork

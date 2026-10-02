@@ -2,7 +2,7 @@
 
 // The offline tests build Rules and Catalog without the game: no CommonLibF4, only the standard
 // library and nlohmann/json. Everything that needs RE:: lives outside those two files.
-#ifndef SH_OFFLINE_TESTS
+#ifndef CX_OFFLINE_TESTS
 #	include "RE/Fallout.h"
 #	include "F4SE/F4SE.h"
 
@@ -35,7 +35,9 @@ namespace logger = F4SE::log;
 #include <optional>
 #include <random>
 #include <ranges>
+#include <print>
 #include <set>
+#include <sstream>
 #include <shared_mutex>
 #include <span>
 #include <thread>

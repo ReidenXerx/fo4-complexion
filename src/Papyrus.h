@@ -1,9 +1,9 @@
 #pragma once
 
-// Silhouette:DLL -- the functions the bridge and Silhouette:API call. The plugin never calls into
-// the VM (S-18); everything goes this way round.
+// The natives of Complexion:DLL (papyrus/Complexion/DLL.psc): the bridge asks for orders and reports back. The
+// plugin never calls into the Papyrus VM itself.
 
-namespace SH::Papyrus
+namespace CX::Papyrus
 {
 	bool Register(RE::BSScript::IVirtualMachine* a_vm);
 }

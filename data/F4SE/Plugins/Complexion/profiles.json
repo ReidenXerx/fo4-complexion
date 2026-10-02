@@ -1,0 +1,537 @@
+{
+ "about": "Who gets which overlays (docs/complexion-profiles.md, approved by the owner 2026-10-02 as C-7). count = percent chance of 0/1/2/3/4 features; kinds = percent weights of the feature kinds; styles = the tattoo styles a person's style is drawn from; emblems = the emblems members may wear (only members, C-7); sizes = the sizes tattoos may have; hair = pubic hair sizes; adult = chance a feature may be an adult or degrading piece (0 = never; the MCM switch turns all of it off).",
+ "cap": 6,
+ "kinds": {
+  "tattoo": [
+   "tattoo"
+  ],
+  "scar": [
+   "scar",
+   "wound",
+   "burn"
+  ],
+  "dirt": [
+   "dirt"
+  ],
+  "brand": [
+   "brand"
+  ],
+  "nails": [
+   "nails"
+  ]
+ },
+ "hair": {
+  "wild": [
+   "medium",
+   "large",
+   "full"
+  ],
+  "trim": [
+   "tiny",
+   "small"
+  ],
+  "any": [
+   "tiny",
+   "small",
+   "medium",
+   "large",
+   "full"
+  ]
+ },
+ "universal": {
+  "female": [
+   {
+    "kind": "pubic_hair",
+    "percent": 75
+   },
+   {
+    "kind": "mole",
+    "percent": 40
+   },
+   {
+    "kind": "nipple",
+    "percent": 35
+   },
+   {
+    "kind": "acne",
+    "percent": 8
+   }
+  ],
+  "male": [
+   {
+    "kind": "body_hair",
+    "percent": 40
+   }
+  ]
+ },
+ "rules": {
+  "same_kind_decay": 0.5,
+  "style_share": 0.75,
+  "one_large": true,
+  "regions_unique": true
+ },
+ "default": "settlers",
+ "groups": {
+  "settlers": {
+   "factions": [],
+   "count": [
+    55,
+    30,
+    12,
+    3,
+    0
+   ],
+   "kinds": {
+    "tattoo": 80,
+    "scar": 20
+   },
+   "styles": [
+    "floral",
+    "animal",
+    "script",
+    "geometric"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0
+  },
+  "captives": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "CaptiveFaction",
+     254152
+    ],
+    [
+     "Fallout4.esm",
+     "BoundCaptiveFaction",
+     362000
+    ]
+   ],
+   "count": [
+    10,
+    30,
+    35,
+    20,
+    5
+   ],
+   "kinds": {
+    "brand": 45,
+    "scar": 30,
+    "dirt": 25
+   },
+   "styles": [
+    "degrading",
+    "script",
+    "crude"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 60
+  },
+  "raiders": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "RaiderFaction",
+     117741
+    ]
+   ],
+   "count": [
+    5,
+    15,
+    35,
+    30,
+    15
+   ],
+   "kinds": {
+    "tattoo": 55,
+    "scar": 25,
+    "dirt": 15,
+    "brand": 5
+   },
+   "styles": [
+    "crude",
+    "skull",
+    "tribal"
+   ],
+   "emblems": [
+    "raiders"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large",
+    "full"
+   ],
+   "hair": "wild",
+   "adult": 10
+  },
+  "disciples": {
+   "factions": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04GangDisciplesFaction",
+     62520
+    ]
+   ],
+   "count": [
+    5,
+    15,
+    30,
+    30,
+    20
+   ],
+   "kinds": {
+    "tattoo": 45,
+    "scar": 40,
+    "dirt": 15
+   },
+   "styles": [
+    "skull",
+    "script",
+    "crude"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large",
+    "full"
+   ],
+   "hair": "wild",
+   "adult": 10
+  },
+  "pack": {
+   "factions": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04GangPackFaction",
+     62522
+    ]
+   ],
+   "count": [
+    5,
+    20,
+    35,
+    30,
+    10
+   ],
+   "kinds": {
+    "tattoo": 70,
+    "scar": 20,
+    "dirt": 10
+   },
+   "styles": [
+    "animal",
+    "tribal"
+   ],
+   "emblems": [],
+   "sizes": [
+    "small",
+    "medium",
+    "large",
+    "full"
+   ],
+   "hair": "wild",
+   "adult": 5
+  },
+  "operators": {
+   "factions": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04GangOperatorsFaction",
+     62521
+    ]
+   ],
+   "count": [
+    20,
+    45,
+    30,
+    5,
+    0
+   ],
+   "kinds": {
+    "tattoo": 70,
+    "nails": 30
+   },
+   "styles": [
+    "pinup",
+    "geometric",
+    "realistic_art",
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large"
+   ],
+   "hair": "trim",
+   "adult": 10
+  },
+  "gunners": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "GunnerFaction",
+     361219
+    ]
+   ],
+   "count": [
+    25,
+    45,
+    25,
+    5,
+    0
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 40
+   },
+   "styles": [
+    "military",
+    "skull"
+   ],
+   "emblems": [
+    "gunners"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0
+  },
+  "triggermen": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "TriggermanFaction",
+     539344
+    ]
+   ],
+   "count": [
+    30,
+    45,
+    20,
+    5,
+    0
+   ],
+   "kinds": {
+    "tattoo": 80,
+    "scar": 20
+   },
+   "styles": [
+    "script",
+    "pinup",
+    "crude"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0
+  },
+  "bos": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "BrotherhoodofSteelFaction",
+     384577
+    ]
+   ],
+   "count": [
+    70,
+    25,
+    5,
+    0,
+    0
+   ],
+   "kinds": {
+    "scar": 50,
+    "tattoo": 50
+   },
+   "styles": [
+    "military"
+   ],
+   "emblems": [
+    "bos"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "trim",
+   "adult": 0
+  },
+  "minutemen": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "MinutemenFaction",
+     426051
+    ]
+   ],
+   "count": [
+    55,
+    35,
+    10,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 75,
+    "scar": 25
+   },
+   "styles": [
+    "military",
+    "script",
+    "floral"
+   ],
+   "emblems": [
+    "minutemen"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0
+  },
+  "railroad": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "RailroadFaction",
+     627958
+    ]
+   ],
+   "count": [
+    65,
+    30,
+    5,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 80,
+    "scar": 20
+   },
+   "styles": [
+    "geometric"
+   ],
+   "emblems": [
+    "railroad"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0
+  },
+  "atom": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "ChildrenOfAtomFaction",
+     195460
+    ],
+    [
+     "DLCCoast.esm",
+     "DLC03ChildrenofAtomFaction",
+     17506
+    ]
+   ],
+   "count": [
+    20,
+    50,
+    25,
+    5,
+    0
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 40
+   },
+   "styles": [
+    "religious",
+    "geometric"
+   ],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large"
+   ],
+   "hair": "any",
+   "adult": 0
+  },
+  "institute": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "InstituteFaction",
+     386392
+    ]
+   ],
+   "count": [
+    95,
+    5,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 50,
+    "nails": 50
+   },
+   "styles": [],
+   "emblems": [
+    "institute"
+   ],
+   "sizes": [
+    "tiny"
+   ],
+   "hair": "trim",
+   "adult": 0
+  }
+ },
+ "order": [
+  "captives",
+  "disciples",
+  "operators",
+  "pack",
+  "triggermen",
+  "raiders",
+  "gunners",
+  "bos",
+  "minutemen",
+  "railroad",
+  "atom",
+  "institute"
+ ]
+}

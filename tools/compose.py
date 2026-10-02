@@ -84,7 +84,9 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True):
         roll = rng.percent()
         if roll >= u['percent']:
             continue
-        cands = [t for t in mine if t['kind'] == u['kind'] and not adultish(t)]
+        # Emblems only for members here too: some pubic hair is trimmed into a faction's mark.
+        cands = [t for t in mine if t['kind'] == u['kind'] and not adultish(t)
+                 and (not t['emblem'] or t['emblem'] in g['emblems'])]
         if u['kind'] == 'pubic_hair':
             sizes = profiles['hair'][g['hair']]
             cands = [t for t in cands if t['size'] in sizes] or cands
@@ -193,9 +195,23 @@ def main():
     ap.add_argument('--profiles', type=pathlib.Path, default=ROOT / 'data' / 'profiles.json')
     ap.add_argument('--tags', type=pathlib.Path, default=ROOT / 'build' / 'tags.json')
     ap.add_argument('--simulate', type=int, default=0)
+    ap.add_argument('--dump', type=int, default=0,
+                    help='picks for seeds 0..N-1 per group and sex, one line each: the parity file the C++ '
+                         'composer must reproduce (ComplexionTests --parity)')
     a = ap.parse_args()
     profiles = json.loads(a.profiles.read_text(encoding='utf-8'))
     catalog = load_catalog(a.tags)
+    if a.dump:
+        order = profiles['order'] + [profiles['default']]
+        for group in order:
+            for female in (True, False):
+                for s in range(a.dump):
+                    seed = (s * 0x9E3779B97F4A7C15 + 12345) & MASK
+                    for adult in (True, False):
+                        picks = compose(profiles, catalog, female, group, seed, adult)
+                        print(f'{group} {"f" if female else "m"} {seed} {int(adult)} ' +
+                              ','.join(f'{p["key"]}@{p["priority"]}' for p in picks))
+        return
     if a.simulate:
         sys.exit(1 if simulate(profiles, catalog, a.simulate) else 0)
 

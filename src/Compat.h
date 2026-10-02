@@ -3,12 +3,12 @@
 // S-75: the few calls that differ between the classic OG library (alandtse's CommonLibF4) and
 // CommonLibF4RD, the one that runs on OG, NG and AE. Everything else is the same API.
 
-namespace SH::Compat
+namespace CX::Compat
 {
 	// The NPC record's sex. Fallout 4's own SEX enum: 0 male, 1 female.
 	inline bool Female(RE::TESNPC* a_npc)
 	{
-#ifdef SH_RUNTIME_DATABASE
+#ifdef CX_RUNTIME_DATABASE
 		return a_npc && a_npc->GetSex() == 1;
 #else
 		return a_npc && a_npc->GetSex() == RE::SEX::kFemale;
@@ -23,7 +23,7 @@ namespace SH::Compat
 		if (!a_ref) {
 			return {};
 		}
-#ifdef SH_RUNTIME_DATABASE
+#ifdef CX_RUNTIME_DATABASE
 		auto* base = a_ref->GetObjectReference();
 		return base ? std::string{ RE::TESFullName::GetFullName(*base) } : std::string{};
 #else
@@ -35,7 +35,7 @@ namespace SH::Compat
 	// The biped slots an item fills, as bits (bit i = slot 30 + i).
 	inline std::uint32_t FilledSlots(const RE::BGSBipedObjectForm* a_form)
 	{
-#ifdef SH_RUNTIME_DATABASE
+#ifdef CX_RUNTIME_DATABASE
 		return static_cast<std::uint32_t>(a_form->GetFilledSlots().underlying());
 #else
 		return a_form->GetFilledSlots();
@@ -47,7 +47,7 @@ namespace SH::Compat
 	// after all 39 records read). Its wrapper is a cast onto F4SE's own interface, so the call goes there.
 	inline bool NextRecordInfo(const F4SE::SerializationInterface* a_intfc, std::uint32_t& a_type, std::uint32_t& a_version, std::uint32_t& a_length)
 	{
-#ifdef SH_RUNTIME_DATABASE
+#ifdef CX_RUNTIME_DATABASE
 		const auto& raw = reinterpret_cast<const F4SE::detail::F4SESerializationInterface&>(*a_intfc);
 		return raw.GetNextRecordInfo(&a_type, &a_version, &a_length);
 #else

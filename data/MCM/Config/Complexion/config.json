@@ -1,0 +1,50 @@
+{
+  "modName": "Complexion",
+  "displayName": "Complexion",
+  "minMcmVersion": 1,
+  "pages": [
+    {
+      "pageDisplayName": "Complexion",
+      "content": [
+        {
+          "type": "text",
+          "text": "Every NPC gets skin overlays the first time you meet them, and keeps them: chosen for who they are. Raiders are inked, scarred and grimy; settlers mostly plain, with a mole or a small tattoo; the Brotherhood clean but for a scar and its own mark; the Institute almost untouched. Everyone gets the everyday layer: moles, body hair, skin detail. Never more than six overlays on anyone, never three of a kind, and a faction's emblem only on its own people."
+        },
+        {
+          "type": "section",
+          "text": "Settings"
+        },
+        {
+          "type": "switcher",
+          "id": "bEnabled:General",
+          "text": "Hand out overlays",
+          "help": "Off: nobody new gets overlays from Complexion. People who already have theirs keep them.",
+          "valueOptions": { "sourceType": "ModSettingBool" }
+        },
+        {
+          "type": "switcher",
+          "id": "bAdult:General",
+          "text": "Adult and degrading pieces",
+          "help": "Slave stamps and barcodes, chains, sexual tattoos: on raiders' captives, and on raiders and the Nuka-World gangs at low odds. Off: nobody gets them. Takes effect for people met from now on (Roll everyone again to change everyone).",
+          "valueOptions": { "sourceType": "ModSettingBool" }
+        },
+        {
+          "type": "section",
+          "text": "Everyone"
+        },
+        {
+          "type": "button",
+          "text": "Roll everyone again",
+          "help": "Forgets every look Complexion gave and decides everyone anew as you meet them. Their old Complexion overlays are replaced; overlays other mods put on them are kept.",
+          "action": { "type": "CallFunction", "form": "Complexion.esp|800", "function": "MenuRollAgain", "params": [] }
+        },
+        {
+          "type": "button",
+          "text": "Clear every overlay",
+          "help": "For moving from Random Overlay Framework: LooksMenu forgets every overlay on everyone, ROF's leftovers included (and any you set by hand on NPCs). Complexion then puts its own looks back as you meet people. Do it outside of any AAF scene, then save and load.",
+          "action": { "type": "CallFunction", "form": "Complexion.esp|800", "function": "MenuClearAll", "params": [] }
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
-  "name": "silhouette",
+  "name": "complexion",
   "version-string": "0.1.0",
-  "description": "OBody NG's body distribution for Fallout 4: the F4SE plugin (Phase 2)",
+  "description": "Complexion: curated LooksMenu overlays for Fallout 4's NPCs (the F4SE plugin)",
   "supports": "windows & x64",
   "dependencies": [
     "boost-stl-interfaces",

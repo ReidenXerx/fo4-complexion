@@ -1,4 +1,3 @@
-#include "Camera.h"
 #include "CoSave.h"
 #include "Game.h"
 #include "Papyrus.h"
@@ -33,7 +32,7 @@ namespace
 	};
 
 	// After F4SE::Init: log_directory() is built from the save folder name, which Init fills in.
-	// The previous run's log is kept as Silhouette.prev.log -- the run that follows a crash is the
+	// The previous run's log is kept as Complexion.prev.log -- the run that follows a crash is the
 	// run that would otherwise erase the only record of it (Rapport's scar). Nothing here may throw:
 	// without a log the plugin still runs.
 	void InitLogging()
@@ -45,7 +44,7 @@ namespace
 			}
 			std::error_code ec;
 			std::filesystem::create_directories(*path, ec);
-			*path /= SH_PROJECT_NAME ".log"sv;
+			*path /= CX_PROJECT_NAME ".log"sv;
 			auto previous = *path;
 			previous.replace_extension(".prev.log");
 			std::filesystem::remove(previous, ec);
@@ -69,37 +68,35 @@ namespace
 		case F4SE::MessagingInterface::kGameDataReady:
 			// Sent twice: data false before the data loads, true once it has. Forms exist only then.
 			if (a_message->data) {
-				SH::Game::Load();
-				SH::Sinks::Attach();
+				CX::Game::Load();
+				CX::Sinks::Attach();
 			}
 			break;
 		case F4SE::MessagingInterface::kPreLoadGame:
 			// Everything queued belongs to the save being left. FF-prefixed ids are allocated per
 			// save: the same number over there is somebody else.
-			SH::Game::ForgetInbox();
-			SH::Game::TheDirector().ForgetWorld();
-			SH::Camera::Reset();
+			CX::Game::ForgetInbox();
+			CX::Game::TheDirector().ForgetQueue();
 			break;
 		case F4SE::MessagingInterface::kNewGame:
 			// A new game from the main menu sends no kPreLoadGame, and has no records to keep -- nor the
-			// ones a newer Silhouette left in the last save loaded. The watchdog is not armed: character
+			// ones a newer Complexion left in the last save loaded. The watchdog is not armed: character
 			// creation runs a long while before the bridge's quest.
-			SH::Game::ForgetInbox();
-			SH::Game::TheDirector().ForgetWorld();
-			SH::CoSave::Revert();
-			SH::Camera::Reset();
-			SH::Sinks::Attach();
+			CX::Game::ForgetInbox();
+			CX::Game::TheDirector().ForgetQueue();
+			CX::CoSave::Revert();
+			CX::Sinks::Attach();
 			break;
 		case F4SE::MessagingInterface::kPostLoadGame:
 			// data: whether the load succeeded. A failed one leaves the game where it was -- and
 			// kPreLoadGame already forgot everyone in it, so the sweep reads them again either way.
-			SH::Sinks::Attach();
-			SH::Game::ArmSweep();
+			CX::Sinks::Attach();
+			CX::Game::ArmSweep();
 			if (a_message->data) {
-				SH::Game::NoteGameLoaded();
+				CX::Game::NoteGameLoaded();
 			}
-			logger::info("after loading{}: {} record(s); {}", a_message->data ? "" : " (the load FAILED)", SH::Game::TheDirector().RecordCount(),
-				SH::Sinks::Status());
+			logger::info("after loading{}: {} record(s); {}", a_message->data ? "" : " (the load FAILED)", CX::Game::TheDirector().RecordCount(),
+				CX::Sinks::Status());
 			break;
 		default:
 			break;
@@ -110,14 +107,14 @@ namespace
 extern "C" DLLEXPORT bool F4SEAPI F4SEPlugin_Query(const F4SE::QueryInterface* a_f4se, F4SE::PluginInfo* a_info)
 {
 	a_info->infoVersion = F4SE::PluginInfo::kVersion;
-	a_info->name = SH_PROJECT_NAME;
-	a_info->version = SH_VERSION_MAJOR * 10000 + SH_VERSION_MINOR * 100 + SH_VERSION_PATCH;
+	a_info->name = CX_PROJECT_NAME;
+	a_info->version = CX_VERSION_MAJOR * 10000 + CX_VERSION_MINOR * 100 + CX_VERSION_PATCH;
 
 	if (a_f4se->IsEditor()) {
 		return false;
 	}
-#ifdef SH_RUNTIME_DATABASE
-	// S-75: OG's F4SE asks this; it only ever runs on 1.10.163. NG's and AE's read F4SEPlugin_Version.
+#ifdef CX_RUNTIME_DATABASE
+	// Silhouette S-75: OG's F4SE asks this; it only ever runs on 1.10.163. NG's and AE's read F4SEPlugin_Version.
 	return true;
 #else
 	// Every address this plugin resolves is an OG 1.10.163 id (S-18). Refusing another runtime is
@@ -126,7 +123,7 @@ extern "C" DLLEXPORT bool F4SEAPI F4SEPlugin_Query(const F4SE::QueryInterface* a
 #endif
 }
 
-#ifdef SH_RUNTIME_DATABASE
+#ifdef CX_RUNTIME_DATABASE
 namespace
 {
 	// NG's and AE's F4SE load a plugin by this record. Addresses come from Runtime Database
@@ -135,8 +132,8 @@ namespace
 	constexpr F4SE::PluginVersionData MakeVersionData() noexcept
 	{
 		F4SE::PluginVersionData data{};
-		data.pluginVersion = (SH_VERSION_MAJOR << 24) | (SH_VERSION_MINOR << 16) | (SH_VERSION_PATCH << 4);
-		constexpr std::string_view name = SH_PROJECT_NAME;
+		data.pluginVersion = (CX_VERSION_MAJOR << 24) | (CX_VERSION_MINOR << 16) | (CX_VERSION_PATCH << 4);
+		constexpr std::string_view name = CX_PROJECT_NAME;
 		for (std::size_t i = 0; i < name.size() && i < std::size(data.name) - 1; ++i) {
 			data.name[i] = name[i];
 		}
@@ -152,29 +149,29 @@ extern "C" DLLEXPORT constinit F4SE::PluginVersionData F4SEPlugin_Version = Make
 
 extern "C" DLLEXPORT bool F4SEAPI F4SEPlugin_Load(const F4SE::LoadInterface* a_f4se)
 {
-#ifdef SH_RUNTIME_DATABASE
+#ifdef CX_RUNTIME_DATABASE
 	F4SE::Init(a_f4se);
 #else
 	// false: F4SE's own logger would name the file after an empty plugin name (".log").
 	F4SE::Init(a_f4se, false);
 #endif
 	InitLogging();
-	logger::info("{} v{}", SH_PROJECT_NAME, SH_VERSION_STRING);
-#ifdef SH_RUNTIME_DATABASE
+	logger::info("{} v{}", CX_PROJECT_NAME, CX_VERSION_STRING);
+#ifdef CX_RUNTIME_DATABASE
 	{
 		const auto& module = REL::Module::get();
 		const auto  family = module.is_ae() ? "AE" : module.is_ng() ? "NG" : "OG";
-		logger::info("runtime {} ({}), addresses through Runtime Database (S-75)", module.version().string(), family);
+		logger::info("runtime {} ({}), addresses through Runtime Database (Silhouette S-75)", module.version().string(), family);
 	}
 #endif
 
 	const auto papyrus = F4SE::GetPapyrusInterface();
-	if (!papyrus || !papyrus->Register(SH::Papyrus::Register)) {
+	if (!papyrus || !papyrus->Register(CX::Papyrus::Register)) {
 		logger::critical("could not register the papyrus functions");
 		return false;
 	}
-	if (!SH::CoSave::Register(F4SE::GetSerializationInterface())) {
-		logger::error("no co-save: nothing Silhouette decides will be remembered between saves");
+	if (!CX::CoSave::Register(F4SE::GetSerializationInterface())) {
+		logger::error("no co-save: nothing Complexion decides will be remembered between saves");
 	}
 	const auto messaging = F4SE::GetMessagingInterface();
 	if (!messaging || !messaging->RegisterListener(MessageHandler)) {

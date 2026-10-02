@@ -1,180 +1,98 @@
 #include "Game.h"
 
 #include "Compat.h"
-#include "Crosshair.h"
 #include "EventSources.h"
-#include "Presets.h"
 
-#include <cwctype>
-#include <fstream>
-
-namespace SH::Game
+namespace CX::Game
 {
 	namespace
 	{
-		constexpr auto kFolder = "Data/F4SE/Plugins/Silhouette"sv;
-		constexpr auto kTemplates = "Data/F4SE/Plugins/F4EE/BodyGen/Loose/Silhouette_templates.ini"sv;
-		constexpr auto kMorphs = "Data/F4SE/Plugins/F4EE/BodyGen/Loose/Silhouette_morphs.ini"sv;
+		constexpr auto kFolder = "Data/F4SE/Plugins/Complexion"sv;
+		constexpr auto kOverlays = "Data/F4SE/Plugins/F4EE/Overlays"sv;
 
-		// The two character-creation dummies (Fallout4.esm). LooksMenu CLONES the chosen one's body
-		// onto the player when character creation ends, so nothing of ours may ever be on them.
+		// The two character-creation dummies (Fallout4.esm): LooksMenu clones the chosen one onto the player.
 		constexpr std::uint32_t kSpouseMale = 0x0A7D34;
 		constexpr std::uint32_t kSpouseFemale = 0x0A7D35;
 
-		// Power armour (Fallout4.esm): a frame is a machine an NPC climbs into, not clothes (L5 #8).
-		constexpr std::uint32_t kPowerArmorFrameKeyword = 0x15503F;  // isPowerArmorFrame
-		constexpr std::uint32_t kPowerArmorPieceKeyword = 0x04D8A1;  // ArmorTypePower
-
 		constexpr std::size_t  kInboxLimit = 4096;
 		constexpr std::int64_t kSilentBridgeMs = 60'000;
-		constexpr std::int64_t kSummaryMs = 30'000;
+		constexpr std::int64_t kSweepMs = 30'000;
 
-		struct Resolved
+		// The races whose body the overlays are painted for (the human body's UV). Children, ghouls, synths of
+		// the old models and creatures are left alone.
+		constexpr std::array kRaces{ "HumanRace"sv };
+
+		struct GroupFactions
 		{
-			std::vector<std::pair<RE::TESFaction*, FormRef>> factions;  // the faction rules' factions
-			std::unordered_set<std::uint32_t>                 blacklist;  // ORefit, runtime form ids
-			std::unordered_set<std::uint32_t>                 force;
-			std::unordered_set<std::uint32_t>                 heavy;  // S-48: the explicit lists
-			std::unordered_set<std::uint32_t>                 light;
-			std::uint32_t                                     clothedMask{ 0 };
-			std::array<const RE::BGSKeyword*, 2>              powerArmor{};
-			std::unordered_map<std::uint32_t, bool>           heavyOf;  // each item decided once (main thread only)
+			std::string                    group;
+			std::vector<RE::TESFaction*>   factions;
 		};
 
 		struct Inbox
 		{
-			struct Equip
-			{
-				std::uint32_t ref;
-				std::uint32_t item;
-				bool          equipped;
-			};
-
 			std::mutex                lock;
 			std::deque<std::uint32_t> loaded;
-			std::deque<Equip>         equips;
-			std::size_t               dropped{ 0 };  // since the last load
+			std::size_t               dropped{ 0 };
 			bool                      warned{ false };
 		};
 
 		Director                   g_director;
-		Resolved                   g_resolved;
+		std::vector<GroupFactions> g_groups;  // in the profiles' order: the first that matches wins
+		bool                       g_loaded{ false };
 		Inbox                      g_inbox;
-		CrosshairTrail             g_trail;              // the view caster's activate picks, as handles
-		std::atomic<std::uint32_t> g_dialoguePick{ 0 };  // its dialogue pick, a handle: for the log only
-		std::atomic<std::int64_t>  g_loadedMs{ 0 };      // when the last load finished, 0 before any
-		std::atomic<std::int64_t>  g_pumpedMs{ 0 };  // the bridge's last poll
-		std::atomic<std::int64_t>  g_askedMs{ 0 };   // the bridge's last protocol check (Connect)
+		std::atomic<std::int64_t>  g_loadedMs{ 0 };
+		std::atomic<std::int64_t>  g_pumpedMs{ 0 };
+		std::atomic<std::int64_t>  g_askedMs{ 0 };
 		std::atomic<bool>          g_watching{ false };
-		std::int64_t               g_summaryMs{ 0 };  // main thread: the last summary line
+		std::mutex                 g_warningLock;
+		std::string                g_warning;
 
-		// Main thread: the load sweep. After a load in a running game the game does not report the people
-		// already around the player as loaded, so nobody was read and a picking saved mid-preview was never
-		// put back (S-47). Measured 2026-09-24: Silhouette read 19 people after a load from the main menu and
-		// none after two loads in the running game; F4MCP's own sink on the same source got 85 events after
-		// a main-menu load and 2 (both created references) after an in-session one, the sink still attached.
-		// For a while after each load, the bridge's polls read every actor the game is simulating, once each.
-		// The while starts at the first poll, not at the load: the bridge polls only while the game runs, and
-		// a player who alt-tabs out at once (bAlwaysActive=0), or a menu, can hold that off past it (wave 5).
-		constexpr std::int64_t            kSweepMs = 30'000;
-		bool                              g_sweepArmed{ false };  // a load happened; the first poll starts the sweep
-		std::int64_t                      g_sweepArmedMs{ 0 };
-		std::int64_t                      g_sweepFirstMs{ 0 };    // that first poll
+		bool                              g_sweepArmed{ false };
 		std::int64_t                      g_sweepUntilMs{ 0 };
-		bool                              g_sweepSaid{ true };
-		std::unordered_set<std::uint32_t> g_swept;     // read by the sweep since the load
-		std::unordered_set<std::uint32_t> g_reported;  // reported loaded by the game since the load
+		std::unordered_set<std::uint32_t> g_swept;
 
 		std::int64_t NowMs()
 		{
 			return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 		}
 
-		// Main thread: the reference a handle names now, or null -- a handle outlives its reference, and
-		// then names nobody. A handle IS its 32-bit value, and that is all the sink copied.
-		RE::NiPointer<RE::TESObjectREFR> RefFor(std::uint32_t a_handle)
+		bool IEquals(std::string_view a, std::string_view b)
 		{
-			static_assert(sizeof(RE::ObjectRefHandle) == sizeof(std::uint32_t));
-			if (a_handle == 0) {
-				return {};
-			}
-			RE::ObjectRefHandle handle;
-			std::memcpy(static_cast<void*>(&handle), &a_handle, sizeof(a_handle));
-			return handle.get();
+			return a.size() == b.size() && std::ranges::equal(a, b, [](char x, char y) {
+				return std::tolower(static_cast<unsigned char>(x)) == std::tolower(static_cast<unsigned char>(y));
+			});
 		}
 
-		// Main thread: "Harold Roach (00115EA1)", for the log.
-		std::string Described(RE::TESObjectREFR* a_ref)
-		{
-			const auto name = Compat::DisplayName(a_ref);
-			return std::format("{} ({:08X})", !name.empty() ? name : "unnamed", a_ref ? a_ref->GetFormID() : 0u);
-		}
-
-		bool AnyIEquals(const std::vector<std::string>& a_list, std::string_view a_name)
-		{
-			return std::ranges::any_of(a_list, [&](const std::string& n) { return IEquals(n, a_name); });
-		}
-
-		// A path for the log: path::string() throws for a name the ANSI code page cannot hold, and a throw at
-		// data load takes the game down. (An unpaired surrogate throws even here: every caller is inside the
-		// manifest loop's try.)
+		// A path for the log: path::string() throws for a name the ANSI code page cannot hold.
 		std::string Utf8(const std::filesystem::path& a_path)
 		{
 			const auto u = a_path.generic_u8string();
 			return { reinterpret_cast<const char*>(u.data()), u.size() };
 		}
 
-		std::optional<nlohmann::json> ReadJson(const std::filesystem::path& a_path, std::string& a_error)
+		std::optional<std::string> ReadText(const std::filesystem::path& a_path)
 		{
 			std::ifstream in(a_path, std::ios::binary);
 			if (!in) {
+				return std::nullopt;
+			}
+			return std::string{ std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>() };
+		}
+
+		// jsoncpp, which LooksMenu reads its files with, allows comments; so does this.
+		std::optional<nlohmann::json> ReadJson(const std::filesystem::path& a_path, std::string& a_error)
+		{
+			const auto text = ReadText(a_path);
+			if (!text) {
 				a_error = std::format("{} is missing", Utf8(a_path));
 				return std::nullopt;
 			}
 			try {
-				return nlohmann::json::parse(in);
+				return nlohmann::json::parse(*text, nullptr, true, true);
 			} catch (const std::exception& e) {
 				a_error = std::format("{} is not valid JSON: {}", Utf8(a_path), e.what());
 				return std::nullopt;
 			}
-		}
-
-		std::optional<FilesHeader> ReadHeader(std::string_view a_file, std::string& a_error)
-		{
-			std::ifstream in{ std::filesystem::path{ a_file } };
-			if (!in) {
-				a_error = std::format("{} is missing: Silhouette's BodyGen files are not installed", a_file);
-				return std::nullopt;
-			}
-			auto header = ParseFilesHeader(in);
-			if (!header) {
-				a_error = std::format("{} names no build in its header", a_file);
-			}
-			return header;
-		}
-
-		std::uint32_t Resolve(const FormRef& a_ref)
-		{
-			auto* dh = RE::TESDataHandler::GetSingleton();
-			auto* form = dh ? dh->LookupForm(a_ref.id, a_ref.plugin) : nullptr;
-			return form ? form->GetFormID() : 0;
-		}
-
-		std::unordered_set<std::uint32_t> ResolveAll(const std::vector<FormRef>& a_refs)
-		{
-			std::unordered_set<std::uint32_t> out;
-			for (const auto& f : a_refs) {
-				if (const auto id = Resolve(f)) {
-					out.insert(id);
-				}
-			}
-			return out;
-		}
-
-		std::string PluginOf(const RE::TESForm* a_form)
-		{
-			const auto* file = a_form ? a_form->GetFile(0) : nullptr;
-			return file ? std::string{ file->filename } : std::string{};
 		}
 
 		std::string NameOfForm(const RE::TESForm* a_form)
@@ -182,62 +100,12 @@ namespace SH::Game
 			return a_form ? std::string{ RE::TESFullName::GetFullName(*a_form) } : std::string{};
 		}
 
-		// Loaded as far as a body is concerned: the biped is built with the 3D and let go with it. A
-		// member read, where Get3D() would be a virtual call on a table this library maps by hand.
 		bool Has3D(RE::Actor* a_actor)
 		{
 			const auto& biped = a_actor->biped;
 			return biped && biped->root;
 		}
 
-		// Everyone the game is simulating around the player (the two lists Rapport's ActorScan reads on this
-		// runtime) whose body is built and whom the sweep has not read since the load.
-		void Sweep(std::deque<std::uint32_t>& a_loaded)
-		{
-			const auto lists = RE::ProcessLists::GetSingleton();
-			if (!lists) {
-				return;
-			}
-			for (const auto* handles : { &lists->highActorHandles, &lists->middleHighActorHandles }) {
-				for (const auto& handle : *handles) {
-					const auto ptr = handle.get();
-					auto*      actor = ptr.get();
-					if (actor && Has3D(actor) && g_swept.insert(actor->GetFormID()).second) {
-						a_loaded.push_back(actor->GetFormID());
-					}
-				}
-			}
-		}
-
-		// TESObjectARMO has GetFilledSlots twice over (two of its bases); the biped object form's is
-		// the one that says which slots it takes.
-		std::uint32_t SlotsOf(const RE::TESObjectARMO* a_item)
-		{
-			return Compat::FilledSlots(static_cast<const RE::BGSBipedObjectForm*>(a_item));
-		}
-
-		// The item's own keywords, read from the members: no virtual call on a table mapped by hand.
-		bool HasKeyword(const RE::TESObjectARMO* a_item, const RE::BGSKeyword* a_keyword)
-		{
-			const auto* form = static_cast<const RE::BGSKeywordForm*>(a_item);
-			if (!a_keyword || !form->keywords) {
-				return false;
-			}
-			for (std::uint32_t i = 0; i < form->numKeywords; ++i) {
-				if (form->keywords[i] == a_keyword) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		bool PowerArmor(const RE::TESObjectARMO* a_item)
-		{
-			return std::ranges::any_of(g_resolved.powerArmor, [&](const RE::BGSKeyword* k) { return HasKeyword(a_item, k); });
-		}
-
-		// A race's editor id, from the member (as LooksMenu reads it): the virtual getter returns "" for
-		// most forms on this runtime.
 		std::string RaceName(const RE::TESRace* a_race)
 		{
 			const char* edid = a_race ? a_race->formEditorID.c_str() : nullptr;
@@ -259,29 +127,96 @@ namespace SH::Game
 			return false;
 		}
 
-		// Every skin the actor's body could be: the record's, each template's up the chain, the race's.
-		// The one on the biped is not clothing, whichever of them it is -- counting a template's skin as
-		// clothes would refit a naked woman.
-		std::vector<RE::TESObjectARMO*> SkinsOf(RE::Actor* a_actor)
+		// The loaded plugins, as LooksMenu walks them: full plugins in load order, then light ones.
+		std::vector<std::string> LoadedPlugins()
 		{
-			std::vector<RE::TESObjectARMO*> out;
-			int                             depth = 0;
-			for (auto* n = a_actor->GetNPC(); n && depth < 16; n = n->faceNPC, ++depth) {
-				if (n->formSkin) {
-					out.push_back(n->formSkin);
+			std::vector<std::string> out;
+			auto* dh = RE::TESDataHandler::GetSingleton();
+			if (!dh) {
+				return out;
+			}
+			for (auto* f : dh->compiledFileCollection.files) {
+				if (f) {
+					out.emplace_back(f->filename);
 				}
 			}
-			if (a_actor->race && a_actor->race->formSkin) {
-				out.push_back(a_actor->race->formSkin);
+			for (auto* f : dh->compiledFileCollection.smallFiles) {
+				if (f) {
+					out.emplace_back(f->filename);
+				}
 			}
 			return out;
 		}
 
-		// S-75: this plugin reads a few members of the game's classes directly (the biped, the race, the NPC
-		// record's race, template and skin, an item's keywords and slots, the process lists). Runtime Database
-		// finds the game's functions on OG, NG and AE; it does not make a class's layout the same. So before
-		// any of it is trusted, each member is read once -- on the player and on the Vault 111 jumpsuit -- and
-		// checked against what it must be. A runtime where one differs turns the plugin off, never half on.
+		// The template keys LooksMenu holds ("f:<id>", "m:<id>"): OverlayInterface::LoadOverlayMods' order and
+		// rules -- Overlays\<plugin file name>\overlays.json per loaded plugin, then Overlays\Loose\*.json; gender
+		// above 1 is female; an entry with no gender or id is skipped; a file that does not parse is skipped whole.
+		std::set<std::string> InstalledTemplates(const std::vector<std::string>& a_plugins, std::size_t& a_files)
+		{
+			std::set<std::string>              out;
+			std::vector<std::filesystem::path> files;
+			for (const auto& p : a_plugins) {
+				std::filesystem::path f = std::filesystem::path(kOverlays) / std::filesystem::path(p) / "overlays.json";  // the game's own (ANSI) file name
+				std::error_code       ec;
+				if (std::filesystem::exists(f, ec)) {
+					files.push_back(std::move(f));
+				}
+			}
+			std::error_code ec;
+			const auto      loose = std::filesystem::path(kOverlays) / "Loose";
+			if (std::filesystem::is_directory(loose, ec)) {
+				std::vector<std::filesystem::path> found;
+				for (const auto& e : std::filesystem::directory_iterator(loose, ec)) {
+					if (e.path().extension() == ".json") {
+						found.push_back(e.path());
+					}
+				}
+				std::ranges::sort(found);
+				files.insert(files.end(), found.begin(), found.end());
+			}
+			for (const auto& f : files) {
+				std::string error;
+				const auto  json = ReadJson(f, error);
+				if (!json || !json->is_array()) {
+					logger::warn("overlays: {} (LooksMenu skips this file too)", error.empty() ? Utf8(f) + " is not a list" : error);
+					continue;
+				}
+				++a_files;
+				for (const auto& e : *json) {
+					if (!e.is_object() || !e.contains("gender") || !e.contains("id") || !e["id"].is_string() || !e["gender"].is_number()) {
+						continue;
+					}
+					const bool female = e["gender"].get<double>() >= 1;
+					out.insert(std::string(female ? "f:" : "m:") + e["id"].get<std::string>());
+				}
+			}
+			return out;
+		}
+
+		void Warn(std::string a_line)
+		{
+			std::scoped_lock l{ g_warningLock };
+			g_warning += (g_warning.empty() ? "" : "\n\n") + a_line;
+		}
+
+		void Sweep(std::deque<std::uint32_t>& a_loaded)
+		{
+			const auto lists = RE::ProcessLists::GetSingleton();
+			if (!lists) {
+				return;
+			}
+			for (const auto* handles : { &lists->highActorHandles, &lists->middleHighActorHandles }) {
+				for (const auto& handle : *handles) {
+					const auto ptr = handle.get();
+					auto*      actor = ptr.get();
+					if (actor && Has3D(actor) && g_swept.insert(actor->GetFormID()).second) {
+						a_loaded.push_back(actor->GetFormID());
+					}
+				}
+			}
+		}
+
+		// The members this plugin reads, checked once on the player before any is trusted (Silhouette S-75).
 		enum class Layout
 		{
 			kUnchecked,
@@ -293,10 +228,8 @@ namespace SH::Game
 		struct LayoutRun
 		{
 			std::vector<std::string> problems;
-			bool                     complete{ false };  // the player's 3D was there to read the biped
+			bool                     complete{ false };
 		};
-
-		constexpr std::uint32_t kJumpsuit = 0x0001EED7;  // Fallout4.esm "Vault 111 Jumpsuit": body slot 33
 
 		void CheckLayout(void* a_run)
 		{
@@ -319,35 +252,22 @@ namespace SH::Game
 				}
 				return true;
 			};
-			auto* npc = player->GetNPC();
+			auto*      npc = player->GetNPC();
 			const bool npcOk = is(npc, RE::ENUM_FORM_ID::kNPC_, "the player's base record", false);
 			const bool raceOk = is(player->race, RE::ENUM_FORM_ID::kRACE, "Actor::race", false);
 			if (npcOk) {
 				is(npc->formRace, RE::ENUM_FORM_ID::kRACE, "TESNPC::formRace", false);
 				is(npc->faceNPC, RE::ENUM_FORM_ID::kNPC_, "TESNPC::faceNPC", true);
-				is(npc->formSkin, RE::ENUM_FORM_ID::kARMO, "TESNPC::formSkin", true);
+				for (const auto& f : npc->factions) {
+					if (!is(f.faction, RE::ENUM_FORM_ID::kFACT, "TESNPC::factions", false)) {
+						break;
+					}
+				}
 			}
 			if (raceOk) {
 				const auto edid = RaceName(player->race);
 				if (edid.empty() || edid.size() > 128 || !std::ranges::all_of(edid, [](char c) { return c > 32 && c < 127; })) {
 					run.problems.push_back(std::format("TESForm::formEditorID reads \"{}\" for the player's race", edid.substr(0, 40)));
-				}
-				is(player->race->formSkin, RE::ENUM_FORM_ID::kARMO, "TESRace::formSkin", true);
-			}
-			if (auto* form = RE::TESForm::GetFormByID(kJumpsuit); form && form->Is(RE::ENUM_FORM_ID::kARMO)) {
-				auto* item = static_cast<RE::TESObjectARMO*>(form);
-				if ((SlotsOf(item) & (1u << (33 - 30))) == 0) {
-					run.problems.push_back(std::format("BGSBipedObjectForm slots read {:08X} for the Vault 111 jumpsuit", SlotsOf(item)));
-				}
-				const auto* keywords = static_cast<const RE::BGSKeywordForm*>(item);
-				if (keywords->numKeywords > 256) {
-					run.problems.push_back(std::format("BGSKeywordForm::numKeywords reads {}", keywords->numKeywords));
-				} else {
-					for (std::uint32_t i = 0; i < keywords->numKeywords; ++i) {
-						if (!is(keywords->keywords[i], RE::ENUM_FORM_ID::kKYWD, "BGSKeywordForm::keywords", false)) {
-							break;
-						}
-					}
 				}
 			}
 			if (const auto lists = RE::ProcessLists::GetSingleton()) {
@@ -362,19 +282,11 @@ namespace SH::Game
 				}
 			}
 			if (!Has3D(player)) {
-				return;  // the biped is read once the player's body is built
-			}
-			const auto& biped = player->biped;
-			for (std::size_t i = 0; i < 32; ++i) {
-				if (auto* form = biped->object[i].parent.object; form && Events::SafeFormType(form) == 0) {
-					run.problems.push_back(std::format("BipedAnim::object[{}] holds no form", i));
-					break;
-				}
+				return;
 			}
 			run.complete = true;
 		}
 
-		// Main thread, from the pump: once, when the player's body is built.
 		void GuardLayout()
 		{
 			if (g_layout != Layout::kUnchecked) {
@@ -386,11 +298,11 @@ namespace SH::Game
 				run.complete = true;
 			}
 			if (!run.complete && run.problems.empty()) {
-				return;  // no body yet: next pump
+				return;
 			}
 			if (run.problems.empty()) {
 				g_layout = Layout::kGood;
-				logger::info("layout: every member Silhouette reads checks out on this runtime (S-75)");
+				logger::info("layout: every member Complexion reads checks out on this runtime");
 				return;
 			}
 			g_layout = Layout::kBad;
@@ -398,186 +310,41 @@ namespace SH::Game
 			for (const auto& p : run.problems) {
 				all += (all.empty() ? "" : "; ") + p;
 			}
-			const auto why = std::format("this game's classes are laid out differently from what Silhouette.dll reads ({}) - "
-										 "the plugin is off, BodyGen still gives bodies. Please report it with Silhouette.log (S-75)",
+			logger::error("layout: this game's classes are laid out differently from what Complexion.dll reads ({}) - Complexion is off. "
+						  "Please report it with Complexion.log",
 				all);
-			logger::error("layout: {}", why);
-			g_director.Refuse(why);
+			g_director.SetEnabled(false);
 		}
 
-		struct Worn
-		{
-			bool        clothed{ false };
-			bool        heavy{ false };
-			std::string heavyBy;  // the first heavy item's name
-			bool        powerArmor{ false };
-			std::string outfitSet;
-			bool        removing{ false };  // the event's item comes off a body, chest or pelvis slot
-		};
-
-		bool Dresses(const Catalog& a_catalog, RE::TESObjectARMO* a_item)
-		{
-			const auto id = a_item->GetFormID();
-			const auto name = NameOfForm(a_item);
-			if (g_resolved.force.contains(id) || AnyIEquals(a_catalog.forceRefitNames, name)) {
-				return true;
-			}
-			if ((SlotsOf(a_item) & g_resolved.clothedMask) == 0 || PowerArmor(a_item)) {
-				return false;
-			}
-			const bool blacklisted = g_resolved.blacklist.contains(id) || AnyIEquals(a_catalog.outfitBlacklistNames, name) ||
-			                         AnyIEquals(a_catalog.outfitBlacklistPlugins, PluginOf(a_item));
-			return !blacklisted;
-		}
-
-		// S-48: heavy only where it is plain. The catalog's lists decide first; then a whole word or
-		// phrase of the item's name from orefit.heavy.words ("armor", "jacket", ...). Whatever the name
-		// does not say is light: a chest flattened under a shirt is worse than a nipple showing through a
-		// coat. Each item is decided once, and a heavy or listed one says why in the log.
-		bool Heavy(const Catalog& a_catalog, RE::TESObjectARMO* a_item)
-		{
-			const auto id = a_item->GetFormID();
-			if (const auto it = g_resolved.heavyOf.find(id); it != g_resolved.heavyOf.end()) {
-				return it->second;
-			}
-			const auto  name = NameOfForm(a_item);
-			bool        heavy = false;
-			std::string why;
-			if (g_resolved.heavy.contains(id) || AnyIEquals(a_catalog.heavyNames, name)) {
-				heavy = true;
-				why = "listed as heavy";
-			} else if (g_resolved.light.contains(id) || AnyIEquals(a_catalog.lightNames, name)) {
-				why = "listed as light";
-			} else if (auto word = a_catalog.HeavyWord(name); !word.empty()) {
-				heavy = true;
-				why = std::format("the name says \"{}\"", word);
-			}
-			g_resolved.heavyOf.emplace(id, heavy);
-			if (!why.empty()) {
-				logger::info("clothing {:08X} \"{}\" ({}): {} - {}", id, name, PluginOf(a_item), heavy ? "heavy" : "light", why);
-			}
-			return heavy;
-		}
-
-		// What they wear, from the biped, as OBody decides it (S-20): the item of the equip event
-		// being handled counts as already off or already on, since the biped may not show it yet.
-		Worn ReadWorn(RE::Actor* a_actor, const Catalog& a_catalog, bool a_female, RE::TESForm* a_changing, bool a_equipping)
-		{
-			std::array<RE::TESObjectARMO*, 32> bySlot{};
-			if (const auto& biped = a_actor->biped; biped) {
-				for (std::size_t i = 0; i < bySlot.size(); ++i) {
-					auto* form = biped->object[i].parent.object;
-					bySlot[i] = form && form->Is(RE::ENUM_FORM_ID::kARMO) ? static_cast<RE::TESObjectARMO*>(form) : nullptr;
-				}
-			}
-			auto* changing = a_changing && a_changing->Is(RE::ENUM_FORM_ID::kARMO) ? static_cast<RE::TESObjectARMO*>(a_changing) : nullptr;
-			if (changing) {
-				if (a_equipping) {
-					const auto slots = SlotsOf(changing);
-					for (std::size_t i = 0; i < bySlot.size(); ++i) {
-						if (slots & (1u << i)) {
-							bySlot[i] = changing;
-						}
-					}
-				} else {
-					for (auto& item : bySlot) {
-						if (item == changing) {
-							item = nullptr;
-						}
-					}
-				}
-			}
-
-			Worn       worn;
-			const auto skins = SkinsOf(a_actor);
-			const auto skin = [&](RE::TESObjectARMO* a_item) { return std::ranges::find(skins, a_item) != skins.end(); };
-			std::unordered_set<RE::TESObjectARMO*> checked;
-			for (auto* item : bySlot) {
-				if (!item || skin(item) || !checked.insert(item).second) {
-					continue;
-				}
-				worn.powerArmor = worn.powerArmor || PowerArmor(item);
-				if (!Dresses(a_catalog, item)) {
-					continue;
-				}
-				worn.clothed = true;
-				if (!worn.heavy && Heavy(a_catalog, item)) {
-					worn.heavy = true;
-					worn.heavyBy = NameOfForm(item);
-				}
-			}
-			if (worn.clothed) {
-				for (const int slot : a_catalog.clothedSlots) {
-					auto* item = bySlot[static_cast<std::size_t>(slot - 30)];
-					if (!item || skin(item)) {
-						continue;
-					}
-					if (auto set = a_catalog.OutfitRefitSet(NameOfForm(item), a_female); !set.empty()) {
-						worn.outfitSet = std::move(set);
-						break;
-					}
-				}
-			}
-			// OBody raises OnActorRemovingClothes for whatever leaves the body, chest or pelvis slots,
-			// whatever ORefit's own lists say about it -- but a power armour piece put down is not clothing.
-			worn.removing = changing && !a_equipping && !skin(changing) && (SlotsOf(changing) & g_resolved.clothedMask) != 0 && !PowerArmor(changing);
-			return worn;
-		}
-
-		std::optional<Sighting> Read(RE::Actor* a_actor, const Catalog& a_catalog, RE::TESForm* a_changing, bool a_equipping, bool* a_removing)
+		std::optional<Facts> Read(RE::Actor* a_actor)
 		{
 			auto* npc = a_actor ? a_actor->GetNPC() : nullptr;
 			if (!npc) {
 				return std::nullopt;
 			}
-			Sighting s;
-			s.ref = a_actor->GetFormID();
-			s.base = npc->GetFormID();
-			s.facts.female = Compat::Female(npc);
-			s.facts.seed = s.ref;
-			// The NPC record's name, as OBody reads it: a reference renamed at runtime (Rapport names the
-			// settlers it befriends) keeps the rule its record matched.
-			s.facts.baseName = NameOfForm(npc);
-			s.eligible = !NeverShaped(a_actor);
-
-			// The record and every template up its chain, as BodyGen matches a form-id line; the plugin
-			// of the chain's root, as BodyGen applies a plugin line (only to records with no template).
-			int depth = 0;
-			for (auto* n = npc; n && depth < 16; n = n->faceNPC, ++depth) {
-				if (const auto* file = n->GetFile(0)) {
-					s.facts.bases.push_back(FormRef{ file->filename, n->GetLocalFormID() });
-					s.facts.originPlugin = file->filename;
+			Facts f;
+			f.ref = a_actor->GetFormID();
+			f.base = npc->GetFormID();
+			f.female = Compat::Female(npc);
+			f.name = std::format("{}", Compat::DisplayName(a_actor));
+			if (a_actor == RE::PlayerCharacter::GetSingleton() || IsDummy(npc)) {
+				f.skip = "player";
+				return f;
+			}
+			const auto race = RaceName(npc->formRace ? npc->formRace : a_actor->race);
+			if (std::ranges::none_of(kRaces, [&](std::string_view r) { return IEquals(r, race); })) {
+				f.skip = "race " + race;
+				return f;
+			}
+			// The record's own factions, as Silhouette's faction pools read them (a template's are carried by
+			// the record it builds).
+			for (const auto& g : g_groups) {
+				if (std::ranges::any_of(g.factions, [&](RE::TESFaction* a_f) { return a_f && npc->IsInFaction(a_f); })) {
+					f.group = g.group;
+					break;
 				}
 			}
-			// The record's own factions, as OBody reads them. A leveled record that takes its factions
-			// from a template already carries them; walking the chain could only add false matches.
-			for (const auto& [faction, ref] : g_resolved.factions) {
-				if (faction && npc->IsInFaction(faction) &&
-					std::ranges::none_of(s.facts.factions, [&](const FormRef& f) { return f.Is(ref.plugin, ref.id); })) {
-					s.facts.factions.push_back(ref);
-				}
-			}
-			s.facts.race = RaceOf(a_actor);
-			const auto worn = ReadWorn(a_actor, a_catalog, s.facts.female, a_changing, a_equipping);
-			s.clothed = worn.clothed;
-			s.heavy = worn.heavy;
-			s.heavyBy = worn.heavyBy;
-			s.powerArmor = worn.powerArmor;
-			s.outfitSet = worn.outfitSet;
-			if (a_removing) {
-				*a_removing = worn.removing;
-			}
-			return s;
-		}
-
-		template <class T>
-		void PushCapped(std::deque<T>& a_queue, T a_item)
-		{
-			if (a_queue.size() >= kInboxLimit) {
-				a_queue.pop_front();  // the oldest: an actor seen again later is read again then
-				++g_inbox.dropped;
-			}
-			a_queue.push_back(a_item);
+			return f;
 		}
 
 		void Watch()
@@ -585,27 +352,13 @@ namespace SH::Game
 			for (;;) {
 				std::this_thread::sleep_for(std::chrono::seconds{ 20 });
 				auto loaded = g_loadedMs.load();
-				if (loaded != 0 && g_pumpedMs.load() < loaded && NowMs() - loaded > kSilentBridgeMs) {
-					// Once per load -- and not over a newer load's stamp, set while this one was being checked.
-					// The bridge only sweeps when this plugin cannot be used (S-54): say why, not "check the esp".
-					if (g_loadedMs.compare_exchange_strong(loaded, 0)) {
-						if (!g_director.Ready()) {
-							logger::warn("nobody is shaped one by one this session - {}. The bridge, where Silhouette.esp and its scripts are "
-										 "there, only takes refits off (BodyGen still gives bodies)",
-								g_director.Status());
-						} else if (g_askedMs.load() >= loaded) {
-							// Asked by Silhouette's scripts -- the bridge's, or the API's (the regeneration window,
-							// the MCM page, which shows without the esp, another mod) -- so they are there, but the
-							// bridge does not poll.
-							logger::warn("Silhouette's scripts answered but the bridge does not poll: Silhouette.esp is not enabled (its "
-										 "quest runs the bridge), the bridge's script is missing or from another release than Silhouette.dll, "
-										 "or LooksMenu is not loaded. Install one release's files together and enable the esp; until the "
-										 "bridge polls, nobody is shaped one by one (BodyGen still gives bodies)");
-						} else {
-							logger::warn("the bridge has not polled in the minute since the save loaded. If that goes on, check that Silhouette.esp "
-										 "is enabled, its scripts are installed and LooksMenu is loaded: until it polls, nobody is shaped one by one "
-										 "(BodyGen still gives bodies)");
-						}
+				if (loaded != 0 && g_pumpedMs.load() < loaded && NowMs() - loaded > kSilentBridgeMs && g_loadedMs.compare_exchange_strong(loaded, 0)) {
+					if (g_askedMs.load() >= loaded) {
+						logger::warn("Complexion's scripts answered but the bridge does not poll: Complexion.esp is not enabled, its scripts are "
+									 "from another release than Complexion.dll, or LooksMenu is not loaded. Until it polls, nobody gets overlays");
+					} else {
+						logger::warn("the bridge has not polled in the minute since the save loaded: check that Complexion.esp is enabled, "
+									 "its scripts are installed and LooksMenu is loaded");
 					}
 				}
 			}
@@ -617,209 +370,103 @@ namespace SH::Game
 		return g_director;
 	}
 
-	namespace
-	{
-		std::mutex  g_bodyWarningLock;
-		std::string g_bodyWarning;
-
-		// The owner's rule (2026-09-30): a sex with no body Silhouette supports -- no loose .tri, or one carrying
-		// under half of the sliders the pool sets (another body family's) -- is left alone: never probed, rolled,
-		// refit or picked. Said in the log, and once on the player's screen through the bridge. LooksMenu still
-		// reads Silhouette's BodyGen lines for them; their sliders are ones that body does not have.
-		void CheckBodies(Catalog& a_catalog)
-		{
-			std::vector<std::string> off;
-			for (const int s : { 1, 0 }) {
-				const bool  female = s == 1;
-				const auto  sex = female ? "female"sv : "male"sv;
-				const auto  tri = female ? "FemaleBody.tri"sv : "MaleBody.tri"sv;
-				const auto  morphs = Presets::BodyMorphs("Data", female);
-				const auto  fit = Presets::MeasureBody(a_catalog, female, morphs);
-				const auto  family = female ? "CBBE"sv : "BodyTalk"sv;  // what Silhouette's bodies are made for
-				a_catalog.bodySupported[s] = fit.supported;
-				if (fit.supported) {
-					logger::info("bodies: {} carries {} of the {} {} sliders Silhouette's pool sets - {} NPCs are shaped", tri, fit.found, fit.used, sex, sex);
-					continue;
-				}
-				const auto why = morphs.empty()
-				                     ? std::format("no loose Meshes\\Actors\\Character\\CharacterAssets\\{} with morphs (build {} in BodySlide with Build Morphs on)", tri, family)
-				                     : std::format("{} carries only {} of the {} {} sliders Silhouette's pool sets (its bodies are made for {})", tri, fit.found, fit.used, sex, family);
-				logger::warn("bodies: no {} body Silhouette supports - {}. Silhouette leaves every {} NPC alone.", sex, why, sex);
-				off.push_back(std::format("no {} body it supports was found, so {} NPCs are left alone: {}.", sex, sex, why));
-			}
-			std::scoped_lock l{ g_bodyWarningLock };
-			g_bodyWarning.clear();
-			for (const auto& line : off) {
-				g_bodyWarning += (g_bodyWarning.empty() ? "" : "\n\n") + line;
-			}
-		}
-
-		// S-76: the player's own BodySlide presets join the pickers (never random), resolved through the slider
-		// set each body was built with, as the generator would have resolved them (Presets::ReadInstalled).
-		// Absolute mode only: in a compensated build every value is relative to what the base has baked in,
-		// and that is not guessed here.
-		void AddInstalledPresets(Catalog& a_catalog)
-		{
-			if (a_catalog.mode != "absolute") {
-				logger::info("presets: this build is {} - your own presets are read only for a zeroed body (S-76)", a_catalog.mode);
-				return;
-			}
-			if (!a_catalog.sliderSets[0] && !a_catalog.sliderSets[1]) {
-				logger::info("presets: this build does not say how the body's sliders read - your own presets are not read (S-76)");
-				return;
-			}
-			auto read = Presets::ReadInstalled(a_catalog, "Data");
-			for (const int s : { 0, 1 }) {
-				if (!read.body[s]) {
-					logger::info("presets: no loose {} with morphs - your own {} presets are not read (S-76)",
-						s ? "FemaleBody.tri" : "MaleBody.tri", s ? "female" : "male");
-				}
-			}
-			auto&       result = read.installed;
-			std::size_t female = 0;
-			for (auto& p : result.added) {
-				female += p.female ? 1 : 0;
-				a_catalog.presets.push_back(std::move(p));
-			}
-			logger::info("presets: {} of your own join the pickers ({} female, {} male), from {} file(s) (S-76)",
-				result.added.size(), female, result.added.size() - female, read.files);
-			constexpr std::size_t kShown = 20;
-			for (std::size_t i = 0; i < result.notes.size() && i < kShown; ++i) {
-				logger::info("presets: left out {}", result.notes[i]);
-			}
-			if (result.notes.size() > kShown) {
-				logger::info("presets: ... and {} more left out", result.notes.size() - kShown);
-			}
-		}
-	}
-
-	std::string TakeBodyWarning()
-	{
-		std::scoped_lock l{ g_bodyWarningLock };
-		return std::exchange(g_bodyWarning, {});
-	}
-
 	void Load()
 	{
+		if (g_loaded) {
+			return;
+		}
+		g_loaded = true;
 		std::string error;
-		const auto  doc = ReadJson(std::filesystem::path{ kFolder } / "catalog.json", error);
-		if (!doc) {
-			logger::error("catalog: {} - rules, ORefit and the picker are off (BodyGen still gives bodies)", error);
-			g_director.Refuse(std::format("no catalog: {}", error));
+		const auto  profilesText = ReadText(std::filesystem::path(kFolder) / "profiles.json");
+		auto        tags = ReadJson(std::filesystem::path(kFolder) / "tags.json", error);
+		if (!profilesText || !tags) {
+			const auto why = !profilesText ? std::string("Data/F4SE/Plugins/Complexion/profiles.json is missing") : error;
+			logger::error("{} - Complexion hands out nothing", why);
+			Warn(std::format("Complexion's own files are not installed ({}): nobody gets overlays. Reinstall Complexion.", why));
 			return;
 		}
-		auto catalog = ParseCatalog(*doc, error);
-		if (!catalog) {
-			logger::error("catalog refused: {}", error);
-			g_director.Refuse(std::format("catalog refused: {}", error));
-			return;
-		}
-		AddInstalledPresets(*catalog);
-		CheckBodies(*catalog);
-
-		// The catalog and the BodyGen files come from one generator run, or neither can be trusted: a
-		// marker would name a preset of another build (S-19), or the runtime would apply rules the
-		// BodyGen lines do not agree with.
-		for (const auto file : { kTemplates, kMorphs }) {
-			const auto header = ReadHeader(file, error);
-			if (!header) {
-				logger::error("catalog: {}", error);
-				g_director.Refuse(error);
-				return;
-			}
-			if (header->build != catalog->build || header->stamp != catalog->stamp || (!header->rules.empty() && header->rules != catalog->rulesHash)) {
-				const auto why = std::format("the catalog is build {} (stamp {}, rules {}) but {} is build {} (stamp {}, rules {}): install one generator run's files together",
-					catalog->build, catalog->stamp, catalog->rulesHash, file, header->build, header->stamp, header->rules.empty() ? "?" : header->rules);
-				logger::error("catalog refused: {}", why);
-				g_director.Refuse(why);
-				return;
-			}
-		}
-
-		// Walked with increment(ec): the range-for's ++ throws on an error, and a throw here would take
-		// the game down at data load.
-		std::size_t     manifests = 0;
+		// A player's own tags for packs Complexion does not know: tags\*.json, in name order, the later file wins.
 		std::error_code ec;
-		for (std::filesystem::directory_iterator it{ std::filesystem::path{ kFolder } / "manifests", ec }, end; !ec && it != end; it.increment(ec)) {
-			// One file at a time, and nothing it does may throw out of here: a name the ANSI code page
-			// cannot hold makes path::string() throw, and so would anything that formats it.
-			try {
-				const auto& path = it->path();
-				if (path.extension() != ".json") {
-					continue;
+		const auto      includes = std::filesystem::path(kFolder) / "tags";
+		if (std::filesystem::is_directory(includes, ec)) {
+			std::vector<std::filesystem::path> found;
+			for (const auto& e : std::filesystem::directory_iterator(includes, ec)) {
+				if (e.path().extension() == ".json") {
+					found.push_back(e.path());
 				}
-				const auto  name = Utf8(path.filename());
-				std::string merror;
-				const auto  m = ReadJson(path, merror);
-				auto        parsed = m ? ParseManifest(*m, merror) : std::nullopt;
-				if (!parsed) {
-					logger::warn("manifest {}: {}", name, merror);
-					continue;
+			}
+			std::ranges::sort(found);
+			for (const auto& f : found) {
+				std::string e2;
+				if (const auto more = ReadJson(f, e2); more && more->is_object()) {
+					for (const auto& [k, v] : more->items()) {
+						(*tags)[k] = v;
+					}
+					logger::info("tags: {} adds {} template(s)", Utf8(f), more->size());
+				} else {
+					logger::warn("tags: {}", e2.empty() ? Utf8(f) + " is not an object" : e2);
 				}
-				// A build's manifest is <stamp>.json: one under another name (copied, renamed by hand) would
-				// replace the real one's meaning for every body of that build.
-				if (path.stem().wstring() != std::to_wstring(parsed->first)) {
-					logger::warn("manifest {} says it is build stamp {}: not read (a manifest is named for its stamp)", name, parsed->first);
-					continue;
-				}
-				catalog->AddManifest(parsed->first, std::move(parsed->second));
-				++manifests;
-			} catch (const std::exception& e) {
-				logger::warn("manifests: a file could not be read ({}) - skipped", e.what());
 			}
 		}
-		if (ec) {
-			logger::warn("manifests: {} - bodies of older builds may not be named or healed", ec.message());
+
+		Profiles profiles;
+		try {
+			profiles = ParseProfiles(*profilesText);
+		} catch (const std::exception& e) {
+			logger::error("profiles.json: {} - Complexion hands out nothing", e.what());
+			Warn(std::format("Complexion's profiles.json is broken ({}): nobody gets overlays.", e.what()));
+			return;
 		}
 
-		g_resolved = {};
-		for (const auto& rule : catalog->factionRules) {
-			auto* dh = RE::TESDataHandler::GetSingleton();
-			auto* faction = dh ? dh->LookupForm<RE::TESFaction>(rule.faction.id, rule.faction.plugin) : nullptr;
-			if (!faction) {
-				logger::warn("faction rule {} ({}|{:X}): not in this load order - the rule never matches", rule.editorID, rule.faction.plugin, rule.faction.id);
+		const auto  plugins = LoadedPlugins();
+		std::size_t files = 0;
+		const auto  installed = InstalledTemplates(plugins, files);
+		auto        catalog = ParseCatalog(*tags, installed);
+		std::size_t female = 0;
+		for (const auto& t : catalog) {
+			female += t.female ? 1 : 0;
+		}
+		logger::info("overlays: LooksMenu loads {} template(s) from {} file(s); {} of them tagged and usable ({} female, {} male); "
+					 "the others are never handed out at random",
+			installed.size(), files, catalog.size(), female, catalog.size() - female);
+
+		auto* dh = RE::TESDataHandler::GetSingleton();
+		g_groups.clear();
+		for (const auto& g : profiles.groups) {
+			GroupFactions gf{ g.name, {} };
+			for (const auto& f : g.factions) {
+				auto* form = dh && f.id ? dh->LookupForm(f.id, f.plugin) : nullptr;
+				if (form && form->Is(RE::ENUM_FORM_ID::kFACT)) {
+					gf.factions.push_back(static_cast<RE::TESFaction*>(form));
+				} else {
+					logger::info("group {}: {}|{} ({:06X}) is not in this load order", g.name, f.plugin, f.editorID, f.id);
+				}
 			}
-			g_resolved.factions.emplace_back(faction, rule.faction);
-		}
-		g_resolved.blacklist = ResolveAll(catalog->outfitBlacklist);
-		g_resolved.force = ResolveAll(catalog->forceRefit);
-		g_resolved.heavy = ResolveAll(catalog->heavyItems);
-		g_resolved.light = ResolveAll(catalog->lightItems);
-		for (const int slot : catalog->clothedSlots) {
-			g_resolved.clothedMask |= 1u << (slot - 30);
-		}
-		if (auto* dh = RE::TESDataHandler::GetSingleton()) {
-			g_resolved.powerArmor = { dh->LookupForm<RE::BGSKeyword>(kPowerArmorFrameKeyword, "Fallout4.esm"sv),
-				dh->LookupForm<RE::BGSKeyword>(kPowerArmorPieceKeyword, "Fallout4.esm"sv) };
-		}
-		if (!g_resolved.powerArmor[0] || !g_resolved.powerArmor[1]) {
-			logger::warn("power armour keywords not found in Fallout4.esm: NPCs in power armour count as dressed");
+			g_groups.push_back(std::move(gf));
 		}
 
-		logger::info("catalog: build {}, stamp {}, rules {}, {} presets, {} manifest(s), {} faction rule(s), {} refit set(s)",
-			catalog->build, catalog->stamp, catalog->rulesHash, catalog->presets.size(), manifests, catalog->factionRules.size(), catalog->refitSets.size());
-		g_director.SetCatalog(std::make_shared<const Catalog>(std::move(*catalog)));
-		logger::info("{}", g_director.Status());
+		if (std::ranges::any_of(plugins, [](const std::string& p) { return IEquals(p, "INVB_OverlayFramework.esp"); })) {
+			logger::warn("Random Overlay Framework is loaded: it hands out overlays too, and stacks them on every load");
+			Warn("Random Overlay Framework is loaded. It hands out overlays as well, and stacks them on every load: "
+				 "uninstall it, then use MCM > Complexion > Clear every overlay once, so Complexion starts from clean skin.");
+		}
+		g_director.SetData(std::move(profiles), std::move(catalog));
+	}
+
+	std::string TakeWarning()
+	{
+		std::scoped_lock l{ g_warningLock };
+		return std::exchange(g_warning, {});
 	}
 
 	void NoteLoaded(std::uint32_t a_ref)
 	{
 		std::scoped_lock l{ g_inbox.lock };
-		PushCapped(g_inbox.loaded, a_ref);
-	}
-
-	void NoteEquip(std::uint32_t a_ref, std::uint32_t a_item, bool a_equipped)
-	{
-		std::scoped_lock l{ g_inbox.lock };
-		PushCapped(g_inbox.equips, Inbox::Equip{ a_ref, a_item, a_equipped });
-	}
-
-	void NoteCrosshair(std::uint32_t a_activate, std::uint32_t a_dialogue)
-	{
-		// "Aimed at within the last N seconds" counts from when the crosshair LEFT them: a long look
-		// followed by opening a menu is the case the window exists for.
-		g_trail.Note(a_activate, NowMs());
-		g_dialoguePick.store(a_dialogue);
+		if (g_inbox.loaded.size() >= kInboxLimit) {
+			g_inbox.loaded.pop_front();
+			++g_inbox.dropped;
+		}
+		g_inbox.loaded.push_back(a_ref);
 	}
 
 	void ForgetInbox()
@@ -827,20 +474,12 @@ namespace SH::Game
 		{
 			std::scoped_lock l{ g_inbox.lock };
 			g_inbox.loaded.clear();
-			g_inbox.equips.clear();
 			g_inbox.dropped = 0;
 			g_inbox.warned = false;
 		}
-		g_trail.Forget();
-		g_dialoguePick.store(0);
-		// Main thread (a load or a new game starting): an item created in the save being left (0xFF)
-		// has an id the next save gives to something else. Every other id keeps its answer.
-		std::erase_if(g_resolved.heavyOf, [](const auto& a_item) { return (a_item.first >> 24) == 0xFF; });
 		g_sweepArmed = false;
 		g_sweepUntilMs = 0;
-		g_sweepSaid = true;
 		g_swept.clear();
-		g_reported.clear();
 	}
 
 	void NoteAsked()
@@ -850,12 +489,11 @@ namespace SH::Game
 
 	void See(RE::Actor* a_actor)
 	{
-		const auto catalog = g_director.CatalogPtr();
-		if (!catalog || !a_actor || !Has3D(a_actor)) {
+		if (!a_actor || !Has3D(a_actor) || g_layout == Layout::kBad) {
 			return;
 		}
-		if (const auto s = Read(a_actor, *catalog, nullptr, false, nullptr)) {
-			g_director.Seen(*s);
+		if (const auto f = Read(a_actor)) {
+			g_director.Seen(*f);
 		}
 	}
 
@@ -869,14 +507,9 @@ namespace SH::Game
 
 	void ArmSweep()
 	{
-		// Main thread, like the pump that reads it.
 		g_sweepArmed = true;
-		g_sweepArmedMs = NowMs();
-		g_sweepFirstMs = 0;
 		g_sweepUntilMs = 0;
-		g_sweepSaid = false;
 		g_swept.clear();
-		g_reported.clear();
 	}
 
 	RE::Actor* ActorFor(std::uint32_t a_ref)
@@ -891,32 +524,9 @@ namespace SH::Game
 		return static_cast<RE::Actor*>(form);
 	}
 
-	bool IsFemale(RE::Actor* a_actor)
-	{
-		auto* npc = a_actor ? a_actor->GetNPC() : nullptr;
-		return Compat::Female(npc);
-	}
-
-	std::uint32_t BaseOf(RE::Actor* a_actor)
-	{
-		auto* npc = a_actor ? a_actor->GetNPC() : nullptr;
-		return npc ? npc->GetFormID() : 0;
-	}
-
 	std::string NameOf(RE::Actor* a_actor)
 	{
 		return Compat::DisplayName(a_actor);
-	}
-
-	bool NeverShaped(RE::Actor* a_actor)
-	{
-		return !a_actor || a_actor == RE::PlayerCharacter::GetSingleton() || IsDummy(a_actor->GetNPC());
-	}
-
-	std::string RaceOf(RE::Actor* a_actor)
-	{
-		auto* npc = a_actor ? a_actor->GetNPC() : nullptr;
-		return RaceName(npc && npc->formRace ? npc->formRace : (a_actor ? a_actor->race : nullptr));
 	}
 
 	void Pump()
@@ -924,128 +534,43 @@ namespace SH::Game
 		g_pumpedMs.store(NowMs());
 		GuardLayout();
 		if (g_layout == Layout::kBad) {
-			return;  // refused: nothing is read from members this runtime lays out otherwise
+			return;
 		}
 		std::deque<std::uint32_t> loaded;
-		std::deque<Inbox::Equip>  equips;
 		std::size_t               dropped = 0;
 		{
 			std::scoped_lock l{ g_inbox.lock };
 			loaded.swap(g_inbox.loaded);
-			equips.swap(g_inbox.equips);
 			if (g_inbox.dropped != 0 && !g_inbox.warned) {
 				g_inbox.warned = true;
 				dropped = g_inbox.dropped;
 			}
 		}
 		if (dropped != 0) {
-			logger::warn("the bridge fell behind: {} actor event(s) dropped, the oldest first; those actors are read again when they next load", dropped);
+			logger::warn("the bridge fell behind: {} actor event(s) dropped; those actors are read again when they next load", dropped);
 		}
+		// After a load in a running game the game reports nobody already around the player as loaded
+		// (Silhouette S-43): for a while from the first poll, every actor it simulates is read once.
 		if (g_sweepArmed) {
 			const auto now = NowMs();
 			if (g_sweepUntilMs == 0) {
-				g_sweepFirstMs = now;
-				g_sweepUntilMs = now + kSweepMs;  // from the first poll after the load, however late it came
+				g_sweepUntilMs = now + kSweepMs;
 			}
 			if (now < g_sweepUntilMs) {
-				g_reported.insert(loaded.begin(), loaded.end());
-				if (g_director.CatalogPtr()) {
-					Sweep(loaded);  // without a catalog nobody is read, so nobody is counted as read
-				}
-			} else if (!g_sweepSaid) {
-				g_sweepSaid = true;
+				Sweep(loaded);
+			} else {
 				g_sweepArmed = false;
-				const auto told = static_cast<std::size_t>(std::ranges::count_if(g_swept, [](std::uint32_t a_ref) { return g_reported.contains(a_ref); }));
-				logger::info("after loading: {} actor(s) around the player read; the game reported {} of them as loaded, and {} it reported were "
-							 "not among them; the first poll came {:.1f} s after the load",
-					g_swept.size(), told, g_reported.size() - told, static_cast<double>(g_sweepFirstMs - g_sweepArmedMs) / 1000.0);
+				logger::info("after loading: {} actor(s) around the player read", g_swept.size());
 			}
 		}
-		const auto catalog = g_director.CatalogPtr();
-		if (catalog) {
-			std::unordered_set<std::uint32_t> done;
-			for (const auto ref : loaded) {
-				if (!done.insert(ref).second) {
-					continue;
-				}
-				auto* actor = ActorFor(ref);
-				if (!actor || !Has3D(actor)) {
-					continue;
-				}
-				if (const auto s = Read(actor, *catalog, nullptr, false, nullptr)) {
-					g_director.Seen(*s);
-				}
+		std::unordered_set<std::uint32_t> done;
+		for (const auto ref : loaded) {
+			if (!done.insert(ref).second) {
+				continue;
 			}
-			for (const auto& e : equips) {
-				auto* item = RE::TESForm::GetFormByID(e.item);
-				if (!item || !item->Is(RE::ENUM_FORM_ID::kARMO)) {
-					continue;  // a weapon, ammunition, aid: nothing anyone wears
-				}
-				auto* actor = ActorFor(e.ref);
-				if (!actor || !Has3D(actor)) {
-					continue;  // no biped to read: they are read again when they load
-				}
-				bool removing = false;
-				if (const auto s = Read(actor, *catalog, item, e.equipped, &removing)) {
-					g_director.Dressed(*s, removing);
-				}
-			}
+			See(ActorFor(ref));
 		}
 		FlushLog();
-		// What the bridge did, every half minute while there is anything to say (L5 #2).
-		if (const auto now = NowMs(); now - g_summaryMs >= kSummaryMs) {
-			g_summaryMs = now;
-			if (const auto line = g_director.TakeSummary(); !line.empty()) {
-				logger::info("{}", line);
-			}
-		}
-	}
-
-	std::uint32_t CrosshairActor(float a_recentSeconds)
-	{
-		const auto recentMs = a_recentSeconds > 0.0F ? static_cast<std::int64_t>(a_recentSeconds * 1000.0F) : std::int64_t{ 0 };
-		RE::NiPointer<RE::TESObjectREFR> chosen;
-		const auto handle = g_trail.Choose(recentMs, NowMs(), [&](std::uint32_t a_handle) {
-			auto  ref = RefFor(a_handle);
-			auto* actor = ref ? ActorFor(ref->GetFormID()) : nullptr;
-			if (!actor || NeverShaped(actor) || !actor->GetNPC()) {
-				return false;
-			}
-			chosen = std::move(ref);
-			return true;
-		});
-		// Pick and the menu ask only when the player acts, so every answer is written: the log says what the
-		// game reported there either way.
-		if (chosen) {
-			logger::info("pick: {}, {}", Described(chosen.get()),
-				handle == g_trail.Current() ? std::string{ "under the crosshair" } : std::format("aimed at within the last {:.0f} s", a_recentSeconds));
-			return chosen->GetFormID();
-		}
-		{
-			// The one question a player cannot answer from the screen: what did the game report there.
-			const auto current = g_trail.Current();
-			const auto ref = RefFor(current);
-			auto*      actor = ref ? ActorFor(ref->GetFormID()) : nullptr;
-			std::string what;
-			if (current == 0) {
-				what = "nothing is under the crosshair within reach -- aim at someone close enough to talk to";
-			} else if (!ref) {
-				what = "the reference under the crosshair is gone";
-			} else if (!actor || !actor->GetNPC()) {
-				what = std::format("the crosshair is on {}, not an NPC", Described(ref.get()));
-			} else {
-				what = std::format("the crosshair is on {}, whom Silhouette never shapes (the player or a character-creation dummy)", Described(ref.get()));
-			}
-			if (const auto talk = g_dialoguePick.load(); talk != 0 && talk != current) {
-				const auto other = RefFor(talk);
-				what += std::format("; the dialogue pick is {}", other ? Described(other.get()) : "gone");
-			}
-			if (recentMs > 0) {
-				what += std::format("; nobody Silhouette shapes was aimed at in the last {:.0f} s", a_recentSeconds);
-			}
-			logger::info("pick: nobody to pick - {}", what);
-		}
-		return 0;
 	}
 
 	void FlushLog()

@@ -4,7 +4,7 @@
 // exact runtime and logs them on every launch ("matrix: equip attached (scan: TESEquipEvent ...)").
 // Every read is bounds-checked against the module or guarded, so any address can be asked.
 
-namespace SH::Events
+namespace CX::Events
 {
 	namespace
 	{

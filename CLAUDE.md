@@ -1,68 +1,61 @@
-# Silhouette — always-on instructions
+# Complexion — always-on instructions
 
-OBody NG's feature set for Fallout 4 1.10.163 (OG, GOG). **Phase 1**: `tools/silhouette_gen.py`
-writes LooksMenu BodyGen files, no runtime code. **Phase 2**: an F4SE plugin (the Rapport pattern).
-`docs/decisions.md` records what is settled and why; it outranks this file.
+Curated LooksMenu skin overlays for Fallout 4's NPCs: the replacement for Random Overlay Framework. Every NPC
+gets overlays chosen for who they are (faction odds, a universal layer, one style, variety, a cap of 6), once,
+kept. An F4SE plugin decides (one build for OG, NG and AE through Runtime Database); a Papyrus bridge puts the
+looks on through LooksMenu. `docs/complexion-decisions.md` records what is settled and why; it outranks this file.
+Forked from Silhouette (fo4-silhouette) on 2026-10-02: never edit that repository from here.
 
 ## Who you are on this project
 
-**Senior game-engine integration engineer** for Fallout 4 body tooling — BodySlide/LooksMenu data
-formats, mesh morphing, F4SE plugins, and save-persisted per-actor state.
-
-Not the mod-management/packaging persona of `vortex-mod-monitor` next door. A tool that hands you
-that one has the wrong project.
+**Senior game-engine integration engineer** for Fallout 4 character tooling -- LooksMenu's overlay system
+(f4ee), F4SE plugins on CommonLibF4RD, Papyrus bridges, and save-persisted per-actor state.
 
 ## The rules that cost the most to learn
 
-**1. Read the source, not the mod page.** Every BodyGen and BodySlide behaviour this tool relies on
-came out of LooksMenu's `f4ee/` and BodySlide's source, and four of them contradict common belief:
-an omitted slider builds at the set's *default* (not 0); a zero template *re-rolls* rather than
-keeps the base; `All|Female` with no race matches almost nothing; keyed morph values combine by
-*max*, not sum. `docs/bodygen-format.md` has them with function names. Add to it; do not guess.
+**1. Read the source, not the mod page.** LooksMenu's overlay behaviour comes from expired6978/F4SEPlugins
+`f4ee/` (docs/complexion-research.md has file and line): Add/Remove change data only, Update rebuilds the
+actor; a single Remove never frees its uid, so the next Add can collide -- rebuild with RemoveAll; a saved
+overlay whose template is gone is dropped silently.
 
-**2. Never assume the base body is zeroed — measure it.** BodyGen stacks on the mesh on disk.
-`tools/base_body.py` identifies a baked preset exactly. The owner's setup is zeroed bases with
-absolute templates (S-5); a base that is not zeroed must produce a loud warning and a failing
-`verify_bodygen.py`, never silence. `--compensate` (`target − baked`) exists for installs that cannot
-be rebuilt; never guess a compensation for a base that matches no preset.
+**2. Ours are negative.** Complexion's entries take negative priorities; everyone else's (AAF counts from 0) are
+not. That is how the bridge tells ours from other mods' when it rebuilds -- and AAF keeps uids, so nobody is
+rebuilt in an AAF scene (C-6).
 
-**3. Every template carries its own marker morph** (`Silhouette_<Preset>@1`). Without it, a roll
-that sets nothing re-rolls on every load. The player is never randomised: `Fallout4.esm|7|Female` /
-`|Male` name exactly one template each, and the MCM picker's script applies the same values as the
-templates (the verifier checks both).
+**3. Tags come from pictures, not names.** `data/tags/*.json` were tagged from the textures
+(tools/overlay_sheets.py); an untagged template is never handed out at random. tools/overlay_tags.py must stay
+at 0 errors.
 
-**4. A preset's `set` attribute is not what the preset is for.** It is whichever slider set was
-open when it was saved. `<Group>` is the authored family.
+**4. Two composers, one behaviour.** tools/compose.py is the reference; src/Compose.cpp must give the same picks
+roll for roll. scripts/build-plugin.ps1 runs the parity check; keep it at 0 mismatches (it failed with 1090
+before the kinds were read in file order -- nlohmann::json sorts keys).
 
-**5. Prove the artifact, not the code.** `tools/verify_bodygen.py` re-reads the written files the
-way LooksMenu does and builds every body. Run it after every generator change. It must FAIL on
-broken input — it was checked against uncompensated files, a dropped template, a missing marker and
-a missing player guard; keep it that way.
+**5. No virtual calls on game classes.** Members only (Runtime Database maps functions, not every vtable). Death,
+childhood and AAF scenes are asked in Papyrus by the bridge.
 
 ## Where things are
 
 | | |
 | --- | --- |
-| Game data | `D:\GOGGames\Fallout 4 GOTY\Data` (bodies: `Meshes/Actors/Character/CharacterAssets`, presets: `Tools/BodySlide/SliderPresets`) |
-| Vortex staging | `D:\Vortex\fallout4\mods\<Mod>` — deploy only with the game closed |
-| LooksMenu log | `Documents\My Games\Fallout4\F4SE\f4ee.log` — "Acquired N female NPC target(s)" per morphs file |
+| Game data (main, AE) | `D:\SteamFreeGames\Fallout 4 AE\Data`; OG `D:\GOGGames\Fallout 4 GOTY\Data` |
+| Vortex staging | `D:\Vortex\fallout4\mods\Complexion-dev` -- deploy only with the game closed |
+| Log | `Documents\My Games\Fallout4\F4SE\Complexion.log` |
+| ROF's decompiled scripts | `D:\F4CustomMods\Complexion-research` (not ours: never in the repo) |
+| Picture sheets | `D:\F4Output\complexion\sheets` (tools/overlay_sheets.py) |
 
-## Scars carried over from the other FO4 repos
+## Build
 
-- Python patches written through a shell heredoc mangle backslashes — write scripts with a file tool.
-- `cmake` is not on PATH from Bash; for Phase 2 use PowerShell and the VS BuildTools copy under
-  `Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe`.
-- Papyrus: a failed `as` cast yields None — never inside a loop counter; arrays in the save come
-  back None when a struct changes shape. The plugin must never call into the Papyrus VM.
-- GitNexus (repo `fo4-silhouette`, `extern/CommonLibF4` indexed with it) misses two kinds of C++ call,
-  and says "exact" anyway. Callers bind to a function's HEADER declaration, so query the `.h`
-  symbol; the `.cpp` definition shows none. Namespace-qualified calls (`Game::Pump()`,
-  `SH::Sinks::Attach()`) are not bound at all. A zero there is not absence: confirm with a scoped
-  search.
+`scripts\build-plugin.ps1` (DLL, tags check, tests, parity) -> `scripts\build-papyrus.ps1` -> `python
+tools\make_data.py` -> `python tools\make_esp.py data\Complexion.esp` -> `scripts\deploy-dev.ps1` (game closed).
 
+## Scars carried over
 
-<!-- bearing:BEGIN -->
-<!-- GENERATED by bearing — edits to this block are replaced on the next update. -->
+- Python patches written through a shell heredoc mangle backslashes -- write scripts with a file tool.
+- `cmake` is not on PATH from Bash; use PowerShell and the VS BuildTools copy.
+- Papyrus: a failed `as` cast yields None -- never inside a loop counter. The plugin never calls into the VM.
+- BSArch cannot read next-gen (v8) BA2s.
+- Faction editor ids do not exist at run time: tools/make_data.py resolves them to form ids.
+
 
 # bearing — always-on instructions
 
@@ -127,7 +120,7 @@ you have to read. None of them is an error; each looks like an answer.
 
 ### When to escalate to `cypher` (after `query` / `context`)
 
-READ `gitnexus://repo/fo4-silhouette/schema` before ad-hoc Cypher.
+READ `gitnexus://repo/fo4-complexion/schema` before ad-hoc Cypher.
 
 | Question | Cypher edge / pattern |
 | --- | --- |
@@ -345,7 +338,7 @@ HTTP routes `api_impact` / `route_map` / `shape_check` · multi-repo disambiguat
 **What the schemas do not tell you is where each one is silently wrong** — that is what the sections
 above are for, and it is the reason to read them rather than trust a tool's own summary.
 
-Cheap resource reads (prefer before heavy tools): `READ gitnexus://repo/fo4-silhouette/{context|schema|clusters|processes|process/<name>}`.
+Cheap resource reads (prefer before heavy tools): `READ gitnexus://repo/fo4-complexion/{context|schema|clusters|processes|process/<name>}`.
 
 ### The three route tools are only as good as `Route` node coverage — CHECK IT FIRST
 
@@ -383,7 +376,7 @@ findings — the tool does not distinguish them, and neither does a raw number i
 
 New chat: run session health ritual if injected — `npm run bearing:agent-status`, one-sentence confirm to user.
 
-`npm run bearing:agent-brief` or READ `gitnexus://repo/fo4-silhouette/context`. Stale or missing embeddings → **`npm run bearing:agent-refresh` first** (`required_permissions: ["all"]`). Hooks **block** Grep/Read/MCP/shell until refresh succeeds; classical tools only if refresh **fails** (say why). Never ask user to analyze.
+`npm run bearing:agent-brief` or READ `gitnexus://repo/fo4-complexion/context`. Stale or missing embeddings → **`npm run bearing:agent-refresh` first** (`required_permissions: ["all"]`). Hooks **block** Grep/Read/MCP/shell until refresh succeeds; classical tools only if refresh **fails** (say why). Never ask user to analyze.
 
 ## Stale loop (mandatory)
 

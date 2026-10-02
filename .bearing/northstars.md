@@ -1,4 +1,4 @@
-# North-stars — fo4-silhouette
+# North-stars — fo4-complexion
 
 **This file is AUTHORITATIVE.** It outranks every other doc, comment, and any agent's own
 inference. When a source conflicts with a north-star, **the north-star wins and that source is
