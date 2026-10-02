@@ -1,0 +1,18 @@
+{
+"f:DNX_LShoulder_Butterfly1":{"kind":"tattoo","regions":["shoulders"],"size":"tiny","style":["animal","realistic_art"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"small butterfly"},
+"f:DNX_Lshoulder_Tiger1":{"kind":"tattoo","regions":["shoulders"],"size":"small","style":["tribal","animal"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"tribal snarling wolf head"},
+"f:DNX_Lwrback_TribalHeart":{"kind":"tattoo","regions":["lower_back"],"size":"small","style":["tribal"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"tribal lower back piece"},
+"f:DNX_Pelvis_Heart1":{"kind":"tattoo","regions":["pelvis"],"size":"small","style":["tribal"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"tribal heart horns"},
+"f:DNX_Rarm_RoseDagger":{"kind":"tattoo","regions":["arm_r"],"size":"small","style":["floral","military"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"rose and dagger"},
+"f:DNX_Rarm_TribalDragon":{"kind":"tattoo","regions":["arm_r"],"size":"medium","style":["tribal","animal"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"tribal dragon armband"},
+"f:DNX_Rhip_CurlyGirl":{"kind":"tattoo","regions":["pelvis"],"size":"tiny","style":["pinup","realistic_art"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"curly-haired woman portrait"},
+"f:DNX_Rhip_Stars2":{"kind":"tattoo","regions":["pelvis"],"size":"tiny","style":["cartoon"],"emblem":null,"lore":"stretch","adult":false,"quality":"ok","note":"scattered stars"},
+"f:DNX_Rleg_DmCatch1":{"kind":"tattoo","regions":["leg_r"],"size":"small","style":["tribal","geometric"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"dreamcatcher with feathers"},
+"f:DNX_Rleg_Lion2":{"kind":"tattoo","regions":["leg_r"],"size":"small","style":["animal","realistic_art"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"lion head"},
+"f:DNX_Rleg_TribalBand1":{"kind":"tattoo","regions":["leg_r"],"size":"small","style":["tribal"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"tribal band"},
+"f:DNX_RShoulder_Flower1":{"kind":"tattoo","regions":["shoulders"],"size":"tiny","style":["floral"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"single rose"},
+"f:F_Back_Abraxo":{"kind":"brand","regions":["back"],"size":"small","style":["emblem"],"emblem":"other_fo","lore":"fits","adult":false,"quality":"ok","note":"Abraxo cleaner logo"},
+"f:F_Back_Anime":{"kind":"tattoo","regions":["back"],"size":"medium","style":["cartoon"],"emblem":null,"lore":"stretch","adult":false,"quality":"ok","note":"anime girl line art"},
+"f:F_Back_Barcode":{"kind":"brand","regions":["back"],"size":"tiny","style":["emblem"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"barcode"},
+"f:F_Back_BoS":{"kind":"tattoo","regions":["back"],"size":"small","style":["script","military"],"emblem":"bos","lore":"fits","adult":false,"quality":"ok","note":"Ad Victoriam text, mirrored"}
+}

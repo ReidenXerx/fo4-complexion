@@ -1,0 +1,243 @@
+{
+ "m:M_LowerBack_Barcode": {
+  "kind": "brand",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "barcode brand"
+ },
+ "m:M_LowerBack_Batman": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Batman bat logo"
+ },
+ "m:M_LowerBack_CoA_1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "circle sigil"
+ },
+ "m:M_LowerBack_CoA_2": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical circle sigil strip"
+ },
+ "m:M_LowerBack_Crystal": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "crystal shard strip"
+ },
+ "m:M_LowerBack_Gunner_1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "military"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "crosshair mark"
+ },
+ "m:M_LowerBack_Gunner_2": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scribbled skull"
+ },
+ "m:M_LowerBack_Imperial_Mark": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Imperial aquila with rays"
+ },
+ "m:M_LowerBack_Institute_B": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red Institute logo"
+ },
+ "m:M_LowerBack_Institute_O": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint Institute logo"
+ },
+ "m:M_LowerBack_Institute_R": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red Institute logo"
+ },
+ "m:M_LowerBack_Loveheart_Bed": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "heart-shaped sketch art"
+ },
+ "m:M_LowerBack_Lovemark": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged spade-heart mark"
+ },
+ "m:M_LowerBack_Minutemen_1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen crossed emblem"
+ },
+ "m:M_LowerBack_Minutemen_2": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black star"
+ },
+ "m:M_LowerBack_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull in chain ring"
+ }
+}

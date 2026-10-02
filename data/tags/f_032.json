@@ -1,0 +1,244 @@
+{
+ "f:F_Pelvis_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross triage mark"
+ },
+ "f:F_Pelvis_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec logo"
+ },
+ "f:F_Pelvis_Wonderwoman": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Wonder Woman W emblem"
+ },
+ "f:F_Pelvis_YinYang": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "yin yang"
+ },
+ "f:F_RArm_Barcode": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "barcode"
+ },
+ "f:F_RArm_BoS": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood gear emblem"
+ },
+ "f:F_RArm_Captive": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chain shackle links"
+ },
+ "f:F_RArm_CoA": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "concentric rings band"
+ },
+ "f:F_RArm_Crystal": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "crystal shard bands"
+ },
+ "f:F_RArm_Gunner_1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "military"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "crosshair, tiny"
+ },
+ "f:F_RArm_Gunner_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint skull mark, tiny"
+ },
+ "f:F_RArm_Hex": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiky spine band"
+ },
+ "f:F_RArm_Institute_B": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red Institute logo, tiny"
+ },
+ "f:F_RArm_Institute_O": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint outline mark"
+ },
+ "f:F_RArm_Institute_R": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red Institute logo, tiny"
+ },
+ "f:F_RArm_LoveMark": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "heart-shaped ornament"
+ }
+}

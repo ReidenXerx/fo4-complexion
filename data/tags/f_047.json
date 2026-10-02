@@ -1,0 +1,210 @@
+{
+ "f:SvarogNLTriangle": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "triangle patch"
+ },
+ "f:SvarogNLTriangleLarge": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "large triangle patch"
+ },
+ "f:Moles_01": {
+  "kind": "mole",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "nearly invisible moles"
+ },
+ "f:Moles_02": {
+  "kind": "mole",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "few scattered moles"
+ },
+ "f:Moles_03": {
+  "kind": "freckles",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "very faint speckles"
+ },
+ "f:Moles_04": {
+  "kind": "mole",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "few scattered moles"
+ },
+ "f:Moles_05": {
+  "kind": "mole",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "few scattered moles"
+ },
+ "f:Moles_06": {
+  "kind": "freckles",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "very faint speckles"
+ },
+ "f:Moles_07": {
+  "kind": "mole",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "few scattered moles"
+ },
+ "f:Moles_08": {
+  "kind": "mole",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "few scattered moles"
+ },
+ "f:Moles_09": {
+  "kind": "mole",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "few scattered moles"
+ },
+ "f:Moles_10": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "blotchy skin pattern"
+ },
+ "f:Moles_11": {
+  "kind": "mole",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "few scattered moles"
+ },
+ "f:Moles_12": {
+  "kind": "mole",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "few scattered moles"
+ },
+ "f:Moles_13": {
+  "kind": "mole",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "single dark mole"
+ },
+ "f:Moles_14": {
+  "kind": "mole",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "single tiny mole"
+ }
+}

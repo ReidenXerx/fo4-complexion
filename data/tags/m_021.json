@@ -1,0 +1,242 @@
+{
+ "m:M_Pelvis_Settler_1": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull in chain ring"
+ },
+ "m:M_Pelvis_Settler_2": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint scribbled skull"
+ },
+ "m:M_Pelvis_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud mask emblem"
+ },
+ "m:M_Pelvis_Superman_1": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Superman logo outline"
+ },
+ "m:M_Pelvis_Superman_2": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Superman logo solid"
+ },
+ "m:M_Pelvis_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross medical mark"
+ },
+ "m:M_Pelvis_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec style logo"
+ },
+ "m:M_Pelvis_Wonderwoman": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Wonder Woman logo"
+ },
+ "m:M_Pelvis_YinYang": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "yin yang symbol"
+ },
+ "m:M_RArm_Barcode": {
+  "kind": "brand",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "barcode brand"
+ },
+ "m:M_RArm_BoS": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood of Steel emblem"
+ },
+ "m:M_RArm_Captive": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "degrading"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "shackle chains captive mark"
+ },
+ "m:M_RArm_CoA": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "horizontal circle sigil strip"
+ },
+ "m:M_RArm_Crystal": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "crystal shard strips"
+ },
+ "m:M_RArm_Gunner_1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "military"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "crosshair mark"
+ },
+ "m:M_RArm_Gunner_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scribbled skull"
+ }
+}

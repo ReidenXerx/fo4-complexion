@@ -1,0 +1,247 @@
+{
+ "f:F_LowerBack_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross triage mark"
+ },
+ "f:F_LowerBack_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec logo"
+ },
+ "f:F_LowerBack_Wonderwoman": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Wonder Woman W emblem"
+ },
+ "f:F_LowerBack_YinYang": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "yin yang"
+ },
+ "f:F_Neck_SpiderWeb_Back": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web with spider"
+ },
+ "f:F_Neck_SpiderWeb_Chest": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web with spider"
+ },
+ "f:F_Pelvis_Barcode": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "barcode"
+ },
+ "f:F_Pelvis_BoS": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood winged emblem"
+ },
+ "f:F_Pelvis_Captive": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chain links"
+ },
+ "f:F_Pelvis_CoA_1": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "stacked concentric circles"
+ },
+ "f:F_Pelvis_CoA_2": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical concentric rings"
+ },
+ "f:F_Pelvis_Falloutboy": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "cartoon",
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault Boy thumbs up"
+ },
+ "f:F_Pelvis_Gunner_2": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "grungy skull mark"
+ },
+ "f:F_Pelvis_Imperial_Mark": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Imperial aquila eagle"
+ },
+ "f:F_Pelvis_Institute_B": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red Institute logo, tiny"
+ },
+ "f:F_Pelvis_Institute_O": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint Institute outline"
+ }
+}

@@ -1,0 +1,245 @@
+{
+ "f:RR Abs Spyro": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "small coiled dragon"
+ },
+ "f:RR Abs Tailbird": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "phoenix with long tail"
+ },
+ "f:RR Abs Venomous": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal spider"
+ },
+ "f:RR Abs Vwing": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "tiny",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal V wings"
+ },
+ "f:RR ArmL Anarchy": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "brushstroke anarchy symbol"
+ },
+ "f:RR ArmL Anubis": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "anubis head silhouette"
+ },
+ "f:RR ArmL DeathEater": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Death Eater snake skull, Harry Potter"
+ },
+ "f:RR ArmL FairyBranch": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "fairy on branch"
+ },
+ "f:RR ArmL Pegasus": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged pegasus"
+ },
+ "f:RR ArmL Spartan": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "military"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spartan helmet"
+ },
+ "f:RR ArmR CrowFeather": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "crow feather turning to birds"
+ },
+ "f:RR ArmR DracoGenie": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal dragon swirl"
+ },
+ "f:RR ArmR FalcoSwoop": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "falcon swooping"
+ },
+ "f:RR ArmR Mermaid": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "mermaid silhouette"
+ },
+ "f:RR ArmR Sailor": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "military"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "sailor anchor"
+ },
+ "f:RR ArmR Triforce": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Zelda triforce emblem"
+ }
+}

@@ -1,0 +1,254 @@
+{
+ "f:F_Chest_Vaulttec_2": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec gear logo"
+ },
+ "f:F_Chest_Witchblade": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Witchblade comic emblem"
+ },
+ "f:F_Chest_Wonder_Woman_B": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Wonder Woman logo"
+ },
+ "f:F_Chest_Wonder_Woman_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Wonder Woman logo"
+ },
+ "f:F_Chest_YinYang": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "religious",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "yin yang symbol"
+ },
+ "f:F_Full_Captive": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "degrading"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chains across whole body"
+ },
+ "f:F_Full_Crystal_All": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "dark crystal shards across body"
+ },
+ "f:F_Full_Crystal_Neck": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "shoulders"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "dark crystal shard ring on neck"
+ },
+ "f:F_Full_Gunner": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "crosshair mark"
+ },
+ "f:F_Full_Hex_All": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "thorny hex vine pattern body"
+ },
+ "f:F_Full_Hex_Arms": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l",
+   "arm_r"
+  ],
+  "size": "large",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "thorny hex vine arms"
+ },
+ "f:F_Full_Hex_Front_Back": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "back",
+   "belly"
+  ],
+  "size": "large",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "thorny hex vine front and back"
+ },
+ "f:F_Full_Hex_Legs": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l",
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "thorny hex vine curls legs"
+ },
+ "f:F_Full_Minutemen": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "three black stars"
+ },
+ "f:F_Full_Neon_Black": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint neon octagon outline"
+ },
+ "f:F_Full_Neon_Blue": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint neon octagon outline"
+ }
+}

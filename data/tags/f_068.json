@@ -1,0 +1,243 @@
+{
+ "f:HipL_Flower1": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "rose with leaves"
+ },
+ "f:HipR_Flower1": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "rose vine"
+ },
+ "f:KneeL_Web1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web with spider"
+ },
+ "f:LegL_Butterfly1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small blue butterfly"
+ },
+ "f:LegL_Dancer1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "pinup"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "pole dancer silhouette"
+ },
+ "f:LegL_Flowers1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "flowering vine"
+ },
+ "f:LegL_Ornament1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "graveyard hill with roots"
+ },
+ "f:LegL_Ornament2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal spiked ornament"
+ },
+ "f:LegL_Rose1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "yellow rose"
+ },
+ "f:LegL_Sleeve1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "paisley floral sleeve"
+ },
+ "f:LegL_Sleeve2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "celtic tree of life"
+ },
+ "f:LegL_Sleeve3": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal horse"
+ },
+ "f:LegL_Sleeve4": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey flames"
+ },
+ "f:LegL_Wing1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small wing"
+ },
+ "f:LegR_Flower1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "rose stem"
+ },
+ "f:LegR_Horseshoes1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "horseshoes"
+ }
+}

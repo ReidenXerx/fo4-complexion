@@ -1,0 +1,247 @@
+{
+ "m:M_Hand_L_Institute_B": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Institute logo red"
+ },
+ "m:M_Hand_L_Institute_O": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Institute logo faint outline"
+ },
+ "m:M_Hand_L_Institute_R": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Institute logo red"
+ },
+ "m:M_Hand_L_Kill": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "KILL letters on fingers"
+ },
+ "m:M_Hand_L_Love": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "LOVE letters on fingers"
+ },
+ "m:M_Hand_L_Lovemark": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Winged heart ornament"
+ },
+ "m:M_Hand_L_Minutemen_1": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen cross and stars"
+ },
+ "m:M_Hand_L_Minutemen_2": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Black star"
+ },
+ "m:M_Hand_L_Nate": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "NORA letters on fingers"
+ },
+ "m:M_Hand_L_Pain": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "PAIN letters on fingers"
+ },
+ "m:M_Hand_L_Password": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Word Password"
+ },
+ "m:M_Hand_L_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Raider skull in chain ring"
+ },
+ "m:M_Hand_L_Railroad_1": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Railroad track mark"
+ },
+ "m:M_Hand_L_Shaun": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Shaun name text"
+ },
+ "m:M_Hand_L_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver shroud emblem"
+ },
+ "m:M_Hand_L_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Spiderweb"
+ }
+}

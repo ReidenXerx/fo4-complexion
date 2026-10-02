@@ -1,0 +1,249 @@
+{
+"f:F_Butt_Triage_L": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "other_fo",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "red medical cross, Triage"
+},
+"f:F_Butt_Triage_R": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "other_fo",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "red medical cross, Triage"
+},
+"f:F_Butt_VaultTec_L": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "vault_tec",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Vault-Tec gear door symbol"
+},
+"f:F_Butt_VaultTec_R": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "vault_tec",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Vault-Tec gear door symbol"
+},
+"f:F_Chest_Abraxo": {
+"kind": "brand",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"emblem"
+],
+"emblem": "other_fo",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Abraxo cleaner logo"
+},
+"f:F_Chest_Barcode": {
+"kind": "brand",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": null,
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "barcode"
+},
+"f:F_Chest_Batman": {
+"kind": "brand",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"emblem"
+],
+"emblem": "real_world",
+"lore": "breaks",
+"adult": false,
+"quality": "ok",
+"note": "Batman logo"
+},
+"f:F_Chest_BoS": {
+"kind": "brand",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"emblem",
+"military"
+],
+"emblem": "bos",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Brotherhood of Steel emblem"
+},
+"f:F_Chest_Captive_1": {
+"kind": "tattoo",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": [
+"degrading"
+],
+"emblem": null,
+"lore": "fits",
+"adult": true,
+"quality": "ok",
+"note": "chain loops, captive mark"
+},
+"f:F_Chest_Captive_2": {
+"kind": "tattoo",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": [
+"degrading"
+],
+"emblem": null,
+"lore": "fits",
+"adult": true,
+"quality": "ok",
+"note": "chain loops, captive mark"
+},
+"f:F_Chest_Chinese_Dragon_1": {
+"kind": "tattoo",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": [
+"animal",
+"realistic_art"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "ok",
+"note": "detailed Chinese dragon"
+},
+"f:F_Chest_Chinese_Dragon_2": {
+"kind": "tattoo",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": [
+"animal",
+"realistic_art"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "ok",
+"note": "detailed Chinese dragon"
+},
+"f:F_Chest_CoA_1_BL": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": [
+"emblem",
+"geometric"
+],
+"emblem": "atom",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Children of Atom orbit, left breast"
+},
+"f:F_Chest_CoA_1_BR": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": [
+"emblem",
+"geometric"
+],
+"emblem": "atom",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Children of Atom orbit, right breast"
+},
+"f:F_Chest_CoA_1_C": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": [
+"emblem",
+"geometric"
+],
+"emblem": "atom",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Children of Atom orbits, both breasts"
+},
+"f:F_Chest_CoA_2": {
+"kind": "brand",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"emblem",
+"geometric"
+],
+"emblem": "atom",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Children of Atom vertical orbits"
+}
+}

@@ -1,0 +1,222 @@
+{
+ "m:M_LArm_Railroad_1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad track mark, tiny"
+ },
+ "m:M_LArm_Railroad_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small railroad track"
+ },
+ "m:M_LArm_Railroad_3": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "long railroad track strip"
+ },
+ "m:M_LArm_Settler_1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint circular design"
+ },
+ "m:M_LArm_Settler_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint tiny mark"
+ },
+ "m:M_LArm_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud mask emblem"
+ },
+ "m:M_LArm_Sleeve": {
+  "kind": "skin",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LArm_Sleeve_Blue": {
+  "kind": "skin",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LArm_Sleeve_Brown": {
+  "kind": "skin",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LArm_Sleeve_Cyan": {
+  "kind": "skin",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LArm_Sleeve_Green": {
+  "kind": "skin",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LArm_Sleeve_Purple": {
+  "kind": "skin",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LArm_Sleeve_Red": {
+  "kind": "skin",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LArm_Sleeve_White": {
+  "kind": "skin",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LArm_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiderweb line art"
+ },
+ "m:M_LArm_Sun": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "sun outline tattoo"
+ }
+}

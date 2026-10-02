@@ -1,0 +1,235 @@
+{
+ "f:F_LLeg_Neon_Cyan": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, cyan"
+ },
+ "f:F_LLeg_Neon_Green": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, green"
+ },
+ "f:F_LLeg_Neon_Purple": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, purple"
+ },
+ "f:F_LLeg_Neon_Red": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, red"
+ },
+ "f:F_LLeg_Neon_White": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, white"
+ },
+ "f:F_LLeg_Neon_Yellow": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, yellow"
+ },
+ "f:F_LLeg_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chained skull Raider mark"
+ },
+ "f:F_LLeg_Railroad_3": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad track strip"
+ },
+ "f:F_LLeg_Settler_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint chained skull outline"
+ },
+ "f:F_LLeg_Settler_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint skull smudge"
+ },
+ "f:F_LLeg_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud mask"
+ },
+ "f:F_LLeg_Sleeve_Black": {
+  "kind": "other",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "noisy grey sleeve patch, black"
+ },
+ "f:F_LLeg_Sleeve_Blue": {
+  "kind": "other",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "noisy grey sleeve patch, blue"
+ },
+ "f:F_LLeg_Sleeve_Brown": {
+  "kind": "other",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "noisy grey sleeve patch, brown"
+ },
+ "f:F_LLeg_Sleeve_Cyan": {
+  "kind": "other",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "noisy grey sleeve patch, cyan"
+ },
+ "f:F_LLeg_Sleeve_Green": {
+  "kind": "other",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "noisy grey sleeve patch, green"
+ }
+}

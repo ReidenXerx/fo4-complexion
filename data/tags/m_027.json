@@ -1,0 +1,245 @@
+{
+ "m:LMBT_SugarSkullGirlRoses_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "sugar skull woman with roses"
+ },
+ "m:LMBT_Tiger_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tiger face"
+ },
+ "m:LMBT_Tribal10_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "paired tribal side pieces"
+ },
+ "m:LMBT_Tribal11_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "knotwork tribal shoulder"
+ },
+ "m:LMBT_Tribal1_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "tiny",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small mirrored tribal"
+ },
+ "m:LMBT_Tribal2_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal swirl band"
+ },
+ "m:LMBT_Tribal3_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "tiny",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small vertical tribal"
+ },
+ "m:LMBT_Tribal4_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal wings"
+ },
+ "m:LMBT_Tribal5_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal trio swirl"
+ },
+ "m:LMBT_Tribal6_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "knotwork tribal"
+ },
+ "m:LMBT_Tribal7_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "tiny",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small vertical tribal"
+ },
+ "m:LMBT_Tribal8_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal winged piece"
+ },
+ "m:LMBT_Tribal9_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "knotwork tribal"
+ },
+ "m:LMBT_WidowmakerArm_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "script",
+   "realistic_art"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Widowmaker shattered text"
+ },
+ "m:LMBT_WidowmakerBack_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "emblem",
+   "geometric"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Overwatch Widowmaker spider logo"
+ },
+ "m:f_nails_10_male": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "olive nail dots"
+ }
+}

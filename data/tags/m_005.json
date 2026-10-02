@@ -1,0 +1,253 @@
+{
+ "m:M_Chest_Crystal": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Black crystal shards pair"
+ },
+ "m:M_Chest_Dragon_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Dragon in circle"
+ },
+ "m:M_Chest_Dragon_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Dragon in circle"
+ },
+ "m:M_Chest_Dragons": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Tribal dragon pair"
+ },
+ "m:M_Chest_Gunner_1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Crosshair mark"
+ },
+ "m:M_Chest_Gunner_1_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Crosshair mark"
+ },
+ "m:M_Chest_Gunner_1_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Crosshair mark"
+ },
+ "m:M_Chest_Gunner_2_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Gunner skull emblem"
+ },
+ "m:M_Chest_Gunner_2_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Gunner skull emblem"
+ },
+ "m:M_Chest_Gunner_2_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Gunner skull emblem"
+ },
+ "m:M_Chest_Gunner_3": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Gunner skull emblem, large"
+ },
+ "m:M_Chest_Hex_Belly": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "V-shaped bone spine pattern"
+ },
+ "m:M_Chest_Hex_Raven": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Spiked tail pattern"
+ },
+ "m:M_Chest_Hex_Reverse": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Spiked tail pattern mirrored"
+ },
+ "m:M_Chest_Imperial_Mark": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Imperial aquila eagle (Warhammer)"
+ },
+ "m:M_Chest_Institute_B_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Institute logo red"
+ }
+}

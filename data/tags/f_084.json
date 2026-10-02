@@ -1,0 +1,256 @@
+{
+ "f:Rutah_Feet-RightHeart": {
+  "kind": "tattoo",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "thorny heart"
+ },
+ "f:Rutah_ForeArmLeft": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art",
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull medallion forearm"
+ },
+ "f:Rutah_ForeArmRight": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "smoky skull forearm"
+ },
+ "f:Rutah_FullBody-VariantA": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "tribal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "sheet of wings, skulls, sleeves"
+ },
+ "f:Rutah_FullBody-VariantB": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "sheet of back, wings, crosses"
+ },
+ "f:Rutah_FullBody-VariantC": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "tribal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "sheet of sleeves, wings, legs"
+ },
+ "f:Rutah_HandLeft": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull and spider hand piece"
+ },
+ "f:Rutah_HandRight": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "moth with skull wings"
+ },
+ "f:Rutah_LegLeft-Cross": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "religious",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "cross with rosary"
+ },
+ "f:Rutah_LegLeft-Full": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [
+   "pinup",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dagger heart, woman portrait, spider"
+ },
+ "f:Rutah_LegLeft-Sleeve": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "clock roses leg sleeve"
+ },
+ "f:Rutah_LegRight-Cobra": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "cobra with tribal"
+ },
+ "f:Rutah_LegRight-Full": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "animal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged dragon snake, crest, vine"
+ },
+ "f:Rutah_LegRight-Sleeve": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "clock, cobwebs, feathers sleeve"
+ },
+ "f:Rutah_LegsBoth": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l",
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "animal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "sheet of leg designs both legs"
+ },
+ "f:Rutah_Pubic": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "swirl heart vine"
+ }
+}

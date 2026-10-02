@@ -1,0 +1,250 @@
+{
+ "f:Back_Whore1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "tiny",
+  "style": [
+   "script",
+   "degrading"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "text banner: WHORE"
+ },
+ "f:Back_Wings1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal wings pair"
+ },
+ "f:Back_Wings2": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "angel wing outlines"
+ },
+ "f:BackLow_Arrow1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "curved arrow pointing down"
+ },
+ "f:BackLow_Backdoor1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "script",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "banner text: BACKDOOR"
+ },
+ "f:BackLow_Bomb1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "sexual",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "poor",
+  "note": "bomb-shaped figure icon"
+ },
+ "f:BackLow_Deeper1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "script",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "arched text: DEEPER"
+ },
+ "f:BackLow_Diamond1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small diamond with rays"
+ },
+ "f:BackLow_NoDissap": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "curved text line"
+ },
+ "f:BackLow_Tribal1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal swirl tramp stamp"
+ },
+ "f:BackLow_Urinal1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "urinal-style icon"
+ },
+ "f:Belly _Butterfly1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small blue butterfly"
+ },
+ "f:Belly_Bats1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "flock of bats"
+ },
+ "f:Belly_Birds1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "birds flying diagonal"
+ },
+ "f:Belly_BJ1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "sexual",
+   "script",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "woman portrait, protein diet text"
+ },
+ "f:Belly_Fo41": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "cartoon"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault Boy thumbs up"
+ }
+}

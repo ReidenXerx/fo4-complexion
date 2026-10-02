@@ -1,0 +1,249 @@
+{
+ "f:ArmR_Ornament2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "floral",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "henna-style ornament"
+ },
+ "f:ArmR_Ornament3": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal spiky band"
+ },
+ "f:ArmR_Phoenix1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "phoenix in crescent"
+ },
+ "f:ArmR_Sleeve1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "roses, swallows, Love banner"
+ },
+ "f:ArmR_Sleeve2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "flame sleeve band"
+ },
+ "f:ArmR_Sleeve3": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "polynesian tribal sleeve"
+ },
+ "f:ArmR_Sleeve4": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "collage of figure and roses"
+ },
+ "f:Back_Adverst1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "blank ad frame Your Ad Here"
+ },
+ "f:Back_AnalPain1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "poor",
+  "note": "tally marks with sexual text"
+ },
+ "f:Back_Angel-Devil1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "religious",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "angel and devil figures"
+ },
+ "f:Back_AsUWish": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "As you wish text, figures"
+ },
+ "f:Back_BeHappy": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Do what makes you happy"
+ },
+ "f:Back_Cards1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "pinup"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "playing cards banner, possibly slave"
+ },
+ "f:Back_Chains1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "long chain down spine"
+ },
+ "f:Back_Cross1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate inverted cross"
+ },
+ "f:Back_DaggerHeart1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "pinup",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dagger through heart, banner"
+ }
+}

@@ -1,0 +1,251 @@
+{
+ "m:FM_Back_BoS": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Ad Victoriam text, Brotherhood"
+ },
+ "m:FM_Back_Expend": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "script"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Skull with banner, Expend"
+ },
+ "m:FM_Back_Marine": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "military"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Semper Fi text"
+ },
+ "m:FM_Back_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Red cross medic mark"
+ },
+ "m:M_Back_Abraxo": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Abraxo cleaner logo"
+ },
+ "m:M_Back_Anime": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Anime girl line art"
+ },
+ "m:M_Back_Barcode": {
+  "kind": "brand",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Barcode"
+ },
+ "m:M_Back_BoS": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Ad Victoriam text, Brotherhood"
+ },
+ "m:M_Back_Captive": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Chain links down spine"
+ },
+ "m:M_Back_Chinese_Dragon": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Chinese dragon"
+ },
+ "m:M_Back_CoA_1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Children of Atom circles"
+ },
+ "m:M_Back_CoA_2": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Children of Atom vertical circles"
+ },
+ "m:M_Back_Crystal": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Black crystal shape"
+ },
+ "m:M_Back_Gunner_1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Crosshair mark"
+ },
+ "m:M_Back_Gunner_2": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Gunner skull emblem"
+ },
+ "m:M_Back_Gunner_3": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Gunner skull emblem, large"
+ }
+}

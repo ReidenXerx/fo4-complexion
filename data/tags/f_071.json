@@ -1,0 +1,246 @@
+{
+ "f:ThighL_Approved-br": {
+  "kind": "brand",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "red APPROVED stamp"
+ },
+ "f:ThighL_Eye1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "religious",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "eye in pyramid"
+ },
+ "f:ThighL_NoRegrets": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "No Regrets rose banner"
+ },
+ "f:ThighL_Ornament1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "thorn wreath with roses"
+ },
+ "f:ThighL_Queen1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Queen scroll banner"
+ },
+ "f:ThighL_StayYoung": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "Stay Young text, cut at edge"
+ },
+ "f:ThighLBack_Arms": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "open hands outline"
+ },
+ "f:ThighLBack_Barcode1": {
+  "kind": "brand",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "barcode"
+ },
+ "f:ThighLBack_Crab1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "crab"
+ },
+ "f:ThighLBack_GuaranteeStamp1": {
+  "kind": "brand",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "round guarantee stamp"
+ },
+ "f:ThighLBack_Lobster1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "lobster"
+ },
+ "f:ThighLBack_PawPrints1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "blue paw prints"
+ },
+ "f:ThighLBack_Roach1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "cockroach"
+ },
+ "f:ThighLBack_Rose1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "single rose"
+ },
+ "f:ThighLFront_Fish1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "koi fish with lotus"
+ },
+ "f:ThighLFront_Girl1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "pinup",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "pin-up girl with roses"
+ }
+}

@@ -1,0 +1,246 @@
+{
+ "f:ThighRFront_Bird1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal phoenix bird"
+ },
+ "f:ThighRFront_Cross1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate gothic cross"
+ },
+ "f:ThighRFront_Cross2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "religious",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "cross with tribal wings"
+ },
+ "f:ThighRFront_Ornament1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged dragon"
+ },
+ "f:ThighRFront_Sperm1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "sexual",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": true,
+  "quality": "poor",
+  "note": "sperm cells, tiny"
+ },
+ "f:ThighRFront_Wolf&Rose": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "wolf with rose"
+ },
+ "f:Thighs_Butterfies1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l",
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "two butterflies one per thigh"
+ },
+ "f:Thighs_Chains1": {
+  "kind": "other",
+  "regions": [
+   "leg_l",
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "thin chain, one per thigh"
+ },
+ "f:Thighs_Chains2": {
+  "kind": "other",
+  "regions": [
+   "leg_l",
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "thin chain, one per thigh"
+ },
+ "f:Thighs_Ribbons1": {
+  "kind": "other",
+  "regions": [
+   "leg_l",
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "ribbons on thighs"
+ },
+ "f:Thighs_Wings1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l",
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "wing on each thigh"
+ },
+ "f:Torso_Chains1": {
+  "kind": "other",
+  "regions": [
+   "belly",
+   "chest"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "hanging chain loop over torso"
+ },
+ "f:Torso_Chains2": {
+  "kind": "other",
+  "regions": [
+   "belly",
+   "chest"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "V-shaped chains on torso"
+ },
+ "f:Torso_Ornament1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back",
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "two tribal pieces, one with rose"
+ },
+ "f:Tramp1": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal band"
+ },
+ "f:Tramp2": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged skull with text"
+ }
+}

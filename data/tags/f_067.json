@@ -1,0 +1,244 @@
+{
+ "f:Chest_TicTac1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "tic-tac-toe grid with text"
+ },
+ "f:Chest_Tribal1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal sternum piece"
+ },
+ "f:Chest_WeNeedU": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "We Need You poster rose"
+ },
+ "f:FootL_Love1": {
+  "kind": "tattoo",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Love cursive script"
+ },
+ "f:FootR_Flower1": {
+  "kind": "tattoo",
+  "regions": [
+   "feet"
+  ],
+  "size": "medium",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "rose vine"
+ },
+ "f:FootR_Penis1": {
+  "kind": "tattoo",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [
+   "cartoon",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": true,
+  "quality": "ok",
+  "note": "cartoon penis"
+ },
+ "f:ForearmL_Crab1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "crab"
+ },
+ "f:ForearmL_Flower1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "flower and swirls"
+ },
+ "f:ForearmL_Horseshoe1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "horseshoe"
+ },
+ "f:ForearmL_Ornament1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "greek key band"
+ },
+ "f:ForearmL_Scorpion1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red scorpion"
+ },
+ "f:ForearmL_Sleeve2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "colourful flowers, ornate"
+ },
+ "f:ForearmR_BarbedWire1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "barbed wire band"
+ },
+ "f:ForearmR_Chinese1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "Chinese characters, small"
+ },
+ "f:ForearmR_Ornament1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal flame ornament"
+ },
+ "f:ForearmR_Ornament2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "small ornate round medallion"
+ }
+}

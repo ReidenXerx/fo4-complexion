@@ -1,0 +1,243 @@
+{
+ "f:LegR_Octopus1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "engraved octopus"
+ },
+ "f:LegR_Ornament1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal ornament"
+ },
+ "f:LegR_Ornament2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal spiked ornament"
+ },
+ "f:LegR_Ornament3": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "polynesian tribal sleeve"
+ },
+ "f:LegR_Sleeve1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "floral",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate vine filigree"
+ },
+ "f:LegR_Sleeve2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Chinese dragon"
+ },
+ "f:LegR_Sleeve3": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal spiral column"
+ },
+ "f:Legs_Chains1": {
+  "kind": "other",
+  "regions": [
+   "leg_l",
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin chain lines, faint"
+ },
+ "f:Legs_LaceStockings": {
+  "kind": "other",
+  "regions": [
+   "leg_l",
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "lace stocking bands"
+ },
+ "f:Legs_Octopus1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l",
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [
+   "cartoon",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "octopus pieces scattered, cut seams"
+ },
+ "f:Neck_GuaranteeStamp1": {
+  "kind": "brand",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "guarantee stamp, tiny"
+ },
+ "f:Neck_Mandala1": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate mandala ring"
+ },
+ "f:Neck_Mandala2": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "sun mandala ring"
+ },
+ "f:Neck_NacklaceChain1": {
+  "kind": "other",
+  "regions": [
+   "neck"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chain necklace ring"
+ },
+ "f:Neck_Necklace1": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornamental necklace band"
+ },
+ "f:Neck_Ornament1": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small tribal ornament"
+ }
+}

@@ -1,0 +1,245 @@
+{
+ "f:F_LLeg_BoS": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood winged emblem"
+ },
+ "f:F_LLeg_Captive": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chain shackle links"
+ },
+ "f:F_LLeg_CoA_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical concentric rings"
+ },
+ "f:F_LLeg_CoA_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "orbit circles design"
+ },
+ "f:F_LLeg_Crystal": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "crystal shards strip"
+ },
+ "f:F_LLeg_Gunner_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "military"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "crosshair, tiny"
+ },
+ "f:F_LLeg_Gunner_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "grungy skull mark"
+ },
+ "f:F_LLeg_Hex": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiky spine curl"
+ },
+ "f:F_LLeg_Imperial_Mark": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Imperial aquila eagle"
+ },
+ "f:F_LLeg_LoveMark_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged heart"
+ },
+ "f:F_LLeg_LoveMark_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged heart"
+ },
+ "f:F_LLeg_Minutemen_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen star and flash"
+ },
+ "f:F_LLeg_Minutemen_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen star"
+ },
+ "f:F_LLeg_Neon_Black": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, black"
+ },
+ "f:F_LLeg_Neon_Blue": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, blue"
+ },
+ "f:F_LLeg_Neon_Brown": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, brown"
+ }
+}

@@ -1,0 +1,248 @@
+{
+ "f:Tramp3": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal lower back wing"
+ },
+ "f:Tramp4": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal swirl band"
+ },
+ "f:Tramp5": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal ornament band"
+ },
+ "f:Tramp6": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "mirrored text with line"
+ },
+ "f:Tramp7": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "scrolls with text"
+ },
+ "f:Tramp8": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "thin tribal wing band"
+ },
+ "f:UnderBoobL_Flower1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "hibiscus flower"
+ },
+ "f:UnderBoobR_Flower1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small flower"
+ },
+ "f:UnderBoobR_Flower2": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "heart with vine"
+ },
+ "f:UnderBoobs_Bird1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spread-wing eagle"
+ },
+ "f:UnderBoobs_Bird2": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "egyptian falcon with roses"
+ },
+ "f:UnderBoobs_Bird3": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal phoenix"
+ },
+ "f:RR Abs BarbedSun": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "barbed sun cross"
+ },
+ "f:RR Abs ButterflyFlower": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "floral",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "butterfly and flower vine"
+ },
+ "f:RR Abs CrossGlyph": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "religious",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "cross with glyphs"
+ },
+ "f:RR Abs FrogPrince": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "frog prince glyph, tiny"
+ }
+}

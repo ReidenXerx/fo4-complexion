@@ -1,0 +1,210 @@
+{
+ "f:SvarogNLLanding Strip Wide": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "wide landing strip"
+ },
+ "f:SvarogNLLeaf": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "tall strip split across UV seam"
+ },
+ "f:SvarogNLLightning Bolt": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "lightning bolt strip"
+ },
+ "f:SvarogNLMuff": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "muff bush"
+ },
+ "f:SvarogNLMuff Fuller": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "fuller wide muff"
+ },
+ "f:SvarogNLNarrow Arrow": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "narrow arrow"
+ },
+ "f:SvarogNLNarrow Arrow Large": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "large narrow arrow"
+ },
+ "f:SvarogNLPin-Stripe": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "thin pin-stripe"
+ },
+ "f:SvarogNLPin-Stripe Short": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "short pin-stripe"
+ },
+ "f:SvarogNLPin-Stripe Shorter": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "shorter pin-stripe"
+ },
+ "f:SvarogNLSquare": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "square patch"
+ },
+ "f:SvarogNLTheShortCut": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "tall strip split across UV seam"
+ },
+ "f:SvarogNLTheV": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "V shape"
+ },
+ "f:SvarogNLTheX": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "X shape"
+ },
+ "f:SvarogNLTopKnot": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "top knot patch"
+ },
+ "f:SvarogNLTopKnotSmall": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small top knot"
+ }
+}

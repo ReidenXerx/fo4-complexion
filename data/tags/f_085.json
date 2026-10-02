@@ -1,0 +1,143 @@
+{
+ "f:Rutah_ShinLeft": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "pinup",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "woman portrait shin"
+ },
+ "f:Rutah_ShinRight": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "rose and snake"
+ },
+ "f:Rutah_ThighLeft-KnifeThruHeart": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "knife through heart"
+ },
+ "f:Rutah_ThighLeft-LockedHeart": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "script",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "butterfly with lettered heart"
+ },
+ "f:Rutah_ThighRight-BarbedWire": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "barbed wire band"
+ },
+ "f:Rutah_ThighRight-Dragon": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged dragon coiled"
+ },
+ "f:Rutah_TorsoFull-VariantA": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "tribal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "torso sheet: sleeves, heart wings"
+ },
+ "f:Rutah_TorsoFull-VariantB": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "torso sheet: back skulls, flanks"
+ },
+ "f:Rutah_TorsoFull-VariantC": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "torso sheet: wings, heart wings"
+ }
+}

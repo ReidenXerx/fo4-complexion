@@ -1,0 +1,245 @@
+{
+ "f:F_Pelvis_Institute_R": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red Institute logo, tiny"
+ },
+ "f:F_Pelvis_KimLicking": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "cartoon",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": true,
+  "quality": "ok",
+  "note": "cartoon character oral scene, crowd"
+ },
+ "f:F_Pelvis_Korra": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "cartoon",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": true,
+  "quality": "ok",
+  "note": "Korra nude rear silhouette"
+ },
+ "f:F_Pelvis_Minutemen_1": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen star and flash"
+ },
+ "f:F_Pelvis_Minutemen_2": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen star"
+ },
+ "f:F_Pelvis_Neon_1_Black": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, black"
+ },
+ "f:F_Pelvis_Neon_1_Blue": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, blue"
+ },
+ "f:F_Pelvis_Neon_1_Brown": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, brown"
+ },
+ "f:F_Pelvis_Neon_1_Cyan": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, cyan"
+ },
+ "f:F_Pelvis_Neon_1_Green": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, green"
+ },
+ "f:F_Pelvis_Neon_1_Purple": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, purple"
+ },
+ "f:F_Pelvis_Neon_1_Red": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, red"
+ },
+ "f:F_Pelvis_Neon_1_White": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, white"
+ },
+ "f:F_Pelvis_Neon_1_Yellow": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, yellow"
+ },
+ "f:F_Pelvis_Neon_2_Black": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, black, longer"
+ },
+ "f:F_Pelvis_Neon_2_Blue": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, blue, longer"
+ }
+}

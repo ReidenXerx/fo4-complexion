@@ -1,0 +1,210 @@
+{
+ "f:SkinTexture_02": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "veins and red marks"
+ },
+ "f:SkinTexture_03": {
+  "kind": "dirt",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "body skin texture pores; grime"
+ },
+ "f:SkinTexture_04": {
+  "kind": "dirt",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red marks and fine veins; grime"
+ },
+ "f:SkinTexture_05": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "body skin texture pores"
+ },
+ "f:SkinTexture_06": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "nearly invisible veins"
+ },
+ "f:SkinTexture_07": {
+  "kind": "dirt",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "mottled body skin; grime"
+ },
+ "f:SkinTexture_08": {
+  "kind": "dirt",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "body skin texture pores; grime"
+ },
+ "f:SkinTexture_09": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "blurry dark blotches"
+ },
+ "f:SkinTexture_10": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "body skin texture pores"
+ },
+ "f:SkinTexture_11": {
+  "kind": "dirt",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "body skin texture pores; grime"
+ },
+ "f:SkinTexture_12": {
+  "kind": "dirt",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "blurry dark blotches; grime"
+ },
+ "f:SkinTexture_13": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "body skin texture pores"
+ },
+ "f:SkinTexture_14": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "blurry dark blotches"
+ },
+ "f:SkinTexture_15": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "noisy grunge skin"
+ },
+ "f:SkinTexture_16": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint ring pattern on torso"
+ },
+ "f:SkinTexture_17": {
+  "kind": "dirt",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "body skin texture pores; grime"
+ }
+}

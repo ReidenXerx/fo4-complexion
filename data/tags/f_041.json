@@ -1,0 +1,249 @@
+{
+ "f:LMBT_SkullWings": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "animal",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged skull with roses"
+ },
+ "f:LMBT_Snek1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "coiled rattlesnake"
+ },
+ "f:LMBT_Snek2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "coiled rattlesnake striking"
+ },
+ "f:LMBT_SugarSkullGirlRoses": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [
+   "pinup",
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "sugar skull girl with roses"
+ },
+ "f:LMBT_Tiger": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tiger face"
+ },
+ "f:LMBT_Tribal1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "symmetrical lower back tribal"
+ },
+ "f:LMBT_Tribal10": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "two tribal armband strips"
+ },
+ "f:LMBT_Tribal11": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "knotwork tribal blob"
+ },
+ "f:LMBT_Tribal2": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "thin symmetrical tribal"
+ },
+ "f:LMBT_Tribal3": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "tiny",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical tribal loop"
+ },
+ "f:LMBT_Tribal4": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged tribal"
+ },
+ "f:LMBT_Tribal5": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal fork pattern"
+ },
+ "f:LMBT_Tribal6": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dense tribal swirl"
+ },
+ "f:LMBT_Tribal7": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "tiny",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small tribal glyph"
+ },
+ "f:LMBT_Tribal8": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal lower back wing"
+ },
+ "f:LMBT_Tribal9": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "knotwork tribal blob"
+ }
+}

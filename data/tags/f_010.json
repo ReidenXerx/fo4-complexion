@@ -1,0 +1,245 @@
+{
+"f:F_Chest_Institute_B_BR": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "institute",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "red Institute logo, right breast"
+},
+"f:F_Chest_Institute_B_C": {
+"kind": "brand",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "institute",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "red Institute logo, centre"
+},
+"f:F_Chest_Institute_O_BL": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "institute",
+"lore": "fits",
+"adult": false,
+"quality": "poor",
+"note": "Institute outline, faint"
+},
+"f:F_Chest_Institute_O_BR": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "institute",
+"lore": "fits",
+"adult": false,
+"quality": "poor",
+"note": "Institute outline, faint"
+},
+"f:F_Chest_Institute_O_C": {
+"kind": "brand",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "institute",
+"lore": "fits",
+"adult": false,
+"quality": "poor",
+"note": "Institute outline, faint"
+},
+"f:F_Chest_Institute_R_BL": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "institute",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "red Institute logo, left breast"
+},
+"f:F_Chest_Institute_R_BR": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "institute",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "red Institute logo, right breast"
+},
+"f:F_Chest_Institute_R_C": {
+"kind": "brand",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "institute",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "red Institute logo, centre"
+},
+"f:F_Chest_Licking": {
+"kind": "tattoo",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"sexual",
+"realistic_art"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": true,
+"quality": "ok",
+"note": "grey nude figures in embrace"
+},
+"f:F_Chest_Lineart": {
+"kind": "tattoo",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": [
+"geometric"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": true,
+"quality": "ok",
+"note": "breast outline line art"
+},
+"f:F_Chest_Love_Mark_Belly": {
+"kind": "tattoo",
+"regions": [
+"belly"
+],
+"size": "small",
+"style": [
+"sexual"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": true,
+"quality": "ok",
+"note": "winged heart lovemark"
+},
+"f:F_Chest_Love_Mark_C": {
+"kind": "tattoo",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"sexual"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": true,
+"quality": "ok",
+"note": "winged heart lovemark"
+},
+"f:F_Chest_Love_Mark_L": {
+"kind": "tattoo",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": [
+"sexual"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": true,
+"quality": "ok",
+"note": "winged heart lovemark, left"
+},
+"f:F_Chest_Love_Mark_R": {
+"kind": "tattoo",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": [
+"sexual"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": true,
+"quality": "ok",
+"note": "winged heart lovemark, right"
+},
+"f:F_Chest_Minutemen_1_BL": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"military"
+],
+"emblem": "minutemen",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Minutemen musket and stars"
+},
+"f:F_Chest_Minutemen_1_BR": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"military"
+],
+"emblem": "minutemen",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Minutemen musket and stars"
+}
+}

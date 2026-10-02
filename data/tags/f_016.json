@@ -1,0 +1,259 @@
+{
+ "f:F_Chest_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web with spider"
+ },
+ "f:F_Chest_Spirals": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "pair of tribal spiral suns"
+ },
+ "f:F_Chest_Stars": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "pair of tribal black suns"
+ },
+ "f:F_Chest_Sun": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiky sun burst"
+ },
+ "f:F_Chest_Superman2_B": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Superman logo"
+ },
+ "f:F_Chest_Superman_B": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Superman logo"
+ },
+ "f:F_Chest_Superman_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Superman logo"
+ },
+ "f:F_Chest_Treasure_Map_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dashed treasure map with X"
+ },
+ "f:F_Chest_Treasure_Map_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dashed treasure map with X"
+ },
+ "f:F_Chest_Triage_B": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross over chain ring"
+ },
+ "f:F_Chest_Triage_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross over chain ring"
+ },
+ "f:F_Chest_Triage_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross over chain ring"
+ },
+ "f:F_Chest_Triage_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross over chain ring"
+ },
+ "f:F_Chest_Triage_L": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross over chain ring"
+ },
+ "f:F_Chest_Triage_R": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross over chain ring"
+ },
+ "f:F_Chest_Vaulttec_1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec gear logo"
+ }
+}

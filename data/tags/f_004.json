@@ -1,0 +1,210 @@
+{
+"f:F_Back_Neon_BL_Yellow": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_BR_Black": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_BR_Blue": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_BR_Brown": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_BR_Cyan": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_BR_Green": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_BR_Purple": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_BR_Red": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_BR_White": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_BR_Yellow": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_C_Black": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_C_Blue": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_C_Brown": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_C_Cyan": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_C_Green": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_C_Purple": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+}
+}

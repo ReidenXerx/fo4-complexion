@@ -1,0 +1,246 @@
+{
+ "f:NeckBack_Barcode1": {
+  "kind": "brand",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "barcode"
+ },
+ "f:NippleL_Serial1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "tiny serial text arc"
+ },
+ "f:Pubic_Butterflies1": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dandelion seeds to butterflies"
+ },
+ "f:Pubic_Diamond1": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "diamond heart gem"
+ },
+ "f:Pubic_Entrance1": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": true,
+  "quality": "ok",
+  "note": "Entrance banner, sexual joke"
+ },
+ "f:Pubic_Flies1": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "two small flies"
+ },
+ "f:Pubic_Fo41": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "cartoon"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault Boy"
+ },
+ "f:Pubic_Penis1": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [
+   "cartoon",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": true,
+  "quality": "poor",
+  "note": "tiny cartoon penis"
+ },
+ "f:Pubic_Sperm1": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [
+   "sexual",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": true,
+  "quality": "poor",
+  "note": "sperm cells"
+ },
+ "f:pubic_Tribal1": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal heart wings"
+ },
+ "f:pubic_Tribal2": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal bat"
+ },
+ "f:Pubic_Web1": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web fan"
+ },
+ "f:Pubic_Welcome1": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": true,
+  "quality": "ok",
+  "note": "Welcome banner, sexual joke"
+ },
+ "f:ShinR_Butterfly1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "blue butterfly"
+ },
+ "f:ShinR_Owl1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "owl dreamcatcher"
+ },
+ "f:ShoulderL_Web1": {
+  "kind": "tattoo",
+  "regions": [
+   "shoulders"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web"
+ }
+}

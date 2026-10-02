@@ -1,0 +1,235 @@
+{
+ "m:M_RLeg_Sleeve": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_RLeg_Sleeve_Blue": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_RLeg_Sleeve_Brown": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_RLeg_Sleeve_Cyan": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_RLeg_Sleeve_Green": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_RLeg_Gunner_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scribbled skull"
+ },
+ "m:M_RLeg_Hex": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiked spiral tribal"
+ },
+ "m:M_RLeg_LoveMark_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged heart"
+ },
+ "m:M_RLeg_LoveMark_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged heart"
+ },
+ "m:M_RLeg_Minutemen_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen crossed emblem"
+ },
+ "m:M_RLeg_Minutemen_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black star"
+ },
+ "m:M_RLeg_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull in chain ring"
+ },
+ "m:M_RLeg_Railroad_3": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad track strip"
+ },
+ "m:M_RLeg_Settler_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint skull in chain ring"
+ },
+ "m:M_RLeg_Settler_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint scribbled skull"
+ },
+ "m:M_RLeg_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud mask emblem"
+ }
+}

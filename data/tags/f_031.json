@@ -1,0 +1,245 @@
+{
+ "f:F_Pelvis_Neon_2_Brown": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, brown"
+ },
+ "f:F_Pelvis_Neon_2_Cyan": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, cyan"
+ },
+ "f:F_Pelvis_Neon_2_Green": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, green"
+ },
+ "f:F_Pelvis_Neon_2_Purple": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, purple"
+ },
+ "f:F_Pelvis_Neon_2_Red": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, red"
+ },
+ "f:F_Pelvis_Neon_2_White": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, white"
+ },
+ "f:F_Pelvis_Neon_2_Yellow": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted strip, yellow"
+ },
+ "f:F_Pelvis_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chained skull Raider mark"
+ },
+ "f:F_Pelvis_Railroad_1": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Railroad mark"
+ },
+ "f:F_Pelvis_Railroad_2": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Railroad ladder mark"
+ },
+ "f:F_Pelvis_Settler_1": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint chained skull"
+ },
+ "f:F_Pelvis_Settler_2": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint skull smudge"
+ },
+ "f:F_Pelvis_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud mask"
+ },
+ "f:F_Pelvis_Superman_1": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "poor",
+  "note": "Superman S outline, faint"
+ },
+ "f:F_Pelvis_Superman_2": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Superman S shield fragment"
+ },
+ "f:F_Pelvis_Treasure_Map": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dotted treasure map path, X"
+ }
+}

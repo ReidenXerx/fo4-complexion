@@ -1,0 +1,247 @@
+{
+ "f:RR Butt Butterfly": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "butterfly"
+ },
+ "f:RR Butt DaggerThorn": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dagger through rose"
+ },
+ "f:RR Butt DevilHeart": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "pinup"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "devil heart with wings"
+ },
+ "f:RR Butt Elephant": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "elephant"
+ },
+ "f:RR Butt FourClover": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "four-leaf clover"
+ },
+ "f:RR Butt Hydra": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Hydra octopus skull"
+ },
+ "f:RR Butt JollyRoger": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "jolly roger skull crossbones"
+ },
+ "f:RR Butt KingHeart": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "king of hearts card"
+ },
+ "f:RR Butt Lips": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "pinup"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "lips kiss mark"
+ },
+ "f:RR Butt Lotus": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "lotus with swirls"
+ },
+ "f:RR Butt PawPrint": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "paw prints"
+ },
+ "f:RR Butt QueenHeart": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "queen of hearts card"
+ },
+ "f:RR Collar AztecSun": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "aztec sun"
+ },
+ "f:RR Collar DragonTail": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dragon tail"
+ },
+ "f:RR Collar DragonWing": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dragon wings"
+ },
+ "f:RR Collar FMAcurtis": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Fullmetal Alchemist cross-snake"
+ }
+}

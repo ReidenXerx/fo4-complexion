@@ -1,0 +1,210 @@
+{
+ "f:Scars_06": {
+  "kind": "wound",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "long bloody scar"
+ },
+ "f:Scars_07": {
+  "kind": "scar",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "three small scars"
+ },
+ "f:Scars_08": {
+  "kind": "scar",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small cuts and dots, X marks"
+ },
+ "f:Scars_09": {
+  "kind": "scar",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "two tiny scars"
+ },
+ "f:Scars_10": {
+  "kind": "scar",
+  "regions": [
+   "belly"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "short horizontal scar"
+ },
+ "f:Scars_11": {
+  "kind": "scar",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "short diagonal scar"
+ },
+ "f:Scars_12": {
+  "kind": "scar",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "four small scars"
+ },
+ "f:Scars_13": {
+  "kind": "scar",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "stitched horizontal scar"
+ },
+ "f:Scars_14": {
+  "kind": "scar",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "curved scars on tall strip"
+ },
+ "f:Scars_15": {
+  "kind": "scar",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "curved and stitch scars"
+ },
+ "f:Scars_16": {
+  "kind": "wound",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "claw slash marks"
+ },
+ "f:Scars_17": {
+  "kind": "wound",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "blotches and claw marks"
+ },
+ "f:Scars_18": {
+  "kind": "scar",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "two small scars"
+ },
+ "f:Scars_19": {
+  "kind": "scar",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "short curved scar"
+ },
+ "f:Scars_20": {
+  "kind": "burn",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "rough burn scar tissue"
+ },
+ "f:SkinTexture_01": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "body skin texture pores"
+ }
+}

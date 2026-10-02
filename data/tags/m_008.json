@@ -1,0 +1,247 @@
+{
+ "m:M_Chest_Railroad_3_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Long railroad track"
+ },
+ "m:M_Chest_Settler_1_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Faint raider skull ring"
+ },
+ "m:M_Chest_Settler_1_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Faint raider skull ring"
+ },
+ "m:M_Chest_Settler_1_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Faint raider skull ring"
+ },
+ "m:M_Chest_Settler_2_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Faint grainy skull"
+ },
+ "m:M_Chest_Settler_2_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Faint grainy skull"
+ },
+ "m:M_Chest_Settler_2_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Faint grainy skull"
+ },
+ "m:M_Chest_Settler_3": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Faint grainy skull, large"
+ },
+ "m:M_Chest_SilverShroud_B": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver shroud emblem"
+ },
+ "m:M_Chest_SilverShroud_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver shroud emblem"
+ },
+ "m:M_Chest_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Spiderweb with spider"
+ },
+ "m:M_Chest_Spirals": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "tribal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Tribal spiral suns pair"
+ },
+ "m:M_Chest_Stars": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "tribal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Tribal suns pair"
+ },
+ "m:M_Chest_Sun": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Spiky sun"
+ },
+ "m:M_Chest_Superman2_B": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Superman S shield"
+ },
+ "m:M_Chest_Superman_B": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Superman S shield"
+ }
+}

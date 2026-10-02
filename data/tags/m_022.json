@@ -1,0 +1,238 @@
+{
+ "m:M_RArm_Hex": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiked spiral tribal"
+ },
+ "m:M_RArm_Institute_B": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red Institute logo"
+ },
+ "m:M_RArm_Institute_O": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint Institute logo"
+ },
+ "m:M_RArm_Institute_R": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red Institute logo"
+ },
+ "m:M_RArm_LoveMark": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged spade-heart mark"
+ },
+ "m:M_RArm_Minutemen_1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen crossed emblem"
+ },
+ "m:M_RArm_Minutemen_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black star"
+ },
+ "m:M_RArm_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull in chain ring"
+ },
+ "m:M_RArm_Railroad_1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad track mark"
+ },
+ "m:M_RArm_Railroad_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small railroad track"
+ },
+ "m:M_RArm_Railroad_3": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "long railroad track strip"
+ },
+ "m:M_RArm_Settler_1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint circular design"
+ },
+ "m:M_RArm_Settler_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint tiny mark"
+ },
+ "m:M_RArm_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud mask emblem"
+ },
+ "m:M_RArm_Sleeve": {
+  "kind": "skin",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_RArm_Sleeve_Blue": {
+  "kind": "skin",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ }
+}

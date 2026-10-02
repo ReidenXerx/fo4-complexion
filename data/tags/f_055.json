@@ -1,0 +1,210 @@
+{
+ "f:Pubic4ginger_02": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "ginger trimmed patch with faint extras"
+ },
+ "f:Pubic4ginger_03": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "barely visible tiny tuft"
+ },
+ "f:Pubic4ginger_04": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint small tuft"
+ },
+ "f:Pubic4ginger_05": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small dark triangle patch"
+ },
+ "f:Pubic4ginger_06": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "wide sparse curly hair"
+ },
+ "f:Pubic4ginger_07": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tiny dense tuft"
+ },
+ "f:Pubic4ginger_08": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tiny triangle tuft"
+ },
+ "f:Pubic4ginger_09": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "sparse natural bush"
+ },
+ "f:Pubic4ginger_10": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint narrow strip"
+ },
+ "f:Pubic4ginger_11": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dense round bush, sparse spread"
+ },
+ "f:Pubic4ginger_12": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint narrow strip"
+ },
+ "f:Pubic4ginger_13": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "light sparse vertical strip"
+ },
+ "f:Pubic4ginger_14": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small dense patch, faint spread"
+ },
+ "f:Pubic4ginger_15": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "ring-shaped hair design, odd"
+ },
+ "f:Pubic4ginger_16": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "wide dense triangle"
+ },
+ "f:Pubic4ginger_17": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "tiny faint checkmark strip"
+ }
+}

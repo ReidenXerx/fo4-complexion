@@ -1,0 +1,259 @@
+{
+ "f:F_Chest_Minutemen_1_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen crossed musket lightning stars"
+ },
+ "f:F_Chest_Minutemen_2_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black star"
+ },
+ "f:F_Chest_Minutemen_2_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black star"
+ },
+ "f:F_Chest_Minutemen_2_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black star"
+ },
+ "f:F_Chest_Moon_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "sun-moon spiral ornament"
+ },
+ "f:F_Chest_Moon_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "sun-moon spiral ornament"
+ },
+ "f:F_Chest_Neon_1_BL_Black": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "neon line, nearly invisible"
+ },
+ "f:F_Chest_Neon_1_BL_Blue": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "neon line, nearly invisible"
+ },
+ "f:F_Chest_Neon_1_BL_Brown": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "neon line, nearly invisible"
+ },
+ "f:F_Chest_Neon_1_BL_Cyan": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "neon line, nearly invisible"
+ },
+ "f:F_Chest_Neon_1_BL_Green": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "neon line, nearly invisible"
+ },
+ "f:F_Chest_Neon_1_BL_Purple": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "neon line, nearly invisible"
+ },
+ "f:F_Chest_Neon_1_BL_Red": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "neon line, nearly invisible"
+ },
+ "f:F_Chest_Neon_1_BL_White": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "neon line, nearly invisible"
+ },
+ "f:F_Chest_Neon_1_BL_Yellow": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "neon line, nearly invisible"
+ },
+ "f:F_Chest_Neon_1_BR_Black": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "neon line, nearly invisible"
+ }
+}

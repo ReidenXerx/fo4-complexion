@@ -1,0 +1,245 @@
+{
+ "m:M_Chest_Minutemen_1_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen cross and stars"
+ },
+ "m:M_Chest_Minutemen_2_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Black star"
+ },
+ "m:M_Chest_Minutemen_2_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Black star"
+ },
+ "m:M_Chest_Minutemen_2_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Black star"
+ },
+ "m:M_Chest_Moon_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Spiral sun ornament"
+ },
+ "m:M_Chest_Moon_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Spiral sun ornament"
+ },
+ "m:M_Chest_Raider_1_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Raider skull in chain ring"
+ },
+ "m:M_Chest_Raider_1_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Raider skull in chain ring"
+ },
+ "m:M_Chest_Raider_1_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Raider skull in chain ring"
+ },
+ "m:M_Chest_Railroad_1_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Railroad ladder mark"
+ },
+ "m:M_Chest_Railroad_1_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Railroad ladder mark"
+ },
+ "m:M_Chest_Railroad_1_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Railroad ladder mark"
+ },
+ "m:M_Chest_Railroad_2_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Railroad track mark"
+ },
+ "m:M_Chest_Railroad_2_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Railroad track mark"
+ },
+ "m:M_Chest_Railroad_2_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Railroad track mark"
+ },
+ "m:M_Chest_Railroad_3_BB": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Long railroad track"
+ }
+}

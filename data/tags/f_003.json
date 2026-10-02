@@ -1,0 +1,232 @@
+{
+"f:F_Back_Kim": {
+"kind": "tattoo",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"cartoon"
+],
+"emblem": null,
+"lore": "breaks",
+"adult": false,
+"quality": "ok",
+"note": "anime girl face line art"
+},
+"f:F_Back_Korra": {
+"kind": "tattoo",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"cartoon",
+"sexual"
+],
+"emblem": null,
+"lore": "breaks",
+"adult": true,
+"quality": "ok",
+"note": "nude anime character, Korra"
+},
+"f:F_Back_Korra_2": {
+"kind": "tattoo",
+"regions": [
+"back"
+],
+"size": "large",
+"style": [
+"cartoon",
+"sexual"
+],
+"emblem": null,
+"lore": "breaks",
+"adult": true,
+"quality": "ok",
+"note": "nude anime figure line art"
+},
+"f:F_Back_Lineart": {
+"kind": "tattoo",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"geometric"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "ok",
+"note": "heart-shaped body outline"
+},
+"f:F_Back_Love_Mark": {
+"kind": "tattoo",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [
+"sexual"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": true,
+"quality": "ok",
+"note": "spade lovemark symbol"
+},
+"f:F_Back_Minutemen_1": {
+"kind": "brand",
+"regions": [
+"back"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"military"
+],
+"emblem": "minutemen",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Minutemen musket and stars"
+},
+"f:F_Back_Minutemen_2": {
+"kind": "brand",
+"regions": [
+"back"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"military"
+],
+"emblem": "minutemen",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "black star"
+},
+"f:F_Back_Mongrels": {
+"kind": "tattoo",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [
+"emblem",
+"animal",
+"script"
+],
+"emblem": null,
+"lore": "breaks",
+"adult": false,
+"quality": "ok",
+"note": "Farewell Mongrels chained dog logo"
+},
+"f:F_Back_Neon_BL_Black": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon diagonal stripes"
+},
+"f:F_Back_Neon_BL_Blue": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon diagonal stripes"
+},
+"f:F_Back_Neon_BL_Brown": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon diagonal stripes"
+},
+"f:F_Back_Neon_BL_Cyan": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon diagonal stripes"
+},
+"f:F_Back_Neon_BL_Green": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon diagonal stripes"
+},
+"f:F_Back_Neon_BL_Purple": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon diagonal stripes"
+},
+"f:F_Back_Neon_BL_Red": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon diagonal stripes"
+},
+"f:F_Back_Neon_BL_White": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon diagonal stripes"
+}
+}

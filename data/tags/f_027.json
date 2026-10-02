@@ -1,0 +1,235 @@
+{
+ "f:F_LLeg_Sleeve_Purple": {
+  "kind": "other",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "noisy grey sleeve patch, purple"
+ },
+ "f:F_LLeg_Sleeve_Red": {
+  "kind": "other",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "noisy grey sleeve patch, red"
+ },
+ "f:F_LLeg_Sleeve_White": {
+  "kind": "other",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "noisy grey sleeve patch, white"
+ },
+ "f:F_LLeg_Sleeve_Yellow": {
+  "kind": "other",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "noisy grey sleeve patch, yellow"
+ },
+ "f:F_LLeg_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web"
+ },
+ "f:F_LLeg_Treasure_Map": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dotted treasure map path, X"
+ },
+ "f:F_LLeg_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross triage mark"
+ },
+ "f:F_LLeg_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec logo"
+ },
+ "f:F_LowerBack_Barcode": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "barcode"
+ },
+ "f:F_LowerBack_Batman": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Batman bat logo splatter"
+ },
+ "f:F_LowerBack_CoA_1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "stacked concentric circles"
+ },
+ "f:F_LowerBack_CoA_2": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical concentric rings"
+ },
+ "f:F_LowerBack_Crystal": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "crystal shard strip"
+ },
+ "f:F_LowerBack_Gunner_1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "military"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "crosshair, tiny"
+ },
+ "f:F_LowerBack_Gunner_2": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "grungy skull mark"
+ },
+ "f:F_LowerBack_Imperial_Mark": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Imperial aquila eagle rays"
+ }
+}

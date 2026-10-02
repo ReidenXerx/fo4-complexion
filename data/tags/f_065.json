@@ -1,0 +1,247 @@
+{
+ "f:ButtL_Horseshoe1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "horseshoe"
+ },
+ "f:ButtL_InstituteStamp": {
+  "kind": "brand",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red round Institute-style stamp"
+ },
+ "f:ButtL_LoveSsuffering_Arb": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": true,
+  "quality": "ok",
+  "note": "Arabic text: love and suffering"
+ },
+ "f:ButtL_Ornament1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "mandala ornaments at UV corners"
+ },
+ "f:ButtL_PunishMe_Arb": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "script",
+   "degrading"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": true,
+  "quality": "ok",
+  "note": "Arabic text: punish me"
+ },
+ "f:ButtR_Birds1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "flock of birds"
+ },
+ "f:ButtR_Butterfly1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small butterfly"
+ },
+ "f:ButtR_Cook1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "cook or tiger head icon"
+ },
+ "f:ButtR_Fish1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "fish outline"
+ },
+ "f:ButtR_Fo41": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "pinup"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Fallout 4 pin-up cherub"
+ },
+ "f:ButtR_Paw1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "paw print"
+ },
+ "f:ButtR_Recomended": {
+  "kind": "brand",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint Recommended stamp"
+ },
+ "f:ButtR_Slave_Stamp1": {
+  "kind": "brand",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "degrading",
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "slave stamp, round"
+ },
+ "f:ButtR_Smile1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "smiley face"
+ },
+ "f:ButtR_TicTac": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "tic-tac-toe grid"
+ },
+ "f:CalfL_Dream_Jap": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "tiny mark at seam edge"
+ }
+}

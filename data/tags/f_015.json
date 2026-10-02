@@ -1,0 +1,247 @@
+{
+ "f:F_Chest_Settler_1_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint outline skull in chain ring"
+ },
+ "f:F_Chest_Settler_2_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint stippled skull with X eye"
+ },
+ "f:F_Chest_Settler_2_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint stippled skull with X eye"
+ },
+ "f:F_Chest_Settler_2_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint stippled skull with X eye"
+ },
+ "f:F_Chest_Settler_3": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "large faint stippled skull X eye"
+ },
+ "f:F_Chest_SilverShroud_B": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "cartoon",
+   "realistic_art"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud hooded figure, red scarf"
+ },
+ "f:F_Chest_SilverShroud_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "cartoon",
+   "realistic_art"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud hooded figure, red scarf"
+ },
+ "f:F_Chest_Sleeve_Black": {
+  "kind": "other",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "grey noisy capsule blobs, unclear"
+ },
+ "f:F_Chest_Sleeve_Blue": {
+  "kind": "other",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "grey noisy capsule blobs, unclear"
+ },
+ "f:F_Chest_Sleeve_Brown": {
+  "kind": "other",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "grey noisy capsule blobs, unclear"
+ },
+ "f:F_Chest_Sleeve_Cyan": {
+  "kind": "other",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "grey noisy capsule blobs, unclear"
+ },
+ "f:F_Chest_Sleeve_Green": {
+  "kind": "other",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "grey noisy capsule blobs, unclear"
+ },
+ "f:F_Chest_Sleeve_Purple": {
+  "kind": "other",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "grey noisy capsule blobs, unclear"
+ },
+ "f:F_Chest_Sleeve_Red": {
+  "kind": "other",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "grey noisy capsule blobs, unclear"
+ },
+ "f:F_Chest_Sleeve_White": {
+  "kind": "other",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "grey noisy capsule blobs, unclear"
+ },
+ "f:F_Chest_Sleeve_Yellow": {
+  "kind": "other",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "grey noisy capsule blobs, unclear"
+ }
+}

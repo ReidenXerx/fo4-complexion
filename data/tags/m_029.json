@@ -1,0 +1,190 @@
+{
+ "m:t_nails_3_male": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "purple toenail polish"
+ },
+ "m:t_nails_4_male": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "green toenail polish"
+ },
+ "m:t_nails_5_male": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "mauve toenail polish"
+ },
+ "m:t_nails_6_male": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "crimson toenail polish"
+ },
+ "m:t_nails_7_male": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black toenail polish"
+ },
+ "m:t_nails_8_male": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "navy toenail polish"
+ },
+ "m:t_nails_9_male": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "teal toenail polish"
+ },
+ "m:TBOSGageArmHair": {
+  "kind": "body_hair",
+  "regions": [
+   "arm_l",
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "forearm hair patches"
+ },
+ "m:TBOSGageArmpitHair": {
+  "kind": "body_hair",
+  "regions": [
+   "shoulders",
+   "chest"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "armpit hair tufts"
+ },
+ "m:TBOSGageBodyHair": {
+  "kind": "body_hair",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "full body hair, stretched seams"
+ },
+ "m:TBOSGageHandHair": {
+  "kind": "body_hair",
+  "regions": [
+   "chest",
+   "pubic"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chest and pubic hair"
+ },
+ "m:TBOSGageLegHair": {
+  "kind": "body_hair",
+  "regions": [
+   "leg_l",
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "leg hair with streaked edges"
+ },
+ "m:TBOSRiotBodyhair": {
+  "kind": "body_hair",
+  "regions": [
+   "pubic",
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "pubic and thigh hair"
+ },
+ "m:TBOSRiotBodyhairAlt": {
+  "kind": "body_hair",
+  "regions": [
+   "pubic",
+   "belly"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "sparse hair, seam artifacts"
+ }
+}

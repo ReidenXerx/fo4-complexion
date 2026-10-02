@@ -1,0 +1,241 @@
+{
+ "f:F_RLeg_Barcode": {
+  "kind": "brand",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "barcode"
+ },
+ "f:F_RLeg_BoS": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood of Steel winged gear"
+ },
+ "f:F_RLeg_Captive": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "two chain rings, captive"
+ },
+ "f:F_RLeg_CoA_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "emblem"
+  ],
+  "emblem": "atom",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Children of Atom orbit column"
+ },
+ "f:F_RLeg_CoA_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "emblem"
+  ],
+  "emblem": "atom",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Children of Atom orbit rings"
+ },
+ "f:F_RLeg_Crystal": {
+  "kind": "other",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey faceted crystal strip"
+ },
+ "f:F_RLeg_Gunner_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "crosshair target"
+ },
+ "f:F_RLeg_Gunner_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scratchy skull"
+ },
+ "f:F_RLeg_Hex": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiny curling tribal band"
+ },
+ "f:F_RLeg_LoveMark_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged heart"
+ },
+ "f:F_RLeg_LoveMark_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged heart variant"
+ },
+ "f:F_RLeg_Minutemen_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "musket, lightning, stars"
+ },
+ "f:F_RLeg_Minutemen_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "single black star"
+ },
+ "f:F_RLeg_Neon_Black": {
+  "kind": "other",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin neon strip"
+ },
+ "f:F_RLeg_Neon_Blue": {
+  "kind": "other",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin neon strip"
+ },
+ "f:F_RLeg_Neon_Brown": {
+  "kind": "other",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin neon strip"
+ }
+}

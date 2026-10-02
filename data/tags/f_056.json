@@ -1,0 +1,228 @@
+{
+ "f:Pubic4ginger_18": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint narrow tuft"
+ },
+ "f:Pubic4ginger_19": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dense wide natural bush"
+ },
+ "f:Pubic4ginger_20": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical strip with sparse spread"
+ },
+ "f:Pubic4ginger_21": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "tiny faint tuft"
+ },
+ "f:Pubic4ginger_22": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "narrow dark tuft"
+ },
+ "f:Pubic4ginger_23": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "hair shaped like letters ok"
+ },
+ "f:Pubic4ginger_24": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small inverted triangle shaved shape"
+ },
+ "f:Pubic4ginger_25": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "heart-shaped trimmed hair"
+ },
+ "f:Anus_Target1": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "target bullseye at anus"
+ },
+ "f:Anus_Web1": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "spider web at anus"
+ },
+ "f:ArmL_BoS1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "small Brotherhood-style crest"
+ },
+ "f:ArmL_Chains1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chain wrapped around arm"
+ },
+ "f:ArmL_Cross1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small gothic cross"
+ },
+ "f:ArmL_DCservice1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "script"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "DC Security Special Service badge"
+ },
+ "f:ArmL_Flower1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "blue roses"
+ },
+ "f:ArmL_GodJudgeTxt": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "script: Only God can judge me"
+ }
+}

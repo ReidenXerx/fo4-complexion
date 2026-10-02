@@ -1,0 +1,242 @@
+{
+ "m:M_LowerBack_Railroad_1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad track mark"
+ },
+ "m:M_LowerBack_Railroad_2": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small railroad track"
+ },
+ "m:M_LowerBack_Settler_1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull in chain ring"
+ },
+ "m:M_LowerBack_Settler_2": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint scribbled skull"
+ },
+ "m:M_LowerBack_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud mask emblem"
+ },
+ "m:M_LowerBack_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiderweb line art"
+ },
+ "m:M_LowerBack_Superman_1": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Superman logo outline"
+ },
+ "m:M_LowerBack_Superman_2": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Superman logo fragment"
+ },
+ "m:M_LowerBack_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross medical mark"
+ },
+ "m:M_LowerBack_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec style logo"
+ },
+ "m:M_LowerBack_Wonderwoman": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Wonder Woman logo outline"
+ },
+ "m:M_LowerBack_YinYang": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "tiny",
+  "style": [
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "yin yang symbol"
+ },
+ "m:M_Neck_SpiderWeb_Back": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiderweb with spider"
+ },
+ "m:M_Neck_SpiderWeb_Chest": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiderweb with spider"
+ },
+ "m:M_Pelvis_Barcode": {
+  "kind": "brand",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "barcode brand"
+ },
+ "m:M_Pelvis_BoS": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood of Steel emblem"
+ }
+}

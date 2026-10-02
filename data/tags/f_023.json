@@ -1,0 +1,244 @@
+{
+ "f:F_LArm_Minutemen_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen star"
+ },
+ "f:F_LArm_Neon_Black": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, black"
+ },
+ "f:F_LArm_Neon_Blue": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, blue"
+ },
+ "f:F_LArm_Neon_Brown": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, brown"
+ },
+ "f:F_LArm_Neon_Cyan": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, cyan"
+ },
+ "f:F_LArm_Neon_Green": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, green"
+ },
+ "f:F_LArm_Neon_Purple": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, purple"
+ },
+ "f:F_LArm_Neon_Red": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, red"
+ },
+ "f:F_LArm_Neon_White": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, white"
+ },
+ "f:F_LArm_Neon_Yellow": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "neon dotted band, yellow"
+ },
+ "f:F_LArm_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chained skull Raider mark"
+ },
+ "f:F_LArm_Railroad_1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Railroad ladder mark"
+ },
+ "f:F_LArm_Railroad_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Railroad ladder mark"
+ },
+ "f:F_LArm_Railroad_3": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad track band"
+ },
+ "f:F_LArm_Settler_1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint circular sketch"
+ },
+ "f:F_LArm_Settler_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint smudge mark"
+ }
+}

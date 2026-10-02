@@ -1,0 +1,221 @@
+{
+ "m:f_nails_11_male": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "white fingernail polish"
+ },
+ "m:f_nails_12_male": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black fingernail polish"
+ },
+ "m:f_nails_1_male": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "brown fingernail polish"
+ },
+ "m:f_nails_2_male": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black fingernail polish"
+ },
+ "m:f_nails_3_male": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "purple fingernail polish"
+ },
+ "m:f_nails_4_male": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "green fingernail polish"
+ },
+ "m:f_nails_5_male": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "mauve fingernail polish"
+ },
+ "m:f_nails_6_male": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "crimson fingernail polish"
+ },
+ "m:f_nails_7_male": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black fingernail polish"
+ },
+ "m:f_nails_8_male": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "navy fingernail polish"
+ },
+ "m:f_nails_9_male": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "teal fingernail polish"
+ },
+ "m:t_nails_10_male": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "olive toenail polish"
+ },
+ "m:t_nails_11_male": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "white toenail polish"
+ },
+ "m:t_nails_12_male": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black toenail polish"
+ },
+ "m:t_nails_1_male": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "brown toenail polish"
+ },
+ "m:t_nails_2_male": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black toenail polish"
+ }
+}

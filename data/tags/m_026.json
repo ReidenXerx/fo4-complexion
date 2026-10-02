@@ -1,0 +1,256 @@
+{
+ "m:LMBT_GunsAndCards3_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull with revolvers and cards"
+ },
+ "m:LMBT_Helios_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate sun"
+ },
+ "m:LMBT_JasonBrodyLeft_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "large",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dense symmetric tribal sleeve"
+ },
+ "m:LMBT_JasonBrodyRight_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "large",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dense symmetric tribal sleeve"
+ },
+ "m:LMBT_MasksIndian_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "theatre masks and woman"
+ },
+ "m:LMBT_NakedGirl_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [
+   "pinup",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "nude pin-up woman with wings"
+ },
+ "m:LMBT_Polynesian_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Polynesian tribal band"
+ },
+ "m:LMBT_RosesClock_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "roses and clock"
+ },
+ "m:LMBT_RoseText_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "floral",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "roses with banner text"
+ },
+ "m:LMBT_Skull_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull with foliage"
+ },
+ "m:LMBT_SkullBird_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged skull"
+ },
+ "m:LMBT_SkullFlowers_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull flowers butterfly"
+ },
+ "m:LMBT_SkullRoses_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull and roses"
+ },
+ "m:LMBT_SkullWings1_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged skull with flowers"
+ },
+ "m:LMBT_SkullWings2_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged skull with roses"
+ },
+ "m:LMBT_Snek_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "coiled striking snake"
+ }
+}

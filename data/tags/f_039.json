@@ -1,0 +1,253 @@
+{
+ "f:LMBT_Flowers2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "plumeria flower cluster"
+ },
+ "f:LMBT_GirlFeather": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "sleeping girl, feathers, flowing hair"
+ },
+ "f:LMBT_GirlRoses": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "pinup",
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "girl with roses, hush gesture"
+ },
+ "f:LMBT_GrimReaperFlag1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "grim reaper with scythe"
+ },
+ "f:LMBT_GrimReaperFlag2": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "grim reaper with scythe"
+ },
+ "f:LMBT_GunsAndCards1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "military"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull, revolvers, playing cards"
+ },
+ "f:LMBT_GunsAndCards2": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "military"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull, revolvers, playing cards"
+ },
+ "f:LMBT_GunsAndCards3": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "military"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull, revolvers, aces"
+ },
+ "f:LMBT_HeartCurly": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "floral",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "curly ornate heart"
+ },
+ "f:LMBT_Helios": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate sun"
+ },
+ "f:LMBT_JasonBrodyLeft": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "large",
+  "style": [
+   "tribal"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Far Cry 3 Jason Brody tribal"
+ },
+ "f:LMBT_JasonBrodyRight": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "large",
+  "style": [
+   "tribal"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Far Cry 3 Jason Brody tribal"
+ },
+ "f:LMBT_LoveNeverDie": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "swallows, lock heart, Love Never Die"
+ },
+ "f:LMBT_MasksIndian": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "pinup",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "masks and native-style woman"
+ },
+ "f:LMBT_MehndiDreamcatcher": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "mehndi mandala dreamcatcher"
+ },
+ "f:LMBT_MehndiHand": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "mehndi hand henna design"
+ }
+}

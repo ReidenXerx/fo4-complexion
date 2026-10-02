@@ -1,0 +1,249 @@
+{
+ "f:Belly_Wolf1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "howling wolf head"
+ },
+ "f:Body_Chains1": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "chain body harness with ring"
+ },
+ "f:Body_Dumb1": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "scatter of tiny doodles, many spots"
+ },
+ "f:Body_Dumb2": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "scattered small marks, arcs, text"
+ },
+ "f:Body_Dumb3": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "sparse scattered ornaments, arcs"
+ },
+ "f:Body_Dumb4": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "scattered leaves, vines, small symbols"
+ },
+ "f:Body_Dumb5": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "scattered tattoos, bats, arrows"
+ },
+ "f:Body_Dumb6": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "floral",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "many colourful tattoos: butterflies, paisley"
+ },
+ "f:Body_Dumb7": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "floral",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "dense full-body collage: snake, wings, flowers"
+ },
+ "f:Body_MeatChart": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "script",
+   "degrading"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": true,
+  "quality": "ok",
+  "note": "butcher meat chart labels on body"
+ },
+ "f:BodyFront_Birds_Butterfly1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "large",
+  "style": [
+   "animal",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "swallows, moth, leaf wreaths"
+ },
+ "f:BoobL_Bats1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "bats cluster"
+ },
+ "f:BoobL_Birds1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "flock of birds"
+ },
+ "f:BoobL_Crab1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scorpion or crab"
+ },
+ "f:BoobL_Frog1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small frog"
+ },
+ "f:BoobL_LimitedEdition1": {
+  "kind": "brand",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "Limited Edition stamp"
+ }
+}

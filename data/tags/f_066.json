@@ -1,0 +1,245 @@
+{
+ "f:CalfL_GirlBend1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "pinup"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "pin-up girl bending over"
+ },
+ "f:CalfL_Orniment1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal dragon-head ornament"
+ },
+ "f:CalfL_Scorpion1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scorpion"
+ },
+ "f:CalfRBack_Hazard1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "biohazard symbol"
+ },
+ "f:CalfRBack_Wolf1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "wolf head"
+ },
+ "f:Chest_Bird1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal eagle chest piece"
+ },
+ "f:Chest_Cat1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint cat, barely visible"
+ },
+ "f:Chest_Cross1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "gothic cross"
+ },
+ "f:Chest_Fo41": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "cartoon"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault Boy thumbs up"
+ },
+ "f:Chest_HotBitch1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "Hot Bitch text, faint"
+ },
+ "f:Chest_Motivated1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Nowy Motivated script text"
+ },
+ "f:Chest_Mountains": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "mountain strip, cut at edge"
+ },
+ "f:Chest_Penis1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "cartoon",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": true,
+  "quality": "ok",
+  "note": "cartoon penis"
+ },
+ "f:Chest_SeaGull1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "seagull"
+ },
+ "f:Chest_Star1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "outlined star"
+ },
+ "f:Chest_Stars1": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "arc of seven stars"
+ }
+}

@@ -1,0 +1,253 @@
+{
+ "m:M_Back_Hex_Back": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Spine ribs bone pattern"
+ },
+ "m:M_Back_Hex_Raven": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Spiked tail along spine"
+ },
+ "m:M_Back_Hex_Rib": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Ribcage bone pattern"
+ },
+ "m:M_Back_Imperial_Mark": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "geometric"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Imperial sunburst winged crest"
+ },
+ "m:M_Back_Institute_B": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Institute logo red"
+ },
+ "m:M_Back_Institute_O": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Institute logo faint outline"
+ },
+ "m:M_Back_Institute_R": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Institute logo red"
+ },
+ "m:M_Back_Jab": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "pinup",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": true,
+  "quality": "ok",
+  "note": "Nude woman line art"
+ },
+ "m:M_Back_Kim": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Faint anime face sketch"
+ },
+ "m:M_Back_Korra": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "pinup",
+   "sexual",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": true,
+  "quality": "ok",
+  "note": "Topless anime girl"
+ },
+ "m:M_Back_Korra_2": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "pinup",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": true,
+  "quality": "ok",
+  "note": "Nude woman line figure"
+ },
+ "m:M_Back_Lineart": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "pinup",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": true,
+  "quality": "ok",
+  "note": "Nude female body outline"
+ },
+ "m:M_Back_Love_Mark": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Spade ornament"
+ },
+ "m:M_Back_Minutemen_1": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen cross and stars"
+ },
+ "m:M_Back_Minutemen_2": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Black star"
+ },
+ "m:M_Back_Mongrels": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "animal"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Farewell Mongrels band logo"
+ }
+}

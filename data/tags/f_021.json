@@ -1,0 +1,249 @@
+{
+ "f:F_Hand_R_Lovemark": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate heart with wings"
+ },
+ "f:F_Hand_R_Minutemen_1": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen musket lightning stars"
+ },
+ "f:F_Hand_R_Minutemen_2": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black Minutemen star"
+ },
+ "f:F_Hand_R_Nate": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical NATE letters"
+ },
+ "f:F_Hand_R_Pain": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical PAIN letters"
+ },
+ "f:F_Hand_R_Password": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "upside-down word Password"
+ },
+ "f:F_Hand_R_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull in chain ring, crosshair"
+ },
+ "f:F_Hand_R_Railroad_1": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad ladder mark"
+ },
+ "f:F_Hand_R_Shaun": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "word Shaun in script"
+ },
+ "f:F_Hand_R_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "cartoon",
+   "realistic_art"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud figure, red scarf"
+ },
+ "f:F_Hand_R_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web"
+ },
+ "f:F_Hand_R_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross over chain ring"
+ },
+ "f:F_Hand_R_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec gear vertical"
+ },
+ "f:F_Hands_Dirt": {
+  "kind": "dirt",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dirt smears on hands"
+ },
+ "f:F_Hands_Eyes": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "black eye shapes on both hands"
+ },
+ "f:F_Hands_Hex": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "dark claw marks both hands"
+ }
+}

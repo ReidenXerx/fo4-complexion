@@ -1,0 +1,247 @@
+{
+ "f:F_Full_Neon_Brown": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint neon octagon outline"
+ },
+ "f:F_Full_Neon_Cyan": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint neon octagon outline"
+ },
+ "f:F_Full_Neon_Green": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint neon octagon outline"
+ },
+ "f:F_Full_Neon_Purple": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint neon octagon outline"
+ },
+ "f:F_Full_Neon_Red": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint neon octagon outline"
+ },
+ "f:F_Full_Neon_White": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint neon octagon outline"
+ },
+ "f:F_Full_Neon_Yellow": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint neon octagon outline"
+ },
+ "f:F_Full_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "crude"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chain ring across body"
+ },
+ "f:F_Full_Settler": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "crude"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint outline chain ring"
+ },
+ "f:F_Hand_L_Barcode": {
+  "kind": "brand",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "barcode on hand"
+ },
+ "f:F_Hand_L_BoS_1": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood winged sword gear"
+ },
+ "f:F_Hand_L_BoS_2": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood winged sword gear"
+ },
+ "f:F_Hand_L_Captive": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "degrading"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "shackle chains on hand"
+ },
+ "f:F_Hand_L_CoA": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "religious"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Children of Atom orbit circles"
+ },
+ "f:F_Hand_L_Gunner": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "crude"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scribbled Gunner mark"
+ },
+ "f:F_Hand_L_Hate": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical HATE letters"
+ }
+}

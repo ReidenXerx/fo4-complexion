@@ -1,0 +1,271 @@
+{
+ "f:F_Chest_Neon_3_Red": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint neon vertical dash column"
+ },
+ "f:F_Chest_Neon_3_White": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint neon vertical dash column"
+ },
+ "f:F_Chest_Neon_3_Yellow": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint neon vertical dash column"
+ },
+ "f:F_Chest_Raider_1_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull in chain ring, crosshair"
+ },
+ "f:F_Chest_Raider_1_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull in chain ring, crosshair"
+ },
+ "f:F_Chest_Raider_1_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull in chain ring, crosshair"
+ },
+ "f:F_Chest_Railroad_1_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad ladder mark"
+ },
+ "f:F_Chest_Railroad_1_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad ladder mark tilted"
+ },
+ "f:F_Chest_Railroad_1_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad ladder mark"
+ },
+ "f:F_Chest_Railroad_2_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad track rungs"
+ },
+ "f:F_Chest_Railroad_2_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad ladder diagonal"
+ },
+ "f:F_Chest_Railroad_2_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad ladder vertical"
+ },
+ "f:F_Chest_Railroad_3_BB": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [
+   "emblem",
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "long railroad track horizontal"
+ },
+ "f:F_Chest_Railroad_3_C": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [
+   "emblem",
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "long railroad ladder vertical"
+ },
+ "f:F_Chest_Settler_1_BL": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint outline skull in chain ring"
+ },
+ "f:F_Chest_Settler_1_BR": {
+  "kind": "tattoo",
+  "regions": [
+   "chest",
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint outline skull in chain ring"
+ }
+}

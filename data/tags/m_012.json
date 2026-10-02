@@ -1,0 +1,248 @@
+{
+ "m:M_Hand_L_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Red cross medic mark"
+ },
+ "m:M_Hand_L_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec logo"
+ },
+ "m:M_Hand_R_Barcode": {
+  "kind": "brand",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Barcode on hand"
+ },
+ "m:M_Hand_R_BoS_1": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood emblem on hand"
+ },
+ "m:M_Hand_R_BoS_2": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood emblem on hand"
+ },
+ "m:M_Hand_R_Captive": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Chain cuffs"
+ },
+ "m:M_Hand_R_CoA": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Children of Atom circles"
+ },
+ "m:M_Hand_R_Gunner": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Faint Gunner skull"
+ },
+ "m:M_Hand_R_Hex": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Bats"
+ },
+ "m:M_Hand_R_Institute_B": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Institute logo red"
+ },
+ "m:M_Hand_R_Institute_O": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Institute logo faint outline"
+ },
+ "m:M_Hand_R_Institute_R": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Institute logo red"
+ },
+ "m:M_Hand_R_Kill": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "KILL letters on fingers"
+ },
+ "m:M_Hand_R_Love": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "LOVE letters on fingers"
+ },
+ "m:M_Hand_R_Lovemark": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Winged heart ornament"
+ },
+ "m:M_Hand_R_Minutemen_1": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Minutemen cross and stars"
+ }
+}

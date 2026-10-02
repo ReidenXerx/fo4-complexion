@@ -1,0 +1,224 @@
+{
+ "f:F_RArm_Settler_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint blotchy mark, nearly invisible"
+ },
+ "f:F_RArm_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud mask in red and black"
+ },
+ "f:F_RArm_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web line art"
+ },
+ "f:F_RArm_Sun": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "line-art sun"
+ },
+ "f:F_RArm_Treasure_Map": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dashed treasure map trail with X"
+ },
+ "f:F_RArm_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross triage mark"
+ },
+ "f:F_RArm_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec style eye symbol"
+ },
+ "f:F_RArm_Sleeve_Black": {
+  "kind": "skin",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RArm_Sleeve_Blue": {
+  "kind": "skin",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RArm_Sleeve_Brown": {
+  "kind": "skin",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RArm_Sleeve_Cyan": {
+  "kind": "skin",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RArm_Sleeve_Green": {
+  "kind": "skin",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RArm_Sleeve_Purple": {
+  "kind": "skin",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RArm_Sleeve_Red": {
+  "kind": "skin",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RArm_Sleeve_White": {
+  "kind": "skin",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RArm_Sleeve_Yellow": {
+  "kind": "skin",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ }
+}

@@ -1,0 +1,228 @@
+{
+ "m:M_LLeg_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull in chain ring"
+ },
+ "m:M_LLeg_Railroad_3": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "crude"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad track strip"
+ },
+ "m:M_LLeg_Settler_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint skull in chain ring"
+ },
+ "m:M_LLeg_Settler_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint scribbled skull"
+ },
+ "m:M_LLeg_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud mask emblem"
+ },
+ "m:M_LLeg_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiderweb line art"
+ },
+ "m:M_LLeg_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross medical mark"
+ },
+ "m:M_LLeg_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec style logo"
+ },
+ "m:M_LLeg_Sleeve": {
+  "kind": "skin",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LLeg_Sleeve_Blue": {
+  "kind": "skin",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LLeg_Sleeve_Brown": {
+  "kind": "skin",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LLeg_Sleeve_Cyan": {
+  "kind": "skin",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LLeg_Sleeve_Green": {
+  "kind": "skin",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LLeg_Sleeve_Purple": {
+  "kind": "skin",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LLeg_Sleeve_Red": {
+  "kind": "skin",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_LLeg_Sleeve_White": {
+  "kind": "skin",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ }
+}

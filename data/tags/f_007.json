@@ -1,0 +1,249 @@
+{
+"f:F_Butt_Captive": {
+"kind": "tattoo",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"degrading"
+],
+"emblem": null,
+"lore": "fits",
+"adult": true,
+"quality": "ok",
+"note": "shackle chains, captive mark"
+},
+"f:F_Butt_Gunner_L": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"skull"
+],
+"emblem": "gunners",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Gunners skull stamp"
+},
+"f:F_Butt_Gunner_R": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"skull"
+],
+"emblem": "gunners",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Gunners skull stamp"
+},
+"f:F_Butt_Hands": {
+"kind": "marks",
+"regions": [
+"butt"
+],
+"size": "medium",
+"style": [
+"sexual"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": true,
+"quality": "ok",
+"note": "grabbing handprints on butt"
+},
+"f:F_Butt_Institute_B": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "institute",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "red Institute logo"
+},
+"f:F_Butt_Institute_O": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "institute",
+"lore": "fits",
+"adult": false,
+"quality": "poor",
+"note": "Institute logo, faint outline"
+},
+"f:F_Butt_Institute_R": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "institute",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "red Institute logo"
+},
+"f:F_Butt_LoveMark": {
+"kind": "tattoo",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"sexual"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": true,
+"quality": "ok",
+"note": "spade lovemark symbol"
+},
+"f:F_Butt_Minutemen_1": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"military"
+],
+"emblem": "minutemen",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Minutemen musket and stars"
+},
+"f:F_Butt_Minutemen_2": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"military"
+],
+"emblem": "minutemen",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "black star"
+},
+"f:F_Butt_Railroad_1": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"crude"
+],
+"emblem": "railroad",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Railroad rails symbol"
+},
+"f:F_Butt_Railroad_2": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "railroad",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Railroad rails symbol"
+},
+"f:F_Butt_Settler_L": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"skull"
+],
+"emblem": "raiders",
+"lore": "fits",
+"adult": false,
+"quality": "poor",
+"note": "faint skull stamp, nearly invisible"
+},
+"f:F_Butt_Settler_R": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"skull"
+],
+"emblem": "raiders",
+"lore": "fits",
+"adult": false,
+"quality": "poor",
+"note": "faint skull stamp, nearly invisible"
+},
+"f:F_Butt_SilverShroud_L": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "other_fo",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Silver Shroud mask mark"
+},
+"f:F_Butt_SilverShroud_R": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "other_fo",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Silver Shroud mask mark"
+}
+}

@@ -1,0 +1,208 @@
+{
+ "f:LNRIndustries_LaCoiffeStyles02": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tiny thin vertical strip"
+ },
+ "f:LNRIndustries_LaCoiffeStyles03": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "thin vertical strip"
+ },
+ "f:LNRIndustries_LaCoiffeStyles04": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "thin vertical strip"
+ },
+ "f:LNRIndustries_LaCoiffeStyles05": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "narrow vertical strip"
+ },
+ "f:LNRIndustries_LaCoiffeStyles06": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "tiny faint square patch"
+ },
+ "f:LNRIndustries_LaCoiffeStyles07": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small trimmed patch"
+ },
+ "f:LNRIndustries_LaCoiffeStyles08": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small inverted triangle"
+ },
+ "f:LNRIndustries_LaCoiffeStyles09": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small short patch"
+ },
+ "f:LNRIndustries_LaCoiffeStyles10": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "patch with band above"
+ },
+ "f:LNRIndustries_LaCoiffeStyles11": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chevron-shaped patch"
+ },
+ "f:LNRIndustries_LaCoiffeStyles12": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "radiation trefoil shaved pattern"
+ },
+ "f:LNRIndustries_LaCoiffeStyles13": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "three small trefoils"
+ },
+ "f:LNRIndustries_LaCoiffeStyles14": {
+  "kind": "other",
+  "regions": [],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "unreadable"
+ },
+ "f:LNRIndustries_LaCoiffeStyles15": {
+  "kind": "other",
+  "regions": [],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "unreadable"
+ },
+ "f:LNRIndustries_LaCoiffeStyles16": {
+  "kind": "other",
+  "regions": [],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "unreadable"
+ },
+ "f:CalientePubicHair1": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "full natural bush"
+ }
+}

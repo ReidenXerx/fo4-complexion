@@ -1,0 +1,244 @@
+{
+ "f:RR Neck Cancer": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "cancer zodiac"
+ },
+ "f:RR Neck Capricorn": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "capricorn zodiac"
+ },
+ "f:RR Neck Gemini": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "gemini zodiac"
+ },
+ "f:RR Neck Leo": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "leo zodiac"
+ },
+ "f:RR Neck Libra": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "libra zodiac"
+ },
+ "f:RR Neck Pisces": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "pisces zodiac"
+ },
+ "f:RR Neck Sagittarius": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "sagittarius zodiac"
+ },
+ "f:RR Neck Scorpio": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "scorpio zodiac scorpion"
+ },
+ "f:RR Neck Taurus": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "taurus zodiac"
+ },
+ "f:RR Neck Virgo": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "virgo zodiac"
+ },
+ "f:RR Pelvic AllSeeingEye": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "all-seeing eye"
+ },
+ "f:RR Pelvic BonyFinger": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skeleton hand middle finger"
+ },
+ "f:RR Pelvic CelticTriangle": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "celtic triangle knot"
+ },
+ "f:RR Pelvic DragonSpiral": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dragon with wings"
+ },
+ "f:RR Pelvic FreeBird": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "phoenix bird"
+ },
+ "f:RR Pelvic Hallows": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Deathly Hallows symbol"
+ }
+}

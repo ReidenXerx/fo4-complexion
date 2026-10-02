@@ -1,0 +1,226 @@
+{
+ "f:F_RArm_Minutemen_1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "musket, lightning, stars"
+ },
+ "f:F_RArm_Minutemen_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "single black star"
+ },
+ "f:F_RArm_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull in chain circle"
+ },
+ "f:F_RArm_Railroad_1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "ladder-like railroad mark"
+ },
+ "f:F_RArm_Railroad_2": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "ladder railroad mark"
+ },
+ "f:F_RArm_Railroad_3": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad track band"
+ },
+ "f:F_RArm_Settler_1": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint circular scribble, nearly invisible"
+ },
+ "f:F_RArm_Neon_Black": {
+  "kind": "other",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin dotted neon strip"
+ },
+ "f:F_RArm_Neon_Blue": {
+  "kind": "other",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin dotted neon strip"
+ },
+ "f:F_RArm_Neon_Brown": {
+  "kind": "other",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin dotted neon strip"
+ },
+ "f:F_RArm_Neon_Cyan": {
+  "kind": "other",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin dotted neon strip"
+ },
+ "f:F_RArm_Neon_Green": {
+  "kind": "other",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin dotted neon strip"
+ },
+ "f:F_RArm_Neon_Purple": {
+  "kind": "other",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin dotted neon strip"
+ },
+ "f:F_RArm_Neon_Red": {
+  "kind": "other",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin dotted neon strip"
+ },
+ "f:F_RArm_Neon_White": {
+  "kind": "other",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin dotted neon strip"
+ },
+ "f:F_RArm_Neon_Yellow": {
+  "kind": "other",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin dotted neon strip"
+ }
+}

@@ -1,0 +1,245 @@
+{
+ "m:M_RLeg_Sleeve_Purple": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_RLeg_Sleeve_Red": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_RLeg_Sleeve_White": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey cloudy sleeve base"
+ },
+ "m:M_RLeg_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiderweb line art"
+ },
+ "m:M_RLeg_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross medical mark"
+ },
+ "m:M_RLeg_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec style logo"
+ },
+ "m:LMBT_AngelWings_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate angel wings"
+ },
+ "m:LMBT_BlessedMerciless_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Blessed are the merciless text"
+ },
+ "m:LMBT_DeathTime_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull roses clock banner"
+ },
+ "m:LMBT_Demon_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "horned demon skull"
+ },
+ "m:LMBT_DemonSkull_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "horned demon skull sketch"
+ },
+ "m:LMBT_Eagle_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spread-wing eagle"
+ },
+ "m:LMBT_GrimReaperFlag1_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "grim reaper with scythe flag"
+ },
+ "m:LMBT_GrimReaperFlag2_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "grim reaper with scythe"
+ },
+ "m:LMBT_GunsAndCards1_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull with cards and revolvers"
+ },
+ "m:LMBT_GunsAndCards2_Male": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull with cards and bullets"
+ }
+}

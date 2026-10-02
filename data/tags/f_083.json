@@ -1,0 +1,253 @@
+{
+ "f:Rutah_ArmRight-FullSleeve": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dragon-flame roses full sleeve"
+ },
+ "f:Rutah_ArmRight-Skull": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate skull"
+ },
+ "f:Rutah_ArmRight-TribalRoses": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal with roses"
+ },
+ "f:Rutah_Back-FullA": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skulls and roses full back"
+ },
+ "f:Rutah_Back-ShoulderLeft": {
+  "kind": "tattoo",
+  "regions": [
+   "shoulders",
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal beast left shoulder blade"
+ },
+ "f:Rutah_Back-ShoulderRight": {
+  "kind": "tattoo",
+  "regions": [
+   "shoulders",
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "knight figure in smoke"
+ },
+ "f:Rutah_BackLower-Pistols": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "crossed pistols with roses"
+ },
+ "f:Rutah_BackLower-Tribal": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal lower back band"
+ },
+ "f:Rutah_BackNeck": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal butterfly nape"
+ },
+ "f:Rutah_BreastLeft": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "lizard"
+ },
+ "f:Rutah_BreastRight": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "flower with smoke"
+ },
+ "f:Rutah_CalfLeft": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spiky flower"
+ },
+ "f:Rutah_CalfRight": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged snake sword crest"
+ },
+ "f:Rutah_Chest-HeartNWings": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "pinup"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "heart with feathered wings"
+ },
+ "f:Rutah_Chest-SkullNWings": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull with wings and swirls"
+ },
+ "f:Rutah_Feet-LeftSkull": {
+  "kind": "tattoo",
+  "regions": [
+   "feet"
+  ],
+  "size": "small",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "sugar skull"
+ }
+}

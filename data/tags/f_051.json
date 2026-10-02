@@ -1,0 +1,210 @@
+{
+ "f:SkinTexture_18": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "purple flower blotches"
+ },
+ "f:SkinTexture_19": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint skull-like pattern"
+ },
+ "f:SkinTexture_20": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "blurry dark patches"
+ },
+ "f:BodyHair_01": {
+  "kind": "body_hair",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "nearly invisible body hair"
+ },
+ "f:BodyHair_02": {
+  "kind": "body_hair",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "nearly invisible body hair"
+ },
+ "f:BodyHair_03": {
+  "kind": "body_hair",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint body hair"
+ },
+ "f:BodyHair_04": {
+  "kind": "body_hair",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "nearly invisible body hair"
+ },
+ "f:BodyHair_05": {
+  "kind": "body_hair",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "nearly invisible body hair"
+ },
+ "f:BodyHair_06": {
+  "kind": "body_hair",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "nearly invisible body hair"
+ },
+ "f:BodyHair_07": {
+  "kind": "body_hair",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint body hair"
+ },
+ "f:BodyHair_08": {
+  "kind": "body_hair",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint body hair"
+ },
+ "f:BodyHair_09": {
+  "kind": "body_hair",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint body hair"
+ },
+ "f:BodyHair_10": {
+  "kind": "body_hair",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint body hair"
+ },
+ "f:Pubic4blond_01": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "full bush with groin crease marks"
+ },
+ "f:Pubic4blond_02": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "full bush with groin marks"
+ },
+ "f:Pubic4blond_03": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tiny cross-shaped tuft"
+ }
+}

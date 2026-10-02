@@ -1,0 +1,250 @@
+{
+ "f:RR Back AthenaMedusa": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Athena Medusa face with snakes"
+ },
+ "f:RR Back ChimaeraLion": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "lion chimera with face"
+ },
+ "f:RR Back CompassMountain": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "compass in mountain triangle"
+ },
+ "f:RR Back DragonBlade": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "dragon and blade, faint, cut at edge"
+ },
+ "f:RR Back FlameWings": {
+  "kind": "tattoo",
+  "regions": [
+   "back",
+   "shoulders"
+  ],
+  "size": "large",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal flame wings pair"
+ },
+ "f:RR Back Gunslinger": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "military"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "gunslinger, cut at edge"
+ },
+ "f:RR Back HeartClock": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "heart clock with roses"
+ },
+ "f:RR Back HolySee": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "religious",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "snake-wrapped winged staff"
+ },
+ "f:RR Back Kraken": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "kraken with anchor and wheel"
+ },
+ "f:RR Back LosMuertos": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skeletons with roots, Day of Dead"
+ },
+ "f:RR Back OdinRaven": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "animal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "raven in norse knotwork star"
+ },
+ "f:RR Back Scarab": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged scarab with ankh"
+ },
+ "f:RR Back Siren": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "siren with serpents"
+ },
+ "f:RR Back SkullSpine": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull spine ornate"
+ },
+ "f:RR Back Skyrim": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "emblem",
+   "geometric"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Skyrim dragon emblem"
+ },
+ "f:RR Back WizardCrest": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate wizard crest tower"
+ }
+}

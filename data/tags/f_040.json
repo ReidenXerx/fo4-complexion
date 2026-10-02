@@ -1,0 +1,262 @@
+{
+ "f:LMBT_MehndiHand2": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l",
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "henna paisley motifs"
+ },
+ "f:LMBT_MehndiKat": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "sugar-style cat face with roses"
+ },
+ "f:LMBT_NakedGirl": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "pinup",
+   "realistic_art",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": true,
+  "quality": "ok",
+  "note": "nude seated girl with halo"
+ },
+ "f:LMBT_NeckText": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "cursive line of text"
+ },
+ "f:LMBT_NippleCobweb": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "cobweb around nipple"
+ },
+ "f:LMBT_NippleCobwebSpider": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric",
+   "animal",
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "cobweb and spider around nipple"
+ },
+ "f:LMBT_Roses": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "large rose bouquet"
+ },
+ "f:LMBT_Roses2": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small rose cluster"
+ },
+ "f:LMBT_Roses3": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "rose vine"
+ },
+ "f:LMBT_RosesClock": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "roses with pocket watch"
+ },
+ "f:LMBT_RosesLantern": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts",
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "floral",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "underboob roses and lantern"
+ },
+ "f:LMBT_RoseText": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "floral",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "roses with text ribbon"
+ },
+ "f:LMBT_Skull": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull with plant growth"
+ },
+ "f:LMBT_SkullBird": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint skull bird, tiny"
+ },
+ "f:LMBT_SkullFlowers": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull, roses, butterfly"
+ },
+ "f:LMBT_SkullRoses": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "floral",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull with roses and ribbon"
+ }
+}

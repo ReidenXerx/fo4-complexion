@@ -1,0 +1,253 @@
+{
+ "m:M_Full_Gunner": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Large crosshair"
+ },
+ "m:M_Full_Hex_All": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [
+   "tribal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Bone spine pattern set"
+ },
+ "m:M_Full_Hex_Arms": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l",
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Bone pattern on arms"
+ },
+ "m:M_Full_Hex_Front_Back": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "large",
+  "style": [
+   "tribal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Bone spine front and back"
+ },
+ "m:M_Full_Hex_Legs": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l",
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Spiked tails on legs"
+ },
+ "m:M_Full_Minutemen": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Three Minutemen stars"
+ },
+ "m:M_Full_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Chain ring"
+ },
+ "m:M_Full_Settler": {
+  "kind": "tattoo",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Faint chain ring"
+ },
+ "m:M_Hand_L_Barcode": {
+  "kind": "brand",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Barcode on hand"
+ },
+ "m:M_Hand_L_BoS_1": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood emblem on hand"
+ },
+ "m:M_Hand_L_BoS_2": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood emblem on hand"
+ },
+ "m:M_Hand_L_Captive": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Chain cuffs"
+ },
+ "m:M_Hand_L_CoA": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Children of Atom circles"
+ },
+ "m:M_Hand_L_Gunner": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "Faint Gunner skull"
+ },
+ "m:M_Hand_L_Hate": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "HATE letters across fingers"
+ },
+ "m:M_Hand_L_Hex": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Bats"
+ }
+}

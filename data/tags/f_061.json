@@ -1,0 +1,250 @@
+{
+ "f:Belly_GBng1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "tiny",
+  "style": [
+   "sexual",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "line-art sex scene"
+ },
+ "f:Belly_Lion1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "lion head"
+ },
+ "f:Belly_LiveLoveLaugh": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "Live Love Laugh script"
+ },
+ "f:Belly_Mandala1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "lotus mandala"
+ },
+ "f:Belly_Mandala2": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "narrow lotus ornament"
+ },
+ "f:Belly_Mermaid1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "pinup",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "mermaid with stars"
+ },
+ "f:Belly_Ornament1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal wing shapes"
+ },
+ "f:Belly_Ornament2": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate lace pendant design"
+ },
+ "f:Belly_Penis1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "sexual",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "penis outline with text"
+ },
+ "f:Belly_Penises1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "medium",
+  "style": [
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "moth, Love shelter, penis wings"
+ },
+ "f:Belly_Snake1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "coiled snake"
+ },
+ "f:Belly_Snake2": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "thin snake"
+ },
+ "f:Belly_Snake3": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "snake in loop"
+ },
+ "f:Belly_Stars1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scattered stars"
+ },
+ "f:Belly_Turtle1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "turtle"
+ },
+ "f:Belly_WebSpider1": {
+  "kind": "tattoo",
+  "regions": [
+   "belly"
+  ],
+  "size": "medium",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web with spider"
+ }
+}

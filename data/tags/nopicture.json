@@ -1,0 +1,478 @@
+{
+ "f:Blackout": {
+  "kind": "tattoo",
+  "regions": [],
+  "size": "large",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "RJs Blackout tattoo set (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Celtic": {
+  "kind": "tattoo",
+  "regions": [],
+  "size": "large",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "RJs Celtic tattoo set (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Egyptian": {
+  "kind": "tattoo",
+  "regions": [],
+  "size": "large",
+  "style": [
+   "religious"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "RJs Egyptian tattoo set (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Mandala": {
+  "kind": "tattoo",
+  "regions": [],
+  "size": "large",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "RJs Mandala tattoo set (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Nordic": {
+  "kind": "tattoo",
+  "regions": [],
+  "size": "large",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "RJs Nordic tattoo set (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Pink": {
+  "kind": "tattoo",
+  "regions": [],
+  "size": "large",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "RJs Pink tattoo set (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_light_1_big": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit light 1 big (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_light_1_blam": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit light 1 blam (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_light_1_medium": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit light 1 medium (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_light_1_small": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit light 1 small (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_nipple_large": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit nipple large (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_nipple_light": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit nipple light (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_nipple_speckle": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit nipple speckle (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_nipple_wrinkled": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit nipple wrinkled (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_ring_hard_big": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit ring hard big (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_ring_hard_blam": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit ring hard blam (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_ring_hard_medium": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit ring hard medium (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_ring_hard_small": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit ring hard small (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_ring_soft_big": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit ring soft big (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_ring_soft_blam": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit ring soft blam (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_ring_soft_medium": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit ring soft medium (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_ring_soft_small": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit ring soft small (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_ringed_1_big": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit ringed 1 big (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_ringed_1_blam": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit ringed 1 blam (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_ringed_1_medium": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit ringed 1 medium (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_ringed_1_small": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit ringed 1 small (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_speckle_1_big": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit speckle 1 big (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_speckle_1_blam": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit speckle 1 blam (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_speckle_1_medium": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit speckle 1 medium (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_speckle_1_small": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit speckle 1 small (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_wrinkled_medium": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit wrinkled medium (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_wrinkled_small": {
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Titkit wrinkled small (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_X_Ducttape": {
+  "kind": "other",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "Titkit X Ducttape (no picture: v8 BA2)",
+  "unseen": true
+ },
+ "f:Titkit_xtape_x": {
+  "kind": "other",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "Titkit xtape x (no picture: v8 BA2)",
+  "unseen": true
+ }
+}

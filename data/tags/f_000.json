@@ -1,0 +1,18 @@
+{
+"f:DNX_Back_AngelWings1":{"kind":"tattoo","regions":["back"],"size":"large","style":["religious","realistic_art"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"angel wings across back"},
+"f:DNX_Back_AngelWings2":{"kind":"tattoo","regions":["back"],"size":"large","style":["religious","realistic_art"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"feathered angel wings across back"},
+"f:DNX_Back_Dragon1":{"kind":"tattoo","regions":["back"],"size":"large","style":["tribal","animal"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"black dragon with thorns"},
+"f:DNX_Back_Revolvers":{"kind":"tattoo","regions":["back"],"size":"medium","style":["military","realistic_art"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"crossed engraved revolvers"},
+"f:DNX_Back_TribalPhoenix":{"kind":"tattoo","regions":["back"],"size":"large","style":["tribal","animal"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"tribal phoenix wings"},
+"f:DNX_Chest_Birds":{"kind":"tattoo","regions":["chest"],"size":"small","style":["animal"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"row of small birds"},
+"f:DNX_Hands_Henna1":{"kind":"tattoo","regions":["hand_l","hand_r"],"size":"medium","style":["floral","geometric"],"emblem":null,"lore":"stretch","adult":false,"quality":"ok","note":"henna floral patterns on hands"},
+"f:DNX_Larm_ButfMusicStars":{"kind":"tattoo","regions":["arm_l"],"size":"medium","style":["floral","cartoon"],"emblem":null,"lore":"stretch","adult":false,"quality":"ok","note":"butterfly, stars, music swirls"},
+"f:DNX_Larm_Maori1":{"kind":"tattoo","regions":["arm_l"],"size":"medium","style":["tribal"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"maori tribal armband"},
+"f:DNX_Lchest_Biohazard":{"kind":"tattoo","regions":["chest"],"size":"tiny","style":["geometric"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"biohazard symbol"},
+"f:DNX_Lchest_TribalFlower":{"kind":"tattoo","regions":["chest"],"size":"tiny","style":["tribal","floral"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"small tribal flower"},
+"f:DNX_Lhip_Stars1":{"kind":"tattoo","regions":["pelvis"],"size":"small","style":["cartoon"],"emblem":null,"lore":"stretch","adult":false,"quality":"ok","note":"column of stars on hip"},
+"f:DNX_Lleg_FlowersButterfly":{"kind":"tattoo","regions":["leg_l"],"size":"medium","style":["floral","realistic_art"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"butterfly and hibiscus flowers"},
+"f:DNX_Lleg_Heart2":{"kind":"tattoo","regions":["leg_l"],"size":"tiny","style":["tribal"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"small tribal heart"},
+"f:DNX_Lleg_TribalBand3":{"kind":"tattoo","regions":["leg_l"],"size":"small","style":["tribal"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"tribal band"},
+"f:DNX_LShoulder_Birds":{"kind":"tattoo","regions":["shoulders"],"size":"small","style":["animal"],"emblem":null,"lore":"fits","adult":false,"quality":"ok","note":"flock of birds flying"}
+}

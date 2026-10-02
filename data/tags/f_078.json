@@ -1,0 +1,251 @@
+{
+ "f:RR Collar HeartSpike": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "heart with spiked wings"
+ },
+ "f:RR Collar NecroWing": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged serpent staff"
+ },
+ "f:RR Collar ONI": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "oni winged crest"
+ },
+ "f:RR Collar Ouroboros": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "ouroboros circle star"
+ },
+ "f:RR Collar Scarab": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "winged scarab"
+ },
+ "f:RR Collar SunMoon": {
+  "kind": "tattoo",
+  "regions": [
+   "neck",
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "sun and moon ornament"
+ },
+ "f:RR ForeL Chimaera": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "chimaera chain forearm band"
+ },
+ "f:RR ForeL DragonS": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal dragon forearm"
+ },
+ "f:RR ForeR Serpent": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "entwined serpents forearm"
+ },
+ "f:RR ForeR ShufflePlay": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "shuffle play symbols"
+ },
+ "f:RR LegL Aztec": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "aztec eagle serpent spiral"
+ },
+ "f:RR LegL Serpents": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dragon and serpent"
+ },
+ "f:RR LegR Draconic": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "draconic sea dragon"
+ },
+ "f:RR LegR PunkWing": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "geometric",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate punk wing filigree"
+ },
+ "f:RR Neck Aquarius": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "aquarius zodiac"
+ },
+ "f:RR Neck Aries": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "aries zodiac"
+ }
+}

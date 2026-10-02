@@ -1,0 +1,246 @@
+{
+ "f:BoobR_Scorpion1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scorpion"
+ },
+ "f:BoobR_Stars1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "ring of stars, EU-like"
+ },
+ "f:BoobR_TicTac": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "tic-tac-toe grid"
+ },
+ "f:BoobR_Wreath1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "small wreath"
+ },
+ "f:Boobs_Pentagram1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "pair of pentagrams"
+ },
+ "f:Boobs_Stars1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "pair of outline stars"
+ },
+ "f:Boobs_Stars2": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "pair of heptagram stars"
+ },
+ "f:Boobs_Web1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "pair of spider webs"
+ },
+ "f:Butt_Enema1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "sexual",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "enema bulb drawing"
+ },
+ "f:Butt_fart1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "sexual",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "fart cloud joke"
+ },
+ "f:Butt_Fly1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "tiny fly"
+ },
+ "f:Butt_Penis1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "sexual"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "poor",
+  "note": "tiny penis doodle"
+ },
+ "f:Butt_Web2": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web"
+ },
+ "f:ButtL_Elefant1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "stylised elephant, ornamented"
+ },
+ "f:ButtL_Fish1": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small fish"
+ },
+ "f:ButtL_GuaranteeStamp1": {
+  "kind": "brand",
+  "regions": [
+   "butt"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "guarantee stamp oval"
+ }
+}

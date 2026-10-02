@@ -1,0 +1,231 @@
+{
+ "f:LMBT_Vine1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "leafy vine"
+ },
+ "f:LMBT_Vine2": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "flower scroll flourish"
+ },
+ "f:LMBT_WidowmakerArm": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "medium",
+  "style": [
+   "script"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Widowmaker Overwatch text"
+ },
+ "f:LMBT_WidowmakerBack": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric",
+   "animal"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Widowmaker Overwatch spider"
+ },
+ "f:f_nails_1": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "brown grey nail polish"
+ },
+ "f:f_nails_10": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "olive nail polish"
+ },
+ "f:f_nails_11": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "light grey nail polish"
+ },
+ "f:f_nails_12": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black nail polish"
+ },
+ "f:f_nails_2": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dark brown nail polish"
+ },
+ "f:f_nails_3": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "purple nail polish"
+ },
+ "f:f_nails_4": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "green nail polish"
+ },
+ "f:f_nails_5": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "plum nail polish"
+ },
+ "f:f_nails_6": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "crimson nail polish"
+ },
+ "f:f_nails_7": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black nail polish"
+ },
+ "f:f_nails_8": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "navy nail polish"
+ },
+ "f:f_nails_9": {
+  "kind": "nails",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "teal nail polish"
+ }
+}

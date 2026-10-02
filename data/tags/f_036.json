@@ -1,0 +1,224 @@
+{
+ "f:F_RLeg_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "emblem"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "skull crosshair in chain circle"
+ },
+ "f:F_RLeg_Railroad_3": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "railroad track ladder"
+ },
+ "f:F_RLeg_Settler_1": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint skull in chain circle"
+ },
+ "f:F_RLeg_Settler_2": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "skull",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint scratchy skull"
+ },
+ "f:F_RLeg_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver Shroud hat and mask"
+ },
+ "f:F_RLeg_Neon_Cyan": {
+  "kind": "other",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin neon strip"
+ },
+ "f:F_RLeg_Neon_Green": {
+  "kind": "other",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin neon strip"
+ },
+ "f:F_RLeg_Neon_Purple": {
+  "kind": "other",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin neon strip"
+ },
+ "f:F_RLeg_Neon_Red": {
+  "kind": "other",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin neon strip"
+ },
+ "f:F_RLeg_Neon_White": {
+  "kind": "other",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin neon strip"
+ },
+ "f:F_RLeg_Neon_Yellow": {
+  "kind": "other",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "poor",
+  "note": "thin neon strip"
+ },
+ "f:F_RLeg_Sleeve_Black": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RLeg_Sleeve_Blue": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RLeg_Sleeve_Brown": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RLeg_Sleeve_Cyan": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RLeg_Sleeve_Green": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ }
+}

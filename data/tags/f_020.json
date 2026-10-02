@@ -1,0 +1,248 @@
+{
+ "f:F_Hand_L_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "realistic_art",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web"
+ },
+ "f:F_Hand_L_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross over chain ring"
+ },
+ "f:F_Hand_L_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec gear vertical"
+ },
+ "f:F_Hand_R_Barcode": {
+  "kind": "brand",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "barcode on hand"
+ },
+ "f:F_Hand_R_BoS_1": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood winged sword gear"
+ },
+ "f:F_Hand_R_BoS_2": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Brotherhood winged sword gear"
+ },
+ "f:F_Hand_R_Captive": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "degrading"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "shackle chains on hand"
+ },
+ "f:F_Hand_R_CoA": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "religious"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Children of Atom orbit circles"
+ },
+ "f:F_Hand_R_Fist": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical FIST letters"
+ },
+ "f:F_Hand_R_Gunner": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "crude"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scribbled Gunner mark"
+ },
+ "f:F_Hand_R_Hex": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "five dark claw marks"
+ },
+ "f:F_Hand_R_Institute_B": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Institute Vitruvian figure, red"
+ },
+ "f:F_Hand_R_Institute_O": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint Institute outline mark"
+ },
+ "f:F_Hand_R_Institute_R": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "institute",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Institute Vitruvian figure, red"
+ },
+ "f:F_Hand_R_Kill": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical KILL letters"
+ },
+ "f:F_Hand_R_Love": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical LOVE letters"
+ }
+}

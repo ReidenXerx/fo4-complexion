@@ -1,0 +1,241 @@
+{
+ "f:F_RLeg_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "spider web line art"
+ },
+ "f:F_RLeg_Treasure_Map": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dashed treasure map trail with X"
+ },
+ "f:F_RLeg_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross triage mark"
+ },
+ "f:F_RLeg_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec style eye symbol"
+ },
+ "f:FF_Back_BoS": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "AD VICTORIAM text, mirrored"
+ },
+ "f:FF_Back_Expend": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "skull",
+   "script"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Expendables skull and banner"
+ },
+ "f:FF_Back_Marine": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "military"
+  ],
+  "emblem": "real_world",
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "SEMPER FI text, mirrored"
+ },
+ "f:FF_Back_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "red cross triage mark"
+ },
+ "f:LMBT_AngelWings": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate angel wings"
+ },
+ "f:LMBT_Assassin": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "medium",
+  "style": [
+   "pinup",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "masked girl with gun, skulls"
+ },
+ "f:LMBT_Bird": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "dove in light rays"
+ },
+ "f:LMBT_BoobBroderie": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "medium",
+  "style": [
+   "floral",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "lace jewelry-style chest design"
+ },
+ "f:F_RLeg_Sleeve_Purple": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RLeg_Sleeve_Red": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RLeg_Sleeve_White": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ },
+ "f:F_RLeg_Sleeve_Yellow": {
+  "kind": "skin",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "grey stippled sleeve patch"
+ }
+}

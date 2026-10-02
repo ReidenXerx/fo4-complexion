@@ -1,0 +1,18 @@
+{
+"f:F_Back_Captive":{"kind":"tattoo","regions":["back"],"size":"small","style":["degrading"],"emblem":null,"lore":"fits","adult":true,"quality":"ok","note":"chain links, captive mark"},
+"f:F_Back_Chinese_Dragon":{"kind":"tattoo","regions":["back"],"size":"medium","style":["animal","realistic_art"],"emblem":null,"lore":"stretch","adult":false,"quality":"ok","note":"detailed Chinese dragon"},
+"f:F_Back_CoA_1":{"kind":"tattoo","regions":["back"],"size":"small","style":["emblem","geometric"],"emblem":"atom","lore":"fits","adult":false,"quality":"ok","note":"Children of Atom orbit circles"},
+"f:F_Back_CoA_2":{"kind":"tattoo","regions":["back"],"size":"small","style":["emblem","geometric"],"emblem":"atom","lore":"fits","adult":false,"quality":"ok","note":"Children of Atom vertical orbits"},
+"f:F_Back_Crystal":{"kind":"tattoo","regions":["back"],"size":"small","style":["geometric"],"emblem":null,"lore":"stretch","adult":false,"quality":"ok","note":"black angular crystal shape"},
+"f:F_Back_Gunner_1":{"kind":"brand","regions":["back"],"size":"tiny","style":["emblem","military"],"emblem":"gunners","lore":"fits","adult":false,"quality":"poor","note":"crosshair, partial, cut off"},
+"f:F_Back_Gunner_2":{"kind":"brand","regions":["back"],"size":"small","style":["emblem","skull"],"emblem":"gunners","lore":"fits","adult":false,"quality":"ok","note":"Gunners skull stamp"},
+"f:F_Back_Gunner_3":{"kind":"brand","regions":["back"],"size":"small","style":["emblem","skull"],"emblem":"gunners","lore":"fits","adult":false,"quality":"ok","note":"Gunners skull stamp, large"},
+"f:F_Back_Hex_Back":{"kind":"tattoo","regions":["back"],"size":"medium","style":["skull","geometric"],"emblem":null,"lore":"stretch","adult":false,"quality":"ok","note":"black spine and ribs"},
+"f:F_Back_Hex_Raven":{"kind":"tattoo","regions":["back"],"size":"medium","style":["skull","geometric"],"emblem":null,"lore":"stretch","adult":false,"quality":"ok","note":"curling spine bone design"},
+"f:F_Back_Hex_Rib":{"kind":"tattoo","regions":["back"],"size":"medium","style":["skull","geometric"],"emblem":null,"lore":"stretch","adult":false,"quality":"ok","note":"rib cage bone design"},
+"f:F_Back_Imperial_Mark":{"kind":"tattoo","regions":["back"],"size":"small","style":["emblem","geometric"],"emblem":null,"lore":"breaks","adult":false,"quality":"ok","note":"winged sunburst imperial mark"},
+"f:F_Back_Institute_B":{"kind":"brand","regions":["back"],"size":"small","style":["emblem"],"emblem":"institute","lore":"fits","adult":false,"quality":"ok","note":"red Institute logo"},
+"f:F_Back_Institute_O":{"kind":"brand","regions":["back"],"size":"small","style":["emblem"],"emblem":"institute","lore":"fits","adult":false,"quality":"poor","note":"Institute logo, outline faint"},
+"f:F_Back_Institute_R":{"kind":"brand","regions":["back"],"size":"small","style":["emblem"],"emblem":"institute","lore":"fits","adult":false,"quality":"ok","note":"red Institute logo"},
+"f:F_Back_Jab":{"kind":"tattoo","regions":["back"],"size":"medium","style":["pinup","sexual"],"emblem":null,"lore":"stretch","adult":true,"quality":"ok","note":"erotic line art, bent-over woman"}
+}

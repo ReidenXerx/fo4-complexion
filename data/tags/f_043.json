@@ -1,0 +1,210 @@
+{
+ "f:t_nails_1": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "brown grey toenail polish"
+ },
+ "f:t_nails_10": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "olive toenail polish"
+ },
+ "f:t_nails_11": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "light grey toenail polish"
+ },
+ "f:t_nails_12": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black toenail polish"
+ },
+ "f:t_nails_2": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black toenail polish"
+ },
+ "f:t_nails_3": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "purple toenail polish"
+ },
+ "f:t_nails_4": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "green toenail polish"
+ },
+ "f:t_nails_5": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "plum toenail polish"
+ },
+ "f:t_nails_6": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "crimson toenail polish"
+ },
+ "f:t_nails_7": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "black toenail polish"
+ },
+ "f:t_nails_8": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "navy toenail polish"
+ },
+ "f:t_nails_9": {
+  "kind": "nails",
+  "regions": [
+   "feet"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "teal toenail polish"
+ },
+ "f:AndyMambo_MoreCBBEPubicHair01": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "dark trimmed pubic hair"
+ },
+ "f:AndyMambo_MoreCBBEPubicHair02": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "dense dark pubic hair"
+ },
+ "f:AndyMambo_MoreCBBEPubicHair03": {
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "sparse light pubic hair"
+ },
+ "f:LNRIndustries_LaCoiffeStyles01": {
+  "kind": "other",
+  "regions": [
+   "full_body"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "unreadable"
+ }
+}

@@ -1,0 +1,251 @@
+{
+ "m:M_Hand_R_Minutemen_2": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Black star"
+ },
+ "m:M_Hand_R_Nate": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "NORA letters on fingers"
+ },
+ "m:M_Hand_R_Pain": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "PAIN letters on fingers"
+ },
+ "m:M_Hand_R_Password": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Word Password"
+ },
+ "m:M_Hand_R_Raider": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "skull"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Raider skull in chain ring"
+ },
+ "m:M_Hand_R_Railroad_1": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Railroad track mark"
+ },
+ "m:M_Hand_R_Shaun": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Shaun name text"
+ },
+ "m:M_Hand_R_SilverShroud": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "Silver shroud emblem"
+ },
+ "m:M_Hand_R_SpiderWeb": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Spiderweb"
+ },
+ "m:M_Hand_R_Triage": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "other_fo",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Red cross medic mark"
+ },
+ "m:M_Hand_R_VaultTec": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Vault-Tec logo"
+ },
+ "m:M_Hands_Dirt": {
+  "kind": "dirt",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Grime on hands and fingers"
+ },
+ "m:M_Hands_Eyes": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Eyes on both hands"
+ },
+ "m:M_Hands_Hex": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "Bats on both hands"
+ },
+ "m:M_Hands_Love_Fist": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "LOVE FIST knuckle letters"
+ },
+ "m:M_Hands_Love_Hate": {
+  "kind": "tattoo",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "HATE LOVE knuckle letters"
+ }
+}

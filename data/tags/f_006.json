@@ -1,0 +1,242 @@
+{
+"f:F_Back_Sleeve_Purple": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "grey noise patch, unclear"
+},
+"f:F_Back_Sleeve_Red": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "grey noise patch, unclear"
+},
+"f:F_Back_Sleeve_White": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "grey noise patch, unclear"
+},
+"f:F_Back_Sleeve_Yellow": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "grey noise patch, unclear"
+},
+"f:F_Back_Treasure_Map": {
+"kind": "tattoo",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [
+"crude"
+],
+"emblem": null,
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "dotted path to X, treasure map"
+},
+"f:F_Back_Triage": {
+"kind": "brand",
+"regions": [
+"back"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "other_fo",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "red medical cross, Triage"
+},
+"f:F_Back_VaultTec": {
+"kind": "brand",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [
+"emblem"
+],
+"emblem": "vault_tec",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Vault-Tec gear door symbol"
+},
+"f:F_Back_VG_Preg": {
+"kind": "tattoo",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"pinup",
+"sexual"
+],
+"emblem": "vault_tec",
+"lore": "fits",
+"adult": true,
+"quality": "ok",
+"note": "Vault Girl silhouette, pregnant"
+},
+"f:F_Back_VG_Sex": {
+"kind": "tattoo",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [
+"pinup",
+"sexual",
+"script"
+],
+"emblem": "vault_tec",
+"lore": "fits",
+"adult": true,
+"quality": "ok",
+"note": "Vault Girl embrace, Prepare for the Future"
+},
+"f:F_Back_Wonder_Woman": {
+"kind": "tattoo",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"pinup",
+"sexual",
+"realistic_art"
+],
+"emblem": null,
+"lore": "breaks",
+"adult": true,
+"quality": "ok",
+"note": "Wonder Woman nude rear line art"
+},
+"f:F_Back_YinYang": {
+"kind": "tattoo",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [
+"religious",
+"geometric"
+],
+"emblem": null,
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "yin yang symbol"
+},
+"f:F_Butt_44": {
+"kind": "marks",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"script"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "ok",
+"note": "two digit numerals, 4"
+},
+"f:F_Butt_46": {
+"kind": "marks",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"script"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "ok",
+"note": "numerals 6 and 4"
+},
+"f:F_Butt_69": {
+"kind": "marks",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"script",
+"sexual"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": true,
+"quality": "ok",
+"note": "numerals 6 and 9"
+},
+"f:F_Butt_Barcode": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": null,
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "barcode"
+},
+"f:F_Butt_BoS": {
+"kind": "brand",
+"regions": [
+"butt"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"military"
+],
+"emblem": "bos",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Brotherhood of Steel emblem"
+}
+}

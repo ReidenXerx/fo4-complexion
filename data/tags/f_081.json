@@ -1,0 +1,250 @@
+{
+ "f:RR ThighL GlyphRune": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "glyph rune ornament; Horde-like crest"
+ },
+ "f:RR ThighL LegendBird": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [
+   "animal",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal phoenix legend bird"
+ },
+ "f:RR ThighL NagaSiren": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "large",
+  "style": [
+   "realistic_art"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "naga siren with ornate swirls"
+ },
+ "f:RR ThighL Wyvern": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal",
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal wyvern"
+ },
+ "f:RR ThighR Darksiders": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [
+   "emblem",
+   "geometric"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Darksiders rune circle"
+ },
+ "f:RR ThighR LionKnit": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "animal",
+   "skull"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "lion, skull and dreamcatcher"
+ },
+ "f:RR ThighR PhoenixFlight": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "phoenix in flight"
+ },
+ "f:RR ThighR RavenRune": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "large",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "raven with rune feathers"
+ },
+ "f:RR ThighR Seahorse": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [
+   "animal",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "ornate seahorse"
+ },
+ "f:RR ThighR SnakeDagger": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "snake and dagger, cut at seam"
+ },
+ "f:RR Tramp AceOnFire": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "ace on fire tribal"
+ },
+ "f:RR Tramp Assassino": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Assassins-style winged mark"
+ },
+ "f:RR Tramp AztecWings": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "aztec wings"
+ },
+ "f:RR Tramp Beetle": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "beetle"
+ },
+ "f:RR Tramp BrandofSacrifice": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "tribal"
+  ],
+  "emblem": "real_world",
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "note": "Berserk brand of sacrifice"
+ },
+ "f:RR Tramp Brotherhand": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "painted handprint"
+ }
+}

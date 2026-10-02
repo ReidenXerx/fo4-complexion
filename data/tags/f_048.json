@@ -1,0 +1,210 @@
+{
+ "f:Moles_15": {
+  "kind": "mole",
+  "regions": [
+   "face"
+  ],
+  "size": "tiny",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "single elongated mole"
+ },
+ "f:Pimples_01": {
+  "kind": "acne",
+  "regions": [
+   "face"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scattered pimples"
+ },
+ "f:Pimples_02": {
+  "kind": "acne",
+  "regions": [
+   "face"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scattered pimples"
+ },
+ "f:Pimples_03": {
+  "kind": "acne",
+  "regions": [
+   "face"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "faint speckled pimples"
+ },
+ "f:Pimples_04": {
+  "kind": "acne",
+  "regions": [
+   "face"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "very faint speckles"
+ },
+ "f:Pimples_05": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "blotchy skin pattern"
+ },
+ "f:Pimples_06": {
+  "kind": "acne",
+  "regions": [
+   "face"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scattered pimples"
+ },
+ "f:Pimples_07": {
+  "kind": "acne",
+  "regions": [
+   "face"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scattered pimples"
+ },
+ "f:Pimples_08": {
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "poor",
+  "note": "faint skin noise"
+ },
+ "f:Pimples_09": {
+  "kind": "acne",
+  "regions": [
+   "face"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scattered pimples"
+ },
+ "f:Pimples_10": {
+  "kind": "acne",
+  "regions": [
+   "face"
+  ],
+  "size": "full",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "few large blemishes"
+ },
+ "f:Scars_01": {
+  "kind": "scar",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "long curved scar"
+ },
+ "f:Scars_02": {
+  "kind": "scar",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "vertical stitched scar"
+ },
+ "f:Scars_03": {
+  "kind": "scar",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "short curved scar"
+ },
+ "f:Scars_04": {
+  "kind": "scar",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "two parallel slash scars"
+ },
+ "f:Scars_05": {
+  "kind": "scar",
+  "regions": [
+   "full_body"
+  ],
+  "size": "medium",
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "several pink scars"
+ }
+}

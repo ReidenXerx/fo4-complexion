@@ -1,0 +1,231 @@
+{
+"f:F_Back_Neon_C_Red": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_C_White": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Neon_C_Yellow": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "faint neon stripes, barely visible"
+},
+"f:F_Back_Raider": {
+"kind": "brand",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [
+"emblem",
+"skull"
+],
+"emblem": "raiders",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "chained skull with crosshair"
+},
+"f:F_Back_Railroad_1": {
+"kind": "brand",
+"regions": [
+"back"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"crude"
+],
+"emblem": "railroad",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Railroad rails symbol"
+},
+"f:F_Back_Railroad_2": {
+"kind": "brand",
+"regions": [
+"back"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "railroad",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Railroad rails symbol"
+},
+"f:F_Back_Railroad_3": {
+"kind": "brand",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [
+"emblem"
+],
+"emblem": "railroad",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "long Railroad rails"
+},
+"f:F_Back_Settler_1": {
+"kind": "brand",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [
+"emblem",
+"skull"
+],
+"emblem": "raiders",
+"lore": "fits",
+"adult": false,
+"quality": "poor",
+"note": "faint chained skull outline"
+},
+"f:F_Back_Settler_2": {
+"kind": "brand",
+"regions": [
+"back"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"skull"
+],
+"emblem": "raiders",
+"lore": "fits",
+"adult": false,
+"quality": "poor",
+"note": "faint skull stamp, nearly invisible"
+},
+"f:F_Back_Settler_3": {
+"kind": "brand",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [
+"emblem",
+"skull"
+],
+"emblem": "raiders",
+"lore": "fits",
+"adult": false,
+"quality": "poor",
+"note": "faint skull stamp, nearly invisible"
+},
+"f:F_Back_SilverShroud": {
+"kind": "brand",
+"regions": [
+"back"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "other_fo",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Silver Shroud mask mark"
+},
+"f:F_Back_Sleeve_Black": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "grey noise patch, unclear"
+},
+"f:F_Back_Sleeve_Blue": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "grey noise patch, unclear"
+},
+"f:F_Back_Sleeve_Brown": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "grey noise patch, unclear"
+},
+"f:F_Back_Sleeve_Cyan": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "grey noise patch, unclear"
+},
+"f:F_Back_Sleeve_Green": {
+"kind": "other",
+"regions": [
+"back"
+],
+"size": "small",
+"style": [],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "poor",
+"note": "grey noise patch, unclear"
+}
+}

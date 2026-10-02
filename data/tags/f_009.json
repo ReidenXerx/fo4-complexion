@@ -1,0 +1,259 @@
+{
+"f:F_Chest_Crystal": {
+"kind": "tattoo",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"geometric"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "ok",
+"note": "grey crystal shards, both sides"
+},
+"f:F_Chest_Dragon_BL": {
+"kind": "tattoo",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": [
+"animal",
+"geometric"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "ok",
+"note": "dragon in circle, left breast"
+},
+"f:F_Chest_Dragon_BR": {
+"kind": "tattoo",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": [
+"animal",
+"geometric"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "ok",
+"note": "dragon in circle, right breast"
+},
+"f:F_Chest_Dragons": {
+"kind": "tattoo",
+"regions": [
+"breasts"
+],
+"size": "medium",
+"style": [
+"tribal",
+"animal"
+],
+"emblem": null,
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "pair of tribal dragons"
+},
+"f:F_Chest_Gunner_1": {
+"kind": "brand",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"military"
+],
+"emblem": "gunners",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "crosshair mark"
+},
+"f:F_Chest_Gunner_1_BL": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"military"
+],
+"emblem": "gunners",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "crosshair, left breast"
+},
+"f:F_Chest_Gunner_1_BR": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"military"
+],
+"emblem": "gunners",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "crosshair, right breast"
+},
+"f:F_Chest_Gunner_2_BL": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"skull"
+],
+"emblem": "gunners",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Gunners skull, left breast"
+},
+"f:F_Chest_Gunner_2_BR": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"skull"
+],
+"emblem": "gunners",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Gunners skull, right breast"
+},
+"f:F_Chest_Gunner_2_C": {
+"kind": "brand",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": [
+"emblem",
+"skull"
+],
+"emblem": "gunners",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "Gunners skull, centre"
+},
+"f:F_Chest_Gunner_3": {
+"kind": "brand",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"emblem",
+"skull"
+],
+"emblem": "gunners",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "large Gunners skull"
+},
+"f:F_Chest_Hex_Belly": {
+"kind": "tattoo",
+"regions": [
+"belly",
+"chest"
+],
+"size": "medium",
+"style": [
+"skull",
+"geometric"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "ok",
+"note": "V-shaped rib bones"
+},
+"f:F_Chest_Hex_Raven": {
+"kind": "tattoo",
+"regions": [
+"belly",
+"chest"
+],
+"size": "medium",
+"style": [
+"skull",
+"geometric"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "ok",
+"note": "curling spine bone design"
+},
+"f:F_Chest_Hex_Reverse": {
+"kind": "tattoo",
+"regions": [
+"belly",
+"chest"
+],
+"size": "medium",
+"style": [
+"skull",
+"geometric"
+],
+"emblem": null,
+"lore": "stretch",
+"adult": false,
+"quality": "ok",
+"note": "curling spine bone, mirrored"
+},
+"f:F_Chest_Imperial_Mark": {
+"kind": "tattoo",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"emblem",
+"military"
+],
+"emblem": "real_world",
+"lore": "breaks",
+"adult": false,
+"quality": "ok",
+"note": "Warhammer 40k imperial aquila"
+},
+"f:F_Chest_Institute_B_BL": {
+"kind": "brand",
+"regions": [
+"breasts"
+],
+"size": "tiny",
+"style": [
+"emblem"
+],
+"emblem": "institute",
+"lore": "fits",
+"adult": false,
+"quality": "ok",
+"note": "red Institute logo, left breast"
+}
+}

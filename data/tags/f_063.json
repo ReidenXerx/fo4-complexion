@@ -1,0 +1,248 @@
+{
+ "f:BoobL_Mandala1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": true,
+  "quality": "ok",
+  "note": "mandala, Hindi text body sex"
+ },
+ "f:BoobL_Milk1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": true,
+  "quality": "ok",
+  "note": "Human Milk text with drop"
+ },
+ "f:BoobL_Ornament1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "plain ring circle"
+ },
+ "f:BoobL_Prices1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "cost of services price text"
+ },
+ "f:BoobL_Snake1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "animal",
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "ouroboros snake circle"
+ },
+ "f:BoobL_Tribal1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal swirl"
+ },
+ "f:BoobR_ClockFace1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "clock face"
+ },
+ "f:BoobR_ClockFace2": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "clock face with numerals"
+ },
+ "f:BoobR_Crab1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "scorpion"
+ },
+ "f:BoobR_Frog1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal",
+   "cartoon"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "small frog"
+ },
+ "f:BoobR_GuaranteeStamp1": {
+  "kind": "brand",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "guarantee stamp oval"
+ },
+ "f:BoobR_Lizard1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "tiny",
+  "style": [
+   "animal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "lizard"
+ },
+ "f:BoobR_Mandala1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "geometric",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "stretch",
+  "adult": false,
+  "quality": "ok",
+  "note": "coloured mandala"
+ },
+ "f:BoobR_Ornament1": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "thorn wreath ring"
+ },
+ "f:BoobR_Ornament2": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal vine swirl"
+ },
+ "f:BoobR_Ornament3": {
+  "kind": "tattoo",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "style": [
+   "tribal",
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "tribal star flower"
+ }
+}
