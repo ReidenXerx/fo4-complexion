@@ -1419,3 +1419,13 @@ player's off while it is open; (2) the free camera handles the mouse itself -- i
 movie between openings -- every opening starts it again (Panel.Begin). The menu input context (0x8) and the
 gamepad's cursor removal (extended flag 2) are gone; the gamepad is not claimed. Ways out: Cancel, the window's
 hotkey again, `cgf "Silhouette:API.CloseWindow"`. The window logs what it receives ("window:" lines).
+
+## S-81 — The dead are left alone (0.3.2, 2026-10-02)
+
+Reports of pre-placed corpses showing only their head and hands (no logs yet). Re-applying morphs to a ragdolled
+corpse is the lead on Silhouette's side (Anatomy-specialist's), so Silhouette writes nothing to the dead: a body,
+refit or touch-up order for a dead actor is not carried out (OrderGone: it waits for a sighting, so the drain does
+not spin); a probe or a snapshot still reads them. The window, the Pick hotkey and MCM's Apply/Random buttons
+refuse a dead target and say why. A body LooksMenu's BodyGen gives at cell load is not ours to stop. Shipped with
+Anatomy Engine 1.2.2's guard against non-finite physics: a "[physics] ... went non-finite" line in
+anatomy_ocbpc.log puts a remaining case on the physics; without one, on LooksMenu's own BodyGen at cell load.

@@ -79,6 +79,10 @@ order. Each item names where it is settled: `S-#` is a decision in [decisions.md
 
 ## Picking bodies in game
 
+- **The dead are left alone** (S-81): Silhouette changes no corpse's body -- no faction body, no refit, no
+  touch-up on someone dead; the window, the Pick hotkey and MCM's buttons say so instead. A body LooksMenu's
+  BodyGen gives them as the cell loads is LooksMenu's.
+
 - **The picker window** (S-79): opened by a hotkey on the NPC in your sights, by MCM's buttons (on the NPC
   aimed at in the half minute before, or on you), or from the console (`cgf "Silhouette:API.OpenWindow"`).
   A grid of pictures of every preset that fits them -- Silhouette's, CBBE's and BodyTalk's stock ones, yours
