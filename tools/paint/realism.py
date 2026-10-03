@@ -14,15 +14,29 @@ def _front(P):
 
 
 def freckles(m, rng, amount=0.6):
-    """Sun freckles: hundreds of small light-brown flecks on the shoulders, upper back, chest and arms."""
+    """Sun freckles where the sun lands: densest on the tops of the shoulders, the upper chest above the breasts,
+    the upper back and the outer arms, thinning out smoothly from there; small, pale, uneven, in clusters.
+    In game (2026-10-03, Norma Gibson) the first version read as a rash: big even dots over the breasts and belly,
+    stopping dead on a height line."""
     P = Painter(m)
     rgb, alpha = blank(m)
-    sun = np.where(P.reg('torso') & (P.h > 0.72), 1.0, 0.0) + np.where(P.reg('arm'), 0.8, 0.0)
-    sun = sun * P.cov
+    seed = int(rng.integers(1 << 30))
+    h, n = P.h, P.n
+    up = np.clip(n[..., 2] + 0.35, 0, 1)                          # faces the sky
+    top = np.clip((h - 0.74) / 0.08, 0, 1) ** 1.5                 # shoulders and the top of the chest/back
+    breasts = P.reg('torso') & (h > 0.68) & (h < 0.80) & (n[..., 1] > 0.35)
+    torso = P.reg('torso') * top * (0.35 + 0.65 * up) * np.where(breasts, 0.15, 1.0)
+    arm_out = np.abs(P.p[..., 0]) / max(np.abs(P.p[..., 0][P.reg('arm')]).max(), 1e-6)
+    arms = P.reg('arm') * (0.45 + 0.55 * np.clip(n[..., 2] + n[..., 1] * 0.5 + 0.3, 0, 1)) * (0.5 + 0.5 * arm_out)
+    clusters = np.clip(fbm(P.p, 0.35, seed, 3) * 2.2 - 0.55, 0.05, 1)
+    sun = (np.maximum(torso, arms * 0.85) * clusters * P.cov) ** 1.3
     a = np.zeros(m.covered.shape)
-    for c, n in P.pick_points(rng, sun > 0, int(300 + 1200 * amount), sun):
-        P.blob_into(a, c, n, rng.uniform(0.05, 0.13), gain=rng.uniform(0.9, 1.6), cap=0.55)
-    over(rgb, alpha, (0.55, 0.36, 0.24), a)
+    tone = fbm(P.p, 1.5, seed + 1, 2)
+    for c, nn in P.pick_points(rng, sun > 0.01, int(500 + 1500 * amount), sun):
+        P.blob_into(a, c, nn, rng.uniform(0.025, 0.07), gain=rng.uniform(0.5, 1.1), cap=rng.uniform(0.18, 0.4))
+    edge = 0.6 + 0.6 * fbm(P.p, 6.0, seed + 2, 2)               # ragged, not round
+    colour = np.stack([0.60 - 0.08 * tone, 0.42 - 0.06 * tone, 0.30 - 0.04 * tone], -1)
+    over(rgb, alpha, colour, np.clip(a * edge, 0, 0.42))
     return rgb, alpha
 
 
