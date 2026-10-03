@@ -27,6 +27,10 @@ namespace CX::Game
 
 	// From the event sink, on whatever thread the game sends it: queued, nothing read yet.
 	void NoteLoaded(std::uint32_t a_ref);
+	// The crosshair's activate pick, a reference handle (0: nothing), from the view caster's sink (C-19).
+	void NoteCrosshair(std::uint32_t a_handle);
+	// Main thread: the NPC under the crosshair, or aimed at within the last a_recentSeconds; 0 for none.
+	[[nodiscard]] std::uint32_t CrosshairActor(float a_recentSeconds);
 
 	// Main thread: everything queued since the last pump.
 	void Pump();

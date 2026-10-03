@@ -34,8 +34,11 @@ $files = [ordered]@{
     'Complexion.esp'                         = 'data\Complexion.esp'
     'MCM\Config\Complexion\config.json'      = 'data\MCM\Config\Complexion\config.json'
     'MCM\Config\Complexion\settings.ini'     = 'data\MCM\Config\Complexion\settings.ini'
+    'MCM\Config\Complexion\keybinds.json'    = 'data\MCM\Config\Complexion\keybinds.json'
+    'Interface\ComplexionMenu.swf'            = 'build\interface\ComplexionMenu.swf'
+    'F4SE\Plugins\Complexion\thumbs.json'    = 'data\F4SE\Plugins\Complexion\thumbs.json'
 }
-foreach ($tree in 'Textures\Overlays\Complexion', 'Materials\Overlays\Complexion', 'F4SE\Plugins\F4EE\Overlays\Complexion.esp', 'F4SE\Plugins\RobCo_Patcher\race') {
+foreach ($tree in 'Textures\Overlays\Complexion', 'Textures\Complexion', 'Materials\Overlays\Complexion', 'F4SE\Plugins\F4EE\Overlays\Complexion.esp', 'F4SE\Plugins\RobCo_Patcher\race') {
     Get-ChildItem (Join-Path $root "data\$tree") -File -Recurse | ForEach-Object {
         $files[$_.FullName.Substring((Join-Path $root 'data').Length + 1)] = $_.FullName.Substring($root.Length + 1)
     }
@@ -46,6 +49,14 @@ if ($LASTEXITCODE) { throw 'Complexion.esp is refused' }
 $dll = Get-Item (Join-Path $root "build\$Config\Complexion.dll")
 $newest = Get-ChildItem (Join-Path $root 'src') -File | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 if ($newest.LastWriteTime -gt $dll.LastWriteTime) { throw "Complexion.dll is older than src\$($newest.Name): run scripts\build-plugin.ps1" }
+# The window (C-19): its movie newer than every .as, and its pictures of the build the index names.
+$swf = Get-Item (Join-Path $root 'build\interface\ComplexionMenu.swf') -ErrorAction SilentlyContinue
+$as = Get-ChildItem (Join-Path $root 'interface\src') -Filter *.as | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+if (-not $swf -or $as.LastWriteTime -gt $swf.LastWriteTime) { throw "ComplexionMenu.swf is missing or older than $($as.Name): run scripts\build-interface.ps1" }
+$thumbs = Get-Content (Join-Path $root 'data\F4SE\Plugins\Complexion\thumbs.json') -Raw | ConvertFrom-Json
+if (-not (Get-ChildItem (Join-Path $root 'data\Textures\Complexion') -Filter "Thumbs*_$($thumbs.build)_*.dds")) {
+    throw "no picture atlas of build $($thumbs.build): run python tools\paint\thumbs.py"
+}
 
 if (Test-Path $out) { Remove-Item $out -Recurse -Force }
 if (Test-Path $zip) { Remove-Item $zip -Force }

@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #include "Compat.h"
+#include "Crosshair.h"
 #include "EventSources.h"
 
 namespace CX::Game
@@ -55,6 +56,8 @@ namespace CX::Game
 		bool                              g_sweepArmed{ false };
 		std::int64_t                      g_sweepUntilMs{ 0 };
 		std::unordered_set<std::uint32_t> g_swept;
+
+		CrosshairTrail                    g_trail;  // the view caster's activate picks, as handles (C-19)
 
 		std::int64_t NowMs()
 		{
@@ -479,6 +482,23 @@ namespace CX::Game
 		// first poll, once RobCo Patcher has surely patched the races.
 		g_rofLoaded = std::ranges::any_of(plugins, [](const std::string& p) { return IEquals(p, "INVB_OverlayFramework.esp"); });
 		g_director.SetData(std::move(profiles), std::move(catalog));
+
+		// C-19: where each of Complexion's own templates has its picture in the window's atlases
+		// (tools/paint/thumbs.py). Without the file the window works, with text cards.
+		std::string thumbError;
+		if (const auto thumbs = ReadJson(std::filesystem::path(kFolder) / "thumbs.json", thumbError); thumbs && thumbs->is_object() &&
+																										(*thumbs).contains("cells")) {
+			std::unordered_map<std::string, std::pair<int, int>> cells;
+			for (const auto& [k, v] : (*thumbs)["cells"].items()) {
+				if (v.is_array() && v.size() == 2) {
+					cells[k] = { v[0].get<int>(), v[1].get<int>() };
+				}
+			}
+			logger::info("window: {} picture(s) in the atlases", cells.size());
+			g_director.SetThumbs(std::move(cells), (*thumbs).value("build", std::string{}));
+		} else {
+			logger::info("window: no thumbs.json ({}) - the window shows text cards", thumbError.empty() ? "missing" : thumbError);
+		}
 	}
 
 	std::string TakeWarning()
@@ -503,6 +523,36 @@ namespace CX::Game
 		g_inbox.loaded.push_back(a_ref);
 	}
 
+	void NoteCrosshair(std::uint32_t a_handle)
+	{
+		// "Aimed at within the last N seconds" counts from when the crosshair LEFT them: a long look followed by
+		// opening a menu is the case the window exists for.
+		g_trail.Note(a_handle, NowMs());
+	}
+
+	std::uint32_t CrosshairActor(float a_recentSeconds)
+	{
+		const auto recentMs = a_recentSeconds > 0.0F ? static_cast<std::int64_t>(a_recentSeconds * 1000.0F) : std::int64_t{ 0 };
+		std::uint32_t chosen = 0;
+		(void)g_trail.Choose(recentMs, NowMs(), [&](std::uint32_t a_handle) {
+			if (a_handle == 0) {
+				return false;
+			}
+			static_assert(sizeof(RE::ObjectRefHandle) == sizeof(std::uint32_t));
+			RE::ObjectRefHandle handle;
+			std::memcpy(static_cast<void*>(&handle), &a_handle, sizeof(a_handle));
+			const auto ref = handle.get();
+			auto*      actor = ref ? ActorFor(ref->GetFormID()) : nullptr;
+			if (!actor || !actor->GetNPC() || actor == RE::PlayerCharacter::GetSingleton()) {
+				return false;
+			}
+			chosen = actor->GetFormID();
+			return true;
+		});
+		logger::info("window: {}", chosen ? std::format("aimed at {}", NameOf(ActorFor(chosen))) : std::string{ "nobody aimed at - the window opens on the player" });
+		return chosen;
+	}
+
 	void ForgetInbox()
 	{
 		{
@@ -511,6 +561,7 @@ namespace CX::Game
 			g_inbox.dropped = 0;
 			g_inbox.warned = false;
 		}
+		g_trail.Forget();
 		g_sweepArmed = false;
 		g_sweepUntilMs = 0;
 		g_swept.clear();

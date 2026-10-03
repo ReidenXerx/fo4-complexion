@@ -205,9 +205,20 @@ namespace CX
 				x.emblem = t["emblem"].get<std::string>();
 			}
 			x.adult = t.value("adult", false);
+			x.note = t.value("note", "");
 			out.push_back(std::move(x));
 		}
 		return out;
+	}
+
+	int LayerOf(std::string_view a_kind)
+	{
+		return Layer(a_kind);
+	}
+
+	bool IsAdult(const Template& a_t)
+	{
+		return a_t.adult || std::ranges::find(a_t.style, "degrading") != a_t.style.end() || std::ranges::find(a_t.style, "sexual") != a_t.style.end();
 	}
 
 	std::vector<Pick> Compose(const Profiles& a_profiles, const std::vector<Template>& a_catalog, bool a_female, const Group& a_group,

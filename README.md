@@ -23,6 +23,15 @@ on anyone, one style per person, never three of a kind, and a faction's emblem o
 - **Plays well with others.** Overlays other mods put on an NPC (AAF's, Rapport's sweat) are kept, and draw on top.
   Nobody is touched during an AAF scene. The player, the dead and children are never touched.
 
+## The overlay window
+
+Choose overlays by hand: aim at someone (or no one, for yourself) and press the window's hotkey (MCM >
+Complexion), or use its buttons in the MCM. They stand still, undressed, framed by the camera, and the window
+lists every overlay that fits them -- Complexion's own with a picture, other packs' by name -- by category, with a
+search. A click puts one on or takes it off, live; Random rolls a look; Clear takes Complexion's off. Apply keeps
+it as their look from then on; Cancel puts back exactly what they had, clothes included. It is the only way the
+player gets overlays from Complexion: the player is never given a random look.
+
 ## Requirements
 
 Fallout 4 1.10.163 (old-gen), 1.10.984 (next-gen) or 1.11.x (Anniversary), F4SE, Runtime Database, LooksMenu,

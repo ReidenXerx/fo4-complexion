@@ -207,6 +207,18 @@ chest, upper back, nape, shoulder, underbust, navel, belly, lower back, hip and 
 painter that places by height uses them; the leg spots centre on the leg. Rule: a new place on the body is measured
 on the mesh, and checked on a render, before anything is painted there.
 
+## C-19: An overlay window, ported from Silhouette's picker (owner, 2026-10-04)
+
+The owner asked for Silhouette's picker window (S-79) in Complexion, and chose (poll 2026-10-04):
+- **target:** NPCs AND the player ("Them" = the NPC under the crosshair, "Me" = the player -- the player is never
+  randomised, so this is how they give themselves overlays);
+- **contents:** every tagged, usable overlay -- Complexion's own and the installed packs' -- by category, with search;
+- **preview:** live on the target (the camera frames them; Cancel undoes everything) AND thumbnail pictures now.
+Built as Silhouette's is (its S-79 lessons carried over): an ActionScript 3 SWF compiled by Flex, opened by F4SE's
+custom-menu API from Papyrus, the panel and Bridge talking through UI.Invoke and external events; native camera and
+crosshair from the plugin. What differs: multi-select (toggle overlays on and off, several per category) instead of
+one preset, and a hand-picked look is the NPC's decision from then on (never re-rolled, C-4) until rolled again.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

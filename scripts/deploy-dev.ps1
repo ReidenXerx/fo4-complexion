@@ -38,10 +38,14 @@ $files = [ordered]@{
     'Complexion.esp'                              = 'data\Complexion.esp'
     'MCM\Config\Complexion\config.json'           = 'data\MCM\Config\Complexion\config.json'
     'MCM\Config\Complexion\settings.ini'          = 'data\MCM\Config\Complexion\settings.ini'
+    'MCM\Config\Complexion\keybinds.json'         = 'data\MCM\Config\Complexion\keybinds.json'
+    # C-19: the overlay window (scripts\build-interface.ps1) and the index of its pictures (tools\paint\thumbs.py)
+    'Interface\ComplexionMenu.swf'                 = 'build\interface\ComplexionMenu.swf'
+    'F4SE\Plugins\Complexion\thumbs.json'         = 'data\F4SE\Plugins\Complexion\thumbs.json'
 }
 
 # Complexion's own overlays (tools\paint\make_marks.py): every file under these folders, as it is.
-foreach ($tree in 'Textures\Overlays\Complexion', 'Materials\Overlays\Complexion', 'F4SE\Plugins\F4EE\Overlays\Complexion.esp', 'F4SE\Plugins\RobCo_Patcher\race') {
+foreach ($tree in 'Textures\Overlays\Complexion', 'Textures\Complexion', 'Materials\Overlays\Complexion', 'F4SE\Plugins\F4EE\Overlays\Complexion.esp', 'F4SE\Plugins\RobCo_Patcher\race') {
     $dir = Join-Path $root "data\$tree"
     if (-not (Test-Path $dir)) { throw "missing data\$tree - run python tools\paint\make_marks.py" }
     Get-ChildItem $dir -File -Recurse | ForEach-Object {

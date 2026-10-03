@@ -21,6 +21,10 @@ param(
     # real base does, and the bridge's custom events stop compiling. Kept outside the public repo, as the
     # base is.
     [string] $F4se     = 'D:\F4CustomMods\PapyrusBase\Source\F4SE',
+    # F4SE's Actor.psc (the game's Data\Scripts\Source copy): Actor.GetWornItem, for undressing whoever the overlay
+    # window shows (C-19). Searched before the base, whose Actor is the decompiled vanilla one. Outside the public
+    # repo for the same reason the base is: it is Bethesda's Actor source with F4SE's additions.
+    [string] $F4seActor = 'D:\F4CustomMods\PapyrusBase\Source\ComplexionF4SE',
     [string] $Compiler = 'D:\GOGGames\Fallout 4 GOTY\Papyrus Compiler\PapyrusCompiler.exe'
 )
 
@@ -36,6 +40,9 @@ if (-not (Test-Path $Compiler)) {
 if (-not (Test-Path (Join-Path $Base 'Institute_Papyrus_Flags.flg'))) {
     throw "No Institute_Papyrus_Flags.flg in $Base."
 }
+if (-not (Test-Path (Join-Path $F4seActor 'Actor.psc'))) {
+    throw "No Actor.psc in $F4seActor - copy F4SE's from the game's Data\Scripts\Source."
+}
 if (-not (Test-Path (Join-Path $F4se 'ScriptObject.psc'))) {
     throw "No ScriptObject.psc in $F4se - copy the base's and append RegisterForExternalEvent and UnregisterForExternalEvent from F4SE's (the game's Data\Scripts\Source)."
 }
@@ -47,7 +54,7 @@ Write-Host "Compiling $($scripts.Count) script(s) against $Base"
 # Batch mode, not file by file: a namespaced script (Complexion:Bridge) compiled by
 # path fails with "filename does not match script name". The namespace has to come
 # from the import paths, which -all does and a single file path cannot.
-$output = & $Compiler $sources -all -f="Institute_Papyrus_Flags.flg" -i="$F4se;$Base;$sources;$stubs" -o="$out" 2>&1
+$output = & $Compiler $sources -all -f="Institute_Papyrus_Flags.flg" -i="$F4seActor;$F4se;$Base;$sources;$stubs" -o="$out" 2>&1
 
 # Print everything the compiler said: a filtered view once hid the only line that
 # explained a failure.

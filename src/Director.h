@@ -31,6 +31,7 @@ namespace CX
 		std::string       persona;  // Rapport's, as the bridge read it (C-14); "" = none
 		std::vector<Pick> picks;
 		bool              applied{ false };  // the bridge confirmed every entry landed
+		bool              manual{ false };   // chosen by hand in the overlay window (C-19): kept as it is
 	};
 
 	struct Order
@@ -39,6 +40,7 @@ namespace CX
 		std::uint32_t     ref{ 0 };
 		bool              female{ false };
 		std::vector<Pick> picks;
+		bool              window{ false };  // the overlay window's preview: done, it changes no record
 	};
 
 	class Director
@@ -94,6 +96,28 @@ namespace CX
 		[[nodiscard]] std::uint64_t Salt() const;
 		void SetSalt(std::uint64_t a_salt);
 
+		// ---- the overlay window (C-19): one session at a time, on one actor ----
+		// Where each of Complexion's own templates has its picture: key -> (atlas, cell), and the build of the atlases.
+		void SetThumbs(std::unordered_map<std::string, std::pair<int, int>> a_cells, std::string a_build);
+		[[nodiscard]] std::string ThumbBuild() const;
+		// Opens a session on a_ref (an NPC, or the player): what Complexion put on them is the draft. "" or why not.
+		[[nodiscard]] std::string WindowBegin(std::uint32_t a_ref, bool a_female);
+		void WindowEnd();
+		// One page of a category ("on", "all", "skin", "hair", "scars", "tattoos", "rough", "paint", "nails"),
+		// searched: "<total>|<entry>|<entry>...", an entry "key\tlabel\tkind\ton\tatlas\tcell" (atlas -1: no picture).
+		[[nodiscard]] std::string WindowPage(std::string_view a_category, std::string_view a_search, int a_page, int a_per) const;
+		// Puts a template on the draft or takes it off: whether it is on now.
+		bool WindowToggle(std::string_view a_key);
+		[[nodiscard]] std::size_t WindowCount() const;
+		void WindowClear();
+		// A new random look, as Complexion would roll one for them, into the draft.
+		void WindowRoll();
+		// An order carrying the draft (Preview) or what they had before (Restore), for the bridge to put on now.
+		[[nodiscard]] std::uint32_t WindowPreview();
+		[[nodiscard]] std::uint32_t WindowRestore();
+		// Apply: the draft is their look from now on, kept until rolled again.
+		void WindowApply();
+
 	private:
 		void Log(std::string a_line);
 		[[nodiscard]] std::uint64_t SeedFor(std::uint32_t a_ref, std::uint32_t a_base) const;
@@ -109,5 +133,22 @@ namespace CX
 		std::unordered_map<std::uint32_t, Order>           _inflight;  // order id -> order
 		std::uint32_t                                      _nextId{ 1 };
 		std::vector<std::string>                           _log;
+
+		struct Window
+		{
+			bool                  active{ false };
+			std::uint32_t         ref{ 0 };
+			bool                  female{ false };
+			std::optional<Record> before;  // their record when the window opened, if any
+			std::vector<Pick>     draft;
+			std::uint32_t         rolls{ 0 };
+		};
+		Window                                                  _window;
+		std::unordered_map<std::string, std::pair<int, int>>    _thumbs;
+		std::string                                             _thumbBuild;
+
+		[[nodiscard]] const Template* Find(std::string_view a_key) const;
+		[[nodiscard]] std::vector<Pick> Repriority(std::vector<Pick> a_picks) const;
+		[[nodiscard]] std::uint32_t WindowOrder(std::vector<Pick> a_picks);
 	};
 }

@@ -48,3 +48,29 @@ String Function OrderGroup(Int aiOrder) Native Global
 Bool Function OrderRegroup(Int aiOrder, String asGroup) Native Global
 ; Their Rapport persona (C-14): a look not yet on them is composed again with it. True when it changed.
 Bool Function OrderPersona(Int aiOrder, String asPersona) Native Global
+
+; ---- C-19: the overlay window (ported from Silhouette's picker, S-79) ----
+; The NPC under the crosshair, or aimed at within the last afRecentSeconds; 0 for none.
+Int Function CrosshairActor(Float afRecentSeconds) Native Global
+; The game's free camera framing someone; "" when there, "wait" while it comes on (ask CameraStep again), else why not.
+String Function CameraFrame(Float afX, Float afY, Float afZ, Float afAngle, Float afHeight) Native Global
+String Function CameraRestore() Native Global
+String Function CameraStep() Native Global
+; A session on one actor: what Complexion put on them is the draft. "" or why not.
+String Function WindowBegin(Int aiActor, Bool abFemale) Native Global
+Function WindowEnd() Native Global
+; The build of the picture atlases (tools/paint/thumbs.py), "" without pictures.
+String Function WindowBuild() Native Global
+; One page: "<total>|<entry>|...", an entry "key<TAB>label<TAB>kind<TAB>on<TAB>atlas<TAB>cell".
+String Function WindowPage(String asCategory, String asSearch, Int aiPage, Int aiPer) Native Global
+; On the draft or off it: whether it is on now.
+Bool Function WindowToggle(String asKey) Native Global
+Int Function WindowCount() Native Global
+Function WindowClear() Native Global
+Function WindowRoll() Native Global
+; An order the bridge puts on at once: the draft (Preview), or what they had (Restore). Ours are replaced even
+; when it holds none.
+Int Function WindowPreview() Native Global
+Int Function WindowRestore() Native Global
+; The draft is their look from now on, until rolled again.
+Function WindowApply() Native Global

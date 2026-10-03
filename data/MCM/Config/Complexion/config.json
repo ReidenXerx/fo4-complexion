@@ -34,6 +34,42 @@
         },
         {
           "type": "section",
+          "text": "Overlay window"
+        },
+        {
+          "type": "text",
+          "text": "Choose overlays by hand: aim at someone (or no one, for yourself) and open the window. They stand still, undressed, framed by the camera; click an overlay to put it on or take it off, live. Apply keeps it - their look from then on; Cancel puts back what they had. Pictures for Complexion's own overlays; other packs' show by name."
+        },
+        {
+          "type": "hotkey",
+          "id": "window",
+          "text": "Open the window on the NPC in your sights, or on you",
+          "help": "Opens the overlay window on the NPC you aim at (or aimed at in the last seconds), or on you. Pressed again while it is open, it closes it as Cancel."
+        },
+        {
+          "type": "button",
+          "text": "Open the window on the NPC I aimed at",
+          "help": "Opens the overlay window on whoever was in your sights in the half minute before you opened this menu, when you close it.",
+          "action": {
+            "type": "CallFunction",
+            "form": "Complexion.esp|800",
+            "function": "MenuOpenWindow",
+            "params": []
+          }
+        },
+        {
+          "type": "button",
+          "text": "Open the window on me",
+          "help": "Opens the overlay window on you, when you close this menu. Complexion never gives you a random look: this is how you choose yours.",
+          "action": {
+            "type": "CallFunction",
+            "form": "Complexion.esp|800",
+            "function": "MenuOpenWindowMe",
+            "params": []
+          }
+        },
+        {
+          "type": "section",
           "text": "Everyone"
         },
         {

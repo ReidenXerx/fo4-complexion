@@ -4,8 +4,9 @@ namespace CX
 {
 	namespace
 	{
-		// 2: a record carries the persona (C-14). Version 1 records load with none.
-		constexpr std::uint32_t kSaveVersion = 2;
+		// 2: a record carries the persona (C-14). 3: and whether it was chosen by hand (C-19). Older records load
+		// with none.
+		constexpr std::uint32_t kSaveVersion = 3;
 
 		std::uint64_t Mix(std::uint64_t a_z)
 		{
@@ -128,8 +129,18 @@ namespace CX
 	void Director::Seen(const Facts& a_facts)
 	{
 		std::scoped_lock l{ _lock };
-		if (!_enabled || !a_facts.ref || !a_facts.skip.empty()) {
+		if (!_enabled || !a_facts.ref) {
 			return;
+		}
+		if (!a_facts.skip.empty()) {
+			// Never decided for -- but a look the player chose for themselves in the window is put back (C-19).
+			const auto mine = _records.find(a_facts.ref);
+			if (a_facts.skip != "player" || mine == _records.end() || !mine->second.manual) {
+				return;
+			}
+		}
+		if (_window.active && _window.ref == a_facts.ref) {
+			return;  // the window has them
 		}
 		auto it = _records.find(a_facts.ref);
 		if (it == _records.end()) {
@@ -205,7 +216,11 @@ namespace CX
 			return;
 		}
 		const auto ref = it->second.ref;
+		const bool window = it->second.window;
 		_inflight.erase(it);
+		if (window) {
+			return;  // a preview: the record changes only on Apply
+		}
 		if (const auto r = _records.find(ref); r != _records.end()) {
 			r->second.applied = a_landed;
 			if (!a_landed) {
@@ -308,6 +323,7 @@ namespace CX
 		std::scoped_lock l{ _lock };
 		_queue.clear();
 		_inflight.clear();
+		_window = {};
 	}
 
 	std::size_t Director::RecordCount() const
@@ -346,6 +362,7 @@ namespace CX
 			w.U32(r.base);
 			w.Str(r.group);
 			w.Str(r.persona);
+			w.U8(r.manual ? 1 : 0);
 			w.U32(static_cast<std::uint32_t>(r.picks.size()));
 			for (const auto& p : r.picks) {
 				w.Str(p.key);
@@ -370,12 +387,13 @@ namespace CX
 		std::size_t dropped = 0;
 		for (std::uint32_t i = 0; i < count; ++i) {
 			std::uint32_t ref = 0, picks = 0;
-			std::uint8_t  female = 0, applied = 0;
+			std::uint8_t  female = 0, applied = 0, manual = 0;
 			Record        rec;
 			if (!r.U32(ref) || !r.U8(female) || !r.U8(applied) || !r.U32(rec.base) || !r.Str(rec.group) ||
-				(version >= 2 && !r.Str(rec.persona)) || !r.U32(picks) || picks > 64) {
+				(version >= 2 && !r.Str(rec.persona)) || (version >= 3 && !r.U8(manual)) || !r.U32(picks) || picks > 64) {
 				return false;
 			}
+			rec.manual = manual != 0;
 			rec.female = female != 0;
 			rec.applied = applied != 0;
 			for (std::uint32_t k = 0; k < picks; ++k) {
@@ -405,6 +423,7 @@ namespace CX
 		_records.clear();
 		_queue.clear();
 		_inflight.clear();
+		_window = {};
 		_salt = 0x436F6D706C786E31ull;
 	}
 
@@ -424,6 +443,261 @@ namespace CX
 	{
 		std::scoped_lock l{ _lock };
 		_salt = a_salt;
+	}
+
+	// ---- the overlay window (C-19) ----
+
+	namespace
+	{
+		// The window's categories: which tag kinds each shows.
+		const std::map<std::string, std::vector<std::string>, std::less<>>& Categories()
+		{
+			static const std::map<std::string, std::vector<std::string>, std::less<>> c{
+				{ "skin", { "skin", "mole", "freckles", "birthmark", "acne", "nipple", "tan" } },
+				{ "hair", { "pubic_hair", "body_hair" } },
+				{ "scars", { "scar", "wound", "burn" } },
+				{ "tattoos", { "tattoo", "brand" } },
+				{ "rough", { "bruise", "marks", "blood", "dirt" } },
+				{ "paint", { "makeup" } },
+				{ "nails", { "nails" } },
+			};
+			return c;
+		}
+
+		std::string Lower(std::string_view a_s)
+		{
+			std::string out(a_s);
+			std::ranges::transform(out, out.begin(), [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+			return out;
+		}
+
+		// A label for a card: the tag's note, capitalised; the template id without one. Tabs and bars, which
+		// separate fields and entries, never get into one.
+		std::string Label(const Template& a_t)
+		{
+			std::string out = a_t.note.empty() ? a_t.id : a_t.note;
+			for (auto& c : out) {
+				if (c == '\t' || c == '|') {
+					c = ' ';
+				}
+			}
+			if (!out.empty()) {
+				out[0] = static_cast<char>(std::toupper(static_cast<unsigned char>(out[0])));
+			}
+			return out;
+		}
+
+		bool IEq(std::string_view a, std::string_view b)
+		{
+			return a.size() == b.size() && std::ranges::equal(a, b, [](char x, char y) {
+				return std::tolower(static_cast<unsigned char>(x)) == std::tolower(static_cast<unsigned char>(y));
+			});
+		}
+
+		bool Ours(const Template& a_t)
+		{
+			return a_t.id.starts_with("Complexion_");
+		}
+	}
+
+	const Template* Director::Find(std::string_view a_key) const
+	{
+		const auto it = std::ranges::lower_bound(_catalog, a_key, {}, &Template::key);
+		if (it != _catalog.end() && it->key == a_key) {
+			return &*it;
+		}
+		// Papyrus hands strings back in whichever case was interned first (a key through the window's events).
+		const auto found = std::ranges::find_if(_catalog, [&](const Template& t) { return IEq(t.key, a_key); });
+		return found != _catalog.end() ? &*found : nullptr;
+	}
+
+	// The window's picks in their layers: skin under hair under tattoos (C-6), the later of a layer above.
+	std::vector<Pick> Director::Repriority(std::vector<Pick> a_picks) const
+	{
+		for (std::size_t i = 0; i < a_picks.size(); ++i) {
+			a_picks[i].priority = LayerOf(a_picks[i].kind) + static_cast<int>(i);
+		}
+		return a_picks;
+	}
+
+	void Director::SetThumbs(std::unordered_map<std::string, std::pair<int, int>> a_cells, std::string a_build)
+	{
+		std::scoped_lock l{ _lock };
+		_thumbs = std::move(a_cells);
+		_thumbBuild = std::move(a_build);
+	}
+
+	std::string Director::ThumbBuild() const
+	{
+		std::scoped_lock l{ _lock };
+		return _thumbBuild;
+	}
+
+	std::string Director::WindowBegin(std::uint32_t a_ref, bool a_female)
+	{
+		std::scoped_lock l{ _lock };
+		if (!a_ref) {
+			return "nobody to show";
+		}
+		if (_catalog.empty()) {
+			return "Complexion's data did not load (Complexion.log says why)";
+		}
+		_window = {};
+		_window.active = true;
+		_window.ref = a_ref;
+		_window.female = a_female;
+		if (const auto it = _records.find(a_ref); it != _records.end()) {
+			_window.before = it->second;
+			_window.draft = it->second.picks;
+		}
+		// Whatever the poll had queued for them waits: the window has them now.
+		std::erase(_queue, a_ref);
+		return {};
+	}
+
+	void Director::WindowEnd()
+	{
+		std::scoped_lock l{ _lock };
+		_window = {};
+	}
+
+	std::string Director::WindowPage(std::string_view a_category, std::string_view a_search, int a_page, int a_per) const
+	{
+		std::scoped_lock l{ _lock };
+		if (!_window.active) {
+			return "0";
+		}
+		const auto  search = Lower(a_search);
+		const auto& cats = Categories();
+		const auto  cat = cats.find(a_category);
+		const bool  onOnly = a_category == "on";
+		std::vector<const Template*> shown;
+		const auto on = [&](const Template& t) {
+			return std::ranges::any_of(_window.draft, [&](const Pick& p) { return p.key == t.key; });
+		};
+		const auto passes = [&](const Template& t) {
+			if (t.female != _window.female || (!_adult && IsAdult(t))) {
+				return false;
+			}
+			if (onOnly ? !on(t) : (cat != cats.end() && std::ranges::find(cat->second, t.kind) == cat->second.end())) {
+				return false;
+			}
+			return search.empty() || Lower(Label(t)).find(search) != std::string::npos || Lower(t.id).find(search) != std::string::npos;
+		};
+		for (const auto& t : _catalog) {
+			if (passes(t)) {
+				shown.push_back(&t);
+			}
+		}
+		// Complexion's own first (they have pictures), each part in the catalog's order.
+		std::ranges::stable_partition(shown, [](const Template* t) { return Ours(*t); });
+		const int per = std::clamp(a_per, 1, 60);
+		const int first = std::max(0, a_page) * per;
+		std::string out = std::to_string(shown.size());
+		for (int i = first; i < first + per && i < static_cast<int>(shown.size()); ++i) {
+			const auto& t = *shown[static_cast<std::size_t>(i)];
+			int  atlas = -1, cell = -1;
+			if (const auto th = _thumbs.find(t.key); th != _thumbs.end()) {
+				atlas = th->second.first;
+				cell = th->second.second;
+			}
+			out += std::format("|{}\t{}\t{}\t{}\t{}\t{}", t.key, Label(t), t.kind, on(t) ? 1 : 0, atlas, cell);
+		}
+		return out;
+	}
+
+	bool Director::WindowToggle(std::string_view a_key)
+	{
+		std::scoped_lock l{ _lock };
+		if (!_window.active) {
+			return false;
+		}
+		if (const auto n = std::erase_if(_window.draft, [&](const Pick& p) { return IEq(p.key, a_key); }); n > 0) {
+			return false;
+		}
+		const auto* t = Find(a_key);
+		if (!t || t->female != _window.female || _window.draft.size() >= 24) {
+			return false;
+		}
+		_window.draft.push_back(Pick{ t->key, t->id, t->kind, 0 });
+		return true;
+	}
+
+	std::size_t Director::WindowCount() const
+	{
+		std::scoped_lock l{ _lock };
+		return _window.active ? _window.draft.size() : 0;
+	}
+
+	void Director::WindowClear()
+	{
+		std::scoped_lock l{ _lock };
+		_window.draft.clear();
+	}
+
+	void Director::WindowRoll()
+	{
+		std::scoped_lock l{ _lock };
+		if (!_window.active || _profiles.groups.empty()) {
+			return;
+		}
+		const auto* group = _window.before ? _profiles.Find(_window.before->group) : nullptr;
+		if (!group) {
+			group = _profiles.Find(_profiles.fallback);
+		}
+		if (!group) {
+			return;
+		}
+		const std::uint32_t base = _window.before ? _window.before->base : 0;
+		const auto          persona = _window.before ? _window.before->persona : std::string{};
+		_window.draft = Compose(_profiles, _catalog, _window.female, *group, Mix(SeedFor(_window.ref, base) + ++_window.rolls), _adult, persona);
+	}
+
+	std::uint32_t Director::WindowOrder(std::vector<Pick> a_picks)
+	{
+		// Every order on them before is over: what the window shows is the latest.
+		std::erase_if(_inflight, [&](const auto& kv) { return kv.second.ref == _window.ref; });
+		const auto id = _nextId++;
+		_inflight.emplace(id, Order{ id, _window.ref, _window.female, Repriority(std::move(a_picks)), true });
+		return id;
+	}
+
+	std::uint32_t Director::WindowPreview()
+	{
+		std::scoped_lock l{ _lock };
+		return _window.active ? WindowOrder(_window.draft) : 0;
+	}
+
+	std::uint32_t Director::WindowRestore()
+	{
+		std::scoped_lock l{ _lock };
+		if (!_window.active) {
+			return 0;
+		}
+		return WindowOrder(_window.before ? _window.before->picks : std::vector<Pick>{});
+	}
+
+	void Director::WindowApply()
+	{
+		std::scoped_lock l{ _lock };
+		if (!_window.active) {
+			return;
+		}
+		Record r = _window.before.value_or(Record{});
+		r.female = _window.female;
+		if (r.group.empty()) {
+			r.group = "hand-picked";
+		}
+		r.picks = Repriority(_window.draft);
+		r.applied = true;  // the window's last preview put exactly these on them
+		r.manual = true;
+		std::string list;
+		for (const auto& p : r.picks) {
+			list += (list.empty() ? "" : ", ") + p.id;
+		}
+		Log(std::format("{:08X}: chosen in the window: {}", _window.ref, list.empty() ? "nothing" : list));
+		_records[_window.ref] = std::move(r);
+		_window.before = _records[_window.ref];
 	}
 
 	void Director::Log(std::string a_line)

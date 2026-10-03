@@ -35,13 +35,31 @@ namespace CX::Sinks
 			}
 		}
 
-		Tap<RE::TESObjectLoadedEvent> g_loaded{ OnLoaded };
-		std::atomic<bool>             g_loadedOn{ false };
-		std::atomic<bool>             g_loadedWarned{ false };
+		// C-19: the crosshair, for the overlay window -- two handles copied, nothing looked up (the main thread does
+		// that when the window asks). Ported from Silhouette (S-79).
+		void OnViewCaster(const Events::ViewCasterUpdateEvent& a_event)
+		{
+			Game::NoteCrosshair(a_event.active ? a_event.activatePickRef : 0);
+		}
+
+		Tap<RE::TESObjectLoadedEvent>      g_loaded{ OnLoaded };
+		Tap<Events::ViewCasterUpdateEvent> g_pick{ OnViewCaster };
+		std::atomic<bool>                  g_loadedOn{ false };
+		std::atomic<bool>                  g_loadedWarned{ false };
+		std::atomic<bool>                  g_pickOn{ false };
 	}
 
 	void Attach()
 	{
+		if (!g_pickOn.load()) {
+			if (const auto found = Events::FindGlobalSource("ViewCasterUpdateEvent"sv)) {
+				RE::BSTEventSource<Events::ViewCasterUpdateEvent>* source =
+					reinterpret_cast<RE::BSTGlobalEvent::EventSource<Events::ViewCasterUpdateEvent>*>(found);
+				source->RegisterSink(&g_pick);
+				g_pickOn.store(true);
+				logger::info("events: crosshair attached (the view caster's global source, {:X})", found);
+			}
+		}
 		// The header's getter faults on 1.10.163 (Silhouette, from F4MCP's log): the holder is scanned instead.
 		if (g_loadedOn.load()) {
 			return;
@@ -60,6 +78,6 @@ namespace CX::Sinks
 
 	std::string Status()
 	{
-		return std::format("loaded: {}", g_loadedOn.load() ? "yes" : "no");
+		return std::format("loaded: {}, crosshair: {}", g_loadedOn.load() ? "yes" : "no", g_pickOn.load() ? "yes" : "no");
 	}
 }

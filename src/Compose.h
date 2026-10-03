@@ -17,6 +17,7 @@ namespace CX
 		std::vector<std::string> style;
 		std::string              emblem;  // "" for none
 		bool                     adult{ false };
+		std::string              note;    // what it shows, in words (the tag's note): the overlay window's label
 	};
 
 	struct Group
@@ -85,6 +86,12 @@ namespace CX
 	// build/tags.json joined with what LooksMenu loaded: a_installed holds "f:<id>"/"m:<id>" keys, or is
 	// empty to take every tag (the tests). Only quality "ok", lore not "breaks"; sorted by key.
 	[[nodiscard]] std::vector<Template> ParseCatalog(const nlohmann::json& a_tags, const std::set<std::string>& a_installed);
+
+	// The priority layer of a kind (skin lowest, nails highest; all negative, C-6).
+	[[nodiscard]] int LayerOf(std::string_view a_kind);
+
+	// Explicit or degrading: what the MCM's adult switch turns off.
+	[[nodiscard]] bool IsAdult(const Template& a_t);
 
 	[[nodiscard]] std::vector<Pick> Compose(const Profiles& a_profiles, const std::vector<Template>& a_catalog, bool a_female,
 		const Group& a_group, std::uint64_t a_seed, bool a_adultAllowed, std::string_view a_persona = {});

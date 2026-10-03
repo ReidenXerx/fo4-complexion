@@ -1,5 +1,6 @@
 #include "Papyrus.h"
 
+#include "Camera.h"
 #include "Game.h"
 #include "Sinks.h"
 
@@ -10,7 +11,8 @@ namespace CX::Papyrus
 		constexpr auto kScript = "Complexion:DLL"sv;
 
 		// 1: the first bridge (orders of whole looks, Done/Gone, Configure, ResetAll, Unapply, Warning).
-		constexpr std::int32_t kProtocol = 1;
+		// 2: the overlay window (C-19): crosshair, camera, the window's session.
+		constexpr std::int32_t kProtocol = 2;
 
 		using Str = RE::BSFixedString;
 
@@ -146,6 +148,42 @@ namespace CX::Papyrus
 			return D().Regroup(Id(a_id), a_group.c_str() ? std::string_view{ a_group.c_str() } : std::string_view{});
 		}
 
+		// ---- the overlay window (C-19) ----
+
+		std::int32_t CrosshairActor(std::monostate, float a_recentSeconds) { return static_cast<std::int32_t>(Game::CrosshairActor(a_recentSeconds)); }
+
+		Str CameraFrame(std::monostate, float a_x, float a_y, float a_z, float a_angle, float a_height)
+		{
+			return Str{ Camera::Frame(a_x, a_y, a_z, a_angle, a_height) };
+		}
+		Str CameraRestore(std::monostate) { return Str{ Camera::Restore() }; }
+		Str CameraStep(std::monostate) { return Str{ Camera::Step() }; }
+
+		Str  WindowBegin(std::monostate, std::int32_t a_ref, bool a_female) { return Str{ D().WindowBegin(Id(a_ref), a_female) }; }
+		void WindowEnd(std::monostate) { D().WindowEnd(); }
+		Str  WindowBuild(std::monostate) { return Str{ D().ThumbBuild() }; }
+
+		Str WindowPage(std::monostate, Str a_category, Str a_search, std::int32_t a_page, std::int32_t a_per)
+		{
+			// Papyrus hands strings back in any case: the categories are lowercase.
+			std::string cat = a_category.c_str() ? a_category.c_str() : "";
+			std::ranges::transform(cat, cat.begin(), [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+			return Str{ D().WindowPage(cat, a_search.c_str() ? a_search.c_str() : "", a_page, a_per) };
+		}
+
+		bool WindowToggle(std::monostate, Str a_key)
+		{
+			// A key is "f:<id>", and it may come back in another case: the director finds it case-insensitively.
+			return D().WindowToggle(a_key.c_str() ? a_key.c_str() : "");
+		}
+
+		std::int32_t WindowCount(std::monostate) { return static_cast<std::int32_t>(D().WindowCount()); }
+		void         WindowClear(std::monostate) { D().WindowClear(); }
+		void         WindowRoll(std::monostate) { D().WindowRoll(); }
+		std::int32_t WindowPreview(std::monostate) { return static_cast<std::int32_t>(D().WindowPreview()); }
+		std::int32_t WindowRestore(std::monostate) { return static_cast<std::int32_t>(D().WindowRestore()); }
+		void         WindowApply(std::monostate) { D().WindowApply(); }
+
 		// Only functions that touch nothing but the director's state (its own lock) may be fast; anything that
 		// reads the game stays on the main thread. Set on the function object, as Silhouette does.
 		template <class F>
@@ -191,6 +229,21 @@ namespace CX::Papyrus
 		Bind(a_vm, "OrderGroup"sv, OrderGroup, fast);
 		Bind(a_vm, "OrderRegroup"sv, OrderRegroup, fast);
 		Bind(a_vm, "OrderPersona"sv, OrderPersona, fast);
+		Bind(a_vm, "CrosshairActor"sv, CrosshairActor, main);
+		Bind(a_vm, "CameraFrame"sv, CameraFrame, main);
+		Bind(a_vm, "CameraRestore"sv, CameraRestore, main);
+		Bind(a_vm, "CameraStep"sv, CameraStep, main);
+		Bind(a_vm, "WindowBegin"sv, WindowBegin, fast);
+		Bind(a_vm, "WindowEnd"sv, WindowEnd, fast);
+		Bind(a_vm, "WindowBuild"sv, WindowBuild, fast);
+		Bind(a_vm, "WindowPage"sv, WindowPage, fast);
+		Bind(a_vm, "WindowToggle"sv, WindowToggle, fast);
+		Bind(a_vm, "WindowCount"sv, WindowCount, fast);
+		Bind(a_vm, "WindowClear"sv, WindowClear, fast);
+		Bind(a_vm, "WindowRoll"sv, WindowRoll, fast);
+		Bind(a_vm, "WindowPreview"sv, WindowPreview, fast);
+		Bind(a_vm, "WindowRestore"sv, WindowRestore, fast);
+		Bind(a_vm, "WindowApply"sv, WindowApply, fast);
 		logger::info("papyrus: {} natives bound, protocol {}", kScript, kProtocol);
 		return true;
 	}

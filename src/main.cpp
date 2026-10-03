@@ -1,4 +1,5 @@
 #include "CoSave.h"
+#include "Camera.h"
 #include "Game.h"
 #include "Papyrus.h"
 #include "Sinks.h"
@@ -76,6 +77,7 @@ namespace
 			// Everything queued belongs to the save being left. FF-prefixed ids are allocated per
 			// save: the same number over there is somebody else.
 			CX::Game::ForgetInbox();
+			CX::Camera::Reset();
 			CX::Game::TheDirector().ForgetQueue();
 			break;
 		case F4SE::MessagingInterface::kNewGame:
@@ -83,6 +85,7 @@ namespace
 			// ones a newer Complexion left in the last save loaded. The watchdog is not armed: character
 			// creation runs a long while before the bridge's quest.
 			CX::Game::ForgetInbox();
+			CX::Camera::Reset();
 			CX::Game::TheDirector().ForgetQueue();
 			CX::CoSave::Revert();
 			CX::Sinks::Attach();

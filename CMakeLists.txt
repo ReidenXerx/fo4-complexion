@@ -36,6 +36,8 @@ endif()
 set(SOURCES
 	"src/PCH.h"
 	"src/Compat.h"
+	"src/Camera.h"
+	"src/Camera.cpp"
 	"src/Catalog.h"
 	"src/Catalog.cpp"
 	"src/Compose.h"
@@ -50,8 +52,11 @@ set(SOURCES
 	"src/Game.cpp"
 	"src/Papyrus.h"
 	"src/Papyrus.cpp"
+	"src/Shot.h"
+	"src/Shot.cpp"
 	"src/Sinks.h"
 	"src/Sinks.cpp"
+	"src/Crosshair.h"
 	"src/main.cpp"
 )
 

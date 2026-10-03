@@ -200,6 +200,49 @@ namespace
 		Check(e.Salt() == d.Salt(), "the salt survives the co-save");
 		Check(!e.Load(std::span(bytes).first(bytes.size() / 2), {}), "a truncated co-save is refused");
 
+		// The overlay window (C-19): a draft, previews that change no record, Cancel back to what they had, Apply kept.
+		{
+			const auto before = d.RecordFor(0x1234)->picks;
+			Check(d.WindowBegin(0x1234, true).empty() && d.WindowCount() == before.size(), "the window opens on what Complexion put on them");
+			const auto page = d.WindowPage("skin", "", 0, 15);
+			Check(page.find('|') != std::string::npos, "a page lists something");
+			const auto firstKey = page.substr(page.find('|') + 1, page.find('\t') - page.find('|') - 1);
+			const bool wasOn = std::ranges::any_of(before, [&](const CX::Pick& p) { return p.key == firstKey; });
+			std::string shouted = firstKey;
+			std::ranges::transform(shouted, shouted.begin(), [](unsigned char c) { return static_cast<char>(std::toupper(c)); });
+			Check(d.WindowToggle(shouted) == !wasOn, "a toggle flips it, whatever case Papyrus hands the key in");
+			const auto preview = d.WindowPreview();
+			Check(preview != 0 && d.GetOrder(preview)->window, "a preview is a window order");
+			d.Done(preview, true);
+			Check(d.RecordFor(0x1234)->picks.size() == before.size(), "a preview changes no record");
+			const auto restore = d.WindowRestore();
+			Check(d.GetOrder(restore)->picks.size() == before.size(), "Cancel puts back what they had");
+			d.Done(restore, true);
+			d.WindowClear();
+			Check(d.WindowCount() == 0, "Clear empties the draft");
+			d.WindowRoll();
+			const auto rolled = d.WindowCount();
+			d.WindowApply();
+			Check(d.RecordFor(0x1234)->manual && d.RecordFor(0x1234)->picks.size() == rolled, "Apply keeps the draft, chosen by hand");
+			d.WindowEnd();
+			CX::Director g;
+			Check(g.Load(d.Save(), {}) && g.RecordFor(0x1234)->manual, "a hand-chosen look survives the co-save");
+			// The player: never decided for, but a look they chose is put back when it is not on them.
+			const CX::Facts me{ 0x14, 0x7, true, "", "Player", "player" };
+			d.Seen(me);
+			Check(!d.RecordFor(0x14), "the player gets no random look");
+			Check(d.WindowBegin(0x14, true).empty(), "the window opens on the player");
+			const auto mine = d.WindowPage("skin", "", 0, 15);  // a roll may give a settler nothing: one by hand
+			d.WindowToggle(mine.substr(mine.find('|') + 1, mine.find('\t') - mine.find('|') - 1));
+			Check(d.WindowCount() == 1, "one overlay chosen for the player");
+			d.WindowApply();
+			d.WindowEnd();
+			d.Unapply();
+			d.Seen(me);
+			const auto again = d.NextOrder();
+			Check(again != 0 && d.GetOrder(again)->ref == 0x14, "the player's chosen look is put back after a clear");
+		}
+
 		// Reset: forgotten, and rolled with a new salt.
 		const auto salt = d.Salt();
 		d.ResetAll();
