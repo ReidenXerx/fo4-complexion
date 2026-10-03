@@ -9,8 +9,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey cloudy sleeve base"
+  "quality": "poor",
+  "note": "grey cloudy sleeve base -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "m:M_RLeg_Sleeve_Blue": {
   "kind": "skin",
@@ -22,8 +22,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey cloudy sleeve base"
+  "quality": "poor",
+  "note": "grey cloudy sleeve base -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "m:M_RLeg_Sleeve_Brown": {
   "kind": "skin",
@@ -35,8 +35,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey cloudy sleeve base"
+  "quality": "poor",
+  "note": "grey cloudy sleeve base -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "m:M_RLeg_Sleeve_Cyan": {
   "kind": "skin",
@@ -48,8 +48,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey cloudy sleeve base"
+  "quality": "poor",
+  "note": "grey cloudy sleeve base -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "m:M_RLeg_Sleeve_Green": {
   "kind": "skin",
@@ -61,8 +61,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey cloudy sleeve base"
+  "quality": "poor",
+  "note": "grey cloudy sleeve base -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "m:M_RLeg_Gunner_2": {
   "kind": "tattoo",

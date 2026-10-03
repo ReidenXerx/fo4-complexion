@@ -177,8 +177,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "noisy grey sleeve patch, black"
+  "quality": "poor",
+  "note": "noisy grey sleeve patch, black -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "f:F_LLeg_Sleeve_Blue": {
   "kind": "other",
@@ -190,8 +190,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "noisy grey sleeve patch, blue"
+  "quality": "poor",
+  "note": "noisy grey sleeve patch, blue -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "f:F_LLeg_Sleeve_Brown": {
   "kind": "other",
@@ -203,8 +203,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "noisy grey sleeve patch, brown"
+  "quality": "poor",
+  "note": "noisy grey sleeve patch, brown -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "f:F_LLeg_Sleeve_Cyan": {
   "kind": "other",
@@ -216,8 +216,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "noisy grey sleeve patch, cyan"
+  "quality": "poor",
+  "note": "noisy grey sleeve patch, cyan -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "f:F_LLeg_Sleeve_Green": {
   "kind": "other",
@@ -229,7 +229,7 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "noisy grey sleeve patch, green"
+  "quality": "poor",
+  "note": "noisy grey sleeve patch, green -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  }
 }

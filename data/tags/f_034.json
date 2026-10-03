@@ -114,8 +114,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey stippled sleeve patch"
+  "quality": "poor",
+  "note": "grey stippled sleeve patch -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "f:F_RArm_Sleeve_Blue": {
   "kind": "skin",
@@ -127,8 +127,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey stippled sleeve patch"
+  "quality": "poor",
+  "note": "grey stippled sleeve patch -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "f:F_RArm_Sleeve_Brown": {
   "kind": "skin",
@@ -140,8 +140,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey stippled sleeve patch"
+  "quality": "poor",
+  "note": "grey stippled sleeve patch -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "f:F_RArm_Sleeve_Cyan": {
   "kind": "skin",
@@ -153,8 +153,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey stippled sleeve patch"
+  "quality": "poor",
+  "note": "grey stippled sleeve patch -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "f:F_RArm_Sleeve_Green": {
   "kind": "skin",
@@ -166,8 +166,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey stippled sleeve patch"
+  "quality": "poor",
+  "note": "grey stippled sleeve patch -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "f:F_RArm_Sleeve_Purple": {
   "kind": "skin",
@@ -179,8 +179,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey stippled sleeve patch"
+  "quality": "poor",
+  "note": "grey stippled sleeve patch -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "f:F_RArm_Sleeve_Red": {
   "kind": "skin",
@@ -192,8 +192,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey stippled sleeve patch"
+  "quality": "poor",
+  "note": "grey stippled sleeve patch -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "f:F_RArm_Sleeve_White": {
   "kind": "skin",
@@ -205,8 +205,8 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey stippled sleeve patch"
+  "quality": "poor",
+  "note": "grey stippled sleeve patch -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  },
  "f:F_RArm_Sleeve_Yellow": {
   "kind": "skin",
@@ -218,7 +218,7 @@
   "emblem": null,
   "lore": "stretch",
   "adult": false,
-  "quality": "ok",
-  "note": "grey stippled sleeve patch"
+  "quality": "poor",
+  "note": "grey stippled sleeve patch -- a colour base for building sleeves, not a look: alone it draws a solid glowing block (in game 10-03, Becky Fallon)"
  }
 }
