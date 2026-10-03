@@ -28,10 +28,12 @@ from PIL import Image
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import decals  # noqa: E402
+import flash  # noqa: E402
 import hands  # noqa: E402
 import life  # noqa: E402
 import marks  # noqa: E402
 import realism  # noqa: E402
+import seams  # noqa: E402
 from body import UVMap  # noqa: E402
 from preview import sheet  # noqa: E402
 
@@ -311,6 +313,78 @@ for style, chipped, sexes in (('red', False, F), ('black', False, F), ('purple',
     note = 'dirty nails' if style == 'dirty' else f'{"chipped " if chipped else ""}{style} nails'
     add(f'Nails{style.title()}{"Chipped" if chipped else ""}', sexes, 'nails', (style, chipped), 1024, dict(NAILS, note=note), 1)
 HAND_PAINTERS = {'nails'}
+# Marks that belong AT a seam with the head or hands (seams.py): every other body mark fades out before them.
+SEAM_EXEMPT = {'collar', 'bindings', 'shackles'}
+
+# ---- C-17 (owner, 2026-10-03): our own art tattoos, traditional flash (flash.py), so every faction's tattoo styles
+# have our own art and the LoversLab packs are optional extra variety. Appended last: earlier seeds stay put.
+# (name, motif, motif args, spot, side, width, faded, crude, size, styles)
+FLASH = [
+    ('Rose', 'rose', (), 'forearm', 1, 5.0, False, 0.0, 'small', ['floral']),
+    ('RoseChest', 'rose', (), 'chest', -1, 5.0, False, 0.0, 'small', ['floral']),
+    ('RoseThigh', 'rose', (), 'thigh', 1, 6.5, True, 0.0, 'medium', ['floral']),
+    ('RoseYellow', 'rose', ((226, 178, 44),), 'shoulder', -1, 5.0, False, 0.0, 'small', ['floral']),
+    ('Skull', 'skull', (), 'forearm', -1, 4.5, False, 0.2, 'small', ['skull']),
+    ('SkullBack', 'skull', (), 'upper_back', 0, 9.0, True, 0.2, 'medium', ['skull']),
+    ('SkullBones', 'skull_bones', (), 'chest', 0, 8.0, False, 0.3, 'medium', ['skull', 'crude']),
+    ('SkullCalf', 'skull', ((170, 28, 32),), 'calf', 1, 5.0, False, 0.0, 'small', ['skull']),
+    ('Dagger', 'dagger', (), 'forearm', 1, 3.2, False, 0.0, 'small', ['crude', 'military']),
+    ('DaggerCalf', 'dagger', ((36, 72, 150),), 'calf', -1, 3.6, True, 0.0, 'small', ['crude']),
+    ('HeartMom', 'heart_banner', ('MOM',), 'upper_arm', 1, 5.5, True, 0.0, 'small', ['script', 'floral']),
+    ('HeartTrueLove', 'heart_banner', ('TRUE LOVE',), 'chest', 1, 6.0, False, 0.0, 'small', ['script', 'pinup']),
+    ('HeartNuka', 'heart_banner', ('NUKA',), 'hip', -1, 5.0, False, 0.0, 'small', ['script', 'cartoon']),
+    ('SwallowPair', 'swallow_pair', (), 'chest', 0, 12.0, False, 0.0, 'medium', ['animal']),
+    ('Swallow', 'swallow', (), 'hip', 1, 5.0, False, 0.0, 'small', ['animal']),
+    ('SwallowNeck', 'swallow', ((170, 28, 32),), 'neck_back', 0, 4.0, False, 0.0, 'tiny', ['animal']),
+    ('Anchor', 'anchor', (), 'forearm', -1, 4.0, True, 0.0, 'small', ['military']),
+    ('AnchorCalf', 'anchor', (), 'calf', -1, 4.5, False, 0.0, 'small', ['military']),
+    ('Snake', 'snake', (), 'forearm', 1, 5.5, False, 0.0, 'small', ['animal']),
+    ('SnakeThigh', 'snake', ((36, 72, 150),), 'thigh', -1, 7.0, False, 0.0, 'medium', ['animal']),
+    ('Web', 'web', (), 'upper_arm', 1, 5.0, True, 0.3, 'small', ['crude']),
+    ('WebShoulder', 'web', (), 'shoulder', -1, 6.0, False, 0.2, 'small', ['crude', 'geometric']),
+    ('Spider', 'spider', (), 'neck_back', 0, 3.0, False, 0.2, 'tiny', ['animal', 'crude']),
+    ('SpiderArm', 'spider', (), 'forearm', -1, 3.0, False, 0.0, 'tiny', ['animal']),
+    ('NauticalStar', 'nautical_star', (), 'shoulder', 1, 4.0, False, 0.0, 'small', ['geometric', 'military']),
+    ('NauticalStarHip', 'nautical_star', ((36, 72, 150),), 'hip', -1, 3.6, False, 0.0, 'tiny', ['geometric']),
+    ('Lightning', 'lightning', (), 'forearm', -1, 3.0, False, 0.0, 'tiny', ['geometric']),
+    ('MushroomCloud', 'mushroom_cloud', (), 'upper_back', 0, 9.0, False, 0.0, 'medium', ['religious', 'cartoon']),
+    ('MushroomCloudArm', 'mushroom_cloud', (), 'upper_arm', -1, 5.0, True, 0.2, 'small', ['religious', 'crude']),
+    ('Radiation', 'radiation', (), 'shoulder', -1, 4.5, False, 0.0, 'small', ['geometric', 'religious']),
+    ('NukaCap', 'nuka_cap', (), 'forearm', 1, 4.0, False, 0.0, 'small', ['cartoon']),
+    ('Cherries', 'cherries', (), 'hip', 1, 4.0, False, 0.0, 'small', ['pinup', 'cartoon']),
+    ('Eye', 'eye', (), 'upper_back', 0, 7.0, False, 0.0, 'medium', ['religious', 'geometric']),
+    ('Flames', 'flames', (), 'calf', -1, 7.0, False, 0.0, 'small', ['tribal', 'crude']),
+    ('FlamesArm', 'flames', (), 'forearm', 1, 6.0, False, 0.0, 'small', ['tribal']),
+    ('Wolf', 'wolf', (), 'upper_arm', -1, 5.5, False, 0.0, 'small', ['animal', 'geometric']),
+    ('WolfBack', 'wolf', (), 'upper_back', 0, 10.0, False, 0.0, 'medium', ['animal', 'geometric']),
+    ('Eagle', 'eagle', (), 'chest', 0, 11.0, False, 0.0, 'medium', ['animal', 'military']),
+    ('EagleBack', 'eagle', (), 'upper_back', 0, 14.0, True, 0.0, 'large', ['animal', 'military']),
+    ('Koi', 'koi', (), 'thigh', 1, 7.0, False, 0.0, 'medium', ['animal', 'floral']),
+    ('KoiCalf', 'koi', ((170, 28, 32),), 'calf', -1, 5.0, False, 0.0, 'small', ['animal']),
+    ('Butterfly', 'butterfly', (), 'lower_back', 0, 6.0, False, 0.0, 'small', ['animal', 'floral']),
+    ('ButterflyHip', 'butterfly', ((96, 46, 130),), 'hip', 1, 4.0, False, 0.0, 'small', ['animal', 'floral']),
+    ('Revolver', 'revolver', (), 'hip', -1, 6.0, False, 0.2, 'small', ['military', 'crude']),
+    ('Grenade', 'grenade', (), 'forearm', -1, 3.5, False, 0.0, 'tiny', ['military']),
+    ('Tombstone', 'tombstone', (), 'calf', 1, 4.5, True, 0.0, 'small', ['skull', 'script']),
+    ('EightBall', 'eight_ball', (), 'forearm', 1, 3.5, False, 0.0, 'tiny', ['gambling', 'cartoon']),
+    ('Compass', 'compass', (), 'forearm', -1, 4.5, False, 0.0, 'small', ['geometric']),
+    ('CompassBack', 'compass', (), 'upper_back', 0, 9.0, True, 0.0, 'medium', ['geometric']),
+]
+for name, motif, margs, spot, side, width, faded, crude, size, style in FLASH:
+    region = (['arm_r'] if side > 0 else ['arm_l']) if spot in ('forearm', 'upper_arm') else \
+        ((['leg_r'] if side > 0 else ['leg_l']) if spot in ('thigh', 'calf') else [SPOT_REGION[spot]])
+    add(f'Flash{name}', BOTH, 'flash', (motif, margs, spot, side, width, faded, crude), 2048,
+        dict(kind='tattoo', regions=region, size=size, style=style, emblem=None, lore='fits', adult=False, quality='ok',
+             note=f'flash: {motif.replace("_", " ")}'), 1)
+
+# ---- 2026-10-03 (owner: "especially important"): areolas centred on the measured nipple, in four tones and in
+# small and large; the earlier three keep their random size. Appended last: earlier seeds stay put.
+add('NipplesRose', F, 'nipples', ('rose', True), 2048, dict(ROUGH, kind='nipple', regions=['breasts'], size='small', note='rose areolas'), 1)
+for tone in ('pink', 'rose', 'brown', 'dark'):
+    for label, size in (('Small', 1.35), ('Large', 2.15)):
+        add(f'Nipples{tone.title()}{label}', F, 'nipples', (tone, True, size), 2048,
+            dict(ROUGH, kind='nipple', regions=['breasts'], size='small' if label == 'Small' else 'medium',
+                 note=f'{label.lower()} {tone} areolas'), 1)
 
 
 def design(spec, rng):
@@ -344,6 +418,10 @@ def paint(painter, m, rng, args):
     if painter == 'wrap':
         spec, where, side, height, ink, crude = args
         return decals.wrap(m, design(spec, rng), where, side, height=height, ink=ink, crude=crude, seed=int(rng.integers(1 << 30)))
+    if painter == 'flash':
+        motif, margs, spot, side, width, faded, crude = args
+        return flash.project_rgba(m, flash.MOTIFS[motif](*margs), spot, side, width=width, faded=faded, crude=crude,
+                                  rotate=float(rng.uniform(-0.15, 0.15)), seed=int(rng.integers(1 << 30)))
     if painter == 'scar_decal':
         spec, spot, side, width = args
         return life.scar_decal(m, rng, design(spec, rng), spot, side, width)
@@ -385,6 +463,38 @@ def multiplier(rgb, alpha):
     return Image.fromarray((tex * 255 + 0.5).astype(np.uint8), 'RGB')
 
 
+def bleed(img, covered, steps=16):
+    """Spreads the finished multiplier past the UV islands' edges: every texel off the islands, out to `steps`
+    texels, takes the mean of its already-filled neighbours. Without it the off-island texels are neutral, and
+    filtering and mipmaps blend that neutral into a dark mark wherever it meets an island's edge -- a pale line
+    through the pubic hair, in game 2026-10-03. Only off-island texels change, recomputed from the islands each
+    time, so running it twice gives the same texture."""
+    tex = np.asarray(img, dtype=np.float64).copy()
+    have = covered.copy()
+    for _ in range(steps):
+        acc = np.zeros_like(tex)
+        cnt = np.zeros(have.shape)
+        for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            sh = np.roll(have, (dy, dx), (0, 1))
+            acc += np.roll(tex, (dy, dx), (0, 1)) * sh[..., None]
+            cnt += sh
+        new = (~have) & (cnt > 0)
+        tex[new] = acc[new] / cnt[new][:, None]
+        have = have | new
+    return Image.fromarray(np.clip(tex + 0.5, 0, 255).astype(np.uint8), 'RGB')
+
+
+def encode(tool, png, tex_dir, tid):
+    """The PNG to BC1 with mipmaps, named as the material names it."""
+    r = subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'BC1_UNORM', '-m', '0', '-o', str(tex_dir), str(png)],
+                       capture_output=True, text=True)
+    made = next((f for f in tex_dir.iterdir() if f.name.lower() == f'{tid}_d.dds'.lower()), None)
+    if r.returncode or not made:
+        sys.exit(f'texconv failed on {png}: {r.stdout[-300:]} {r.stderr[-300:]}')
+    if made.name != f'{tid}_d.dds':
+        made.rename(tex_dir / f'{tid}_d.dds')  # texconv writes .DDS; the material names .dds
+
+
 def texconv():
     for t in TEXCONV:
         if t.exists():
@@ -408,6 +518,7 @@ def main():
     ap.add_argument('--only', default='')
     ap.add_argument('--missing', action='store_true', help='paint only templates with no texture yet')
     ap.add_argument('--shard', default='', help='k/N: paint only every Nth template from the k-th (run N at once)')
+    ap.add_argument('--rebleed', action='store_true', help='apply bleed() to the finished PNGs and re-encode (no repaint)')
     a = ap.parse_args()
     tex_dir = ROOT / 'data' / 'Textures' / 'Overlays' / 'Complexion'
     mat_dir = ROOT / 'data' / 'Materials' / 'Overlays' / 'Complexion'
@@ -417,7 +528,24 @@ def main():
         d.mkdir(parents=True, exist_ok=True)
     tool = texconv()
     maps = {}
-    entries, tags, previews = [], {}, {'female': [], 'male': []}
+    if a.rebleed:
+        for tid, sex, painter, args, size, tag in MARKS:
+            png = work / f'{tid}_d.png'
+            if a.only and not tid.startswith(a.only):
+                continue
+            if not png.exists():
+                print(f'  {tid}: no PNG, repaint it')
+                continue
+            on_hands = painter in HAND_PAINTERS
+            img = Image.open(png).convert('RGB')
+            key = (sex, img.size[0], on_hands)
+            if key not in maps:
+                maps[key] = hands.HandMap(a.data, sex, img.size[0]) if on_hands else UVMap(a.data, sex, img.size[0])
+            bleed(img, maps[key].covered).save(png)
+            encode(tool, png, tex_dir, tid)
+        print('re-bled')
+        return
+    entries, tags = [], {}
     for n, (tid, sex, painter, args, size, tag) in enumerate(MARKS):
         female = sex == 'female'
         on_hands = painter in HAND_PAINTERS
@@ -438,27 +566,19 @@ def main():
         m = maps[key]
         rng = np.random.default_rng(1000 + n)
         rgb, alpha = paint(painter, m, rng, args)
+        if not on_hands and painter not in SEAM_EXEMPT:
+            alpha = alpha * seams.seam_fade(m)  # no hard line against the head or hands (owner, 10-03)
         rgb = dilate(rgb, alpha, m.covered)
-        img = multiplier(rgb, alpha)
+        img = bleed(multiplier(rgb, alpha), m.covered)
         png = work / f'{tid}_d.png'
         img.save(png)
-        r = subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'BC1_UNORM', '-m', '0', '-o', str(tex_dir), str(png)],
-                           capture_output=True, text=True)
-        made = next((f for f in tex_dir.iterdir() if f.name.lower() == f'{tid}_d.dds'.lower()), None)
-        if r.returncode or not made:
-            sys.exit(f'texconv failed on {png}: {r.stdout[-300:]} {r.stderr[-300:]}')
-        if made.name != f'{tid}_d.dds':
-            made.rename(tex_dir / f'{tid}_d.dds')  # texconv writes .DDS; the material names .dds
+        encode(tool, png, tex_dir, tid)
         (mat_dir / f'{tid}.bgem').write_bytes(bgem(f'overlays/Complexion/{tid}_d.dds', (hands.NORMAL if on_hands else NORMAL)[sex]))
-        if not on_hands:
-            previews[sex].append((tid.replace('Complexion_', ''), rgb, alpha, m))
         print(f'  {tid}: {painter}{args} {size}px, {float((alpha > 0.05).mean()) * 100:.1f}% of the map')
+        del rgb, alpha, img  # the full-res arrays: kept for a preview sheet they grew ~130 MB per template (every OOM, 10-03)
     (json_dir / 'overlays.json').write_text(json.dumps(entries, indent=1), encoding='utf-8', newline='\n')
     (ROOT / 'data' / 'tags' / 'complexion.json').write_text(json.dumps(tags, indent=1), encoding='utf-8', newline='\n')
-    for sex, items in previews.items():
-        for size in sorted({it[3].size for it in items}):
-            group = [it[:3] for it in items if it[3].size == size]
-            print(sheet(maps[(sex, size, False)], group, ROOT / 'build' / f'marks_preview_{sex}_{size}.png', height=360))
+    # Review sheets come from the finished textures: tools/paint/review.py (and review_hands.py).
     print(f'{len(entries)} templates; textures in {tex_dir}')
 
 

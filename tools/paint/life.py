@@ -15,7 +15,7 @@ from PIL import Image, ImageDraw, ImageFilter
 
 import decals
 from decals import limb, limb_end, ring_coords
-from marks import Painter, blank, fbm, over
+from marks import Painter, blank, fbm, landmarks, over
 from realism import HAIR, hair
 
 FRESH_BRUISE = ((0.55, 0.12, 0.17), (0.38, 0.09, 0.22), (0.22, 0.06, 0.20))
@@ -46,7 +46,7 @@ def spot(P, mask, x, h, facing=0.0):
 
 def torso_width(P):
     torso = P.reg('torso')
-    return np.abs(P.p[..., 0][torso & (np.abs(P.h - 0.75) < 0.02)]).max()
+    return np.abs(P.p[..., 0][torso & (np.abs(P.h - 0.75) < 0.02)]).max()  # (kept: every x offset was tuned to it)
 
 
 def crotch_h(P):
@@ -244,15 +244,22 @@ def cigarette_burns(m, rng, healed=False):
 
 
 def _bite(P, a_dent, a_bruise, c, n, rng, size=1.0):
+    """One human bite: the upper and lower dental arches as two facing arcs of separate tooth marks -- the front
+    teeth short and straight, wider apart toward the sides -- with a gap where the jaws' corners were, and a suction
+    bruise filling the middle. (The first version was one even ring of dots: in review it read as a necklace.)"""
     t = _unit(np.cross(n, (0.0, 0.0, 1.0)) if abs(n[2]) < 0.9 else np.cross(n, (1.0, 0.0, 0.0)))
     ang = rng.uniform(-0.6, 0.6)
     t, b = t * np.cos(ang) + np.cross(n, t) * np.sin(ang), np.cross(n, t) * np.cos(ang) - t * np.sin(ang)
-    ax, bx = 1.55 * size, 1.05 * size
-    for lo, hi in ((0.25, np.pi - 0.25), (np.pi + 0.3, 2 * np.pi - 0.3)):
-        for th in np.linspace(lo, hi, 7):
-            q = c + t * np.cos(th) * ax + b * np.sin(th) * bx
-            P.blob_into(a_dent, q, n, 0.17 * size, gain=1.6, cap=0.9)
-    P.blob_into(a_bruise, c, n, 1.25 * size, gain=1.0, cap=0.7)
+    ax = 1.5 * size
+    for arch, bx, sign in (('upper', 0.95 * size, 1), ('lower', 0.80 * size, -1)):
+        for k, th in enumerate(np.linspace(0.42, np.pi - 0.42, 6)):
+            ctr = c + t * np.cos(th) * ax + b * np.sin(th) * bx * sign
+            radial = _unit(t * np.cos(th) * ax / ax + b * np.sin(th) * sign)
+            tang = _unit(np.cross(n, radial))
+            width = 0.30 * size if 1 <= k <= 4 else 0.22 * size     # incisors broad, canines narrow
+            mark, _ = segment(P, ctr, n, tang, width * 0.5, 0.075 * size, facing=0.2)
+            np.maximum(a_dent, mark * rng.uniform(0.75, 1.0), out=a_dent)
+    P.blob_into(a_bruise, c, n, 0.95 * size, gain=0.9, cap=0.55)
 
 
 def bites(m, rng, places=('shoulder',)):
@@ -265,14 +272,16 @@ def bites(m, rng, places=('shoulder',)):
     tw = torso_width(P)
     for place in places:
         side = 1 if rng.random() < 0.5 else -1
-        if place == 'breast':
-            c, n = spot(P, P.reg('torso'), side * 0.45 * tw, 0.765, 0.5)
+        L = landmarks(m)
+        if place == 'breast':  # the upper inner breast, off the areola
+            tip = L['nipples'][side]
+            c, n = spot(P, P.reg('torso'), tip[0] - side * 2.5, L['nipple'] + 0.03, 0.4)
         elif place == 'inner_thigh':
             c, n, _ = decals.anchor(m, 'inner_thigh', side)
         elif place == 'butt':
             c, n = spot(P, P.reg('torso', 'leg'), side * 0.45 * tw, ch + 0.06, -0.4)
-        elif place == 'neck':
-            c, n = spot(P, P.reg('torso', 'head'), side * 0.25 * tw, 0.87, 0.2)
+        elif place == 'neck':  # the side of the neck's base, clear of the seam's fade
+            c, n = spot(P, P.reg('torso', 'head'), side * 0.3 * tw, L['top'] - 0.035, 0.0)
         else:
             c, n, _ = decals.anchor(m, 'shoulder', side)
         _bite(P, dent, bruise, c, n, rng, rng.uniform(0.9, 1.1))
@@ -293,10 +302,11 @@ def hickeys(m, rng, places=('neck', 'chest')):
     for place in places:
         for _ in range(int(rng.integers(1, 3))):
             side = 1 if rng.random() < 0.5 else -1
+            L = landmarks(m)
             if place == 'neck':
-                c, n = spot(P, P.reg('torso', 'head'), side * rng.uniform(0.1, 0.35) * tw, rng.uniform(0.855, 0.88), 0.2)
-            elif place == 'chest':
-                c, n = spot(P, P.reg('torso'), side * rng.uniform(0.2, 0.6) * tw, rng.uniform(0.74, 0.82), 0.4)
+                c, n = spot(P, P.reg('torso', 'head'), side * rng.uniform(0.15, 0.4) * tw, L['top'] - rng.uniform(0.03, 0.045), 0.0)
+            elif place == 'chest':  # the upper chest and the tops of the breasts
+                c, n = spot(P, P.reg('torso'), side * rng.uniform(0.2, 0.6) * tw, rng.uniform(L['nipple'] + 0.02, L['chest']), 0.4)
             elif place == 'inner_thigh':
                 c, n, _ = decals.anchor(m, 'inner_thigh', side)
                 c = c + np.array((0.0, 0.0, rng.uniform(-1.5, 1.5)))
@@ -567,24 +577,43 @@ def tan_lines(m, rng, cut='tshirt'):
 
     if cut == 'tshirt':
         sleeve = soft((arm_out - 0.42) * 0.25) * P.reg('arm')
-        neck_v = soft((h - (0.86 - 0.05 * np.clip(1 - np.abs(x) / (0.35 * tw), 0, 1) * (n[..., 1] > 0))) * 1.0) * P.reg('torso', 'head')
+        L = landmarks(m)
+        neck_v = soft((h - (L['top'] - 0.035 - 0.04 * np.clip(1 - np.abs(x) / (0.35 * tw), 0, 1) * (n[..., 1] > 0))) * 1.0) * P.reg('torso', 'head')
         sun = np.maximum(sleeve, neck_v)
     elif cut == 'tank':
         strap = np.exp(-((np.abs(x) - 0.55 * tw) / (0.12 * tw)) ** 4)
-        neckline = 0.80 + 0.04 * (1 - strap)
-        sun = np.maximum(P.reg('arm') * 1.0, soft(h - neckline) * (1 - strap * (h < 0.9)) * P.reg('torso', 'head'))
+        L = landmarks(m)
+        neckline = L['nipple'] + 0.035 + 0.025 * (1 - strap)
+        sun = np.maximum(P.reg('arm') * 1.0, soft(h - neckline) * (1 - strap * (h < L['top'] + 0.01)) * P.reg('torso', 'head'))
     elif cut == 'bikini':
-        tips = []
-        for side in (1, -1):
-            half = P.reg('torso') & (x * side > 1.0) & (h > 0.68) & (h < 0.86)
-            idx = np.flatnonzero(half)
-            tips.append(P.p.reshape(-1, 3)[idx[np.argmax(P.p.reshape(-1, 3)[idx, 1])]])
+        L = landmarks(m)
+        tips = list(L['nipples'].values())
         top = np.zeros(m.covered.shape)
+        band_h = L['underbust'] + 0.01
+        apex_h = L['nipple'] + 0.05
+        for tip in tips:  # a triangle cup: wide along the band under the breast, narrowing to its apex above
+            frac = np.clip((apex_h - h) / (apex_h - band_h), 0, 1)
+            half_w = 0.6 + 3.6 * frac
+            cup = (h > band_h) & (h < apex_h) & (np.abs(x - tip[0]) < half_w) & (n[..., 1] > 0.1)
+            top = np.maximum(top, cup.astype(float))
+        # the band under the breasts, and a halter strap from each cup's apex up and in to the neck
+        straps = (np.abs(h - band_h) < 0.006) & P.reg('torso')
         for tip in tips:
-            d = np.sqrt(((P.p - tip) ** 2).sum(-1))
-            top = np.maximum(top, (d < 3.2) * (n[..., 1] > 0.2))
-        straps = (np.abs(h - 0.79) < 0.006) | ((np.abs(np.abs(x) - 0.3 * tw) < 0.3) & (h > 0.79) & (n[..., 1] > 0))
-        bottom = (h > ch - 0.03) & (h < ch + 0.035) & P.reg('torso') & ~((n[..., 1] > 0.3) & (np.abs(x) > 0.55 * tw))
+            t = np.clip((h - apex_h) / max(L['top'] - apex_h, 1e-6), 0, 1)
+            sx = tip[0] + (np.sign(tip[0]) * 0.18 * tw - tip[0]) * t
+            straps = straps | ((np.abs(x - sx) < 0.35) & (h > apex_h - 0.005) & (n[..., 1] > 0) & P.reg('torso', 'head'))
+        # the bottom: a front triangle down to the crotch, and at the back the seat of the buttocks
+        # the bottom: a front triangle from the hip line down to the crotch, the seat over the buttocks behind
+        # (their middle is at crotch + 0.075, decals' 'butt'), and the ties round the hips joining them
+        waist = ch + 0.06
+        front = (n[..., 1] > 0.0) & (h > ch - 0.035) & (h < waist) & \
+            (np.abs(x) < 0.12 * tw + np.clip((h - ch + 0.035) / (waist - ch + 0.035), 0, 1) * 0.68 * tw)
+        # the line rises toward the back: the hip line in front, the top of the buttocks behind
+        line_h = waist + 0.05 * np.clip(-n[..., 1], 0, 1)
+        seat = (n[..., 1] <= 0.0) & (h > ch - 0.01) & (h < line_h) & \
+            (np.abs(x) < 0.12 * tw + np.clip((h - ch + 0.01) / (waist + 0.05 - ch + 0.01), 0, 1) * 0.78 * tw)
+        ties = (np.abs(h - line_h + 0.005) < 0.006)
+        bottom = (front | seat | ties) & P.reg('torso', 'leg')
         cover = np.clip(top + straps + bottom, 0, 1)
         sun = (1 - cover) * P.cov
     else:  # shorts
@@ -600,10 +629,11 @@ def sunburn(m, rng):
     P = Painter(m)
     rgb, alpha = blank(m)
     seed = int(rng.integers(1 << 30))
-    up = np.clip((P.h - 0.72) / 0.08, 0, 1) * P.reg('torso', 'arm', 'head') * np.clip(P.n[..., 2] + 0.6, 0, 1)
+    L = landmarks(m)
+    up = np.clip((P.h - (L['nipple'] + 0.01)) / 0.05, 0, 1) * P.reg('torso', 'arm', 'head') * np.clip(P.n[..., 2] + 0.6, 0, 1)
     arms = P.reg('arm') * 0.6
     burn = np.clip(np.maximum(up, arms) * (0.7 + 0.5 * fbm(P.p, 0.4, seed, 3)), 0, 1)
-    peel = np.clip((fbm(P.p, 3.0, seed + 1, 3) - 0.68) * 7, 0, 1) * burn * (P.h > 0.78)
+    peel = np.clip((fbm(P.p, 3.0, seed + 1, 3) - 0.68) * 7, 0, 1) * burn * (P.h > L['nipple'] + 0.03)
     over(rgb, alpha, (0.86, 0.36, 0.30), np.clip(burn * 0.4, 0, 0.45))
     over(rgb, alpha, (0.97, 0.88, 0.82), np.clip(peel * 0.45, 0, 0.45))
     return rgb, alpha
@@ -629,7 +659,7 @@ def age_spots(m, rng):
     """Age spots: flat light-brown spots on the forearms, shoulders and upper chest."""
     P = Painter(m)
     rgb, alpha = blank(m)
-    w = np.where(P.reg('arm'), 1.0, 0.0) + np.where(P.reg('torso') & (P.h > 0.74), 0.6, 0.0)
+    w = np.where(P.reg('arm'), 1.0, 0.0) + np.where(P.reg('torso') & (P.h > landmarks(m)['nipple'] + 0.02), 0.6, 0.0)
     a = np.zeros(m.covered.shape)
     for c, n in P.pick_points(rng, w > 0, int(rng.integers(30, 80)), w):
         P.blob_into(a, c, n, rng.uniform(0.15, 0.45), gain=rng.uniform(0.8, 1.3), cap=0.55)
@@ -684,7 +714,8 @@ def surgery_scar(m, rng, which='appendix'):
         c, n = spot(P, P.reg('torso'), 0.0, ch + 0.03, 0.5)
         scar_line(P, pale, rim, c, n, np.array((1.0, 0.0, 0.0)), 4.8, 0.17)
     elif which == 'sternum':
-        c, n = spot(P, P.reg('torso'), 0.0, 0.78, 0.5)
+        L = landmarks(m)
+        c, n = spot(P, P.reg('torso'), 0.0, (L['nipple'] + L['chest']) / 2 - 0.01, 0.5)
         scar_line(P, pale, rim, c, n, np.array((0.0, 0.0, 1.0)), 6.0, 0.24, stitched=True)
     else:  # knee
         side = 1 if rng.random() < 0.5 else -1

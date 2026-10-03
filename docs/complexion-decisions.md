@@ -173,6 +173,40 @@ The owner chose all four proposed sets. All painted in 3D as C-9/C-13, multiplie
   each finger's last bone, the nail's facing measured from the female hands texture, where nails are drawn pale
   (tools/paint/hands.py). Polish colours, chipped polish, dirty nails.
 
+## C-16: Every mark fades out before the neck and wrist seams (owner, 2026-10-03)
+
+A body overlay covers only the body mesh, which stops at the neck and the wrists, where the head and hands meshes
+take over. Seen in game: sunburn over a man's torso and arms ended in a hard line against his pale head and hands.
+So every body template fades to nothing over the last ~3 units (4 cm) before those seams -- "cheaply fixes seams".
+The seams are the body shape's open edges (UV splits welded), measured: a loop at each wrist and the neck opening
+(tools/paint/seams.py); the female body's crotch opening is not a seam with another mesh and is left alone. Marks
+that belong AT a seam keep their edge: the collar's chafe and the rope and shackle marks.
+
+## C-17: Our own art tattoos -- traditional flash; the LoversLab packs become optional (owner, 2026-10-03)
+
+The owner: "we can even handle full replacement of all LoversLab dependencies with our own overlays", and chose
+"flash set, packs optional". The packs were the only source of art tattoos (animals, florals, skulls, pin-ups,
+cartoons), so without them those faction styles ran thin. Complexion now draws its own in American-traditional
+flash -- bold black outline, flat pigments, whip-shading -- the style a wasteland tattooist would ink, and the one
+that can be drawn as clean vector art (tools/paint/flash.py): roses, skulls, a skull and crossbones, daggers, a heart
+with a banner (MOM, TRUE LOVE, NUKA), swallows, an anchor, snakes, a spider and its web, the nautical star,
+lightning, the mushroom cloud, the radiation sign, a Nuka-Cola cap, cherries, an eye, flames, a geometric wolf, an
+eagle, a koi, a butterfly, a revolver, a grenade, a tombstone, an eight ball, a compass -- each at one or two classic
+spots, styled to match the faction tables. They carry colour (decals were single-ink), multiplied onto the skin.
+Photo-realistic pieces and pin-ups stay with the packs, which remain supported as optional variety; with our flash in
+place ROF no longer has to stay installed for its packs (C-11), the player's choice.
+
+## C-18: Body places come from measured landmarks, never assumed heights (owner review, 2026-10-03)
+
+Reviewing the breast overlays the owner called "especially important" showed the areolas off-centre (a woman's
+"most forward point" is the front of the breast, not the nipple) and the upper-body anchors at assumed heights: the
+"chest" at 0.80 (under the bust on CBBE, whose nipples are at 0.857), the "shoulder" on the side of the breast, the
+"nape" between the shoulder blades. tools/paint/marks.landmarks measures each body once -- the nipple tips (the vertex
+ring standing out most from its neighbourhood along the local normal), the crotch, the torso's top -- and derives the
+chest, upper back, nape, shoulder, underbust, navel, belly, lower back, hip and thigh from them. Every anchor and
+painter that places by height uses them; the leg spots centre on the leg. Rule: a new place on the body is measured
+on the mesh, and checked on a render, before anything is painted there.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

@@ -3419,6 +3419,814 @@
 "degrading"
 ]
 },
+"f:Complexion_FlashAnchorCalf_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: anchor",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_l"
+],
+"size": "small",
+"style": [
+"military"
+]
+},
+"f:Complexion_FlashAnchor_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: anchor",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"military"
+]
+},
+"f:Complexion_FlashButterflyHip_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: butterfly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pelvis"
+],
+"size": "small",
+"style": [
+"animal",
+"floral"
+]
+},
+"f:Complexion_FlashButterfly_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: butterfly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"lower_back"
+],
+"size": "small",
+"style": [
+"animal",
+"floral"
+]
+},
+"f:Complexion_FlashCherries_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: cherries",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pelvis"
+],
+"size": "small",
+"style": [
+"pinup",
+"cartoon"
+]
+},
+"f:Complexion_FlashCompassBack_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: compass",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"geometric"
+]
+},
+"f:Complexion_FlashCompass_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: compass",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"geometric"
+]
+},
+"f:Complexion_FlashDaggerCalf_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: dagger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_l"
+],
+"size": "small",
+"style": [
+"crude"
+]
+},
+"f:Complexion_FlashDagger_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: dagger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"crude",
+"military"
+]
+},
+"f:Complexion_FlashEagleBack_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: eagle",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "large",
+"style": [
+"animal",
+"military"
+]
+},
+"f:Complexion_FlashEagle_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: eagle",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": [
+"animal",
+"military"
+]
+},
+"f:Complexion_FlashEightBall_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: eight ball",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "tiny",
+"style": [
+"gambling",
+"cartoon"
+]
+},
+"f:Complexion_FlashEye_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: eye",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"religious",
+"geometric"
+]
+},
+"f:Complexion_FlashFlamesArm_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: flames",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"tribal"
+]
+},
+"f:Complexion_FlashFlames_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: flames",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_l"
+],
+"size": "small",
+"style": [
+"tribal",
+"crude"
+]
+},
+"f:Complexion_FlashGrenade_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: grenade",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "tiny",
+"style": [
+"military"
+]
+},
+"f:Complexion_FlashHeartMom_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: heart banner",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"script",
+"floral"
+]
+},
+"f:Complexion_FlashHeartNuka_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: heart banner",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pelvis"
+],
+"size": "small",
+"style": [
+"script",
+"cartoon"
+]
+},
+"f:Complexion_FlashHeartTrueLove_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: heart banner",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"script",
+"pinup"
+]
+},
+"f:Complexion_FlashKoiCalf_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: koi",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_l"
+],
+"size": "small",
+"style": [
+"animal"
+]
+},
+"f:Complexion_FlashKoi_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: koi",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_r"
+],
+"size": "medium",
+"style": [
+"animal",
+"floral"
+]
+},
+"f:Complexion_FlashLightning_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: lightning",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "tiny",
+"style": [
+"geometric"
+]
+},
+"f:Complexion_FlashMushroomCloudArm_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: mushroom cloud",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"religious",
+"crude"
+]
+},
+"f:Complexion_FlashMushroomCloud_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: mushroom cloud",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"religious",
+"cartoon"
+]
+},
+"f:Complexion_FlashNauticalStarHip_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: nautical star",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pelvis"
+],
+"size": "tiny",
+"style": [
+"geometric"
+]
+},
+"f:Complexion_FlashNauticalStar_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: nautical star",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"shoulders"
+],
+"size": "small",
+"style": [
+"geometric",
+"military"
+]
+},
+"f:Complexion_FlashNukaCap_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: nuka cap",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"cartoon"
+]
+},
+"f:Complexion_FlashRadiation_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: radiation",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"shoulders"
+],
+"size": "small",
+"style": [
+"geometric",
+"religious"
+]
+},
+"f:Complexion_FlashRevolver_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: revolver",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pelvis"
+],
+"size": "small",
+"style": [
+"military",
+"crude"
+]
+},
+"f:Complexion_FlashRoseChest_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: rose",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"floral"
+]
+},
+"f:Complexion_FlashRoseThigh_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: rose",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_r"
+],
+"size": "medium",
+"style": [
+"floral"
+]
+},
+"f:Complexion_FlashRoseYellow_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: rose",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"shoulders"
+],
+"size": "small",
+"style": [
+"floral"
+]
+},
+"f:Complexion_FlashRose_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: rose",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"floral"
+]
+},
+"f:Complexion_FlashSkullBack_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: skull",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"skull"
+]
+},
+"f:Complexion_FlashSkullBones_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: skull bones",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": [
+"skull",
+"crude"
+]
+},
+"f:Complexion_FlashSkullCalf_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: skull",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_r"
+],
+"size": "small",
+"style": [
+"skull"
+]
+},
+"f:Complexion_FlashSkull_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: skull",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"skull"
+]
+},
+"f:Complexion_FlashSnakeThigh_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: snake",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_l"
+],
+"size": "medium",
+"style": [
+"animal"
+]
+},
+"f:Complexion_FlashSnake_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: snake",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"animal"
+]
+},
+"f:Complexion_FlashSpiderArm_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: spider",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "tiny",
+"style": [
+"animal"
+]
+},
+"f:Complexion_FlashSpider_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: spider",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"neck"
+],
+"size": "tiny",
+"style": [
+"animal",
+"crude"
+]
+},
+"f:Complexion_FlashSwallowNeck_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: swallow",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"neck"
+],
+"size": "tiny",
+"style": [
+"animal"
+]
+},
+"f:Complexion_FlashSwallowPair_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: swallow pair",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": [
+"animal"
+]
+},
+"f:Complexion_FlashSwallow_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: swallow",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pelvis"
+],
+"size": "small",
+"style": [
+"animal"
+]
+},
+"f:Complexion_FlashTombstone_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: tombstone",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_r"
+],
+"size": "small",
+"style": [
+"skull",
+"script"
+]
+},
+"f:Complexion_FlashWebShoulder_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: web",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"shoulders"
+],
+"size": "small",
+"style": [
+"crude",
+"geometric"
+]
+},
+"f:Complexion_FlashWeb_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: web",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"crude"
+]
+},
+"f:Complexion_FlashWolfBack_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: wolf",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"animal",
+"geometric"
+]
+},
+"f:Complexion_FlashWolf_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: wolf",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"animal",
+"geometric"
+]
+},
 "f:Complexion_Freckles_F01": {
 "adult": false,
 "emblem": null,
@@ -3939,12 +4747,68 @@
 "size": "tiny",
 "style": []
 },
+"f:Complexion_NipplesBrownLarge_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "large brown areolas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"breasts"
+],
+"size": "medium",
+"style": []
+},
+"f:Complexion_NipplesBrownSmall_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "small brown areolas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": []
+},
 "f:Complexion_NipplesBrown_F01": {
 "adult": false,
 "emblem": null,
 "kind": "nipple",
 "lore": "fits",
 "note": "brown areolas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": []
+},
+"f:Complexion_NipplesDarkLarge_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "large dark areolas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"breasts"
+],
+"size": "medium",
+"style": []
+},
+"f:Complexion_NipplesDarkSmall_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "small dark areolas",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -3967,12 +4831,82 @@
 "size": "small",
 "style": []
 },
+"f:Complexion_NipplesPinkLarge_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "large pink areolas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"breasts"
+],
+"size": "medium",
+"style": []
+},
+"f:Complexion_NipplesPinkSmall_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "small pink areolas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": []
+},
 "f:Complexion_NipplesPink_F01": {
 "adult": false,
 "emblem": null,
 "kind": "nipple",
 "lore": "fits",
 "note": "pink areolas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": []
+},
+"f:Complexion_NipplesRoseLarge_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "large rose areolas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"breasts"
+],
+"size": "medium",
+"style": []
+},
+"f:Complexion_NipplesRoseSmall_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "small rose areolas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"breasts"
+],
+"size": "small",
+"style": []
+},
+"f:Complexion_NipplesRose_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "rose areolas",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -25365,6 +26299,814 @@
 "size": "small",
 "style": [
 "degrading"
+]
+},
+"m:Complexion_FlashAnchorCalf_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: anchor",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_l"
+],
+"size": "small",
+"style": [
+"military"
+]
+},
+"m:Complexion_FlashAnchor_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: anchor",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"military"
+]
+},
+"m:Complexion_FlashButterflyHip_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: butterfly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pelvis"
+],
+"size": "small",
+"style": [
+"animal",
+"floral"
+]
+},
+"m:Complexion_FlashButterfly_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: butterfly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"lower_back"
+],
+"size": "small",
+"style": [
+"animal",
+"floral"
+]
+},
+"m:Complexion_FlashCherries_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: cherries",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pelvis"
+],
+"size": "small",
+"style": [
+"pinup",
+"cartoon"
+]
+},
+"m:Complexion_FlashCompassBack_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: compass",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"geometric"
+]
+},
+"m:Complexion_FlashCompass_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: compass",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"geometric"
+]
+},
+"m:Complexion_FlashDaggerCalf_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: dagger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_l"
+],
+"size": "small",
+"style": [
+"crude"
+]
+},
+"m:Complexion_FlashDagger_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: dagger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"crude",
+"military"
+]
+},
+"m:Complexion_FlashEagleBack_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: eagle",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "large",
+"style": [
+"animal",
+"military"
+]
+},
+"m:Complexion_FlashEagle_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: eagle",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": [
+"animal",
+"military"
+]
+},
+"m:Complexion_FlashEightBall_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: eight ball",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "tiny",
+"style": [
+"gambling",
+"cartoon"
+]
+},
+"m:Complexion_FlashEye_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: eye",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"religious",
+"geometric"
+]
+},
+"m:Complexion_FlashFlamesArm_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: flames",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"tribal"
+]
+},
+"m:Complexion_FlashFlames_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: flames",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_l"
+],
+"size": "small",
+"style": [
+"tribal",
+"crude"
+]
+},
+"m:Complexion_FlashGrenade_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: grenade",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "tiny",
+"style": [
+"military"
+]
+},
+"m:Complexion_FlashHeartMom_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: heart banner",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"script",
+"floral"
+]
+},
+"m:Complexion_FlashHeartNuka_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: heart banner",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pelvis"
+],
+"size": "small",
+"style": [
+"script",
+"cartoon"
+]
+},
+"m:Complexion_FlashHeartTrueLove_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: heart banner",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"script",
+"pinup"
+]
+},
+"m:Complexion_FlashKoiCalf_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: koi",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_l"
+],
+"size": "small",
+"style": [
+"animal"
+]
+},
+"m:Complexion_FlashKoi_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: koi",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_r"
+],
+"size": "medium",
+"style": [
+"animal",
+"floral"
+]
+},
+"m:Complexion_FlashLightning_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: lightning",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "tiny",
+"style": [
+"geometric"
+]
+},
+"m:Complexion_FlashMushroomCloudArm_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: mushroom cloud",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"religious",
+"crude"
+]
+},
+"m:Complexion_FlashMushroomCloud_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: mushroom cloud",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"religious",
+"cartoon"
+]
+},
+"m:Complexion_FlashNauticalStarHip_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: nautical star",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pelvis"
+],
+"size": "tiny",
+"style": [
+"geometric"
+]
+},
+"m:Complexion_FlashNauticalStar_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: nautical star",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"shoulders"
+],
+"size": "small",
+"style": [
+"geometric",
+"military"
+]
+},
+"m:Complexion_FlashNukaCap_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: nuka cap",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"cartoon"
+]
+},
+"m:Complexion_FlashRadiation_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: radiation",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"shoulders"
+],
+"size": "small",
+"style": [
+"geometric",
+"religious"
+]
+},
+"m:Complexion_FlashRevolver_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: revolver",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pelvis"
+],
+"size": "small",
+"style": [
+"military",
+"crude"
+]
+},
+"m:Complexion_FlashRoseChest_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: rose",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"floral"
+]
+},
+"m:Complexion_FlashRoseThigh_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: rose",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_r"
+],
+"size": "medium",
+"style": [
+"floral"
+]
+},
+"m:Complexion_FlashRoseYellow_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: rose",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"shoulders"
+],
+"size": "small",
+"style": [
+"floral"
+]
+},
+"m:Complexion_FlashRose_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: rose",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"floral"
+]
+},
+"m:Complexion_FlashSkullBack_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: skull",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"skull"
+]
+},
+"m:Complexion_FlashSkullBones_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: skull bones",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": [
+"skull",
+"crude"
+]
+},
+"m:Complexion_FlashSkullCalf_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: skull",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_r"
+],
+"size": "small",
+"style": [
+"skull"
+]
+},
+"m:Complexion_FlashSkull_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: skull",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"skull"
+]
+},
+"m:Complexion_FlashSnakeThigh_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: snake",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_l"
+],
+"size": "medium",
+"style": [
+"animal"
+]
+},
+"m:Complexion_FlashSnake_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: snake",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"animal"
+]
+},
+"m:Complexion_FlashSpiderArm_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: spider",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "tiny",
+"style": [
+"animal"
+]
+},
+"m:Complexion_FlashSpider_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: spider",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"neck"
+],
+"size": "tiny",
+"style": [
+"animal",
+"crude"
+]
+},
+"m:Complexion_FlashSwallowNeck_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: swallow",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"neck"
+],
+"size": "tiny",
+"style": [
+"animal"
+]
+},
+"m:Complexion_FlashSwallowPair_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: swallow pair",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": [
+"animal"
+]
+},
+"m:Complexion_FlashSwallow_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: swallow",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pelvis"
+],
+"size": "small",
+"style": [
+"animal"
+]
+},
+"m:Complexion_FlashTombstone_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: tombstone",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_r"
+],
+"size": "small",
+"style": [
+"skull",
+"script"
+]
+},
+"m:Complexion_FlashWebShoulder_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: web",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"shoulders"
+],
+"size": "small",
+"style": [
+"crude",
+"geometric"
+]
+},
+"m:Complexion_FlashWeb_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: web",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"crude"
+]
+},
+"m:Complexion_FlashWolfBack_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: wolf",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"animal",
+"geometric"
+]
+},
+"m:Complexion_FlashWolf_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "flash: wolf",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"animal",
+"geometric"
 ]
 },
 "m:Complexion_Freckles_M01": {

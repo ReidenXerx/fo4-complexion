@@ -6,7 +6,7 @@ Every painter returns (rgb, alpha) over the skin; make_marks.py turns that into 
 import numpy as np
 from PIL import Image, ImageDraw
 
-from marks import Painter, blank, fbm, over
+from marks import Painter, blank, fbm, landmarks, over
 
 
 def _front(P):
@@ -23,8 +23,9 @@ def freckles(m, rng, amount=0.6):
     seed = int(rng.integers(1 << 30))
     h, n = P.h, P.n
     up = np.clip(n[..., 2] + 0.35, 0, 1)                          # faces the sky
-    top = np.clip((h - 0.74) / 0.08, 0, 1) ** 1.5                 # shoulders and the top of the chest/back
-    breasts = P.reg('torso') & (h > 0.68) & (h < 0.80) & (n[..., 1] > 0.35)
+    L = landmarks(m)
+    top = np.clip((h - (L['nipple'] - 0.02)) / 0.08, 0, 1) ** 1.5   # shoulders and the top of the chest/back
+    breasts = P.reg('torso') & (h > L['underbust'] - 0.02) & (h < L['nipple'] + 0.04) & (n[..., 1] > 0.35)
     torso = P.reg('torso') * top * (0.35 + 0.65 * up) * np.where(breasts, 0.15, 1.0)
     arm_out = np.abs(P.p[..., 0]) / max(np.abs(P.p[..., 0][P.reg('arm')]).max(), 1e-6)
     arms = P.reg('arm') * (0.45 + 0.55 * np.clip(n[..., 2] + n[..., 1] * 0.5 + 0.3, 0, 1)) * (0.5 + 0.5 * arm_out)
@@ -77,10 +78,17 @@ def veins(m, rng):
     seed = int(rng.integers(1 << 30))
     ridge = np.abs(fbm(P.p * np.array([1.0, 1.0, 0.6]), 0.55, seed, 4) - 0.5)
     lines = np.clip(1 - ridge / 0.05, 0, 1) ** 1.5
-    where = (P.reg('torso') & (P.h > 0.66) & (P.h < 0.82) & _front(P)) \
-        | (P.reg('arm') & (P.n[..., 1] > 0.0)) | (P.reg('leg') & (P.h > 0.3) & (P.h < 0.5))
+    L = landmarks(m)
+    chest = P.reg('torso') & _front(P) & (P.h > L['underbust']) & (P.h < L['nipple'] + 0.05)
+    if m.sex == 'female':  # on the breasts, around (not over) the areolas
+        tipd = np.min([np.sqrt(((P.p - t) ** 2).sum(-1)) for t in L['nipples'].values()], axis=0)
+        chest = chest & (tipd > 2.2) & (tipd < 6.5)
+    else:
+        chest = chest & False
+    where = chest | (P.reg('arm') & (P.n[..., 1] > 0.3)) \
+        | (P.reg('leg') & (P.h > L['crotch'] - 0.15) & (P.h < L['crotch'] - 0.03) & (np.abs(P.n[..., 0]) > 0.4))
     soft = np.clip(fbm(P.p, 0.25, seed + 9, 2) * 1.6 - 0.4, 0, 1)
-    a = lines * soft * where * 0.5
+    a = lines * soft * where * 0.45
     over(rgb, alpha, (0.40, 0.48, 0.62), a)
     return rgb, alpha
 
@@ -93,11 +101,15 @@ def stretch_marks(m, rng):
     zone = rng.choice(['hips', 'belly', 'breasts', 'thighs'])
     h, x, front = P.h, P.p[..., 0], P.n[..., 1]
     if zone == 'hips':
-        where = P.reg('torso', 'leg') & (h > 0.46) & (h < 0.62) & (np.abs(P.n[..., 0]) > 0.25)
+        L = landmarks(m)
+        where = P.reg('torso', 'leg') & (h > L['crotch'] - 0.10) & (h < L['crotch'] + 0.06) & (np.abs(P.n[..., 0]) > 0.25)
     elif zone == 'belly':
-        where = P.reg('torso') & (h > 0.55) & (h < 0.66) & (front > 0.2)
+        L = landmarks(m)
+        where = P.reg('torso') & (h > L['crotch'] + 0.01) & (h < L['navel'] + 0.02) & (front > 0.2)
     elif zone == 'breasts':
-        where = P.reg('torso') & (h > 0.70) & (h < 0.80) & (front > 0.3)
+        L = landmarks(m)
+        tipd = np.min([np.sqrt(((P.p - t) ** 2).sum(-1)) for t in L['nipples'].values()], axis=0)
+        where = P.reg('torso') & (h > L['underbust'] - 0.01) & (h < L['nipple'] + 0.05) & (front > 0.2) & (tipd > 2.5)
     else:
         where = P.reg('leg') & (h > 0.32) & (h < 0.48)
     # Streaks: thin lines along a direction, broken and wavy.
@@ -129,59 +141,60 @@ def pimples(m, rng, amount=0.5):
     return rgb, alpha
 
 
-def nipples(m, rng, tone='brown', female=True):
-    """Areola detail: a darker areola with a soft edge, Montgomery bumps, a darker tip; size varies."""
+AREOLA = {'pink': (0.84, 0.50, 0.49), 'rose': (0.70, 0.38, 0.37), 'brown': (0.54, 0.35, 0.27),
+          'dark': (0.33, 0.21, 0.17)}
+
+
+def nipples(m, rng, tone='brown', female=True, size=None):
+    """Areola and nipple, centred on the nipple tip measured on the mesh (marks.landmarks: the vertex ring standing
+    out most from its neighbourhood). The first version took a woman's "most forward point", which is the front of
+    the breast, not the nipple: in review (2026-10-03) every areola sat off-centre, its Montgomery bumps a dark dotted
+    ring like a gear.
+
+    The areola: a defined but slightly irregular edge, colour deepening toward the nipple, fine wrinkles; a few small
+    Montgomery glands, LIGHTER than the areola, scattered in its outer half; the nipple itself darker and denser.
+    size: the areola's radius in game units (about 1.43 cm each); random within the sex's range when None."""
     P = Painter(m)
     rgb, alpha = blank(m)
-    chest = P.reg('torso') & (P.h > 0.68) & (P.h < 0.92) & (P.n[..., 1] > 0.2)
-    if not chest.any():
-        return rgb, alpha
-    colours = {'pink': (0.80, 0.50, 0.48), 'brown': (0.55, 0.36, 0.28), 'dark': (0.36, 0.23, 0.18)}
-    col = np.array(colours[tone])
-    size = rng.uniform(1.2, 2.2)
-    a = np.zeros(m.covered.shape)
-    tip = np.zeros(m.covered.shape)
-    bumps = np.zeros(m.covered.shape)
-    for side in (1, -1):
-        half = chest & (P.p[..., 0] * side > 1.0)
-        if not half.any():
+    col = np.array(AREOLA[tone])
+    if size is None:
+        size = rng.uniform(1.3, 2.0) if female else rng.uniform(0.7, 1.0)
+    seed = int(rng.integers(1 << 30))
+    a_areola = np.zeros(m.covered.shape)
+    a_tip = np.zeros(m.covered.shape)
+    a_gland = np.zeros(m.covered.shape)
+    shade = np.ones(m.covered.shape)
+    for side, tip in landmarks(m)['nipples'].items():
+        idx = P.near(tip, size * 2.5)
+        if not len(idx):
             continue
-        idx = np.flatnonzero(half)
-        Pf = P.p.reshape(-1, 3)[idx]
-        if female:
-            # The breast's tip: the most forward point of that side.
-            k = idx[np.argmax(Pf[:, 1])]
-        else:
-            # A man's chest is flat, but the mesh models the nipple as a small bump: the vertex that stands out
-            # most from the skin around it (its forward offset over the mean of its neighbours within 2.5 units),
-            # on that side of the chest. Neither "most forward" (the pec's underside) nor a fixed height (0.775: some
-            # 40 cm low on the owner's screen, 2026-10-03) finds it.
-            V = m.vertices
-            hv = (V[:, 2] - m.bounds[0][2]) / (m.bounds[1][2] - m.bounds[0][2])
-            cand = np.flatnonzero((V[:, 0] * side > 1.0) & (hv > 0.7) & (hv < 0.95) & (m.vertex_region == 0))
-            C = V[cand]
-            front = C[:, 1] > C[:, 1].max() - 3.0  # the front of the chest, not the ribcage's sides
-            cand, C = cand[front], C[front]
-            d2 = ((C[:, None, :] - C[None, :, :]) ** 2).sum(-1)
-            near = d2 < 1.2 ** 2  # the bump is small: a wider ring averages it away
-            mean_y = (near * C[None, :, 1]).sum(1) / near.sum(1)
-            bump = C[:, 1] - mean_y
-            peak = C[np.argsort(-bump)[:5]].mean(axis=0)  # the ring of bump vertices: its centre is the tip
-            k = idx[np.argmin(((Pf - peak) ** 2).sum(-1))]
-        c, n = P.p.reshape(-1, 3)[k], P.n.reshape(-1, 3)[k]
-        P.blob_into(a, c, n, size * 0.55, gain=2.4, cap=0.85)
-        P.blob_into(tip, c, n, size * 0.18, gain=2.0, cap=0.8)
-        for _ in range(int(rng.integers(6, 14))):
+        Q = P.p.reshape(-1, 3)[idx]
+        Nq = P.n.reshape(-1, 3)[idx]
+        k = np.argmin(((Q - tip) ** 2).sum(-1))
+        n0 = Nq[k]
+        d = np.sqrt(((Q - Q[k]) ** 2).sum(-1))
+        facing = np.clip((Nq @ n0 - 0.1) / 0.3, 0, 1)
+        wobble = 1 + 0.045 * (fbm(Q, 0.9, seed + side, 2) - 0.5) * 2 + 0.02 * (fbm(Q, 3.0, seed + side + 5, 2) - 0.5)
+        r = d / (size * wobble)
+        edge = np.clip((1.0 - r) / 0.14, 0, 1) ** 1.3
+        a_areola.reshape(-1)[idx] = np.maximum(a_areola.reshape(-1)[idx], edge * facing)
+        # deeper toward the nipple, lighter through the middle, a little deeper again at the rim
+        prof = 0.82 + 0.16 * np.clip(r / 0.55, 0, 1) - 0.10 * np.clip((r - 0.75) / 0.2, 0, 1) * np.clip((1.05 - r) / 0.1, 0, 1)
+        shade.reshape(-1)[idx] = np.minimum(shade.reshape(-1)[idx], prof)
+        tip_r = size * (0.24 if female else 0.32)
+        a_tip.reshape(-1)[idx] = np.maximum(a_tip.reshape(-1)[idx], np.clip((tip_r - d) / (tip_r * 0.35), 0, 1) * facing)
+        t = np.cross(n0, (0.0, 0.0, 1.0))
+        t = t / (np.linalg.norm(t) or 1)
+        b = np.cross(n0, t)
+        for _ in range(int(rng.integers(4, 10)) if female else int(rng.integers(0, 4))):
             ang = rng.uniform(0, 2 * np.pi)
-            t = np.cross(n, (0, 0, 1.0))
-            t = t / (np.linalg.norm(t) or 1)
-            b = np.cross(n, t)
-            q = c + (t * np.cos(ang) + b * np.sin(ang)) * size * rng.uniform(0.6, 0.9)
-            P.blob_into(bumps, q, n, 0.07, gain=1.5, cap=0.6)
-    edge = 0.7 + 0.5 * fbm(P.p, 3.0, int(rng.integers(1 << 30)), 2)
-    over(rgb, alpha, col, np.clip(a * edge, 0, 0.8))
-    over(rgb, alpha, col * 0.75, bumps)
-    over(rgb, alpha, col * 0.8, tip)
+            q = Q[k] + (t * np.cos(ang) + b * np.sin(ang)) * size * rng.uniform(0.5, 0.85)
+            P.blob_into(a_gland, q, n0, rng.uniform(0.09, 0.14), gain=1.6, cap=rng.uniform(0.45, 0.65))
+    wrinkle = 0.88 + 0.24 * fbm(P.p, 7.0, seed + 7, 2)
+    colour = col[None, None, :] * (shade * wrinkle)[..., None]
+    over(rgb, alpha, colour, np.clip(a_areola * (0.62 if female else 0.5), 0, 0.7))
+    over(rgb, alpha, col * 0.70, np.clip(a_tip * 0.75, 0, 0.8))
+    over(rgb, alpha, np.clip(col * 1.22 + 0.08, 0, 1), np.clip(a_gland * a_areola, 0, 0.6))
     return rgb, alpha
 
 
@@ -245,9 +258,11 @@ def body_hair_male(m, rng, where='chest', colour='brown', size=2048):
     if where == 'chest':
         x, h = np.abs(P.p[..., 0]), P.h
         ragged = 0.6 + 0.6 * fbm(P.p, 0.7, int(rng.integers(1 << 30)), 3)
-        pecs = np.exp(-(((x - 4.5) / 4.2) ** 2 + ((h - 0.775) / 0.05) ** 2) ** 2) * ragged
-        sternum = np.exp(-((x / 2.0) ** 2 + ((h - 0.76) / 0.05) ** 2) ** 2)
-        trail = np.exp(-(x / 0.7) ** 2) * np.clip((0.74 - h) / 0.04, 0, 1) * (h > 0.56)
+        L = landmarks(m)
+        hc = L['nipple'] - 0.01
+        pecs = np.exp(-(((x - 5.0) / 4.2) ** 2 + ((h - hc) / 0.05) ** 2) ** 2) * ragged
+        sternum = np.exp(-((x / 2.0) ** 2 + ((h - hc + 0.01) / 0.05) ** 2) ** 2)
+        trail = np.exp(-(x / 0.7) ** 2) * np.clip((hc - 0.04 - h) / 0.04, 0, 1) * (h > L['navel'] - 0.02)
         d = np.clip(np.maximum(np.maximum(pecs * 0.7, sternum * 0.45), trail * 0.5), 0, 1) * front * P.reg('torso')
         return hair(m, rng, d, HAIR[colour], length=(3, 7), share=0.07, base=0.12, size=size)
     # Arms reach out sideways in the bind pose: the forearm is the outer half, by distance from the middle.
@@ -264,7 +279,13 @@ def stubble_female(m, rng, colour='brown', size=2048):
     P = Painter(m)
     rgb, alpha = blank(m)
     legs = P.reg('leg') & (P.h > 0.05) & (P.h < 0.45)
-    pits = P.reg('torso', 'arm') & (P.h > 0.80) & (P.h < 0.88) & (np.abs(P.n[..., 0]) > 0.5)
+    pits = np.zeros(m.covered.shape, bool)
+    for side in (1, -1):
+        under = P.reg('arm') & (P.p[..., 0] * side > 0) & (P.n[..., 2] < -0.45) & (P.h > 0.72) & (P.h < 0.95)
+        if under.any():
+            idx = np.flatnonzero(under)
+            c = P.p.reshape(-1, 3)[idx[np.argmin(np.abs(P.p.reshape(-1, 3)[idx, 0]))]]
+            pits |= (((P.p - c) ** 2).sum(-1) < 1.6 ** 2) & (P.n[..., 2] < 0.2) & P.cov
     where = np.where(legs, 0.6, 0.0) + np.where(pits, 1.0, 0.0)
     a = np.zeros(m.covered.shape)
     for c, n in P.pick_points(rng, where > 0, 2500, where):

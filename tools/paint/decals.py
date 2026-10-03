@@ -11,7 +11,7 @@ import pathlib
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-from marks import Painter, blank, fbm, over
+from marks import Painter, blank, fbm, landmarks, over
 
 FONTS = pathlib.Path(__file__).resolve().parent / 'fonts'
 FONT = {'blackletter': 'UnifrakturMaguntia-Book.ttf', 'pirate': 'PirataOne-Regular.ttf', 'western': 'Rye-Regular.ttf',
@@ -35,20 +35,25 @@ def anchor(m, spot, side=0):
     tw = np.abs(p[..., 0][torso & (np.abs(h - 0.75) < 0.02)]).max() if torso.any() else 10.0
     front_torso = torso & (n[..., 1] > 0.3)
     crotch = h[front_torso].min() if front_torso.any() else 0.47
+    # Heights from the measured landmarks (marks.landmarks), not assumed: the first anchors put the "chest" under the
+    # bust, the "shoulder" on the side of the breast and the "nape" between the shoulder blades (2026-10-03).
+    L = landmarks(m)
+    band = torso & (np.abs(h - L['shoulder']) < 0.01)
+    shoulder_x = np.abs(p[..., 0][band]).max() if band.any() else 0.75 * tw
     specs = {
         # spot: (mask, target x, target h, facing (+1 front / -1 back / 0 side), up)
-        'chest': (torso, side * 0.42 * tw if side else 0.0, 0.80, 1, (0, 0, 1)),
-        'belly': (torso, 0.0, 0.63, 1, (0, 0, 1)),
-        'upper_back': (torso, 0.0, 0.80, -1, (0, 0, 1)),
-        'lower_back': (torso, 0.0, 0.58, -1, (0, 0, 1)),
-        'neck_back': (torso, 0.0, 0.875, -1, (0, 0, 1)),
-        'shoulder': (torso | arm, side * 0.75 * tw, 0.83, 0, (0, 0, 1)),
+        'chest': (torso, side * 0.42 * tw if side else 0.0, L['chest'], 1, (0, 0, 1)),
+        'belly': (torso, 0.0, L['belly'], 1, (0, 0, 1)),
+        'upper_back': (torso, 0.0, L['upper_back'], -1, (0, 0, 1)),
+        'lower_back': (torso, 0.0, L['lower_back'], -1, (0, 0, 1)),
+        'neck_back': (torso, 0.0, L['neck'], -1, (0, 0, 1)),
+        'shoulder': (torso | arm, side * shoulder_x, L['shoulder'], 0, (0, 0, 1)),
         'upper_arm': (arm, side * 0.45 * reach, None, 0, (0, 0, 1)),
         'forearm': (arm, side * 0.72 * reach, None, 1, (side or 1, 0, 0)),
-        'thigh': (leg, side * 0.45 * tw, 0.38, 1, (0, 0, 1)),
-        'thigh_back': (leg, side * 0.45 * tw, 0.40, -1, (0, 0, 1)),
-        'calf': (leg, side * 0.40 * tw, 0.16, -1, (0, 0, 1)),
-        'hip': (torso | leg, side * 0.85 * tw, 0.53, 0, (0, 0, 1)),
+        'thigh': (leg, side * 0.45 * tw, L['thigh'], 1, (0, 0, 1)),
+        'thigh_back': (leg, side * 0.45 * tw, L['thigh'], -1, (0, 0, 1)),
+        'calf': (leg, side * 0.40 * tw, L['calf'], -1, (0, 0, 1)),
+        'hip': (torso | leg, side * 0.85 * tw, L['hip'], 0, (0, 0, 1)),
         'butt': (torso | leg, side * 0.45 * tw, None, -1, (0, 0, 1)),  # height: from the crotch, below
         # Lewd marks (C-14): just above the pubic hair, the crack of the buttocks, the inner thighs.
         'pubic': (torso, 0.0, crotch + 0.05, 1, (0, 0, 1)),
@@ -56,6 +61,11 @@ def anchor(m, spot, side=0):
         'inner_thigh': (leg, side * 0.16 * tw, crotch - 0.07, 2, (0, 0, 1)),
     }
     mask, tx, th, facing, up = specs[spot]
+    if spot in ('thigh', 'thigh_back', 'calf') and side:
+        # the middle of that leg at that height (a fraction of the waist's width hit the inner thigh at mid-thigh)
+        legband = leg & P.cov & (np.abs(h - th) < 0.01) & (p[..., 0] * side > 0)
+        if legband.any():
+            tx = float(p[..., 0][legband].mean())
     if spot == 'butt':
         th = crotch + 0.075  # the middle of a buttock (a fixed 0.51 put the words on the backs of the thighs)
     mask = mask & P.cov

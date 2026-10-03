@@ -94,9 +94,11 @@ class Painter:
         idx = np.flatnonzero(mask)
         P = self.p.reshape(-1, 3)[idx]
         best = np.full(len(idx), np.inf)
-        for k in range(0, len(g), 256):
-            d = np.sqrt(((P[:, None, :] - g[None, k:k + 256, :]) ** 2).sum(-1)).min(axis=1)
-            best = np.minimum(best, d)
+        for j in range(0, len(P), 32768):  # texels in chunks too: back hair is ~900k texels (5 GB at once)
+            q = P[j:j + 32768]
+            for k in range(0, len(g), 256):
+                d = np.sqrt(((q[:, None, :] - g[None, k:k + 256, :]) ** 2).sum(-1)).min(axis=1)
+                best[j:j + 32768] = np.minimum(best[j:j + 32768], d)
         out.reshape(-1)[idx] = best
         return out
 
@@ -126,6 +128,63 @@ class Painter:
         d2 = ((self.p - centre) ** 2).sum(-1)
         facing = np.clip((self.n @ normal - 0.15) / 0.5, 0, 1)
         return np.exp(-d2 / (2 * radius * radius)) * facing * self.cov
+
+
+def landmarks(m):
+    """Heights (0 feet .. 1 the neck seam, as Painter.h) and points of the body's landmarks, MEASURED on the mesh.
+    The first anchors assumed heights instead (a chest at 0.80, a shoulder at 0.83, a nape at 0.875), and on these
+    bodies 0.80 is under the bust and 0.875 between the shoulder blades (measured 2026-10-03: CBBE nipples at 0.856,
+    the torso's top at 0.968, the crotch at 0.566). Everything that places a mark by height uses these.
+
+    nipples: per side (+1 the character's right, -1 left), the tip -- the vertex ring that stands out most from its
+    neighbourhood along the local normal (the same on women's breasts and men's flat chests)."""
+    if hasattr(m, '_landmarks'):
+        return m._landmarks
+    V, T = m.vertices, m.triangles
+    lo, hi = m.bounds[0][2], m.bounds[1][2]
+
+    def H(z):
+        return (z - lo) / (hi - lo)
+    fn = np.cross(V[T[:, 1]] - V[T[:, 0]], V[T[:, 2]] - V[T[:, 0]])
+    vn = np.zeros_like(V)
+    for k in range(3):
+        np.add.at(vn, T[:, k], fn)
+    vn /= np.maximum(np.linalg.norm(vn, axis=1, keepdims=True), 1e-9)
+    torso = m.vertex_region == REGIONS.index('torso')
+    hv = H(V[:, 2])
+    top = float(hv[torso & (np.abs(V[:, 0]) < 2.0)].max())
+    front_mid = torso & (vn[:, 1] > 0.3)
+    crotch = float(hv[front_mid].min())
+    nipples = {}
+    for side in (1, -1):
+        cand = np.flatnonzero((V[:, 0] * side > 1.0) & (hv > 0.70) & (hv < 0.95) & torso & (vn[:, 1] > 0.2))
+        C, N = V[cand], vn[cand]
+        C, N = C[C[:, 1] > C[:, 1].max() - 3.0], N[C[:, 1] > C[:, 1].max() - 3.0]  # the front, not the ribcage sides
+        d2 = ((C[:, None, :] - C[None, :, :]) ** 2).sum(-1)
+        near = d2 < 1.2 ** 2
+        mean = (near[..., None] * C[None, :, :]).sum(1) / near.sum(1)[:, None]
+        nmean = (near[..., None] * N[None, :, :]).sum(1) / near.sum(1)[:, None]
+        nmean /= np.linalg.norm(nmean, axis=1, keepdims=True)
+        bump = ((C - mean) * nmean).sum(1)
+        k = np.argsort(-bump)[:5]
+        nipples[side] = C[k].mean(axis=0)
+    nip = float(np.mean([H(p[2]) for p in nipples.values()]))
+    out = {
+        'top': top, 'crotch': crotch, 'nipple': nip, 'nipples': nipples,
+        'neck': top - 0.02,                     # the nape / the base of the throat, below the seam's fade
+        'chest': (nip + top) / 2 + 0.005,       # the upper chest: above the breasts, below the collarbones
+        'upper_back': nip + 0.03,               # between the shoulder blades
+        'shoulder': top - 0.045,                # the shoulder cap
+        'underbust': nip - 0.055 if m.sex == 'female' else nip - 0.03,
+        'navel': crotch + 0.08,
+        'belly': crotch + 0.065,
+        'lower_back': crotch + 0.06,
+        'hip': crotch + 0.035,
+        'thigh': crotch - 0.12,
+        'calf': 0.16,
+    }
+    m._landmarks = out
+    return out
 
 
 def over(rgb, alpha, c, a):
