@@ -108,9 +108,14 @@ Event OnTimer(Int aiTimerID)
 	EndIf
 	Complexion:DLL.Pump()
 	; A line for the player, once: some are only known after the first poll (Random Overlay Framework switched off).
+	; A box only for a real problem: a modal box holds every script mod still until it is clicked.
 	String said = Complexion:DLL.Warning()
 	If said != ""
 		Debug.MessageBox("Complexion: " + said)
+	EndIf
+	String news = Complexion:DLL.Notice()
+	If news != ""
+		Debug.Notification(news)
 	EndIf
 	; One drain at a time, on a stack of its own: LooksMenu's natives return at once, and the plugin hands an
 	; actor to one order at a time either way.

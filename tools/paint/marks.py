@@ -325,7 +325,7 @@ def scars(m, rng, count=(1, 3), stitched=False):
     return rgb, alpha
 
 
-def pubic_hair(m, rng, shape='full', size=2048):
+def pubic_hair(m, rng, shape='full', size=2048, colour=(0.07, 0.05, 0.04)):
     """Male pubic hair: thousands of short dark curved strokes, densest at the centre, the outline by shape."""
     P = Painter(m)
     rgb, alpha = blank(m)
@@ -371,5 +371,5 @@ def pubic_hair(m, rng, shape='full', size=2048):
     a = np.asarray(canvas.resize(density.shape[::-1]), dtype=np.float64) / 255.0 * P.cov
     base = np.clip(density * 1.3, 0, 1) ** 1.5 * (0.45 + 0.4 * fbm(P.p, 2.5, int(rng.integers(1 << 30)), 2))
     a = np.maximum(a * np.clip(density * 3, 0, 1), base)
-    over(rgb, alpha, (0.07, 0.05, 0.04), np.clip(a, 0, 0.92))
+    over(rgb, alpha, colour, np.clip(a, 0, 0.92))
     return rgb, alpha

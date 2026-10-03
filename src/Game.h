@@ -21,6 +21,9 @@ namespace CX::Game
 	// A line for the player's screen, once a launch ("" after that and when there is nothing to say): Random
 	// Overlay Framework is loaded, or Complexion's data is missing.
 	[[nodiscard]] std::string TakeWarning();
+	// A line for the corner of the screen (a notification), once: news, not a problem. A modal box at load holds
+	// every script mod still until a hand clicks it (measured 2026-10-03: an unread box stopped the bridge for 3 hours).
+	[[nodiscard]] std::string TakeNotice();
 
 	// From the event sink, on whatever thread the game sends it: queued, nothing read yet.
 	void NoteLoaded(std::uint32_t a_ref);

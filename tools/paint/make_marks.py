@@ -74,6 +74,14 @@ add('ScarStitched', ('male',), 'scars', ((1, 2), True), 2048, dict(ROUGH, kind='
 add('PubicFull', ('male',), 'pubic_hair', ('full', 2048), 2048, dict(ROUGH, kind='pubic_hair', regions=['pubic'], size='large', note='full pubic hair'), 2)
 add('PubicTrim', ('male',), 'pubic_hair', ('trim', 2048), 2048, dict(ROUGH, kind='pubic_hair', regions=['pubic'], size='small', note='trimmed pubic hair'), 1)
 add('PubicTrail', ('male',), 'pubic_hair', ('trail', 2048), 2048, dict(ROUGH, kind='pubic_hair', regions=['pubic'], size='medium', note='pubic hair and a trail'), 1)
+# 2026-10-03: more men's variety -- every man in Diamond City shared 4 pubic and 3 mole sheets. Appended last,
+# so the seeds of everything above (their place in this list) stay as they were.
+BROWN, GREY = (0.16, 0.10, 0.06), (0.42, 0.40, 0.38)
+add('PubicFullBrown', ('male',), 'pubic_hair', ('full', 2048, BROWN), 2048, dict(ROUGH, kind='pubic_hair', regions=['pubic'], size='large', note='full pubic hair, brown'), 2)
+add('PubicFullGrey', ('male',), 'pubic_hair', ('full', 2048, GREY), 2048, dict(ROUGH, kind='pubic_hair', regions=['pubic'], size='large', note='full pubic hair, greying'), 1)
+add('PubicTrimBrown', ('male',), 'pubic_hair', ('trim', 2048, BROWN), 2048, dict(ROUGH, kind='pubic_hair', regions=['pubic'], size='small', note='trimmed pubic hair, brown'), 2)
+add('PubicTrailBrown', ('male',), 'pubic_hair', ('trail', 2048, BROWN), 2048, dict(ROUGH, kind='pubic_hair', regions=['pubic'], size='medium', note='pubic hair and a trail, brown'), 1)
+add('MolesMore', ('male',), 'moles', ((10, 30),), 2048, dict(ROUGH, kind='mole', regions=[], size='tiny', note='moles'), 3)
 
 
 def dilate(rgb, alpha, covered, steps=6):

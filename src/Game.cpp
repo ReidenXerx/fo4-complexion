@@ -47,6 +47,7 @@ namespace CX::Game
 		std::atomic<bool>          g_watching{ false };
 		std::mutex                 g_warningLock;
 		std::string                g_warning;
+		std::string                g_notice;
 
 		bool                              g_rofLoaded{ false };
 		bool                              g_rofChecked{ false };
@@ -201,6 +202,12 @@ namespace CX::Game
 		{
 			std::scoped_lock l{ g_warningLock };
 			g_warning += (g_warning.empty() ? "" : "\n\n") + a_line;
+		}
+
+		void Notify(std::string a_line)
+		{
+			std::scoped_lock l{ g_warningLock };
+			g_notice = std::move(a_line);
 		}
 
 		void Sweep(std::deque<std::uint32_t>& a_loaded)
@@ -480,6 +487,12 @@ namespace CX::Game
 		return std::exchange(g_warning, {});
 	}
 
+	std::string TakeNotice()
+	{
+		std::scoped_lock l{ g_warningLock };
+		return std::exchange(g_notice, {});
+	}
+
 	void NoteLoaded(std::uint32_t a_ref)
 	{
 		std::scoped_lock l{ g_inbox.lock };
@@ -578,8 +591,7 @@ namespace CX::Game
 			if (found == 3) {
 				logger::info("Random Overlay Framework is loaded for its tattoo packs; its distributor is switched off (its own done-keywords on "
 							 "the Human race, from Complexion_ROF.ini). Its old overlays stay until MCM > Complexion > Clear every overlay");
-				Warn("Random Overlay Framework is installed: Complexion has switched its distributor off, and uses its tattoo packs. "
-					 "To remove the overlays ROF already put on people, press MCM > Complexion > Clear every overlay once.");
+				Notify("Complexion: Random Overlay Framework switched off, its tattoos kept. Old ROF overlays: MCM > Complexion > Clear every overlay.");
 			} else {
 				logger::warn("Random Overlay Framework is loaded and still hands out overlays: {} of its 3 done-keywords are on the Human race "
 							 "(RobCo Patcher missing, or F4SE/Plugins/RobCo_Patcher/race/Complexion_ROF.ini not installed)",

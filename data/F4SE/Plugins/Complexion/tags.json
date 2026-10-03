@@ -22687,6 +22687,42 @@
 "size": "large",
 "style": []
 },
+"m:Complexion_MolesMore_M01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_MolesMore_M02": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_MolesMore_M03": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
 "m:Complexion_Moles_M01": {
 "adult": false,
 "emblem": null,
@@ -22723,6 +22759,48 @@
 "size": "tiny",
 "style": []
 },
+"m:Complexion_PubicFullBrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "full pubic hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"m:Complexion_PubicFullBrown_M02": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "full pubic hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"m:Complexion_PubicFullGrey_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "full pubic hair, greying",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
 "m:Complexion_PubicFull_M01": {
 "adult": false,
 "emblem": null,
@@ -22751,6 +22829,20 @@
 "size": "large",
 "style": []
 },
+"m:Complexion_PubicTrailBrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "pubic hair and a trail, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "medium",
+"style": []
+},
 "m:Complexion_PubicTrail_M01": {
 "adult": false,
 "emblem": null,
@@ -22763,6 +22855,34 @@
 "pubic"
 ],
 "size": "medium",
+"style": []
+},
+"m:Complexion_PubicTrimBrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "trimmed pubic hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
+"m:Complexion_PubicTrimBrown_M02": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "trimmed pubic hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
 "style": []
 },
 "m:Complexion_PubicTrim_M01": {

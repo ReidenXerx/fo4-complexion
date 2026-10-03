@@ -42,6 +42,7 @@ namespace CX::Papyrus
 		}
 
 		Str Warning(std::monostate) { return Str{ Game::TakeWarning() }; }
+		Str Notice(std::monostate) { return Str{ Game::TakeNotice() }; }
 
 		// A line from the bridge into Complexion.log (the "what is on them" button).
 		void Log(std::monostate, Str a_line) { logger::info("bridge: {}", a_line.c_str() ? a_line.c_str() : ""); }
@@ -57,7 +58,8 @@ namespace CX::Papyrus
 			for (const auto& p : r->picks) {
 				list += (list.empty() ? "" : ", ") + p.id;
 			}
-			return Str{ std::format("{}{}: {}", r->group, r->applied ? "" : " (not yet on them)", list.empty() ? "nothing" : list) };
+			const bool waiting = !r->applied && !r->picks.empty();
+			return Str{ std::format("{}{}: {}", r->group, waiting ? " (not yet on them)" : "", list.empty() ? "nothing" : list) };
 		}
 
 		// MCM "Roll everyone again".
@@ -163,6 +165,7 @@ namespace CX::Papyrus
 		Bind(a_vm, "Pending"sv, Pending, fast);
 		Bind(a_vm, "Configure"sv, Configure, fast);
 		Bind(a_vm, "Warning"sv, Warning, fast);
+		Bind(a_vm, "Notice"sv, Notice, fast);
 		Bind(a_vm, "Log"sv, Log, fast);
 		Bind(a_vm, "Decided"sv, Decided, fast);
 		Bind(a_vm, "NameOf"sv, NameOf, main);

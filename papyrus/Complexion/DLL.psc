@@ -13,6 +13,8 @@ Function Configure(Bool abEnabled, Bool abAdult) Native Global
 ; A line for the player's screen, once a launch: Random Overlay Framework is loaded, or Complexion's files are
 ; missing. "" when there is nothing to say.
 String Function Warning() Native Global
+; A line for the corner of the screen, once: news, not a problem ("" when none).
+String Function Notice() Native Global
 
 ; A line into Complexion.log.
 Function Log(String asLine) Native Global

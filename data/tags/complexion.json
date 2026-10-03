@@ -521,5 +521,116 @@
   ],
   "size": "medium",
   "note": "pubic hair and a trail"
+ },
+ "m:Complexion_PubicFullBrown_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "large",
+  "note": "full pubic hair, brown"
+ },
+ "m:Complexion_PubicFullBrown_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "large",
+  "note": "full pubic hair, brown"
+ },
+ "m:Complexion_PubicFullGrey_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "large",
+  "note": "full pubic hair, greying"
+ },
+ "m:Complexion_PubicTrimBrown_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "note": "trimmed pubic hair, brown"
+ },
+ "m:Complexion_PubicTrimBrown_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "note": "trimmed pubic hair, brown"
+ },
+ "m:Complexion_PubicTrailBrown_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "medium",
+  "note": "pubic hair and a trail, brown"
+ },
+ "m:Complexion_MolesMore_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "mole",
+  "regions": [],
+  "size": "tiny",
+  "note": "moles"
+ },
+ "m:Complexion_MolesMore_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "mole",
+  "regions": [],
+  "size": "tiny",
+  "note": "moles"
+ },
+ "m:Complexion_MolesMore_M03": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "mole",
+  "regions": [],
+  "size": "tiny",
+  "note": "moles"
  }
 }
