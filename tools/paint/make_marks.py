@@ -36,17 +36,21 @@ DATA = pathlib.Path(r'D:\SteamFreeGames\Fallout 4 AE\Data')
 TEXCONV = [pathlib.Path(r'D:\xEdit.4.1.5f\Edit Scripts\Texconvx64.exe'), pathlib.Path(r'D:\DynDOLOD\Edit Scripts\Texconvx64.exe')]
 NORMAL = {'female': 'actors/character/basehumanfemale/FemaleBody_n.dds',
           'male': 'actors/character/basehumanmale/BaseMaleBody_n.dds'}
+# The material MULTIPLIES the skin, as porcOverlays' moles and scars do (their BGEMs, read 2026-10-03): blend
+# source DEST_COLOR (4), destination ZERO (1), so the frame becomes skin x texture x base colour x scale. A texel
+# at NEUTRAL leaves the skin alone, darker darkens it, lighter lightens it -- and it is lit and shadowed with the
+# skin, on any skin tone. Measured in game the same day: INVB's alpha blending (SRC_ALPHA / INV_SRC_ALPHA) draws
+# unlit, so pale scars glowed in a dark corner; with "effect lighting" switched on the marks did not show at all.
+# Header: porc's Moles_01.BGEM (blend 1/4/1, alpha test, z write, z test, SSR); base colour 1,1,1, scale 2.
+SCALE = 2.0
+NEUTRAL = 1.0 / SCALE
 BGEM_HEAD = bytes.fromhex(
-    '4247454d020000000300000000000000000000000000803f0000803f0000803f01060000000700000000010101010000000000000000'
+    '4247454d020000000300000000000000000000000000803f0000803f0000803f01040000000100000000010101010000000000000000'
     '000000000000803f00')
 BGEM_MID = bytes.fromhex('01000000000100000000')
-# The tail after the normal map: the empty envmap-mask string (5), then six flags -- blood, EFFECT LIGHTING,
-# falloff, falloff colour, greyscale-to-palette alpha, soft -- then the base colour (3 floats) and its scale,
-# falloff start/stop angle and opacity (4 floats), LIGHTING INFLUENCE, envmap min LOD (1 byte), soft depth.
-# INVB's has effect lighting off: an effect material is then unlit, and anything pale glows in the dark.
 BGEM_TAIL = bytes.fromhex(
-    '0100000000' '000100000000' '0000803f0000803f0000803f' '0000803f' '00000000000000000000000000000000'
-    '0000803f' '00' '00000000')
+    '0100000000' '000000000000' '0000803f0000803f0000803f' + struct.pack('<f', SCALE).hex() +
+    '00000000000000000000000000000000' '00000000' '00' '00000000')
 assert len(BGEM_HEAD) == 63 and len(BGEM_TAIL) == 52
 
 # id, sex, painter, args, texture size, tags
@@ -104,6 +108,18 @@ def dilate(rgb, alpha, covered, steps=6):
     return rgb
 
 
+SKIN = np.array((0.80, 0.64, 0.54))  # the skin the painters (and preview.py) paint over
+
+
+def multiplier(rgb, alpha):
+    """What the multiply material needs: per texel, the factor the skin is multiplied by -- 1 where nothing is
+    painted, colour/skin where the mark is opaque -- stored as factor x NEUTRAL (the material scales it back).
+    Everywhere off the marks, and off the UV islands, it is exactly NEUTRAL: no seam, no tint."""
+    factor = 1.0 + alpha[..., None] * (rgb / SKIN - 1.0)
+    tex = np.clip(factor * NEUTRAL, 0.0, 1.0)
+    return Image.fromarray((tex * 255 + 0.5).astype(np.uint8), 'RGB')
+
+
 def texconv():
     for t in TEXCONV:
         if t.exists():
@@ -148,10 +164,10 @@ def main():
         rng = np.random.default_rng(1000 + n)
         rgb, alpha = getattr(marks, painter)(m, rng, *args)
         rgb = dilate(rgb, alpha, m.covered)
-        img = Image.fromarray(np.dstack([np.clip(rgb, 0, 1) * 255, np.clip(alpha, 0, 1) * 255]).astype(np.uint8), 'RGBA')
+        img = multiplier(rgb, alpha)
         png = work / f'{tid}_d.png'
         img.save(png)
-        r = subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'BC3_UNORM', '-m', '0', '-o', str(tex_dir), str(png)],
+        r = subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'BC1_UNORM', '-m', '0', '-o', str(tex_dir), str(png)],
                            capture_output=True, text=True)
         made = next((f for f in tex_dir.iterdir() if f.name.lower() == f'{tid}_d.dds'.lower()), None)
         if r.returncode or not made:

@@ -112,6 +112,17 @@ the ability's active effect stores which effect runs, and could find none. What 
 its MCM pages, and a load-time update routine that its own Performance Settings limit to new versions. The plugin
 checks at the first poll that the three keywords are on the Human race and says so either way.
 
+## C-12: Complexion's marks multiply the skin (measured in game, 2026-10-03)
+
+Our first material copied INVB's: alpha blending (SRC_ALPHA / INV_SRC_ALPHA), which Fallout 4 draws unlit -- pale
+healed scars glowed like neon in a dark corner; with the BGEM's "effect lighting" switched on, the marks did not
+show at all. porcOverlays' moles and scars, which draw right, MULTIPLY: blend DEST_COLOR / ZERO, so the frame is
+skin x texture x base colour x scale. Complexion's materials now copy porc's header with base colour 1,1,1 and
+scale 2: each texel stores the factor the skin is multiplied by, times 1/2; off the marks and off the UV islands it
+is exactly neutral grey. A mark darkens (grime, bruises, blood, moles, hair) or lightens (old scars) the skin under
+it, lit and shadowed with it, on any skin tone. Textures are BC1 (no alpha needed). Shared note:
+fo4-overlay-bgem-multiply.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.
