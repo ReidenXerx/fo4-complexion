@@ -34,6 +34,8 @@ import life  # noqa: E402
 import marks  # noqa: E402
 import realism  # noqa: E402
 import seams  # noqa: E402
+import skin  # noqa: E402
+HAIR_RGB = realism.HAIR  # skin adds ginger, lightbrown, darkbrown
 from body import UVMap  # noqa: E402
 from preview import sheet  # noqa: E402
 
@@ -386,6 +388,120 @@ for tone in ('pink', 'rose', 'brown', 'dark'):
             dict(ROUGH, kind='nipple', regions=['breasts'], size='small' if label == 'Small' else 'medium',
                  note=f'{label.lower()} {tone} areolas'), 1)
 
+# ---- 2026-10-03 (owner: "the accent on the realistic module"): the realism layer in real variety, and the kinds
+# still missing -- skin.py. Appended last: earlier seeds stay put. Painter names 'skin.<fn>' (paint() dispatch).
+R = ROUGH
+MOLE_VARIANTS = [  # name, args (count, size, tone, zone, clusters, raised), note
+    ('MolesScattered', ((25, 50), (0.06, 0.16), 'brown', 'everywhere', 0, False), 'scattered small moles'),
+    ('MolesFewLarge', ((4, 9), (0.18, 0.32), 'dark', 'everywhere', 0, True), 'a few large raised moles'),
+    ('MolesClustered', ((25, 45), (0.06, 0.18), 'brown', 'everywhere', 4, False), 'moles in clusters'),
+    ('MolesBack', ((20, 40), (0.06, 0.2), 'dark', 'back', 0, False), 'moles over the back'),
+    ('MolesFront', ((12, 28), (0.06, 0.18), 'brown', 'front', 0, False), 'moles on the chest and belly'),
+    ('MolesLight', ((20, 45), (0.07, 0.2), 'light', 'everywhere', 0, False), 'light-brown flat moles'),
+    ('MolesMany', ((60, 110), (0.04, 0.13), 'brown', 'everywhere', 0, False), 'many small moles'),
+    ('MolesRaisedDark', ((8, 18), (0.12, 0.24), 'dark', 'upper', 0, True), 'dark raised moles, upper body'),
+]
+for name, args, note in MOLE_VARIANTS:
+    add(name, F, 'skin.moles', args, 2048, dict(R, kind='mole', regions=[], size='tiny', note=note), 2)
+    add(name, M, 'skin.moles', args, 2048, dict(R, kind='mole', regions=[], size='tiny', note=note), 1)
+add('CherryAngiomas', BOTH, 'skin.cherry_angiomas', (), 2048, dict(R, kind='mole', regions=[], size='tiny', note='tiny red cherry angiomas'), 2)
+add('SunSpots', BOTH, 'skin.sun_spots', (0.5,), 2048, dict(R, kind='freckles', regions=[], size='small', note='sun spots on the shoulders'), 1)
+add('SunSpotsHeavy', BOTH, 'skin.sun_spots', (1.0,), 2048, dict(R, kind='freckles', regions=[], size='medium', note='heavy sun spots'), 1)
+add('PortWine', BOTH, 'skin.port_wine', (3.5,), 2048, dict(R, kind='birthmark', regions=[], size='medium', note='a port-wine stain'), 2)
+add('PortWineLarge', BOTH, 'skin.port_wine', (6.0,), 2048, dict(R, kind='birthmark', regions=[], size='large', note='a large port-wine stain'), 1)
+add('CafeAuLait', BOTH, 'skin.cafe_au_lait', ((2, 5),), 2048, dict(R, kind='birthmark', regions=[], size='small', note='cafe-au-lait spots'), 2)
+add('MongolianSpot', BOTH, 'skin.mongolian_spot', (), 2048, dict(R, kind='birthmark', regions=['lower_back'], size='medium', note='a slate-blue birthmark low on the back'), 1)
+add('LineaNigra', F, 'skin.linea_nigra', (0.30,), 2048, dict(R, kind='skin', regions=[], size='small', note='a faint pregnancy line'), 1)
+add('LineaNigraDark', F, 'skin.linea_nigra', (0.5,), 2048, dict(R, kind='skin', regions=[], size='small', note='a dark pregnancy line'), 1)
+add('FlushChest', BOTH, 'skin.flush', ('chest',), 1024, dict(R, kind='skin', regions=[], size='medium', note='blotchy redness on the chest'), 2)
+add('FlushButtocks', BOTH, 'skin.flush', ('buttocks',), 1024, dict(R, kind='skin', regions=[], size='medium', note='blotchy redness on the buttocks'), 1)
+add('KeratosisArms', BOTH, 'skin.flush', ('arms',), 2048, dict(R, kind='skin', regions=[], size='small', note='rough red bumps on the upper arms'), 1)
+add('Goosebumps', BOTH, 'skin.goosebumps', ('arms',), 2048, dict(R, kind='skin', regions=[], size='medium', note='goosebumps on the arms'), 1)
+add('GoosebumpsAll', BOTH, 'skin.goosebumps', ('arms_legs',), 2048, dict(R, kind='skin', regions=[], size='large', note='goosebumps on arms and legs'), 1)
+# scars -- women had none of ours; both get lengths, widths, ages
+for name, args, n_f, n_m, note in (
+        ('Scar', ((1, 3), (3.5, 8.0), (0.25, 0.45), False, 'everywhere', 'old'), 3, 0, 'healed scars'),
+        ('ScarStitched', ((1, 2), (3.0, 6.0), (0.25, 0.4), True, 'everywhere', 'old'), 2, 0, 'stitched scars'),
+        ('ScarThin', ((2, 5), (2.0, 5.0), (0.12, 0.2), False, 'everywhere', 'old'), 2, 2, 'thin pale scars'),
+        ('ScarLong', ((1, 1), (9.0, 14.0), (0.3, 0.5), False, 'upper', 'old'), 1, 2, 'one long scar'),
+        ('ScarNewer', ((1, 2), (3.0, 7.0), (0.25, 0.4), False, 'everywhere', 'newer'), 2, 2, 'newer pink scars'),
+        ('ScarArms', ((2, 4), (1.5, 4.0), (0.15, 0.3), False, 'arms', 'old'), 1, 2, 'scars on the arms'),
+        ('ScarLegs', ((2, 4), (2.0, 5.0), (0.2, 0.35), False, 'legs', 'old'), 1, 1, 'scars on the legs')):
+    if n_f:
+        add(name, F, 'skin.scars', args, 2048, dict(R, kind='scar', regions=[], size='small', note=note), n_f)
+    if n_m:
+        add(name if name not in ('Scar', 'ScarStitched') else name + 'More', M, 'skin.scars', args, 2048,
+            dict(R, kind='scar', regions=[], size='small', note=note), n_m)
+add('Keloid', BOTH, 'skin.keloid', ('chest',), 2048, dict(R, kind='scar', regions=['chest'], size='small', note='a keloid scar on the chest'), 1)
+add('KeloidArm', BOTH, 'skin.keloid', ('arms',), 2048, dict(R, kind='scar', regions=[], size='small', note='a keloid scar on an arm'), 1)
+add('Vaccination', BOTH, 'skin.vaccination', (-1, 1), 2048, dict(R, kind='scar', regions=['arm_l'], size='tiny', note='a smallpox vaccination scar'), 1)
+add('VaccinationTwo', BOTH, 'skin.vaccination', (-1, 2), 2048, dict(R, kind='scar', regions=['arm_l'], size='tiny', note='two vaccination scars'), 1)
+add('BiteScarDog', BOTH, 'skin.bite_scar', ('dog',), 2048, dict(R, kind='scar', regions=[], size='small', note='a healed dog bite'), 2)
+add('BiteScarHuman', BOTH, 'skin.bite_scar', ('human',), 2048, dict(R, kind='scar', regions=[], size='small', note='a healed human bite'), 1)
+# freckles, pores, stretch marks, acne -- in variety
+for name, args, note in (('FrecklesShoulders', (0.5, 'shoulders'), 'freckles on the shoulders'),
+                         ('FrecklesDense', (1.0, 'upper'), 'dense freckles'),
+                         ('FrecklesFaint', (0.25, 'upper'), 'a few faint freckles'),
+                         ('FrecklesArms', (0.6, 'arms'), 'freckled arms'),
+                         ('FrecklesEverywhere', (0.9, 'everywhere'), 'freckles all over'),
+                         ('FrecklesGinger', (1.0, 'everywhere', (0.03, 0.08), 'ginger'), 'ginger freckles all over'),
+                         ('FrecklesDark', (0.6, 'upper', (0.03, 0.07), 'medium'), 'darker freckles')):
+    add(name, BOTH, 'skin.freckles', args, 2048, dict(R, kind='freckles', regions=[], size='medium', note=note), 1)
+add('PoresFine', BOTH, 'skin.pores', (0.6, 9.0), 2048, dict(R, kind='skin', regions=[], size='full', note='fine skin texture'), 1)
+add('PoresCoarse', BOTH, 'skin.pores', (0.9, 4.0), 2048, dict(R, kind='skin', regions=[], size='full', note='coarse skin texture'), 1)
+for zone in ('hips', 'belly', 'breasts', 'thighs', 'buttocks', 'shoulders'):
+    sexes = F if zone == 'breasts' else (M if zone == 'shoulders' else BOTH)
+    for fresh in (False, True):
+        add(f'Stretch{zone.title()}{"Fresh" if fresh else "Old"}', sexes, 'skin.stretch', (zone, fresh), 2048,
+            dict(R, kind='skin', regions=[], size='small', note=f'{"fresh" if fresh else "old"} stretch marks, {zone}'), 1)
+for zone, amount in (('back', 0.7), ('chest', 0.5), ('buttocks', 0.5), ('shoulders', 0.6), ('back', 0.25)):
+    add(f'Acne{zone.title()}{"Light" if amount < 0.4 else ""}', BOTH, 'skin.acne', (zone, amount), 2048,
+        dict(R, kind='acne', regions=[], size='small', note=f'acne, {zone}'), 1)
+# pubic hair: more colours and styles
+for colour in ('ginger', 'lightbrown', 'darkbrown', 'grey'):
+    add(f'PubicNatural{colour.title()}', F, 'pubic_female', ('natural', colour), 2048, dict(R, kind='pubic_hair', regions=['pubic'], size='large', note=f'natural pubic hair, {colour}'), 1)
+for style, colours, size in (('bushy', ('brown', 'black', 'ginger', 'darkbrown'), 'large'),
+                             ('bikini', ('brown', 'black', 'blond', 'ginger'), 'small'),
+                             ('stubble', ('darkbrown', 'lightbrown'), 'small'),
+                             ('heart', ('brown', 'black'), 'small')):
+    for colour in colours:
+        add(f'Pubic{style.title()}{colour.title()}', F, 'skin.pubic_female', (style, colour), 2048,
+            dict(R, kind='pubic_hair', regions=['pubic'], size=size, note=f'{style} pubic hair, {colour}'), 1)
+for colour in ('ginger', 'darkbrown', 'lightbrown'):
+    add(f'PubicFull{colour.title()}', M, 'pubic_hair', ('full', 2048, HAIR_RGB[colour]), 2048, dict(R, kind='pubic_hair', regions=['pubic'], size='large', note=f'full pubic hair, {colour}'), 1)
+    add(f'PubicTrim{colour.title()}', M, 'pubic_hair', ('trim', 2048, HAIR_RGB[colour]), 2048, dict(R, kind='pubic_hair', regions=['pubic'], size='small', note=f'trimmed pubic hair, {colour}'), 1)
+# body hair: chest patterns and colours, limbs, backs; women's fine trail
+for pattern in ('light', 'sternum', 'heavy', 'full'):
+    for colour in (('brown', 'black', 'ginger', 'blond') if pattern != 'full' else ('ginger', 'blond', 'darkbrown')):
+        add(f'Chest{pattern.title()}{colour.title()}', M, 'skin.chest_hair', (pattern, colour), 2048,
+            dict(R, kind='body_hair', regions=['chest'], size='medium', note=f'{pattern} chest hair, {colour}'), 1)
+for colour, amount in (('blond', 1.0), ('ginger', 1.0), ('black', 1.4), ('brown', 0.5)):
+    add(f'LimbHair{colour.title()}{"Heavy" if amount > 1.2 else ("Light" if amount < 0.8 else "")}', M, 'skin.limb_hair', (colour, amount), 2048,
+        dict(R, kind='body_hair', regions=[], size='medium', note=f'arm and leg hair, {colour}'), 1)
+for colour, amount in (('brown', 0.5), ('black', 1.0), ('grey', 0.7)):
+    add(f'BackHair{colour.title()}{"Light" if amount < 0.8 else "Heavy"}', M, 'skin.back_hair', (colour, amount), 2048,
+        dict(R, kind='body_hair', regions=['back'], size='large', note=f'back hair, {colour}'), 1)
+for colour in ('brown', 'blond', 'ginger'):
+    add(f'Underarm{colour.title()}More', F, 'underarm_hair', (colour,), 2048, dict(R, kind='body_hair', regions=[], size='tiny', note=f'unshaved underarms, {colour}'), 1)
+add('TrailFemale', F, 'skin.female_trail', ('brown',), 2048, dict(R, kind='body_hair', regions=[], size='tiny', note='a faint line of hair below the navel'), 1)
+add('TrailFemaleDark', F, 'skin.female_trail', ('darkbrown',), 2048, dict(R, kind='body_hair', regions=[], size='tiny', note='a darker line of hair below the navel'), 1)
+# sun: strengths and cuts
+for cut, strengths, sexes in (('tshirt', (0.2, 0.45), BOTH), ('sleeve34', (0.32,), BOTH), ('tank', (0.2, 0.45), BOTH),
+                              ('bikini', (0.2, 0.45), F), ('onepiece', (0.32, 0.45), F), ('shorts', (0.45,), M)):
+    for k, st in enumerate(strengths):
+        add(f'Tan{cut.title()}{"Light" if st < 0.3 else ("Dark" if st > 0.4 else "")}', sexes, 'tan_lines', (cut, st), 1024,
+            dict(R, kind='tan', regions=[], size='full', note=f'{cut} tan lines'), 1)
+add('SunburnMild', BOTH, 'sunburn', (0.55, False), 1024, dict(R, kind='tan', regions=[], size='large', note='mild sunburn'), 1)
+add('SunburnSevere', BOTH, 'sunburn', (1.4, True), 1024, dict(R, kind='tan', regions=[], size='large', note='severe sunburn, peeling'), 1)
+# the rest, heavier and lighter
+add('AgeSpotsHeavy', BOTH, 'skin.sun_spots', (1.3,), 2048, dict(R, kind='skin', regions=[], size='medium', note='heavy age spots'), 1)
+add('VaricoseHeavy', BOTH, 'varicose', (), 2048, dict(R, kind='skin', regions=[], size='small', note='varicose veins'), 1)
+add('CelluliteMore', F, 'cellulite', (), 1024, dict(R, kind='skin', regions=[], size='medium', note='cellulite'), 2)
+for tone in ('pink', 'rose', 'brown', 'dark'):
+    for label, size in (('Small', 0.6), ('Large', 1.15)):
+        add(f'Nipples{tone.title()}{label}', M, 'nipples', (tone, False, size), 2048,
+            dict(R, kind='nipple', regions=['chest'], size='tiny', note=f'{label.lower()} {tone} nipples'), 1)
+
 
 def design(spec, rng):
     kind, *rest = spec
@@ -425,6 +541,8 @@ def paint(painter, m, rng, args):
     if painter == 'scar_decal':
         spec, spot, side, width = args
         return life.scar_decal(m, rng, design(spec, rng), spot, side, width)
+    if painter.startswith('skin.'):
+        return getattr(skin, painter[5:])(m, rng, *args)
     for module in (marks, realism, life, hands):
         if hasattr(module, painter):
             return getattr(module, painter)(m, rng, *args)

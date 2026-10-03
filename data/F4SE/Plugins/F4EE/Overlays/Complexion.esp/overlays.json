@@ -6662,5 +6662,3127 @@
   "transformable": true,
   "sort": 0,
   "gender": 1
+ },
+ {
+  "id": "Complexion_MolesScattered_F01",
+  "name": "Complexion - scattered small moles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesScattered_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesScattered_F02",
+  "name": "Complexion - scattered small moles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesScattered_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesScattered_M01",
+  "name": "Complexion - scattered small moles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesScattered_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_MolesFewLarge_F01",
+  "name": "Complexion - a few large raised moles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesFewLarge_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesFewLarge_F02",
+  "name": "Complexion - a few large raised moles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesFewLarge_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesFewLarge_M01",
+  "name": "Complexion - a few large raised moles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesFewLarge_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_MolesClustered_F01",
+  "name": "Complexion - moles in clusters",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesClustered_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesClustered_F02",
+  "name": "Complexion - moles in clusters",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesClustered_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesClustered_M01",
+  "name": "Complexion - moles in clusters",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesClustered_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_MolesBack_F01",
+  "name": "Complexion - moles over the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesBack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesBack_F02",
+  "name": "Complexion - moles over the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesBack_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesBack_M01",
+  "name": "Complexion - moles over the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesBack_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_MolesFront_F01",
+  "name": "Complexion - moles on the chest and belly",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesFront_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesFront_F02",
+  "name": "Complexion - moles on the chest and belly",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesFront_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesFront_M01",
+  "name": "Complexion - moles on the chest and belly",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesFront_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_MolesLight_F01",
+  "name": "Complexion - light-brown flat moles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesLight_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesLight_F02",
+  "name": "Complexion - light-brown flat moles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesLight_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesLight_M01",
+  "name": "Complexion - light-brown flat moles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesLight_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_MolesMany_F01",
+  "name": "Complexion - many small moles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesMany_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesMany_F02",
+  "name": "Complexion - many small moles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesMany_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesMany_M01",
+  "name": "Complexion - many small moles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesMany_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_MolesRaisedDark_F01",
+  "name": "Complexion - dark raised moles, upper body",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesRaisedDark_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesRaisedDark_F02",
+  "name": "Complexion - dark raised moles, upper body",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesRaisedDark_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MolesRaisedDark_M01",
+  "name": "Complexion - dark raised moles, upper body",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MolesRaisedDark_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_CherryAngiomas_F01",
+  "name": "Complexion - tiny red cherry angiomas",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_CherryAngiomas_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_CherryAngiomas_F02",
+  "name": "Complexion - tiny red cherry angiomas",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_CherryAngiomas_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_CherryAngiomas_M01",
+  "name": "Complexion - tiny red cherry angiomas",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_CherryAngiomas_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_CherryAngiomas_M02",
+  "name": "Complexion - tiny red cherry angiomas",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_CherryAngiomas_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SunSpots_F01",
+  "name": "Complexion - sun spots on the shoulders",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SunSpots_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SunSpots_M01",
+  "name": "Complexion - sun spots on the shoulders",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SunSpots_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SunSpotsHeavy_F01",
+  "name": "Complexion - heavy sun spots",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SunSpotsHeavy_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SunSpotsHeavy_M01",
+  "name": "Complexion - heavy sun spots",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SunSpotsHeavy_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PortWine_F01",
+  "name": "Complexion - a port-wine stain",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PortWine_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PortWine_F02",
+  "name": "Complexion - a port-wine stain",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PortWine_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PortWine_M01",
+  "name": "Complexion - a port-wine stain",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PortWine_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PortWine_M02",
+  "name": "Complexion - a port-wine stain",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PortWine_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PortWineLarge_F01",
+  "name": "Complexion - a large port-wine stain",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PortWineLarge_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PortWineLarge_M01",
+  "name": "Complexion - a large port-wine stain",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PortWineLarge_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_CafeAuLait_F01",
+  "name": "Complexion - cafe-au-lait spots",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_CafeAuLait_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_CafeAuLait_F02",
+  "name": "Complexion - cafe-au-lait spots",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_CafeAuLait_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_CafeAuLait_M01",
+  "name": "Complexion - cafe-au-lait spots",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_CafeAuLait_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_CafeAuLait_M02",
+  "name": "Complexion - cafe-au-lait spots",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_CafeAuLait_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_MongolianSpot_F01",
+  "name": "Complexion - a slate-blue birthmark low on the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MongolianSpot_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_MongolianSpot_M01",
+  "name": "Complexion - a slate-blue birthmark low on the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_MongolianSpot_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_LineaNigra_F01",
+  "name": "Complexion - a faint pregnancy line",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_LineaNigra_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_LineaNigraDark_F01",
+  "name": "Complexion - a dark pregnancy line",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_LineaNigraDark_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_FlushChest_F01",
+  "name": "Complexion - blotchy redness on the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FlushChest_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_FlushChest_F02",
+  "name": "Complexion - blotchy redness on the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FlushChest_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_FlushChest_M01",
+  "name": "Complexion - blotchy redness on the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FlushChest_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_FlushChest_M02",
+  "name": "Complexion - blotchy redness on the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FlushChest_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_FlushButtocks_F01",
+  "name": "Complexion - blotchy redness on the buttocks",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FlushButtocks_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_FlushButtocks_M01",
+  "name": "Complexion - blotchy redness on the buttocks",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FlushButtocks_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_KeratosisArms_F01",
+  "name": "Complexion - rough red bumps on the upper arms",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_KeratosisArms_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_KeratosisArms_M01",
+  "name": "Complexion - rough red bumps on the upper arms",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_KeratosisArms_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Goosebumps_F01",
+  "name": "Complexion - goosebumps on the arms",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Goosebumps_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Goosebumps_M01",
+  "name": "Complexion - goosebumps on the arms",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Goosebumps_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_GoosebumpsAll_F01",
+  "name": "Complexion - goosebumps on arms and legs",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_GoosebumpsAll_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_GoosebumpsAll_M01",
+  "name": "Complexion - goosebumps on arms and legs",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_GoosebumpsAll_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Scar_F01",
+  "name": "Complexion - healed scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Scar_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Scar_F02",
+  "name": "Complexion - healed scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Scar_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Scar_F03",
+  "name": "Complexion - healed scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Scar_F03.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_ScarStitched_F01",
+  "name": "Complexion - stitched scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarStitched_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_ScarStitched_F02",
+  "name": "Complexion - stitched scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarStitched_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_ScarThin_F01",
+  "name": "Complexion - thin pale scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarThin_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_ScarThin_F02",
+  "name": "Complexion - thin pale scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarThin_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_ScarThin_M01",
+  "name": "Complexion - thin pale scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarThin_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ScarThin_M02",
+  "name": "Complexion - thin pale scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarThin_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ScarLong_F01",
+  "name": "Complexion - one long scar",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarLong_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_ScarLong_M01",
+  "name": "Complexion - one long scar",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarLong_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ScarLong_M02",
+  "name": "Complexion - one long scar",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarLong_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ScarNewer_F01",
+  "name": "Complexion - newer pink scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarNewer_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_ScarNewer_F02",
+  "name": "Complexion - newer pink scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarNewer_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_ScarNewer_M01",
+  "name": "Complexion - newer pink scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarNewer_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ScarNewer_M02",
+  "name": "Complexion - newer pink scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarNewer_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ScarArms_F01",
+  "name": "Complexion - scars on the arms",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarArms_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_ScarArms_M01",
+  "name": "Complexion - scars on the arms",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarArms_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ScarArms_M02",
+  "name": "Complexion - scars on the arms",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarArms_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ScarLegs_F01",
+  "name": "Complexion - scars on the legs",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarLegs_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_ScarLegs_M01",
+  "name": "Complexion - scars on the legs",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ScarLegs_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Keloid_F01",
+  "name": "Complexion - a keloid scar on the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Keloid_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Keloid_M01",
+  "name": "Complexion - a keloid scar on the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Keloid_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_KeloidArm_F01",
+  "name": "Complexion - a keloid scar on an arm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_KeloidArm_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_KeloidArm_M01",
+  "name": "Complexion - a keloid scar on an arm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_KeloidArm_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Vaccination_F01",
+  "name": "Complexion - a smallpox vaccination scar",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Vaccination_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Vaccination_M01",
+  "name": "Complexion - a smallpox vaccination scar",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Vaccination_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_VaccinationTwo_F01",
+  "name": "Complexion - two vaccination scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_VaccinationTwo_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_VaccinationTwo_M01",
+  "name": "Complexion - two vaccination scars",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_VaccinationTwo_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_BiteScarDog_F01",
+  "name": "Complexion - a healed dog bite",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_BiteScarDog_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_BiteScarDog_F02",
+  "name": "Complexion - a healed dog bite",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_BiteScarDog_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_BiteScarDog_M01",
+  "name": "Complexion - a healed dog bite",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_BiteScarDog_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_BiteScarDog_M02",
+  "name": "Complexion - a healed dog bite",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_BiteScarDog_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_BiteScarHuman_F01",
+  "name": "Complexion - a healed human bite",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_BiteScarHuman_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_BiteScarHuman_M01",
+  "name": "Complexion - a healed human bite",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_BiteScarHuman_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_FrecklesShoulders_F01",
+  "name": "Complexion - freckles on the shoulders",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesShoulders_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_FrecklesShoulders_M01",
+  "name": "Complexion - freckles on the shoulders",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesShoulders_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_FrecklesDense_F01",
+  "name": "Complexion - dense freckles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesDense_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_FrecklesDense_M01",
+  "name": "Complexion - dense freckles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesDense_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_FrecklesFaint_F01",
+  "name": "Complexion - a few faint freckles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesFaint_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_FrecklesFaint_M01",
+  "name": "Complexion - a few faint freckles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesFaint_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_FrecklesArms_F01",
+  "name": "Complexion - freckled arms",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesArms_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_FrecklesArms_M01",
+  "name": "Complexion - freckled arms",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesArms_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_FrecklesEverywhere_F01",
+  "name": "Complexion - freckles all over",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesEverywhere_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_FrecklesEverywhere_M01",
+  "name": "Complexion - freckles all over",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesEverywhere_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_FrecklesGinger_F01",
+  "name": "Complexion - ginger freckles all over",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesGinger_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_FrecklesGinger_M01",
+  "name": "Complexion - ginger freckles all over",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesGinger_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_FrecklesDark_F01",
+  "name": "Complexion - darker freckles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesDark_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_FrecklesDark_M01",
+  "name": "Complexion - darker freckles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_FrecklesDark_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PoresFine_F01",
+  "name": "Complexion - fine skin texture",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PoresFine_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PoresFine_M01",
+  "name": "Complexion - fine skin texture",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PoresFine_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PoresCoarse_F01",
+  "name": "Complexion - coarse skin texture",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PoresCoarse_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PoresCoarse_M01",
+  "name": "Complexion - coarse skin texture",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PoresCoarse_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_StretchHipsOld_F01",
+  "name": "Complexion - old stretch marks, hips",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchHipsOld_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_StretchHipsOld_M01",
+  "name": "Complexion - old stretch marks, hips",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchHipsOld_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_StretchHipsFresh_F01",
+  "name": "Complexion - fresh stretch marks, hips",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchHipsFresh_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_StretchHipsFresh_M01",
+  "name": "Complexion - fresh stretch marks, hips",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchHipsFresh_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_StretchBellyOld_F01",
+  "name": "Complexion - old stretch marks, belly",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchBellyOld_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_StretchBellyOld_M01",
+  "name": "Complexion - old stretch marks, belly",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchBellyOld_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_StretchBellyFresh_F01",
+  "name": "Complexion - fresh stretch marks, belly",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchBellyFresh_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_StretchBellyFresh_M01",
+  "name": "Complexion - fresh stretch marks, belly",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchBellyFresh_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_StretchBreastsOld_F01",
+  "name": "Complexion - old stretch marks, breasts",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchBreastsOld_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_StretchBreastsFresh_F01",
+  "name": "Complexion - fresh stretch marks, breasts",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchBreastsFresh_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_StretchThighsOld_F01",
+  "name": "Complexion - old stretch marks, thighs",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchThighsOld_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_StretchThighsOld_M01",
+  "name": "Complexion - old stretch marks, thighs",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchThighsOld_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_StretchThighsFresh_F01",
+  "name": "Complexion - fresh stretch marks, thighs",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchThighsFresh_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_StretchThighsFresh_M01",
+  "name": "Complexion - fresh stretch marks, thighs",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchThighsFresh_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_StretchButtocksOld_F01",
+  "name": "Complexion - old stretch marks, buttocks",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchButtocksOld_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_StretchButtocksOld_M01",
+  "name": "Complexion - old stretch marks, buttocks",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchButtocksOld_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_StretchButtocksFresh_F01",
+  "name": "Complexion - fresh stretch marks, buttocks",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchButtocksFresh_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_StretchButtocksFresh_M01",
+  "name": "Complexion - fresh stretch marks, buttocks",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchButtocksFresh_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_StretchShouldersOld_M01",
+  "name": "Complexion - old stretch marks, shoulders",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchShouldersOld_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_StretchShouldersFresh_M01",
+  "name": "Complexion - fresh stretch marks, shoulders",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_StretchShouldersFresh_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_AcneBack_F01",
+  "name": "Complexion - acne, back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_AcneBack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_AcneBack_M01",
+  "name": "Complexion - acne, back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_AcneBack_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_AcneChest_F01",
+  "name": "Complexion - acne, chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_AcneChest_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_AcneChest_M01",
+  "name": "Complexion - acne, chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_AcneChest_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_AcneButtocks_F01",
+  "name": "Complexion - acne, buttocks",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_AcneButtocks_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_AcneButtocks_M01",
+  "name": "Complexion - acne, buttocks",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_AcneButtocks_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_AcneShoulders_F01",
+  "name": "Complexion - acne, shoulders",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_AcneShoulders_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_AcneShoulders_M01",
+  "name": "Complexion - acne, shoulders",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_AcneShoulders_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_AcneBackLight_F01",
+  "name": "Complexion - acne, back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_AcneBackLight_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_AcneBackLight_M01",
+  "name": "Complexion - acne, back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_AcneBackLight_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PubicNaturalGinger_F01",
+  "name": "Complexion - natural pubic hair, ginger",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicNaturalGinger_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicNaturalLightbrown_F01",
+  "name": "Complexion - natural pubic hair, lightbrown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicNaturalLightbrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicNaturalDarkbrown_F01",
+  "name": "Complexion - natural pubic hair, darkbrown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicNaturalDarkbrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicNaturalGrey_F01",
+  "name": "Complexion - natural pubic hair, grey",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicNaturalGrey_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicBushyBrown_F01",
+  "name": "Complexion - bushy pubic hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicBushyBrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicBushyBlack_F01",
+  "name": "Complexion - bushy pubic hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicBushyBlack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicBushyGinger_F01",
+  "name": "Complexion - bushy pubic hair, ginger",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicBushyGinger_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicBushyDarkbrown_F01",
+  "name": "Complexion - bushy pubic hair, darkbrown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicBushyDarkbrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicBikiniBrown_F01",
+  "name": "Complexion - bikini pubic hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicBikiniBrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicBikiniBlack_F01",
+  "name": "Complexion - bikini pubic hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicBikiniBlack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicBikiniBlond_F01",
+  "name": "Complexion - bikini pubic hair, blond",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicBikiniBlond_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicBikiniGinger_F01",
+  "name": "Complexion - bikini pubic hair, ginger",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicBikiniGinger_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicStubbleDarkbrown_F01",
+  "name": "Complexion - stubble pubic hair, darkbrown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicStubbleDarkbrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicStubbleLightbrown_F01",
+  "name": "Complexion - stubble pubic hair, lightbrown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicStubbleLightbrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicHeartBrown_F01",
+  "name": "Complexion - heart pubic hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicHeartBrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicHeartBlack_F01",
+  "name": "Complexion - heart pubic hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicHeartBlack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicFullGinger_M01",
+  "name": "Complexion - full pubic hair, ginger",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicFullGinger_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PubicTrimGinger_M01",
+  "name": "Complexion - trimmed pubic hair, ginger",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicTrimGinger_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PubicFullDarkbrown_M01",
+  "name": "Complexion - full pubic hair, darkbrown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicFullDarkbrown_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PubicTrimDarkbrown_M01",
+  "name": "Complexion - trimmed pubic hair, darkbrown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicTrimDarkbrown_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PubicFullLightbrown_M01",
+  "name": "Complexion - full pubic hair, lightbrown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicFullLightbrown_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PubicTrimLightbrown_M01",
+  "name": "Complexion - trimmed pubic hair, lightbrown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicTrimLightbrown_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestLightBrown_M01",
+  "name": "Complexion - light chest hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestLightBrown_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestLightBlack_M01",
+  "name": "Complexion - light chest hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestLightBlack_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestLightGinger_M01",
+  "name": "Complexion - light chest hair, ginger",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestLightGinger_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestLightBlond_M01",
+  "name": "Complexion - light chest hair, blond",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestLightBlond_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestSternumBrown_M01",
+  "name": "Complexion - sternum chest hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestSternumBrown_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestSternumBlack_M01",
+  "name": "Complexion - sternum chest hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestSternumBlack_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestSternumGinger_M01",
+  "name": "Complexion - sternum chest hair, ginger",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestSternumGinger_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestSternumBlond_M01",
+  "name": "Complexion - sternum chest hair, blond",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestSternumBlond_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestHeavyBrown_M01",
+  "name": "Complexion - heavy chest hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestHeavyBrown_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestHeavyBlack_M01",
+  "name": "Complexion - heavy chest hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestHeavyBlack_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestHeavyGinger_M01",
+  "name": "Complexion - heavy chest hair, ginger",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestHeavyGinger_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestHeavyBlond_M01",
+  "name": "Complexion - heavy chest hair, blond",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestHeavyBlond_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestFullGinger_M01",
+  "name": "Complexion - full chest hair, ginger",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestFullGinger_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestFullBlond_M01",
+  "name": "Complexion - full chest hair, blond",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestFullBlond_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestFullDarkbrown_M01",
+  "name": "Complexion - full chest hair, darkbrown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestFullDarkbrown_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_LimbHairBlond_M01",
+  "name": "Complexion - arm and leg hair, blond",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_LimbHairBlond_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_LimbHairGinger_M01",
+  "name": "Complexion - arm and leg hair, ginger",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_LimbHairGinger_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_LimbHairBlackHeavy_M01",
+  "name": "Complexion - arm and leg hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_LimbHairBlackHeavy_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_LimbHairBrownLight_M01",
+  "name": "Complexion - arm and leg hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_LimbHairBrownLight_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_BackHairBrownLight_M01",
+  "name": "Complexion - back hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_BackHairBrownLight_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_BackHairBlackHeavy_M01",
+  "name": "Complexion - back hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_BackHairBlackHeavy_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_BackHairGreyLight_M01",
+  "name": "Complexion - back hair, grey",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_BackHairGreyLight_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_UnderarmBrownMore_F01",
+  "name": "Complexion - unshaved underarms, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_UnderarmBrownMore_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_UnderarmBlondMore_F01",
+  "name": "Complexion - unshaved underarms, blond",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_UnderarmBlondMore_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_UnderarmGingerMore_F01",
+  "name": "Complexion - unshaved underarms, ginger",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_UnderarmGingerMore_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TrailFemale_F01",
+  "name": "Complexion - a faint line of hair below the navel",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TrailFemale_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TrailFemaleDark_F01",
+  "name": "Complexion - a darker line of hair below the navel",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TrailFemaleDark_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TanTshirtLight_F01",
+  "name": "Complexion - tshirt tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanTshirtLight_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TanTshirtLight_M01",
+  "name": "Complexion - tshirt tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanTshirtLight_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TanTshirtDark_F01",
+  "name": "Complexion - tshirt tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanTshirtDark_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TanTshirtDark_M01",
+  "name": "Complexion - tshirt tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanTshirtDark_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TanSleeve34_F01",
+  "name": "Complexion - sleeve34 tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanSleeve34_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TanSleeve34_M01",
+  "name": "Complexion - sleeve34 tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanSleeve34_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TanTankLight_F01",
+  "name": "Complexion - tank tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanTankLight_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TanTankLight_M01",
+  "name": "Complexion - tank tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanTankLight_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TanTankDark_F01",
+  "name": "Complexion - tank tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanTankDark_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TanTankDark_M01",
+  "name": "Complexion - tank tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanTankDark_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TanBikiniLight_F01",
+  "name": "Complexion - bikini tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanBikiniLight_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TanBikiniDark_F01",
+  "name": "Complexion - bikini tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanBikiniDark_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TanOnepiece_F01",
+  "name": "Complexion - onepiece tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanOnepiece_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TanOnepieceDark_F01",
+  "name": "Complexion - onepiece tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanOnepieceDark_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TanShortsDark_M01",
+  "name": "Complexion - shorts tan lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TanShortsDark_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SunburnMild_F01",
+  "name": "Complexion - mild sunburn",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SunburnMild_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SunburnMild_M01",
+  "name": "Complexion - mild sunburn",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SunburnMild_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SunburnSevere_F01",
+  "name": "Complexion - severe sunburn, peeling",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SunburnSevere_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SunburnSevere_M01",
+  "name": "Complexion - severe sunburn, peeling",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SunburnSevere_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_AgeSpotsHeavy_F01",
+  "name": "Complexion - heavy age spots",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_AgeSpotsHeavy_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_AgeSpotsHeavy_M01",
+  "name": "Complexion - heavy age spots",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_AgeSpotsHeavy_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_VaricoseHeavy_F01",
+  "name": "Complexion - varicose veins",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_VaricoseHeavy_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_VaricoseHeavy_M01",
+  "name": "Complexion - varicose veins",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_VaricoseHeavy_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_CelluliteMore_F01",
+  "name": "Complexion - cellulite",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_CelluliteMore_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_CelluliteMore_F02",
+  "name": "Complexion - cellulite",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_CelluliteMore_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_NipplesPinkSmall_M01",
+  "name": "Complexion - small pink nipples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesPinkSmall_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_NipplesPinkLarge_M01",
+  "name": "Complexion - large pink nipples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesPinkLarge_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_NipplesRoseSmall_M01",
+  "name": "Complexion - small rose nipples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesRoseSmall_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_NipplesRoseLarge_M01",
+  "name": "Complexion - large rose nipples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesRoseLarge_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_NipplesBrownSmall_M01",
+  "name": "Complexion - small brown nipples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesBrownSmall_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_NipplesBrownLarge_M01",
+  "name": "Complexion - large brown nipples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesBrownLarge_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_NipplesDarkSmall_M01",
+  "name": "Complexion - small dark nipples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesDarkSmall_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_NipplesDarkLarge_M01",
+  "name": "Complexion - large dark nipples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesDarkLarge_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
  }
 ]

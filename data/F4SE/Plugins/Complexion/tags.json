@@ -3079,6 +3079,78 @@
 "realistic_art"
 ]
 },
+"f:Complexion_AcneBackLight_F01": {
+"adult": false,
+"emblem": null,
+"kind": "acne",
+"lore": "fits",
+"note": "acne, back",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_AcneBack_F01": {
+"adult": false,
+"emblem": null,
+"kind": "acne",
+"lore": "fits",
+"note": "acne, back",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_AcneButtocks_F01": {
+"adult": false,
+"emblem": null,
+"kind": "acne",
+"lore": "fits",
+"note": "acne, buttocks",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_AcneChest_F01": {
+"adult": false,
+"emblem": null,
+"kind": "acne",
+"lore": "fits",
+"note": "acne, chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_AcneShoulders_F01": {
+"adult": false,
+"emblem": null,
+"kind": "acne",
+"lore": "fits",
+"note": "acne, shoulders",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_AgeSpotsHeavy_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "heavy age spots",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
 "f:Complexion_AgeSpots_F01": {
 "adult": false,
 "emblem": null,
@@ -3155,6 +3227,42 @@
 "sexual",
 "lewd"
 ]
+},
+"f:Complexion_BiteScarDog_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a healed dog bite",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_BiteScarDog_F02": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a healed dog bite",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_BiteScarHuman_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a healed human bite",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
 },
 "f:Complexion_BiteShoulder_F01": {
 "adult": true,
@@ -3341,6 +3449,54 @@
 "size": "medium",
 "style": []
 },
+"f:Complexion_CafeAuLait_F01": {
+"adult": false,
+"emblem": null,
+"kind": "birthmark",
+"lore": "fits",
+"note": "cafe-au-lait spots",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_CafeAuLait_F02": {
+"adult": false,
+"emblem": null,
+"kind": "birthmark",
+"lore": "fits",
+"note": "cafe-au-lait spots",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_CelluliteMore_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "cellulite",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_CelluliteMore_F02": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "cellulite",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
 "f:Complexion_Cellulite_F01": {
 "adult": false,
 "emblem": null,
@@ -3363,6 +3519,30 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
+"style": []
+},
+"f:Complexion_CherryAngiomas_F01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "tiny red cherry angiomas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_CherryAngiomas_F02": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "tiny red cherry angiomas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
 "style": []
 },
 "f:Complexion_CigBurnsHealed_F01": {
@@ -4227,6 +4407,126 @@
 "geometric"
 ]
 },
+"f:Complexion_FlushButtocks_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "blotchy redness on the buttocks",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_FlushChest_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "blotchy redness on the chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_FlushChest_F02": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "blotchy redness on the chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_FrecklesArms_F01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "freckled arms",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_FrecklesDark_F01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "darker freckles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_FrecklesDense_F01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "dense freckles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_FrecklesEverywhere_F01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "freckles all over",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_FrecklesFaint_F01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "a few faint freckles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_FrecklesGinger_F01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "ginger freckles all over",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_FrecklesShoulders_F01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "freckles on the shoulders",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
 "f:Complexion_Freckles_F01": {
 "adult": false,
 "emblem": null,
@@ -4257,6 +4557,30 @@
 "kind": "freckles",
 "lore": "fits",
 "note": "sun freckles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_GoosebumpsAll_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "goosebumps on arms and legs",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"f:Complexion_Goosebumps_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "goosebumps on the arms",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -4395,6 +4719,44 @@
 "lewd"
 ]
 },
+"f:Complexion_KeloidArm_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a keloid scar on an arm",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_Keloid_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a keloid scar on the chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": []
+},
+"f:Complexion_KeratosisArms_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "rough red bumps on the upper arms",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
 "f:Complexion_KissPink_F01": {
 "adult": true,
 "emblem": null,
@@ -4504,6 +4866,30 @@
 "back"
 ],
 "size": "large",
+"style": []
+},
+"f:Complexion_LineaNigraDark_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "a dark pregnancy line",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_LineaNigra_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "a faint pregnancy line",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
 "style": []
 },
 "f:Complexion_MarkerCumRag_F01": {
@@ -4617,6 +5003,212 @@
 "degrading",
 "script"
 ]
+},
+"f:Complexion_MolesBack_F01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "moles over the back",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesBack_F02": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "moles over the back",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesClustered_F01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "moles in clusters",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesClustered_F02": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "moles in clusters",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesFewLarge_F01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "a few large raised moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesFewLarge_F02": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "a few large raised moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesFront_F01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "moles on the chest and belly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesFront_F02": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "moles on the chest and belly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesLight_F01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "light-brown flat moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesLight_F02": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "light-brown flat moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesMany_F01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "many small moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesMany_F02": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "many small moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesRaisedDark_F01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "dark raised moles, upper body",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesRaisedDark_F02": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "dark raised moles, upper body",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesScattered_F01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "scattered small moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MolesScattered_F02": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "scattered small moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_MongolianSpot_F01": {
+"adult": false,
+"emblem": null,
+"kind": "birthmark",
+"lore": "fits",
+"note": "a slate-blue birthmark low on the back",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"lower_back"
+],
+"size": "medium",
+"style": []
 },
 "f:Complexion_Mud_F01": {
 "adult": false,
@@ -4987,6 +5579,30 @@
 "size": "small",
 "style": []
 },
+"f:Complexion_PoresCoarse_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "coarse skin texture",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"f:Complexion_PoresFine_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "fine skin texture",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
 "f:Complexion_Pores_F01": {
 "adult": false,
 "emblem": null,
@@ -5009,6 +5625,182 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
+"style": []
+},
+"f:Complexion_PortWineLarge_F01": {
+"adult": false,
+"emblem": null,
+"kind": "birthmark",
+"lore": "fits",
+"note": "a large port-wine stain",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"f:Complexion_PortWine_F01": {
+"adult": false,
+"emblem": null,
+"kind": "birthmark",
+"lore": "fits",
+"note": "a port-wine stain",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_PortWine_F02": {
+"adult": false,
+"emblem": null,
+"kind": "birthmark",
+"lore": "fits",
+"note": "a port-wine stain",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_PubicBikiniBlack_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "bikini pubic hair, black",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
+"f:Complexion_PubicBikiniBlond_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "bikini pubic hair, blond",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
+"f:Complexion_PubicBikiniBrown_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "bikini pubic hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
+"f:Complexion_PubicBikiniGinger_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "bikini pubic hair, ginger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
+"f:Complexion_PubicBushyBlack_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "bushy pubic hair, black",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"f:Complexion_PubicBushyBrown_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "bushy pubic hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"f:Complexion_PubicBushyDarkbrown_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "bushy pubic hair, darkbrown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"f:Complexion_PubicBushyGinger_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "bushy pubic hair, ginger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"f:Complexion_PubicHeartBlack_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "heart pubic hair, black",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
+"f:Complexion_PubicHeartBrown_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "heart pubic hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
 "style": []
 },
 "f:Complexion_PubicLandingBlack_F01": {
@@ -5093,6 +5885,90 @@
 "pubic"
 ],
 "size": "large",
+"style": []
+},
+"f:Complexion_PubicNaturalDarkbrown_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "natural pubic hair, darkbrown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"f:Complexion_PubicNaturalGinger_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "natural pubic hair, ginger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"f:Complexion_PubicNaturalGrey_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "natural pubic hair, grey",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"f:Complexion_PubicNaturalLightbrown_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "natural pubic hair, lightbrown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"f:Complexion_PubicStubbleDarkbrown_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "stubble pubic hair, darkbrown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
+"f:Complexion_PubicStubbleLightbrown_F01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "stubble pubic hair, lightbrown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
 "style": []
 },
 "f:Complexion_PubicTriangleBlack_F01": {
@@ -5273,6 +6149,150 @@
 "size": "small",
 "style": []
 },
+"f:Complexion_ScarArms_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "scars on the arms",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_ScarLegs_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "scars on the legs",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_ScarLong_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "one long scar",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_ScarNewer_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "newer pink scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_ScarNewer_F02": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "newer pink scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_ScarStitched_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "stitched scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_ScarStitched_F02": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "stitched scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_ScarThin_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "thin pale scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_ScarThin_F02": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "thin pale scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_Scar_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "healed scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_Scar_F02": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "healed scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_Scar_F03": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "healed scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
 "f:Complexion_ShackleAnkles_F01": {
 "adult": false,
 "emblem": null,
@@ -5337,6 +6357,126 @@
 "size": "medium",
 "style": []
 },
+"f:Complexion_StretchBellyFresh_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "fresh stretch marks, belly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_StretchBellyOld_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "old stretch marks, belly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_StretchBreastsFresh_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "fresh stretch marks, breasts",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_StretchBreastsOld_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "old stretch marks, breasts",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_StretchButtocksFresh_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "fresh stretch marks, buttocks",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_StretchButtocksOld_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "old stretch marks, buttocks",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_StretchHipsFresh_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "fresh stretch marks, hips",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_StretchHipsOld_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "old stretch marks, hips",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_StretchThighsFresh_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "fresh stretch marks, thighs",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_StretchThighsOld_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "old stretch marks, thighs",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
 "f:Complexion_Stretch_F01": {
 "adult": false,
 "emblem": null,
@@ -5395,6 +6535,54 @@
 "quality": "ok",
 "regions": [],
 "size": "small",
+"style": []
+},
+"f:Complexion_SunSpotsHeavy_F01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "heavy sun spots",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_SunSpots_F01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "sun spots on the shoulders",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_SunburnMild_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "mild sunburn",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"f:Complexion_SunburnSevere_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "severe sunburn, peeling",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
 "style": []
 },
 "f:Complexion_Sunburn_F01": {
@@ -5469,6 +6657,30 @@
 "size": "small",
 "style": []
 },
+"f:Complexion_TanBikiniDark_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "bikini tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"f:Complexion_TanBikiniLight_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "bikini tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
 "f:Complexion_TanBikini_F01": {
 "adult": false,
 "emblem": null,
@@ -5481,12 +6693,96 @@
 "size": "full",
 "style": []
 },
+"f:Complexion_TanOnepieceDark_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "onepiece tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"f:Complexion_TanOnepiece_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "onepiece tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"f:Complexion_TanSleeve34_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "sleeve34 tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"f:Complexion_TanTankDark_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "tank tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"f:Complexion_TanTankLight_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "tank tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
 "f:Complexion_TanTank_F01": {
 "adult": false,
 "emblem": null,
 "kind": "tan",
 "lore": "fits",
 "note": "tank-top tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"f:Complexion_TanTshirtDark_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "tshirt tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"f:Complexion_TanTshirtLight_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "tshirt tan lines",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -6662,12 +7958,60 @@
 "script"
 ]
 },
+"f:Complexion_TrailFemaleDark_F01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "a darker line of hair below the navel",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_TrailFemale_F01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "a faint line of hair below the navel",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
 "f:Complexion_UnderarmBlack_F01": {
 "adult": false,
 "emblem": null,
 "kind": "body_hair",
 "lore": "fits",
 "note": "unshaved underarms, black",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_UnderarmBlondMore_F01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "unshaved underarms, blond",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_UnderarmBrownMore_F01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "unshaved underarms, brown",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -6684,6 +8028,58 @@
 "quality": "ok",
 "regions": [],
 "size": "tiny",
+"style": []
+},
+"f:Complexion_UnderarmGingerMore_F01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "unshaved underarms, ginger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_VaccinationTwo_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "two vaccination scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_Vaccination_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a smallpox vaccination scar",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_VaricoseHeavy_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "varicose veins",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
 "style": []
 },
 "f:Complexion_Varicose_F01": {
@@ -25930,6 +27326,78 @@
 "size": "tiny",
 "style": []
 },
+"m:Complexion_AcneBackLight_M01": {
+"adult": false,
+"emblem": null,
+"kind": "acne",
+"lore": "fits",
+"note": "acne, back",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_AcneBack_M01": {
+"adult": false,
+"emblem": null,
+"kind": "acne",
+"lore": "fits",
+"note": "acne, back",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_AcneButtocks_M01": {
+"adult": false,
+"emblem": null,
+"kind": "acne",
+"lore": "fits",
+"note": "acne, buttocks",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_AcneChest_M01": {
+"adult": false,
+"emblem": null,
+"kind": "acne",
+"lore": "fits",
+"note": "acne, chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_AcneShoulders_M01": {
+"adult": false,
+"emblem": null,
+"kind": "acne",
+"lore": "fits",
+"note": "acne, shoulders",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_AgeSpotsHeavy_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "heavy age spots",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
 "m:Complexion_AgeSpots_M01": {
 "adult": false,
 "emblem": null,
@@ -25968,6 +27436,20 @@
 "size": "medium",
 "style": []
 },
+"m:Complexion_BackHairBlackHeavy_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "back hair, black",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "large",
+"style": []
+},
 "m:Complexion_BackHairBlack_M01": {
 "adult": false,
 "emblem": null,
@@ -25982,12 +27464,40 @@
 "size": "large",
 "style": []
 },
+"m:Complexion_BackHairBrownLight_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "back hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "large",
+"style": []
+},
 "m:Complexion_BackHairBrown_M01": {
 "adult": false,
 "emblem": null,
 "kind": "body_hair",
 "lore": "fits",
 "note": "back hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "large",
+"style": []
+},
+"m:Complexion_BackHairGreyLight_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "back hair, grey",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -26014,6 +27524,42 @@
 "kind": "birthmark",
 "lore": "fits",
 "note": "a birthmark",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_BiteScarDog_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a healed dog bite",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_BiteScarDog_M02": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a healed dog bite",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_BiteScarHuman_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a healed human bite",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -26205,6 +27751,96 @@
 "size": "medium",
 "style": []
 },
+"m:Complexion_CafeAuLait_M01": {
+"adult": false,
+"emblem": null,
+"kind": "birthmark",
+"lore": "fits",
+"note": "cafe-au-lait spots",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_CafeAuLait_M02": {
+"adult": false,
+"emblem": null,
+"kind": "birthmark",
+"lore": "fits",
+"note": "cafe-au-lait spots",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_CherryAngiomas_M01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "tiny red cherry angiomas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_CherryAngiomas_M02": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "tiny red cherry angiomas",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_ChestFullBlond_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "full chest hair, blond",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestFullDarkbrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "full chest hair, darkbrown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestFullGinger_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "full chest hair, ginger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
 "m:Complexion_ChestHairBlack_M01": {
 "adult": false,
 "emblem": null,
@@ -26239,6 +27875,174 @@
 "kind": "body_hair",
 "lore": "fits",
 "note": "chest hair, grey",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestHeavyBlack_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "heavy chest hair, black",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestHeavyBlond_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "heavy chest hair, blond",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestHeavyBrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "heavy chest hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestHeavyGinger_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "heavy chest hair, ginger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestLightBlack_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "light chest hair, black",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestLightBlond_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "light chest hair, blond",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestLightBrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "light chest hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestLightGinger_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "light chest hair, ginger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestSternumBlack_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "sternum chest hair, black",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestSternumBlond_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "sternum chest hair, blond",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestSternumBrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "sternum chest hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestSternumGinger_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "sternum chest hair, ginger",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -27109,6 +28913,126 @@
 "geometric"
 ]
 },
+"m:Complexion_FlushButtocks_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "blotchy redness on the buttocks",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_FlushChest_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "blotchy redness on the chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_FlushChest_M02": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "blotchy redness on the chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_FrecklesArms_M01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "freckled arms",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_FrecklesDark_M01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "darker freckles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_FrecklesDense_M01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "dense freckles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_FrecklesEverywhere_M01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "freckles all over",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_FrecklesFaint_M01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "a few faint freckles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_FrecklesGinger_M01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "ginger freckles all over",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_FrecklesShoulders_M01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "freckles on the shoulders",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
 "m:Complexion_Freckles_M01": {
 "adult": false,
 "emblem": null,
@@ -27127,6 +29051,30 @@
 "kind": "freckles",
 "lore": "fits",
 "note": "sun freckles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_GoosebumpsAll_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "goosebumps on arms and legs",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"m:Complexion_Goosebumps_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "goosebumps on the arms",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -27289,6 +29237,44 @@
 "lewd"
 ]
 },
+"m:Complexion_KeloidArm_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a keloid scar on an arm",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_Keloid_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a keloid scar on the chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": []
+},
+"m:Complexion_KeratosisArms_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "rough red bumps on the upper arms",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
 "m:Complexion_KissPink_M01": {
 "adult": true,
 "emblem": null,
@@ -27385,6 +29371,18 @@
 "size": "large",
 "style": []
 },
+"m:Complexion_LimbHairBlackHeavy_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "arm and leg hair, black",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
 "m:Complexion_LimbHairBlack_M01": {
 "adult": false,
 "emblem": null,
@@ -27397,12 +29395,48 @@
 "size": "medium",
 "style": []
 },
+"m:Complexion_LimbHairBlond_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "arm and leg hair, blond",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_LimbHairBrownLight_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "arm and leg hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
 "m:Complexion_LimbHairBrown_M01": {
 "adult": false,
 "emblem": null,
 "kind": "body_hair",
 "lore": "fits",
 "note": "arm and leg hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_LimbHairGinger_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "arm and leg hair, ginger",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -27489,6 +29523,78 @@
 "script"
 ]
 },
+"m:Complexion_MolesBack_M01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "moles over the back",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_MolesClustered_M01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "moles in clusters",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_MolesFewLarge_M01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "a few large raised moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_MolesFront_M01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "moles on the chest and belly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_MolesLight_M01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "light-brown flat moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_MolesMany_M01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "many small moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
 "m:Complexion_MolesMore_M01": {
 "adult": false,
 "emblem": null,
@@ -27519,6 +29625,30 @@
 "kind": "mole",
 "lore": "fits",
 "note": "moles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_MolesRaisedDark_M01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "dark raised moles, upper body",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_MolesScattered_M01": {
+"adult": false,
+"emblem": null,
+"kind": "mole",
+"lore": "fits",
+"note": "scattered small moles",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -27559,6 +29689,20 @@
 "quality": "ok",
 "regions": [],
 "size": "tiny",
+"style": []
+},
+"m:Complexion_MongolianSpot_M01": {
+"adult": false,
+"emblem": null,
+"kind": "birthmark",
+"lore": "fits",
+"note": "a slate-blue birthmark low on the back",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"lower_back"
+],
+"size": "medium",
 "style": []
 },
 "m:Complexion_Mud_M01": {
@@ -27615,12 +29759,68 @@
 "size": "tiny",
 "style": []
 },
+"m:Complexion_NipplesBrownLarge_M01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "large brown nipples",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_NipplesBrownSmall_M01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "small brown nipples",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": []
+},
 "m:Complexion_NipplesBrown_M01": {
 "adult": false,
 "emblem": null,
 "kind": "nipple",
 "lore": "fits",
 "note": "brown nipples",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_NipplesDarkLarge_M01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "large dark nipples",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_NipplesDarkSmall_M01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "small dark nipples",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -27643,12 +29843,68 @@
 "size": "tiny",
 "style": []
 },
+"m:Complexion_NipplesPinkLarge_M01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "large pink nipples",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_NipplesPinkSmall_M01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "small pink nipples",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": []
+},
 "m:Complexion_NipplesPink_M01": {
 "adult": false,
 "emblem": null,
 "kind": "nipple",
 "lore": "fits",
 "note": "pink nipples",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_NipplesRoseLarge_M01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "large rose nipples",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_NipplesRoseSmall_M01": {
+"adult": false,
+"emblem": null,
+"kind": "nipple",
+"lore": "fits",
+"note": "small rose nipples",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -27729,6 +29985,30 @@
 "size": "small",
 "style": []
 },
+"m:Complexion_PoresCoarse_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "coarse skin texture",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"m:Complexion_PoresFine_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "fine skin texture",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
 "m:Complexion_Pores_M01": {
 "adult": false,
 "emblem": null,
@@ -27751,6 +30031,42 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
+"style": []
+},
+"m:Complexion_PortWineLarge_M01": {
+"adult": false,
+"emblem": null,
+"kind": "birthmark",
+"lore": "fits",
+"note": "a large port-wine stain",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"m:Complexion_PortWine_M01": {
+"adult": false,
+"emblem": null,
+"kind": "birthmark",
+"lore": "fits",
+"note": "a port-wine stain",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_PortWine_M02": {
+"adult": false,
+"emblem": null,
+"kind": "birthmark",
+"lore": "fits",
+"note": "a port-wine stain",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
 "style": []
 },
 "m:Complexion_PubicFullAuburn_M01": {
@@ -27809,12 +30125,54 @@
 "size": "large",
 "style": []
 },
+"m:Complexion_PubicFullDarkbrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "full pubic hair, darkbrown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"m:Complexion_PubicFullGinger_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "full pubic hair, ginger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
 "m:Complexion_PubicFullGrey_M01": {
 "adult": false,
 "emblem": null,
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "full pubic hair, greying",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"m:Complexion_PubicFullLightbrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "full pubic hair, lightbrown",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -27913,6 +30271,48 @@
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
+"m:Complexion_PubicTrimDarkbrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "trimmed pubic hair, darkbrown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
+"m:Complexion_PubicTrimGinger_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "trimmed pubic hair, ginger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
+"m:Complexion_PubicTrimLightbrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "trimmed pubic hair, lightbrown",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -28043,6 +30443,90 @@
 "size": "small",
 "style": []
 },
+"m:Complexion_ScarArms_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "scars on the arms",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_ScarArms_M02": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "scars on the arms",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_ScarLegs_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "scars on the legs",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_ScarLong_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "one long scar",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_ScarLong_M02": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "one long scar",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_ScarNewer_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "newer pink scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_ScarNewer_M02": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "newer pink scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
 "m:Complexion_ScarStitched_M01": {
 "adult": false,
 "emblem": null,
@@ -28061,6 +30545,30 @@
 "kind": "scar",
 "lore": "fits",
 "note": "stitched scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_ScarThin_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "thin pale scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_ScarThin_M02": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "thin pale scars",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -28155,6 +30663,126 @@
 "size": "medium",
 "style": []
 },
+"m:Complexion_StretchBellyFresh_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "fresh stretch marks, belly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_StretchBellyOld_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "old stretch marks, belly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_StretchButtocksFresh_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "fresh stretch marks, buttocks",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_StretchButtocksOld_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "old stretch marks, buttocks",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_StretchHipsFresh_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "fresh stretch marks, hips",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_StretchHipsOld_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "old stretch marks, hips",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_StretchShouldersFresh_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "fresh stretch marks, shoulders",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_StretchShouldersOld_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "old stretch marks, shoulders",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_StretchThighsFresh_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "fresh stretch marks, thighs",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_StretchThighsOld_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "old stretch marks, thighs",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
 "m:Complexion_Stretch_M01": {
 "adult": false,
 "emblem": null,
@@ -28165,6 +30793,54 @@
 "quality": "ok",
 "regions": [],
 "size": "small",
+"style": []
+},
+"m:Complexion_SunSpotsHeavy_M01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "heavy sun spots",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_SunSpots_M01": {
+"adult": false,
+"emblem": null,
+"kind": "freckles",
+"lore": "fits",
+"note": "sun spots on the shoulders",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_SunburnMild_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "mild sunburn",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"m:Complexion_SunburnSevere_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "severe sunburn, peeling",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
 "style": []
 },
 "m:Complexion_Sunburn_M01": {
@@ -28227,6 +30903,18 @@
 "size": "small",
 "style": []
 },
+"m:Complexion_TanShortsDark_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "shorts tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
 "m:Complexion_TanShorts_M01": {
 "adult": false,
 "emblem": null,
@@ -28239,12 +30927,72 @@
 "size": "full",
 "style": []
 },
+"m:Complexion_TanSleeve34_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "sleeve34 tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"m:Complexion_TanTankDark_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "tank tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"m:Complexion_TanTankLight_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "tank tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
 "m:Complexion_TanTank_M01": {
 "adult": false,
 "emblem": null,
 "kind": "tan",
 "lore": "fits",
 "note": "tank-top tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"m:Complexion_TanTshirtDark_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "tshirt tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"m:Complexion_TanTshirtLight_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "tshirt tan lines",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -29312,6 +32060,46 @@
 "style": [
 "script"
 ]
+},
+"m:Complexion_VaccinationTwo_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "two vaccination scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_Vaccination_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a smallpox vaccination scar",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_VaricoseHeavy_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "varicose veins",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
 },
 "m:Complexion_Varicose_M01": {
 "adult": false,

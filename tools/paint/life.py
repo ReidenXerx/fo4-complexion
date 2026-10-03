@@ -559,10 +559,11 @@ def pack_paint(m, rng, colour='green'):
 # ---------------------------------------------------------------- ordinary life
 
 
-def tan_lines(m, rng, cut='tshirt'):
+def tan_lines(m, rng, cut='tshirt', strength=0.32):
     """A working tan: darker skin where the sun reached, a sharp-ish line where the clothes stopped -- a T-shirt
-    (forearms and the V of the neck), a tank top (arms, shoulders, upper chest and back), a bikini or shorts
-    (everything but the bikini or the shorts)."""
+    (forearms and the V of the neck), three-quarter sleeves (the lower forearms), a tank top (arms, shoulders, upper
+    chest and back), a bikini, a one-piece swimsuit or shorts (everything but what they covered). strength: how
+    dark the tan is."""
     P = Painter(m)
     rgb, alpha = blank(m)
     x, h, n = P.p[..., 0], P.h, P.n
@@ -575,8 +576,8 @@ def tan_lines(m, rng, cut='tshirt'):
     def soft(v):
         return np.clip(v / edge + 0.5, 0, 1)
 
-    if cut == 'tshirt':
-        sleeve = soft((arm_out - 0.42) * 0.25) * P.reg('arm')
+    if cut in ('tshirt', 'sleeve34'):
+        sleeve = soft((arm_out - (0.42 if cut == 'tshirt' else 0.70)) * 0.25) * P.reg('arm')
         L = landmarks(m)
         neck_v = soft((h - (L['top'] - 0.035 - 0.04 * np.clip(1 - np.abs(x) / (0.35 * tw), 0, 1) * (n[..., 1] > 0))) * 1.0) * P.reg('torso', 'head')
         sun = np.maximum(sleeve, neck_v)
@@ -602,7 +603,6 @@ def tan_lines(m, rng, cut='tshirt'):
             t = np.clip((h - apex_h) / max(L['top'] - apex_h, 1e-6), 0, 1)
             sx = tip[0] + (np.sign(tip[0]) * 0.18 * tw - tip[0]) * t
             straps = straps | ((np.abs(x - sx) < 0.35) & (h > apex_h - 0.005) & (n[..., 1] > 0) & P.reg('torso', 'head'))
-        # the bottom: a front triangle down to the crotch, and at the back the seat of the buttocks
         # the bottom: a front triangle from the hip line down to the crotch, the seat over the buttocks behind
         # (their middle is at crotch + 0.075, decals' 'butt'), and the ties round the hips joining them
         waist = ch + 0.06
@@ -616,16 +616,24 @@ def tan_lines(m, rng, cut='tshirt'):
         bottom = (front | seat | ties) & P.reg('torso', 'leg')
         cover = np.clip(top + straps + bottom, 0, 1)
         sun = (1 - cover) * P.cov
+    elif cut == 'onepiece':
+        L = landmarks(m)
+        # the torso from the upper chest (a scoop neck, straps over the shoulders) down to high-cut legs
+        strap = np.exp(-((np.abs(x) - 0.45 * tw) / (0.10 * tw)) ** 4)
+        neck = L['nipple'] + 0.03 + 0.02 * (n[..., 1] < 0)
+        legline = ch - 0.03 + 0.06 * np.clip(np.abs(x) / tw, 0, 1)
+        body = P.reg('torso', 'leg') & (h > legline) & ((h < neck) | ((strap > 0.5) & P.reg('torso')))
+        sun = (1 - body) * P.cov
     else:  # shorts
         cover = (h > ch - 0.13) & (h < ch + 0.08) & P.reg('torso', 'leg')
         sun = (1 - cover) * P.cov
     tan = 0.75 + 0.35 * fbm(P.p, 0.3, seed + 1, 2)
-    over(rgb, alpha, (0.52, 0.36, 0.25), np.clip(sun * P.cov * 0.32 * tan, 0, 0.38))
+    over(rgb, alpha, (0.52, 0.36, 0.25), np.clip(sun * P.cov * strength * tan, 0, strength + 0.06))
     return rgb, alpha
 
 
-def sunburn(m, rng):
-    """Sunburn: reddened shoulders, upper back, nape and forearms, peeling in places."""
+def sunburn(m, rng, severity=1.0, peeling=True):
+    """Sunburn: reddened shoulders, upper back, nape and forearms, peeling in places; severity scales the red."""
     P = Painter(m)
     rgb, alpha = blank(m)
     seed = int(rng.integers(1 << 30))
@@ -634,8 +642,9 @@ def sunburn(m, rng):
     arms = P.reg('arm') * 0.6
     burn = np.clip(np.maximum(up, arms) * (0.7 + 0.5 * fbm(P.p, 0.4, seed, 3)), 0, 1)
     peel = np.clip((fbm(P.p, 3.0, seed + 1, 3) - 0.68) * 7, 0, 1) * burn * (P.h > L['nipple'] + 0.03)
-    over(rgb, alpha, (0.86, 0.36, 0.30), np.clip(burn * 0.4, 0, 0.45))
-    over(rgb, alpha, (0.97, 0.88, 0.82), np.clip(peel * 0.45, 0, 0.45))
+    over(rgb, alpha, (0.86, 0.36, 0.30), np.clip(burn * 0.4 * severity, 0, 0.45 * severity + 0.05))
+    if peeling:
+        over(rgb, alpha, (0.97, 0.88, 0.82), np.clip(peel * 0.45, 0, 0.45))
     return rgb, alpha
 
 

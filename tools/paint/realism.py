@@ -245,10 +245,42 @@ def pubic_female(m, rng, style='natural', colour='brown', size=2048):
     elif style == 'trimmed':
         d = np.exp(-((ux / (1.4 + 0.3 * np.clip(uz, 0, 6))) ** 2 + ((uz - 3.0) / 2.6) ** 2) ** 2)
     elif style == 'triangle':
-        d = ((uz > 1.0) & (uz < 6.0) & (np.abs(ux) < 0.55 * uz)).astype(float) * np.exp(-((uz - 3.5) / 3.0) ** 6)
+        # trimmed to a triangle, but hair, not a stencil: the edges soft and ragged (a hard mask read as a sticker
+        # in the 2026-10-03 collage)
+        ragged = 0.35 * (fbm(P.p, 1.6, int(rng.integers(1 << 30)), 2) - 0.5)
+        inside = np.clip((0.55 * uz - np.abs(ux) + ragged) / 0.55, 0, 1) * np.clip((uz - 0.8) / 0.6, 0, 1) \
+            * np.clip((6.2 - uz + ragged) / 0.8, 0, 1)
+        d = inside ** 1.5
     else:  # landing strip
         d = np.exp(-(ux / 0.75) ** 4) * np.exp(-((uz - 3.8) / 2.9) ** 6)
     return hair(m, rng, d * front, HAIR[colour], length=(2, 6), share=0.22, base=0.4, size=size)
+
+
+def chest_density(P, m, rng, pattern='full'):
+    """Where a man's chest hair grows: ONE broad patch across the chest, densest over the breastbone and round the
+    nipples, thinning toward the shoulders and armpits; heavy chests continue down the belly, widening to the pubic
+    hair. (Two round pads on the pecs, and a separate disc on the belly, read as stickers in the 2026-10-03
+    collage.) Returns 0..1 per texel."""
+    L = landmarks(m)
+    x, h = np.abs(P.p[..., 0]), P.h
+    hc = L['nipple'] - 0.005
+    ragged = 0.55 + 0.7 * fbm(P.p, 0.6, int(rng.integers(1 << 30)), 3)
+    chest = np.exp(-((x / 7.2) ** 2 + ((h - hc) / 0.052) ** 2) ** 1.4) * ragged
+    core = np.exp(-((x / 2.6) ** 2 + ((h - hc + 0.006) / 0.06) ** 2))
+    trail = np.exp(-(x / 0.8) ** 2) * np.clip((hc - 0.04 - h) / 0.04, 0, 1) * (h > L['navel'] - 0.02)
+    span = max(hc - 0.03 - (L['crotch'] + 0.05), 1e-6)
+    widen = np.clip((hc - 0.03 - h) / span, 0, 1)
+    abdomen = np.exp(-(x / (1.0 + 6.0 * widen ** 1.5)) ** 2) * (h < hc - 0.03) * (h > L['crotch'] + 0.05) * ragged
+    if pattern == 'light':
+        d = chest * 0.42
+    elif pattern == 'sternum':
+        d = np.maximum(core * 0.7, trail * 0.35)
+    elif pattern == 'heavy':
+        d = np.maximum(np.maximum(chest * 0.9, core * 0.75), abdomen * 0.6)
+    else:
+        d = np.maximum(np.maximum(chest * 0.72, core * 0.55), trail * 0.5)
+    front = (P.n[..., 1] > 0.1) * P.reg('torso')
+    return np.clip(d, 0, 1) * front
 
 
 def body_hair_male(m, rng, where='chest', colour='brown', size=2048):
@@ -256,14 +288,7 @@ def body_hair_male(m, rng, where='chest', colour='brown', size=2048):
     P = Painter(m)
     front = P.n[..., 1] > 0.1
     if where == 'chest':
-        x, h = np.abs(P.p[..., 0]), P.h
-        ragged = 0.6 + 0.6 * fbm(P.p, 0.7, int(rng.integers(1 << 30)), 3)
-        L = landmarks(m)
-        hc = L['nipple'] - 0.01
-        pecs = np.exp(-(((x - 5.0) / 4.2) ** 2 + ((h - hc) / 0.05) ** 2) ** 2) * ragged
-        sternum = np.exp(-((x / 2.0) ** 2 + ((h - hc + 0.01) / 0.05) ** 2) ** 2)
-        trail = np.exp(-(x / 0.7) ** 2) * np.clip((hc - 0.04 - h) / 0.04, 0, 1) * (h > L['navel'] - 0.02)
-        d = np.clip(np.maximum(np.maximum(pecs * 0.7, sternum * 0.45), trail * 0.5), 0, 1) * front * P.reg('torso')
+        d = chest_density(P, m, rng, 'full')
         return hair(m, rng, d, HAIR[colour], length=(3, 7), share=0.07, base=0.12, size=size)
     # Arms reach out sideways in the bind pose: the forearm is the outer half, by distance from the middle.
     arm_out = np.abs(P.p[..., 0]) / max(np.abs(P.p[..., 0][P.reg('arm')]).max(), 1e-6)
