@@ -17,14 +17,14 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 TAGS = ROOT / 'data' / 'tags'
 KINDS = {'tattoo', 'scar', 'wound', 'burn', 'bruise', 'marks', 'dirt', 'blood', 'mole', 'freckles', 'skin', 'acne',
-         'birthmark', 'pubic_hair', 'body_hair', 'nipple', 'nails', 'makeup', 'brand', 'other'}
+         'birthmark', 'pubic_hair', 'body_hair', 'nipple', 'nails', 'makeup', 'brand', 'tan', 'other'}
 REGIONS = {'face', 'neck', 'shoulders', 'chest', 'breasts', 'belly', 'back', 'lower_back', 'pelvis', 'pubic', 'butt',
            'arm_l', 'arm_r', 'hand_l', 'hand_r', 'leg_l', 'leg_r', 'feet', 'full_body'}
 SIZES = ['tiny', 'small', 'medium', 'large', 'full']
 STYLES = {'tribal', 'crude', 'military', 'emblem', 'skull', 'animal', 'floral', 'geometric', 'script', 'religious',
-          'pinup', 'sexual', 'degrading', 'lewd', 'cartoon', 'realistic_art'}
+          'pinup', 'sexual', 'degrading', 'lewd', 'gambling', 'cartoon', 'realistic_art'}
 EMBLEMS = {None, 'bos', 'minutemen', 'vault_tec', 'atom', 'institute', 'railroad', 'gunners', 'raiders', 'nuka',
-           'other_fo', 'real_world'}
+           'disciples', 'pack', 'other_fo', 'real_world'}
 LORE = ['fits', 'stretch', 'breaks']
 VARIANT = re.compile(r'(_(BL|BR|C|L|R|B|O|G|Y|P|W|Red|Blue|Green|Pink|Purple|Yellow|White|Black|Orange|Gold|'
                      r'Silver|Cyan|[A-Z]))+$|\d+[a-z]?$', re.I)

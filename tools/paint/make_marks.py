@@ -28,6 +28,8 @@ from PIL import Image
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import decals  # noqa: E402
+import hands  # noqa: E402
+import life  # noqa: E402
 import marks  # noqa: E402
 import realism  # noqa: E402
 from body import UVMap  # noqa: E402
@@ -204,8 +206,123 @@ for sexes, rows in ((('female',), LEWD_F), (('male',), LEWD_M), (('female', 'mal
                  quality='ok', note=note), 1)
 
 
+# ---- C-15 (owner, 2026-10-03): all four new sets. Appended after everything above, so earlier seeds stay put.
+ADULT = dict(ROUGH, adult=True)
+# Captives and rough life
+add('RopeWrists', BOTH, 'bindings', ('wrists', True), 2048, dict(ROUGH, kind='marks', regions=[], size='small', note='rope marks around the wrists'), 2)
+add('RopeWristsHealed', BOTH, 'bindings', ('wrists', False), 2048, dict(ROUGH, kind='marks', regions=[], size='small', note='old rope marks on the wrists'), 1)
+add('RopeAnkles', BOTH, 'bindings', ('ankles', True), 2048, dict(ROUGH, kind='marks', regions=[], size='small', note='rope marks around the ankles'), 1)
+add('ShackleAnkles', BOTH, 'shackles', ('ankles',), 2048, dict(ROUGH, kind='marks', regions=[], size='small', note='shackle chafe on the ankles'), 1)
+add('ShackleWrists', BOTH, 'shackles', ('wrists',), 2048, dict(ROUGH, kind='marks', regions=[], size='small', note='shackle chafe on the wrists'), 1)
+add('Collar', BOTH, 'collar', (), 2048, dict(ADULT, kind='marks', regions=[], size='small', style=['degrading'], note="a collar's chafe around the neck"), 1)
+add('GripArms', BOTH, 'grip_bruises', ('arms',), 2048, dict(ROUGH, kind='bruise', regions=[], size='small', note='finger bruises around the upper arms'), 2)
+add('GripHips', BOTH, 'grip_bruises', ('hips',), 2048, dict(ADULT, kind='bruise', regions=[], size='small', style=['sexual', 'lewd'], note='finger bruises on the hips, held from behind'), 1)
+add('CigBurns', BOTH, 'cigarette_burns', (False,), 2048, dict(ROUGH, kind='burn', regions=[], size='tiny', style=['degrading'], note='fresh cigarette burns'), 2)
+add('CigBurnsHealed', BOTH, 'cigarette_burns', (True,), 2048, dict(ROUGH, kind='burn', regions=[], size='tiny', note='old cigarette burn scars'), 1)
+add('BiteShoulder', BOTH, 'bites', (('shoulder',),), 2048, dict(ADULT, kind='marks', regions=[], size='small', style=['sexual'], note='a bite mark on the shoulder'), 1)
+add('BiteBreast', F, 'bites', (('breast', 'neck'),), 2048, dict(ADULT, kind='marks', regions=[], size='small', style=['sexual', 'lewd'], note='bite marks on a breast and the neck'), 1)
+add('BiteThigh', BOTH, 'bites', (('inner_thigh', 'butt'),), 2048, dict(ADULT, kind='marks', regions=[], size='small', style=['sexual', 'lewd'], note='bite marks on the inner thigh and a buttock'), 1)
+add('HickeyNeck', BOTH, 'hickeys', (('neck', 'chest'),), 2048, dict(ADULT, kind='bruise', regions=[], size='small', style=['sexual', 'lewd'], note='hickeys on the neck and chest'), 2)
+add('HickeyThigh', BOTH, 'hickeys', (('inner_thigh', 'belly'),), 2048, dict(ADULT, kind='bruise', regions=[], size='small', style=['sexual', 'lewd'], note='hickeys on the inner thighs and low on the belly'), 1)
+KISS = dict(ADULT, kind='makeup', regions=[], size='small', style=['sexual', 'lewd'])
+add('KissRed', F, 'kisses', ('red', (('butt', 1), ('butt', -1), ('inner_thigh', 1))), 2048, dict(KISS, note='red lipstick kisses on the buttocks and a thigh'), 1)
+add('KissPink', F, 'kisses', ('pink', (('chest', 1), ('belly', 0), ('inner_thigh', -1))), 2048, dict(KISS, note='pink lipstick kisses down the body'), 1)
+add('KissPlum', F, 'kisses', ('plum', (('butt', -1), ('hip', 1), ('thigh', 1))), 2048, dict(KISS, note='dark lipstick kisses'), 1)
+add('KissRed', M, 'kisses', ('red', (('butt', 1), ('belly', 0), ('inner_thigh', -1))), 2048, dict(KISS, note='red lipstick kisses'), 1)
+add('KissPink', M, 'kisses', ('pink', (('chest', -1), ('shoulder', 1), ('butt', -1))), 2048, dict(KISS, note='pink lipstick kisses'), 1)
+SCRAWL = dict(ADULT, kind='marks', regions=[], size='small', style=['lewd', 'degrading', 'script'])
+SCRAWLS = [
+    (BOTH, 'MarkerNext', ((('arrow', 'NEXT', 'pubic', 0, 9),), 'marker'), '"NEXT" and an arrow down, in marker'),
+    (BOTH, 'MarkerUsed', ((('word', 'USED', 'thigh', 1, 7), ('tally', '8', 'thigh', -1, 6)), 'marker'), '"USED" and a tally on the thighs, in marker'),
+    (BOTH, 'MarkerTenCaps', ((('word', '10 CAPS', 'lower_back', 0, 11),), 'marker_red'), 'a price, "10 CAPS", in red marker'),
+    (BOTH, 'MarkerSlave', ((('word', 'SLAVE', 'chest', 0, 10),), 'marker'), '"SLAVE" across the chest, in marker'),
+    (BOTH, 'MarkerCumRag', ((('word', 'CUM RAG', 'butt', 1, 8),), 'marker_blue'), '"CUM RAG" on a buttock, in marker'),
+    (F, 'MarkerFree', ((('arrow', 'FREE', 'pubic', 0, 8), ('word', 'RENT ME', 'butt', -1, 7)), 'marker'), '"FREE" with an arrow and "RENT ME", in marker'),
+    (F, 'MarkerDirtyGirl', ((('word', 'DIRTY GIRL', 'belly', 0, 12),), 'marker_red'), '"DIRTY GIRL" across the belly, in red marker'),
+]
+for sexes, name, args, note in SCRAWLS:
+    add(name, sexes, 'scrawl', args, 2048, dict(SCRAWL, note=note), 1)
+# Faction flavour
+add('RitualCuts', BOTH, 'ritual_cuts', (False,), 2048, dict(ROUGH, kind='scar', regions=[], size='small', emblem='disciples', note="the Disciples' ritual cuts, healed"), 2)
+add('RitualCutsFresh', BOTH, 'ritual_cuts', (True,), 2048, dict(ROUGH, kind='wound', regions=[], size='small', emblem='disciples', note="the Disciples' ritual cuts, fresh"), 1)
+add('BloodyHands', BOTH, 'bloody_hands', ((('chest', 1), ('belly', 0)),), 2048, dict(ROUGH, kind='blood', regions=[], size='medium', emblem='disciples', note='bloody handprints on the chest and belly'), 1)
+add('BloodyHandsThigh', BOTH, 'bloody_hands', ((('chest', -1), ('thigh', 1)),), 2048, dict(ROUGH, kind='blood', regions=[], size='medium', emblem='disciples', note='bloody handprints on the chest and a thigh'), 1)
+add('RadSores', BOTH, 'rad_sores', (), 2048, dict(ROUGH, kind='burn', regions=[], size='medium', emblem='atom', note='radiation sores'), 2)
+add('AtomScar', BOTH, 'scar_decal', (('emblem', 'atom'), 'chest', 0, 8), 2048, dict(ROUGH, kind='scar', regions=['chest'], size='medium', emblem='atom', note='the Atom cut into the chest'), 1)
+add('BulletScars', BOTH, 'bullet_scars', ((1, 3),), 2048, dict(ROUGH, kind='scar', regions=[], size='tiny', note='healed bullet wounds'), 2)
+add('Shrapnel', BOTH, 'shrapnel', (), 2048, dict(ROUGH, kind='scar', regions=[], size='small', note='shrapnel scars down one side'), 1)
+add('LaserBurn', BOTH, 'laser_burn', (), 2048, dict(ROUGH, kind='burn', regions=[], size='small', note='a laser burn scar'), 2)
+add('BurnScar', BOTH, 'burn_scar', (), 2048, dict(ROUGH, kind='burn', regions=[], size='medium', note='an old burn scar'), 1)
+for colour in ('green', 'purple', 'pink', 'blue'):
+    add(f'PackPaint{colour.title()}', BOTH, 'pack_paint', (colour,), 2048, dict(ROUGH, kind='makeup', regions=[], size='large', emblem='pack', note=f"the Pack's {colour} body paint"), 1)
+FLAVOUR = [
+    ('GunnersTally', ('tally', 13), 'forearm', 1, 6, 'fresh', 0.5, 'small', ['military', 'crude'], 'gunners', False, 'a kill tally on the forearm'),
+    ('GunnersTallyArm', ('tally', 23), 'upper_arm', -1, 7, 'faded', 0.5, 'small', ['military', 'crude'], 'gunners', False, 'a long kill tally on the upper arm'),
+    ('AceSpades', ('card',), 'forearm', 1, 4.5, 'fresh', 0.0, 'small', ['gambling'], None, False, 'the ace of spades'),
+    ('Dice', ('dice',), 'upper_arm', -1, 5.5, 'fresh', 0.0, 'small', ['gambling'], None, False, 'a pair of dice'),
+    ('Lucky', ('lucky',), 'chest', -1, 6, 'fresh', 0.0, 'small', ['gambling', 'script'], None, False, 'a horseshoe, LUCKY'),
+    ('LuckyBack', ('lucky',), 'upper_back', 0, 10, 'faded', 0.0, 'medium', ['gambling', 'script'], None, False, 'a big LUCKY horseshoe on the back'),
+    ('Dollar', ('dollar',), 'shoulder', 1, 5, 'fresh', 0.0, 'small', ['gambling'], None, False, 'a dollar sign in stars'),
+    ('Vault81', ('vault', 81), 'upper_arm', 1, 5.5, 'fresh', 0.0, 'small', ['emblem'], 'vault_tec', False, 'Vault 81 in the gear'),
+    ('Vault81Word', ('word', 'VAULT 81', 'stencil', 0.0), 'forearm', -1, 7, 'faded', 0.0, 'small', ['script', 'emblem'], 'vault_tec', False, '"VAULT 81" on the forearm'),
+]
+for name, spec, spot, side, width, ink, crude, size, style, emblem, adult, note in FLAVOUR:
+    region = (['arm_r'] if side > 0 else ['arm_l']) if spot in ('forearm', 'upper_arm') else [SPOT_REGION[spot]]
+    add(f'Tattoo{name}', BOTH, 'decal', (spec, spot, side, width, ink, crude), 2048,
+        dict(kind='tattoo', regions=region, size=size, style=style, emblem=emblem, lore='fits', adult=adult, quality='ok', note=note), 1)
+# Ordinary life
+add('TanTshirt', BOTH, 'tan_lines', ('tshirt',), 1024, dict(ROUGH, kind='tan', regions=[], size='full', note="a farmer's tan"), 1)
+add('TanTank', BOTH, 'tan_lines', ('tank',), 1024, dict(ROUGH, kind='tan', regions=[], size='full', note='tank-top tan lines'), 1)
+add('TanBikini', F, 'tan_lines', ('bikini',), 1024, dict(ROUGH, kind='tan', regions=[], size='full', note='bikini tan lines'), 1)
+add('TanShorts', M, 'tan_lines', ('shorts',), 1024, dict(ROUGH, kind='tan', regions=[], size='full', note='a tan with shorts lines'), 1)
+add('Sunburn', BOTH, 'sunburn', (), 1024, dict(ROUGH, kind='tan', regions=[], size='large', note='sunburn, peeling'), 2)
+add('Mud', BOTH, 'mud', (0.6,), 1024, dict(ROUGH, kind='dirt', regions=[], size='medium', note='mud on the legs'), 2)
+add('AgeSpots', BOTH, 'age_spots', (), 2048, dict(ROUGH, kind='skin', regions=[], size='small', note='age spots'), 2)
+add('Varicose', BOTH, 'varicose', (), 2048, dict(ROUGH, kind='skin', regions=[], size='small', note='varicose and spider veins'), 1)
+add('Cellulite', F, 'cellulite', (), 1024, dict(ROUGH, kind='skin', regions=[], size='medium', note='cellulite'), 2)
+for which, sexes in (('appendix', BOTH), ('caesarean', F), ('sternum', BOTH), ('knee', BOTH)):
+    add(f'Surgery{which.title()}', sexes, 'surgery_scar', (which,), 2048, dict(ROUGH, kind='scar', regions=[], size='small', note=f'a surgery scar ({which})'), 1)
+for colour in ('brown', 'black'):
+    add(f'BackHair{colour.title()}', M, 'back_hair', (colour,), 2048, dict(ROUGH, kind='body_hair', regions=['back'], size='large', note=f'back hair, {colour}'), 1)
+    add(f'HappyTrail{colour.title()}', M, 'happy_trail', (colour,), 2048, dict(ROUGH, kind='body_hair', regions=[], size='small', note=f'a happy trail, {colour}'), 1)
+    add(f'Underarm{colour.title()}', F, 'underarm_hair', (colour,), 2048, dict(ROUGH, kind='body_hair', regions=[], size='tiny', note=f'unshaved underarms, {colour}'), 1)
+AUBURN, BLOND = (0.32, 0.15, 0.08), (0.55, 0.42, 0.26)
+add('PubicFullAuburn', M, 'pubic_hair', ('full', 2048, AUBURN), 2048, dict(ROUGH, kind='pubic_hair', regions=['pubic'], size='large', note='full pubic hair, auburn'), 1)
+add('PubicFullBlond', M, 'pubic_hair', ('full', 2048, BLOND), 2048, dict(ROUGH, kind='pubic_hair', regions=['pubic'], size='large', note='full pubic hair, blond'), 1)
+add('PubicTrimBlond', M, 'pubic_hair', ('trim', 2048, BLOND), 2048, dict(ROUGH, kind='pubic_hair', regions=['pubic'], size='small', note='trimmed pubic hair, blond'), 1)
+# Wrapped tattoos: (name, design, where, side, height, ink, crude, size, style, sexes, note)
+WRAPS = [
+    ('ArmbandBarbed', ('barbed',), 'upper_arm', 1, 2.2, 'fresh', 0.3, 'small', ['crude', 'tribal'], BOTH, 'a barbed-wire armband'),
+    ('ArmbandTribal', ('band', 0), 'upper_arm', -1, 2.4, 'fresh', 0.0, 'small', ['tribal'], BOTH, 'a tribal armband'),
+    ('ArmbandKnots', ('band', 1), 'forearm', 1, 2.0, 'faded', 0.0, 'small', ['geometric'], BOTH, 'a knotwork band on the forearm'),
+    ('AnkleChain', ('chain',), 'ankle', -1, 1.2, 'fresh', 0.0, 'tiny', ['geometric'], BOTH, 'a chain round the ankle'),
+    ('ThighGarter', ('garter',), 'thigh', 1, 2.6, 'fresh', 0.0, 'small', ['floral', 'pinup'], F, 'a lace garter round the thigh'),
+    ('SleeveTribal', ('sleeve',), 'forearm', -1, 9, 'fresh', 0.0, 'large', ['tribal'], BOTH, 'a tribal sleeve on the forearm'),
+    ('SleeveCalf', ('sleeve',), 'calf', 1, 9, 'fresh', 0.0, 'large', ['tribal'], BOTH, 'a tribal sleeve on the calf'),
+]
+for name, spec, where, side, height, ink, crude, size, style, sexes, note in WRAPS:
+    region = (['arm_r'] if side > 0 else ['arm_l']) if where in ('upper_arm', 'forearm', 'wrist') else (['leg_r'] if side > 0 else ['leg_l'])
+    add(f'Tattoo{name}', sexes, 'wrap', (spec, where, side, height, ink, crude), 2048,
+        dict(kind='tattoo', regions=region, size=size, style=style, emblem=None, lore='fits', adult=False, quality='ok', note=note), 1)
+# Nails: the hands mesh, LooksMenu slot 4 (hands.py)
+NAILS = dict(ROUGH, kind='nails', regions=['hand_l', 'hand_r'], size='tiny')
+for style, chipped, sexes in (('red', False, F), ('black', False, F), ('purple', False, F), ('pink', False, F),
+                              ('red', True, F), ('black', True, BOTH), ('dirty', False, BOTH)):
+    note = 'dirty nails' if style == 'dirty' else f'{"chipped " if chipped else ""}{style} nails'
+    add(f'Nails{style.title()}{"Chipped" if chipped else ""}', sexes, 'nails', (style, chipped), 1024, dict(NAILS, note=note), 1)
+HAND_PAINTERS = {'nails'}
+
+
 def design(spec, rng):
     kind, *rest = spec
+    if kind == 'vault':
+        return decals.vault_number(rest[0])
+    if kind in ('card', 'dice', 'lucky', 'dollar'):
+        return getattr(decals, kind)()
+    if kind == 'band':
+        return decals.band(rng, kind=rest[0])
+    if kind in ('barbed', 'chain', 'garter', 'sleeve'):
+        return getattr(decals, kind)(rng)
     if kind == 'word':
         text, font, arc = rest
         return decals.word(text, font, arc)
@@ -224,7 +341,13 @@ def paint(painter, m, rng, args):
     if painter == 'decal':
         spec, spot, side, width, ink, crude = args
         return decals.project(m, design(spec, rng), spot, side, width=width, ink=ink, crude=crude, seed=int(rng.integers(1 << 30)))
-    for module in (marks, realism):
+    if painter == 'wrap':
+        spec, where, side, height, ink, crude = args
+        return decals.wrap(m, design(spec, rng), where, side, height=height, ink=ink, crude=crude, seed=int(rng.integers(1 << 30)))
+    if painter == 'scar_decal':
+        spec, spot, side, width = args
+        return life.scar_decal(m, rng, design(spec, rng), spot, side, width)
+    for module in (marks, realism, life, hands):
         if hasattr(module, painter):
             return getattr(module, painter)(m, rng, *args)
     raise SystemExit(f'no painter {painter}')
@@ -284,6 +407,7 @@ def main():
     ap.add_argument('--data', type=pathlib.Path, default=DATA)
     ap.add_argument('--only', default='')
     ap.add_argument('--missing', action='store_true', help='paint only templates with no texture yet')
+    ap.add_argument('--shard', default='', help='k/N: paint only every Nth template from the k-th (run N at once)')
     a = ap.parse_args()
     tex_dir = ROOT / 'data' / 'Textures' / 'Overlays' / 'Complexion'
     mat_dir = ROOT / 'data' / 'Materials' / 'Overlays' / 'Complexion'
@@ -296,16 +420,22 @@ def main():
     entries, tags, previews = [], {}, {'female': [], 'male': []}
     for n, (tid, sex, painter, args, size, tag) in enumerate(MARKS):
         female = sex == 'female'
-        entries.append({'id': tid, 'name': f'Complexion - {tag["note"]}', 'slots': [{'slot': 3, 'material': f'overlays\\Complexion\\{tid}.bgem'}],
-                        'playable': True, 'transformable': True, 'sort': 0, 'gender': 1 if female else 0})
+        on_hands = painter in HAND_PAINTERS
+        # The body is LooksMenu slot 3, the hands slot 4 (as the packs' nails, LMNSOverlays f_nails_1).
+        entries.append({'id': tid, 'name': f'Complexion - {tag["note"]}',
+                        'slots': [{'slot': 4 if on_hands else 3, 'material': f'overlays\\Complexion\\{tid}.bgem'}],
+                        'playable': True, 'transformable': not on_hands, 'sort': 0, 'gender': 1 if female else 0})
         tags[('f:' if female else 'm:') + tid] = tag
         if a.only and not tid.startswith(a.only):
             continue
+        if a.shard and n % int(a.shard.split('/')[1]) != int(a.shard.split('/')[0]):
+            continue
         if a.missing and (tex_dir / f'{tid}_d.dds').exists():
             continue
-        if (sex, size) not in maps:
-            maps[(sex, size)] = UVMap(a.data, sex, size)
-        m = maps[(sex, size)]
+        key = (sex, size, on_hands)
+        if key not in maps:
+            maps[key] = hands.HandMap(a.data, sex, size) if on_hands else UVMap(a.data, sex, size)
+        m = maps[key]
         rng = np.random.default_rng(1000 + n)
         rgb, alpha = paint(painter, m, rng, args)
         rgb = dilate(rgb, alpha, m.covered)
@@ -319,15 +449,16 @@ def main():
             sys.exit(f'texconv failed on {png}: {r.stdout[-300:]} {r.stderr[-300:]}')
         if made.name != f'{tid}_d.dds':
             made.rename(tex_dir / f'{tid}_d.dds')  # texconv writes .DDS; the material names .dds
-        (mat_dir / f'{tid}.bgem').write_bytes(bgem(f'overlays/Complexion/{tid}_d.dds', NORMAL[sex]))
-        previews[sex].append((tid.replace('Complexion_', ''), rgb, alpha, m))
+        (mat_dir / f'{tid}.bgem').write_bytes(bgem(f'overlays/Complexion/{tid}_d.dds', (hands.NORMAL if on_hands else NORMAL)[sex]))
+        if not on_hands:
+            previews[sex].append((tid.replace('Complexion_', ''), rgb, alpha, m))
         print(f'  {tid}: {painter}{args} {size}px, {float((alpha > 0.05).mean()) * 100:.1f}% of the map')
     (json_dir / 'overlays.json').write_text(json.dumps(entries, indent=1), encoding='utf-8', newline='\n')
     (ROOT / 'data' / 'tags' / 'complexion.json').write_text(json.dumps(tags, indent=1), encoding='utf-8', newline='\n')
     for sex, items in previews.items():
         for size in sorted({it[3].size for it in items}):
             group = [it[:3] for it in items if it[3].size == size]
-            print(sheet(maps[(sex, size)], group, ROOT / 'build' / f'marks_preview_{sex}_{size}.png', height=360))
+            print(sheet(maps[(sex, size, False)], group, ROOT / 'build' / f'marks_preview_{sex}_{size}.png', height=360))
     print(f'{len(entries)} templates; textures in {tex_dir}')
 
 

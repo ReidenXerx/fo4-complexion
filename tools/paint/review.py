@@ -18,7 +18,10 @@ height = int(sys.argv[4]) if len(sys.argv) > 4 else 360
 m = UVMap(DATA, sex, 2048)
 tag = 'F' if sex == 'female' else 'M'
 items = []
-for png in sorted((ROOT / 'build' / 'marks').glob(f'{prefix}*_{tag}0*_d.png')):
+pngs = []
+for pre in prefix.split(','):  # several prefixes, comma-separated
+    pngs += sorted((ROOT / 'build' / 'marks').glob(f'{pre}*_{tag}0*_d.png'))
+for png in pngs:
     tex = np.asarray(Image.open(png).convert('RGB').resize((2048, 2048)), dtype=np.float64) / 255.0
     factor = tex * 2.0  # make_marks: texel = factor x 1/2
     # what the game draws: the skin times the factor; shown as colour over skin at full alpha

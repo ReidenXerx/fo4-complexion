@@ -29,18 +29,19 @@ Everyone gets at most **6** overlays (C-5). The budget is filled in this order:
 
 | group | count 0/1/2/3/4 | features drawn from | style of the tattoos |
 | --- | --- | --- | --- |
-| Settlers and everyone else | 55/30/12/3/0 | small tattoos 80%, a scar 20% | floral, animal, script, geometric; small |
+| Settlers and everyone else | 55/30/12/3/0 | small tattoos 80%, a scar 20%; tan lines or sunburn (C-15) | floral, animal, script, geometric; small |
 | Raiders | 5/15/35/30/15 | tattoos 55%, scars and burns 25%, grime 15%, brands 5% | crude, skull, tribal, the raider emblem; any size |
-| Disciples | 5/15/30/30/20 | tattoos 45%, scars and wounds 40%, grime 15% | skull, script, crude |
-| Pack | 5/20/35/30/10 | tattoos 70%, scars 20%, grime 10% | animal, tribal; large pieces |
-| Operators | 20/45/30/5/0 | tattoos 70%, nails 30% | pin-up, geometric, realistic art, script |
+| Disciples | 5/15/30/30/20 | tattoos 45%, scars and wounds 40%, grime 15% (C-15: their ritual cuts and bloody handprints) | skull, script, crude |
+| Pack | 5/20/35/30/10 | tattoos 70%, scars 20%, grime 10%, body paint (C-15) | animal, tribal; large pieces |
+| Operators | 20/45/30/5/0 | tattoos 70%, nails 30% | pin-up, geometric, realistic art, script, gambling (C-15) |
 | Gunners | 25/45/25/5/0 | tattoos 60%, scars 40% | military, skull, the Gunners emblem |
-| Triggermen | 30/45/20/5/0 | tattoos 80%, scars 20% | script, pin-up, crude (prison ink) |
+| Triggermen | 30/45/20/5/0 | tattoos 80%, scars 20% | script, pin-up, crude (prison ink), gambling (C-15) |
 | Brotherhood | 70/25/5/0/0 | scars 50%, tattoos 50% | military, the BoS emblem only |
 | Minutemen | 55/35/10/0/0 | tattoos 75%, scars 25% | the Minutemen emblem, military, script, floral |
 | Railroad | 65/30/5/0/0 | tattoos 80%, scars 20% | the Railroad mark (tiny), geometric |
 | Children of Atom | 20/50/25/5/0 | tattoos 60%, burns and scars 40% | the Atom emblem, religious, geometric |
 | Institute | 95/5/0/0/0 | a tiny Institute emblem, nails | - |
+| Vault 81 (C-15) | 40/45/15/0/0 | tattoos 60%, scars 40% | the Vault-Tec gear and Vault 81's number, script, geometric; small |
 
 ## Composition rules (what keeps it from looking random)
 

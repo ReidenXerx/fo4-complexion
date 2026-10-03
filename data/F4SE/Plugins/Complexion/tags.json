@@ -3079,6 +3079,44 @@
 "realistic_art"
 ]
 },
+"f:Complexion_AgeSpots_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "age spots",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_AgeSpots_F02": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "age spots",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_AtomScar_F01": {
+"adult": false,
+"emblem": "atom",
+"kind": "scar",
+"lore": "fits",
+"note": "the Atom cut into the chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
 "f:Complexion_Birthmark_F01": {
 "adult": false,
 "emblem": null,
@@ -3102,6 +3140,50 @@
 "regions": [],
 "size": "small",
 "style": []
+},
+"f:Complexion_BiteBreast_F01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "bite marks on a breast and the neck",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"f:Complexion_BiteShoulder_F01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "a bite mark on the shoulder",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual"
+]
+},
+"f:Complexion_BiteThigh_F01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "bite marks on the inner thigh and a buttock",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
 },
 "f:Complexion_Blood_F01": {
 "adult": false,
@@ -3133,6 +3215,30 @@
 "kind": "blood",
 "lore": "fits",
 "note": "dried blood, drips, spatter",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_BloodyHandsThigh_F01": {
+"adult": false,
+"emblem": "disciples",
+"kind": "blood",
+"lore": "fits",
+"note": "bloody handprints on the chest and a thigh",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_BloodyHands_F01": {
+"adult": false,
+"emblem": "disciples",
+"kind": "blood",
+"lore": "fits",
+"note": "bloody handprints on the chest and belly",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -3198,6 +3304,120 @@
 "regions": [],
 "size": "small",
 "style": []
+},
+"f:Complexion_BulletScars_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "healed bullet wounds",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_BulletScars_F02": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "healed bullet wounds",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_BurnScar_F01": {
+"adult": false,
+"emblem": null,
+"kind": "burn",
+"lore": "fits",
+"note": "an old burn scar",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_Cellulite_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "cellulite",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_Cellulite_F02": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "cellulite",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_CigBurnsHealed_F01": {
+"adult": false,
+"emblem": null,
+"kind": "burn",
+"lore": "fits",
+"note": "old cigarette burn scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_CigBurns_F01": {
+"adult": false,
+"emblem": null,
+"kind": "burn",
+"lore": "fits",
+"note": "fresh cigarette burns",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": [
+"degrading"
+]
+},
+"f:Complexion_CigBurns_F02": {
+"adult": false,
+"emblem": null,
+"kind": "burn",
+"lore": "fits",
+"note": "fresh cigarette burns",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": [
+"degrading"
+]
+},
+"f:Complexion_Collar_F01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "a collar's chafe around the neck",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"degrading"
+]
 },
 "f:Complexion_Freckles_F01": {
 "adult": false,
@@ -3283,6 +3503,159 @@
 "size": "medium",
 "style": []
 },
+"f:Complexion_GripArms_F01": {
+"adult": false,
+"emblem": null,
+"kind": "bruise",
+"lore": "fits",
+"note": "finger bruises around the upper arms",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_GripArms_F02": {
+"adult": false,
+"emblem": null,
+"kind": "bruise",
+"lore": "fits",
+"note": "finger bruises around the upper arms",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_GripHips_F01": {
+"adult": true,
+"emblem": null,
+"kind": "bruise",
+"lore": "fits",
+"note": "finger bruises on the hips, held from behind",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"f:Complexion_HickeyNeck_F01": {
+"adult": true,
+"emblem": null,
+"kind": "bruise",
+"lore": "fits",
+"note": "hickeys on the neck and chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"f:Complexion_HickeyNeck_F02": {
+"adult": true,
+"emblem": null,
+"kind": "bruise",
+"lore": "fits",
+"note": "hickeys on the neck and chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"f:Complexion_HickeyThigh_F01": {
+"adult": true,
+"emblem": null,
+"kind": "bruise",
+"lore": "fits",
+"note": "hickeys on the inner thighs and low on the belly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"f:Complexion_KissPink_F01": {
+"adult": true,
+"emblem": null,
+"kind": "makeup",
+"lore": "fits",
+"note": "pink lipstick kisses down the body",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"f:Complexion_KissPlum_F01": {
+"adult": true,
+"emblem": null,
+"kind": "makeup",
+"lore": "fits",
+"note": "dark lipstick kisses",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"f:Complexion_KissRed_F01": {
+"adult": true,
+"emblem": null,
+"kind": "makeup",
+"lore": "fits",
+"note": "red lipstick kisses on the buttocks and a thigh",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"f:Complexion_LaserBurn_F01": {
+"adult": false,
+"emblem": null,
+"kind": "burn",
+"lore": "fits",
+"note": "a laser burn scar",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_LaserBurn_F02": {
+"adult": false,
+"emblem": null,
+"kind": "burn",
+"lore": "fits",
+"note": "a laser burn scar",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
 "f:Complexion_LashesFresh_F01": {
 "adult": false,
 "emblem": null,
@@ -3325,6 +3698,247 @@
 "size": "large",
 "style": []
 },
+"f:Complexion_MarkerCumRag_F01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "\"CUM RAG\" on a buttock, in marker",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"lewd",
+"degrading",
+"script"
+]
+},
+"f:Complexion_MarkerDirtyGirl_F01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "\"DIRTY GIRL\" across the belly, in red marker",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"lewd",
+"degrading",
+"script"
+]
+},
+"f:Complexion_MarkerFree_F01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "\"FREE\" with an arrow and \"RENT ME\", in marker",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"lewd",
+"degrading",
+"script"
+]
+},
+"f:Complexion_MarkerNext_F01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "\"NEXT\" and an arrow down, in marker",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"lewd",
+"degrading",
+"script"
+]
+},
+"f:Complexion_MarkerSlave_F01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "\"SLAVE\" across the chest, in marker",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"lewd",
+"degrading",
+"script"
+]
+},
+"f:Complexion_MarkerTenCaps_F01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "a price, \"10 CAPS\", in red marker",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"lewd",
+"degrading",
+"script"
+]
+},
+"f:Complexion_MarkerUsed_F01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "\"USED\" and a tally on the thighs, in marker",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"lewd",
+"degrading",
+"script"
+]
+},
+"f:Complexion_Mud_F01": {
+"adult": false,
+"emblem": null,
+"kind": "dirt",
+"lore": "fits",
+"note": "mud on the legs",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_Mud_F02": {
+"adult": false,
+"emblem": null,
+"kind": "dirt",
+"lore": "fits",
+"note": "mud on the legs",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_NailsBlackChipped_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nails",
+"lore": "fits",
+"note": "chipped black nails",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"hand_l",
+"hand_r"
+],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_NailsBlack_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nails",
+"lore": "fits",
+"note": "black nails",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"hand_l",
+"hand_r"
+],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_NailsDirty_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nails",
+"lore": "fits",
+"note": "dirty nails",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"hand_l",
+"hand_r"
+],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_NailsPink_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nails",
+"lore": "fits",
+"note": "pink nails",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"hand_l",
+"hand_r"
+],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_NailsPurple_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nails",
+"lore": "fits",
+"note": "purple nails",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"hand_l",
+"hand_r"
+],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_NailsRedChipped_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nails",
+"lore": "fits",
+"note": "chipped red nails",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"hand_l",
+"hand_r"
+],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_NailsRed_F01": {
+"adult": false,
+"emblem": null,
+"kind": "nails",
+"lore": "fits",
+"note": "red nails",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"hand_l",
+"hand_r"
+],
+"size": "tiny",
+"style": []
+},
 "f:Complexion_NipplesBrown_F01": {
 "adult": false,
 "emblem": null,
@@ -3365,6 +3979,54 @@
 "breasts"
 ],
 "size": "small",
+"style": []
+},
+"f:Complexion_PackPaintBlue_F01": {
+"adult": false,
+"emblem": "pack",
+"kind": "makeup",
+"lore": "fits",
+"note": "the Pack's blue body paint",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"f:Complexion_PackPaintGreen_F01": {
+"adult": false,
+"emblem": "pack",
+"kind": "makeup",
+"lore": "fits",
+"note": "the Pack's green body paint",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"f:Complexion_PackPaintPink_F01": {
+"adult": false,
+"emblem": "pack",
+"kind": "makeup",
+"lore": "fits",
+"note": "the Pack's pink body paint",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"f:Complexion_PackPaintPurple_F01": {
+"adult": false,
+"emblem": "pack",
+"kind": "makeup",
+"lore": "fits",
+"note": "the Pack's purple body paint",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
 "style": []
 },
 "f:Complexion_Pimples_F01": {
@@ -3569,6 +4231,150 @@
 "size": "small",
 "style": []
 },
+"f:Complexion_RadSores_F01": {
+"adult": false,
+"emblem": "atom",
+"kind": "burn",
+"lore": "fits",
+"note": "radiation sores",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_RadSores_F02": {
+"adult": false,
+"emblem": "atom",
+"kind": "burn",
+"lore": "fits",
+"note": "radiation sores",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"f:Complexion_RitualCutsFresh_F01": {
+"adult": false,
+"emblem": "disciples",
+"kind": "wound",
+"lore": "fits",
+"note": "the Disciples' ritual cuts, fresh",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_RitualCuts_F01": {
+"adult": false,
+"emblem": "disciples",
+"kind": "scar",
+"lore": "fits",
+"note": "the Disciples' ritual cuts, healed",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_RitualCuts_F02": {
+"adult": false,
+"emblem": "disciples",
+"kind": "scar",
+"lore": "fits",
+"note": "the Disciples' ritual cuts, healed",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_RopeAnkles_F01": {
+"adult": false,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "rope marks around the ankles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_RopeWristsHealed_F01": {
+"adult": false,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "old rope marks on the wrists",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_RopeWrists_F01": {
+"adult": false,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "rope marks around the wrists",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_RopeWrists_F02": {
+"adult": false,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "rope marks around the wrists",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_ShackleAnkles_F01": {
+"adult": false,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "shackle chafe on the ankles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_ShackleWrists_F01": {
+"adult": false,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "shackle chafe on the wrists",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_Shrapnel_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "shrapnel scars down one side",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
 "f:Complexion_Spank_F01": {
 "adult": false,
 "emblem": null,
@@ -3656,6 +4462,195 @@
 "regions": [],
 "size": "small",
 "style": []
+},
+"f:Complexion_Sunburn_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "sunburn, peeling",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"f:Complexion_Sunburn_F02": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "sunburn, peeling",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"f:Complexion_SurgeryAppendix_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a surgery scar (appendix)",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_SurgeryCaesarean_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a surgery scar (caesarean)",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_SurgeryKnee_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a surgery scar (knee)",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_SurgerySternum_F01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a surgery scar (sternum)",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"f:Complexion_TanBikini_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "bikini tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"f:Complexion_TanTank_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "tank-top tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"f:Complexion_TanTshirt_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "a farmer's tan",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"f:Complexion_TattooAceSpades_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "the ace of spades",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"gambling"
+]
+},
+"f:Complexion_TattooAnkleChain_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a chain round the ankle",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_l"
+],
+"size": "tiny",
+"style": [
+"geometric"
+]
+},
+"f:Complexion_TattooArmbandBarbed_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a barbed-wire armband",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"crude",
+"tribal"
+]
+},
+"f:Complexion_TattooArmbandKnots_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a knotwork band on the forearm",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"geometric"
+]
+},
+"f:Complexion_TattooArmbandTribal_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a tribal armband",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"tribal"
+]
 },
 "f:Complexion_TattooAtomChest_F01": {
 "adult": false,
@@ -3774,6 +4769,38 @@
 "military"
 ]
 },
+"f:Complexion_TattooDice_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a pair of dice",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"gambling"
+]
+},
+"f:Complexion_TattooDollar_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a dollar sign in stars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"shoulders"
+],
+"size": "small",
+"style": [
+"gambling"
+]
+},
 "f:Complexion_TattooFaith_F01": {
 "adult": false,
 "emblem": null,
@@ -3841,6 +4868,40 @@
 "emblem",
 "military",
 "skull"
+]
+},
+"f:Complexion_TattooGunnersTallyArm_F01": {
+"adult": false,
+"emblem": "gunners",
+"kind": "tattoo",
+"lore": "fits",
+"note": "a long kill tally on the upper arm",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"military",
+"crude"
+]
+},
+"f:Complexion_TattooGunnersTally_F01": {
+"adult": false,
+"emblem": "gunners",
+"kind": "tattoo",
+"lore": "fits",
+"note": "a kill tally on the forearm",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"military",
+"crude"
 ]
 },
 "f:Complexion_TattooHate_F01": {
@@ -4147,6 +5208,40 @@
 "crude"
 ]
 },
+"f:Complexion_TattooLuckyBack_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a big LUCKY horseshoe on the back",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"gambling",
+"script"
+]
+},
+"f:Complexion_TattooLucky_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a horseshoe, LUCKY",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"gambling",
+"script"
+]
+},
 "f:Complexion_TattooMandalaBack_F01": {
 "adult": false,
 "emblem": null,
@@ -4403,6 +5498,38 @@
 "crude"
 ]
 },
+"f:Complexion_TattooSleeveCalf_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a tribal sleeve on the calf",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_r"
+],
+"size": "large",
+"style": [
+"tribal"
+]
+},
+"f:Complexion_TattooSleeveTribal_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a tribal sleeve on the forearm",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "large",
+"style": [
+"tribal"
+]
+},
 "f:Complexion_TattooSold_F01": {
 "adult": true,
 "emblem": null,
@@ -4436,6 +5563,23 @@
 "style": [
 "script",
 "military"
+]
+},
+"f:Complexion_TattooThighGarter_F01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a lace garter round the thigh",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_r"
+],
+"size": "small",
+"style": [
+"floral",
+"pinup"
 ]
 },
 "f:Complexion_TattooThirteen_F01": {
@@ -4503,6 +5647,39 @@
 "tribal"
 ]
 },
+"f:Complexion_TattooVault81Word_F01": {
+"adult": false,
+"emblem": "vault_tec",
+"kind": "tattoo",
+"lore": "fits",
+"note": "\"VAULT 81\" on the forearm",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"script",
+"emblem"
+]
+},
+"f:Complexion_TattooVault81_F01": {
+"adult": false,
+"emblem": "vault_tec",
+"kind": "tattoo",
+"lore": "fits",
+"note": "Vault 81 in the gear",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"emblem"
+]
+},
 "f:Complexion_TattooVaultTecArm_F01": {
 "adult": false,
 "emblem": "vault_tec",
@@ -4550,6 +5727,42 @@
 "style": [
 "script"
 ]
+},
+"f:Complexion_UnderarmBlack_F01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "unshaved underarms, black",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_UnderarmBrown_F01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "unshaved underarms, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_Varicose_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "varicose and spider veins",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
 },
 "f:Complexion_Veins_F01": {
 "adult": false,
@@ -23783,6 +24996,72 @@
 "size": "tiny",
 "style": []
 },
+"m:Complexion_AgeSpots_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "age spots",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_AgeSpots_M02": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "age spots",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_AtomScar_M01": {
+"adult": false,
+"emblem": "atom",
+"kind": "scar",
+"lore": "fits",
+"note": "the Atom cut into the chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_BackHairBlack_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "back hair, black",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "large",
+"style": []
+},
+"m:Complexion_BackHairBrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "back hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "large",
+"style": []
+},
 "m:Complexion_Birthmark_M01": {
 "adult": false,
 "emblem": null,
@@ -23806,6 +25085,35 @@
 "regions": [],
 "size": "small",
 "style": []
+},
+"m:Complexion_BiteShoulder_M01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "a bite mark on the shoulder",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual"
+]
+},
+"m:Complexion_BiteThigh_M01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "bite marks on the inner thigh and a buttock",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
 },
 "m:Complexion_Blood_M01": {
 "adult": false,
@@ -23837,6 +25145,30 @@
 "kind": "blood",
 "lore": "fits",
 "note": "dried blood, drips, spatter",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_BloodyHandsThigh_M01": {
+"adult": false,
+"emblem": "disciples",
+"kind": "blood",
+"lore": "fits",
+"note": "bloody handprints on the chest and a thigh",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_BloodyHands_M01": {
+"adult": false,
+"emblem": "disciples",
+"kind": "blood",
+"lore": "fits",
+"note": "bloody handprints on the chest and belly",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -23903,6 +25235,42 @@
 "size": "small",
 "style": []
 },
+"m:Complexion_BulletScars_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "healed bullet wounds",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_BulletScars_M02": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "healed bullet wounds",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_BurnScar_M01": {
+"adult": false,
+"emblem": null,
+"kind": "burn",
+"lore": "fits",
+"note": "an old burn scar",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
 "m:Complexion_ChestHairBlack_M01": {
 "adult": false,
 "emblem": null,
@@ -23944,6 +25312,60 @@
 ],
 "size": "medium",
 "style": []
+},
+"m:Complexion_CigBurnsHealed_M01": {
+"adult": false,
+"emblem": null,
+"kind": "burn",
+"lore": "fits",
+"note": "old cigarette burn scars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_CigBurns_M01": {
+"adult": false,
+"emblem": null,
+"kind": "burn",
+"lore": "fits",
+"note": "fresh cigarette burns",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": [
+"degrading"
+]
+},
+"m:Complexion_CigBurns_M02": {
+"adult": false,
+"emblem": null,
+"kind": "burn",
+"lore": "fits",
+"note": "fresh cigarette burns",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": [
+"degrading"
+]
+},
+"m:Complexion_Collar_M01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "a collar's chafe around the neck",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"degrading"
+]
 },
 "m:Complexion_Freckles_M01": {
 "adult": false,
@@ -24017,6 +25439,168 @@
 "size": "medium",
 "style": []
 },
+"m:Complexion_GripArms_M01": {
+"adult": false,
+"emblem": null,
+"kind": "bruise",
+"lore": "fits",
+"note": "finger bruises around the upper arms",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_GripArms_M02": {
+"adult": false,
+"emblem": null,
+"kind": "bruise",
+"lore": "fits",
+"note": "finger bruises around the upper arms",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_GripHips_M01": {
+"adult": true,
+"emblem": null,
+"kind": "bruise",
+"lore": "fits",
+"note": "finger bruises on the hips, held from behind",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"m:Complexion_HappyTrailBlack_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "a happy trail, black",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_HappyTrailBrown_M01": {
+"adult": false,
+"emblem": null,
+"kind": "body_hair",
+"lore": "fits",
+"note": "a happy trail, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_HickeyNeck_M01": {
+"adult": true,
+"emblem": null,
+"kind": "bruise",
+"lore": "fits",
+"note": "hickeys on the neck and chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"m:Complexion_HickeyNeck_M02": {
+"adult": true,
+"emblem": null,
+"kind": "bruise",
+"lore": "fits",
+"note": "hickeys on the neck and chest",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"m:Complexion_HickeyThigh_M01": {
+"adult": true,
+"emblem": null,
+"kind": "bruise",
+"lore": "fits",
+"note": "hickeys on the inner thighs and low on the belly",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"m:Complexion_KissPink_M01": {
+"adult": true,
+"emblem": null,
+"kind": "makeup",
+"lore": "fits",
+"note": "pink lipstick kisses",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"m:Complexion_KissRed_M01": {
+"adult": true,
+"emblem": null,
+"kind": "makeup",
+"lore": "fits",
+"note": "red lipstick kisses",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"sexual",
+"lewd"
+]
+},
+"m:Complexion_LaserBurn_M01": {
+"adult": false,
+"emblem": null,
+"kind": "burn",
+"lore": "fits",
+"note": "a laser burn scar",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_LaserBurn_M02": {
+"adult": false,
+"emblem": null,
+"kind": "burn",
+"lore": "fits",
+"note": "a laser burn scar",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
 "m:Complexion_LashesFresh_M01": {
 "adult": false,
 "emblem": null,
@@ -24082,6 +25666,86 @@
 "regions": [],
 "size": "medium",
 "style": []
+},
+"m:Complexion_MarkerCumRag_M01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "\"CUM RAG\" on a buttock, in marker",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"lewd",
+"degrading",
+"script"
+]
+},
+"m:Complexion_MarkerNext_M01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "\"NEXT\" and an arrow down, in marker",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"lewd",
+"degrading",
+"script"
+]
+},
+"m:Complexion_MarkerSlave_M01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "\"SLAVE\" across the chest, in marker",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"lewd",
+"degrading",
+"script"
+]
+},
+"m:Complexion_MarkerTenCaps_M01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "a price, \"10 CAPS\", in red marker",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"lewd",
+"degrading",
+"script"
+]
+},
+"m:Complexion_MarkerUsed_M01": {
+"adult": true,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "\"USED\" and a tally on the thighs, in marker",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": [
+"lewd",
+"degrading",
+"script"
+]
 },
 "m:Complexion_MolesMore_M01": {
 "adult": false,
@@ -24155,6 +25819,60 @@
 "size": "tiny",
 "style": []
 },
+"m:Complexion_Mud_M01": {
+"adult": false,
+"emblem": null,
+"kind": "dirt",
+"lore": "fits",
+"note": "mud on the legs",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_Mud_M02": {
+"adult": false,
+"emblem": null,
+"kind": "dirt",
+"lore": "fits",
+"note": "mud on the legs",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_NailsBlackChipped_M01": {
+"adult": false,
+"emblem": null,
+"kind": "nails",
+"lore": "fits",
+"note": "chipped black nails",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"hand_l",
+"hand_r"
+],
+"size": "tiny",
+"style": []
+},
+"m:Complexion_NailsDirty_M01": {
+"adult": false,
+"emblem": null,
+"kind": "nails",
+"lore": "fits",
+"note": "dirty nails",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"hand_l",
+"hand_r"
+],
+"size": "tiny",
+"style": []
+},
 "m:Complexion_NipplesBrown_M01": {
 "adult": false,
 "emblem": null,
@@ -24195,6 +25913,54 @@
 "chest"
 ],
 "size": "tiny",
+"style": []
+},
+"m:Complexion_PackPaintBlue_M01": {
+"adult": false,
+"emblem": "pack",
+"kind": "makeup",
+"lore": "fits",
+"note": "the Pack's blue body paint",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"m:Complexion_PackPaintGreen_M01": {
+"adult": false,
+"emblem": "pack",
+"kind": "makeup",
+"lore": "fits",
+"note": "the Pack's green body paint",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"m:Complexion_PackPaintPink_M01": {
+"adult": false,
+"emblem": "pack",
+"kind": "makeup",
+"lore": "fits",
+"note": "the Pack's pink body paint",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"m:Complexion_PackPaintPurple_M01": {
+"adult": false,
+"emblem": "pack",
+"kind": "makeup",
+"lore": "fits",
+"note": "the Pack's purple body paint",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
 "style": []
 },
 "m:Complexion_Pimples_M01": {
@@ -24243,6 +26009,34 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
+"style": []
+},
+"m:Complexion_PubicFullAuburn_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "full pubic hair, auburn",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
+"style": []
+},
+"m:Complexion_PubicFullBlond_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "full pubic hair, blond",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "large",
 "style": []
 },
 "m:Complexion_PubicFullBrown_M01": {
@@ -24343,6 +26137,20 @@
 "size": "medium",
 "style": []
 },
+"m:Complexion_PubicTrimBlond_M01": {
+"adult": false,
+"emblem": null,
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "trimmed pubic hair, blond",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
 "m:Complexion_PubicTrimBrown_M01": {
 "adult": false,
 "emblem": null,
@@ -24382,6 +26190,114 @@
 "regions": [
 "pubic"
 ],
+"size": "small",
+"style": []
+},
+"m:Complexion_RadSores_M01": {
+"adult": false,
+"emblem": "atom",
+"kind": "burn",
+"lore": "fits",
+"note": "radiation sores",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_RadSores_M02": {
+"adult": false,
+"emblem": "atom",
+"kind": "burn",
+"lore": "fits",
+"note": "radiation sores",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
+"m:Complexion_RitualCutsFresh_M01": {
+"adult": false,
+"emblem": "disciples",
+"kind": "wound",
+"lore": "fits",
+"note": "the Disciples' ritual cuts, fresh",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_RitualCuts_M01": {
+"adult": false,
+"emblem": "disciples",
+"kind": "scar",
+"lore": "fits",
+"note": "the Disciples' ritual cuts, healed",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_RitualCuts_M02": {
+"adult": false,
+"emblem": "disciples",
+"kind": "scar",
+"lore": "fits",
+"note": "the Disciples' ritual cuts, healed",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_RopeAnkles_M01": {
+"adult": false,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "rope marks around the ankles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_RopeWristsHealed_M01": {
+"adult": false,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "old rope marks on the wrists",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_RopeWrists_M01": {
+"adult": false,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "rope marks around the wrists",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_RopeWrists_M02": {
+"adult": false,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "rope marks around the wrists",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
 "size": "small",
 "style": []
 },
@@ -24433,6 +26349,42 @@
 "size": "small",
 "style": []
 },
+"m:Complexion_ShackleAnkles_M01": {
+"adult": false,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "shackle chafe on the ankles",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_ShackleWrists_M01": {
+"adult": false,
+"emblem": null,
+"kind": "marks",
+"lore": "fits",
+"note": "shackle chafe on the wrists",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_Shrapnel_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "shrapnel scars down one side",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
 "m:Complexion_Spank_M01": {
 "adult": false,
 "emblem": null,
@@ -24472,6 +26424,183 @@
 "regions": [],
 "size": "small",
 "style": []
+},
+"m:Complexion_Sunburn_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "sunburn, peeling",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"m:Complexion_Sunburn_M02": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "sunburn, peeling",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "large",
+"style": []
+},
+"m:Complexion_SurgeryAppendix_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a surgery scar (appendix)",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_SurgeryKnee_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a surgery scar (knee)",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_SurgerySternum_M01": {
+"adult": false,
+"emblem": null,
+"kind": "scar",
+"lore": "fits",
+"note": "a surgery scar (sternum)",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
+},
+"m:Complexion_TanShorts_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "a tan with shorts lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"m:Complexion_TanTank_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "tank-top tan lines",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"m:Complexion_TanTshirt_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tan",
+"lore": "fits",
+"note": "a farmer's tan",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "full",
+"style": []
+},
+"m:Complexion_TattooAceSpades_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "the ace of spades",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"gambling"
+]
+},
+"m:Complexion_TattooAnkleChain_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a chain round the ankle",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_l"
+],
+"size": "tiny",
+"style": [
+"geometric"
+]
+},
+"m:Complexion_TattooArmbandBarbed_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a barbed-wire armband",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"crude",
+"tribal"
+]
+},
+"m:Complexion_TattooArmbandKnots_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a knotwork band on the forearm",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"geometric"
+]
+},
+"m:Complexion_TattooArmbandTribal_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a tribal armband",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"tribal"
+]
 },
 "m:Complexion_TattooAtomChest_M01": {
 "adult": false,
@@ -24590,6 +26719,38 @@
 "military"
 ]
 },
+"m:Complexion_TattooDice_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a pair of dice",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"gambling"
+]
+},
+"m:Complexion_TattooDollar_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a dollar sign in stars",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"shoulders"
+],
+"size": "small",
+"style": [
+"gambling"
+]
+},
 "m:Complexion_TattooFaith_M01": {
 "adult": false,
 "emblem": null,
@@ -24657,6 +26818,40 @@
 "emblem",
 "military",
 "skull"
+]
+},
+"m:Complexion_TattooGunnersTallyArm_M01": {
+"adult": false,
+"emblem": "gunners",
+"kind": "tattoo",
+"lore": "fits",
+"note": "a long kill tally on the upper arm",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"military",
+"crude"
+]
+},
+"m:Complexion_TattooGunnersTally_M01": {
+"adult": false,
+"emblem": "gunners",
+"kind": "tattoo",
+"lore": "fits",
+"note": "a kill tally on the forearm",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"military",
+"crude"
 ]
 },
 "m:Complexion_TattooHate_M01": {
@@ -24871,6 +27066,40 @@
 "style": [
 "script",
 "crude"
+]
+},
+"m:Complexion_TattooLuckyBack_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a big LUCKY horseshoe on the back",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"back"
+],
+"size": "medium",
+"style": [
+"gambling",
+"script"
+]
+},
+"m:Complexion_TattooLucky_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a horseshoe, LUCKY",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "small",
+"style": [
+"gambling",
+"script"
 ]
 },
 "m:Complexion_TattooMandalaBack_M01": {
@@ -25129,6 +27358,38 @@
 "crude"
 ]
 },
+"m:Complexion_TattooSleeveCalf_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a tribal sleeve on the calf",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"leg_r"
+],
+"size": "large",
+"style": [
+"tribal"
+]
+},
+"m:Complexion_TattooSleeveTribal_M01": {
+"adult": false,
+"emblem": null,
+"kind": "tattoo",
+"lore": "fits",
+"note": "a tribal sleeve on the forearm",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "large",
+"style": [
+"tribal"
+]
+},
 "m:Complexion_TattooSold_M01": {
 "adult": true,
 "emblem": null,
@@ -25229,6 +27490,39 @@
 "tribal"
 ]
 },
+"m:Complexion_TattooVault81Word_M01": {
+"adult": false,
+"emblem": "vault_tec",
+"kind": "tattoo",
+"lore": "fits",
+"note": "\"VAULT 81\" on the forearm",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_l"
+],
+"size": "small",
+"style": [
+"script",
+"emblem"
+]
+},
+"m:Complexion_TattooVault81_M01": {
+"adult": false,
+"emblem": "vault_tec",
+"kind": "tattoo",
+"lore": "fits",
+"note": "Vault 81 in the gear",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"emblem"
+]
+},
 "m:Complexion_TattooVaultTecArm_M01": {
 "adult": false,
 "emblem": "vault_tec",
@@ -25276,6 +27570,18 @@
 "style": [
 "script"
 ]
+},
+"m:Complexion_Varicose_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "fits",
+"note": "varicose and spider veins",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "small",
+"style": []
 },
 "m:Complexion_Veins_M01": {
 "adult": false,

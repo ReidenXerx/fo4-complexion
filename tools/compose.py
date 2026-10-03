@@ -22,10 +22,10 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MASK = (1 << 64) - 1
-LAYERS = {'skin': -100, 'mole': -100, 'freckles': -100, 'acne': -100, 'birthmark': -100, 'nipple': -100,
+LAYERS = {'skin': -100, 'mole': -100, 'freckles': -100, 'acne': -100, 'birthmark': -100, 'nipple': -100, 'tan': -100,
           'scar': -90, 'wound': -90, 'burn': -90, 'bruise': -90, 'marks': -90,
           'pubic_hair': -80, 'body_hair': -80,
-          'tattoo': -70, 'brand': -65, 'dirt': -60, 'blood': -55, 'nails': -50}
+          'tattoo': -70, 'brand': -65, 'makeup': -62, 'dirt': -60, 'blood': -55, 'nails': -50}
 SIZE_ORDER = ['tiny', 'small', 'medium', 'large', 'full']
 
 
@@ -124,7 +124,8 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona=
             for _ in range(k):
                 cands = []
                 for t in mine:
-                    if t['kind'] != 'tattoo' or pz['style'] not in t['style'] or any(q['key'] == t['key'] for q in picks):
+                    # Any kind wearing the persona's style: lewd ink, and since C-15 hickeys, lipstick and marker too.
+                    if pz['style'] not in t['style'] or any(q['key'] == t['key'] for q in picks):
                         continue
                     regions = set(t['regions'] or [])
                     if profiles['rules']['regions_unique'] and regions and (regions & used_regions or
@@ -134,7 +135,8 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona=
                     cands.append(t)
                 if not cands:
                     break
-                take(cands[rng.pick(len(cands))], 'tattoo')
+                t = cands[rng.pick(len(cands))]
+                take(t, t['kind'])
 
     # 2. count
     roll, n = rng.percent(), 0

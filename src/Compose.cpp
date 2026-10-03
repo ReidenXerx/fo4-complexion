@@ -30,9 +30,10 @@ namespace CX
 		{
 			static const std::map<std::string, int, std::less<>> layers{
 				{ "skin", -100 }, { "mole", -100 }, { "freckles", -100 }, { "acne", -100 }, { "birthmark", -100 }, { "nipple", -100 },
+				{ "tan", -100 },
 				{ "scar", -90 }, { "wound", -90 }, { "burn", -90 }, { "bruise", -90 }, { "marks", -90 },
 				{ "pubic_hair", -80 }, { "body_hair", -80 },
-				{ "tattoo", -70 }, { "brand", -65 }, { "dirt", -60 }, { "blood", -55 }, { "nails", -50 }
+				{ "tattoo", -70 }, { "brand", -65 }, { "makeup", -62 }, { "dirt", -60 }, { "blood", -55 }, { "nails", -50 }
 			};
 			const auto it = layers.find(a_kind);
 			return it == layers.end() ? -70 : it->second;
@@ -299,7 +300,8 @@ namespace CX
 				for (int i = 0; i < k; ++i) {
 					std::vector<const Template*> cands;
 					for (const auto* t : mine) {
-						if (t->kind != "tattoo" || !Has(t->style, pz->second.style) || picked(*t) || clashes(*t)) {
+						// Any kind wearing the persona's style: lewd ink, and since C-15 hickeys, lipstick and marker too.
+						if (!Has(t->style, pz->second.style) || picked(*t) || clashes(*t)) {
 							continue;
 						}
 						cands.push_back(t);
@@ -307,7 +309,8 @@ namespace CX
 					if (cands.empty()) {
 						break;
 					}
-					take(*cands[rng.Pick(cands.size())], "tattoo");
+					const auto* t = cands[rng.Pick(cands.size())];
+					take(*t, t->kind);
 				}
 			}
 		}

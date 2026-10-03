@@ -23,6 +23,12 @@
    "bruise",
    "marks",
    "blood"
+  ],
+  "sun": [
+   "tan"
+  ],
+  "paint": [
+   "makeup"
   ]
  },
  "hair": {
@@ -133,7 +139,8 @@
    "kinds": {
     "tattoo": 75,
     "scar": 20,
-    "dirt": 5
+    "dirt": 5,
+    "sun": 10
    },
    "styles": [
     "floral",
@@ -256,7 +263,9 @@
     "script",
     "crude"
    ],
-   "emblems": [],
+   "emblems": [
+    "disciples"
+   ],
    "sizes": [
     "tiny",
     "small",
@@ -286,13 +295,16 @@
     "tattoo": 60,
     "scar": 15,
     "dirt": 10,
-    "rough": 15
+    "rough": 15,
+    "paint": 25
    },
    "styles": [
     "animal",
     "tribal"
    ],
-   "emblems": [],
+   "emblems": [
+    "pack"
+   ],
    "sizes": [
     "small",
     "medium",
@@ -325,7 +337,8 @@
     "pinup",
     "geometric",
     "realistic_art",
-    "script"
+    "script",
+    "gambling"
    ],
    "emblems": [],
    "sizes": [
@@ -355,7 +368,8 @@
    "kinds": {
     "tattoo": 55,
     "scar": 35,
-    "rough": 10
+    "rough": 10,
+    "sun": 5
    },
    "styles": [
     "military",
@@ -394,7 +408,8 @@
    "styles": [
     "script",
     "pinup",
-    "crude"
+    "crude",
+    "gambling"
    ],
    "emblems": [],
    "sizes": [
@@ -455,7 +470,8 @@
    ],
    "kinds": {
     "tattoo": 75,
-    "scar": 25
+    "scar": 25,
+    "sun": 10
    },
    "styles": [
     "military",
@@ -573,6 +589,47 @@
    ],
    "hair": "trim",
    "adult": 0
+  },
+  "vault81": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "Vault81CitizenFaction",
+     1122168
+    ],
+    [
+     "Fallout4.esm",
+     "Vault81GuardFaction",
+     324772
+    ]
+   ],
+   "count": [
+    40,
+    45,
+    15,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 40
+   },
+   "styles": [
+    "emblem",
+    "script",
+    "geometric"
+   ],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "about": "Vault 81 residents and guards (C-15): clean-living vault folk, a vault tattoo now and then"
   }
  },
  "order": [
@@ -587,7 +644,8 @@
   "minutemen",
   "railroad",
   "atom",
-  "institute"
+  "institute",
+  "vault81"
  ],
  "characters": {
   "Piper Wright": {

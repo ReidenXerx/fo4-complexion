@@ -15,8 +15,10 @@ from marks import Painter, blank, fbm, over
 
 FONTS = pathlib.Path(__file__).resolve().parent / 'fonts'
 FONT = {'blackletter': 'UnifrakturMaguntia-Book.ttf', 'pirate': 'PirataOne-Regular.ttf', 'western': 'Rye-Regular.ttf',
-        'script': 'GreatVibes-Regular.ttf', 'stencil': 'StardosStencil-Bold.ttf'}
-INK = {'fresh': (0.10, 0.12, 0.13), 'faded': (0.24, 0.30, 0.38), 'red': (0.45, 0.10, 0.10)}
+        'script': 'GreatVibes-Regular.ttf', 'stencil': 'StardosStencil-Bold.ttf',
+        'marker': 'PermanentMarker-Regular.ttf'}  # Permanent Marker: Apache 2.0 (fonts/LICENSE-Apache-2.0.txt)
+INK = {'fresh': (0.10, 0.12, 0.13), 'faded': (0.24, 0.30, 0.38), 'red': (0.45, 0.10, 0.10),
+       'marker': (0.06, 0.06, 0.09), 'marker_red': (0.55, 0.05, 0.08), 'marker_blue': (0.10, 0.14, 0.42)}
 
 
 # ---------------------------------------------------------------- anchors
@@ -112,6 +114,81 @@ def project(m, design, spot, side=0, width=8.0, rotate=0.0, alpha=0.9, ink='fres
         a = a * (1 - crude * 0.5 * fbm(P.p, 3.0, seed, 2))
     a = np.clip(a * alpha, 0, 0.95) * P.cov
     over(rgb, a_out, INK[ink], a)
+    return rgb, a_out
+
+
+# ---------------------------------------------------------------- wrapped around a limb (C-15)
+
+def _unit(v):
+    return v / max(np.linalg.norm(v), 1e-9)
+
+
+def limb(P, which, side):
+    """(mask, centre, axis) of one limb: 'arm' (axis outward to the wrist) or 'leg' (axis down to the ankle); side +1
+    the character's right (+x)."""
+    mask = P.reg(which) & (P.p[..., 0] * side > 0.5)
+    pts = P.p[mask]
+    c = pts.mean(axis=0)
+    _, _, vt = np.linalg.svd(pts[:: max(len(pts) // 20000, 1)] - c, full_matrices=False)
+    a = vt[0]
+    if which == 'arm' and a[0] * side < 0:
+        a = -a
+    if which == 'leg' and a[2] > 0:
+        a = -a
+    return mask, c, a
+
+
+def ring_coords(P, mask, c, a, t0):
+    """For the texels of a limb: t (along its axis from t0), theta (around it, 0 at the front, +-pi at the back)
+    and the local radius, about the limb's own centre at t0."""
+    t = (P.p - c) @ a - t0
+    slab = mask & (np.abs(t) < 0.6)
+    cc = P.p[slab].mean(axis=0) if slab.any() else c + a * t0
+    e1 = _unit(np.array((0.0, 1.0, 0.0)) - a * a[1])
+    e2 = np.cross(a, e1)
+    d = P.p - cc
+    d = d - (d @ a)[..., None] * a
+    theta = np.arctan2(d @ e2, d @ e1)
+    return t, theta, np.linalg.norm(d, axis=-1)
+
+
+def limb_end(P, mask, c, a, end=True):
+    t = (P.p[mask] - c) @ a
+    return t.max() if end else t.min()
+
+
+LIMB_AT = {'upper_arm': ('arm', 0.32), 'forearm': ('arm', 0.72), 'wrist': ('arm', 0.93),
+           'thigh': ('leg', 0.25), 'calf': ('leg', 0.68), 'ankle': ('leg', 0.92)}
+
+
+def wrap(m, design, where, side, height=3.0, alpha=0.9, ink='fresh', crude=0.0, seed=0):
+    """design (a PIL 'L' image, white = ink) wrapped all the way round a limb, `height` game units tall: an armband,
+    an anklet, a sleeve. The design repeats round the limb a whole number of times, so it meets itself at the back
+    (or the inside) without a seam; its top is toward the body."""
+    P = Painter(m)
+    rgb, a_out = blank(m)
+    which, frac = LIMB_AT[where]
+    mask, c, a = limb(P, which, side)
+    if not mask.any():
+        return rgb, a_out
+    tt = (P.p[mask] - c) @ a
+    t0 = tt.min() + (tt.max() - tt.min()) * frac
+    t, theta, r = ring_coords(P, mask, c, a, t0)
+    img = np.asarray(design, dtype=np.float64) / 255.0
+    H, W = img.shape
+    band = mask & (np.abs(t) < height / 2)
+    if not band.any():
+        return rgb, a_out
+    circ = 2 * np.pi * np.median(r[band])
+    repeats = max(1, int(round(circ * H / height / W)))
+    u = (theta + np.pi) / (2 * np.pi)
+    xi = np.clip(((u * repeats) % 1.0 * W).astype(int), 0, W - 1)
+    yi = np.clip(((t / height + 0.5) * H).astype(int), 0, H - 1)
+    a_ = np.where(band, img[yi, xi], 0.0)
+    if crude:
+        a_ = a_ * (1 - crude * 0.5 * fbm(P.p, 3.0, seed, 2))
+    a_ = np.clip(a_ * alpha, 0, 0.95) * P.cov
+    over(rgb, a_out, INK[ink], a_)
     return rgb, a_out
 
 
@@ -240,13 +317,13 @@ def tribal(rng, w=700, h=420):
     return Image.fromarray(full)
 
 
-def band(rng, w=900, h=120):
+def band(rng, w=900, h=120, kind=None):
     """An arm or leg band: a strip of repeated triangles or knots between two lines."""
     im, d = _canvas(w, h)
     d.rectangle((0, 8, w, 18), fill=255)
     d.rectangle((0, h - 18, w, h - 8), fill=255)
     step = int(rng.integers(40, 80))
-    kind = rng.integers(0, 2)
+    kind = rng.integers(0, 2) if kind is None else kind
     for x in range(0, w, step):
         if kind == 0:
             d.polygon([(x, h - 22), (x + step / 2, 22), (x + step, h - 22)], fill=255)
@@ -307,4 +384,138 @@ def emblem(name, size=500):
         d.ellipse((c - 90, c - 90, c + 90, c + 90), outline=255, width=12)
         for dx, dy in ((0, -1), (0, 1), (-1, 0), (1, 0)):
             d.line((c + dx * 110, c + dy * 110, c + dx * 245, c + dy * 245), fill=255, width=16)
+    return im
+
+
+# ---------------------------------------------------------------- C-15 designs
+
+def barbed(rng, w=600, h=150):
+    """Barbed wire: two strands twisted round each other, a four-point barb every so often."""
+    im, d = _canvas(w, h)
+    cy = h / 2
+    xs = np.linspace(0, w, 200)
+    for ph in (0, np.pi):
+        pts = [(x, cy + np.sin(x / w * 2 * np.pi * 4 + ph) * h * 0.13) for x in xs]
+        d.line(pts, fill=255, width=7)
+    for x in np.arange(w / 8, w, w / 4):
+        for dx, dy in ((-1, -1), (1, 1), (-1, 1), (1, -1)):
+            d.line((x, cy, x + dx * 26, cy + dy * 34), fill=255, width=6)
+    return im
+
+
+def chain(rng, w=600, h=110):
+    """A chain: oval links, alternately face-on (open) and edge-on (a bar)."""
+    im, d = _canvas(w, h)
+    step = 70
+    for k, x in enumerate(range(0, w, step)):
+        if k % 2 == 0:
+            d.ellipse((x - 10, 20, x + step + 10, h - 20), outline=255, width=12)
+        else:
+            d.rounded_rectangle((x - 6, h / 2 - 10, x + step + 6, h / 2 + 10), radius=10, fill=255)
+    return im
+
+
+def garter(rng, w=600, h=170):
+    """A lace band: a line with scallops hanging from it and dots in each scallop."""
+    im, d = _canvas(w, h)
+    d.rectangle((0, 18, w, 30), fill=255)
+    step = 60
+    for x in range(0, w, step):
+        d.arc((x, -10, x + step, 110), 0, 180, fill=255, width=7)
+        d.ellipse((x + step / 2 - 8, 60, x + step / 2 + 8, 76), fill=255)
+        d.line((x + step / 2, 100, x + step / 2, 150), fill=255, width=4)
+        d.ellipse((x + step / 2 - 11, 140, x + step / 2 + 11, 162), outline=255, width=4)
+    return im
+
+
+def sleeve(rng, w=500, h=900):
+    """A tribal sleeve: interlocking hooks running up the limb (tiles round it)."""
+    im, d = _canvas(w, h)
+    for k in range(int(rng.integers(8, 12))):
+        y0 = (k + rng.uniform(0, 1)) / 10 * h
+        x0 = rng.uniform(0, w)
+        length = rng.uniform(0.3, 0.6) * h
+        curl = rng.uniform(-1.6, 1.6)
+        thick = rng.uniform(26, 48)
+        for t in np.linspace(0, 1, 40):
+            y = y0 + (t - 0.5) * length
+            x = x0 + np.sin(t * np.pi * curl) * w * 0.25
+            r = thick * np.sin(np.pi * t) ** 0.7 + 2
+            for xx in (x - w, x, x + w):
+                d.ellipse((xx - r, y - r, xx + r, y + r), fill=255)
+    return im
+
+
+def _spade(d, cx, cy, s):
+    d.ellipse((cx - s, cy - s * 0.2, cx, cy + s * 0.8), fill=255)
+    d.ellipse((cx, cy - s * 0.2, cx + s, cy + s * 0.8), fill=255)
+    d.polygon([(cx - s, cy + s * 0.25), (cx + s, cy + s * 0.25), (cx, cy - s * 1.1)], fill=255)
+    d.polygon([(cx, cy + s * 0.4), (cx - s * 0.4, cy + s * 1.3), (cx + s * 0.4, cy + s * 1.3)], fill=255)
+
+
+def card(rng=None, w=340, h=470):
+    """The ace of spades."""
+    im, d = _canvas(w, h)
+    d.rounded_rectangle((10, 10, w - 10, h - 10), radius=34, outline=255, width=12)
+    f = ImageFont.truetype(str(FONTS / FONT['western']), 80)
+    d.text((34, 26), 'A', fill=255, font=f)
+    d.text((w - 96, h - 116), 'A', fill=255, font=f)
+    _spade(d, w / 2, h / 2 - 40, 78)
+    return im
+
+
+def dice(rng=None, size=520):
+    """A pair of dice, tumbling: a five and a two."""
+    out = Image.new('L', (size, size), 0)
+    for (cx, cy, rot, pips) in ((170, 230, 14, 5), (360, 300, -22, 2)):
+        im, d = _canvas(220, 220)
+        d.rounded_rectangle((10, 10, 210, 210), radius=34, outline=255, width=12)
+        spots = {5: ((60, 60), (160, 60), (110, 110), (60, 160), (160, 160)), 2: ((65, 65), (155, 155))}[pips]
+        for x, y in spots:
+            d.ellipse((x - 18, y - 18, x + 18, y + 18), fill=255)
+        im = im.rotate(rot, expand=True)
+        out.paste(im, (int(cx - im.width / 2), int(cy - im.height / 2)), im)
+    return out
+
+
+def lucky(rng=None, w=520, h=440):
+    """A horseshoe, points up, with LUCKY under it."""
+    im, d = _canvas(w, h)
+    cx = w / 2
+    d.arc((cx - 150, 20, cx + 150, 320), 0, 180, fill=255, width=46)
+    d.rectangle((cx - 150, 60, cx - 104, 170), fill=255)
+    d.rectangle((cx + 104, 60, cx + 150, 170), fill=255)
+    for ang in np.linspace(0.15, np.pi - 0.15, 6):
+        x, y = cx + np.cos(ang) * 127, 170 + np.sin(ang) * 127
+        d.ellipse((x - 7, y - 7, x + 7, y + 7), fill=0)
+    f = ImageFont.truetype(str(FONTS / FONT['western']), 86)
+    l, t, r, b = f.getbbox('LUCKY')
+    d.text((cx - (r - l) / 2 - l, 330 - t), 'LUCKY', fill=255, font=f)
+    return im
+
+
+def dollar(rng=None, size=420):
+    """A dollar sign in a ring of stars."""
+    im, d = _canvas(size, size)
+    c = size / 2
+    f = ImageFont.truetype(str(FONTS / FONT['western']), 300)
+    l, t, r, b = f.getbbox('$')
+    d.text((c - (r - l) / 2 - l, c - (b - t) / 2 - t), '$', fill=255, font=f)
+    for k in range(8):
+        a = k * np.pi / 4
+        x, y = c + np.cos(a) * 185, c + np.sin(a) * 185
+        star = [(x + np.cos(-np.pi / 2 + i * 4 * np.pi / 5) * 18, y + np.sin(-np.pi / 2 + i * 4 * np.pi / 5) * 18) for i in range(5)]
+        d.polygon(star, fill=255)
+    return im
+
+
+def vault_number(number, size=500):
+    """A vault's number inside the Vault-Tec gear."""
+    im = emblem('vault_tec', size)
+    d = ImageDraw.Draw(im)
+    c = size / 2
+    d.ellipse((c - 150, c - 150, c + 150, c + 150), fill=0)
+    f = ImageFont.truetype(str(FONTS / FONT['stencil']), 150 if len(str(number)) < 3 else 110)
+    l, t, r, b = f.getbbox(str(number))
+    d.text((c - (r - l) / 2 - l, c - (b - t) / 2 - t), str(number), fill=255, font=f)
     return im

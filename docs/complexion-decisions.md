@@ -150,6 +150,29 @@ skin (C-12); tattoos are projected decals from a point on the body, flat on the 
 - PROPERTY, SOLD and OWNED are also crude ink: a raider whose adult roll passes may wear them -- a captive who
   joined the raiders.
 
+## C-15: Four more sets: rough life, faction flavour, ordinary skin, wrapped tattoos and nails (owner, 2026-10-03)
+
+The owner chose all four proposed sets. All painted in 3D as C-9/C-13, multiplied onto the skin (C-12):
+- **Captives and rough life** (tools/paint/life.py): rope marks and shackle chafe around the wrists and ankles, a
+  collar's chafe, grip bruises (upper arms; hips from behind), cigarette burns, bite marks, hickeys, lipstick kisses,
+  words in marker pen ("NEXT", "USED", "10 CAPS", "SLAVE", "CUM RAG"...). The sexual and degrading ones are adult
+  (the MCM switch). Rapport's vulgar persona step now draws any KIND wearing its style, not only tattoos, so its
+  NPCs can also get hickeys, kisses and marker words (both composers; parity checked).
+- **Faction flavour:** the Disciples' ritual cuts and bloody handprints (emblem `disciples`), the Children of Atom's
+  radiation sores and an Atom cut as a scar (`atom`), bullet, shrapnel, laser and burn scars for anyone hard-living,
+  the Pack's body paint (emblem `pack`, feature kind `paint` = tag kind `makeup`), Gunners kill tallies, gamblers'
+  ink (style `gambling`: Triggermen and Operators), and Vault 81 tattoos for a new group `vault81` (its citizen and
+  guard factions). Emblems keep each faction's own marks on its members (C-7).
+- **Ordinary life:** tan lines (T-shirt, tank top, bikini, shorts) and sunburn -- a new tag kind `tan`, feature kind
+  `sun` for settlers, Minutemen and Gunners; mud on the legs; age spots, varicose veins, cellulite and surgery
+  scars in the universal skin and scar pools; men's back hair, happy trails and more pubic colours; women's
+  unshaved underarms.
+- **Wrapped tattoos:** armbands, an anklet, a garter and sleeves wrap all the way round the limb (decals.wrap: a
+  cylinder about the limb's own axis, the design repeated a whole number of times so it meets itself).
+- **Nails:** on the hands mesh (LooksMenu slot 4, as the packs' nails). Found on the mesh, not guessed: the back of
+  each finger's last bone, the nail's facing measured from the female hands texture, where nails are drawn pale
+  (tools/paint/hands.py). Polish colours, chipped polish, dirty nails.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.
