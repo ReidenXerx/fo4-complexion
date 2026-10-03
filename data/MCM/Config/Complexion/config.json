@@ -27,7 +27,7 @@
           "type": "switcher",
           "id": "bAdult:General",
           "text": "Adult and degrading pieces",
-          "help": "Slave stamps and barcodes, chains, sexual tattoos: on raiders' captives, and on raiders and the Nuka-World gangs at low odds. Off: nobody gets them. Takes effect for people met from now on (Roll everyone again to change everyone).",
+          "help": "Slave stamps and barcodes, chains, sexual tattoos: on raiders' captives, and on raiders and the Nuka-World gangs at low odds; and with Rapport, the lewd marks of NPCs whose Rapport persona is vulgar (\"ENTRY\" with an arrow, \"Back Door\", \"SLUT\"...). Off: nobody gets any of them. Takes effect for people met from now on (Roll everyone again to change everyone).",
           "valueOptions": {
             "sourceType": "ModSettingBool"
           }

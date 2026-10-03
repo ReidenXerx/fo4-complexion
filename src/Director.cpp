@@ -4,7 +4,8 @@ namespace CX
 {
 	namespace
 	{
-		constexpr std::uint32_t kSaveVersion = 1;
+		// 2: a record carries the persona (C-14). Version 1 records load with none.
+		constexpr std::uint32_t kSaveVersion = 2;
 
 		std::uint64_t Mix(std::uint64_t a_z)
 		{
@@ -242,9 +243,31 @@ namespace CX
 		if (r->second.group == group->name) {
 			return true;
 		}
-		r->second.picks = Compose(_profiles, _catalog, r->second.female, *group, SeedFor(o->second.ref, r->second.base), _adult);
+		r->second.picks = Compose(_profiles, _catalog, r->second.female, *group, SeedFor(o->second.ref, r->second.base), _adult, r->second.persona);
 		Log(std::format("{:08X}: {} after all (a faction on the reference), now: {} overlay(s)", o->second.ref, group->name, r->second.picks.size()));
 		r->second.group = group->name;
+		o->second.picks = r->second.picks;
+		return true;
+	}
+
+	bool Director::SetPersona(std::uint32_t a_id, std::string_view a_persona)
+	{
+		std::scoped_lock l{ _lock };
+		const auto o = _inflight.find(a_id);
+		if (o == _inflight.end()) {
+			return false;
+		}
+		const auto r = _records.find(o->second.ref);
+		if (r == _records.end() || r->second.applied || r->second.persona == a_persona) {
+			return false;
+		}
+		r->second.persona = std::string(a_persona);
+		const auto* group = _profiles.Find(r->second.group);
+		if (!group || !_profiles.personas.contains(a_persona)) {
+			return false;  // a persona with nothing to add: the look stands
+		}
+		r->second.picks = Compose(_profiles, _catalog, r->second.female, *group, SeedFor(o->second.ref, r->second.base), _adult, a_persona);
+		Log(std::format("{:08X}: Rapport persona {}, now: {} overlay(s)", o->second.ref, a_persona, r->second.picks.size()));
 		o->second.picks = r->second.picks;
 		return true;
 	}
@@ -322,6 +345,7 @@ namespace CX
 			w.U8(r.applied ? 1 : 0);
 			w.U32(r.base);
 			w.Str(r.group);
+			w.Str(r.persona);
 			w.U32(static_cast<std::uint32_t>(r.picks.size()));
 			for (const auto& p : r.picks) {
 				w.Str(p.key);
@@ -338,7 +362,7 @@ namespace CX
 		Reader        r(a_bytes);
 		std::uint32_t version = 0, count = 0;
 		std::uint64_t salt = 0;
-		if (!r.U32(version) || version != kSaveVersion || !r.U64(salt) || !r.U32(count)) {
+		if (!r.U32(version) || version < 1 || version > kSaveVersion || !r.U64(salt) || !r.U32(count)) {
 			return false;
 		}
 		_salt = salt;
@@ -348,7 +372,8 @@ namespace CX
 			std::uint32_t ref = 0, picks = 0;
 			std::uint8_t  female = 0, applied = 0;
 			Record        rec;
-			if (!r.U32(ref) || !r.U8(female) || !r.U8(applied) || !r.U32(rec.base) || !r.Str(rec.group) || !r.U32(picks) || picks > 64) {
+			if (!r.U32(ref) || !r.U8(female) || !r.U8(applied) || !r.U32(rec.base) || !r.Str(rec.group) ||
+				(version >= 2 && !r.Str(rec.persona)) || !r.U32(picks) || picks > 64) {
 				return false;
 			}
 			rec.female = female != 0;

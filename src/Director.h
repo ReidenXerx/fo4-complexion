@@ -28,6 +28,7 @@ namespace CX
 		bool              female{ false };
 		std::uint32_t     base{ 0 };  // the NPC record, part of the seed
 		std::string       group;
+		std::string       persona;  // Rapport's, as the bridge read it (C-14); "" = none
 		std::vector<Pick> picks;
 		bool              applied{ false };  // the bridge confirmed every entry landed
 	};
@@ -65,6 +66,9 @@ namespace CX
 		// False when the order or the group is unknown. Only for a look not yet confirmed on them.
 		bool Regroup(std::uint32_t a_id, std::string_view a_group);
 		[[nodiscard]] std::string GroupOf(std::uint32_t a_id) const;
+		// The bridge read their Rapport persona: a look not yet put on them is composed again with it. Returns
+		// whether the look changed.
+		bool SetPersona(std::uint32_t a_id, std::string_view a_persona);
 
 		// MCM "Roll everyone again": a new salt, every record forgotten; whoever is seen next is decided anew
 		// (the bridge replaces our old entries, which it knows by their negative priority).

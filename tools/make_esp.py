@@ -16,6 +16,8 @@ import struct
 import sys
 
 BRIDGE_SCRIPT = 'Complexion:Bridge'
+# Rapport's persona (C-14), a script of its own on the same quest: without Rapport only it fails to load.
+PERSONA_SCRIPT = 'Complexion:Persona'
 BRIDGE_EDID = 'ComplexionBridgeQuest'
 AUTHOR = 'Complexion'
 MASTER = 'Fallout4.esm'
@@ -48,17 +50,18 @@ def group(label, records_blob):
             + struct.pack('<I', 0) + struct.pack('<IHH', 0, 0, 0) + records_blob)
 
 
-def quest_fields(edid, script):
-    vmad = struct.pack('<hhH', 6, 2, 1)        # version, object format, script count
-    vmad += wstring(script)
-    vmad += struct.pack('<B', 0)               # status: local
-    vmad += struct.pack('<H', 0)               # no properties
+def quest_fields(edid, scripts):
+    vmad = struct.pack('<hhH', 6, 2, len(scripts))   # version, object format, script count
+    for script in scripts:
+        vmad += wstring(script)
+        vmad += struct.pack('<B', 0)               # status: local
+        vmad += struct.pack('<H', 0)               # no properties
     dnam = bytes.fromhex('110064670000000000000000')   # AAF_MainQuest's: start game enabled
     return field('EDID', zstring(edid)) + field('VMAD', vmad) + field('DNAM', dnam) + field('NEXT', b'')
 
 
 def build():
-    body = group('QUST', record('QUST', BRIDGE_FORMID, quest_fields(BRIDGE_EDID, BRIDGE_SCRIPT)))
+    body = group('QUST', record('QUST', BRIDGE_FORMID, quest_fields(BRIDGE_EDID, [BRIDGE_SCRIPT, PERSONA_SCRIPT])))
     hedr = struct.pack('<fiI', 1.0, 2, BRIDGE_FORMID + 1)   # version, records + groups, next free id
     header = field('HEDR', hedr) + field('CNAM', zstring(AUTHOR))
     header += field('MAST', zstring(MASTER)) + field('DATA', struct.pack('<Q', 0))
@@ -78,6 +81,8 @@ def check(path):
         problems.append('it is not flagged light')
     if BRIDGE_SCRIPT.encode('ascii') not in blob or b'QUST' not in blob:
         problems.append('it has no quest running Complexion:Bridge')
+    if PERSONA_SCRIPT.encode('ascii') not in blob:
+        problems.append('its quest has no Complexion:Persona (Rapport personas)')
     return problems
 
 

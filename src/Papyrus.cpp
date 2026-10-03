@@ -133,6 +133,14 @@ namespace CX::Papyrus
 
 		Str OrderGroup(std::monostate, std::int32_t a_id) { return Str{ D().GroupOf(Id(a_id)) }; }
 
+		bool OrderPersona(std::monostate, std::int32_t a_id, Str a_persona)
+		{
+			// Papyrus hands strings back in any case: Rapport's personas are lowercase, so are these keys.
+			std::string p = a_persona.c_str() ? a_persona.c_str() : "";
+			std::ranges::transform(p, p.begin(), [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+			return D().SetPersona(Id(a_id), p);
+		}
+
 		bool OrderRegroup(std::monostate, std::int32_t a_id, Str a_group)
 		{
 			return D().Regroup(Id(a_id), a_group.c_str() ? std::string_view{ a_group.c_str() } : std::string_view{});
@@ -182,6 +190,7 @@ namespace CX::Papyrus
 		Bind(a_vm, "OrderGone"sv, OrderGone, fast);
 		Bind(a_vm, "OrderGroup"sv, OrderGroup, fast);
 		Bind(a_vm, "OrderRegroup"sv, OrderRegroup, fast);
+		Bind(a_vm, "OrderPersona"sv, OrderPersona, fast);
 		logger::info("papyrus: {} natives bound, protocol {}", kScript, kProtocol);
 		return true;
 	}

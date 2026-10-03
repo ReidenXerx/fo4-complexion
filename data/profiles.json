@@ -58,8 +58,24 @@
     "percent": 35
    },
    {
+    "kind": "freckles",
+    "percent": 15
+   },
+   {
+    "kind": "skin",
+    "percent": 15
+   },
+   {
+    "kind": "body_hair",
+    "percent": 10
+   },
+   {
     "kind": "acne",
     "percent": 8
+   },
+   {
+    "kind": "birthmark",
+    "percent": 5
    }
   ],
   "male": [
@@ -74,6 +90,26 @@
    {
     "kind": "mole",
     "percent": 30
+   },
+   {
+    "kind": "nipple",
+    "percent": 20
+   },
+   {
+    "kind": "freckles",
+    "percent": 10
+   },
+   {
+    "kind": "skin",
+    "percent": 10
+   },
+   {
+    "kind": "acne",
+    "percent": 6
+   },
+   {
+    "kind": "birthmark",
+    "percent": 5
    }
   ]
  },
@@ -2400,6 +2436,19 @@
    "hair": "any",
    "adult": 0,
    "why": "the hotel handyman"
+  }
+ },
+ "personas": {
+  "vulgar": {
+   "percent": 90,
+   "count": [
+    0,
+    55,
+    35,
+    10
+   ],
+   "style": "lewd",
+   "about": "Rapport persona (Rapport:Core.PersonaOf): lewd marks on top of the look, owner 2026-10-03 (C-14)"
   }
  }
 }

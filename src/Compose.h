@@ -46,6 +46,14 @@ namespace CX
 		int         percent{ 0 };
 	};
 
+	// A Rapport persona that adds marks of one style on top of the look (C-14).
+	struct Persona
+	{
+		int                percent{ 0 };
+		std::array<int, 4> count{};
+		std::string        style;
+	};
+
 	struct Profiles
 	{
 		int                                                    cap{ 6 };
@@ -59,6 +67,7 @@ namespace CX
 		bool                                                   regionsUnique{ true };
 		std::string                                            fallback;  // "default"
 		std::vector<Group>                                     groups;    // in "order", then the default last
+		std::map<std::string, Persona, std::less<>>            personas;
 		[[nodiscard]] const Group*                             Find(std::string_view a_name) const;
 	};
 
@@ -78,5 +87,5 @@ namespace CX
 	[[nodiscard]] std::vector<Template> ParseCatalog(const nlohmann::json& a_tags, const std::set<std::string>& a_installed);
 
 	[[nodiscard]] std::vector<Pick> Compose(const Profiles& a_profiles, const std::vector<Template>& a_catalog, bool a_female,
-		const Group& a_group, std::uint64_t a_seed, bool a_adultAllowed);
+		const Group& a_group, std::uint64_t a_seed, bool a_adultAllowed, std::string_view a_persona = {});
 }

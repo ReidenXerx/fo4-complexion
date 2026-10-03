@@ -66,7 +66,7 @@ namespace
 				}
 				at = tab + 1;
 			}
-			if (cols.size() != 5) {
+			if (cols.size() != 6) {
 				std::println("bad line: {}", line);
 				return 1;
 			}
@@ -74,14 +74,15 @@ namespace
 			const auto&   sex = cols[1];
 			const auto    seed = std::stoull(cols[2]);
 			const int     adult = std::stoi(cols[3]);
-			const auto&   picks = cols[4];
+			const auto&   persona = cols[4];
+			const auto&   picks = cols[5];
 			const auto* g = profiles.Find(group);
 			if (!g) {
 				std::println("no group {}", group);
 				return 1;
 			}
 			std::string mine;
-			for (const auto& p : CX::Compose(profiles, catalog, sex == "f", *g, seed, adult != 0)) {
+			for (const auto& p : CX::Compose(profiles, catalog, sex == "f", *g, seed, adult != 0, persona)) {
 				mine += std::format("{}{}@{}", mine.empty() ? "" : ",", p.key, p.priority);
 			}
 			++lines;

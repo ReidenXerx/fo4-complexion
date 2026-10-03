@@ -26,6 +26,7 @@ Int Property BoundCaptiveFactionID = 0x058610 AutoReadOnly
 Float _drainStarted = -1.0
 Int _polls = 0
 Bool _plugin = False
+Bool _rapport = False
 Bool _mcm = False
 Keyword _aafBusy
 Keyword _aafLocked
@@ -54,6 +55,7 @@ Function Connect()
 	EndIf
 	_captive = Game.GetFormFromFile(CaptiveFactionID, "Fallout4.esm") as Faction
 	_boundCaptive = Game.GetFormFromFile(BoundCaptiveFactionID, "Fallout4.esm") as Faction
+	_rapport = Game.IsPluginInstalled("Rapport.esp")
 	; By the names plugins register with F4SE, not their file names: MCM is "F4MCM"; LooksMenu "F4EE", or
 	; "Fallout 4 Engine Extender" on AE.
 	_mcm = F4SE.GetPluginVersion("F4MCM") > 0 || F4SE.GetPluginVersion("MCM") > 0
@@ -165,6 +167,19 @@ Function RunOrder(Int aiOrder)
 	EndIf
 	If Captive(a) && Complexion:DLL.OrderGroup(aiOrder) != "captives"
 		Complexion:DLL.OrderRegroup(aiOrder, "captives")
+	EndIf
+	If _rapport
+		; Rapport's persona, through the script that holds Rapport's types (Complexion:Persona); without Rapport
+		; that script did not load and CastAs gives None.
+		ScriptObject persona = Self.CastAs("Complexion:Persona")
+		If persona
+			Var[] args = new Var[1]
+			args[0] = a
+			String p = persona.CallFunction("Of", args) as String
+			If p != ""
+				Complexion:DLL.OrderPersona(aiOrder, p)
+			EndIf
+		EndIf
 	EndIf
 	Bool female = Complexion:DLL.OrderFemale(aiOrder)
 	Int count = Complexion:DLL.OrderCount(aiOrder)

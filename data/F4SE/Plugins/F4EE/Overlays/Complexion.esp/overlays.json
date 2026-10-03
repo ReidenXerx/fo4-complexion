@@ -754,5 +754,2063 @@
   "transformable": true,
   "sort": 0,
   "gender": 0
+ },
+ {
+  "id": "Complexion_Freckles_F01",
+  "name": "Complexion - sun freckles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Freckles_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Freckles_F02",
+  "name": "Complexion - sun freckles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Freckles_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Freckles_F03",
+  "name": "Complexion - sun freckles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Freckles_F03.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Freckles_M01",
+  "name": "Complexion - sun freckles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Freckles_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Freckles_M02",
+  "name": "Complexion - sun freckles",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Freckles_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Birthmark_F01",
+  "name": "Complexion - a birthmark",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Birthmark_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Birthmark_F02",
+  "name": "Complexion - a birthmark",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Birthmark_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Birthmark_M01",
+  "name": "Complexion - a birthmark",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Birthmark_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Birthmark_M02",
+  "name": "Complexion - a birthmark",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Birthmark_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Pores_F01",
+  "name": "Complexion - skin texture",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Pores_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Pores_F02",
+  "name": "Complexion - skin texture",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Pores_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Pores_M01",
+  "name": "Complexion - skin texture",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Pores_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Pores_M02",
+  "name": "Complexion - skin texture",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Pores_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Veins_F01",
+  "name": "Complexion - faint veins",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Veins_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Veins_F02",
+  "name": "Complexion - faint veins",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Veins_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Veins_M01",
+  "name": "Complexion - faint veins",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Veins_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Stretch_F01",
+  "name": "Complexion - stretch marks",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Stretch_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Stretch_F02",
+  "name": "Complexion - stretch marks",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Stretch_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Stretch_F03",
+  "name": "Complexion - stretch marks",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Stretch_F03.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Stretch_M01",
+  "name": "Complexion - stretch marks",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Stretch_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Pimples_F01",
+  "name": "Complexion - pimples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Pimples_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Pimples_F02",
+  "name": "Complexion - pimples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Pimples_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Pimples_M01",
+  "name": "Complexion - pimples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Pimples_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_Pimples_M02",
+  "name": "Complexion - pimples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Pimples_M02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_NipplesPink_F01",
+  "name": "Complexion - pink areolas",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesPink_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_NipplesPink_M01",
+  "name": "Complexion - pink nipples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesPink_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_NipplesBrown_F01",
+  "name": "Complexion - brown areolas",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesBrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_NipplesBrown_M01",
+  "name": "Complexion - brown nipples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesBrown_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_NipplesDark_F01",
+  "name": "Complexion - dark areolas",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesDark_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_NipplesDark_M01",
+  "name": "Complexion - dark nipples",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_NipplesDark_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PubicNaturalBrown_F01",
+  "name": "Complexion - natural pubic hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicNaturalBrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicNaturalBlack_F01",
+  "name": "Complexion - natural pubic hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicNaturalBlack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicNaturalAuburn_F01",
+  "name": "Complexion - natural pubic hair, auburn",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicNaturalAuburn_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicNaturalBlond_F01",
+  "name": "Complexion - natural pubic hair, blond",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicNaturalBlond_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicTrimmedBrown_F01",
+  "name": "Complexion - trimmed pubic hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicTrimmedBrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicTrimmedBlack_F01",
+  "name": "Complexion - trimmed pubic hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicTrimmedBlack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicTrimmedBlond_F01",
+  "name": "Complexion - trimmed pubic hair, blond",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicTrimmedBlond_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicTriangleBrown_F01",
+  "name": "Complexion - triangle pubic hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicTriangleBrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicTriangleBlack_F01",
+  "name": "Complexion - triangle pubic hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicTriangleBlack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicLandingBrown_F01",
+  "name": "Complexion - landing pubic hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicLandingBrown_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicLandingBlack_F01",
+  "name": "Complexion - landing pubic hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicLandingBlack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Stubble_F01",
+  "name": "Complexion - leg and underarm stubble",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Stubble_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_Stubble_F02",
+  "name": "Complexion - leg and underarm stubble",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_Stubble_F02.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_ChestHairBrown_M01",
+  "name": "Complexion - chest hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestHairBrown_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestHairBlack_M01",
+  "name": "Complexion - chest hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestHairBlack_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestHairGrey_M01",
+  "name": "Complexion - chest hair, grey",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestHairGrey_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_LimbHairBrown_M01",
+  "name": "Complexion - arm and leg hair, brown",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_LimbHairBrown_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_LimbHairBlack_M01",
+  "name": "Complexion - arm and leg hair, black",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_LimbHairBlack_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooNoMercy_F01",
+  "name": "Complexion - \"No Mercy\" across the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooNoMercy_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooNoMercy_M01",
+  "name": "Complexion - \"No Mercy\" across the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooNoMercy_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooRust_F01",
+  "name": "Complexion - \"RUST\" on the forearm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooRust_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooRust_M01",
+  "name": "Complexion - \"RUST\" on the forearm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooRust_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooKill_F01",
+  "name": "Complexion - \"KILL\" on the forearm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooKill_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooKill_M01",
+  "name": "Complexion - \"KILL\" on the forearm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooKill_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooWasteland_F01",
+  "name": "Complexion - \"Wasteland\" across the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooWasteland_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooWasteland_M01",
+  "name": "Complexion - \"Wasteland\" across the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooWasteland_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooRaiderWord_F01",
+  "name": "Complexion - \"Raider\" on the lower back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooRaiderWord_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooRaiderWord_M01",
+  "name": "Complexion - \"Raider\" on the lower back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooRaiderWord_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooLove_F01",
+  "name": "Complexion - prison \"LOVE\"",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLove_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLove_M01",
+  "name": "Complexion - prison \"LOVE\"",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLove_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooHate_F01",
+  "name": "Complexion - prison \"HATE\"",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooHate_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooHate_M01",
+  "name": "Complexion - prison \"HATE\"",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooHate_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooMom_F01",
+  "name": "Complexion - \"Mom\" on the upper arm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooMom_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooMom_M01",
+  "name": "Complexion - \"Mom\" on the upper arm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooMom_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooThirteen_F01",
+  "name": "Complexion - \"13\" on the neck",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooThirteen_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooThirteen_M01",
+  "name": "Complexion - \"13\" on the neck",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooThirteen_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooHope_F01",
+  "name": "Complexion - \"Hope\" on the hip",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooHope_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooHope_M01",
+  "name": "Complexion - \"Hope\" on the hip",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooHope_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooFaith_F01",
+  "name": "Complexion - \"Faith\" on the lower back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooFaith_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooFaith_M01",
+  "name": "Complexion - \"Faith\" on the lower back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooFaith_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooForever_F01",
+  "name": "Complexion - \"Forever\" on the thigh",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooForever_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooForever_M01",
+  "name": "Complexion - \"Forever\" on the thigh",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooForever_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooSteel_F01",
+  "name": "Complexion - \"STEEL\" on the upper arm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooSteel_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooSteel_M01",
+  "name": "Complexion - \"STEEL\" on the upper arm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooSteel_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooAtomPraised_F01",
+  "name": "Complexion - \"Atom Be Praised\" across the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooAtomPraised_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooAtomPraised_M01",
+  "name": "Complexion - \"Atom Be Praised\" across the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooAtomPraised_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooMinutemenWord_F01",
+  "name": "Complexion - \"Minutemen\" on the upper arm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooMinutemenWord_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooMinutemenWord_M01",
+  "name": "Complexion - \"Minutemen\" on the upper arm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooMinutemenWord_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooProperty_F01",
+  "name": "Complexion - \"PROPERTY\" on the lower back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooProperty_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooProperty_M01",
+  "name": "Complexion - \"PROPERTY\" on the lower back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooProperty_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooSold_F01",
+  "name": "Complexion - \"SOLD\" on a buttock",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooSold_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooSold_M01",
+  "name": "Complexion - \"SOLD\" on a buttock",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooSold_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooOwned_F01",
+  "name": "Complexion - \"OWNED\" on the back of the thigh",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooOwned_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooOwned_M01",
+  "name": "Complexion - \"OWNED\" on the back of the thigh",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooOwned_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooMandalaBack_F01",
+  "name": "Complexion - a mandala between the shoulders",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooMandalaBack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooMandalaBack_M01",
+  "name": "Complexion - a mandala between the shoulders",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooMandalaBack_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooMandalaThigh_F01",
+  "name": "Complexion - a mandala on the thigh",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooMandalaThigh_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooMandalaThigh_M01",
+  "name": "Complexion - a mandala on the thigh",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooMandalaThigh_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooTribalLowerBack_F01",
+  "name": "Complexion - a tribal piece on the lower back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooTribalLowerBack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooTribalLowerBack_M01",
+  "name": "Complexion - a tribal piece on the lower back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooTribalLowerBack_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooTribalShoulder_F01",
+  "name": "Complexion - a tribal piece on the shoulder",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooTribalShoulder_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooTribalShoulder_M01",
+  "name": "Complexion - a tribal piece on the shoulder",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooTribalShoulder_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooTribalChest_F01",
+  "name": "Complexion - a tribal piece across the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooTribalChest_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooTribalChest_M01",
+  "name": "Complexion - a tribal piece across the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooTribalChest_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooBarcodeNeck_F01",
+  "name": "Complexion - a barcode on the neck",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooBarcodeNeck_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooBarcodeNeck_M01",
+  "name": "Complexion - a barcode on the neck",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooBarcodeNeck_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooBarcodeArm_F01",
+  "name": "Complexion - a barcode on the forearm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooBarcodeArm_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooBarcodeArm_M01",
+  "name": "Complexion - a barcode on the forearm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooBarcodeArm_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooPrisonDots_F01",
+  "name": "Complexion - five prison dots",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooPrisonDots_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooPrisonDots_M01",
+  "name": "Complexion - five prison dots",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooPrisonDots_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooAtomShoulder_F01",
+  "name": "Complexion - the Atom on the shoulder",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooAtomShoulder_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooAtomShoulder_M01",
+  "name": "Complexion - the Atom on the shoulder",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooAtomShoulder_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooAtomChest_F01",
+  "name": "Complexion - the Atom on the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooAtomChest_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooAtomChest_M01",
+  "name": "Complexion - the Atom on the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooAtomChest_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooVaultTecArm_F01",
+  "name": "Complexion - the Vault-Tec gear on the forearm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooVaultTecArm_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooVaultTecArm_M01",
+  "name": "Complexion - the Vault-Tec gear on the forearm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooVaultTecArm_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooVaultTecUpperArm_F01",
+  "name": "Complexion - the Vault-Tec gear on the upper arm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooVaultTecUpperArm_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooVaultTecUpperArm_M01",
+  "name": "Complexion - the Vault-Tec gear on the upper arm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooVaultTecUpperArm_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooBoSBack_F01",
+  "name": "Complexion - the Brotherhood on the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooBoSBack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooBoSBack_M01",
+  "name": "Complexion - the Brotherhood on the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooBoSBack_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooBoSArm_F01",
+  "name": "Complexion - the Brotherhood on the upper arm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooBoSArm_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooBoSArm_M01",
+  "name": "Complexion - the Brotherhood on the upper arm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooBoSArm_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooMinutemenShoulder_F01",
+  "name": "Complexion - the Minutemen star on the shoulder",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooMinutemenShoulder_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooMinutemenShoulder_M01",
+  "name": "Complexion - the Minutemen star on the shoulder",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooMinutemenShoulder_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooMinutemenChest_F01",
+  "name": "Complexion - the Minutemen star on the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooMinutemenChest_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooMinutemenChest_M01",
+  "name": "Complexion - the Minutemen star on the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooMinutemenChest_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooRailroadWrist_F01",
+  "name": "Complexion - a tiny Railroad lantern",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooRailroadWrist_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooRailroadWrist_M01",
+  "name": "Complexion - a tiny Railroad lantern",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooRailroadWrist_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooRaiderSkullChest_F01",
+  "name": "Complexion - a crude raider skull on the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooRaiderSkullChest_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooRaiderSkullChest_M01",
+  "name": "Complexion - a crude raider skull on the chest",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooRaiderSkullChest_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooRaiderSkullBack_F01",
+  "name": "Complexion - a raider skull on the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooRaiderSkullBack_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooRaiderSkullBack_M01",
+  "name": "Complexion - a raider skull on the back",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooRaiderSkullBack_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooGunnersShoulder_F01",
+  "name": "Complexion - the Gunners crosshair on the shoulder",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooGunnersShoulder_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooGunnersShoulder_M01",
+  "name": "Complexion - the Gunners crosshair on the shoulder",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooGunnersShoulder_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooGunnersArm_F01",
+  "name": "Complexion - the Gunners crosshair on the forearm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooGunnersArm_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooGunnersArm_M01",
+  "name": "Complexion - the Gunners crosshair on the forearm",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooGunnersArm_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooLewdEntry_F01",
+  "name": "Complexion - \"ENTRY\" and an arrow down to her cunt",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdEntry_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdInsertHere_F01",
+  "name": "Complexion - \"INSERT HERE\" and an arrow down",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdInsertHere_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdCumHere_F01",
+  "name": "Complexion - \"CUM HERE\" and an arrow down",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdCumHere_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdOpen247_F01",
+  "name": "Complexion - \"OPEN 24/7\" over her cunt",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdOpen247_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdBackDoor_F01",
+  "name": "Complexion - a \"Back Door\" tramp stamp, arrow down to her arse",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdBackDoor_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdSpreadMe_F01",
+  "name": "Complexion - \"SPREAD ME\" on a buttock",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdSpreadMe_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdRideMe_F01",
+  "name": "Complexion - \"RIDE ME\" on the inner thigh",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdRideMe_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdFuckMe_F01",
+  "name": "Complexion - \"FUCK ME\" and an arrow up the inner thigh",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdFuckMe_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdSuck_M01",
+  "name": "Complexion - \"SUCK\" and an arrow down to his cock",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdSuck_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooLewdCumDump_M01",
+  "name": "Complexion - \"CUM DUMP\" over his arse",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdCumDump_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooLewdBitch_M01",
+  "name": "Complexion - \"BITCH\" on a buttock",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdBitch_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooLewdFreeUse_F01",
+  "name": "Complexion - \"FREE USE\" and an arrow down",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdFreeUse_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdFreeUse_M01",
+  "name": "Complexion - \"FREE USE\" and an arrow down",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdFreeUse_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooLewdSlut_F01",
+  "name": "Complexion - \"SLUT\" on a buttock",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdSlut_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdSlut_M01",
+  "name": "Complexion - \"SLUT\" on a buttock",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdSlut_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooLewdWhore_F01",
+  "name": "Complexion - \"WHORE\" on a buttock",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdWhore_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdWhore_M01",
+  "name": "Complexion - \"WHORE\" on a buttock",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdWhore_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooLewdTipJar_F01",
+  "name": "Complexion - \"TIP JAR\" over the arse",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdTipJar_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdTipJar_M01",
+  "name": "Complexion - \"TIP JAR\" over the arse",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdTipJar_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_TattooLewdTally_F01",
+  "name": "Complexion - tally marks: seventeen so far",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdTally_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TattooLewdTally_M01",
+  "name": "Complexion - tally marks: seventeen so far",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TattooLewdTally_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
  }
 ]

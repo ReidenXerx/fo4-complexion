@@ -22,7 +22,7 @@ REGIONS = {'face', 'neck', 'shoulders', 'chest', 'breasts', 'belly', 'back', 'lo
            'arm_l', 'arm_r', 'hand_l', 'hand_r', 'leg_l', 'leg_r', 'feet', 'full_body'}
 SIZES = ['tiny', 'small', 'medium', 'large', 'full']
 STYLES = {'tribal', 'crude', 'military', 'emblem', 'skull', 'animal', 'floral', 'geometric', 'script', 'religious',
-          'pinup', 'sexual', 'degrading', 'cartoon', 'realistic_art'}
+          'pinup', 'sexual', 'degrading', 'lewd', 'cartoon', 'realistic_art'}
 EMBLEMS = {None, 'bos', 'minutemen', 'vault_tec', 'atom', 'institute', 'railroad', 'gunners', 'raiders', 'nuka',
            'other_fo', 'real_world'}
 LORE = ['fits', 'stretch', 'breaks']

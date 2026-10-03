@@ -123,6 +123,33 @@ is exactly neutral grey. A mark darkens (grime, bruises, blood, moles, hair) or 
 it, lit and shadowed with it, on any skin tone. Textures are BC1 (no alpha needed). Shared note:
 fo4-overlay-bgem-multiply.
 
+## C-13: Complexion paints its own realism layer and drawn tattoos (owner, 2026-10-03)
+
+To cut players' dependence on LoversLab packs, Complexion paints its own:
+- **the realism layer:** skin detail (moles, freckles, birthmarks, pores, veins, stretch marks, pimples), female
+  pubic hair in styles and colours, nipple and areola detail, and body hair for both sexes;
+- **script tattoos:** words in open-licence tattoo fonts;
+- **geometric and tribal tattoos:** bands, mandalas, barcodes, prison dots;
+- **faction emblems:** drawn as vector shapes.
+
+Art tattoos (illustrations) stay with the packs, which become optional additions: Complexion works complete with
+none installed. All of it is painted on the body in 3D and baked into its own UV map (C-9), multiplied onto the
+skin (C-12); tattoos are projected decals from a point on the body, flat on the skin there.
+
+## C-14: Rapport's vulgar persona wears lewd marks; ex-captives among raiders (owner, 2026-10-03)
+
+- NPCs whose Rapport persona is "vulgar" (Rapport:Core.PersonaOf, a hash of the form id, about a quarter of
+  everyone; some pinned, e.g. Cait) get crude, explicit lewd marks on top of their look: "ENTRY", "INSERT HERE",
+  "CUM HERE", "FREE USE", "OPEN 24/7" with an arrow down to the genitals; "Back Door", "TIP JAR", "CUM DUMP" over
+  the arse; "SLUT", "WHORE", "SPREAD ME", "BITCH" on the buttocks; "RIDE ME", "FUCK ME" on the inner thighs;
+  tally marks. "Don't be too soft." data/profiles.json "personas": 90% of them, one to three marks, drawn after
+  the everyday layer and before the features, so the cap cannot crowd them out.
+- Adult content: the MCM adult switch turns every one of them off. Rapport stays optional: the bridge asks it
+  through Complexion:Persona, a script of its own on the bridge's quest, so without Rapport only that script fails
+  to load. Ivy stays untouched (C-10).
+- PROPERTY, SOLD and OWNED are also crude ink: a raider whose adult roll passes may wear them -- a captive who
+  joined the raiders.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

@@ -97,6 +97,18 @@ namespace CX
 		p.oneLarge = r.at("one_large").get<bool>();
 		p.regionsUnique = r.at("regions_unique").get<bool>();
 		p.fallback = j.at("default").get<std::string>();
+		if (j.contains("personas")) {
+			for (const auto& [name, v] : j.at("personas").items()) {
+				Persona x;
+				x.percent = v.at("percent").get<int>();
+				const auto& c = v.at("count");
+				for (std::size_t i = 0; i < 4 && i < c.size(); ++i) {
+					x.count[i] = c.at(i).get<int>();
+				}
+				x.style = v.at("style").get<std::string>();
+				p.personas.emplace(name, std::move(x));
+			}
+		}
 
 		// The faction groups in their order, then the named characters, then the default.
 		std::vector<std::pair<std::string, const nlohmann::ordered_json*>> order;
@@ -198,7 +210,7 @@ namespace CX
 	}
 
 	std::vector<Pick> Compose(const Profiles& a_profiles, const std::vector<Template>& a_catalog, bool a_female, const Group& a_group,
-		std::uint64_t a_seed, bool a_adultAllowed)
+		std::uint64_t a_seed, bool a_adultAllowed, std::string_view a_persona)
 	{
 		if (a_group.untouched) {
 			return {};
@@ -229,6 +241,9 @@ namespace CX
 
 		// 1. universal
 		for (const auto& u : a_female ? a_profiles.female : a_profiles.male) {
+			if (static_cast<int>(picks.size()) >= a_profiles.cap) {
+				break;  // the universal layer stops at the cap as well
+			}
 			const auto roll = rng.Percent();
 			if (roll >= u.percent) {
 				continue;
@@ -254,6 +269,46 @@ namespace CX
 			}
 			if (!cands.empty()) {
 				take(*cands[rng.Pick(cands.size())], u.kind);
+			}
+		}
+
+		// 1b. the persona (C-14): marks of its style before the features, so the cap cannot crowd them out.
+		const auto clashes = [&](const Template& a_t) {
+			if (!a_profiles.regionsUnique || a_t.regions.empty()) {
+				return false;
+			}
+			bool clash = usedRegions.contains("full_body") || (Has(a_t.regions, "full_body") && !usedRegions.empty());
+			for (const auto& r : a_t.regions) {
+				clash = clash || usedRegions.contains(r);
+			}
+			return clash;
+		};
+		if (const auto pz = a_profiles.personas.find(a_persona);
+			pz != a_profiles.personas.end() && a_adultAllowed && static_cast<int>(picks.size()) < a_profiles.cap) {
+			if (rng.Percent() < pz->second.percent) {
+				auto r2 = rng.Percent();
+				int  k = 0;
+				for (int i = 0; i < 4; ++i) {
+					if (r2 < pz->second.count[i]) {
+						k = i;
+						break;
+					}
+					r2 -= pz->second.count[i];
+				}
+				k = std::min(k, a_profiles.cap - static_cast<int>(picks.size()));
+				for (int i = 0; i < k; ++i) {
+					std::vector<const Template*> cands;
+					for (const auto* t : mine) {
+						if (t->kind != "tattoo" || !Has(t->style, pz->second.style) || picked(*t) || clashes(*t)) {
+							continue;
+						}
+						cands.push_back(t);
+					}
+					if (cands.empty()) {
+						break;
+					}
+					take(*cands[rng.Pick(cands.size())], "tattoo");
+				}
 			}
 		}
 

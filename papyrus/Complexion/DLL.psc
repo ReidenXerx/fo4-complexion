@@ -46,3 +46,5 @@ Function OrderGone(Int aiOrder) Native Global
 String Function OrderGroup(Int aiOrder) Native Global
 ; A faction on the reference the plugin cannot see (a raider's captive): compose the look again for that group.
 Bool Function OrderRegroup(Int aiOrder, String asGroup) Native Global
+; Their Rapport persona (C-14): a look not yet on them is composed again with it. True when it changed.
+Bool Function OrderPersona(Int aiOrder, String asPersona) Native Global

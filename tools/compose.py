@@ -76,7 +76,7 @@ def group_names(profiles):
     return profiles['order'] + ['npc:' + n for n in profiles.get('characters', {})] + [profiles['default']]
 
 
-def compose(profiles, catalog, female, group, seed, adult_allowed=True):
+def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona=''):
     g = group_def(profiles, group)
     if g.get('untouched'):
         return []
@@ -95,6 +95,8 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True):
 
     # 1. universal
     for u in profiles['universal']['female' if female else 'male']:
+        if len(picks) >= profiles['cap']:
+            break
         roll = rng.percent()
         if roll >= u['percent']:
             continue
@@ -106,6 +108,33 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True):
             cands = [t for t in cands if t['size'] in sizes] or cands
         if cands:
             take(cands[rng.pick(len(cands))], u['kind'])
+
+    # 1b. the persona (C-14): a Rapport persona listed in "personas" adds marks of its style, drawn before the
+    #     features so the cap cannot crowd them out. Adult content only, so only while adult is allowed.
+    pz = profiles.get('personas', {}).get(persona)
+    if pz and adult_allowed and len(picks) < profiles['cap']:
+        if rng.percent() < pz['percent']:
+            roll, k = rng.percent(), 0
+            for i, p in enumerate(pz['count']):
+                if roll < p:
+                    k = i
+                    break
+                roll -= p
+            k = min(k, profiles['cap'] - len(picks))
+            for _ in range(k):
+                cands = []
+                for t in mine:
+                    if t['kind'] != 'tattoo' or pz['style'] not in t['style'] or any(q['key'] == t['key'] for q in picks):
+                        continue
+                    regions = set(t['regions'] or [])
+                    if profiles['rules']['regions_unique'] and regions and (regions & used_regions or
+                                                                            ('full_body' in regions and used_regions) or
+                                                                            'full_body' in used_regions):
+                        continue
+                    cands.append(t)
+                if not cands:
+                    break
+                take(cands[rng.pick(len(cands))], 'tattoo')
 
     # 2. count
     roll, n = rng.percent(), 0
@@ -221,10 +250,11 @@ def main():
                 for s in range(a.dump):
                     seed = (s * 0x9E3779B97F4A7C15 + 12345) & MASK
                     for adult in (True, False):
-                        picks = compose(profiles, catalog, female, group, seed, adult)
-                        # Tab-separated: group names ("npc:Piper Wright") and template ids have spaces.
-                        print(f'{group}\t{"f" if female else "m"}\t{seed}\t{int(adult)}\t' +
-                              ','.join(f'{p["key"]}@{p["priority"]}' for p in picks))
+                        for persona in ('', 'vulgar'):
+                            picks = compose(profiles, catalog, female, group, seed, adult, persona)
+                            # Tab-separated: group names ("npc:Piper Wright") and template ids have spaces.
+                            print(f'{group}\t{"f" if female else "m"}\t{seed}\t{int(adult)}\t{persona}\t' +
+                                  ','.join(f'{p["key"]}@{p["priority"]}' for p in picks))
         return
     if a.simulate:
         sys.exit(1 if simulate(profiles, catalog, a.simulate) else 0)

@@ -632,5 +632,2172 @@
   "regions": [],
   "size": "tiny",
   "note": "moles"
+ },
+ "f:Complexion_Freckles_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "freckles",
+  "regions": [],
+  "size": "medium",
+  "note": "sun freckles"
+ },
+ "f:Complexion_Freckles_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "freckles",
+  "regions": [],
+  "size": "medium",
+  "note": "sun freckles"
+ },
+ "f:Complexion_Freckles_F03": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "freckles",
+  "regions": [],
+  "size": "medium",
+  "note": "sun freckles"
+ },
+ "m:Complexion_Freckles_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "freckles",
+  "regions": [],
+  "size": "medium",
+  "note": "sun freckles"
+ },
+ "m:Complexion_Freckles_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "freckles",
+  "regions": [],
+  "size": "medium",
+  "note": "sun freckles"
+ },
+ "f:Complexion_Birthmark_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "birthmark",
+  "regions": [],
+  "size": "small",
+  "note": "a birthmark"
+ },
+ "f:Complexion_Birthmark_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "birthmark",
+  "regions": [],
+  "size": "small",
+  "note": "a birthmark"
+ },
+ "m:Complexion_Birthmark_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "birthmark",
+  "regions": [],
+  "size": "small",
+  "note": "a birthmark"
+ },
+ "m:Complexion_Birthmark_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "birthmark",
+  "regions": [],
+  "size": "small",
+  "note": "a birthmark"
+ },
+ "f:Complexion_Pores_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [],
+  "size": "full",
+  "note": "skin texture"
+ },
+ "f:Complexion_Pores_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [],
+  "size": "full",
+  "note": "skin texture"
+ },
+ "m:Complexion_Pores_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [],
+  "size": "full",
+  "note": "skin texture"
+ },
+ "m:Complexion_Pores_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [],
+  "size": "full",
+  "note": "skin texture"
+ },
+ "f:Complexion_Veins_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [],
+  "size": "small",
+  "note": "faint veins"
+ },
+ "f:Complexion_Veins_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [],
+  "size": "small",
+  "note": "faint veins"
+ },
+ "m:Complexion_Veins_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [],
+  "size": "small",
+  "note": "faint veins"
+ },
+ "f:Complexion_Stretch_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [],
+  "size": "small",
+  "note": "stretch marks"
+ },
+ "f:Complexion_Stretch_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [],
+  "size": "small",
+  "note": "stretch marks"
+ },
+ "f:Complexion_Stretch_F03": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [],
+  "size": "small",
+  "note": "stretch marks"
+ },
+ "m:Complexion_Stretch_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [],
+  "size": "small",
+  "note": "stretch marks"
+ },
+ "f:Complexion_Pimples_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "acne",
+  "regions": [],
+  "size": "small",
+  "note": "pimples"
+ },
+ "f:Complexion_Pimples_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "acne",
+  "regions": [],
+  "size": "small",
+  "note": "pimples"
+ },
+ "m:Complexion_Pimples_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "acne",
+  "regions": [],
+  "size": "small",
+  "note": "pimples"
+ },
+ "m:Complexion_Pimples_M02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "acne",
+  "regions": [],
+  "size": "small",
+  "note": "pimples"
+ },
+ "f:Complexion_NipplesPink_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "note": "pink areolas"
+ },
+ "m:Complexion_NipplesPink_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "nipple",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "note": "pink nipples"
+ },
+ "f:Complexion_NipplesBrown_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "note": "brown areolas"
+ },
+ "m:Complexion_NipplesBrown_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "nipple",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "note": "brown nipples"
+ },
+ "f:Complexion_NipplesDark_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "nipple",
+  "regions": [
+   "breasts"
+  ],
+  "size": "small",
+  "note": "dark areolas"
+ },
+ "m:Complexion_NipplesDark_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "nipple",
+  "regions": [
+   "chest"
+  ],
+  "size": "tiny",
+  "note": "dark nipples"
+ },
+ "f:Complexion_PubicNaturalBrown_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "large",
+  "note": "natural pubic hair, brown"
+ },
+ "f:Complexion_PubicNaturalBlack_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "large",
+  "note": "natural pubic hair, black"
+ },
+ "f:Complexion_PubicNaturalAuburn_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "large",
+  "note": "natural pubic hair, auburn"
+ },
+ "f:Complexion_PubicNaturalBlond_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "large",
+  "note": "natural pubic hair, blond"
+ },
+ "f:Complexion_PubicTrimmedBrown_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "note": "trimmed pubic hair, brown"
+ },
+ "f:Complexion_PubicTrimmedBlack_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "note": "trimmed pubic hair, black"
+ },
+ "f:Complexion_PubicTrimmedBlond_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "note": "trimmed pubic hair, blond"
+ },
+ "f:Complexion_PubicTriangleBrown_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "medium",
+  "note": "triangle pubic hair, brown"
+ },
+ "f:Complexion_PubicTriangleBlack_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "medium",
+  "note": "triangle pubic hair, black"
+ },
+ "f:Complexion_PubicLandingBrown_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "note": "landing pubic hair, brown"
+ },
+ "f:Complexion_PubicLandingBlack_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "note": "landing pubic hair, black"
+ },
+ "f:Complexion_Stubble_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "body_hair",
+  "regions": [],
+  "size": "small",
+  "note": "leg and underarm stubble"
+ },
+ "f:Complexion_Stubble_F02": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "body_hair",
+  "regions": [],
+  "size": "small",
+  "note": "leg and underarm stubble"
+ },
+ "m:Complexion_ChestHairBrown_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "body_hair",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "note": "chest hair, brown"
+ },
+ "m:Complexion_ChestHairBlack_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "body_hair",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "note": "chest hair, black"
+ },
+ "m:Complexion_ChestHairGrey_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "body_hair",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "note": "chest hair, grey"
+ },
+ "m:Complexion_LimbHairBrown_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "body_hair",
+  "regions": [],
+  "size": "medium",
+  "note": "arm and leg hair, brown"
+ },
+ "m:Complexion_LimbHairBlack_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "body_hair",
+  "regions": [],
+  "size": "medium",
+  "note": "arm and leg hair, black"
+ },
+ "f:Complexion_TattooNoMercy_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"No Mercy\" across the chest"
+ },
+ "m:Complexion_TattooNoMercy_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"No Mercy\" across the chest"
+ },
+ "f:Complexion_TattooRust_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"RUST\" on the forearm"
+ },
+ "m:Complexion_TattooRust_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"RUST\" on the forearm"
+ },
+ "f:Complexion_TattooKill_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"KILL\" on the forearm"
+ },
+ "m:Complexion_TattooKill_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"KILL\" on the forearm"
+ },
+ "f:Complexion_TattooWasteland_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Wasteland\" across the back"
+ },
+ "m:Complexion_TattooWasteland_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Wasteland\" across the back"
+ },
+ "f:Complexion_TattooRaiderWord_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "medium",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Raider\" on the lower back"
+ },
+ "m:Complexion_TattooRaiderWord_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "medium",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Raider\" on the lower back"
+ },
+ "f:Complexion_TattooLove_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "prison \"LOVE\""
+ },
+ "m:Complexion_TattooLove_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "prison \"LOVE\""
+ },
+ "f:Complexion_TattooHate_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "prison \"HATE\""
+ },
+ "m:Complexion_TattooHate_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "prison \"HATE\""
+ },
+ "f:Complexion_TattooMom_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Mom\" on the upper arm"
+ },
+ "m:Complexion_TattooMom_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Mom\" on the upper arm"
+ },
+ "f:Complexion_TattooThirteen_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"13\" on the neck"
+ },
+ "m:Complexion_TattooThirteen_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "script",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"13\" on the neck"
+ },
+ "f:Complexion_TattooHope_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Hope\" on the hip"
+ },
+ "m:Complexion_TattooHope_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Hope\" on the hip"
+ },
+ "f:Complexion_TattooFaith_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Faith\" on the lower back"
+ },
+ "m:Complexion_TattooFaith_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Faith\" on the lower back"
+ },
+ "f:Complexion_TattooForever_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Forever\" on the thigh"
+ },
+ "m:Complexion_TattooForever_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Forever\" on the thigh"
+ },
+ "f:Complexion_TattooSteel_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"STEEL\" on the upper arm"
+ },
+ "m:Complexion_TattooSteel_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"STEEL\" on the upper arm"
+ },
+ "f:Complexion_TattooAtomPraised_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "script",
+   "religious"
+  ],
+  "emblem": "atom",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Atom Be Praised\" across the back"
+ },
+ "m:Complexion_TattooAtomPraised_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "script",
+   "religious"
+  ],
+  "emblem": "atom",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Atom Be Praised\" across the back"
+ },
+ "f:Complexion_TattooMinutemenWord_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Minutemen\" on the upper arm"
+ },
+ "m:Complexion_TattooMinutemenWord_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "\"Minutemen\" on the upper arm"
+ },
+ "f:Complexion_TattooProperty_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "medium",
+  "style": [
+   "script",
+   "degrading",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"PROPERTY\" on the lower back"
+ },
+ "m:Complexion_TattooProperty_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "medium",
+  "style": [
+   "script",
+   "degrading",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"PROPERTY\" on the lower back"
+ },
+ "f:Complexion_TattooSold_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "degrading",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"SOLD\" on a buttock"
+ },
+ "m:Complexion_TattooSold_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "degrading",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"SOLD\" on a buttock"
+ },
+ "f:Complexion_TattooOwned_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "degrading",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"OWNED\" on the back of the thigh"
+ },
+ "m:Complexion_TattooOwned_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "script",
+   "degrading",
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"OWNED\" on the back of the thigh"
+ },
+ "f:Complexion_TattooMandalaBack_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a mandala between the shoulders"
+ },
+ "m:Complexion_TattooMandalaBack_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a mandala between the shoulders"
+ },
+ "f:Complexion_TattooMandalaThigh_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a mandala on the thigh"
+ },
+ "m:Complexion_TattooMandalaThigh_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "medium",
+  "style": [
+   "geometric",
+   "floral"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a mandala on the thigh"
+ },
+ "f:Complexion_TattooTribalLowerBack_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a tribal piece on the lower back"
+ },
+ "m:Complexion_TattooTribalLowerBack_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "lower_back"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a tribal piece on the lower back"
+ },
+ "f:Complexion_TattooTribalShoulder_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "shoulders"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a tribal piece on the shoulder"
+ },
+ "m:Complexion_TattooTribalShoulder_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "shoulders"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a tribal piece on the shoulder"
+ },
+ "f:Complexion_TattooTribalChest_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a tribal piece across the chest"
+ },
+ "m:Complexion_TattooTribalChest_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "tribal"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a tribal piece across the chest"
+ },
+ "f:Complexion_TattooBarcodeNeck_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a barcode on the neck"
+ },
+ "m:Complexion_TattooBarcodeNeck_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "neck"
+  ],
+  "size": "tiny",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a barcode on the neck"
+ },
+ "f:Complexion_TattooBarcodeArm_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a barcode on the forearm"
+ },
+ "m:Complexion_TattooBarcodeArm_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "geometric"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a barcode on the forearm"
+ },
+ "f:Complexion_TattooPrisonDots_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "five prison dots"
+ },
+ "m:Complexion_TattooPrisonDots_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "tiny",
+  "style": [
+   "crude"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "five prison dots"
+ },
+ "f:Complexion_TattooAtomShoulder_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "shoulders"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "religious"
+  ],
+  "emblem": "atom",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Atom on the shoulder"
+ },
+ "m:Complexion_TattooAtomShoulder_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "shoulders"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "religious"
+  ],
+  "emblem": "atom",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Atom on the shoulder"
+ },
+ "f:Complexion_TattooAtomChest_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "emblem",
+   "religious"
+  ],
+  "emblem": "atom",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Atom on the chest"
+ },
+ "m:Complexion_TattooAtomChest_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "style": [
+   "emblem",
+   "religious"
+  ],
+  "emblem": "atom",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Atom on the chest"
+ },
+ "f:Complexion_TattooVaultTecArm_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Vault-Tec gear on the forearm"
+ },
+ "m:Complexion_TattooVaultTecArm_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Vault-Tec gear on the forearm"
+ },
+ "f:Complexion_TattooVaultTecUpperArm_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Vault-Tec gear on the upper arm"
+ },
+ "m:Complexion_TattooVaultTecUpperArm_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem"
+  ],
+  "emblem": "vault_tec",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Vault-Tec gear on the upper arm"
+ },
+ "f:Complexion_TattooBoSBack_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Brotherhood on the back"
+ },
+ "m:Complexion_TattooBoSBack_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Brotherhood on the back"
+ },
+ "f:Complexion_TattooBoSArm_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Brotherhood on the upper arm"
+ },
+ "m:Complexion_TattooBoSArm_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_l"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "bos",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Brotherhood on the upper arm"
+ },
+ "f:Complexion_TattooMinutemenShoulder_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "shoulders"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Minutemen star on the shoulder"
+ },
+ "m:Complexion_TattooMinutemenShoulder_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "shoulders"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Minutemen star on the shoulder"
+ },
+ "f:Complexion_TattooMinutemenChest_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Minutemen star on the chest"
+ },
+ "m:Complexion_TattooMinutemenChest_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "minutemen",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Minutemen star on the chest"
+ },
+ "f:Complexion_TattooRailroadWrist_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "geometric"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a tiny Railroad lantern"
+ },
+ "m:Complexion_TattooRailroadWrist_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "tiny",
+  "style": [
+   "emblem",
+   "geometric"
+  ],
+  "emblem": "railroad",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a tiny Railroad lantern"
+ },
+ "f:Complexion_TattooRaiderSkullChest_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "skull",
+   "crude"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a crude raider skull on the chest"
+ },
+ "m:Complexion_TattooRaiderSkullChest_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "chest"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "skull",
+   "crude"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a crude raider skull on the chest"
+ },
+ "f:Complexion_TattooRaiderSkullBack_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "emblem",
+   "skull",
+   "crude"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a raider skull on the back"
+ },
+ "m:Complexion_TattooRaiderSkullBack_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "style": [
+   "emblem",
+   "skull",
+   "crude"
+  ],
+  "emblem": "raiders",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "a raider skull on the back"
+ },
+ "f:Complexion_TattooGunnersShoulder_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "shoulders"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military",
+   "skull"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Gunners crosshair on the shoulder"
+ },
+ "m:Complexion_TattooGunnersShoulder_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "shoulders"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military",
+   "skull"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Gunners crosshair on the shoulder"
+ },
+ "f:Complexion_TattooGunnersArm_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Gunners crosshair on the forearm"
+ },
+ "m:Complexion_TattooGunnersArm_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "emblem",
+   "military"
+  ],
+  "emblem": "gunners",
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "note": "the Gunners crosshair on the forearm"
+ },
+ "f:Complexion_TattooLewdEntry_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"ENTRY\" and an arrow down to her cunt"
+ },
+ "f:Complexion_TattooLewdInsertHere_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"INSERT HERE\" and an arrow down"
+ },
+ "f:Complexion_TattooLewdCumHere_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"CUM HERE\" and an arrow down"
+ },
+ "f:Complexion_TattooLewdOpen247_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"OPEN 24/7\" over her cunt"
+ },
+ "f:Complexion_TattooLewdBackDoor_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "a \"Back Door\" tramp stamp, arrow down to her arse"
+ },
+ "f:Complexion_TattooLewdSpreadMe_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"SPREAD ME\" on a buttock"
+ },
+ "f:Complexion_TattooLewdRideMe_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_r"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"RIDE ME\" on the inner thigh"
+ },
+ "f:Complexion_TattooLewdFuckMe_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "leg_l"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"FUCK ME\" and an arrow up the inner thigh"
+ },
+ "m:Complexion_TattooLewdSuck_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"SUCK\" and an arrow down to his cock"
+ },
+ "m:Complexion_TattooLewdCumDump_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"CUM DUMP\" over his arse"
+ },
+ "m:Complexion_TattooLewdBitch_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"BITCH\" on a buttock"
+ },
+ "f:Complexion_TattooLewdFreeUse_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"FREE USE\" and an arrow down"
+ },
+ "m:Complexion_TattooLewdFreeUse_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"FREE USE\" and an arrow down"
+ },
+ "f:Complexion_TattooLewdSlut_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script",
+   "degrading"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"SLUT\" on a buttock"
+ },
+ "m:Complexion_TattooLewdSlut_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script",
+   "degrading"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"SLUT\" on a buttock"
+ },
+ "f:Complexion_TattooLewdWhore_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script",
+   "degrading"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"WHORE\" on a buttock"
+ },
+ "m:Complexion_TattooLewdWhore_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script",
+   "degrading"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"WHORE\" on a buttock"
+ },
+ "f:Complexion_TattooLewdTipJar_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"TIP JAR\" over the arse"
+ },
+ "m:Complexion_TattooLewdTipJar_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "butt"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "\"TIP JAR\" over the arse"
+ },
+ "f:Complexion_TattooLewdTally_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "tally marks: seventeen so far"
+ },
+ "m:Complexion_TattooLewdTally_M01": {
+  "kind": "tattoo",
+  "regions": [
+   "pelvis"
+  ],
+  "size": "small",
+  "style": [
+   "lewd",
+   "sexual",
+   "script"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": true,
+  "quality": "ok",
+  "note": "tally marks: seventeen so far"
  }
 }
