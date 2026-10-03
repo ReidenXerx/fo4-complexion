@@ -85,6 +85,21 @@ class Painter:
         flat = a.reshape(-1)
         flat[idx] = np.maximum(flat[idx], np.clip(v, 0, cap))
 
+    def genital_distance(self, mask):
+        """For the texels in mask: the 3D distance to the nearest genital vertex (inf without any)."""
+        g = self.m.vertices[self.m.vertex_region == REGIONS.index('genital')]
+        out = np.full(self.cov.shape, np.inf)
+        if not len(g):
+            return out
+        idx = np.flatnonzero(mask)
+        P = self.p.reshape(-1, 3)[idx]
+        best = np.full(len(idx), np.inf)
+        for k in range(0, len(g), 256):
+            d = np.sqrt(((P[:, None, :] - g[None, k:k + 256, :]) ** 2).sum(-1)).min(axis=1)
+            best = np.minimum(best, d)
+        out.reshape(-1)[idx] = best
+        return out
+
     def reg(self, *names):
         mask = np.zeros(self.cov.shape, bool)
         for name in names:
@@ -371,5 +386,9 @@ def pubic_hair(m, rng, shape='full', size=2048, colour=(0.07, 0.05, 0.04)):
     a = np.asarray(canvas.resize(density.shape[::-1]), dtype=np.float64) / 255.0 * P.cov
     base = np.clip(density * 1.3, 0, 1) ** 1.5 * (0.45 + 0.4 * fbm(P.p, 2.5, int(rng.integers(1 << 30)), 2))
     a = np.maximum(a * np.clip(density * 3, 0, 1), base)
+    # The genitals are left bare (body.py), and hair stopping dead at their edge showed as a hard ring around the
+    # base in game (2026-10-03, Solomon): it thins out over the last ~2 units (3 cm) before them instead.
+    near = P.genital_distance(density > 0.02)
+    a = a * np.clip(near / 2.0, 0.0, 1.0) ** 1.5
     over(rgb, alpha, colour, np.clip(a, 0, 0.92))
     return rgb, alpha

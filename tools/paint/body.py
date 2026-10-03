@@ -155,6 +155,7 @@ class UVMap:
         self.size, self.sex = size, sex
         self.vertices, self.triangles = pos, tris
         vreg = np.array([REGIONS.index(region_of(bn)) for bn in bones], dtype=np.int8)
+        self.vertex_region = vreg
         # Vertex normals, area-weighted from the faces.
         fn = np.cross(pos[tris[:, 1]] - pos[tris[:, 0]], pos[tris[:, 2]] - pos[tris[:, 0]])
         vn = np.zeros_like(pos)
