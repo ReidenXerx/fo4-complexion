@@ -458,7 +458,7 @@ namespace CX
 				{ "scars", { "scar", "wound", "burn" } },
 				{ "tattoos", { "tattoo", "brand" } },
 				{ "rough", { "bruise", "marks", "blood", "dirt" } },
-				{ "paint", { "makeup" } },
+				{ "paint", { "makeup", "other" } },  // "other": the packs' paint stripes and neon
 				{ "nails", { "nails" } },
 			};
 			return c;
@@ -527,6 +527,49 @@ namespace CX
 		_thumbBuild = std::move(a_build);
 	}
 
+	void Director::SetSpots(std::unordered_map<std::string, std::array<float, 8>> a_spots)
+	{
+		std::scoped_lock l{ _lock };
+		_spots = std::move(a_spots);
+	}
+
+	std::optional<std::array<float, 8>> Director::SpotOf(std::string_view a_key) const
+	{
+		std::scoped_lock l{ _lock };
+		const auto* t = Find(a_key);
+		if (!t) {
+			return std::nullopt;
+		}
+		if (const auto it = _spots.find(t->key); it != _spots.end()) {
+			return it->second;
+		}
+		// Another pack's: where its tagged region is (h, x, y, normal, spread, arm), in body heights.
+		static const std::map<std::string, std::array<float, 8>, std::less<>> regions{
+			{ "chest", { 0.87F, 0.0F, 0.08F, 0.0F, 1.0F, 0.0F, 0.07F, 0.0F } },
+			{ "breasts", { 0.86F, 0.0F, 0.08F, 0.0F, 1.0F, 0.0F, 0.07F, 0.0F } },
+			{ "belly", { 0.65F, 0.0F, 0.08F, 0.0F, 1.0F, 0.0F, 0.06F, 0.0F } },
+			{ "pubic", { 0.59F, 0.0F, 0.08F, 0.0F, 1.0F, 0.0F, 0.04F, 0.0F } },
+			{ "pelvis", { 0.60F, 0.11F, 0.0F, 1.0F, 0.0F, 0.0F, 0.05F, 0.0F } },
+			{ "back", { 0.85F, 0.0F, -0.07F, 0.0F, -1.0F, 0.0F, 0.09F, 0.0F } },
+			{ "lower_back", { 0.66F, 0.0F, -0.06F, 0.0F, -1.0F, 0.0F, 0.06F, 0.0F } },
+			{ "butt", { 0.56F, 0.0F, -0.08F, 0.0F, -1.0F, 0.0F, 0.07F, 0.0F } },
+			{ "neck", { 0.95F, 0.0F, -0.06F, 0.0F, -1.0F, 0.0F, 0.03F, 0.0F } },
+			{ "arm_l", { 0.80F, -0.2F, 0.0F, -1.0F, 0.0F, 0.0F, 0.1F, 1.0F } },
+			{ "arm_r", { 0.80F, 0.2F, 0.0F, 1.0F, 0.0F, 0.0F, 0.1F, 1.0F } },
+			{ "hand_l", { 0.55F, -0.2F, 0.0F, -1.0F, 0.0F, 0.0F, 0.06F, 1.0F } },
+			{ "hand_r", { 0.55F, 0.2F, 0.0F, 1.0F, 0.0F, 0.0F, 0.06F, 1.0F } },
+			{ "leg_l", { 0.36F, -0.08F, 0.03F, 0.0F, 1.0F, 0.0F, 0.1F, 0.0F } },
+			{ "leg_r", { 0.36F, 0.08F, 0.03F, 0.0F, 1.0F, 0.0F, 0.1F, 0.0F } },
+			{ "feet", { 0.05F, 0.0F, 0.05F, 0.0F, 1.0F, 0.0F, 0.05F, 0.0F } },
+		};
+		for (const auto& r : t->regions) {
+			if (const auto it = regions.find(r); it != regions.end()) {
+				return it->second;
+			}
+		}
+		return std::nullopt;
+	}
+
 	std::string Director::ThumbBuild() const
 	{
 		std::scoped_lock l{ _lock };
@@ -568,9 +611,12 @@ namespace CX
 			return "0";
 		}
 		const auto  search = Lower(a_search);
+		// Lower-cased: a Papyrus string comes back in the case it was first interned in ("All", "SKIN"), and a
+		// category missed here showed everything -- "categories switching doesn't change anything" (owner, 10-04).
+		const auto  category = Lower(a_category);
 		const auto& cats = Categories();
-		const auto  cat = cats.find(a_category);
-		const bool  onOnly = a_category == "on";
+		const auto  cat = cats.find(category);
+		const bool  onOnly = category == "on";
 		std::vector<const Template*> shown;
 		const auto on = [&](const Template& t) {
 			return std::ranges::any_of(_window.draft, [&](const Pick& p) { return p.key == t.key; });
@@ -580,6 +626,10 @@ namespace CX
 				return false;
 			}
 			if (onOnly ? !on(t) : (cat != cats.end() && std::ranges::find(cat->second, t.kind) == cat->second.end())) {
+				return false;
+			}
+			// A category other than "all" it does not know shows nothing, never everything (that hid the case bug).
+			if (!onOnly && cat == cats.end() && category != "all") {
 				return false;
 			}
 			return search.empty() || Lower(Label(t)).find(search) != std::string::npos || Lower(t.id).find(search) != std::string::npos;

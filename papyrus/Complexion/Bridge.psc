@@ -460,6 +460,7 @@ Function OpenWindowOn(Int aiTarget)
 	RegisterForExternalEvent("Complexion_WindowCancel", "OnWindowCancel")
 	RegisterForExternalEvent("Complexion_WindowTarget", "OnWindowTarget")
 	RegisterForExternalEvent("Complexion_WindowNote", "OnWindowNote")
+	RegisterForExternalEvent("Complexion_WindowWhole", "OnWindowWhole")
 	RegisterForMenuOpenCloseEvent(WindowMenu)
 	_winSession += 1
 	_winOpen = True
@@ -580,17 +581,15 @@ String Function WindowSays()
 	Return n + " overlay(s) of Complexion's on them. Click to put one on or take it off."
 EndFunction
 
-; A page the panel asks for: the category, the search, the page. Sent back with what was asked, so the panel
-; drops an answer it no longer wants.
-Function OnWindowPage(String asCategory, String asSearch, Int aiPage)
+; A page the panel asks for: the category, the search, the page, and the question's number. The number goes back
+; with the answer, so the panel drops one it no longer wants -- the strings themselves may come back in another case.
+Function OnWindowPage(String asCategory, String asSearch, Int aiPage, Int aiAsk)
 	If !_winOpen || _winTarget == 0
 		Return
 	EndIf
-	Var[] args = new Var[4]
+	Var[] args = new Var[2]
 	args[0] = Complexion:DLL.WindowPage(asCategory, asSearch, aiPage, WindowPer)
-	args[1] = asCategory
-	args[2] = asSearch
-	args[3] = aiPage
+	args[1] = aiAsk
 	UI.Invoke(WindowMenu, "root1.Menu_mc.SetPage", args)
 EndFunction
 
@@ -598,20 +597,57 @@ Function OnWindowToggle(String asKey)
 	If !_winOpen || _winTarget == 0 || _winClosing
 		Return
 	EndIf
+	_winWantPreview = True  ; from here: Apply (WindowSettle) waits for this toggle's preview
+	Int session = _winSession
 	Bool on = Complexion:DLL.WindowToggle(asKey)
+	Int count = Complexion:DLL.WindowCount()
 	Var[] args = new Var[3]
 	args[0] = asKey
 	args[1] = on
-	args[2] = Complexion:DLL.WindowCount()
+	args[2] = count
 	UI.Invoke(WindowMenu, "root1.Menu_mc.SetOn", args)
-	WindowStatus(WindowSays())
+	If !on && count >= 24
+		WindowStatus("24 overlays of Complexion's is the most: take one off first.")
+	Else
+		WindowStatus(WindowSays())
+	EndIf
+	If on
+		WindowFocus(asKey, session)  ; the camera goes to where it sits (owner, 10-04), before the preview lands
+	EndIf
 	WindowPreviewSoon()
+EndFunction
+
+; The camera close to where template asKey sits on them; a mark over the whole body frames all of them.
+Function WindowFocus(String asKey, Int aiSession)
+	Actor a = Game.GetForm(_winTarget) as Actor
+	Int session = aiSession
+	If !_plugin || !a || !WindowLive(session)
+		Return
+	EndIf
+	String said = Complexion:DLL.CameraFocus(a.GetPositionX(), a.GetPositionY(), a.GetPositionZ(), a.GetAngleZ(), a.GetHeight(), asKey)
+	If said == "none"
+		WindowFrame(a, session)
+		Return
+	EndIf
+	WindowCameraWait(said)
+	If !WindowLive(session)
+		WindowUnframe()
+	EndIf
+EndFunction
+
+; The panel's Whole body: the camera back to all of them.
+Function OnWindowWhole()
+	If !_winOpen || _winTarget == 0 || _winClosing
+		Return
+	EndIf
+	WindowFrame(Game.GetForm(_winTarget) as Actor, _winSession)
 EndFunction
 
 Function OnWindowClear()
 	If !_winOpen || _winTarget == 0 || _winClosing
 		Return
 	EndIf
+	_winWantPreview = True
 	Complexion:DLL.WindowClear()
 	WindowRefresh()
 	WindowPreviewSoon()
@@ -621,6 +657,7 @@ Function OnWindowRoll()
 	If !_winOpen || _winTarget == 0 || _winClosing
 		Return
 	EndIf
+	_winWantPreview = True
 	Complexion:DLL.WindowRoll()
 	WindowRefresh()
 	WindowPreviewSoon()
@@ -759,7 +796,7 @@ EndEvent
 ; Waits for a preview still being put on (at most 5 seconds): what is put back must come after it.
 Function WindowSettle()
 	Int i = 0
-	While _winPreviewing && i < 100
+	While (_winPreviewing || _winWantPreview) && i < 100
 		Utility.WaitMenuMode(0.05)
 		i += 1
 	EndWhile

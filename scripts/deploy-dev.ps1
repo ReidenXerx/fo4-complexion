@@ -54,6 +54,11 @@ foreach ($tree in 'Textures\Overlays\Complexion', 'Textures\Complexion', 'Materi
     }
 }
 
+# Pictures of an older build (another name) out of staging: Vortex takes them out of Data at the next deploy.
+Get-ChildItem (Join-Path $Staging 'Textures\Complexion') -Filter 'Thumbs*.dds' -ErrorAction SilentlyContinue |
+    Where-Object { -not $files.Contains("Textures\Complexion\$($_.Name)") } |
+    ForEach-Object { Remove-Item $_.FullName -Force; Write-Host "  removed stale $($_.Name)" }
+
 & python (Join-Path $root 'tools\make_esp.py') --check (Join-Path $root 'data\Complexion.esp')
 if ($LASTEXITCODE) { throw 'Complexion.esp is refused: rebuild it with tools\make_esp.py' }
 

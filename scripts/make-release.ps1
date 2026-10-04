@@ -55,8 +55,10 @@ $swf = Get-Item (Join-Path $root 'build\interface\ComplexionMenu.swf') -ErrorAct
 $as = Get-ChildItem (Join-Path $root 'interface\src') -Filter *.as | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 if (-not $swf -or $as.LastWriteTime -gt $swf.LastWriteTime) { throw "ComplexionMenu.swf is missing or older than $($as.Name): run scripts\build-interface.ps1" }
 $thumbs = Get-Content (Join-Path $root 'data\F4SE\Plugins\Complexion\thumbs.json') -Raw | ConvertFrom-Json
-if (-not (Get-ChildItem (Join-Path $root 'data\Textures\Complexion') -Filter "Thumbs*_$($thumbs.build)_*.dds")) {
-    throw "no picture atlas of build $($thumbs.build): run python tools\paint\thumbs.py"
+foreach ($sex in 'Female', 'Male') {
+    if (-not (Test-Path (Join-Path $root "data\Textures\Complexion\Thumbs$($sex)_$($thumbs.build)_0.dds"))) {
+        throw "no $sex picture atlas of build $($thumbs.build): run python tools\paint\thumbs.py"
+    }
 }
 
 if (Test-Path $out) { Remove-Item $out -Recurse -Force }

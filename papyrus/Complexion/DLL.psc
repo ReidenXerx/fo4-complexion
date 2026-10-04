@@ -56,6 +56,9 @@ Int Function CrosshairActor(Float afRecentSeconds) Native Global
 String Function CameraFrame(Float afX, Float afY, Float afZ, Float afAngle, Float afHeight) Native Global
 String Function CameraRestore() Native Global
 String Function CameraStep() Native Global
+; The free camera close to where template asKey sits on someone (the window, after it is put on); "none" when it has no
+; spot or spreads wide (a mark over the whole body: frame all of them instead), else as CameraFrame.
+String Function CameraFocus(Float afX, Float afY, Float afZ, Float afAngle, Float afHeight, String asKey) Native Global
 ; A session on one actor: what Complexion put on them is the draft. "" or why not.
 String Function WindowBegin(Int aiActor, Bool abFemale) Native Global
 Function WindowEnd() Native Global

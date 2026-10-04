@@ -157,6 +157,19 @@ namespace CX::Papyrus
 			return Str{ Camera::Frame(a_x, a_y, a_z, a_angle, a_height) };
 		}
 		Str CameraRestore(std::monostate) { return Str{ Camera::Restore() }; }
+
+		// The camera close to where a template sits on them (the window, after one is put on). "none" when it has
+		// no spot (a mark over the whole body): the camera stays.
+		Str CameraFocus(std::monostate, float a_x, float a_y, float a_z, float a_angle, float a_height, Str a_key)
+		{
+			const auto spot = D().SpotOf(a_key.c_str() ? a_key.c_str() : "");
+			if (!spot || (*spot)[6] > 0.15F) {
+				return Str{ "none" };  // over the whole body, or spread wide (a sunburn, a tan): the whole of them
+			}
+			const auto& s = *spot;
+			return Str{ Camera::FrameView(Shot::Focus(a_x, a_y, a_z, a_angle, a_height,
+				Shot::Spot{ s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7] > 0.5F })) };
+		}
 		Str CameraStep(std::monostate) { return Str{ Camera::Step() }; }
 
 		Str  WindowBegin(std::monostate, std::int32_t a_ref, bool a_female) { return Str{ D().WindowBegin(Id(a_ref), a_female) }; }
@@ -232,6 +245,7 @@ namespace CX::Papyrus
 		Bind(a_vm, "CrosshairActor"sv, CrosshairActor, main);
 		Bind(a_vm, "CameraFrame"sv, CameraFrame, main);
 		Bind(a_vm, "CameraRestore"sv, CameraRestore, main);
+		Bind(a_vm, "CameraFocus"sv, CameraFocus, main);
 		Bind(a_vm, "CameraStep"sv, CameraStep, main);
 		Bind(a_vm, "WindowBegin"sv, WindowBegin, fast);
 		Bind(a_vm, "WindowEnd"sv, WindowEnd, fast);

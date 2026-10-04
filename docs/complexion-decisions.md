@@ -219,6 +219,18 @@ custom-menu API from Papyrus, the panel and Bridge talking through UI.Invoke and
 crosshair from the plugin. What differs: multi-select (toggle overlays on and off, several per category) instead of
 one preset, and a hand-picked look is the NPC's decision from then on (never re-rolled, C-4) until rolled again.
 
+The owner's first use (2026-10-04) and the fixes:
+- **The camera goes to the mark.** Putting an overlay on moves the camera close to where it sits, and *Whole body*
+  goes back. The spots are measured by tools/paint/thumbs.py: the centroid, normal and spread of the texels each
+  template changes. Arm spots are re-hung from the mesh's 45-degree arms to the idle pose. Other packs' overlays
+  use their tagged region, and a wide mark frames the whole body.
+- **Categories** had never filtered. Papyrus returned the category in another case: the plugin missed its map and
+  the panel dropped the answer. The fix: the plugin lower-cases the category, and pages are matched by a request
+  number, never by an echoed string.
+- **The wheel** arrives as a stream of CameraZUp/CameraZDown under the free camera. One flick turns one page.
+- **Pictures:** ONE 4096 atlas per sex, because the second 2048 atlas's pictures did not show. The atlas layout is
+  part of the build name.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

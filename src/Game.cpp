@@ -494,8 +494,21 @@ namespace CX::Game
 					cells[k] = { v[0].get<int>(), v[1].get<int>() };
 				}
 			}
-			logger::info("window: {} picture(s) in the atlases", cells.size());
+			std::unordered_map<std::string, std::array<float, 8>> spots;
+			if ((*thumbs).contains("focus") && (*thumbs)["focus"].is_object()) {
+				for (const auto& [k, v] : (*thumbs)["focus"].items()) {
+					if (v.is_array() && v.size() == 8) {
+						std::array<float, 8> a{};
+						for (std::size_t i = 0; i < 8; ++i) {
+							a[i] = v[i].get<float>();
+						}
+						spots[k] = a;
+					}
+				}
+			}
+			logger::info("window: {} picture(s) in the atlases, {} spot(s) for the camera", cells.size(), spots.size());
 			g_director.SetThumbs(std::move(cells), (*thumbs).value("build", std::string{}));
+			g_director.SetSpots(std::move(spots));
 		} else {
 			logger::info("window: no thumbs.json ({}) - the window shows text cards", thumbError.empty() ? "missing" : thumbError);
 		}

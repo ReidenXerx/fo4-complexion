@@ -32,6 +32,10 @@ search. A click puts one on or takes it off, live; Random rolls a look; Clear ta
 it as their look from then on; Cancel puts back exactly what they had, clothes included. It is the only way the
 player gets overlays from Complexion: the player is never given a random look.
 
+Putting one on takes the camera close to where it sits; *Whole body* takes it back. The mouse wheel, Page Up/Down
+and the bumpers turn pages. The hotkey is unbound until you set it in the MCM. Up to 24 of Complexion's overlays at
+a time. Other packs' overlays show by name, without a picture.
+
 ## Requirements
 
 Fallout 4 1.10.163 (old-gen), 1.10.984 (next-gen) or 1.11.x (Anniversary), F4SE, Runtime Database, LooksMenu,

@@ -3,6 +3,8 @@
 // C-19: the overlay window's camera, ported from Silhouette's picker window (S-79). Main thread only (the
 // natives that call these are bound as such).
 
+#include "Shot.h"
+
 namespace CX::Camera
 {
 	// What Frame, Restore and Step answer while the camera is still on its way: the game carries out "tfc"
@@ -15,6 +17,9 @@ namespace CX::Camera
 	// ScreenArcherMenu writes (F4SE's layout); they are read against the camera's own position before anything
 	// is written, and a layout that differs leaves the camera alone -- never half on.
 	[[nodiscard]] std::string Frame(float a_x, float a_y, float a_z, float a_angleDegrees, float a_height);
+
+	// The same, to a view already worked out (Shot::Focus: close to a mark).
+	[[nodiscard]] std::string FrameView(const Shot::View& a_view);
 
 	// Back to the camera the player had: the free camera goes off if Complexion switched it on. "" when it is
 	// back, kWait while it goes.

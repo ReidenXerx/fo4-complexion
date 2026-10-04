@@ -99,6 +99,11 @@ namespace CX
 		// ---- the overlay window (C-19): one session at a time, on one actor ----
 		// Where each of Complexion's own templates has its picture: key -> (atlas, cell), and the build of the atlases.
 		void SetThumbs(std::unordered_map<std::string, std::pair<int, int>> a_cells, std::string a_build);
+		// Where each of Complexion's own templates sits on the body (thumbs.json "focus"), key -> 8 numbers.
+		void SetSpots(std::unordered_map<std::string, std::array<float, 8>> a_spots);
+		// Where a template sits, for the window's camera: its measured spot, else a spot for its tagged region
+		// (other packs' templates); nullopt for one over the whole body or unknown.
+		[[nodiscard]] std::optional<std::array<float, 8>> SpotOf(std::string_view a_key) const;
 		[[nodiscard]] std::string ThumbBuild() const;
 		// Opens a session on a_ref (an NPC, or the player): what Complexion put on them is the draft. "" or why not.
 		[[nodiscard]] std::string WindowBegin(std::uint32_t a_ref, bool a_female);
@@ -146,6 +151,7 @@ namespace CX
 		Window                                                  _window;
 		std::unordered_map<std::string, std::pair<int, int>>    _thumbs;
 		std::string                                             _thumbBuild;
+		std::unordered_map<std::string, std::array<float, 8>>   _spots;
 
 		[[nodiscard]] const Template* Find(std::string_view a_key) const;
 		[[nodiscard]] std::vector<Pick> Repriority(std::vector<Pick> a_picks) const;

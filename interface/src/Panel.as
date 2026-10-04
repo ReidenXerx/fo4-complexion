@@ -1,9 +1,11 @@
 package {
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
@@ -33,9 +35,9 @@ package {
 		private static const COLS:int = 5;
 		private static const ROWS:int = 3;
 		private static const PER:int = COLS * ROWS;   // the bridge's WindowPer
-		private static const CELL:Number = 112;       // one cell of an atlas, in pixels (square)
-		private static const ATLAS_COLS:int = 18;     // 2048 / 112
-		private static const PIC:Number = 0.75;       // cells drawn at this scale
+		private static const CELL:Number = 128;       // one cell of an atlas, in pixels (square)
+		private static const ATLAS_COLS:int = 32;     // 4096 / 128: one atlas a sex (tools/paint/thumbs.py)
+		private static const PIC:Number = 0.66;       // cells drawn at this scale
 		private static const CARD_W:Number = 94;
 		private static const CARD_H:Number = 122;
 		private static const GRID_Y:Number = Y + 218;
@@ -60,9 +62,12 @@ package {
 		private var _closing:Boolean = false;
 		private var _closingAt:int = 0;
 		private var _readyAt:int = 0;
-		private var _asked:String = "";         // the page asked for last: "cat|search|page"
+		private var _ask:int = 0;               // the number of the page question asked last: older answers drop
+		private var _wheelAt:int = -1000;       // the last wheel notch heard, and the last one that turned a page
+		private var _wheelTurnAt:int = -1000;
 		private var _clickables:Array = [];
-		private var _mouseDownAt:int = -1000;
+		private var _actAt:int = -1000;         // the last click acted on: the same click arrives more than one way
+		private var _searchLeftAt:int = -1000;  // Esc / Enter that left the search: not also Cancel / Accept
 
 		private var _title:TextField;
 		private var _status:TextField;
@@ -128,6 +133,7 @@ package {
 				pic.y = 3;
 				var loader:Loader = new Loader();
 				loader.scaleX = loader.scaleY = PIC;
+				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, OnPictureError);
 				pic.addChild(loader);
 				var mask:Shape = new Shape();
 				mask.graphics.beginFill(0xFFFFFF);
@@ -155,12 +161,13 @@ package {
 			_pageText = Text(this, 15, X + 116, under + 6, 160);
 			Button("Next >", X + W - 106, under, 90, function ():void { Turn(1); }, 15);
 			var bottom:Number = under + 44;
-			Button("Random", X + 16, bottom, 110, Roll, 16);
-			Button("Clear", X + 132, bottom, 100, Clear, 16);
-			Button("Apply", X + W - 246, bottom, 110, Apply);
-			Button("Cancel", X + W - 130, bottom, 114, Cancel);
+			Button("Random", X + 16, bottom, 82, Roll, 15);
+			Button("Clear", X + 102, bottom, 70, Clear, 15);
+			Button("Whole body", X + 176, bottom, 96, Whole, 14);
+			Button("Apply", X + W - 226, bottom, 100, Apply);
+			Button("Cancel", X + W - 120, bottom, 104, Cancel);
 
-			addEventListener(MouseEvent.MOUSE_WHEEL, function (e:MouseEvent):void { Turn(e.delta > 0 ? -1 : 1); });
+			addEventListener(MouseEvent.MOUSE_WHEEL, function (e:MouseEvent):void { Wheel(e.delta > 0 ? -1 : 1); });
 			addEventListener(Event.ADDED_TO_STAGE, OnStage);
 			addEventListener(Event.ENTER_FRAME, OnFrame);
 			addEventListener(Event.ENTER_FRAME, OnWatch);
@@ -187,21 +194,26 @@ package {
 			alpha = 1.0;
 			_page = 0;
 			_focus = -1;
-			for (var i:int = 0; i < _cards.length; i++) {
-				_cards[i].shown = "";
-			}
+			Unload();
 			Paint();
 			Ask();
 		}
 
-		// The page asked for: "<total>|key<TAB>label<TAB>kind<TAB>on<TAB>atlas<TAB>cell|..." with what was asked.
-		// An answer to a question no longer open is dropped.
-		public function SetPage(a_joined:String, a_cat:String, a_search:String, a_page:int):void {
-			if (a_cat + "|" + a_search + "|" + a_page != _asked) {
+		// The page asked for: "<total>|key<TAB>label<TAB>kind<TAB>on<TAB>atlas<TAB>cell|..." and the question's
+		// number. An answer to a question no longer open is dropped. (The first window echoed the category and the
+		// search back and compared them: Papyrus returned them in another case, every answer was dropped, and the
+		// categories never changed the page -- the owner, 10-04.)
+		public function SetPage(a_joined:String, a_ask:int):void {
+			if (a_ask != _ask) {
 				return;
 			}
 			var parts:Array = a_joined.split("|");
 			_total = int(parts[0]);
+			if (_total > 0 && _page >= Pages()) {
+				_page = Pages() - 1;  // the list shrank under the page shown (Clear, a card taken off "On them")
+				Ask();
+				return;
+			}
 			_items = [];
 			for (var i:int = 1; i < parts.length; i++) {
 				var f:Array = String(parts[i]).split("\t");
@@ -223,10 +235,8 @@ package {
 					_items[i].on = a_on;
 				}
 			}
-			if (CATS[_cat] == "on") {
-				Ask();  // the list of what is on them changed
-			}
 			Redraw();
+			Ask();  // a page answered before the toggle may be on its way: this answer supersedes it
 		}
 
 		// The draft changed as a whole (Random, Clear): the page is asked for again.
@@ -247,11 +257,13 @@ package {
 			_page = 0;
 			_focus = -1;
 			_mounted = {};
-			_asked = "";
+			_ask++;
+			_mode = "";
+			_canThem = false;
+			_sex = "";
+			_build = "";
 			_search.text = "";
-			for (var i:int = 0; i < _cards.length; i++) {
-				_cards[i].shown = "";
-			}
+			Unload();
 			_title.text = "Complexion";
 			_status.text = "";
 			_ready = true;
@@ -278,9 +290,23 @@ package {
 			if (a_control == "WorldZDown") {
 				return true;
 			}
-			if (a_pressed) {
-				Note("control " + a_control);
+			// And the wheel arrives as "CameraZUp" / "CameraZDown", one per frame while it rolls (measured 10-04:
+			// a dozen for one flick), never as a MOUSE_WHEEL: a flick turns one page.
+			if (a_control == "CameraZUp" || a_control == "CameraZDown") {
+				if (a_pressed) {
+					Wheel(a_control == "CameraZUp" ? -1 : 1);
+				}
+				return true;
 			}
+			// Typing in the search: its keys are the search's (Esc and Enter leave it -- not Cancel, not Accept).
+			if (stage && (stage.focus == _search || getTimer() - _searchLeftAt < 300)) {
+				return a_control != "LShoulder" && a_control != "RShoulder" && a_control != "LTrigger" && a_control != "RTrigger"
+					? true : ProcessPad(a_control, a_pressed);
+			}
+			return ProcessPad(a_control, a_pressed);
+		}
+
+		private function ProcessPad(a_control:String, a_pressed:Boolean):Boolean {
 			var early:Boolean = !_ready || getTimer() - _readyAt < 400;
 			if (early && (a_control == "Cancel" || a_control == "Accept")) {
 				return true;  // the key that opened the window, not an answer
@@ -308,9 +334,6 @@ package {
 
 		private function OnStage(e:Event):void {
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, OnKey);
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, function (e:MouseEvent):void {
-				_mouseDownAt = getTimer();
-			});
 		}
 
 		private function OnWatch(e:Event):void {
@@ -320,8 +343,19 @@ package {
 			}
 		}
 
+		// A click acts once: with the free camera on it can come as WorldZUp AND as a CLICK, in either order (the
+		// first window's mouse-down guard trusted an order; microscope, 10-04).
+		private function Once():Boolean {
+			var now:int = getTimer();
+			if (now - _actAt < 250) {
+				return false;
+			}
+			_actAt = now;
+			return true;
+		}
+
 		private function ClickAtCursor():void {
-			if (!stage || getTimer() - _mouseDownAt < 200) {
+			if (!stage) {
 				return;
 			}
 			var x:Number = stage.mouseX;
@@ -333,7 +367,9 @@ package {
 			for (var i:int = 0; i < _clickables.length; i++) {
 				var c:Object = _clickables[i];
 				if (c.s.visible && c.s.alpha > 0.45 && c.s.hitTestPoint(x, y, true)) {
-					c.f();
+					if (Once()) {
+						c.f();
+					}
 					return;
 				}
 			}
@@ -347,6 +383,28 @@ package {
 					Toggle(i);
 				}
 			};
+		}
+
+		private var _pictureErrors:int = 0;
+
+		// Every card's picture forgotten: the next Redraw loads it again. F4SE unmounts the images when the window
+		// closes, and a card that kept its loaded atlas showed nothing at the next opening (microscope, 10-04).
+		private function Unload():void {
+			for (var i:int = 0; i < _cards.length; i++) {
+				_cards[i].shown = "";
+				_cards[i].loader.name = "";
+				_cards[i].loader.unload();
+			}
+		}
+
+		private function OnPictureError(e:IOErrorEvent):void {
+			if (_pictureErrors++ < 3) {
+				Note("a picture did not load: " + e.text);
+			}
+			var info:LoaderInfo = e.target as LoaderInfo;
+			if (info && info.loader) {
+				info.loader.name = "";  // tried again when the card next changes
+			}
 		}
 
 		private function Note(a_line:String):void {
@@ -392,6 +450,7 @@ package {
 					got = "img://" + name;
 				}
 			}
+			Note("atlas " + file + (got == "" ? " could not be mounted" : " mounted"));
 			_mounted[key] = got;
 			return got;
 		}
@@ -402,10 +461,13 @@ package {
 			if (stage && stage.focus == _search) {
 				if (e.keyCode == 13) {
 					stage.focus = null;
+					_searchLeftAt = getTimer();
 					_page = 0;
+					_focus = -1;
 					Ask();
 				} else if (e.keyCode == 27) {
 					stage.focus = null;
+					_searchLeftAt = getTimer();
 				}
 				return;
 			}
@@ -463,6 +525,24 @@ package {
 			}
 		}
 
+		// The camera back to the whole of them (a pick moves it close to where the mark sits).
+		private function Whole():void {
+			if (!_busy && !_closing) {
+				Send("Complexion_WindowWhole");
+			}
+		}
+
+		// A wheel notch: a run of them close together turns one page, a long roll one more every 0.4 s.
+		private function Wheel(a_by:int):void {
+			var now:int = getTimer();
+			var fresh:Boolean = now - _wheelAt > 150;
+			_wheelAt = now;
+			if (fresh || now - _wheelTurnAt > 400) {
+				_wheelTurnAt = now;
+				Turn(a_by);
+			}
+		}
+
 		private function Clear():void {
 			if (!_busy && !_closing) {
 				Send("Complexion_WindowClear");
@@ -474,6 +554,7 @@ package {
 				return;
 			}
 			_busy = true;
+			_ask++;
 			alpha = 0.6;
 			Send("Complexion_WindowTarget", a_mode);
 		}
@@ -514,9 +595,8 @@ package {
 			if (_mode == "" || _busy) {
 				return;
 			}
-			var search:String = _search.text;
-			_asked = CATS[_cat] + "|" + search + "|" + _page;
-			Send("Complexion_WindowPage", CATS[_cat], search, _page);
+			_ask++;
+			Send("Complexion_WindowPage", CATS[_cat], _search.text, _page, _ask);
 		}
 
 		private function Move(a_by:int):void {
@@ -604,7 +684,7 @@ package {
 
 		private function OnCardClick(e:MouseEvent):void {
 			var i:int = CardIndex(e.currentTarget);
-			if (i >= 0) {
+			if (i >= 0 && Once()) {
 				_focus = i;
 				Toggle(i);
 			}
@@ -666,7 +746,11 @@ package {
 			t.x = Math.max(4, (a_w - t.width) / 2);
 			t.y = a_size > 16 ? 5 : 6;
 			b.addChild(t);
-			b.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void { a_click(); });
+			b.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
+				if (Once()) {
+					a_click();
+				}
+			});
 			_clickables.push({ s: b, f: a_click });
 			addChild(b);
 			Mark(b, false, true);

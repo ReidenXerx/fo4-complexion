@@ -38,6 +38,8 @@ namespace CX::Camera
 		std::chrono::steady_clock::time_point g_asked;     // when it was asked for
 		constexpr auto kGiveUp = std::chrono::seconds(3);  // a toggle not carried out by then never will be
 		Shot::View g_view;
+		Shot::View g_last;  // the view last written into the free camera: the next may be far from it (a close-up
+		                    // on the other side), and the camera reads the last one until it catches up
 
 		RE::PlayerCamera* Camera()
 		{
@@ -100,7 +102,8 @@ namespace CX::Camera
 			RE::NiPoint3 at;
 			a_camera->GetCameraPosition(at, true);
 			const bool here = Near(free->x, free->y, free->z, at.x, at.y, at.z) ||
-			                  (g_placed && Near(free->x, free->y, free->z, g_view.x, g_view.y, g_view.z));
+			                  (g_placed && (Near(free->x, free->y, free->z, g_view.x, g_view.y, g_view.z) ||
+			                                   Near(free->x, free->y, free->z, g_last.x, g_last.y, g_last.z)));
 			const bool angles = std::isfinite(free->pitch) && std::isfinite(free->yaw) && std::abs(free->pitch) <= 2.0F * kTurn &&
 			                    std::abs(free->yaw) <= 2.0F * kTurn;
 			if (!here || !angles) {
@@ -118,6 +121,7 @@ namespace CX::Camera
 			free->z = g_view.z;
 			free->pitch = g_view.pitch;
 			free->yaw = g_view.yaw;
+			g_last = g_view;
 			g_placed = true;
 			Mute(a_camera->currentState.get(), true);
 			return {};
@@ -125,6 +129,11 @@ namespace CX::Camera
 	}
 
 	std::string Frame(float a_x, float a_y, float a_z, float a_angleDegrees, float a_height)
+	{
+		return FrameView(Shot::Aim(a_x, a_y, a_z, a_angleDegrees, a_height));
+	}
+
+	std::string FrameView(const Shot::View& a_view)
 	{
 		if (!g_want && !g_ours && !g_pending) {
 			// A free camera already on is not Complexion's: the player's, or another mod's (ScreenArcherMenu,
@@ -134,7 +143,7 @@ namespace CX::Camera
 			g_placed = false;
 		}
 		g_want = true;
-		g_view = Shot::Aim(a_x, a_y, a_z, a_angleDegrees, a_height);
+		g_view = a_view;
 		return Step();
 	}
 
