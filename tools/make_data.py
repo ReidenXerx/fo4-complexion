@@ -43,6 +43,20 @@ def main():
                 continue
             resolved.append([hit[0], edid, hit[1]])
         group['factions'] = resolved
+    # The game's hair colour records (CLFM) by editor id, which the runtime does not keep: [plugin, edid, local id,
+    # family], so the plugin reads a person's head hair family from their record's hair colour.
+    hc = profiles.get('hair_colours')
+    if hc:
+        clfm = plugin_forms.editor_ids(a.data / 'Fallout4.esm', 'CLFM')
+        hc['forms'] = []
+        for edid, fam in hc['families'].items():
+            hit = clfm.get(edid)
+            if not hit:
+                errors.append(f'hair_colours: no colour {edid} in Fallout4.esm')
+                continue
+            if fam not in hc['accept']:
+                errors.append(f'hair_colours: {edid} -> {fam}, a family "accept" does not list')
+            hc['forms'].append([hit[0], edid, hit[1], fam])
     if errors:
         sys.exit('\n'.join(errors))
     OUT.mkdir(parents=True, exist_ok=True)

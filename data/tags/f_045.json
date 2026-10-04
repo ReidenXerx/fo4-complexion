@@ -10,7 +10,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "thin vertical strip"
+  "note": "thin vertical strip",
+  "hair": "auburn"
  },
  "f:CalienteStubble": {
   "kind": "pubic_hair",
@@ -36,7 +37,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "thick bush"
+  "note": "thick bush",
+  "hair": "black"
  },
  "f:CalienteThicker": {
   "kind": "pubic_hair",
@@ -49,7 +51,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "thicker dense bush"
+  "note": "thicker dense bush",
+  "hair": "black"
  },
  "f:CalienteThin": {
   "kind": "pubic_hair",
@@ -62,7 +65,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "thin sparse bush"
+  "note": "thin sparse bush",
+  "hair": "auburn"
  },
  "f:SvarogNLArrowhead": {
   "kind": "pubic_hair",
@@ -75,7 +79,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "small arrowhead"
+  "note": "small arrowhead",
+  "hair": "black"
  },
  "f:SvarogNLCatPaw": {
   "kind": "pubic_hair",
@@ -90,7 +95,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "cat paw print shape"
+  "note": "cat paw print shape",
+  "hair": "black"
  },
  "f:SvarogNLChaplin": {
   "kind": "pubic_hair",
@@ -103,7 +109,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "tiny chaplin patch"
+  "note": "tiny chaplin patch",
+  "hair": "black"
  },
  "f:SvarogNLDiamond": {
   "kind": "pubic_hair",
@@ -116,7 +123,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "diamond strip"
+  "note": "diamond strip",
+  "hair": "black"
  },
  "f:SvarogNLDiamondSmall": {
   "kind": "pubic_hair",
@@ -129,7 +137,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "tiny diamond strip"
+  "note": "tiny diamond strip",
+  "hair": "black"
  },
  "f:SvarogNLDoubleV": {
   "kind": "pubic_hair",
@@ -142,7 +151,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "double V shape"
+  "note": "double V shape",
+  "hair": "black"
  },
  "f:SvarogNLHares Tail": {
   "kind": "pubic_hair",
@@ -155,7 +165,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "hares tail strip"
+  "note": "hares tail strip",
+  "hair": "black"
  },
  "f:SvarogNLHeart": {
   "kind": "pubic_hair",
@@ -168,7 +179,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "heart shape"
+  "note": "heart shape",
+  "hair": "black"
  },
  "f:SvarogNLLanding Strip": {
   "kind": "pubic_hair",
@@ -181,7 +193,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "landing strip"
+  "note": "landing strip",
+  "hair": "black"
  },
  "f:SvarogNLLanding Strip Mirrored": {
   "kind": "pubic_hair",
@@ -194,7 +207,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "landing strip mirrored"
+  "note": "landing strip mirrored",
+  "hair": "black"
  },
  "f:SvarogNLLanding Strip Thin": {
   "kind": "pubic_hair",
@@ -207,6 +221,7 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "thin landing strip"
+  "note": "thin landing strip",
+  "hair": "black"
  }
 }

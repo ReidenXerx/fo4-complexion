@@ -98,6 +98,25 @@ namespace CX
 		p.oneLarge = r.at("one_large").get<bool>();
 		p.regionsUnique = r.at("regions_unique").get<bool>();
 		p.fallback = j.at("default").get<std::string>();
+		if (j.contains("hair_colours")) {
+			const auto& hc = j.at("hair_colours");
+			p.hairColours.present = true;
+			for (const auto& [k, v] : hc.at("accept").items()) {
+				p.hairColours.accept[k] = Strings(v);
+			}
+			for (const auto& u : hc.at("unknown")) {
+				p.hairColours.unknown.emplace_back(u.at(0).get<std::string>(), u.at(1).get<int>());
+			}
+			if (p.hairColours.unknown.empty()) {
+				throw std::runtime_error("hair_colours: no unknown roll");
+			}
+			if (hc.contains("forms")) {
+				for (const auto& f : hc.at("forms")) {
+					p.hairColours.forms.push_back({ f.at(0).get<std::string>(), f.at(1).get<std::string>(),
+						f.at(2).get<std::uint32_t>(), f.at(3).get<std::string>() });
+				}
+			}
+		}
 		if (j.contains("personas")) {
 			for (const auto& [name, v] : j.at("personas").items()) {
 				Persona x;
@@ -206,6 +225,9 @@ namespace CX
 			}
 			x.adult = t.value("adult", false);
 			x.note = t.value("note", "");
+			if (t.contains("hair") && t["hair"].is_string()) {
+				x.hair = t["hair"].get<std::string>();
+			}
 			out.push_back(std::move(x));
 		}
 		return out;
@@ -222,17 +244,41 @@ namespace CX
 	}
 
 	std::vector<Pick> Compose(const Profiles& a_profiles, const std::vector<Template>& a_catalog, bool a_female, const Group& a_group,
-		std::uint64_t a_seed, bool a_adultAllowed, std::string_view a_persona)
+		std::uint64_t a_seed, bool a_adultAllowed, std::string_view a_persona, std::string_view a_hair)
 	{
 		if (a_group.untouched) {
 			return {};
 		}
-		Rng                             rng(a_seed);
-		std::vector<const Template*>    mine;
-		for (const auto& t : a_catalog) {
-			if (t.female == a_female) {
-				mine.push_back(&t);
+		Rng rng(a_seed);
+		// 0. one hair family per person: the head hair's, else rolled once (tools/compose.py step 0).
+		const std::vector<std::string>* accepted = nullptr;
+		if (const auto& hc = a_profiles.hairColours; hc.present) {
+			auto family = hc.accept.find(std::string(a_hair));
+			if (family == hc.accept.end()) {
+				auto        roll = rng.Percent();
+				std::string pick = hc.unknown.back().first;
+				for (const auto& [fam, w] : hc.unknown) {
+					if (roll < w) {
+						pick = fam;
+						break;
+					}
+					roll -= w;
+				}
+				family = hc.accept.find(pick);
 			}
+			if (family != hc.accept.end()) {
+				accepted = &family->second;
+			}
+		}
+		std::vector<const Template*> mine;
+		for (const auto& t : a_catalog) {
+			if (t.female != a_female) {
+				continue;
+			}
+			if (accepted && (t.kind == "pubic_hair" || t.kind == "body_hair") && !Has(*accepted, t.hair)) {
+				continue;  // another colour than theirs, or a colour nobody could tell
+			}
+			mine.push_back(&t);
 		}
 		std::vector<Pick>     picks;
 		std::set<std::string> usedRegions;

@@ -102,7 +102,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "forearm hair patches"
+  "note": "forearm hair patches",
+  "hair": "black"
  },
  "m:TBOSGageArmpitHair": {
   "kind": "body_hair",
@@ -116,7 +117,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "armpit hair tufts"
+  "note": "armpit hair tufts",
+  "hair": "black"
  },
  "m:TBOSGageBodyHair": {
   "kind": "body_hair",
@@ -129,7 +131,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "poor",
-  "note": "full body hair, stretched seams"
+  "note": "full body hair, stretched seams",
+  "hair": "black"
  },
  "m:TBOSGageHandHair": {
   "kind": "body_hair",
@@ -143,7 +146,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "chest and pubic hair"
+  "note": "chest and pubic hair",
+  "hair": "black"
  },
  "m:TBOSGageLegHair": {
   "kind": "body_hair",
@@ -157,7 +161,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "poor",
-  "note": "leg hair with streaked edges"
+  "note": "leg hair with streaked edges",
+  "hair": "black"
  },
  "m:TBOSRiotBodyhair": {
   "kind": "body_hair",
@@ -171,7 +176,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "pubic and thigh hair"
+  "note": "pubic and thigh hair",
+  "hair": "black"
  },
  "m:TBOSRiotBodyhairAlt": {
   "kind": "body_hair",
@@ -185,6 +191,7 @@
   "lore": "fits",
   "adult": false,
   "quality": "poor",
-  "note": "sparse hair, seam artifacts"
+  "note": "sparse hair, seam artifacts",
+  "hair": "black"
  }
 }

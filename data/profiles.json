@@ -49,6 +49,29 @@
    "full"
   ]
  },
+ "hair_colours": {
+  "about": "One body hair colour per person, matching the hair on their head (owner, 2026-10-04): the family of their head hair colour (tools/make_data.py reads the game's hair colour records into forms) accepts these families of pubic_hair and body_hair templates (the tag's hair, tools/paint/hair.py) -- the same or darker, never another hue. A head colour not listed (another mod's, a dye) rolls one family per person by unknown (percent).",
+  "accept": {
+   "black": ["black", "darkbrown"],
+   "darkbrown": ["darkbrown", "black", "brown"],
+   "brown": ["brown", "darkbrown", "black"],
+   "lightbrown": ["lightbrown", "brown", "blond"],
+   "blond": ["blond", "lightbrown"],
+   "auburn": ["auburn", "ginger", "brown"],
+   "ginger": ["ginger", "auburn"],
+   "grey": ["grey"]
+  },
+  "unknown": [["darkbrown", 30], ["brown", 25], ["black", 20], ["lightbrown", 10], ["blond", 7], ["auburn", 4], ["ginger", 4]],
+  "families": {
+   "HairColor01LightRed": "ginger", "HairColor02LightBrown": "lightbrown", "HairColor03GoldenBlond": "blond",
+   "HairColor04Silver": "grey", "HairColor05Graying": "grey", "HairColor06Red": "ginger", "HairColor07White": "grey",
+   "HairColor08Bleached": "blond", "HairColor09Gray": "grey", "HairColor10SteelGray": "grey",
+   "HairColor11WarmBlack": "black", "HairColor12CoolBrown": "brown", "HairColor13JetBlack": "black",
+   "HairColor14DarkBrown": "darkbrown", "HairColor15DeepRed": "auburn", "HairColor16Blond": "blond",
+   "HairColor17PlatinumBlond": "blond", "HairColor18DeepBrown": "darkbrown", "HairColor19DirtyBlond": "blond",
+   "HairColor20ChestnutBrown": "brown", "HairColor21Brown": "brown", "HairColor22Auburn": "auburn"
+  }
+ },
  "universal": {
   "female": [
    {

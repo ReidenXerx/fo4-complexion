@@ -243,6 +243,25 @@ The owner's first use (2026-10-04) and the fixes:
 - **Pictures:** ONE 4096 atlas per sex, because the second 2048 atlas's pictures did not show. The atlas layout is
   part of the build name.
 
+## C-20: One body hair colour per person, matching the head (owner poll, 2026-10-04)
+
+The owner's photo showed a dark-haired man with dark pubic hair and a ginger chest stripe: the composer picked each
+hair overlay on its own. Now:
+- **The person's family.** The plugin reads their head hair colour from the NPC record (TESNPC::headRelatedData ->
+  hairColor, up the face template chain; checked on the player first, with the other members). It maps the colour
+  to a family through profiles.json hair_colours: the game's 22 natural colours, by editor id, resolved offline by
+  tools/make_data.py.
+- **The templates' family.** Every pubic_hair and body_hair tag carries hair (tools/paint/hair.py). Ours come from
+  the colour their painter got. The packs' come from their pictures, the real textures, for packs whose material
+  draws them as they are; porcPubes from the colour its names state.
+- **The rule.** A family accepts the same or darker, never another hue: brown takes brown, dark brown and black;
+  ginger takes ginger and auburn; grey only grey. A hair template whose colour nobody could tell is never handed out.
+- **Unknown colours.** Another mod's colour or a dye rolls one family per person, so all their hair still matches.
+- **Old saves.** A look decided before this (co-save v3) is checked once, when the person is next seen. If its hair
+  clashes with the head, it is decided again. A look chosen by hand stays.
+- **The "sternum" chest pattern** was a narrow even band down to the navel and read as a painted stripe. It is now a
+  ragged patch over the breastbone, thinning into a faint trail.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

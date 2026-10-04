@@ -49,6 +49,234 @@
    "full"
   ]
  },
+ "hair_colours": {
+  "about": "One body hair colour per person, matching the hair on their head (owner, 2026-10-04): the family of their head hair colour (tools/make_data.py reads the game's hair colour records into forms) accepts these families of pubic_hair and body_hair templates (the tag's hair, tools/paint/hair.py) -- the same or darker, never another hue. A head colour not listed (another mod's, a dye) rolls one family per person by unknown (percent).",
+  "accept": {
+   "black": [
+    "black",
+    "darkbrown"
+   ],
+   "darkbrown": [
+    "darkbrown",
+    "black",
+    "brown"
+   ],
+   "brown": [
+    "brown",
+    "darkbrown",
+    "black"
+   ],
+   "lightbrown": [
+    "lightbrown",
+    "brown",
+    "blond"
+   ],
+   "blond": [
+    "blond",
+    "lightbrown"
+   ],
+   "auburn": [
+    "auburn",
+    "ginger",
+    "brown"
+   ],
+   "ginger": [
+    "ginger",
+    "auburn"
+   ],
+   "grey": [
+    "grey"
+   ]
+  },
+  "unknown": [
+   [
+    "darkbrown",
+    30
+   ],
+   [
+    "brown",
+    25
+   ],
+   [
+    "black",
+    20
+   ],
+   [
+    "lightbrown",
+    10
+   ],
+   [
+    "blond",
+    7
+   ],
+   [
+    "auburn",
+    4
+   ],
+   [
+    "ginger",
+    4
+   ]
+  ],
+  "families": {
+   "HairColor01LightRed": "ginger",
+   "HairColor02LightBrown": "lightbrown",
+   "HairColor03GoldenBlond": "blond",
+   "HairColor04Silver": "grey",
+   "HairColor05Graying": "grey",
+   "HairColor06Red": "ginger",
+   "HairColor07White": "grey",
+   "HairColor08Bleached": "blond",
+   "HairColor09Gray": "grey",
+   "HairColor10SteelGray": "grey",
+   "HairColor11WarmBlack": "black",
+   "HairColor12CoolBrown": "brown",
+   "HairColor13JetBlack": "black",
+   "HairColor14DarkBrown": "darkbrown",
+   "HairColor15DeepRed": "auburn",
+   "HairColor16Blond": "blond",
+   "HairColor17PlatinumBlond": "blond",
+   "HairColor18DeepBrown": "darkbrown",
+   "HairColor19DirtyBlond": "blond",
+   "HairColor20ChestnutBrown": "brown",
+   "HairColor21Brown": "brown",
+   "HairColor22Auburn": "auburn"
+  },
+  "forms": [
+   [
+    "Fallout4.esm",
+    "HairColor01LightRed",
+    656441,
+    "ginger"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor02LightBrown",
+    656429,
+    "lightbrown"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor03GoldenBlond",
+    656431,
+    "blond"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor04Silver",
+    656430,
+    "grey"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor05Graying",
+    656428,
+    "grey"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor06Red",
+    656433,
+    "ginger"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor07White",
+    1699418,
+    "grey"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor08Bleached",
+    1699419,
+    "blond"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor09Gray",
+    1699420,
+    "grey"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor10SteelGray",
+    1699421,
+    "grey"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor11WarmBlack",
+    1699422,
+    "black"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor12CoolBrown",
+    1699423,
+    "brown"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor13JetBlack",
+    1699424,
+    "black"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor14DarkBrown",
+    1699425,
+    "darkbrown"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor15DeepRed",
+    1699426,
+    "auburn"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor16Blond",
+    1699427,
+    "blond"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor17PlatinumBlond",
+    1699428,
+    "blond"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor18DeepBrown",
+    1699429,
+    "darkbrown"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor19DirtyBlond",
+    1699430,
+    "blond"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor20ChestnutBrown",
+    1699431,
+    "brown"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor21Brown",
+    1699432,
+    "brown"
+   ],
+   [
+    "Fallout4.esm",
+    "HairColor22Auburn",
+    1699433,
+    "auburn"
+   ]
+  ]
+ },
  "universal": {
   "female": [
    {

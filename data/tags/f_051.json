@@ -179,7 +179,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "full bush with groin crease marks"
+  "note": "full bush with groin crease marks",
+  "hair": "blond"
  },
  "f:Pubic4blond_02": {
   "kind": "pubic_hair",
@@ -192,7 +193,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "full bush with groin marks"
+  "note": "full bush with groin marks",
+  "hair": "blond"
  },
  "f:Pubic4blond_03": {
   "kind": "pubic_hair",
@@ -205,6 +207,7 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "tiny cross-shaped tuft"
+  "note": "tiny cross-shaped tuft",
+  "hair": "blond"
  }
 }

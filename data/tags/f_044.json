@@ -10,7 +10,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "tiny thin vertical strip"
+  "note": "tiny thin vertical strip",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles03": {
   "kind": "pubic_hair",
@@ -23,7 +24,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "thin vertical strip"
+  "note": "thin vertical strip",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles04": {
   "kind": "pubic_hair",
@@ -36,7 +38,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "thin vertical strip"
+  "note": "thin vertical strip",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles05": {
   "kind": "pubic_hair",
@@ -49,7 +52,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "narrow vertical strip"
+  "note": "narrow vertical strip",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles06": {
   "kind": "pubic_hair",
@@ -62,7 +66,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "poor",
-  "note": "tiny faint square patch"
+  "note": "tiny faint square patch",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles07": {
   "kind": "pubic_hair",
@@ -75,7 +80,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "small trimmed patch"
+  "note": "small trimmed patch",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles08": {
   "kind": "pubic_hair",
@@ -88,7 +94,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "small inverted triangle"
+  "note": "small inverted triangle",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles09": {
   "kind": "pubic_hair",
@@ -101,7 +108,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "small short patch"
+  "note": "small short patch",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles10": {
   "kind": "pubic_hair",
@@ -114,7 +122,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "patch with band above"
+  "note": "patch with band above",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles11": {
   "kind": "pubic_hair",
@@ -127,7 +136,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "chevron-shaped patch"
+  "note": "chevron-shaped patch",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles12": {
   "kind": "pubic_hair",
@@ -142,7 +152,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "radiation trefoil shaved pattern"
+  "note": "radiation trefoil shaved pattern",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles13": {
   "kind": "pubic_hair",
@@ -157,7 +168,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "three small trefoils"
+  "note": "three small trefoils",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles14": {
   "kind": "other",
@@ -203,6 +215,7 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "full natural bush"
+  "note": "full natural bush",
+  "hair": "darkbrown"
  }
 }

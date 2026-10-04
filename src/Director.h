@@ -21,6 +21,7 @@ namespace CX
 		std::string   group;   // the profile group their factions match; "" = the default
 		std::string   name;    // for the log
 		std::string   skip;    // why they are left alone ("dead", "player", "child", "race ..."), "" = eligible
+		std::string   hair;    // their head hair's colour family (profiles.json hair_colours); "" = unknown
 	};
 
 	struct Record
@@ -32,6 +33,8 @@ namespace CX
 		std::vector<Pick> picks;
 		bool              applied{ false };  // the bridge confirmed every entry landed
 		bool              manual{ false };   // chosen by hand in the overlay window (C-19): kept as it is
+		std::string       hair;              // the head hair family it was decided with ("" = unknown)
+		bool              hairChecked{ true };  // false for a record from a save before v4: its hair is checked once
 	};
 
 	struct Order
@@ -106,7 +109,7 @@ namespace CX
 		[[nodiscard]] std::optional<std::array<float, 8>> SpotOf(std::string_view a_key) const;
 		[[nodiscard]] std::string ThumbBuild() const;
 		// Opens a session on a_ref (an NPC, or the player): what Complexion put on them is the draft. "" or why not.
-		[[nodiscard]] std::string WindowBegin(std::uint32_t a_ref, bool a_female);
+		[[nodiscard]] std::string WindowBegin(std::uint32_t a_ref, bool a_female, std::string_view a_hair = {});
 		void WindowEnd();
 		// One page of a category ("on", "all", "skin", "hair", "scars", "tattoos", "rough", "paint", "nails"),
 		// searched: "<total>|<entry>|<entry>...", an entry "key\tlabel\tkind\ton\tatlas\tcell" (atlas -1: no picture).
@@ -146,6 +149,7 @@ namespace CX
 			bool                  female{ false };
 			std::optional<Record> before;  // their record when the window opened, if any
 			std::vector<Pick>     draft;
+			std::string           hair;    // their head hair family: Random matches it
 			std::uint32_t         rolls{ 0 };
 		};
 		Window                                                  _window;
@@ -154,6 +158,8 @@ namespace CX
 		std::unordered_map<std::string, std::array<float, 8>>   _spots;
 
 		[[nodiscard]] const Template* Find(std::string_view a_key) const;
+		// A hair overlay among a_picks that their head hair family does not accept (a record decided before 0.1.3).
+		[[nodiscard]] bool HairClashes(const std::vector<Pick>& a_picks, std::string_view a_hair) const;
 		[[nodiscard]] std::vector<Pick> Repriority(std::vector<Pick> a_picks) const;
 		[[nodiscard]] std::uint32_t WindowOrder(std::vector<Pick> a_picks);
 	};

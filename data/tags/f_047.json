@@ -10,7 +10,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "triangle patch"
+  "note": "triangle patch",
+  "hair": "black"
  },
  "f:SvarogNLTriangleLarge": {
   "kind": "pubic_hair",
@@ -23,7 +24,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "large triangle patch"
+  "note": "large triangle patch",
+  "hair": "black"
  },
  "f:Moles_01": {
   "kind": "mole",

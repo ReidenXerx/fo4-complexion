@@ -274,7 +274,11 @@ def chest_density(P, m, rng, pattern='full'):
     if pattern == 'light':
         d = chest * 0.42
     elif pattern == 'sternum':
-        d = np.maximum(core * 0.7, trail * 0.35)
+        # A patch across the breastbone that spreads between the pecs, ragged, thinning below them into a faint
+        # trail. (A narrow even band from chest to navel read as a painted stripe: the owner's photo, 2026-10-04.)
+        spread = np.exp(-((x / 4.6) ** 2 + ((h - hc + 0.004) / 0.042) ** 2) ** 1.25) * ragged
+        below = np.clip((h - (hc - 0.075)) / 0.06, 0, 1)
+        d = np.maximum(np.maximum(spread * 0.62, core * ragged * 0.5 * below), trail * 0.22)
     elif pattern == 'heavy':
         d = np.maximum(np.maximum(chest * 0.9, core * 0.75), abdomen * 0.6)
     else:

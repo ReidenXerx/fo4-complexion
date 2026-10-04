@@ -4,6 +4,9 @@ This is the REFERENCE implementation. The plugin's C++ composer must give the sa
 (tests/compose_parity checks it), so every step here is deterministic and spelled out:
 
     rng      SplitMix64 seeded with the NPC's seed; percent() = next() % 100; pick(n) = next() % n
+    0. the hair family (hair_colours): the head hair's, else -- when it is not one "accept" lists -- a percent roll
+       walked through "unknown"; from then on a pubic_hair or body_hair template is a candidate only when its
+       tagged hair is one the family accepts (one colour per person, owner 2026-10-04)
     1. the universal layer: for each entry of the sex, in file order, a percent roll; on success one template of
        that kind (pubic hair limited to the group's hair sizes)
     2. the feature count: a percent roll walked through the group's count table, cut to the cap
@@ -76,13 +79,29 @@ def group_names(profiles):
     return profiles['order'] + ['npc:' + n for n in profiles.get('characters', {})] + [profiles['default']]
 
 
-def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona=''):
+HAIR_KINDS = ('pubic_hair', 'body_hair')
+
+
+def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona='', hair=''):
     g = group_def(profiles, group)
     if g.get('untouched'):
         return []
     rules = profiles['rules']
     rng = Rng(seed)
-    mine = [t for t in catalog if t['female'] == female]
+    # 0. one hair family per person
+    hc = profiles.get('hair_colours')
+    accepted = None
+    if hc:
+        if hair not in hc['accept']:
+            roll, hair = rng.percent(), hc['unknown'][-1][0]
+            for fam, w in hc['unknown']:
+                if roll < w:
+                    hair = fam
+                    break
+                roll -= w
+        accepted = set(hc['accept'][hair])
+    mine = [t for t in catalog if t['female'] == female
+            and (accepted is None or t['kind'] not in HAIR_KINDS or t.get('hair') in accepted)]
     picks, used_regions, large = [], set(), False
 
     def take(t, kind):
@@ -235,6 +254,9 @@ def simulate(profiles, catalog, rolls):
     return bad
 
 
+HAIR_DUMP = ('', 'black', 'darkbrown', 'brown', 'lightbrown', 'blond', 'auburn', 'ginger', 'grey')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--profiles', type=pathlib.Path, default=ROOT / 'data' / 'profiles.json')
@@ -253,9 +275,12 @@ def main():
                     seed = (s * 0x9E3779B97F4A7C15 + 12345) & MASK
                     for adult in (True, False):
                         for persona in ('', 'vulgar'):
-                            picks = compose(profiles, catalog, female, group, seed, adult, persona)
+                            # The hair families in turn, and "" (unknown: rolled), one per seed so the file stays
+                            # its size while every family is covered across the seeds.
+                            hair = HAIR_DUMP[s % len(HAIR_DUMP)]
+                            picks = compose(profiles, catalog, female, group, seed, adult, persona, hair)
                             # Tab-separated: group names ("npc:Piper Wright") and template ids have spaces.
-                            print(f'{group}\t{"f" if female else "m"}\t{seed}\t{int(adult)}\t{persona}\t' +
+                            print(f'{group}\t{"f" if female else "m"}\t{seed}\t{int(adult)}\t{persona}\t{hair}\t' +
                                   ','.join(f'{p["key"]}@{p["priority"]}' for p in picks))
         return
     if a.simulate:

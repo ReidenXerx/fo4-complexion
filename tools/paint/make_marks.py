@@ -29,6 +29,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import decals  # noqa: E402
 import flash  # noqa: E402
+import hair  # noqa: E402
 import hands  # noqa: E402
 import life  # noqa: E402
 import marks  # noqa: E402
@@ -676,6 +677,8 @@ def main():
         entries.append({'id': tid, 'name': f'Complexion - {tag["note"]}',
                         'slots': [{'slot': 4 if on_hands else 3, 'material': f'overlays\\Complexion\\{tid}.bgem'}],
                         'playable': True, 'transformable': not on_hands, 'sort': 0, 'gender': 1 if female else 0})
+        if tag['kind'] in hair.HAIR_KINDS:
+            tag = dict(tag, hair=hair.family(painter, args))  # one colour per person: the composer matches it
         tags[('f:' if female else 'm:') + tid] = tag
         if a.only and not tid.startswith(a.only):
             continue

@@ -10,7 +10,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "poor",
-  "note": "faint narrow tuft"
+  "note": "faint narrow tuft",
+  "hair": "ginger"
  },
  "f:Pubic4ginger_19": {
   "kind": "pubic_hair",
@@ -23,7 +24,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "dense wide natural bush"
+  "note": "dense wide natural bush",
+  "hair": "ginger"
  },
  "f:Pubic4ginger_20": {
   "kind": "pubic_hair",
@@ -36,7 +38,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "vertical strip with sparse spread"
+  "note": "vertical strip with sparse spread",
+  "hair": "ginger"
  },
  "f:Pubic4ginger_21": {
   "kind": "pubic_hair",
@@ -49,7 +52,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "poor",
-  "note": "tiny faint tuft"
+  "note": "tiny faint tuft",
+  "hair": "ginger"
  },
  "f:Pubic4ginger_22": {
   "kind": "pubic_hair",
@@ -62,7 +66,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "poor",
-  "note": "narrow dark tuft"
+  "note": "narrow dark tuft",
+  "hair": "ginger"
  },
  "f:Pubic4ginger_23": {
   "kind": "pubic_hair",
@@ -75,7 +80,8 @@
   "lore": "stretch",
   "adult": false,
   "quality": "ok",
-  "note": "hair shaped like letters ok"
+  "note": "hair shaped like letters ok",
+  "hair": "ginger"
  },
  "f:Pubic4ginger_24": {
   "kind": "pubic_hair",
@@ -88,7 +94,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "small inverted triangle shaved shape"
+  "note": "small inverted triangle shaved shape",
+  "hair": "ginger"
  },
  "f:Pubic4ginger_25": {
   "kind": "pubic_hair",
@@ -101,7 +108,8 @@
   "lore": "stretch",
   "adult": false,
   "quality": "ok",
-  "note": "heart-shaped trimmed hair"
+  "note": "heart-shaped trimmed hair",
+  "hair": "ginger"
  },
  "f:Anus_Target1": {
   "kind": "tattoo",

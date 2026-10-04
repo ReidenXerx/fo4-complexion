@@ -481,7 +481,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "full pubic hair"
+  "note": "full pubic hair",
+  "hair": "black"
  },
  "m:Complexion_PubicFull_M02": {
   "style": [],
@@ -494,7 +495,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "full pubic hair"
+  "note": "full pubic hair",
+  "hair": "black"
  },
  "m:Complexion_PubicTrim_M01": {
   "style": [],
@@ -507,7 +509,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "trimmed pubic hair"
+  "note": "trimmed pubic hair",
+  "hair": "black"
  },
  "m:Complexion_PubicTrail_M01": {
   "style": [],
@@ -520,7 +523,8 @@
    "pubic"
   ],
   "size": "medium",
-  "note": "pubic hair and a trail"
+  "note": "pubic hair and a trail",
+  "hair": "black"
  },
  "m:Complexion_PubicFullBrown_M01": {
   "style": [],
@@ -533,7 +537,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "full pubic hair, brown"
+  "note": "full pubic hair, brown",
+  "hair": "darkbrown"
  },
  "m:Complexion_PubicFullBrown_M02": {
   "style": [],
@@ -546,7 +551,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "full pubic hair, brown"
+  "note": "full pubic hair, brown",
+  "hair": "darkbrown"
  },
  "m:Complexion_PubicFullGrey_M01": {
   "style": [],
@@ -559,7 +565,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "full pubic hair, greying"
+  "note": "full pubic hair, greying",
+  "hair": "grey"
  },
  "m:Complexion_PubicTrimBrown_M01": {
   "style": [],
@@ -572,7 +579,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "trimmed pubic hair, brown"
+  "note": "trimmed pubic hair, brown",
+  "hair": "darkbrown"
  },
  "m:Complexion_PubicTrimBrown_M02": {
   "style": [],
@@ -585,7 +593,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "trimmed pubic hair, brown"
+  "note": "trimmed pubic hair, brown",
+  "hair": "darkbrown"
  },
  "m:Complexion_PubicTrailBrown_M01": {
   "style": [],
@@ -598,7 +607,8 @@
    "pubic"
   ],
   "size": "medium",
-  "note": "pubic hair and a trail, brown"
+  "note": "pubic hair and a trail, brown",
+  "hair": "darkbrown"
  },
  "m:Complexion_MolesMore_M01": {
   "style": [],
@@ -986,7 +996,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "natural pubic hair, brown"
+  "note": "natural pubic hair, brown",
+  "hair": "brown"
  },
  "f:Complexion_PubicNaturalBlack_F01": {
   "style": [],
@@ -999,7 +1010,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "natural pubic hair, black"
+  "note": "natural pubic hair, black",
+  "hair": "black"
  },
  "f:Complexion_PubicNaturalAuburn_F01": {
   "style": [],
@@ -1012,7 +1024,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "natural pubic hair, auburn"
+  "note": "natural pubic hair, auburn",
+  "hair": "auburn"
  },
  "f:Complexion_PubicNaturalBlond_F01": {
   "style": [],
@@ -1025,7 +1038,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "natural pubic hair, blond"
+  "note": "natural pubic hair, blond",
+  "hair": "blond"
  },
  "f:Complexion_PubicTrimmedBrown_F01": {
   "style": [],
@@ -1038,7 +1052,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "trimmed pubic hair, brown"
+  "note": "trimmed pubic hair, brown",
+  "hair": "brown"
  },
  "f:Complexion_PubicTrimmedBlack_F01": {
   "style": [],
@@ -1051,7 +1066,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "trimmed pubic hair, black"
+  "note": "trimmed pubic hair, black",
+  "hair": "black"
  },
  "f:Complexion_PubicTrimmedBlond_F01": {
   "style": [],
@@ -1064,7 +1080,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "trimmed pubic hair, blond"
+  "note": "trimmed pubic hair, blond",
+  "hair": "blond"
  },
  "f:Complexion_PubicTriangleBrown_F01": {
   "style": [],
@@ -1077,7 +1094,8 @@
    "pubic"
   ],
   "size": "medium",
-  "note": "triangle pubic hair, brown"
+  "note": "triangle pubic hair, brown",
+  "hair": "brown"
  },
  "f:Complexion_PubicTriangleBlack_F01": {
   "style": [],
@@ -1090,7 +1108,8 @@
    "pubic"
   ],
   "size": "medium",
-  "note": "triangle pubic hair, black"
+  "note": "triangle pubic hair, black",
+  "hair": "black"
  },
  "f:Complexion_PubicLandingBrown_F01": {
   "style": [],
@@ -1103,7 +1122,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "landing pubic hair, brown"
+  "note": "landing pubic hair, brown",
+  "hair": "brown"
  },
  "f:Complexion_PubicLandingBlack_F01": {
   "style": [],
@@ -1116,7 +1136,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "landing pubic hair, black"
+  "note": "landing pubic hair, black",
+  "hair": "black"
  },
  "f:Complexion_Stubble_F01": {
   "style": [],
@@ -1127,7 +1148,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "small",
-  "note": "leg and underarm stubble"
+  "note": "leg and underarm stubble",
+  "hair": "brown"
  },
  "f:Complexion_Stubble_F02": {
   "style": [],
@@ -1138,7 +1160,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "small",
-  "note": "leg and underarm stubble"
+  "note": "leg and underarm stubble",
+  "hair": "brown"
  },
  "m:Complexion_ChestHairBrown_M01": {
   "style": [],
@@ -1151,7 +1174,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "chest hair, brown"
+  "note": "chest hair, brown",
+  "hair": "brown"
  },
  "m:Complexion_ChestHairBlack_M01": {
   "style": [],
@@ -1164,7 +1188,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "chest hair, black"
+  "note": "chest hair, black",
+  "hair": "black"
  },
  "m:Complexion_ChestHairGrey_M01": {
   "style": [],
@@ -1177,7 +1202,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "chest hair, grey"
+  "note": "chest hair, grey",
+  "hair": "grey"
  },
  "m:Complexion_LimbHairBrown_M01": {
   "style": [],
@@ -1188,7 +1214,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "medium",
-  "note": "arm and leg hair, brown"
+  "note": "arm and leg hair, brown",
+  "hair": "brown"
  },
  "m:Complexion_LimbHairBlack_M01": {
   "style": [],
@@ -1199,7 +1226,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "medium",
-  "note": "arm and leg hair, black"
+  "note": "arm and leg hair, black",
+  "hair": "black"
  },
  "f:Complexion_TattooNoMercy_F01": {
   "kind": "tattoo",
@@ -4516,7 +4544,8 @@
    "back"
   ],
   "size": "large",
-  "note": "back hair, brown"
+  "note": "back hair, brown",
+  "hair": "brown"
  },
  "m:Complexion_HappyTrailBrown_M01": {
   "style": [],
@@ -4527,7 +4556,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "small",
-  "note": "a happy trail, brown"
+  "note": "a happy trail, brown",
+  "hair": "brown"
  },
  "f:Complexion_UnderarmBrown_F01": {
   "style": [],
@@ -4538,7 +4568,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "tiny",
-  "note": "unshaved underarms, brown"
+  "note": "unshaved underarms, brown",
+  "hair": "brown"
  },
  "m:Complexion_BackHairBlack_M01": {
   "style": [],
@@ -4551,7 +4582,8 @@
    "back"
   ],
   "size": "large",
-  "note": "back hair, black"
+  "note": "back hair, black",
+  "hair": "black"
  },
  "m:Complexion_HappyTrailBlack_M01": {
   "style": [],
@@ -4562,7 +4594,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "small",
-  "note": "a happy trail, black"
+  "note": "a happy trail, black",
+  "hair": "black"
  },
  "f:Complexion_UnderarmBlack_F01": {
   "style": [],
@@ -4573,7 +4606,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "tiny",
-  "note": "unshaved underarms, black"
+  "note": "unshaved underarms, black",
+  "hair": "black"
  },
  "m:Complexion_PubicFullAuburn_M01": {
   "style": [],
@@ -4586,7 +4620,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "full pubic hair, auburn"
+  "note": "full pubic hair, auburn",
+  "hair": "auburn"
  },
  "m:Complexion_PubicFullBlond_M01": {
   "style": [],
@@ -4599,7 +4634,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "full pubic hair, blond"
+  "note": "full pubic hair, blond",
+  "hair": "blond"
  },
  "m:Complexion_PubicTrimBlond_M01": {
   "style": [],
@@ -4612,7 +4648,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "trimmed pubic hair, blond"
+  "note": "trimmed pubic hair, blond",
+  "hair": "blond"
  },
  "f:Complexion_TattooArmbandBarbed_F01": {
   "kind": "tattoo",
@@ -8151,7 +8188,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "natural pubic hair, ginger"
+  "note": "natural pubic hair, ginger",
+  "hair": "ginger"
  },
  "f:Complexion_PubicNaturalLightbrown_F01": {
   "style": [],
@@ -8164,7 +8202,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "natural pubic hair, lightbrown"
+  "note": "natural pubic hair, lightbrown",
+  "hair": "lightbrown"
  },
  "f:Complexion_PubicNaturalDarkbrown_F01": {
   "style": [],
@@ -8177,7 +8216,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "natural pubic hair, darkbrown"
+  "note": "natural pubic hair, darkbrown",
+  "hair": "darkbrown"
  },
  "f:Complexion_PubicNaturalGrey_F01": {
   "style": [],
@@ -8190,7 +8230,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "natural pubic hair, grey"
+  "note": "natural pubic hair, grey",
+  "hair": "grey"
  },
  "f:Complexion_PubicBushyBrown_F01": {
   "style": [],
@@ -8203,7 +8244,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "bushy pubic hair, brown"
+  "note": "bushy pubic hair, brown",
+  "hair": "brown"
  },
  "f:Complexion_PubicBushyBlack_F01": {
   "style": [],
@@ -8216,7 +8258,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "bushy pubic hair, black"
+  "note": "bushy pubic hair, black",
+  "hair": "black"
  },
  "f:Complexion_PubicBushyGinger_F01": {
   "style": [],
@@ -8229,7 +8272,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "bushy pubic hair, ginger"
+  "note": "bushy pubic hair, ginger",
+  "hair": "ginger"
  },
  "f:Complexion_PubicBushyDarkbrown_F01": {
   "style": [],
@@ -8242,7 +8286,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "bushy pubic hair, darkbrown"
+  "note": "bushy pubic hair, darkbrown",
+  "hair": "darkbrown"
  },
  "f:Complexion_PubicBikiniBrown_F01": {
   "style": [],
@@ -8255,7 +8300,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "bikini pubic hair, brown"
+  "note": "bikini pubic hair, brown",
+  "hair": "brown"
  },
  "f:Complexion_PubicBikiniBlack_F01": {
   "style": [],
@@ -8268,7 +8314,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "bikini pubic hair, black"
+  "note": "bikini pubic hair, black",
+  "hair": "black"
  },
  "f:Complexion_PubicBikiniBlond_F01": {
   "style": [],
@@ -8281,7 +8328,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "bikini pubic hair, blond"
+  "note": "bikini pubic hair, blond",
+  "hair": "blond"
  },
  "f:Complexion_PubicBikiniGinger_F01": {
   "style": [],
@@ -8294,7 +8342,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "bikini pubic hair, ginger"
+  "note": "bikini pubic hair, ginger",
+  "hair": "ginger"
  },
  "f:Complexion_PubicStubbleDarkbrown_F01": {
   "style": [],
@@ -8307,7 +8356,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "stubble pubic hair, darkbrown"
+  "note": "stubble pubic hair, darkbrown",
+  "hair": "darkbrown"
  },
  "f:Complexion_PubicStubbleLightbrown_F01": {
   "style": [],
@@ -8320,7 +8370,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "stubble pubic hair, lightbrown"
+  "note": "stubble pubic hair, lightbrown",
+  "hair": "lightbrown"
  },
  "f:Complexion_PubicHeartBrown_F01": {
   "style": [],
@@ -8333,7 +8384,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "heart pubic hair, brown"
+  "note": "heart pubic hair, brown",
+  "hair": "brown"
  },
  "f:Complexion_PubicHeartBlack_F01": {
   "style": [],
@@ -8346,7 +8398,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "heart pubic hair, black"
+  "note": "heart pubic hair, black",
+  "hair": "black"
  },
  "m:Complexion_PubicFullGinger_M01": {
   "style": [],
@@ -8359,7 +8412,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "full pubic hair, ginger"
+  "note": "full pubic hair, ginger",
+  "hair": "ginger"
  },
  "m:Complexion_PubicTrimGinger_M01": {
   "style": [],
@@ -8372,7 +8426,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "trimmed pubic hair, ginger"
+  "note": "trimmed pubic hair, ginger",
+  "hair": "ginger"
  },
  "m:Complexion_PubicFullDarkbrown_M01": {
   "style": [],
@@ -8385,7 +8440,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "full pubic hair, darkbrown"
+  "note": "full pubic hair, darkbrown",
+  "hair": "darkbrown"
  },
  "m:Complexion_PubicTrimDarkbrown_M01": {
   "style": [],
@@ -8398,7 +8454,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "trimmed pubic hair, darkbrown"
+  "note": "trimmed pubic hair, darkbrown",
+  "hair": "darkbrown"
  },
  "m:Complexion_PubicFullLightbrown_M01": {
   "style": [],
@@ -8411,7 +8468,8 @@
    "pubic"
   ],
   "size": "large",
-  "note": "full pubic hair, lightbrown"
+  "note": "full pubic hair, lightbrown",
+  "hair": "lightbrown"
  },
  "m:Complexion_PubicTrimLightbrown_M01": {
   "style": [],
@@ -8424,7 +8482,8 @@
    "pubic"
   ],
   "size": "small",
-  "note": "trimmed pubic hair, lightbrown"
+  "note": "trimmed pubic hair, lightbrown",
+  "hair": "lightbrown"
  },
  "m:Complexion_ChestLightBrown_M01": {
   "style": [],
@@ -8437,7 +8496,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "light chest hair, brown"
+  "note": "light chest hair, brown",
+  "hair": "brown"
  },
  "m:Complexion_ChestLightBlack_M01": {
   "style": [],
@@ -8450,7 +8510,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "light chest hair, black"
+  "note": "light chest hair, black",
+  "hair": "black"
  },
  "m:Complexion_ChestLightGinger_M01": {
   "style": [],
@@ -8463,7 +8524,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "light chest hair, ginger"
+  "note": "light chest hair, ginger",
+  "hair": "ginger"
  },
  "m:Complexion_ChestLightBlond_M01": {
   "style": [],
@@ -8476,7 +8538,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "light chest hair, blond"
+  "note": "light chest hair, blond",
+  "hair": "blond"
  },
  "m:Complexion_ChestSternumBrown_M01": {
   "style": [],
@@ -8489,7 +8552,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "sternum chest hair, brown"
+  "note": "sternum chest hair, brown",
+  "hair": "brown"
  },
  "m:Complexion_ChestSternumBlack_M01": {
   "style": [],
@@ -8502,7 +8566,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "sternum chest hair, black"
+  "note": "sternum chest hair, black",
+  "hair": "black"
  },
  "m:Complexion_ChestSternumGinger_M01": {
   "style": [],
@@ -8515,7 +8580,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "sternum chest hair, ginger"
+  "note": "sternum chest hair, ginger",
+  "hair": "ginger"
  },
  "m:Complexion_ChestSternumBlond_M01": {
   "style": [],
@@ -8528,7 +8594,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "sternum chest hair, blond"
+  "note": "sternum chest hair, blond",
+  "hair": "blond"
  },
  "m:Complexion_ChestHeavyBrown_M01": {
   "style": [],
@@ -8541,7 +8608,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "heavy chest hair, brown"
+  "note": "heavy chest hair, brown",
+  "hair": "brown"
  },
  "m:Complexion_ChestHeavyBlack_M01": {
   "style": [],
@@ -8554,7 +8622,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "heavy chest hair, black"
+  "note": "heavy chest hair, black",
+  "hair": "black"
  },
  "m:Complexion_ChestHeavyGinger_M01": {
   "style": [],
@@ -8567,7 +8636,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "heavy chest hair, ginger"
+  "note": "heavy chest hair, ginger",
+  "hair": "ginger"
  },
  "m:Complexion_ChestHeavyBlond_M01": {
   "style": [],
@@ -8580,7 +8650,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "heavy chest hair, blond"
+  "note": "heavy chest hair, blond",
+  "hair": "blond"
  },
  "m:Complexion_ChestFullGinger_M01": {
   "style": [],
@@ -8593,7 +8664,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "full chest hair, ginger"
+  "note": "full chest hair, ginger",
+  "hair": "ginger"
  },
  "m:Complexion_ChestFullBlond_M01": {
   "style": [],
@@ -8606,7 +8678,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "full chest hair, blond"
+  "note": "full chest hair, blond",
+  "hair": "blond"
  },
  "m:Complexion_ChestFullDarkbrown_M01": {
   "style": [],
@@ -8619,7 +8692,8 @@
    "chest"
   ],
   "size": "medium",
-  "note": "full chest hair, darkbrown"
+  "note": "full chest hair, darkbrown",
+  "hair": "darkbrown"
  },
  "m:Complexion_LimbHairBlond_M01": {
   "style": [],
@@ -8630,7 +8704,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "medium",
-  "note": "arm and leg hair, blond"
+  "note": "arm and leg hair, blond",
+  "hair": "blond"
  },
  "m:Complexion_LimbHairGinger_M01": {
   "style": [],
@@ -8641,7 +8716,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "medium",
-  "note": "arm and leg hair, ginger"
+  "note": "arm and leg hair, ginger",
+  "hair": "ginger"
  },
  "m:Complexion_LimbHairBlackHeavy_M01": {
   "style": [],
@@ -8652,7 +8728,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "medium",
-  "note": "arm and leg hair, black"
+  "note": "arm and leg hair, black",
+  "hair": "black"
  },
  "m:Complexion_LimbHairBrownLight_M01": {
   "style": [],
@@ -8663,7 +8740,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "medium",
-  "note": "arm and leg hair, brown"
+  "note": "arm and leg hair, brown",
+  "hair": "brown"
  },
  "m:Complexion_BackHairBrownLight_M01": {
   "style": [],
@@ -8676,7 +8754,8 @@
    "back"
   ],
   "size": "large",
-  "note": "back hair, brown"
+  "note": "back hair, brown",
+  "hair": "brown"
  },
  "m:Complexion_BackHairBlackHeavy_M01": {
   "style": [],
@@ -8689,7 +8768,8 @@
    "back"
   ],
   "size": "large",
-  "note": "back hair, black"
+  "note": "back hair, black",
+  "hair": "black"
  },
  "m:Complexion_BackHairGreyLight_M01": {
   "style": [],
@@ -8702,7 +8782,8 @@
    "back"
   ],
   "size": "large",
-  "note": "back hair, grey"
+  "note": "back hair, grey",
+  "hair": "grey"
  },
  "f:Complexion_UnderarmBrownMore_F01": {
   "style": [],
@@ -8713,7 +8794,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "tiny",
-  "note": "unshaved underarms, brown"
+  "note": "unshaved underarms, brown",
+  "hair": "brown"
  },
  "f:Complexion_UnderarmBlondMore_F01": {
   "style": [],
@@ -8724,7 +8806,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "tiny",
-  "note": "unshaved underarms, blond"
+  "note": "unshaved underarms, blond",
+  "hair": "blond"
  },
  "f:Complexion_UnderarmGingerMore_F01": {
   "style": [],
@@ -8735,7 +8818,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "tiny",
-  "note": "unshaved underarms, ginger"
+  "note": "unshaved underarms, ginger",
+  "hair": "ginger"
  },
  "f:Complexion_TrailFemale_F01": {
   "style": [],
@@ -8746,7 +8830,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "tiny",
-  "note": "a faint line of hair below the navel"
+  "note": "a faint line of hair below the navel",
+  "hair": "brown"
  },
  "f:Complexion_TrailFemaleDark_F01": {
   "style": [],
@@ -8757,7 +8842,8 @@
   "kind": "body_hair",
   "regions": [],
   "size": "tiny",
-  "note": "a darker line of hair below the navel"
+  "note": "a darker line of hair below the navel",
+  "hair": "darkbrown"
  },
  "f:Complexion_TanTshirtLight_F01": {
   "style": [],

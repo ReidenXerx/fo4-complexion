@@ -38,6 +38,8 @@ namespace CX::Game
 	// Main thread: an actor by form id, or null.
 	[[nodiscard]] RE::Actor*  ActorFor(std::uint32_t a_ref);
 	[[nodiscard]] std::string NameOf(RE::Actor* a_actor);
+	// Their head hair's colour family (profiles.json hair_colours), "" when not one of the game's colours.
+	[[nodiscard]] std::string HairOf(RE::Actor* a_actor);
 	// Main thread: what the game shows of them now, told to the director (as their 3D loading would).
 	void See(RE::Actor* a_actor);
 

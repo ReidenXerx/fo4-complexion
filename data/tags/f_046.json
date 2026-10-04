@@ -10,7 +10,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "wide landing strip"
+  "note": "wide landing strip",
+  "hair": "black"
  },
  "f:SvarogNLLeaf": {
   "kind": "pubic_hair",
@@ -23,7 +24,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "poor",
-  "note": "tall strip split across UV seam"
+  "note": "tall strip split across UV seam",
+  "hair": "black"
  },
  "f:SvarogNLLightning Bolt": {
   "kind": "pubic_hair",
@@ -36,7 +38,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "lightning bolt strip"
+  "note": "lightning bolt strip",
+  "hair": "black"
  },
  "f:SvarogNLMuff": {
   "kind": "pubic_hair",
@@ -49,7 +52,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "muff bush"
+  "note": "muff bush",
+  "hair": "black"
  },
  "f:SvarogNLMuff Fuller": {
   "kind": "pubic_hair",
@@ -62,7 +66,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "fuller wide muff"
+  "note": "fuller wide muff",
+  "hair": "black"
  },
  "f:SvarogNLNarrow Arrow": {
   "kind": "pubic_hair",
@@ -75,7 +80,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "narrow arrow"
+  "note": "narrow arrow",
+  "hair": "black"
  },
  "f:SvarogNLNarrow Arrow Large": {
   "kind": "pubic_hair",
@@ -88,7 +94,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "large narrow arrow"
+  "note": "large narrow arrow",
+  "hair": "black"
  },
  "f:SvarogNLPin-Stripe": {
   "kind": "pubic_hair",
@@ -101,7 +108,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "thin pin-stripe"
+  "note": "thin pin-stripe",
+  "hair": "black"
  },
  "f:SvarogNLPin-Stripe Short": {
   "kind": "pubic_hair",
@@ -114,7 +122,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "short pin-stripe"
+  "note": "short pin-stripe",
+  "hair": "black"
  },
  "f:SvarogNLPin-Stripe Shorter": {
   "kind": "pubic_hair",
@@ -127,7 +136,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "shorter pin-stripe"
+  "note": "shorter pin-stripe",
+  "hair": "black"
  },
  "f:SvarogNLSquare": {
   "kind": "pubic_hair",
@@ -140,7 +150,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "square patch"
+  "note": "square patch",
+  "hair": "black"
  },
  "f:SvarogNLTheShortCut": {
   "kind": "pubic_hair",
@@ -153,7 +164,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "poor",
-  "note": "tall strip split across UV seam"
+  "note": "tall strip split across UV seam",
+  "hair": "black"
  },
  "f:SvarogNLTheV": {
   "kind": "pubic_hair",
@@ -166,7 +178,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "V shape"
+  "note": "V shape",
+  "hair": "black"
  },
  "f:SvarogNLTheX": {
   "kind": "pubic_hair",
@@ -179,7 +192,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "X shape"
+  "note": "X shape",
+  "hair": "black"
  },
  "f:SvarogNLTopKnot": {
   "kind": "pubic_hair",
@@ -192,7 +206,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "top knot patch"
+  "note": "top knot patch",
+  "hair": "black"
  },
  "f:SvarogNLTopKnotSmall": {
   "kind": "pubic_hair",
@@ -205,6 +220,7 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "small top knot"
+  "note": "small top knot",
+  "hair": "black"
  }
 }

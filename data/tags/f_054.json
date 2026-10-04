@@ -10,7 +10,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "round dense tuft with wings"
+  "note": "round dense tuft with wings",
+  "hair": "brown"
  },
  "f:Pubic4brun_12": {
   "kind": "pubic_hair",
@@ -23,7 +24,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "tiny round tuft"
+  "note": "tiny round tuft",
+  "hair": "brown"
  },
  "f:Pubic4brun_13": {
   "kind": "pubic_hair",
@@ -36,7 +38,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "vertical strip with wings"
+  "note": "vertical strip with wings",
+  "hair": "brown"
  },
  "f:Pubic4brun_14": {
   "kind": "pubic_hair",
@@ -49,7 +52,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "small tuft with wings"
+  "note": "small tuft with wings",
+  "hair": "brown"
  },
  "f:Pubic4brun_15": {
   "kind": "pubic_hair",
@@ -64,7 +68,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "ring emblem shaved pattern"
+  "note": "ring emblem shaved pattern",
+  "hair": "brown"
  },
  "f:Pubic4brun_16": {
   "kind": "pubic_hair",
@@ -77,7 +82,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "trapezoid trimmed bush"
+  "note": "trapezoid trimmed bush",
+  "hair": "brown"
  },
  "f:Pubic4brun_17": {
   "kind": "pubic_hair",
@@ -90,7 +96,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "check-mark shape"
+  "note": "check-mark shape",
+  "hair": "brown"
  },
  "f:Pubic4brun_18": {
   "kind": "pubic_hair",
@@ -103,7 +110,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "tiny faint tuft"
+  "note": "tiny faint tuft",
+  "hair": "brown"
  },
  "f:Pubic4brun_19": {
   "kind": "pubic_hair",
@@ -116,7 +124,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "medium natural bush"
+  "note": "medium natural bush",
+  "hair": "brown"
  },
  "f:Pubic4brun_20": {
   "kind": "pubic_hair",
@@ -129,7 +138,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "vertical strip with wings"
+  "note": "vertical strip with wings",
+  "hair": "brown"
  },
  "f:Pubic4brun_21": {
   "kind": "pubic_hair",
@@ -142,7 +152,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "tiny strip"
+  "note": "tiny strip",
+  "hair": "brown"
  },
  "f:Pubic4brun_22": {
   "kind": "pubic_hair",
@@ -155,7 +166,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "tiny tuft"
+  "note": "tiny tuft",
+  "hair": "brown"
  },
  "f:Pubic4brun_23": {
   "kind": "pubic_hair",
@@ -170,7 +182,8 @@
   "lore": "stretch",
   "adult": false,
   "quality": "ok",
-  "note": "shaved \"ok\" lettering"
+  "note": "shaved \"ok\" lettering",
+  "hair": "brown"
  },
  "f:Pubic4brun_24": {
   "kind": "pubic_hair",
@@ -183,7 +196,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "shaved triangle outline"
+  "note": "shaved triangle outline",
+  "hair": "brown"
  },
  "f:Pubic4brun_25": {
   "kind": "pubic_hair",
@@ -196,7 +210,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "heart-shaped bush"
+  "note": "heart-shaped bush",
+  "hair": "brown"
  },
  "f:Pubic4ginger_01": {
   "kind": "pubic_hair",
@@ -209,6 +224,7 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "full bush with groin crease marks"
+  "note": "full bush with groin crease marks",
+  "hair": "ginger"
  }
 }

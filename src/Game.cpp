@@ -239,6 +239,36 @@ namespace CX::Game
 		};
 		Layout g_layout = Layout::kUnchecked;
 
+		// The game's hair colour records -> their family (profiles.json hair_colours, resolved by tools/make_data.py).
+		std::unordered_map<std::uint32_t, std::string> g_hairFamilies;
+
+		// A record's head hair colour: its own, or up its face template chain (a generic NPC carries the face of the
+		// record it was built from). Members only (rule 5); the layout check reads one on the player first.
+		const RE::TESForm* HairColourOf(RE::TESNPC* a_npc)
+		{
+			int depth = 0;
+			for (auto* n = a_npc; n && depth < 16; n = n->faceNPC, ++depth) {
+				if (n->headRelatedData && n->headRelatedData->hairColor) {
+					return reinterpret_cast<const RE::TESForm*>(n->headRelatedData->hairColor);
+				}
+			}
+			return nullptr;
+		}
+
+		// Their family, "" when the colour is not one of the game's (another mod's, a dye) or not read.
+		std::string HairFamily(RE::TESNPC* a_npc)
+		{
+			if (g_layout != Layout::kGood) {
+				return {};
+			}
+			const auto* colour = HairColourOf(a_npc);
+			if (!colour) {
+				return {};
+			}
+			const auto it = g_hairFamilies.find(colour->GetFormID());
+			return it != g_hairFamilies.end() ? it->second : std::string{};
+		}
+
 		struct LayoutRun
 		{
 			std::vector<std::string> problems;
@@ -272,6 +302,10 @@ namespace CX::Game
 			if (npcOk) {
 				is(npc->formRace, RE::ENUM_FORM_ID::kRACE, "TESNPC::formRace", false);
 				is(npc->faceNPC, RE::ENUM_FORM_ID::kNPC_, "TESNPC::faceNPC", true);
+				// The body hair colour (0.1.3): a hair colour record where TESNPC::headRelatedData says, or none.
+				if (const auto* colour = HairColourOf(npc)) {
+					is(colour, RE::ENUM_FORM_ID::kCLFM, "TESNPC::headRelatedData->hairColor", false);
+				}
 				for (const auto& f : npc->factions) {
 					if (!is(f.faction, RE::ENUM_FORM_ID::kFACT, "TESNPC::factions", false)) {
 						break;
@@ -350,6 +384,7 @@ namespace CX::Game
 				f.skip = "race " + race;
 				return f;
 			}
+			f.hair = HairFamily(npc);
 			// A named character first: their record, or any template up its chain.
 			for (const auto& g : g_groups) {
 				if (g.members.empty()) {
@@ -458,6 +493,15 @@ namespace CX::Game
 			installed.size(), files, catalog.size(), female, catalog.size() - female);
 
 		auto* dh = RE::TESDataHandler::GetSingleton();
+		g_hairFamilies.clear();
+		for (const auto& f : profiles.hairColours.forms) {
+			auto* form = dh && f.id ? dh->LookupForm(f.id, f.plugin) : nullptr;
+			if (form && form->Is(RE::ENUM_FORM_ID::kCLFM)) {
+				g_hairFamilies[form->GetFormID()] = f.family;
+			}
+		}
+		logger::info("hair: {} of the game's {} hair colour(s) known; body hair matches the head's", g_hairFamilies.size(),
+			profiles.hairColours.forms.size());
 		g_groups.clear();
 		for (const auto& g : profiles.groups) {
 			GroupFactions gf{ g.name, {}, {} };
@@ -625,6 +669,11 @@ namespace CX::Game
 	std::string NameOf(RE::Actor* a_actor)
 	{
 		return Compat::DisplayName(a_actor);
+	}
+
+	std::string HairOf(RE::Actor* a_actor)
+	{
+		return a_actor ? HairFamily(a_actor->GetNPC()) : std::string{};
 	}
 
 	namespace

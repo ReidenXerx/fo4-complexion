@@ -66,7 +66,7 @@ namespace
 				}
 				at = tab + 1;
 			}
-			if (cols.size() != 6) {
+			if (cols.size() != 7) {
 				std::println("bad line: {}", line);
 				return 1;
 			}
@@ -75,14 +75,15 @@ namespace
 			const auto    seed = std::stoull(cols[2]);
 			const int     adult = std::stoi(cols[3]);
 			const auto&   persona = cols[4];
-			const auto&   picks = cols[5];
+			const auto&   hair = cols[5];
+			const auto&   picks = cols[6];
 			const auto* g = profiles.Find(group);
 			if (!g) {
 				std::println("no group {}", group);
 				return 1;
 			}
 			std::string mine;
-			for (const auto& p : CX::Compose(profiles, catalog, sex == "f", *g, seed, adult != 0, persona)) {
+			for (const auto& p : CX::Compose(profiles, catalog, sex == "f", *g, seed, adult != 0, persona, hair)) {
 				mine += std::format("{}{}@{}", mine.empty() ? "" : ",", p.key, p.priority);
 			}
 			++lines;
@@ -134,6 +135,40 @@ namespace
 				Check(t != catalog.end() && !t->adult, "adult off: no adult piece");
 			}
 		}
+
+		// One body hair colour per person (0.1.3): every hair pick is a family theirs accepts; unknown rolls one family.
+		const auto& hc = profiles.hairColours;
+		Check(hc.present && hc.accept.size() == 8, "the hair families are read");
+		const auto hairOf = [&](const CX::Pick& a_p) -> const CX::Template* {
+			const auto t = std::ranges::find(catalog, a_p.key, &CX::Template::key);
+			return t != catalog.end() && (t->kind == "pubic_hair" || t->kind == "body_hair") ? &*t : nullptr;
+		};
+		std::size_t hairPicks = 0;
+		for (const auto& g : profiles.groups) {
+			for (const bool female : { true, false }) {
+				for (std::uint64_t seed = 1; seed < 60; ++seed) {
+					for (const auto& [family, accepted] : hc.accept) {
+						for (const auto& p : CX::Compose(profiles, catalog, female, g, seed * 104729, true, {}, family)) {
+							if (const auto* t = hairOf(p)) {
+								++hairPicks;
+								Check(std::ranges::find(accepted, t->hair) != accepted.end(),
+									std::format("{} hair: {} ({}) is a colour it accepts", family, t->key, t->hair));
+							}
+						}
+					}
+					std::set<std::string> seen;
+					for (const auto& p : CX::Compose(profiles, catalog, female, g, seed * 104729, true, {}, "")) {
+						if (const auto* t = hairOf(p)) {
+							seen.insert(t->hair);
+						}
+					}
+					Check(std::ranges::any_of(hc.accept, [&](const auto& a_f) {
+						return std::ranges::all_of(seen, [&](const std::string& h) { return std::ranges::find(a_f.second, h) != a_f.second.end(); });
+					}), "unknown hair: one family for all of it");
+				}
+			}
+		}
+		Check(hairPicks > 1000, "hair is still handed out in every family");
 
 		// The same seed gives the same look.
 		Check(CX::Compose(profiles, catalog, true, *raiders, 42, true).size() ==
@@ -241,6 +276,56 @@ namespace
 			d.Seen(me);
 			const auto again = d.NextOrder();
 			Check(again != 0 && d.GetOrder(again)->ref == 0x14, "the player's chosen look is put back after a clear");
+		}
+
+		// A look from a v3 co-save (before 0.1.3) whose body hair clashes with the head is decided again, once; a
+		// matching one is kept; the family is kept in a v4 co-save.
+		{
+			const auto ginger = std::ranges::find_if(a_catalog, [](const CX::Template& t) { return t.female && t.kind == "pubic_hair" && t.hair == "ginger"; });
+			const auto black = std::ranges::find_if(a_catalog, [](const CX::Template& t) { return t.female && t.kind == "pubic_hair" && t.hair == "black"; });
+			Check(ginger != a_catalog.end() && black != a_catalog.end(), "ginger and black pubic hair exist");
+			std::vector<std::uint8_t> v3;
+			const auto u32 = [&](std::uint32_t v) {
+				for (int i = 0; i < 4; ++i) {
+					v3.push_back(static_cast<std::uint8_t>(v >> (8 * i)));
+				}
+			};
+			const auto str = [&](std::string_view s) {
+				u32(static_cast<std::uint32_t>(s.size()));
+				v3.insert(v3.end(), s.begin(), s.end());
+			};
+			u32(3);
+			u32(0x1111);
+			u32(0x2222);  // the salt
+			u32(2);       // two records
+			for (const auto& [ref, key] : { std::pair{ 0x7001u, ginger->key }, std::pair{ 0x7002u, black->key } }) {
+				u32(ref);
+				v3.push_back(1);  // female
+				v3.push_back(1);  // applied
+				u32(0x8000 + ref);
+				str("raiders");
+				str("");          // persona
+				v3.push_back(0);  // manual
+				u32(1);
+				str(key);
+				str("pubic_hair");
+				u32(static_cast<std::uint32_t>(-80));
+			}
+			CX::Director h;
+			h.SetData(a_profiles, a_catalog);
+			Check(h.Load(v3, {}), "a v3 co-save loads");
+			h.Seen(CX::Facts{ 0x7001, 0x8000 + 0x7001, true, "raiders", "Clash", "", "" });
+			Check(h.RecordFor(0x7001)->picks.front().key == ginger->key, "unknown hair: an old look is left as it is");
+			h.Seen(CX::Facts{ 0x7001, 0x8000 + 0x7001, true, "raiders", "Clash", "", "black" });
+			const auto clash = h.RecordFor(0x7001);
+			Check(!clash->applied && std::ranges::none_of(clash->picks, [&](const CX::Pick& p) { return p.key == ginger->key; }),
+				"ginger pubic hair on a black-haired woman is decided again");
+			h.Seen(CX::Facts{ 0x7002, 0x8000 + 0x7002, true, "raiders", "Match", "", "black" });
+			Check(h.RecordFor(0x7002)->applied && h.RecordFor(0x7002)->picks.front().key == black->key, "a matching old look is kept");
+			CX::Director k;
+			k.SetData(a_profiles, a_catalog);
+			Check(k.Load(h.Save(), {}) && k.RecordFor(0x7001)->hair == "black" && k.RecordFor(0x7001)->hairChecked,
+				"the hair family survives a v4 co-save");
 		}
 
 		// Reset: forgotten, and rolled with a new salt.

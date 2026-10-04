@@ -166,7 +166,8 @@
   "lore": "fits",
   "adult": true,
   "quality": "ok",
-  "note": "dark trimmed pubic hair"
+  "note": "dark trimmed pubic hair",
+  "hair": "black"
  },
  "f:AndyMambo_MoreCBBEPubicHair02": {
   "kind": "pubic_hair",
@@ -179,7 +180,8 @@
   "lore": "fits",
   "adult": true,
   "quality": "ok",
-  "note": "dense dark pubic hair"
+  "note": "dense dark pubic hair",
+  "hair": "black"
  },
  "f:AndyMambo_MoreCBBEPubicHair03": {
   "kind": "pubic_hair",
@@ -192,7 +194,8 @@
   "lore": "fits",
   "adult": true,
   "quality": "ok",
-  "note": "sparse light pubic hair"
+  "note": "sparse light pubic hair",
+  "hair": "black"
  },
  "f:LNRIndustries_LaCoiffeStyles01": {
   "kind": "other",

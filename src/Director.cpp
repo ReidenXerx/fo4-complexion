@@ -6,7 +6,7 @@ namespace CX
 	{
 		// 2: a record carries the persona (C-14). 3: and whether it was chosen by hand (C-19). Older records load
 		// with none.
-		constexpr std::uint32_t kSaveVersion = 3;
+		constexpr std::uint32_t kSaveVersion = 4;  // 4: the record's hair family
 
 		std::uint64_t Mix(std::uint64_t a_z)
 		{
@@ -158,7 +158,8 @@ namespace CX
 			r.female = a_facts.female;
 			r.base = a_facts.base;
 			r.group = group->name;
-			r.picks = Compose(_profiles, _catalog, a_facts.female, *group, SeedFor(a_facts.ref, a_facts.base), _adult);
+			r.hair = a_facts.hair;
+			r.picks = Compose(_profiles, _catalog, a_facts.female, *group, SeedFor(a_facts.ref, a_facts.base), _adult, {}, r.hair);
 			std::string list;
 			for (const auto& p : r.picks) {
 				list += (list.empty() ? "" : ", ") + p.id;
@@ -166,6 +167,25 @@ namespace CX
 			Log(std::format("{} ({:08X}, {}, {}): {}", a_facts.name, a_facts.ref, a_facts.female ? "female" : "male", r.group,
 				r.picks.empty() ? "nothing" : list));
 			it = _records.emplace(a_facts.ref, std::move(r)).first;
+		} else if (!it->second.hairChecked && !a_facts.hair.empty()) {
+			// A look from before body hair matched the head (0.1.3): kept, unless its hair is another colour than
+			// theirs -- then decided again, once. A look chosen by hand is theirs and stays.
+			auto& r = it->second;
+			r.hairChecked = true;
+			r.hair = a_facts.hair;
+			if (!r.manual && HairClashes(r.picks, r.hair)) {
+				// An empty look would queue nothing and leave the old one on them: kept then (it cannot happen while
+				// every family has pubic hair to give, but the bridge only rebuilds for a look that has entries).
+				const auto* group = _profiles.Find(r.group);
+				auto        again = group ? Compose(_profiles, _catalog, r.female, *group, SeedFor(a_facts.ref, r.base), _adult, r.persona, r.hair)
+				                          : std::vector<Pick>{};
+				if (!again.empty()) {
+					r.picks = std::move(again);
+					r.applied = false;
+					Log(std::format("{} ({:08X}): body hair did not match their {} hair, decided again: {} overlay(s)", a_facts.name,
+						a_facts.ref, r.hair, r.picks.size()));
+				}
+			}
 		}
 		if (it->second.applied || it->second.picks.empty()) {
 			return;
@@ -258,7 +278,8 @@ namespace CX
 		if (r->second.group == group->name) {
 			return true;
 		}
-		r->second.picks = Compose(_profiles, _catalog, r->second.female, *group, SeedFor(o->second.ref, r->second.base), _adult, r->second.persona);
+		r->second.picks = Compose(_profiles, _catalog, r->second.female, *group, SeedFor(o->second.ref, r->second.base), _adult, r->second.persona,
+			r->second.hair);
 		Log(std::format("{:08X}: {} after all (a faction on the reference), now: {} overlay(s)", o->second.ref, group->name, r->second.picks.size()));
 		r->second.group = group->name;
 		o->second.picks = r->second.picks;
@@ -281,7 +302,8 @@ namespace CX
 		if (!group || !_profiles.personas.contains(a_persona)) {
 			return false;  // a persona with nothing to add: the look stands
 		}
-		r->second.picks = Compose(_profiles, _catalog, r->second.female, *group, SeedFor(o->second.ref, r->second.base), _adult, a_persona);
+		r->second.picks = Compose(_profiles, _catalog, r->second.female, *group, SeedFor(o->second.ref, r->second.base), _adult, a_persona,
+			r->second.hair);
 		Log(std::format("{:08X}: Rapport persona {}, now: {} overlay(s)", o->second.ref, a_persona, r->second.picks.size()));
 		o->second.picks = r->second.picks;
 		return true;
@@ -363,6 +385,7 @@ namespace CX
 			w.Str(r.group);
 			w.Str(r.persona);
 			w.U8(r.manual ? 1 : 0);
+			w.Str(r.hair);
 			w.U32(static_cast<std::uint32_t>(r.picks.size()));
 			for (const auto& p : r.picks) {
 				w.Str(p.key);
@@ -390,9 +413,11 @@ namespace CX
 			std::uint8_t  female = 0, applied = 0, manual = 0;
 			Record        rec;
 			if (!r.U32(ref) || !r.U8(female) || !r.U8(applied) || !r.U32(rec.base) || !r.Str(rec.group) ||
-				(version >= 2 && !r.Str(rec.persona)) || (version >= 3 && !r.U8(manual)) || !r.U32(picks) || picks > 64) {
+				(version >= 2 && !r.Str(rec.persona)) || (version >= 3 && !r.U8(manual)) || (version >= 4 && !r.Str(rec.hair)) ||
+				!r.U32(picks) || picks > 64) {
 				return false;
 			}
+			rec.hairChecked = version >= 4;
 			rec.manual = manual != 0;
 			rec.female = female != 0;
 			rec.applied = applied != 0;
@@ -570,13 +595,27 @@ namespace CX
 		return std::nullopt;
 	}
 
+	bool Director::HairClashes(const std::vector<Pick>& a_picks, std::string_view a_hair) const
+	{
+		const auto& hc = _profiles.hairColours;
+		const auto  family = hc.accept.find(std::string(a_hair));
+		if (!hc.present || family == hc.accept.end()) {
+			return false;
+		}
+		return std::ranges::any_of(a_picks, [&](const Pick& p) {
+			const auto* t = Find(p.key);
+			return t && (t->kind == "pubic_hair" || t->kind == "body_hair") &&
+			       std::ranges::find(family->second, t->hair) == family->second.end();
+		});
+	}
+
 	std::string Director::ThumbBuild() const
 	{
 		std::scoped_lock l{ _lock };
 		return _thumbBuild;
 	}
 
-	std::string Director::WindowBegin(std::uint32_t a_ref, bool a_female)
+	std::string Director::WindowBegin(std::uint32_t a_ref, bool a_female, std::string_view a_hair)
 	{
 		std::scoped_lock l{ _lock };
 		if (!a_ref) {
@@ -589,6 +628,7 @@ namespace CX
 		_window.active = true;
 		_window.ref = a_ref;
 		_window.female = a_female;
+		_window.hair = std::string(a_hair);
 		if (const auto it = _records.find(a_ref); it != _records.end()) {
 			_window.before = it->second;
 			_window.draft = it->second.picks;
@@ -700,7 +740,8 @@ namespace CX
 		}
 		const std::uint32_t base = _window.before ? _window.before->base : 0;
 		const auto          persona = _window.before ? _window.before->persona : std::string{};
-		_window.draft = Compose(_profiles, _catalog, _window.female, *group, Mix(SeedFor(_window.ref, base) + ++_window.rolls), _adult, persona);
+		_window.draft = Compose(_profiles, _catalog, _window.female, *group, Mix(SeedFor(_window.ref, base) + ++_window.rolls), _adult, persona,
+			_window.hair);
 	}
 
 	std::uint32_t Director::WindowOrder(std::vector<Pick> a_picks)

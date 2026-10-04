@@ -2,6 +2,7 @@
 "f:AndyMambo_MoreCBBEPubicHair01": {
 "adult": true,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "dark trimmed pubic hair",
@@ -16,6 +17,7 @@
 "f:AndyMambo_MoreCBBEPubicHair02": {
 "adult": true,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "dense dark pubic hair",
@@ -30,6 +32,7 @@
 "f:AndyMambo_MoreCBBEPubicHair03": {
 "adult": true,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "sparse light pubic hair",
@@ -2756,6 +2759,7 @@
 "f:CalientePubicHair1": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "full natural bush",
@@ -2770,6 +2774,7 @@
 "f:CalientePubicHair2": {
 "adult": false,
 "emblem": null,
+"hair": "auburn",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "thin vertical strip",
@@ -2798,6 +2803,7 @@
 "f:CalienteThick": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "thick bush",
@@ -2812,6 +2818,7 @@
 "f:CalienteThicker": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "thicker dense bush",
@@ -2826,6 +2833,7 @@
 "f:CalienteThin": {
 "adult": false,
 "emblem": null,
+"hair": "auburn",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "thin sparse bush",
@@ -5666,6 +5674,7 @@
 "f:Complexion_PubicBikiniBlack_F01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "bikini pubic hair, black",
@@ -5680,6 +5689,7 @@
 "f:Complexion_PubicBikiniBlond_F01": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "bikini pubic hair, blond",
@@ -5694,6 +5704,7 @@
 "f:Complexion_PubicBikiniBrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "bikini pubic hair, brown",
@@ -5708,6 +5719,7 @@
 "f:Complexion_PubicBikiniGinger_F01": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "bikini pubic hair, ginger",
@@ -5722,6 +5734,7 @@
 "f:Complexion_PubicBushyBlack_F01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "bushy pubic hair, black",
@@ -5736,6 +5749,7 @@
 "f:Complexion_PubicBushyBrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "bushy pubic hair, brown",
@@ -5750,6 +5764,7 @@
 "f:Complexion_PubicBushyDarkbrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "bushy pubic hair, darkbrown",
@@ -5764,6 +5779,7 @@
 "f:Complexion_PubicBushyGinger_F01": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "bushy pubic hair, ginger",
@@ -5778,6 +5794,7 @@
 "f:Complexion_PubicHeartBlack_F01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "heart pubic hair, black",
@@ -5792,6 +5809,7 @@
 "f:Complexion_PubicHeartBrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "heart pubic hair, brown",
@@ -5806,6 +5824,7 @@
 "f:Complexion_PubicLandingBlack_F01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "landing pubic hair, black",
@@ -5820,6 +5839,7 @@
 "f:Complexion_PubicLandingBrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "landing pubic hair, brown",
@@ -5834,6 +5854,7 @@
 "f:Complexion_PubicNaturalAuburn_F01": {
 "adult": false,
 "emblem": null,
+"hair": "auburn",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "natural pubic hair, auburn",
@@ -5848,6 +5869,7 @@
 "f:Complexion_PubicNaturalBlack_F01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "natural pubic hair, black",
@@ -5862,6 +5884,7 @@
 "f:Complexion_PubicNaturalBlond_F01": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "natural pubic hair, blond",
@@ -5876,6 +5899,7 @@
 "f:Complexion_PubicNaturalBrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "natural pubic hair, brown",
@@ -5890,6 +5914,7 @@
 "f:Complexion_PubicNaturalDarkbrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "natural pubic hair, darkbrown",
@@ -5904,6 +5929,7 @@
 "f:Complexion_PubicNaturalGinger_F01": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "natural pubic hair, ginger",
@@ -5918,6 +5944,7 @@
 "f:Complexion_PubicNaturalGrey_F01": {
 "adult": false,
 "emblem": null,
+"hair": "grey",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "natural pubic hair, grey",
@@ -5932,6 +5959,7 @@
 "f:Complexion_PubicNaturalLightbrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "lightbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "natural pubic hair, lightbrown",
@@ -5946,6 +5974,7 @@
 "f:Complexion_PubicStubbleDarkbrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "stubble pubic hair, darkbrown",
@@ -5960,6 +5989,7 @@
 "f:Complexion_PubicStubbleLightbrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "lightbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "stubble pubic hair, lightbrown",
@@ -5974,6 +6004,7 @@
 "f:Complexion_PubicTriangleBlack_F01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "triangle pubic hair, black",
@@ -5988,6 +6019,7 @@
 "f:Complexion_PubicTriangleBrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "triangle pubic hair, brown",
@@ -6002,6 +6034,7 @@
 "f:Complexion_PubicTrimmedBlack_F01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair, black",
@@ -6016,6 +6049,7 @@
 "f:Complexion_PubicTrimmedBlond_F01": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair, blond",
@@ -6030,6 +6064,7 @@
 "f:Complexion_PubicTrimmedBrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair, brown",
@@ -6516,6 +6551,7 @@
 "f:Complexion_Stubble_F01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "leg and underarm stubble",
@@ -6528,6 +6564,7 @@
 "f:Complexion_Stubble_F02": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "leg and underarm stubble",
@@ -7961,6 +7998,7 @@
 "f:Complexion_TrailFemaleDark_F01": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "a darker line of hair below the navel",
@@ -7973,6 +8011,7 @@
 "f:Complexion_TrailFemale_F01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "a faint line of hair below the navel",
@@ -7985,6 +8024,7 @@
 "f:Complexion_UnderarmBlack_F01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "unshaved underarms, black",
@@ -7997,6 +8037,7 @@
 "f:Complexion_UnderarmBlondMore_F01": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "body_hair",
 "lore": "fits",
 "note": "unshaved underarms, blond",
@@ -8009,6 +8050,7 @@
 "f:Complexion_UnderarmBrownMore_F01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "unshaved underarms, brown",
@@ -8021,6 +8063,7 @@
 "f:Complexion_UnderarmBrown_F01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "unshaved underarms, brown",
@@ -8033,6 +8076,7 @@
 "f:Complexion_UnderarmGingerMore_F01": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "body_hair",
 "lore": "fits",
 "note": "unshaved underarms, ginger",
@@ -19364,6 +19408,7 @@
 "f:LNRIndustries_LaCoiffeStyles02": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "tiny thin vertical strip",
@@ -19378,6 +19423,7 @@
 "f:LNRIndustries_LaCoiffeStyles03": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "thin vertical strip",
@@ -19392,6 +19438,7 @@
 "f:LNRIndustries_LaCoiffeStyles04": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "thin vertical strip",
@@ -19406,6 +19453,7 @@
 "f:LNRIndustries_LaCoiffeStyles05": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "narrow vertical strip",
@@ -19420,6 +19468,7 @@
 "f:LNRIndustries_LaCoiffeStyles06": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "tiny faint square patch",
@@ -19434,6 +19483,7 @@
 "f:LNRIndustries_LaCoiffeStyles07": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "small trimmed patch",
@@ -19448,6 +19498,7 @@
 "f:LNRIndustries_LaCoiffeStyles08": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "small inverted triangle",
@@ -19462,6 +19513,7 @@
 "f:LNRIndustries_LaCoiffeStyles09": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "small short patch",
@@ -19476,6 +19528,7 @@
 "f:LNRIndustries_LaCoiffeStyles10": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "patch with band above",
@@ -19490,6 +19543,7 @@
 "f:LNRIndustries_LaCoiffeStyles11": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "chevron-shaped patch",
@@ -19504,6 +19558,7 @@
 "f:LNRIndustries_LaCoiffeStyles12": {
 "adult": false,
 "emblem": "other_fo",
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "radiation trefoil shaved pattern",
@@ -19520,6 +19575,7 @@
 "f:LNRIndustries_LaCoiffeStyles13": {
 "adult": false,
 "emblem": "other_fo",
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "three small trefoils",
@@ -20465,6 +20521,7 @@
 "f:Pubic4blond_01": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "full bush with groin crease marks",
@@ -20479,6 +20536,7 @@
 "f:Pubic4blond_02": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "full bush with groin marks",
@@ -20493,6 +20551,7 @@
 "f:Pubic4blond_03": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny cross-shaped tuft",
@@ -20507,6 +20566,7 @@
 "f:Pubic4blond_04": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "small tuft and faint marks",
@@ -20521,6 +20581,7 @@
 "f:Pubic4blond_05": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "wide triangle bush",
@@ -20535,6 +20596,7 @@
 "f:Pubic4blond_06": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "wide natural bush",
@@ -20549,6 +20611,7 @@
 "f:Pubic4blond_07": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "small round dense tuft",
@@ -20563,6 +20626,7 @@
 "f:Pubic4blond_08": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "small triangle tuft",
@@ -20577,6 +20641,7 @@
 "f:Pubic4blond_09": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "medium natural bush",
@@ -20591,6 +20656,7 @@
 "f:Pubic4blond_10": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny vertical tuft",
@@ -20605,6 +20671,7 @@
 "f:Pubic4blond_11": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "round dense tuft with wings",
@@ -20619,6 +20686,7 @@
 "f:Pubic4blond_12": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny round tuft",
@@ -20633,6 +20701,7 @@
 "f:Pubic4blond_13": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "vertical strip with wings",
@@ -20647,6 +20716,7 @@
 "f:Pubic4blond_14": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "small tuft with wings",
@@ -20661,6 +20731,7 @@
 "f:Pubic4blond_15": {
 "adult": false,
 "emblem": "other_fo",
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "ring emblem shaved pattern",
@@ -20677,6 +20748,7 @@
 "f:Pubic4blond_16": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "trapezoid trimmed bush",
@@ -20691,6 +20763,7 @@
 "f:Pubic4blond_17": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "check-mark shape",
@@ -20705,6 +20778,7 @@
 "f:Pubic4blond_18": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny faint tuft",
@@ -20719,6 +20793,7 @@
 "f:Pubic4blond_19": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "medium natural bush",
@@ -20733,6 +20808,7 @@
 "f:Pubic4blond_20": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "vertical strip with wings",
@@ -20747,6 +20823,7 @@
 "f:Pubic4blond_21": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny strip",
@@ -20761,6 +20838,7 @@
 "f:Pubic4blond_22": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny tuft",
@@ -20775,6 +20853,7 @@
 "f:Pubic4blond_23": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "shaved \"ok\" lettering",
@@ -20791,6 +20870,7 @@
 "f:Pubic4blond_24": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "shaved triangle outline",
@@ -20805,6 +20885,7 @@
 "f:Pubic4blond_25": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "heart-shaped bush",
@@ -20819,6 +20900,7 @@
 "f:Pubic4brun_01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "full bush with groin crease marks",
@@ -20833,6 +20915,7 @@
 "f:Pubic4brun_02": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "full bush with groin marks",
@@ -20847,6 +20930,7 @@
 "f:Pubic4brun_03": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny cross-shaped tuft",
@@ -20861,6 +20945,7 @@
 "f:Pubic4brun_04": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "small tuft and faint marks",
@@ -20875,6 +20960,7 @@
 "f:Pubic4brun_05": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "wide triangle bush",
@@ -20889,6 +20975,7 @@
 "f:Pubic4brun_06": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "wide natural bush",
@@ -20903,6 +20990,7 @@
 "f:Pubic4brun_07": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "small round dense tuft",
@@ -20917,6 +21005,7 @@
 "f:Pubic4brun_08": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "small triangle tuft",
@@ -20931,6 +21020,7 @@
 "f:Pubic4brun_09": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "medium natural bush",
@@ -20945,6 +21035,7 @@
 "f:Pubic4brun_10": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny vertical tuft",
@@ -20959,6 +21050,7 @@
 "f:Pubic4brun_11": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "round dense tuft with wings",
@@ -20973,6 +21065,7 @@
 "f:Pubic4brun_12": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny round tuft",
@@ -20987,6 +21080,7 @@
 "f:Pubic4brun_13": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "vertical strip with wings",
@@ -21001,6 +21095,7 @@
 "f:Pubic4brun_14": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "small tuft with wings",
@@ -21015,6 +21110,7 @@
 "f:Pubic4brun_15": {
 "adult": false,
 "emblem": "other_fo",
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "ring emblem shaved pattern",
@@ -21031,6 +21127,7 @@
 "f:Pubic4brun_16": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "trapezoid trimmed bush",
@@ -21045,6 +21142,7 @@
 "f:Pubic4brun_17": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "check-mark shape",
@@ -21059,6 +21157,7 @@
 "f:Pubic4brun_18": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny faint tuft",
@@ -21073,6 +21172,7 @@
 "f:Pubic4brun_19": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "medium natural bush",
@@ -21087,6 +21187,7 @@
 "f:Pubic4brun_20": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "vertical strip with wings",
@@ -21101,6 +21202,7 @@
 "f:Pubic4brun_21": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny strip",
@@ -21115,6 +21217,7 @@
 "f:Pubic4brun_22": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny tuft",
@@ -21129,6 +21232,7 @@
 "f:Pubic4brun_23": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "shaved \"ok\" lettering",
@@ -21145,6 +21249,7 @@
 "f:Pubic4brun_24": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "shaved triangle outline",
@@ -21159,6 +21264,7 @@
 "f:Pubic4brun_25": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "heart-shaped bush",
@@ -21173,6 +21279,7 @@
 "f:Pubic4ginger_01": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "full bush with groin crease marks",
@@ -21187,6 +21294,7 @@
 "f:Pubic4ginger_02": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "ginger trimmed patch with faint extras",
@@ -21201,6 +21309,7 @@
 "f:Pubic4ginger_03": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "barely visible tiny tuft",
@@ -21215,6 +21324,7 @@
 "f:Pubic4ginger_04": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "faint small tuft",
@@ -21229,6 +21339,7 @@
 "f:Pubic4ginger_05": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "small dark triangle patch",
@@ -21243,6 +21354,7 @@
 "f:Pubic4ginger_06": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "wide sparse curly hair",
@@ -21257,6 +21369,7 @@
 "f:Pubic4ginger_07": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny dense tuft",
@@ -21271,6 +21384,7 @@
 "f:Pubic4ginger_08": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny triangle tuft",
@@ -21285,6 +21399,7 @@
 "f:Pubic4ginger_09": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "sparse natural bush",
@@ -21299,6 +21414,7 @@
 "f:Pubic4ginger_10": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "faint narrow strip",
@@ -21313,6 +21429,7 @@
 "f:Pubic4ginger_11": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "dense round bush, sparse spread",
@@ -21327,6 +21444,7 @@
 "f:Pubic4ginger_12": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "faint narrow strip",
@@ -21341,6 +21459,7 @@
 "f:Pubic4ginger_13": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "light sparse vertical strip",
@@ -21355,6 +21474,7 @@
 "f:Pubic4ginger_14": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "small dense patch, faint spread",
@@ -21369,6 +21489,7 @@
 "f:Pubic4ginger_15": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "ring-shaped hair design, odd",
@@ -21383,6 +21504,7 @@
 "f:Pubic4ginger_16": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "wide dense triangle",
@@ -21397,6 +21519,7 @@
 "f:Pubic4ginger_17": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny faint checkmark strip",
@@ -21411,6 +21534,7 @@
 "f:Pubic4ginger_18": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "faint narrow tuft",
@@ -21425,6 +21549,7 @@
 "f:Pubic4ginger_19": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "dense wide natural bush",
@@ -21439,6 +21564,7 @@
 "f:Pubic4ginger_20": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "vertical strip with sparse spread",
@@ -21453,6 +21579,7 @@
 "f:Pubic4ginger_21": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "tiny faint tuft",
@@ -21467,6 +21594,7 @@
 "f:Pubic4ginger_22": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "narrow dark tuft",
@@ -21481,6 +21609,7 @@
 "f:Pubic4ginger_23": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "hair shaped like letters ok",
@@ -21495,6 +21624,7 @@
 "f:Pubic4ginger_24": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "small inverted triangle shaved shape",
@@ -21509,6 +21639,7 @@
 "f:Pubic4ginger_25": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "stretch",
 "note": "heart-shaped trimmed hair",
@@ -25128,6 +25259,7 @@
 "f:SvarogNLArrowhead": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "small arrowhead",
@@ -25142,6 +25274,7 @@
 "f:SvarogNLCatPaw": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "cat paw print shape",
@@ -25158,6 +25291,7 @@
 "f:SvarogNLChaplin": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "tiny chaplin patch",
@@ -25172,6 +25306,7 @@
 "f:SvarogNLDiamond": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "diamond strip",
@@ -25186,6 +25321,7 @@
 "f:SvarogNLDiamondSmall": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "tiny diamond strip",
@@ -25200,6 +25336,7 @@
 "f:SvarogNLDoubleV": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "double V shape",
@@ -25214,6 +25351,7 @@
 "f:SvarogNLHares Tail": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "hares tail strip",
@@ -25228,6 +25366,7 @@
 "f:SvarogNLHeart": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "heart shape",
@@ -25242,6 +25381,7 @@
 "f:SvarogNLLanding Strip": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "landing strip",
@@ -25256,6 +25396,7 @@
 "f:SvarogNLLanding Strip Mirrored": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "landing strip mirrored",
@@ -25270,6 +25411,7 @@
 "f:SvarogNLLanding Strip Thin": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "thin landing strip",
@@ -25284,6 +25426,7 @@
 "f:SvarogNLLanding Strip Wide": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "wide landing strip",
@@ -25298,6 +25441,7 @@
 "f:SvarogNLLeaf": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "tall strip split across UV seam",
@@ -25312,6 +25456,7 @@
 "f:SvarogNLLightning Bolt": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "lightning bolt strip",
@@ -25326,6 +25471,7 @@
 "f:SvarogNLMuff": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "muff bush",
@@ -25340,6 +25486,7 @@
 "f:SvarogNLMuff Fuller": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "fuller wide muff",
@@ -25354,6 +25501,7 @@
 "f:SvarogNLNarrow Arrow": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "narrow arrow",
@@ -25368,6 +25516,7 @@
 "f:SvarogNLNarrow Arrow Large": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "large narrow arrow",
@@ -25382,6 +25531,7 @@
 "f:SvarogNLPin-Stripe": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "thin pin-stripe",
@@ -25396,6 +25546,7 @@
 "f:SvarogNLPin-Stripe Short": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "short pin-stripe",
@@ -25410,6 +25561,7 @@
 "f:SvarogNLPin-Stripe Shorter": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "shorter pin-stripe",
@@ -25424,6 +25576,7 @@
 "f:SvarogNLSquare": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "square patch",
@@ -25438,6 +25591,7 @@
 "f:SvarogNLTheShortCut": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "tall strip split across UV seam",
@@ -25452,6 +25606,7 @@
 "f:SvarogNLTheV": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "V shape",
@@ -25466,6 +25621,7 @@
 "f:SvarogNLTheX": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "X shape",
@@ -25480,6 +25636,7 @@
 "f:SvarogNLTopKnot": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "top knot patch",
@@ -25494,6 +25651,7 @@
 "f:SvarogNLTopKnotSmall": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "small top knot",
@@ -25508,6 +25666,7 @@
 "f:SvarogNLTriangle": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "triangle patch",
@@ -25522,6 +25681,7 @@
 "f:SvarogNLTriangleLarge": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "large triangle patch",
@@ -27439,6 +27599,7 @@
 "m:Complexion_BackHairBlackHeavy_M01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "back hair, black",
@@ -27453,6 +27614,7 @@
 "m:Complexion_BackHairBlack_M01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "back hair, black",
@@ -27467,6 +27629,7 @@
 "m:Complexion_BackHairBrownLight_M01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "back hair, brown",
@@ -27481,6 +27644,7 @@
 "m:Complexion_BackHairBrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "back hair, brown",
@@ -27495,6 +27659,7 @@
 "m:Complexion_BackHairGreyLight_M01": {
 "adult": false,
 "emblem": null,
+"hair": "grey",
 "kind": "body_hair",
 "lore": "fits",
 "note": "back hair, grey",
@@ -27802,6 +27967,7 @@
 "m:Complexion_ChestFullBlond_M01": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "body_hair",
 "lore": "fits",
 "note": "full chest hair, blond",
@@ -27816,6 +27982,7 @@
 "m:Complexion_ChestFullDarkbrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "full chest hair, darkbrown",
@@ -27830,6 +27997,7 @@
 "m:Complexion_ChestFullGinger_M01": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "body_hair",
 "lore": "fits",
 "note": "full chest hair, ginger",
@@ -27844,6 +28012,7 @@
 "m:Complexion_ChestHairBlack_M01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "chest hair, black",
@@ -27858,6 +28027,7 @@
 "m:Complexion_ChestHairBrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "chest hair, brown",
@@ -27872,6 +28042,7 @@
 "m:Complexion_ChestHairGrey_M01": {
 "adult": false,
 "emblem": null,
+"hair": "grey",
 "kind": "body_hair",
 "lore": "fits",
 "note": "chest hair, grey",
@@ -27886,6 +28057,7 @@
 "m:Complexion_ChestHeavyBlack_M01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "heavy chest hair, black",
@@ -27900,6 +28072,7 @@
 "m:Complexion_ChestHeavyBlond_M01": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "body_hair",
 "lore": "fits",
 "note": "heavy chest hair, blond",
@@ -27914,6 +28087,7 @@
 "m:Complexion_ChestHeavyBrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "heavy chest hair, brown",
@@ -27928,6 +28102,7 @@
 "m:Complexion_ChestHeavyGinger_M01": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "body_hair",
 "lore": "fits",
 "note": "heavy chest hair, ginger",
@@ -27942,6 +28117,7 @@
 "m:Complexion_ChestLightBlack_M01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "light chest hair, black",
@@ -27956,6 +28132,7 @@
 "m:Complexion_ChestLightBlond_M01": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "body_hair",
 "lore": "fits",
 "note": "light chest hair, blond",
@@ -27970,6 +28147,7 @@
 "m:Complexion_ChestLightBrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "light chest hair, brown",
@@ -27984,6 +28162,7 @@
 "m:Complexion_ChestLightGinger_M01": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "body_hair",
 "lore": "fits",
 "note": "light chest hair, ginger",
@@ -27998,6 +28177,7 @@
 "m:Complexion_ChestSternumBlack_M01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "sternum chest hair, black",
@@ -28012,6 +28192,7 @@
 "m:Complexion_ChestSternumBlond_M01": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "body_hair",
 "lore": "fits",
 "note": "sternum chest hair, blond",
@@ -28026,6 +28207,7 @@
 "m:Complexion_ChestSternumBrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "sternum chest hair, brown",
@@ -28040,6 +28222,7 @@
 "m:Complexion_ChestSternumGinger_M01": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "body_hair",
 "lore": "fits",
 "note": "sternum chest hair, ginger",
@@ -29171,6 +29354,7 @@
 "m:Complexion_HappyTrailBlack_M01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "a happy trail, black",
@@ -29183,6 +29367,7 @@
 "m:Complexion_HappyTrailBrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "a happy trail, brown",
@@ -29374,6 +29559,7 @@
 "m:Complexion_LimbHairBlackHeavy_M01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "arm and leg hair, black",
@@ -29386,6 +29572,7 @@
 "m:Complexion_LimbHairBlack_M01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "arm and leg hair, black",
@@ -29398,6 +29585,7 @@
 "m:Complexion_LimbHairBlond_M01": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "body_hair",
 "lore": "fits",
 "note": "arm and leg hair, blond",
@@ -29410,6 +29598,7 @@
 "m:Complexion_LimbHairBrownLight_M01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "arm and leg hair, brown",
@@ -29422,6 +29611,7 @@
 "m:Complexion_LimbHairBrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "brown",
 "kind": "body_hair",
 "lore": "fits",
 "note": "arm and leg hair, brown",
@@ -29434,6 +29624,7 @@
 "m:Complexion_LimbHairGinger_M01": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "body_hair",
 "lore": "fits",
 "note": "arm and leg hair, ginger",
@@ -30072,6 +30263,7 @@
 "m:Complexion_PubicFullAuburn_M01": {
 "adult": false,
 "emblem": null,
+"hair": "auburn",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "full pubic hair, auburn",
@@ -30086,6 +30278,7 @@
 "m:Complexion_PubicFullBlond_M01": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "full pubic hair, blond",
@@ -30100,6 +30293,7 @@
 "m:Complexion_PubicFullBrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "full pubic hair, brown",
@@ -30114,6 +30308,7 @@
 "m:Complexion_PubicFullBrown_M02": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "full pubic hair, brown",
@@ -30128,6 +30323,7 @@
 "m:Complexion_PubicFullDarkbrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "full pubic hair, darkbrown",
@@ -30142,6 +30338,7 @@
 "m:Complexion_PubicFullGinger_M01": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "full pubic hair, ginger",
@@ -30156,6 +30353,7 @@
 "m:Complexion_PubicFullGrey_M01": {
 "adult": false,
 "emblem": null,
+"hair": "grey",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "full pubic hair, greying",
@@ -30170,6 +30368,7 @@
 "m:Complexion_PubicFullLightbrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "lightbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "full pubic hair, lightbrown",
@@ -30184,6 +30383,7 @@
 "m:Complexion_PubicFull_M01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "full pubic hair",
@@ -30198,6 +30398,7 @@
 "m:Complexion_PubicFull_M02": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "full pubic hair",
@@ -30212,6 +30413,7 @@
 "m:Complexion_PubicTrailBrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "pubic hair and a trail, brown",
@@ -30226,6 +30428,7 @@
 "m:Complexion_PubicTrail_M01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "pubic hair and a trail",
@@ -30240,6 +30443,7 @@
 "m:Complexion_PubicTrimBlond_M01": {
 "adult": false,
 "emblem": null,
+"hair": "blond",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair, blond",
@@ -30254,6 +30458,7 @@
 "m:Complexion_PubicTrimBrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair, brown",
@@ -30268,6 +30473,7 @@
 "m:Complexion_PubicTrimBrown_M02": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair, brown",
@@ -30282,6 +30488,7 @@
 "m:Complexion_PubicTrimDarkbrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "darkbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair, darkbrown",
@@ -30296,6 +30503,7 @@
 "m:Complexion_PubicTrimGinger_M01": {
 "adult": false,
 "emblem": null,
+"hair": "ginger",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair, ginger",
@@ -30310,6 +30518,7 @@
 "m:Complexion_PubicTrimLightbrown_M01": {
 "adult": false,
 "emblem": null,
+"hair": "lightbrown",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair, lightbrown",
@@ -30324,6 +30533,7 @@
 "m:Complexion_PubicTrim_M01": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair",
@@ -39341,6 +39551,7 @@
 "m:TBOSGageArmHair": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "forearm hair patches",
@@ -39356,6 +39567,7 @@
 "m:TBOSGageArmpitHair": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "armpit hair tufts",
@@ -39371,6 +39583,7 @@
 "m:TBOSGageBodyHair": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "full body hair, stretched seams",
@@ -39385,6 +39598,7 @@
 "m:TBOSGageHandHair": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "chest and pubic hair",
@@ -39400,6 +39614,7 @@
 "m:TBOSGageLegHair": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "leg hair with streaked edges",
@@ -39415,6 +39630,7 @@
 "m:TBOSRiotBodyhair": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "pubic and thigh hair",
@@ -39430,6 +39646,7 @@
 "m:TBOSRiotBodyhairAlt": {
 "adult": false,
 "emblem": null,
+"hair": "black",
 "kind": "body_hair",
 "lore": "fits",
 "note": "sparse hair, seam artifacts",
