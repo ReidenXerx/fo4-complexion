@@ -43,8 +43,11 @@ MCM. LooksMenu overlay packs are optional: Complexion paints its own.
 
 ## Moving from Random Overlay Framework
 
-Uninstall it, load your save, and press MCM > Complexion > *Clear every overlay* once (outside any AAF scene), then
-save and load. Complexion puts its own looks back as you meet people.
+Keep it if you use its tattoo packs (Invictusblade's need its plugin): with RobCo Patcher installed, Complexion
+switches ROF's handing-out off and leaves its files and your save alone (C-11). Complexion says in game if it could
+not. If you do not use its packs, uninstall it instead. Either way, load your save and press MCM > Complexion >
+*Clear every overlay* once (outside any AAF scene), then save and load. Complexion puts its own looks back as you
+meet people.
 
 ## Building
 

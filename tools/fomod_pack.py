@@ -69,10 +69,17 @@ SETUP = ('Your setup',
          'Runtime Database: check this yourself -- finds the game\'s functions on old-gen, next-gen and Anniversary (Nexus 108394).\n'
          'MCM: check this yourself -- the switches and the buttons.\n'
          'LooksMenu overlay packs: optional -- Complexion paints its own, and hands out the packs you have alongside.\n'
-         'Random Overlay Framework: uninstall it -- both would hand out overlays. Then MCM > Complexion > Clear every overlay, once.\n'
+         'Random Overlay Framework: keep it for its tattoo packs -- with RobCo Patcher, Complexion switches its handing-out off; or uninstall it. Then MCM > Complexion > Clear every overlay, once.\n'
          'Complexion checks the rest in game and says what is missing.')
 AAF_NOTE = ('AAF is not active',
             'Without AAF there are no AAF scenes to wait for; everything works.')
+# C-11: shown only while ROF's plugin is active. Its tattoo packs (Invictusblade's) need that plugin, so it stays;
+# Complexion's RobCo Patcher ini switches ROF's handing-out off -- which needs RobCo Patcher.
+ROF_NOTE = ('Random Overlay Framework is active',
+            'Keep it if you use its tattoo packs: they need its plugin. Complexion switches ROF\'s handing-out off through '
+            'RobCo Patcher, so install RobCo Patcher too; Complexion says in game if ROF still hands overlays out. '
+            'Not using its packs? Uninstall ROF instead. Either way, after loading your save press MCM > Complexion > '
+            'Clear every overlay once, outside any AAF scene.')
 
 
 def esc(text):
@@ -105,6 +112,10 @@ def module_config(entries):
     </installStep>'''
     pages = [page('Checking your setup', 'Requirements', option(SETUP[0], SETUP[1], flag='setup'))]
     pages += [page(n, n, option(n, d, img)) for n, img, d in FEATURES]
+    pages.append(page('Note: Random Overlay Framework', 'Read this', option(ROF_NOTE[0], ROF_NOTE[1], flag='note_rof'), '''
+      <visible>
+        <fileDependency file="INVB_OverlayFramework.esp" state="Active"/>
+      </visible>'''))
     pages.append(page('Note: AAF', 'Read this', option(AAF_NOTE[0], AAF_NOTE[1], flag='note_aaf'), '''
       <visible>
         <dependencies operator="Or">
