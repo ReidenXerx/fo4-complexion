@@ -23,7 +23,9 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "scattered pimples"
+  "note": "scattered pimples",
+  "nasty": true,
+  "age": "young"
  },
  "f:Pimples_02": {
   "kind": "acne",
@@ -36,7 +38,9 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "scattered pimples"
+  "note": "scattered pimples",
+  "nasty": true,
+  "age": "young"
  },
  "f:Pimples_03": {
   "kind": "acne",
@@ -62,7 +66,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "poor",
-  "note": "very faint speckles"
+  "note": "very faint speckles",
+  "age": "young"
  },
  "f:Pimples_05": {
   "kind": "skin",
@@ -88,7 +93,9 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "scattered pimples"
+  "note": "scattered pimples",
+  "nasty": true,
+  "age": "young"
  },
  "f:Pimples_07": {
   "kind": "acne",
@@ -101,7 +108,9 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "scattered pimples"
+  "note": "scattered pimples",
+  "nasty": true,
+  "age": "young"
  },
  "f:Pimples_08": {
   "kind": "skin",
@@ -127,7 +136,9 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "scattered pimples"
+  "note": "scattered pimples",
+  "nasty": true,
+  "age": "young"
  },
  "f:Pimples_10": {
   "kind": "acne",
@@ -140,7 +151,9 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "few large blemishes"
+  "note": "few large blemishes",
+  "nasty": true,
+  "age": "young"
  },
  "f:Scars_01": {
   "kind": "scar",

@@ -179,7 +179,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "Grime on hands and fingers"
+  "note": "Grime on hands and fingers",
+  "nasty": true
  },
  "m:M_Hands_Eyes": {
   "kind": "tattoo",

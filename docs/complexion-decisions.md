@@ -262,6 +262,43 @@ hair overlay on its own. Now:
 - **The "sternum" chest pattern** was a narrow even band down to the navel and read as a painted stripe. It is now a
   ragged patch over the breastbone, thinning into a faint trail.
 
+## C-21: Who someone is shapes the whole look: place, rough living, age, skin (owner, 2026-10-04)
+
+The owner approved five improvements, plus one rule of their own: the nasty marks belong to the Commonwealth's
+margins, not its elite ("DC citizens ... kinda elite of Commonwealth"). In profiles.json and both composers:
+- **Places as groups.** "Everyone else" was one bucket. It is now nine groups by their game factions, after the
+  gangs and factions: Diamond City Security, Diamond City, Covenant, Goodneighbor, the Atom Cats, caravans, Bunker
+  Hill, scavengers and drifters, farmers and workshop settlers. 22 groups in all; "settlers" keeps whoever is left.
+- **Squalor.** Each group (and each named character) has the percent of its people who live rough. One roll per
+  person: only they get a nasty template (tools/paint/traits.py marks 100 of them):
+  - grime, dirt, blood and open wounds;
+  - pustules and body acne;
+  - fresh bruises, fresh cigarette burns and radiation sores;
+  - welts and chafe.
+
+  Measured (compose.py --simulate):
+
+  | People with a nasty mark | Groups |
+  | --- | --- |
+  | 0% | Diamond City, its Security, Covenant, BoS, Institute, Vault 81 |
+  | 1–6% | settlers, farmers, caravans, Minutemen |
+  | 22% | Goodneighbor |
+  | 44–54% | raiders, Disciples, captives, scavengers |
+- **The universal layer by group.** universal scales the base odds per kind (percent of the base): little acne
+  for the Institute and BoS, trimmed body hair for BoS, the Institute and operators, more for raiders and drifters.
+- **Age.** Grey hair (C-20) means old: acne and pimples never; age spots, varicose veins and cherry angiomas only
+  then.
+- **Skin tone.** The plugin reads the record's body tint (TESNPC::bodyTintColor, the QNAM the game tints the body
+  with) as pale, light, olive or dark. The thresholds come from the game's records: Cait and the default are
+  pale, Deacon light, Amari olive, Preston dark. Freckles, sunburn and redness go on pale and light skin only; tan
+  lines up to olive; the slate-blue birthmark on olive and dark.
+- **Life history** sits in the groups' kinds: guards, caravans and gunners carry more scars, Diamond City and
+  Covenant fewer.
+- **Old saves (co-save v5).** A look decided before these rules is checked once, when the person is next seen and
+  read. If one of its marks is one they would not get now, the look is decided again. A look chosen by hand stays.
+- **Reads wait for the layout check.** Nobody is read before the layout check passes, so hair and skin are never
+  read as unknown.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

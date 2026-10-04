@@ -212,7 +212,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "dirt smears on hands"
+  "note": "dirt smears on hands",
+  "nasty": true
  },
  "f:F_Hands_Eyes": {
   "kind": "tattoo",

@@ -6,7 +6,7 @@ namespace CX
 	{
 		// 2: a record carries the persona (C-14). 3: and whether it was chosen by hand (C-19). Older records load
 		// with none.
-		constexpr std::uint32_t kSaveVersion = 4;  // 4: the record's hair family
+		constexpr std::uint32_t kSaveVersion = 5;  // 4: the record's hair family; 5: its skin tone
 
 		std::uint64_t Mix(std::uint64_t a_z)
 		{
@@ -159,7 +159,8 @@ namespace CX
 			r.base = a_facts.base;
 			r.group = group->name;
 			r.hair = a_facts.hair;
-			r.picks = Compose(_profiles, _catalog, a_facts.female, *group, SeedFor(a_facts.ref, a_facts.base), _adult, {}, r.hair);
+			r.tone = a_facts.tone;
+			r.picks = Compose(_profiles, _catalog, a_facts.female, *group, SeedFor(a_facts.ref, a_facts.base), _adult, {}, r.hair, r.tone);
 			std::string list;
 			for (const auto& p : r.picks) {
 				list += (list.empty() ? "" : ", ") + p.id;
@@ -167,23 +168,27 @@ namespace CX
 			Log(std::format("{} ({:08X}, {}, {}): {}", a_facts.name, a_facts.ref, a_facts.female ? "female" : "male", r.group,
 				r.picks.empty() ? "nothing" : list));
 			it = _records.emplace(a_facts.ref, std::move(r)).first;
-		} else if (!it->second.hairChecked && !a_facts.hair.empty()) {
-			// A look from before body hair matched the head (0.1.3): kept, unless its hair is another colour than
-			// theirs -- then decided again, once. A look chosen by hand is theirs and stays.
+		} else if (!it->second.checked && !a_facts.tone.empty()) {  // only on facts really read (tone always is)
+			// A look decided before today's rules (an older co-save): kept, unless one of its marks is one they would
+			// not get now -- another hair colour than theirs (C-20), a nasty mark on someone who does not live rough,
+			// acne on the old, freckles on dark skin (C-21) -- then decided again, once. A look chosen by hand stays.
 			auto& r = it->second;
-			r.hairChecked = true;
-			r.hair = a_facts.hair;
-			if (!r.manual && HairClashes(r.picks, r.hair)) {
+			r.checked = true;
+			if (!a_facts.hair.empty()) {
+				r.hair = a_facts.hair;
+			}
+			r.tone = a_facts.tone;
+			if (!r.manual && Misfits(r, SeedFor(a_facts.ref, r.base))) {
 				// An empty look would queue nothing and leave the old one on them: kept then (it cannot happen while
 				// every family has pubic hair to give, but the bridge only rebuilds for a look that has entries).
 				const auto* group = _profiles.Find(r.group);
-				auto        again = group ? Compose(_profiles, _catalog, r.female, *group, SeedFor(a_facts.ref, r.base), _adult, r.persona, r.hair)
+				auto        again = group ? Compose(_profiles, _catalog, r.female, *group, SeedFor(a_facts.ref, r.base), _adult, r.persona, r.hair, r.tone)
 				                          : std::vector<Pick>{};
 				if (!again.empty()) {
 					r.picks = std::move(again);
 					r.applied = false;
-					Log(std::format("{} ({:08X}): body hair did not match their {} hair, decided again: {} overlay(s)", a_facts.name,
-						a_facts.ref, r.hair, r.picks.size()));
+					Log(std::format("{} ({:08X}): a mark did not suit them by today's rules ({} hair, {} skin), decided again: {} overlay(s)",
+						a_facts.name, a_facts.ref, r.hair.empty() ? "unknown" : r.hair, r.tone.empty() ? "unknown" : r.tone, r.picks.size()));
 				}
 			}
 		}
@@ -279,7 +284,7 @@ namespace CX
 			return true;
 		}
 		r->second.picks = Compose(_profiles, _catalog, r->second.female, *group, SeedFor(o->second.ref, r->second.base), _adult, r->second.persona,
-			r->second.hair);
+			r->second.hair, r->second.tone);
 		Log(std::format("{:08X}: {} after all (a faction on the reference), now: {} overlay(s)", o->second.ref, group->name, r->second.picks.size()));
 		r->second.group = group->name;
 		o->second.picks = r->second.picks;
@@ -303,7 +308,7 @@ namespace CX
 			return false;  // a persona with nothing to add: the look stands
 		}
 		r->second.picks = Compose(_profiles, _catalog, r->second.female, *group, SeedFor(o->second.ref, r->second.base), _adult, a_persona,
-			r->second.hair);
+			r->second.hair, r->second.tone);
 		Log(std::format("{:08X}: Rapport persona {}, now: {} overlay(s)", o->second.ref, a_persona, r->second.picks.size()));
 		o->second.picks = r->second.picks;
 		return true;
@@ -386,6 +391,7 @@ namespace CX
 			w.Str(r.persona);
 			w.U8(r.manual ? 1 : 0);
 			w.Str(r.hair);
+			w.Str(r.tone);
 			w.U32(static_cast<std::uint32_t>(r.picks.size()));
 			for (const auto& p : r.picks) {
 				w.Str(p.key);
@@ -414,10 +420,10 @@ namespace CX
 			Record        rec;
 			if (!r.U32(ref) || !r.U8(female) || !r.U8(applied) || !r.U32(rec.base) || !r.Str(rec.group) ||
 				(version >= 2 && !r.Str(rec.persona)) || (version >= 3 && !r.U8(manual)) || (version >= 4 && !r.Str(rec.hair)) ||
-				!r.U32(picks) || picks > 64) {
+				(version >= 5 && !r.Str(rec.tone)) || !r.U32(picks) || picks > 64) {
 				return false;
 			}
-			rec.hairChecked = version >= 4;
+			rec.checked = version >= 5;
 			rec.manual = manual != 0;
 			rec.female = female != 0;
 			rec.applied = applied != 0;
@@ -595,17 +601,15 @@ namespace CX
 		return std::nullopt;
 	}
 
-	bool Director::HairClashes(const std::vector<Pick>& a_picks, std::string_view a_hair) const
+	bool Director::Misfits(const Record& a_record, std::uint64_t a_seed) const
 	{
-		const auto& hc = _profiles.hairColours;
-		const auto  family = hc.accept.find(std::string(a_hair));
-		if (!hc.present || family == hc.accept.end()) {
+		const auto* group = _profiles.Find(a_record.group);
+		if (!group) {
 			return false;
 		}
-		return std::ranges::any_of(a_picks, [&](const Pick& p) {
+		return std::ranges::any_of(a_record.picks, [&](const Pick& p) {
 			const auto* t = Find(p.key);
-			return t && (t->kind == "pubic_hair" || t->kind == "body_hair") &&
-			       std::ranges::find(family->second, t->hair) == family->second.end();
+			return t && !Suits(_profiles, *group, a_seed, a_record.hair, a_record.tone, *t);
 		});
 	}
 
@@ -615,7 +619,7 @@ namespace CX
 		return _thumbBuild;
 	}
 
-	std::string Director::WindowBegin(std::uint32_t a_ref, bool a_female, std::string_view a_hair)
+	std::string Director::WindowBegin(std::uint32_t a_ref, bool a_female, std::string_view a_hair, std::string_view a_tone)
 	{
 		std::scoped_lock l{ _lock };
 		if (!a_ref) {
@@ -629,6 +633,7 @@ namespace CX
 		_window.ref = a_ref;
 		_window.female = a_female;
 		_window.hair = std::string(a_hair);
+		_window.tone = std::string(a_tone);
 		if (const auto it = _records.find(a_ref); it != _records.end()) {
 			_window.before = it->second;
 			_window.draft = it->second.picks;
@@ -741,7 +746,7 @@ namespace CX
 		const std::uint32_t base = _window.before ? _window.before->base : 0;
 		const auto          persona = _window.before ? _window.before->persona : std::string{};
 		_window.draft = Compose(_profiles, _catalog, _window.female, *group, Mix(SeedFor(_window.ref, base) + ++_window.rolls), _adult, persona,
-			_window.hair);
+			_window.hair, _window.tone);
 	}
 
 	std::uint32_t Director::WindowOrder(std::vector<Pick> a_picks)

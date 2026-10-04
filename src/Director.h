@@ -22,6 +22,7 @@ namespace CX
 		std::string   name;    // for the log
 		std::string   skip;    // why they are left alone ("dead", "player", "child", "race ..."), "" = eligible
 		std::string   hair;    // their head hair's colour family (profiles.json hair_colours); "" = unknown
+		std::string   tone;    // their skin tone: pale, light, olive, dark; "" = unknown (C-21)
 	};
 
 	struct Record
@@ -34,7 +35,8 @@ namespace CX
 		bool              applied{ false };  // the bridge confirmed every entry landed
 		bool              manual{ false };   // chosen by hand in the overlay window (C-19): kept as it is
 		std::string       hair;              // the head hair family it was decided with ("" = unknown)
-		bool              hairChecked{ true };  // false for a record from a save before v4: its hair is checked once
+		std::string       tone;              // the skin tone it was decided with ("" = unknown)
+		bool              checked{ true };   // false for a record from a save before v5: checked once against today's rules
 	};
 
 	struct Order
@@ -109,7 +111,7 @@ namespace CX
 		[[nodiscard]] std::optional<std::array<float, 8>> SpotOf(std::string_view a_key) const;
 		[[nodiscard]] std::string ThumbBuild() const;
 		// Opens a session on a_ref (an NPC, or the player): what Complexion put on them is the draft. "" or why not.
-		[[nodiscard]] std::string WindowBegin(std::uint32_t a_ref, bool a_female, std::string_view a_hair = {});
+		[[nodiscard]] std::string WindowBegin(std::uint32_t a_ref, bool a_female, std::string_view a_hair = {}, std::string_view a_tone = {});
 		void WindowEnd();
 		// One page of a category ("on", "all", "skin", "hair", "scars", "tattoos", "rough", "paint", "nails"),
 		// searched: "<total>|<entry>|<entry>...", an entry "key\tlabel\tkind\ton\tatlas\tcell" (atlas -1: no picture).
@@ -150,6 +152,7 @@ namespace CX
 			std::optional<Record> before;  // their record when the window opened, if any
 			std::vector<Pick>     draft;
 			std::string           hair;    // their head hair family: Random matches it
+			std::string           tone;    // their skin tone: Random suits it
 			std::uint32_t         rolls{ 0 };
 		};
 		Window                                                  _window;
@@ -158,8 +161,9 @@ namespace CX
 		std::unordered_map<std::string, std::array<float, 8>>   _spots;
 
 		[[nodiscard]] const Template* Find(std::string_view a_key) const;
-		// A hair overlay among a_picks that their head hair family does not accept (a record decided before 0.1.3).
-		[[nodiscard]] bool HairClashes(const std::vector<Pick>& a_picks, std::string_view a_hair) const;
+		// A pick that today's rules would not give this person (hair family, rough living, age, skin tone): a record
+		// decided before them (an older co-save) is checked with it.
+		[[nodiscard]] bool Misfits(const Record& a_record, std::uint64_t a_seed) const;
 		[[nodiscard]] std::vector<Pick> Repriority(std::vector<Pick> a_picks) const;
 		[[nodiscard]] std::uint32_t WindowOrder(std::vector<Pick> a_picks);
 	};

@@ -43,7 +43,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "poor",
-  "note": "scattered tiny nail damage specks"
+  "note": "scattered tiny nail damage specks",
+  "nasty": true
  },
  "f:F_LArm_Barcode": {
   "kind": "tattoo",

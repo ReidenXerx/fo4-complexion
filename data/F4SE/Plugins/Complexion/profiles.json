@@ -1,5 +1,5 @@
 {
- "about": "Who gets which overlays (docs/complexion-profiles.md, approved by the owner 2026-10-02 as C-7). count = percent chance of 0/1/2/3/4 features; kinds = percent weights of the feature kinds; styles = the tattoo styles a person's style is drawn from; emblems = the emblems members may wear (only members, C-7); sizes = the sizes tattoos may have; hair = pubic hair sizes; adult = chance a feature may be an adult or degrading piece (0 = never; the MCM switch turns all of it off).",
+ "about": "Who gets which overlays (docs/complexion-profiles.md, approved by the owner 2026-10-02 as C-7). count = percent chance of 0/1/2/3/4 features; kinds = percent weights of the feature kinds; styles = the tattoo styles a person's style is drawn from; emblems = the emblems members may wear (only members, C-7); sizes = the sizes tattoos may have; hair = pubic hair sizes; adult = chance a feature may be an adult or degrading piece (0 = never; the MCM switch turns all of it off). squalor = percent chance a person of the group lives rough: only they get nasty marks (grime, blood, open wounds, pustules, fresh bruises; tools/paint/traits.py), owner 2026-10-04 -- the elite of the Commonwealth almost never; universal = the universal layer's percents scaled for the group (percent of the base: acne 50 halves it). C-21.",
  "cap": 6,
  "kinds": {
   "tattoo": [
@@ -383,7 +383,8 @@
     "medium"
    ],
    "hair": "any",
-   "adult": 0
+   "adult": 0,
+   "squalor": 30
   },
   "captives": {
    "factions": [
@@ -423,7 +424,12 @@
     "medium"
    ],
    "hair": "any",
-   "adult": 60
+   "adult": 60,
+   "squalor": 95,
+   "universal": {
+    "acne": 150,
+    "body_hair": 130
+   }
   },
   "raiders": {
    "factions": [
@@ -463,7 +469,12 @@
     "full"
    ],
    "hair": "wild",
-   "adult": 10
+   "adult": 10,
+   "squalor": 85,
+   "universal": {
+    "acne": 150,
+    "body_hair": 130
+   }
   },
   "disciples": {
    "factions": [
@@ -502,7 +513,11 @@
     "full"
    ],
    "hair": "wild",
-   "adult": 10
+   "adult": 10,
+   "squalor": 80,
+   "universal": {
+    "body_hair": 120
+   }
   },
   "pack": {
    "factions": [
@@ -540,7 +555,8 @@
     "full"
    ],
    "hair": "wild",
-   "adult": 5
+   "adult": 5,
+   "squalor": 70
   },
   "operators": {
    "factions": [
@@ -576,7 +592,11 @@
     "large"
    ],
    "hair": "trim",
-   "adult": 10
+   "adult": 10,
+   "squalor": 25,
+   "universal": {
+    "body_hair": 60
+   }
   },
   "gunners": {
    "factions": [
@@ -612,7 +632,8 @@
     "medium"
    ],
    "hair": "any",
-   "adult": 0
+   "adult": 0,
+   "squalor": 40
   },
   "triggermen": {
    "factions": [
@@ -646,7 +667,8 @@
     "medium"
    ],
    "hair": "any",
-   "adult": 0
+   "adult": 0,
+   "squalor": 35
   },
   "bos": {
    "factions": [
@@ -679,7 +701,12 @@
     "medium"
    ],
    "hair": "trim",
-   "adult": 0
+   "adult": 0,
+   "squalor": 5,
+   "universal": {
+    "acne": 40,
+    "body_hair": 50
+   }
   },
   "minutemen": {
    "factions": [
@@ -715,7 +742,8 @@
     "medium"
    ],
    "hair": "any",
-   "adult": 0
+   "adult": 0,
+   "squalor": 30
   },
   "railroad": {
    "factions": [
@@ -747,7 +775,8 @@
     "small"
    ],
    "hair": "any",
-   "adult": 0
+   "adult": 0,
+   "squalor": 25
   },
   "atom": {
    "factions": [
@@ -787,7 +816,8 @@
     "large"
    ],
    "hair": "any",
-   "adult": 0
+   "adult": 0,
+   "squalor": 70
   },
   "institute": {
    "factions": [
@@ -816,7 +846,14 @@
     "tiny"
    ],
    "hair": "trim",
-   "adult": 0
+   "adult": 0,
+   "squalor": 0,
+   "universal": {
+    "acne": 20,
+    "body_hair": 40,
+    "freckles": 50,
+    "mole": 60
+   }
   },
   "vault81": {
    "factions": [
@@ -857,7 +894,533 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "about": "Vault 81 residents and guards (C-15): clean-living vault folk, a vault tattoo now and then"
+   "about": "Vault 81 residents and guards (C-15): clean-living vault folk, a vault tattoo now and then",
+   "squalor": 5,
+   "universal": {
+    "acne": 60
+   }
+  },
+  "dcsecurity": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "SecurityDiamondCity",
+     12133
+    ],
+    [
+     "Fallout4.esm",
+     "SecurityDiamondCityExterior",
+     130488
+    ]
+   ],
+   "count": [
+    40,
+    40,
+    15,
+    5,
+    0
+   ],
+   "kinds": {
+    "scar": 55,
+    "tattoo": 40,
+    "sun": 5
+   },
+   "styles": [
+    "military",
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 10,
+   "universal": {
+    "acne": 60,
+    "body_hair": 80
+   }
+  },
+  "diamondcity": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "SettlementDiamondCity",
+     11443
+    ],
+    [
+     "Fallout4.esm",
+     "DmndGenericNPCFaction",
+     22552
+    ],
+    [
+     "Fallout4.esm",
+     "DmndShoppersFaction",
+     361058
+    ],
+    [
+     "Fallout4.esm",
+     "DmndBarPatronsFaction",
+     138636
+    ],
+    [
+     "Fallout4.esm",
+     "DmndNoodlePatronFaction",
+     22550
+    ],
+    [
+     "Fallout4.esm",
+     "DmndWallAudienceFaction",
+     367275
+    ],
+    [
+     "Fallout4.esm",
+     "DmndAllFaithsChapelFaction",
+     598035
+    ],
+    [
+     "Fallout4.esm",
+     "DmndFisherFaction",
+     183060
+    ],
+    [
+     "Fallout4.esm",
+     "DmndFarmerFaction",
+     183061
+    ]
+   ],
+   "count": [
+    65,
+    28,
+    7,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 60,
+    "scar": 25,
+    "sun": 10,
+    "paint": 5
+   },
+   "styles": [
+    "floral",
+    "script",
+    "geometric"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 5,
+   "universal": {
+    "acne": 50,
+    "body_hair": 80
+   }
+  },
+  "covenant": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "CovenantFaction",
+     401456
+    ],
+    [
+     "Fallout4.esm",
+     "CovenantFactionGenericNPCs",
+     871836
+    ]
+   ],
+   "count": [
+    85,
+    15,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 50,
+    "scar": 50
+   },
+   "styles": [
+    "floral",
+    "geometric"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 0,
+   "universal": {
+    "acne": 20,
+    "freckles": 80,
+    "mole": 80
+   }
+  },
+  "goodneighbor": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "SettlementGoodneighbor",
+     141481
+    ],
+    [
+     "Fallout4.esm",
+     "GoodneighborGenericNPCFaction",
+     144165
+    ],
+    [
+     "Fallout4.esm",
+     "GoodneighborNPCShoppersFaction",
+     329513
+    ],
+    [
+     "Fallout4.esm",
+     "GoodneighborGuardFaction",
+     924364
+    ]
+   ],
+   "count": [
+    15,
+    30,
+    30,
+    20,
+    5
+   ],
+   "kinds": {
+    "tattoo": 55,
+    "scar": 20,
+    "dirt": 10,
+    "rough": 10,
+    "paint": 5
+   },
+   "styles": [
+    "crude",
+    "script",
+    "skull",
+    "pinup"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large"
+   ],
+   "hair": "any",
+   "adult": 5,
+   "squalor": 60,
+   "universal": {
+    "acne": 130
+   }
+  },
+  "atomcats": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "DN054AtomCatFaction",
+     296513
+    ],
+    [
+     "Fallout4.esm",
+     "DN054AtomCatVendorFaction",
+     354559
+    ],
+    [
+     "Fallout4.esm",
+     "DN054AtomCatPowerArmorVendorFaction",
+     354562
+    ]
+   ],
+   "count": [
+    10,
+    35,
+    35,
+    20,
+    0
+   ],
+   "kinds": {
+    "tattoo": 70,
+    "scar": 15,
+    "dirt": 15
+   },
+   "styles": [
+    "pinup",
+    "script",
+    "skull"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium",
+    "large"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 45
+  },
+  "caravans": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "CaravanFaction",
+     1248123
+    ],
+    [
+     "Fallout4.esm",
+     "CaravanGuardFaction",
+     1249196
+    ],
+    [
+     "Fallout4.esm",
+     "CaravanLeaderFaction",
+     1255609
+    ],
+    [
+     "Fallout4.esm",
+     "WorkshopCaravanFaction",
+     254157
+    ],
+    [
+     "Fallout4.esm",
+     "REBrahminVendorFaction",
+     1704639
+    ]
+   ],
+   "count": [
+    30,
+    40,
+    25,
+    5,
+    0
+   ],
+   "kinds": {
+    "sun": 35,
+    "scar": 35,
+    "tattoo": 25,
+    "dirt": 5
+   },
+   "styles": [
+    "script",
+    "animal",
+    "military"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 35,
+   "universal": {
+    "freckles": 130
+   }
+  },
+  "bunkerhill": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "SettlementBunkerHill",
+     104795
+    ],
+    [
+     "Fallout4.esm",
+     "BunkerHillGenericNPCFaction",
+     392536
+    ]
+   ],
+   "count": [
+    35,
+    40,
+    20,
+    5,
+    0
+   ],
+   "kinds": {
+    "sun": 30,
+    "scar": 30,
+    "tattoo": 35,
+    "dirt": 5
+   },
+   "styles": [
+    "script",
+    "animal",
+    "floral"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 35
+  },
+  "scavengers": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "REScavengerFaction",
+     213712
+    ],
+    [
+     "Fallout4.esm",
+     "NPC11Scavengers",
+     618146
+    ],
+    [
+     "Fallout4.esm",
+     "MS11ScavengersNPCFaction",
+     575962
+    ],
+    [
+     "Fallout4.esm",
+     "CambridgeDrifterFaction",
+     801877
+    ],
+    [
+     "Fallout4.esm",
+     "TheaterDrifter_FactionDondo",
+     1428792
+    ],
+    [
+     "Fallout4.esm",
+     "TheaterDrifter_FactionSlim",
+     1433227
+    ]
+   ],
+   "count": [
+    10,
+    30,
+    35,
+    20,
+    5
+   ],
+   "kinds": {
+    "dirt": 30,
+    "scar": 30,
+    "tattoo": 25,
+    "rough": 10,
+    "sun": 5
+   },
+   "styles": [
+    "crude",
+    "skull",
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "wild",
+   "adult": 5,
+   "squalor": 85,
+   "universal": {
+    "acne": 130,
+    "body_hair": 130
+   }
+  },
+  "farmers": {
+   "factions": [
+    [
+     "Fallout4.esm",
+     "WorkshopNPCFaction",
+     210931
+    ],
+    [
+     "Fallout4.esm",
+     "FarmerGenericDialogue",
+     1397329
+    ],
+    [
+     "Fallout4.esm",
+     "Farm01Faction",
+     1397331
+    ],
+    [
+     "Fallout4.esm",
+     "Farm02Faction",
+     1403409
+    ],
+    [
+     "Fallout4.esm",
+     "Farm03Faction",
+     1403418
+    ],
+    [
+     "Fallout4.esm",
+     "Farm04Faction",
+     1403419
+    ],
+    [
+     "Fallout4.esm",
+     "Farm05Faction",
+     1403423
+    ],
+    [
+     "Fallout4.esm",
+     "Farm06Faction",
+     1403430
+    ],
+    [
+     "Fallout4.esm",
+     "FarmFactionAbernathy",
+     439508
+    ],
+    [
+     "Fallout4.esm",
+     "FarmFactionFinch",
+     258601
+    ],
+    [
+     "Fallout4.esm",
+     "FarmFactionWarwick",
+     258602
+    ]
+   ],
+   "count": [
+    35,
+    40,
+    20,
+    5,
+    0
+   ],
+   "kinds": {
+    "sun": 40,
+    "scar": 25,
+    "tattoo": 25,
+    "dirt": 10
+   },
+   "styles": [
+    "floral",
+    "animal",
+    "script"
+   ],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small",
+    "medium"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 35,
+   "universal": {
+    "freckles": 130
+   }
   }
  },
  "order": [
@@ -873,7 +1436,16 @@
   "railroad",
   "atom",
   "institute",
-  "vault81"
+  "vault81",
+  "dcsecurity",
+  "diamondcity",
+  "covenant",
+  "goodneighbor",
+  "atomcats",
+  "caravans",
+  "bunkerhill",
+  "scavengers",
+  "farmers"
  ],
  "characters": {
   "Piper Wright": {
@@ -905,7 +1477,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "a reporter: a small inked word at most"
+   "why": "a reporter: a small inked word at most",
+   "squalor": 20
   },
   "Cait": {
    "forms": [
@@ -942,7 +1515,8 @@
    ],
    "hair": "wild",
    "adult": 0,
-   "why": "Combat Zone cage fighter: scarred, bruised, crude ink"
+   "why": "Combat Zone cage fighter: scarred, bruised, crude ink",
+   "squalor": 80
   },
   "Curie": {
    "forms": [
@@ -975,7 +1549,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "a new synth body: nothing on it yet"
+   "why": "a new synth body: nothing on it yet",
+   "squalor": 0
   },
   "Magnolia": {
    "forms": [
@@ -1006,7 +1581,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "lounge singer: one small pretty piece"
+   "why": "lounge singer: one small pretty piece",
+   "squalor": 20
   },
   "Desdemona": {
    "forms": [
@@ -1034,7 +1610,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "severe Railroad leader: an old scar"
+   "why": "severe Railroad leader: an old scar",
+   "squalor": 20
   },
   "Glory": {
    "forms": [
@@ -1069,7 +1646,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "the Railroad's heavy: scars and the lantern mark"
+   "why": "the Railroad's heavy: scars and the lantern mark",
+   "squalor": 20
   },
   "Haylen": {
    "forms": [
@@ -1101,7 +1679,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "a scribe: clean"
+   "why": "a scribe: clean",
+   "squalor": 5
   },
   "Madison Li": {
    "forms": [
@@ -1129,7 +1708,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "a scientist: clean"
+   "why": "a scientist: clean",
+   "squalor": 0
   },
   "Mama Murphy": {
    "forms": [
@@ -1163,7 +1743,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "old chem-worn seer: grime, old ink"
+   "why": "old chem-worn seer: grime, old ink",
+   "squalor": 40
   },
   "Marcy Long": {
    "forms": [
@@ -1193,7 +1774,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "hard survivor: scars and dirt"
+   "why": "hard survivor: scars and dirt",
+   "squalor": 20
   },
   "Fahrenheit": {
    "forms": [
@@ -1229,7 +1811,8 @@
    ],
    "hair": "wild",
    "adult": 0,
-   "why": "Hancock's bodyguard: inked and scarred"
+   "why": "Hancock's bodyguard: inked and scarred",
+   "squalor": 60
   },
   "Irma": {
    "forms": [
@@ -1260,7 +1843,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "faded glamour: one pretty piece"
+   "why": "faded glamour: one pretty piece",
+   "squalor": 20
   },
   "Mags Black": {
    "forms": [
@@ -1295,7 +1879,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "the Operators' boss: styled ink, painted nails"
+   "why": "the Operators' boss: styled ink, painted nails",
+   "squalor": 70
   },
   "Nisha": {
    "forms": [
@@ -1332,7 +1917,8 @@
    ],
    "hair": "wild",
    "adult": 0,
-   "why": "the Disciples' leader: knives leave marks"
+   "why": "the Disciples' leader: knives leave marks",
+   "squalor": 70
   },
   "Kasumi Nakano": {
    "forms": [
@@ -1363,7 +1949,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "a young runaway: one small rebel tattoo"
+   "why": "a young runaway: one small rebel tattoo",
+   "squalor": 20
   },
   "Ronnie Shaw": {
    "forms": [
@@ -1397,7 +1984,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "old Minutemen veteran: scars, the old emblem"
+   "why": "old Minutemen veteran: scars, the old emblem",
+   "squalor": 20
   },
   "Myrna": {
    "forms": [
@@ -1425,7 +2013,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "sour shopkeeper: plain"
+   "why": "sour shopkeeper: plain",
+   "squalor": 20
   },
   "Doctor Amari": {
    "forms": [
@@ -1453,7 +2042,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "a neuroscientist: clean"
+   "why": "a neuroscientist: clean",
+   "squalor": 5
   },
   "Trudy": {
    "forms": [
@@ -1482,7 +2072,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "diner owner: kitchen grime"
+   "why": "diner owner: kitchen grime",
+   "squalor": 20
   },
   "Ellie Perkins": {
    "forms": [
@@ -1512,7 +2103,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "a secretary: plain"
+   "why": "a secretary: plain",
+   "squalor": 20
   },
   "Cricket": {
    "forms": [
@@ -1545,7 +2137,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "arms dealer: tough, scarred, inked"
+   "why": "arms dealer: tough, scarred, inked",
+   "squalor": 20
   },
   "Carla": {
    "forms": [
@@ -1574,7 +2167,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "caravan trader: road dirt"
+   "why": "caravan trader: road dirt",
+   "squalor": 20
   },
   "Captain Avery": {
    "forms": [
@@ -1607,7 +2201,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "Far Harbor's leader: a fisherwoman's scars"
+   "why": "Far Harbor's leader: a fisherwoman's scars",
+   "squalor": 20
   },
   "Aster": {
    "forms": [
@@ -1635,7 +2230,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "Acadia's synth: clean"
+   "why": "Acadia's synth: clean",
+   "squalor": 20
   },
   "Ivy": {
    "forms": [
@@ -1646,7 +2242,8 @@
     ]
    ],
    "untouched": true,
-   "why": "the owner's own companion: her bud owns her look"
+   "why": "the owner's own companion: her bud owns her look",
+   "squalor": 20
   },
   "Geneva": {
    "forms": [
@@ -1677,7 +2274,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "the mayor's secretary: polished"
+   "why": "the mayor's secretary: polished",
+   "squalor": 5
   },
   "Polly": {
    "forms": [
@@ -1708,7 +2306,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "the butcher who writes poems: a small secret"
+   "why": "the butcher who writes poems: a small secret",
+   "squalor": 20
   },
   "Cathy": {
    "forms": [
@@ -1737,7 +2336,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "the grubby salon gossip"
+   "why": "the grubby salon gossip",
+   "squalor": 20
   },
   "Becky Fallon": {
    "forms": [
@@ -1766,7 +2366,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "worn shopkeeper"
+   "why": "worn shopkeeper",
+   "squalor": 20
   },
   "Scarlett": {
    "forms": [
@@ -1797,7 +2398,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "Dugout waitress: a cheap tattoo"
+   "why": "Dugout waitress: a cheap tattoo",
+   "squalor": 20
   },
   "Preston Garvey": {
    "forms": [
@@ -1825,7 +2427,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "earnest Minuteman: a scar from Quincy"
+   "why": "earnest Minuteman: a scar from Quincy",
+   "squalor": 20
   },
   "Paladin Danse": {
    "forms": [
@@ -1859,7 +2462,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "Brotherhood paladin: scars and the emblem"
+   "why": "Brotherhood paladin: scars and the emblem",
+   "squalor": 5
   },
   "Robert MacCready": {
    "forms": [
@@ -1892,7 +2496,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "young merc, ex-Gunner: grime, a cheap skull"
+   "why": "young merc, ex-Gunner: grime, a cheap skull",
+   "squalor": 40
   },
   "Deacon": {
    "forms": [
@@ -1920,7 +2525,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "the spy nobody remembers: nothing to remember"
+   "why": "the spy nobody remembers: nothing to remember",
+   "squalor": 20
   },
   "Arthur Maxson": {
    "forms": [
@@ -1949,7 +2555,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "the young Elder: battle scars"
+   "why": "the young Elder: battle scars",
+   "squalor": 0
   },
   "X6-88": {
    "forms": [
@@ -1977,7 +2584,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "a Courser: built to spec"
+   "why": "a Courser: built to spec",
+   "squalor": 0
   },
   "Old Longfellow": {
    "forms": [
@@ -2013,7 +2621,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "old hunter: sailor ink, scars"
+   "why": "old hunter: sailor ink, scars",
+   "squalor": 50
   },
   "Porter Gage": {
    "forms": [
@@ -2052,7 +2661,8 @@
    ],
    "hair": "wild",
    "adult": 0,
-   "why": "raider lieutenant"
+   "why": "raider lieutenant",
+   "squalor": 70
   },
   "Sturges": {
    "forms": [
@@ -2081,7 +2691,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "mechanic: grease"
+   "why": "mechanic: grease",
+   "squalor": 30
   },
   "Kellogg": {
    "forms": [
@@ -2119,7 +2730,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "mercenary: a career of scars"
+   "why": "mercenary: a career of scars",
+   "squalor": 20
   },
   "Travis Miles": {
    "forms": [
@@ -2147,7 +2759,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "nervous DJ: an indoor body"
+   "why": "nervous DJ: an indoor body",
+   "squalor": 5
   },
   "Mayor McDonough": {
    "forms": [
@@ -2175,7 +2788,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "a polished politician (a synth)"
+   "why": "a polished politician (a synth)",
+   "squalor": 0
   },
   "Vadim Bobrov": {
    "forms": [
@@ -2208,7 +2822,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "barkeep: old prison-style ink"
+   "why": "barkeep: old prison-style ink",
+   "squalor": 20
   },
   "Moe Cronin": {
    "forms": [
@@ -2239,7 +2854,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "Swatters' owner: a ball player's scars"
+   "why": "Swatters' owner: a ball player's scars",
+   "squalor": 20
   },
   "Father": {
    "forms": [
@@ -2267,7 +2883,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "the Institute's director: clean"
+   "why": "the Institute's director: clean",
+   "squalor": 0
   },
   "Paladin Brandis": {
    "forms": [
@@ -2302,7 +2919,8 @@
    ],
    "hair": "wild",
    "adult": 0,
-   "why": "hermit survivor: dirt and old wounds"
+   "why": "hermit survivor: dirt and old wounds",
+   "squalor": 40
   },
   "Tinker Tom": {
    "forms": [
@@ -2333,7 +2951,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "paranoid tinkerer: grease"
+   "why": "paranoid tinkerer: grease",
+   "squalor": 40
   },
   "John": {
    "forms": [
@@ -2361,7 +2980,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "deaf in one ear from the war"
+   "why": "deaf in one ear from the war",
+   "squalor": 20
   },
   "Arturo Rodriguez": {
    "forms": [
@@ -2390,7 +3010,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "gunsmith: burns and grease"
+   "why": "gunsmith: burns and grease",
+   "squalor": 20
   },
   "Solomon": {
    "forms": [
@@ -2421,7 +3042,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "chem seller, slightly stoned"
+   "why": "chem seller, slightly stoned",
+   "squalor": 20
   },
   "Doctor Sun": {
    "forms": [
@@ -2449,7 +3071,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "the doctor: clean"
+   "why": "the doctor: clean",
+   "squalor": 20
   },
   "Abbot": {
    "forms": [
@@ -2477,7 +3100,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "one of the oldest citizens"
+   "why": "one of the oldest citizens",
+   "squalor": 20
   },
   "Sheffield": {
    "forms": [
@@ -2506,7 +3130,8 @@
    ],
    "hair": "wild",
    "adult": 0,
-   "why": "a beggar: grime"
+   "why": "a beggar: grime",
+   "squalor": 75
   },
   "Malcolm Latimer": {
    "forms": [
@@ -2539,7 +3164,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "the rich man: clean"
+   "why": "the rich man: clean",
+   "squalor": 20
   },
   "Finn": {
    "forms": [
@@ -2573,7 +3199,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "Goodneighbor's insurance man: thug ink"
+   "why": "Goodneighbor's insurance man: thug ink",
+   "squalor": 20
   },
   "Wayne Delancy": {
    "forms": [
@@ -2606,7 +3233,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "a hitman"
+   "why": "a hitman",
+   "squalor": 20
   },
   "Parker Quinn": {
    "forms": [
@@ -2637,7 +3265,8 @@
    ],
    "hair": "trim",
    "adult": 0,
-   "why": "a con man: all show"
+   "why": "a con man: all show",
+   "squalor": 20
   },
   "Winlock": {
    "forms": [
@@ -2672,7 +3301,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "a Gunner"
+   "why": "a Gunner",
+   "squalor": 60
   },
   "Barnes": {
    "forms": [
@@ -2707,7 +3337,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "a Gunner"
+   "why": "a Gunner",
+   "squalor": 60
   },
   "Rufus Rubins": {
    "forms": [
@@ -2735,7 +3366,8 @@
    ],
    "hair": "any",
    "adult": 0,
-   "why": "the hotel handyman"
+   "why": "the hotel handyman",
+   "squalor": 20
   }
  },
  "personas": {
@@ -2750,5 +3382,6 @@
    "style": "lewd",
    "about": "Rapport persona (Rapport:Core.PersonaOf): lewd marks on top of the look, owner 2026-10-03 (C-14)"
   }
- }
+ },
+ "squalor_default": 30
 }

@@ -19,6 +19,9 @@ namespace CX
 		bool                     adult{ false };
 		std::string              note;    // what it shows, in words (the tag's note): the overlay window's label
 		std::string              hair;    // pubic_hair / body_hair: its colour family (tools/paint/hair.py); "" = unknown
+		bool                     nasty{ false };  // grime, blood, open wounds, pustules...: only for people living rough (C-21)
+		std::string              age;             // "young" (never on the old), "old" (only on the old), "" = any
+		std::vector<std::string> tones;           // the skin tones it suits; empty = any (tools/paint/traits.py)
 	};
 
 	struct Group
@@ -40,6 +43,8 @@ namespace CX
 		std::vector<std::string>                  sizes;
 		std::string                               hair;
 		int                                       adult{ 0 };
+		int                                       squalor{ 30 };  // percent of the group living rough (C-21)
+		std::map<std::string, int>                universal;      // kind -> percent of the universal layer's odds
 	};
 
 	struct Universal
@@ -113,5 +118,10 @@ namespace CX
 
 	[[nodiscard]] std::vector<Pick> Compose(const Profiles& a_profiles, const std::vector<Template>& a_catalog, bool a_female,
 		const Group& a_group, std::uint64_t a_seed, bool a_adultAllowed, std::string_view a_persona = {},
-		std::string_view a_hair = {});
+		std::string_view a_hair = {}, std::string_view a_tone = {});
+
+	// Whether a template suits this person by the rules decided before any pick (hair family, rough living, age, skin
+	// tone: steps 0 and 0b): a look decided before these rules is checked with it (Director, older co-saves).
+	[[nodiscard]] bool Suits(const Profiles& a_profiles, const Group& a_group, std::uint64_t a_seed, std::string_view a_hair,
+		std::string_view a_tone, const Template& a_t);
 }

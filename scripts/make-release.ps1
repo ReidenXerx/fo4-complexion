@@ -57,6 +57,10 @@ if (-not $swf -or $as.LastWriteTime -gt $swf.LastWriteTime) { throw "ComplexionM
 # Every overlay texture decoded against its painting: no patch around a mark, untouched skin exactly x1 (0.1.2).
 & python (Join-Path $root 'tools\paint\check_encoding.py')
 if ($LASTEXITCODE) { throw 'an overlay texture is off its painting: see tools\paint\check_encoding.py' }
+# The shipped tags are the ones the build made: tools\make_data.py copies build\tags.json, and run before the build it
+# shipped tags without the new fields (twice, 2026-10-04).
+& python -c "import json,sys; a=json.load(open(sys.argv[1],encoding='utf-8')); b=json.load(open(sys.argv[2],encoding='utf-8')); sys.exit(0 if a==b else 1)" (Join-Path $root 'build\tags.json') (Join-Path $root 'data\F4SE\Plugins\Complexion\tags.json')
+if ($LASTEXITCODE) { throw 'the shipped tags.json is not the build''s: run python tools\make_data.py after scripts\build-plugin.ps1' }
 $thumbs = Get-Content (Join-Path $root 'data\F4SE\Plugins\Complexion\thumbs.json') -Raw | ConvertFrom-Json
 foreach ($sex in 'Female', 'Male') {
     if (-not (Test-Path (Join-Path $root "data\Textures\Complexion\Thumbs$($sex)_$($thumbs.build)_0.dds"))) {

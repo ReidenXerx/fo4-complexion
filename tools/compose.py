@@ -7,6 +7,8 @@ This is the REFERENCE implementation. The plugin's C++ composer must give the sa
     0. the hair family (hair_colours): the head hair's, else -- when it is not one "accept" lists -- a percent roll
        walked through "unknown"; from then on a pubic_hair or body_hair template is a candidate only when its
        tagged hair is one the family accepts (one colour per person, owner 2026-10-04)
+    0b. squalor (C-21): one percent roll against the group's squalor -- only a person who lives rough gets a nasty
+       template; and the person's age (old = grey hair) and skin tone keep templates that do not suit them out
     1. the universal layer: for each entry of the sex, in file order, a percent roll; on success one template of
        that kind (pubic hair limited to the group's hair sizes)
     2. the feature count: a percent roll walked through the group's count table, cut to the cap
@@ -82,7 +84,7 @@ def group_names(profiles):
 HAIR_KINDS = ('pubic_hair', 'body_hair')
 
 
-def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona='', hair=''):
+def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona='', hair='', tone=''):
     g = group_def(profiles, group)
     if g.get('untouched'):
         return []
@@ -100,8 +102,20 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona=
                     break
                 roll -= w
         accepted = set(hc['accept'][hair])
-    mine = [t for t in catalog if t['female'] == female
-            and (accepted is None or t['kind'] not in HAIR_KINDS or t.get('hair') in accepted)]
+    # 0b. who they are: rough living, age, skin tone
+    squalid = rng.percent() < g.get('squalor', profiles.get('squalor_default', 30))
+    old = hair == 'grey'
+
+    def suits(t):
+        if accepted is not None and t['kind'] in HAIR_KINDS and t.get('hair') not in accepted:
+            return False
+        if t.get('nasty') and not squalid:
+            return False
+        if t.get('age') == ('young' if old else 'old'):
+            return False
+        return not (tone and t.get('tones') and tone not in t['tones'])
+
+    mine = [t for t in catalog if t['female'] == female and suits(t)]
     picks, used_regions, large = [], set(), False
 
     def take(t, kind):
@@ -117,7 +131,7 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona=
         if len(picks) >= profiles['cap']:
             break
         roll = rng.percent()
-        if roll >= u['percent']:
+        if roll >= u['percent'] * g.get('universal', {}).get(u['kind'], 100) // 100:
             continue
         # Emblems only for members here too: some pubic hair is trimmed into a faction's mark.
         cands = [t for t in mine if t['kind'] == u['kind'] and not adultish(t)
@@ -232,13 +246,16 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona=
 
 def simulate(profiles, catalog, rolls):
     bad = 0
+    nasty = {t['key'] for t in catalog if t.get('nasty')}
     for group in group_names(profiles):
         for female in (True, False):
             counts, kinds, sizes = collections.Counter(), collections.Counter(), collections.Counter()
+            rough = 0
             violations = collections.Counter()
             for s in range(rolls):
                 picks = compose(profiles, catalog, female, group, (hash(group) & 0xFFFF) << 32 | s)
                 counts[len(picks)] += 1
+                rough += any(p['key'] in nasty for p in picks)
                 for p in picks:
                     kinds[p['kind']] += 1
                 if len(picks) > profiles['cap']:
@@ -247,7 +264,7 @@ def simulate(profiles, catalog, rolls):
                     violations['duplicate'] += 1
             dist = ' '.join(f'{k}:{counts[k] * 100 // rolls}%' for k in sorted(counts))
             top = ', '.join(f'{k} {v / rolls:.2f}' for k, v in kinds.most_common(6))
-            print(f'{group:11} {"F" if female else "M"}  overlays {dist:44} per NPC: {top}')
+            print(f'{group:11} {"F" if female else "M"}  nasty {rough * 100 // rolls:3}%  overlays {dist:44} per NPC: {top}')
             for v, c in violations.items():
                 print(f'   VIOLATION {v}: {c}')
                 bad += c
@@ -255,6 +272,7 @@ def simulate(profiles, catalog, rolls):
 
 
 HAIR_DUMP = ('', 'black', 'darkbrown', 'brown', 'lightbrown', 'blond', 'auburn', 'ginger', 'grey')
+TONE_DUMP = ('', 'pale', 'light', 'olive', 'dark')
 
 
 def main():
@@ -278,9 +296,10 @@ def main():
                             # The hair families in turn, and "" (unknown: rolled), one per seed so the file stays
                             # its size while every family is covered across the seeds.
                             hair = HAIR_DUMP[s % len(HAIR_DUMP)]
-                            picks = compose(profiles, catalog, female, group, seed, adult, persona, hair)
+                            tone = TONE_DUMP[(s // 3) % len(TONE_DUMP)]
+                            picks = compose(profiles, catalog, female, group, seed, adult, persona, hair, tone)
                             # Tab-separated: group names ("npc:Piper Wright") and template ids have spaces.
-                            print(f'{group}\t{"f" if female else "m"}\t{seed}\t{int(adult)}\t{persona}\t{hair}\t' +
+                            print(f'{group}\t{"f" if female else "m"}\t{seed}\t{int(adult)}\t{persona}\t{hair}\t{tone}\t' +
                                   ','.join(f'{p["key"]}@{p["priority"]}' for p in picks))
         return
     if a.simulate:

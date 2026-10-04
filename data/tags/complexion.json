@@ -8,7 +8,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "fresh bruises"
+  "note": "fresh bruises",
+  "nasty": true
  },
  "f:Complexion_BruiseFresh_F02": {
   "style": [],
@@ -19,7 +20,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "fresh bruises"
+  "note": "fresh bruises",
+  "nasty": true
  },
  "f:Complexion_BruiseFresh_F03": {
   "style": [],
@@ -30,7 +32,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "fresh bruises"
+  "note": "fresh bruises",
+  "nasty": true
  },
  "m:Complexion_BruiseFresh_M01": {
   "style": [],
@@ -41,7 +44,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "fresh bruises"
+  "note": "fresh bruises",
+  "nasty": true
  },
  "m:Complexion_BruiseFresh_M02": {
   "style": [],
@@ -52,7 +56,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "fresh bruises"
+  "note": "fresh bruises",
+  "nasty": true
  },
  "m:Complexion_BruiseFresh_M03": {
   "style": [],
@@ -63,7 +68,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "fresh bruises"
+  "note": "fresh bruises",
+  "nasty": true
  },
  "f:Complexion_BruiseOld_F01": {
   "style": [],
@@ -74,7 +80,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "fading yellow bruises"
+  "note": "fading yellow bruises",
+  "nasty": true
  },
  "f:Complexion_BruiseOld_F02": {
   "style": [],
@@ -85,7 +92,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "fading yellow bruises"
+  "note": "fading yellow bruises",
+  "nasty": true
  },
  "m:Complexion_BruiseOld_M01": {
   "style": [],
@@ -96,7 +104,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "fading yellow bruises"
+  "note": "fading yellow bruises",
+  "nasty": true
  },
  "m:Complexion_BruiseOld_M02": {
   "style": [],
@@ -107,7 +116,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "fading yellow bruises"
+  "note": "fading yellow bruises",
+  "nasty": true
  },
  "f:Complexion_GrimeLight_F01": {
   "style": [],
@@ -118,7 +128,8 @@
   "kind": "dirt",
   "regions": [],
   "size": "medium",
-  "note": "light ground-in dirt"
+  "note": "light ground-in dirt",
+  "nasty": true
  },
  "f:Complexion_GrimeLight_F02": {
   "style": [],
@@ -129,7 +140,8 @@
   "kind": "dirt",
   "regions": [],
   "size": "medium",
-  "note": "light ground-in dirt"
+  "note": "light ground-in dirt",
+  "nasty": true
  },
  "m:Complexion_GrimeLight_M01": {
   "style": [],
@@ -140,7 +152,8 @@
   "kind": "dirt",
   "regions": [],
   "size": "medium",
-  "note": "light ground-in dirt"
+  "note": "light ground-in dirt",
+  "nasty": true
  },
  "m:Complexion_GrimeLight_M02": {
   "style": [],
@@ -151,7 +164,8 @@
   "kind": "dirt",
   "regions": [],
   "size": "medium",
-  "note": "light ground-in dirt"
+  "note": "light ground-in dirt",
+  "nasty": true
  },
  "f:Complexion_GrimeHeavy_F01": {
   "style": [],
@@ -162,7 +176,8 @@
   "kind": "dirt",
   "regions": [],
   "size": "medium",
-  "note": "heavy grime"
+  "note": "heavy grime",
+  "nasty": true
  },
  "f:Complexion_GrimeHeavy_F02": {
   "style": [],
@@ -173,7 +188,8 @@
   "kind": "dirt",
   "regions": [],
   "size": "medium",
-  "note": "heavy grime"
+  "note": "heavy grime",
+  "nasty": true
  },
  "m:Complexion_GrimeHeavy_M01": {
   "style": [],
@@ -184,7 +200,8 @@
   "kind": "dirt",
   "regions": [],
   "size": "medium",
-  "note": "heavy grime"
+  "note": "heavy grime",
+  "nasty": true
  },
  "m:Complexion_GrimeHeavy_M02": {
   "style": [],
@@ -195,7 +212,8 @@
   "kind": "dirt",
   "regions": [],
   "size": "medium",
-  "note": "heavy grime"
+  "note": "heavy grime",
+  "nasty": true
  },
  "f:Complexion_Blood_F01": {
   "style": [],
@@ -206,7 +224,8 @@
   "kind": "blood",
   "regions": [],
   "size": "medium",
-  "note": "dried blood, drips, spatter"
+  "note": "dried blood, drips, spatter",
+  "nasty": true
  },
  "f:Complexion_Blood_F02": {
   "style": [],
@@ -217,7 +236,8 @@
   "kind": "blood",
   "regions": [],
   "size": "medium",
-  "note": "dried blood, drips, spatter"
+  "note": "dried blood, drips, spatter",
+  "nasty": true
  },
  "f:Complexion_Blood_F03": {
   "style": [],
@@ -228,7 +248,8 @@
   "kind": "blood",
   "regions": [],
   "size": "medium",
-  "note": "dried blood, drips, spatter"
+  "note": "dried blood, drips, spatter",
+  "nasty": true
  },
  "m:Complexion_Blood_M01": {
   "style": [],
@@ -239,7 +260,8 @@
   "kind": "blood",
   "regions": [],
   "size": "medium",
-  "note": "dried blood, drips, spatter"
+  "note": "dried blood, drips, spatter",
+  "nasty": true
  },
  "m:Complexion_Blood_M02": {
   "style": [],
@@ -250,7 +272,8 @@
   "kind": "blood",
   "regions": [],
   "size": "medium",
-  "note": "dried blood, drips, spatter"
+  "note": "dried blood, drips, spatter",
+  "nasty": true
  },
  "m:Complexion_Blood_M03": {
   "style": [],
@@ -261,7 +284,8 @@
   "kind": "blood",
   "regions": [],
   "size": "medium",
-  "note": "dried blood, drips, spatter"
+  "note": "dried blood, drips, spatter",
+  "nasty": true
  },
  "f:Complexion_LashesFresh_F01": {
   "style": [],
@@ -274,7 +298,8 @@
    "back"
   ],
   "size": "large",
-  "note": "fresh whip welts"
+  "note": "fresh whip welts",
+  "nasty": true
  },
  "f:Complexion_LashesFresh_F02": {
   "style": [],
@@ -287,7 +312,8 @@
    "back"
   ],
   "size": "large",
-  "note": "fresh whip welts"
+  "note": "fresh whip welts",
+  "nasty": true
  },
  "m:Complexion_LashesFresh_M01": {
   "style": [],
@@ -300,7 +326,8 @@
    "back"
   ],
   "size": "large",
-  "note": "fresh whip welts"
+  "note": "fresh whip welts",
+  "nasty": true
  },
  "m:Complexion_LashesFresh_M02": {
   "style": [],
@@ -313,7 +340,8 @@
    "back"
   ],
   "size": "large",
-  "note": "fresh whip welts"
+  "note": "fresh whip welts",
+  "nasty": true
  },
  "f:Complexion_LashesHealed_F01": {
   "style": [],
@@ -652,7 +680,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "sun freckles"
+  "note": "sun freckles",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_Freckles_F02": {
   "style": [],
@@ -663,7 +695,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "sun freckles"
+  "note": "sun freckles",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_Freckles_F03": {
   "style": [],
@@ -674,7 +710,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "sun freckles"
+  "note": "sun freckles",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_Freckles_M01": {
   "style": [],
@@ -685,7 +725,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "sun freckles"
+  "note": "sun freckles",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_Freckles_M02": {
   "style": [],
@@ -696,7 +740,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "sun freckles"
+  "note": "sun freckles",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_Birthmark_F01": {
   "style": [],
@@ -872,7 +920,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "pimples"
+  "note": "pimples",
+  "nasty": true,
+  "age": "young"
  },
  "f:Complexion_Pimples_F02": {
   "style": [],
@@ -883,7 +933,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "pimples"
+  "note": "pimples",
+  "nasty": true,
+  "age": "young"
  },
  "m:Complexion_Pimples_M01": {
   "style": [],
@@ -894,7 +946,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "pimples"
+  "note": "pimples",
+  "nasty": true,
+  "age": "young"
  },
  "m:Complexion_Pimples_M02": {
   "style": [],
@@ -905,7 +959,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "pimples"
+  "note": "pimples",
+  "nasty": true,
+  "age": "young"
  },
  "f:Complexion_NipplesPink_F01": {
   "style": [],
@@ -2837,7 +2893,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "rope marks around the wrists"
+  "note": "rope marks around the wrists",
+  "nasty": true
  },
  "f:Complexion_RopeWrists_F02": {
   "style": [],
@@ -2848,7 +2905,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "rope marks around the wrists"
+  "note": "rope marks around the wrists",
+  "nasty": true
  },
  "m:Complexion_RopeWrists_M01": {
   "style": [],
@@ -2859,7 +2917,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "rope marks around the wrists"
+  "note": "rope marks around the wrists",
+  "nasty": true
  },
  "m:Complexion_RopeWrists_M02": {
   "style": [],
@@ -2870,7 +2929,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "rope marks around the wrists"
+  "note": "rope marks around the wrists",
+  "nasty": true
  },
  "f:Complexion_RopeWristsHealed_F01": {
   "style": [],
@@ -2881,7 +2941,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "old rope marks on the wrists"
+  "note": "old rope marks on the wrists",
+  "nasty": true
  },
  "m:Complexion_RopeWristsHealed_M01": {
   "style": [],
@@ -2892,7 +2953,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "old rope marks on the wrists"
+  "note": "old rope marks on the wrists",
+  "nasty": true
  },
  "f:Complexion_RopeAnkles_F01": {
   "style": [],
@@ -2903,7 +2965,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "rope marks around the ankles"
+  "note": "rope marks around the ankles",
+  "nasty": true
  },
  "m:Complexion_RopeAnkles_M01": {
   "style": [],
@@ -2914,7 +2977,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "rope marks around the ankles"
+  "note": "rope marks around the ankles",
+  "nasty": true
  },
  "f:Complexion_ShackleAnkles_F01": {
   "style": [],
@@ -2925,7 +2989,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "shackle chafe on the ankles"
+  "note": "shackle chafe on the ankles",
+  "nasty": true
  },
  "m:Complexion_ShackleAnkles_M01": {
   "style": [],
@@ -2936,7 +3001,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "shackle chafe on the ankles"
+  "note": "shackle chafe on the ankles",
+  "nasty": true
  },
  "f:Complexion_ShackleWrists_F01": {
   "style": [],
@@ -2947,7 +3013,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "shackle chafe on the wrists"
+  "note": "shackle chafe on the wrists",
+  "nasty": true
  },
  "m:Complexion_ShackleWrists_M01": {
   "style": [],
@@ -2958,7 +3025,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "shackle chafe on the wrists"
+  "note": "shackle chafe on the wrists",
+  "nasty": true
  },
  "f:Complexion_Collar_F01": {
   "style": [
@@ -2971,7 +3039,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "a collar's chafe around the neck"
+  "note": "a collar's chafe around the neck",
+  "nasty": true
  },
  "m:Complexion_Collar_M01": {
   "style": [
@@ -2984,7 +3053,8 @@
   "kind": "marks",
   "regions": [],
   "size": "small",
-  "note": "a collar's chafe around the neck"
+  "note": "a collar's chafe around the neck",
+  "nasty": true
  },
  "f:Complexion_GripArms_F01": {
   "style": [],
@@ -2995,7 +3065,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "finger bruises around the upper arms"
+  "note": "finger bruises around the upper arms",
+  "nasty": true
  },
  "f:Complexion_GripArms_F02": {
   "style": [],
@@ -3006,7 +3077,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "finger bruises around the upper arms"
+  "note": "finger bruises around the upper arms",
+  "nasty": true
  },
  "m:Complexion_GripArms_M01": {
   "style": [],
@@ -3017,7 +3089,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "finger bruises around the upper arms"
+  "note": "finger bruises around the upper arms",
+  "nasty": true
  },
  "m:Complexion_GripArms_M02": {
   "style": [],
@@ -3028,7 +3101,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "finger bruises around the upper arms"
+  "note": "finger bruises around the upper arms",
+  "nasty": true
  },
  "f:Complexion_GripHips_F01": {
   "style": [
@@ -3042,7 +3116,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "finger bruises on the hips, held from behind"
+  "note": "finger bruises on the hips, held from behind",
+  "nasty": true
  },
  "m:Complexion_GripHips_M01": {
   "style": [
@@ -3056,7 +3131,8 @@
   "kind": "bruise",
   "regions": [],
   "size": "small",
-  "note": "finger bruises on the hips, held from behind"
+  "note": "finger bruises on the hips, held from behind",
+  "nasty": true
  },
  "f:Complexion_CigBurns_F01": {
   "style": [
@@ -3069,7 +3145,8 @@
   "kind": "burn",
   "regions": [],
   "size": "tiny",
-  "note": "fresh cigarette burns"
+  "note": "fresh cigarette burns",
+  "nasty": true
  },
  "f:Complexion_CigBurns_F02": {
   "style": [
@@ -3082,7 +3159,8 @@
   "kind": "burn",
   "regions": [],
   "size": "tiny",
-  "note": "fresh cigarette burns"
+  "note": "fresh cigarette burns",
+  "nasty": true
  },
  "m:Complexion_CigBurns_M01": {
   "style": [
@@ -3095,7 +3173,8 @@
   "kind": "burn",
   "regions": [],
   "size": "tiny",
-  "note": "fresh cigarette burns"
+  "note": "fresh cigarette burns",
+  "nasty": true
  },
  "m:Complexion_CigBurns_M02": {
   "style": [
@@ -3108,7 +3187,8 @@
   "kind": "burn",
   "regions": [],
   "size": "tiny",
-  "note": "fresh cigarette burns"
+  "note": "fresh cigarette burns",
+  "nasty": true
  },
  "f:Complexion_CigBurnsHealed_F01": {
   "style": [],
@@ -3587,7 +3667,8 @@
   "kind": "wound",
   "regions": [],
   "size": "small",
-  "note": "the Disciples' ritual cuts, fresh"
+  "note": "the Disciples' ritual cuts, fresh",
+  "nasty": true
  },
  "m:Complexion_RitualCutsFresh_M01": {
   "style": [],
@@ -3598,7 +3679,8 @@
   "kind": "wound",
   "regions": [],
   "size": "small",
-  "note": "the Disciples' ritual cuts, fresh"
+  "note": "the Disciples' ritual cuts, fresh",
+  "nasty": true
  },
  "f:Complexion_BloodyHands_F01": {
   "style": [],
@@ -3609,7 +3691,8 @@
   "kind": "blood",
   "regions": [],
   "size": "medium",
-  "note": "bloody handprints on the chest and belly"
+  "note": "bloody handprints on the chest and belly",
+  "nasty": true
  },
  "m:Complexion_BloodyHands_M01": {
   "style": [],
@@ -3620,7 +3703,8 @@
   "kind": "blood",
   "regions": [],
   "size": "medium",
-  "note": "bloody handprints on the chest and belly"
+  "note": "bloody handprints on the chest and belly",
+  "nasty": true
  },
  "f:Complexion_BloodyHandsThigh_F01": {
   "style": [],
@@ -3631,7 +3715,8 @@
   "kind": "blood",
   "regions": [],
   "size": "medium",
-  "note": "bloody handprints on the chest and a thigh"
+  "note": "bloody handprints on the chest and a thigh",
+  "nasty": true
  },
  "m:Complexion_BloodyHandsThigh_M01": {
   "style": [],
@@ -3642,7 +3727,8 @@
   "kind": "blood",
   "regions": [],
   "size": "medium",
-  "note": "bloody handprints on the chest and a thigh"
+  "note": "bloody handprints on the chest and a thigh",
+  "nasty": true
  },
  "f:Complexion_RadSores_F01": {
   "style": [],
@@ -3653,7 +3739,8 @@
   "kind": "burn",
   "regions": [],
   "size": "medium",
-  "note": "radiation sores"
+  "note": "radiation sores",
+  "nasty": true
  },
  "f:Complexion_RadSores_F02": {
   "style": [],
@@ -3664,7 +3751,8 @@
   "kind": "burn",
   "regions": [],
   "size": "medium",
-  "note": "radiation sores"
+  "note": "radiation sores",
+  "nasty": true
  },
  "m:Complexion_RadSores_M01": {
   "style": [],
@@ -3675,7 +3763,8 @@
   "kind": "burn",
   "regions": [],
   "size": "medium",
-  "note": "radiation sores"
+  "note": "radiation sores",
+  "nasty": true
  },
  "m:Complexion_RadSores_M02": {
   "style": [],
@@ -3686,7 +3775,8 @@
   "kind": "burn",
   "regions": [],
   "size": "medium",
-  "note": "radiation sores"
+  "note": "radiation sores",
+  "nasty": true
  },
  "f:Complexion_AtomScar_F01": {
   "style": [],
@@ -4223,7 +4313,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "a farmer's tan"
+  "note": "a farmer's tan",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "m:Complexion_TanTshirt_M01": {
   "style": [],
@@ -4234,7 +4329,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "a farmer's tan"
+  "note": "a farmer's tan",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "f:Complexion_TanTank_F01": {
   "style": [],
@@ -4245,7 +4345,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "tank-top tan lines"
+  "note": "tank-top tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "m:Complexion_TanTank_M01": {
   "style": [],
@@ -4256,7 +4361,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "tank-top tan lines"
+  "note": "tank-top tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "f:Complexion_TanBikini_F01": {
   "style": [],
@@ -4267,7 +4377,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "bikini tan lines"
+  "note": "bikini tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "m:Complexion_TanShorts_M01": {
   "style": [],
@@ -4278,7 +4393,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "a tan with shorts lines"
+  "note": "a tan with shorts lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "f:Complexion_Sunburn_F01": {
   "style": [],
@@ -4289,7 +4409,11 @@
   "kind": "tan",
   "regions": [],
   "size": "large",
-  "note": "sunburn, peeling"
+  "note": "sunburn, peeling",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_Sunburn_F02": {
   "style": [],
@@ -4300,7 +4424,11 @@
   "kind": "tan",
   "regions": [],
   "size": "large",
-  "note": "sunburn, peeling"
+  "note": "sunburn, peeling",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_Sunburn_M01": {
   "style": [],
@@ -4311,7 +4439,11 @@
   "kind": "tan",
   "regions": [],
   "size": "large",
-  "note": "sunburn, peeling"
+  "note": "sunburn, peeling",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_Sunburn_M02": {
   "style": [],
@@ -4322,7 +4454,11 @@
   "kind": "tan",
   "regions": [],
   "size": "large",
-  "note": "sunburn, peeling"
+  "note": "sunburn, peeling",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_Mud_F01": {
   "style": [],
@@ -4333,7 +4469,8 @@
   "kind": "dirt",
   "regions": [],
   "size": "medium",
-  "note": "mud on the legs"
+  "note": "mud on the legs",
+  "nasty": true
  },
  "f:Complexion_Mud_F02": {
   "style": [],
@@ -4344,7 +4481,8 @@
   "kind": "dirt",
   "regions": [],
   "size": "medium",
-  "note": "mud on the legs"
+  "note": "mud on the legs",
+  "nasty": true
  },
  "m:Complexion_Mud_M01": {
   "style": [],
@@ -4355,7 +4493,8 @@
   "kind": "dirt",
   "regions": [],
   "size": "medium",
-  "note": "mud on the legs"
+  "note": "mud on the legs",
+  "nasty": true
  },
  "m:Complexion_Mud_M02": {
   "style": [],
@@ -4366,7 +4505,8 @@
   "kind": "dirt",
   "regions": [],
   "size": "medium",
-  "note": "mud on the legs"
+  "note": "mud on the legs",
+  "nasty": true
  },
  "f:Complexion_AgeSpots_F01": {
   "style": [],
@@ -4377,7 +4517,8 @@
   "kind": "skin",
   "regions": [],
   "size": "small",
-  "note": "age spots"
+  "note": "age spots",
+  "age": "old"
  },
  "f:Complexion_AgeSpots_F02": {
   "style": [],
@@ -4388,7 +4529,8 @@
   "kind": "skin",
   "regions": [],
   "size": "small",
-  "note": "age spots"
+  "note": "age spots",
+  "age": "old"
  },
  "m:Complexion_AgeSpots_M01": {
   "style": [],
@@ -4399,7 +4541,8 @@
   "kind": "skin",
   "regions": [],
   "size": "small",
-  "note": "age spots"
+  "note": "age spots",
+  "age": "old"
  },
  "m:Complexion_AgeSpots_M02": {
   "style": [],
@@ -4410,7 +4553,8 @@
   "kind": "skin",
   "regions": [],
   "size": "small",
-  "note": "age spots"
+  "note": "age spots",
+  "age": "old"
  },
  "f:Complexion_Varicose_F01": {
   "style": [],
@@ -4421,7 +4565,8 @@
   "kind": "skin",
   "regions": [],
   "size": "small",
-  "note": "varicose and spider veins"
+  "note": "varicose and spider veins",
+  "age": "old"
  },
  "m:Complexion_Varicose_M01": {
   "style": [],
@@ -4432,7 +4577,8 @@
   "kind": "skin",
   "regions": [],
   "size": "small",
-  "note": "varicose and spider veins"
+  "note": "varicose and spider veins",
+  "age": "old"
  },
  "f:Complexion_Cellulite_F01": {
   "style": [],
@@ -6883,7 +7029,8 @@
   "kind": "mole",
   "regions": [],
   "size": "tiny",
-  "note": "tiny red cherry angiomas"
+  "note": "tiny red cherry angiomas",
+  "age": "old"
  },
  "f:Complexion_CherryAngiomas_F02": {
   "style": [],
@@ -6894,7 +7041,8 @@
   "kind": "mole",
   "regions": [],
   "size": "tiny",
-  "note": "tiny red cherry angiomas"
+  "note": "tiny red cherry angiomas",
+  "age": "old"
  },
  "m:Complexion_CherryAngiomas_M01": {
   "style": [],
@@ -6905,7 +7053,8 @@
   "kind": "mole",
   "regions": [],
   "size": "tiny",
-  "note": "tiny red cherry angiomas"
+  "note": "tiny red cherry angiomas",
+  "age": "old"
  },
  "m:Complexion_CherryAngiomas_M02": {
   "style": [],
@@ -6916,7 +7065,8 @@
   "kind": "mole",
   "regions": [],
   "size": "tiny",
-  "note": "tiny red cherry angiomas"
+  "note": "tiny red cherry angiomas",
+  "age": "old"
  },
  "f:Complexion_SunSpots_F01": {
   "style": [],
@@ -6927,7 +7077,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "small",
-  "note": "sun spots on the shoulders"
+  "note": "sun spots on the shoulders",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_SunSpots_M01": {
   "style": [],
@@ -6938,7 +7092,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "small",
-  "note": "sun spots on the shoulders"
+  "note": "sun spots on the shoulders",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_SunSpotsHeavy_F01": {
   "style": [],
@@ -6949,7 +7107,12 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "heavy sun spots"
+  "note": "heavy sun spots",
+  "age": "old",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_SunSpotsHeavy_M01": {
   "style": [],
@@ -6960,7 +7123,12 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "heavy sun spots"
+  "note": "heavy sun spots",
+  "age": "old",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_PortWine_F01": {
   "style": [],
@@ -7083,7 +7251,11 @@
    "lower_back"
   ],
   "size": "medium",
-  "note": "a slate-blue birthmark low on the back"
+  "note": "a slate-blue birthmark low on the back",
+  "tones": [
+   "olive",
+   "dark"
+  ]
  },
  "m:Complexion_MongolianSpot_M01": {
   "style": [],
@@ -7096,7 +7268,11 @@
    "lower_back"
   ],
   "size": "medium",
-  "note": "a slate-blue birthmark low on the back"
+  "note": "a slate-blue birthmark low on the back",
+  "tones": [
+   "olive",
+   "dark"
+  ]
  },
  "f:Complexion_LineaNigra_F01": {
   "style": [],
@@ -7129,7 +7305,11 @@
   "kind": "skin",
   "regions": [],
   "size": "medium",
-  "note": "blotchy redness on the chest"
+  "note": "blotchy redness on the chest",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_FlushChest_F02": {
   "style": [],
@@ -7140,7 +7320,11 @@
   "kind": "skin",
   "regions": [],
   "size": "medium",
-  "note": "blotchy redness on the chest"
+  "note": "blotchy redness on the chest",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_FlushChest_M01": {
   "style": [],
@@ -7151,7 +7335,11 @@
   "kind": "skin",
   "regions": [],
   "size": "medium",
-  "note": "blotchy redness on the chest"
+  "note": "blotchy redness on the chest",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_FlushChest_M02": {
   "style": [],
@@ -7162,7 +7350,11 @@
   "kind": "skin",
   "regions": [],
   "size": "medium",
-  "note": "blotchy redness on the chest"
+  "note": "blotchy redness on the chest",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_FlushButtocks_F01": {
   "style": [],
@@ -7173,7 +7365,11 @@
   "kind": "skin",
   "regions": [],
   "size": "medium",
-  "note": "blotchy redness on the buttocks"
+  "note": "blotchy redness on the buttocks",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_FlushButtocks_M01": {
   "style": [],
@@ -7184,7 +7380,11 @@
   "kind": "skin",
   "regions": [],
   "size": "medium",
-  "note": "blotchy redness on the buttocks"
+  "note": "blotchy redness on the buttocks",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_KeratosisArms_F01": {
   "style": [],
@@ -7658,7 +7858,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "freckles on the shoulders"
+  "note": "freckles on the shoulders",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_FrecklesShoulders_M01": {
   "style": [],
@@ -7669,7 +7873,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "freckles on the shoulders"
+  "note": "freckles on the shoulders",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_FrecklesDense_F01": {
   "style": [],
@@ -7680,7 +7888,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "dense freckles"
+  "note": "dense freckles",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_FrecklesDense_M01": {
   "style": [],
@@ -7691,7 +7903,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "dense freckles"
+  "note": "dense freckles",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_FrecklesFaint_F01": {
   "style": [],
@@ -7702,7 +7918,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "a few faint freckles"
+  "note": "a few faint freckles",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_FrecklesFaint_M01": {
   "style": [],
@@ -7713,7 +7933,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "a few faint freckles"
+  "note": "a few faint freckles",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_FrecklesArms_F01": {
   "style": [],
@@ -7724,7 +7948,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "freckled arms"
+  "note": "freckled arms",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_FrecklesArms_M01": {
   "style": [],
@@ -7735,7 +7963,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "freckled arms"
+  "note": "freckled arms",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_FrecklesEverywhere_F01": {
   "style": [],
@@ -7746,7 +7978,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "freckles all over"
+  "note": "freckles all over",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_FrecklesEverywhere_M01": {
   "style": [],
@@ -7757,7 +7993,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "freckles all over"
+  "note": "freckles all over",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_FrecklesGinger_F01": {
   "style": [],
@@ -7768,7 +8008,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "ginger freckles all over"
+  "note": "ginger freckles all over",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_FrecklesGinger_M01": {
   "style": [],
@@ -7779,7 +8023,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "ginger freckles all over"
+  "note": "ginger freckles all over",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_FrecklesDark_F01": {
   "style": [],
@@ -7790,7 +8038,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "darker freckles"
+  "note": "darker freckles",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_FrecklesDark_M01": {
   "style": [],
@@ -7801,7 +8053,11 @@
   "kind": "freckles",
   "regions": [],
   "size": "medium",
-  "note": "darker freckles"
+  "note": "darker freckles",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_PoresFine_F01": {
   "style": [],
@@ -8076,7 +8332,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "acne, back"
+  "note": "acne, back",
+  "nasty": true,
+  "age": "young"
  },
  "m:Complexion_AcneBack_M01": {
   "style": [],
@@ -8087,7 +8345,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "acne, back"
+  "note": "acne, back",
+  "nasty": true,
+  "age": "young"
  },
  "f:Complexion_AcneChest_F01": {
   "style": [],
@@ -8098,7 +8358,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "acne, chest"
+  "note": "acne, chest",
+  "nasty": true,
+  "age": "young"
  },
  "m:Complexion_AcneChest_M01": {
   "style": [],
@@ -8109,7 +8371,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "acne, chest"
+  "note": "acne, chest",
+  "nasty": true,
+  "age": "young"
  },
  "f:Complexion_AcneButtocks_F01": {
   "style": [],
@@ -8120,7 +8384,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "acne, buttocks"
+  "note": "acne, buttocks",
+  "nasty": true,
+  "age": "young"
  },
  "m:Complexion_AcneButtocks_M01": {
   "style": [],
@@ -8131,7 +8397,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "acne, buttocks"
+  "note": "acne, buttocks",
+  "nasty": true,
+  "age": "young"
  },
  "f:Complexion_AcneShoulders_F01": {
   "style": [],
@@ -8142,7 +8410,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "acne, shoulders"
+  "note": "acne, shoulders",
+  "nasty": true,
+  "age": "young"
  },
  "m:Complexion_AcneShoulders_M01": {
   "style": [],
@@ -8153,7 +8423,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "acne, shoulders"
+  "note": "acne, shoulders",
+  "nasty": true,
+  "age": "young"
  },
  "f:Complexion_AcneBackLight_F01": {
   "style": [],
@@ -8164,7 +8436,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "acne, back"
+  "note": "acne, back",
+  "nasty": true,
+  "age": "young"
  },
  "m:Complexion_AcneBackLight_M01": {
   "style": [],
@@ -8175,7 +8449,9 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "acne, back"
+  "note": "acne, back",
+  "nasty": true,
+  "age": "young"
  },
  "f:Complexion_PubicNaturalGinger_F01": {
   "style": [],
@@ -8854,7 +9130,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "tshirt tan lines"
+  "note": "tshirt tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "m:Complexion_TanTshirtLight_M01": {
   "style": [],
@@ -8865,7 +9146,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "tshirt tan lines"
+  "note": "tshirt tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "f:Complexion_TanTshirtDark_F01": {
   "style": [],
@@ -8876,7 +9162,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "tshirt tan lines"
+  "note": "tshirt tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "m:Complexion_TanTshirtDark_M01": {
   "style": [],
@@ -8887,7 +9178,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "tshirt tan lines"
+  "note": "tshirt tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "f:Complexion_TanSleeve34_F01": {
   "style": [],
@@ -8898,7 +9194,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "sleeve34 tan lines"
+  "note": "sleeve34 tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "m:Complexion_TanSleeve34_M01": {
   "style": [],
@@ -8909,7 +9210,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "sleeve34 tan lines"
+  "note": "sleeve34 tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "f:Complexion_TanTankLight_F01": {
   "style": [],
@@ -8920,7 +9226,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "tank tan lines"
+  "note": "tank tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "m:Complexion_TanTankLight_M01": {
   "style": [],
@@ -8931,7 +9242,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "tank tan lines"
+  "note": "tank tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "f:Complexion_TanTankDark_F01": {
   "style": [],
@@ -8942,7 +9258,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "tank tan lines"
+  "note": "tank tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "m:Complexion_TanTankDark_M01": {
   "style": [],
@@ -8953,7 +9274,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "tank tan lines"
+  "note": "tank tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "f:Complexion_TanBikiniLight_F01": {
   "style": [],
@@ -8964,7 +9290,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "bikini tan lines"
+  "note": "bikini tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "f:Complexion_TanBikiniDark_F01": {
   "style": [],
@@ -8975,7 +9306,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "bikini tan lines"
+  "note": "bikini tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "f:Complexion_TanOnepiece_F01": {
   "style": [],
@@ -8986,7 +9322,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "onepiece tan lines"
+  "note": "onepiece tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "f:Complexion_TanOnepieceDark_F01": {
   "style": [],
@@ -8997,7 +9338,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "onepiece tan lines"
+  "note": "onepiece tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "m:Complexion_TanShortsDark_M01": {
   "style": [],
@@ -9008,7 +9354,12 @@
   "kind": "tan",
   "regions": [],
   "size": "full",
-  "note": "shorts tan lines"
+  "note": "shorts tan lines",
+  "tones": [
+   "pale",
+   "light",
+   "olive"
+  ]
  },
  "f:Complexion_SunburnMild_F01": {
   "style": [],
@@ -9019,7 +9370,11 @@
   "kind": "tan",
   "regions": [],
   "size": "large",
-  "note": "mild sunburn"
+  "note": "mild sunburn",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_SunburnMild_M01": {
   "style": [],
@@ -9030,7 +9385,11 @@
   "kind": "tan",
   "regions": [],
   "size": "large",
-  "note": "mild sunburn"
+  "note": "mild sunburn",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_SunburnSevere_F01": {
   "style": [],
@@ -9041,7 +9400,11 @@
   "kind": "tan",
   "regions": [],
   "size": "large",
-  "note": "severe sunburn, peeling"
+  "note": "severe sunburn, peeling",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "m:Complexion_SunburnSevere_M01": {
   "style": [],
@@ -9052,7 +9415,11 @@
   "kind": "tan",
   "regions": [],
   "size": "large",
-  "note": "severe sunburn, peeling"
+  "note": "severe sunburn, peeling",
+  "tones": [
+   "pale",
+   "light"
+  ]
  },
  "f:Complexion_AgeSpotsHeavy_F01": {
   "style": [],
@@ -9063,7 +9430,8 @@
   "kind": "skin",
   "regions": [],
   "size": "medium",
-  "note": "heavy age spots"
+  "note": "heavy age spots",
+  "age": "old"
  },
  "m:Complexion_AgeSpotsHeavy_M01": {
   "style": [],
@@ -9074,7 +9442,8 @@
   "kind": "skin",
   "regions": [],
   "size": "medium",
-  "note": "heavy age spots"
+  "note": "heavy age spots",
+  "age": "old"
  },
  "f:Complexion_VaricoseHeavy_F01": {
   "style": [],
@@ -9085,7 +9454,8 @@
   "kind": "skin",
   "regions": [],
   "size": "small",
-  "note": "varicose veins"
+  "note": "varicose veins",
+  "age": "old"
  },
  "m:Complexion_VaricoseHeavy_M01": {
   "style": [],
@@ -9096,7 +9466,8 @@
   "kind": "skin",
   "regions": [],
   "size": "small",
-  "note": "varicose veins"
+  "note": "varicose veins",
+  "age": "old"
  },
  "f:Complexion_CelluliteMore_F01": {
   "style": [],

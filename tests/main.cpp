@@ -66,7 +66,7 @@ namespace
 				}
 				at = tab + 1;
 			}
-			if (cols.size() != 7) {
+			if (cols.size() != 8) {
 				std::println("bad line: {}", line);
 				return 1;
 			}
@@ -76,14 +76,15 @@ namespace
 			const int     adult = std::stoi(cols[3]);
 			const auto&   persona = cols[4];
 			const auto&   hair = cols[5];
-			const auto&   picks = cols[6];
+			const auto&   tone = cols[6];
+			const auto&   picks = cols[7];
 			const auto* g = profiles.Find(group);
 			if (!g) {
 				std::println("no group {}", group);
 				return 1;
 			}
 			std::string mine;
-			for (const auto& p : CX::Compose(profiles, catalog, sex == "f", *g, seed, adult != 0, persona, hair)) {
+			for (const auto& p : CX::Compose(profiles, catalog, sex == "f", *g, seed, adult != 0, persona, hair, tone)) {
 				mine += std::format("{}{}@{}", mine.empty() ? "" : ",", p.key, p.priority);
 			}
 			++lines;
@@ -169,6 +170,28 @@ namespace
 			}
 		}
 		Check(hairPicks > 1000, "hair is still handed out in every family");
+
+		// C-21: nasty marks only for people living rough (squalor 0 never), age and skin tone respected.
+		const auto find = [&](const CX::Pick& a_p) { return &*std::ranges::find(catalog, a_p.key, &CX::Template::key); };
+		std::size_t roughRaiders = 0;
+		for (std::uint64_t seed = 1; seed < 400; ++seed) {
+			for (const auto* name : { "covenant", "institute" }) {
+				for (const auto& p : CX::Compose(profiles, catalog, seed % 2 == 0, *profiles.Find(name), seed * 7919, true, {}, "brown", "light")) {
+					Check(!find(p)->nasty, std::format("{}: squalor 0, never a nasty mark ({})", name, p.key));
+				}
+			}
+			for (const auto& p : CX::Compose(profiles, catalog, seed % 2 == 0, *profiles.Find("raiders"), seed * 7919, true, {}, "brown", "light")) {
+				roughRaiders += find(p)->nasty ? 1 : 0;
+			}
+			for (const auto& p : CX::Compose(profiles, catalog, seed % 2 == 0, *profiles.Find("settlers"), seed * 7919, true, {}, "grey", "dark")) {
+				Check(find(p)->age != "young", "grey hair: no acne");
+				Check(find(p)->tones.empty() || std::ranges::find(find(p)->tones, "dark") != find(p)->tones.end(), "dark skin: no freckles or sunburn");
+			}
+			for (const auto& p : CX::Compose(profiles, catalog, seed % 2 == 0, *profiles.Find("settlers"), seed * 7919, true, {}, "brown", "pale")) {
+				Check(find(p)->age != "old", "not grey: no age spots");
+			}
+		}
+		Check(roughRaiders > 50, "raiders still get grime, blood and wounds");
 
 		// The same seed gives the same look.
 		Check(CX::Compose(profiles, catalog, true, *raiders, 42, true).size() ==
@@ -315,16 +338,16 @@ namespace
 			h.SetData(a_profiles, a_catalog);
 			Check(h.Load(v3, {}), "a v3 co-save loads");
 			h.Seen(CX::Facts{ 0x7001, 0x8000 + 0x7001, true, "raiders", "Clash", "", "" });
-			Check(h.RecordFor(0x7001)->picks.front().key == ginger->key, "unknown hair: an old look is left as it is");
-			h.Seen(CX::Facts{ 0x7001, 0x8000 + 0x7001, true, "raiders", "Clash", "", "black" });
+			Check(h.RecordFor(0x7001)->picks.front().key == ginger->key, "facts not read yet (no tone): an old look is left as it is");
+			h.Seen(CX::Facts{ 0x7001, 0x8000 + 0x7001, true, "raiders", "Clash", "", "black", "light" });
 			const auto clash = h.RecordFor(0x7001);
 			Check(!clash->applied && std::ranges::none_of(clash->picks, [&](const CX::Pick& p) { return p.key == ginger->key; }),
 				"ginger pubic hair on a black-haired woman is decided again");
-			h.Seen(CX::Facts{ 0x7002, 0x8000 + 0x7002, true, "raiders", "Match", "", "black" });
+			h.Seen(CX::Facts{ 0x7002, 0x8000 + 0x7002, true, "raiders", "Match", "", "black", "light" });
 			Check(h.RecordFor(0x7002)->applied && h.RecordFor(0x7002)->picks.front().key == black->key, "a matching old look is kept");
 			CX::Director k;
 			k.SetData(a_profiles, a_catalog);
-			Check(k.Load(h.Save(), {}) && k.RecordFor(0x7001)->hair == "black" && k.RecordFor(0x7001)->hairChecked,
+			Check(k.Load(h.Save(), {}) && k.RecordFor(0x7001)->hair == "black" && k.RecordFor(0x7001)->tone == "light" && k.RecordFor(0x7001)->checked,
 				"the hair family survives a v4 co-save");
 		}
 

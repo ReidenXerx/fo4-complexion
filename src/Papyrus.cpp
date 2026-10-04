@@ -175,7 +175,8 @@ namespace CX::Papyrus
 		// Random in the window matches their head hair too (a record's own decision, base form data: read-only).
 		Str WindowBegin(std::monostate, std::int32_t a_ref, bool a_female)
 		{
-			return Str{ D().WindowBegin(Id(a_ref), a_female, Game::HairOf(Game::ActorFor(Id(a_ref)))) };
+			auto* actor = Game::ActorFor(Id(a_ref));
+			return Str{ D().WindowBegin(Id(a_ref), a_female, Game::HairOf(actor), Game::ToneOfActor(actor)) };
 		}
 		void WindowEnd(std::monostate) { D().WindowEnd(); }
 		Str  WindowBuild(std::monostate) { return Str{ D().ThumbBuild() }; }

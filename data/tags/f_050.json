@@ -23,7 +23,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "body skin texture pores; grime"
+  "note": "body skin texture pores; grime",
+  "nasty": true
  },
  "f:SkinTexture_04": {
   "kind": "dirt",
@@ -36,7 +37,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "red marks and fine veins; grime"
+  "note": "red marks and fine veins; grime",
+  "nasty": true
  },
  "f:SkinTexture_05": {
   "kind": "skin",
@@ -75,7 +77,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "mottled body skin; grime"
+  "note": "mottled body skin; grime",
+  "nasty": true
  },
  "f:SkinTexture_08": {
   "kind": "dirt",
@@ -88,7 +91,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "body skin texture pores; grime"
+  "note": "body skin texture pores; grime",
+  "nasty": true
  },
  "f:SkinTexture_09": {
   "kind": "skin",
@@ -127,7 +131,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "body skin texture pores; grime"
+  "note": "body skin texture pores; grime",
+  "nasty": true
  },
  "f:SkinTexture_12": {
   "kind": "dirt",
@@ -140,7 +145,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "poor",
-  "note": "blurry dark blotches; grime"
+  "note": "blurry dark blotches; grime",
+  "nasty": true
  },
  "f:SkinTexture_13": {
   "kind": "skin",
@@ -179,7 +185,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "noisy grunge skin"
+  "note": "noisy grunge skin",
+  "nasty": true
  },
  "f:SkinTexture_16": {
   "kind": "skin",
@@ -205,6 +212,7 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "body skin texture pores; grime"
+  "note": "body skin texture pores; grime",
+  "nasty": true
  }
 }

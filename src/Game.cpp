@@ -255,6 +255,28 @@ namespace CX::Game
 			return nullptr;
 		}
 
+		// Their skin tone from the record's body tint (TESNPC::bodyTintColor, the QNAM the game tints the body
+		// with), up the face template chain: pale, light, olive or dark; "" when not read. Thresholds from the
+		// game's own records: Cait 0.97 and the default 0.95 pale, Deacon 0.85 light, Amari 0.72 olive, Preston 0.56.
+		std::string ToneOf(RE::TESNPC* a_npc)
+		{
+			if (g_layout != Layout::kGood) {
+				return {};
+			}
+			int depth = 0;
+			for (auto* n = a_npc; n && depth < 16; n = n->faceNPC, ++depth) {
+				const auto r = static_cast<std::uint8_t>(n->bodyTintColorR);
+				const auto g = static_cast<std::uint8_t>(n->bodyTintColorG);
+				const auto b = static_cast<std::uint8_t>(n->bodyTintColorB);
+				if (r == 0 && g == 0 && b == 0) {
+					continue;  // no tint on this record: the next one up
+				}
+				const double l = (0.3 * r + 0.59 * g + 0.11 * b) / 255.0;
+				return l >= 0.9 ? "pale" : l >= 0.78 ? "light" : l >= 0.66 ? "olive" : "dark";
+			}
+			return {};
+		}
+
 		// Their family, "" when the colour is not one of the game's (another mod's, a dye) or not read.
 		std::string HairFamily(RE::TESNPC* a_npc)
 		{
@@ -385,6 +407,7 @@ namespace CX::Game
 				return f;
 			}
 			f.hair = HairFamily(npc);
+			f.tone = ToneOf(npc);
 			// A named character first: their record, or any template up its chain.
 			for (const auto& g : g_groups) {
 				if (g.members.empty()) {
@@ -631,8 +654,8 @@ namespace CX::Game
 
 	void See(RE::Actor* a_actor)
 	{
-		if (!a_actor || !Has3D(a_actor) || g_layout == Layout::kBad) {
-			return;
+		if (!a_actor || !Has3D(a_actor) || g_layout != Layout::kGood) {
+			return;  // nobody is read before the layout check passed: their hair and skin would read as unknown
 		}
 		if (const auto f = Read(a_actor)) {
 			g_director.Seen(*f);
@@ -674,6 +697,11 @@ namespace CX::Game
 	std::string HairOf(RE::Actor* a_actor)
 	{
 		return a_actor ? HairFamily(a_actor->GetNPC()) : std::string{};
+	}
+
+	std::string ToneOfActor(RE::Actor* a_actor)
+	{
+		return a_actor ? ToneOf(a_actor->GetNPC()) : std::string{};
 	}
 
 	namespace
@@ -719,8 +747,8 @@ namespace CX::Game
 	{
 		g_pumpedMs.store(NowMs());
 		GuardLayout();
-		if (g_layout == Layout::kBad) {
-			return;
+		if (g_layout != Layout::kGood) {
+			return;  // bad: never; unchecked (the player's 3D not loaded yet): the next pump. What came in waits.
 		}
 		CheckROF();
 		std::deque<std::uint32_t> loaded;

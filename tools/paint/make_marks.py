@@ -36,6 +36,7 @@ import marks  # noqa: E402
 import realism  # noqa: E402
 import seams  # noqa: E402
 import skin  # noqa: E402
+import traits  # noqa: E402
 HAIR_RGB = realism.HAIR  # skin adds ginger, lightbrown, darkbrown
 from body import UVMap  # noqa: E402
 from preview import sheet  # noqa: E402
@@ -679,6 +680,7 @@ def main():
                         'playable': True, 'transformable': not on_hands, 'sort': 0, 'gender': 1 if female else 0})
         if tag['kind'] in hair.HAIR_KINDS:
             tag = dict(tag, hair=hair.family(painter, args))  # one colour per person: the composer matches it
+        tag = dict(tag, **traits.of(tag))  # nasty / age / tones (tools/paint/traits.py)
         tags[('f:' if female else 'm:') + tid] = tag
         if a.only and not tid.startswith(a.only):
             continue

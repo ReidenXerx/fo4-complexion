@@ -3089,9 +3089,11 @@
 },
 "f:Complexion_AcneBackLight_F01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "acne, back",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3101,9 +3103,11 @@
 },
 "f:Complexion_AcneBack_F01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "acne, back",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3113,9 +3117,11 @@
 },
 "f:Complexion_AcneButtocks_F01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "acne, buttocks",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3125,9 +3131,11 @@
 },
 "f:Complexion_AcneChest_F01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "acne, chest",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3137,9 +3145,11 @@
 },
 "f:Complexion_AcneShoulders_F01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "acne, shoulders",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3149,6 +3159,7 @@
 },
 "f:Complexion_AgeSpotsHeavy_F01": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "skin",
 "lore": "fits",
@@ -3161,6 +3172,7 @@
 },
 "f:Complexion_AgeSpots_F01": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "skin",
 "lore": "fits",
@@ -3173,6 +3185,7 @@
 },
 "f:Complexion_AgeSpots_F02": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "skin",
 "lore": "fits",
@@ -3306,6 +3319,7 @@
 "emblem": null,
 "kind": "blood",
 "lore": "fits",
+"nasty": true,
 "note": "dried blood, drips, spatter",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3318,6 +3332,7 @@
 "emblem": null,
 "kind": "blood",
 "lore": "fits",
+"nasty": true,
 "note": "dried blood, drips, spatter",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3330,6 +3345,7 @@
 "emblem": null,
 "kind": "blood",
 "lore": "fits",
+"nasty": true,
 "note": "dried blood, drips, spatter",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3342,6 +3358,7 @@
 "emblem": "disciples",
 "kind": "blood",
 "lore": "fits",
+"nasty": true,
 "note": "bloody handprints on the chest and a thigh",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3354,6 +3371,7 @@
 "emblem": "disciples",
 "kind": "blood",
 "lore": "fits",
+"nasty": true,
 "note": "bloody handprints on the chest and belly",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3366,6 +3384,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "fresh bruises",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3378,6 +3397,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "fresh bruises",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3390,6 +3410,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "fresh bruises",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3402,6 +3423,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "fading yellow bruises",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3414,6 +3436,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "fading yellow bruises",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3531,6 +3554,7 @@
 },
 "f:Complexion_CherryAngiomas_F01": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "mole",
 "lore": "fits",
@@ -3543,6 +3567,7 @@
 },
 "f:Complexion_CherryAngiomas_F02": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "mole",
 "lore": "fits",
@@ -3570,6 +3595,7 @@
 "emblem": null,
 "kind": "burn",
 "lore": "fits",
+"nasty": true,
 "note": "fresh cigarette burns",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3584,6 +3610,7 @@
 "emblem": null,
 "kind": "burn",
 "lore": "fits",
+"nasty": true,
 "note": "fresh cigarette burns",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -3598,6 +3625,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "a collar's chafe around the neck",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -4425,7 +4453,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_FlushChest_F01": {
 "adult": false,
@@ -4437,7 +4469,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_FlushChest_F02": {
 "adult": false,
@@ -4449,7 +4485,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_FrecklesArms_F01": {
 "adult": false,
@@ -4461,7 +4501,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_FrecklesDark_F01": {
 "adult": false,
@@ -4473,7 +4517,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_FrecklesDense_F01": {
 "adult": false,
@@ -4485,7 +4533,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_FrecklesEverywhere_F01": {
 "adult": false,
@@ -4497,7 +4549,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_FrecklesFaint_F01": {
 "adult": false,
@@ -4509,7 +4565,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_FrecklesGinger_F01": {
 "adult": false,
@@ -4521,7 +4581,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_FrecklesShoulders_F01": {
 "adult": false,
@@ -4533,7 +4597,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_Freckles_F01": {
 "adult": false,
@@ -4545,7 +4613,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_Freckles_F02": {
 "adult": false,
@@ -4557,7 +4629,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_Freckles_F03": {
 "adult": false,
@@ -4569,7 +4645,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_GoosebumpsAll_F01": {
 "adult": false,
@@ -4600,6 +4680,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "heavy grime",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -4612,6 +4693,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "heavy grime",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -4624,6 +4706,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "light ground-in dirt",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -4636,6 +4719,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "light ground-in dirt",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -4648,6 +4732,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "finger bruises around the upper arms",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -4660,6 +4745,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "finger bruises around the upper arms",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -4672,6 +4758,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "finger bruises on the hips, held from behind",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -4839,6 +4926,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "fresh whip welts",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -4853,6 +4941,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "fresh whip welts",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -5216,13 +5305,18 @@
 "lower_back"
 ],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"olive",
+"dark"
+]
 },
 "f:Complexion_Mud_F01": {
 "adult": false,
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "mud on the legs",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -5235,6 +5329,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "mud on the legs",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -5565,9 +5660,11 @@
 },
 "f:Complexion_Pimples_F01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "pimples",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -5577,9 +5674,11 @@
 },
 "f:Complexion_Pimples_F02": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "pimples",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -6081,6 +6180,7 @@
 "emblem": "atom",
 "kind": "burn",
 "lore": "fits",
+"nasty": true,
 "note": "radiation sores",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -6093,6 +6193,7 @@
 "emblem": "atom",
 "kind": "burn",
 "lore": "fits",
+"nasty": true,
 "note": "radiation sores",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -6105,6 +6206,7 @@
 "emblem": "disciples",
 "kind": "wound",
 "lore": "fits",
+"nasty": true,
 "note": "the Disciples' ritual cuts, fresh",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -6141,6 +6243,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "rope marks around the ankles",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -6153,6 +6256,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "old rope marks on the wrists",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -6165,6 +6269,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "rope marks around the wrists",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -6177,6 +6282,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "rope marks around the wrists",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -6333,6 +6439,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "shackle chafe on the ankles",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -6345,6 +6452,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "shackle chafe on the wrists",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -6576,6 +6684,7 @@
 },
 "f:Complexion_SunSpotsHeavy_F01": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "freckles",
 "lore": "fits",
@@ -6584,7 +6693,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_SunSpots_F01": {
 "adult": false,
@@ -6596,7 +6709,11 @@
 "quality": "ok",
 "regions": [],
 "size": "small",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_SunburnMild_F01": {
 "adult": false,
@@ -6608,7 +6725,11 @@
 "quality": "ok",
 "regions": [],
 "size": "large",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_SunburnSevere_F01": {
 "adult": false,
@@ -6620,7 +6741,11 @@
 "quality": "ok",
 "regions": [],
 "size": "large",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_Sunburn_F01": {
 "adult": false,
@@ -6632,7 +6757,11 @@
 "quality": "ok",
 "regions": [],
 "size": "large",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_Sunburn_F02": {
 "adult": false,
@@ -6644,7 +6773,11 @@
 "quality": "ok",
 "regions": [],
 "size": "large",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "f:Complexion_SurgeryAppendix_F01": {
 "adult": false,
@@ -6704,7 +6837,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "f:Complexion_TanBikiniLight_F01": {
 "adult": false,
@@ -6716,7 +6854,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "f:Complexion_TanBikini_F01": {
 "adult": false,
@@ -6728,7 +6871,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "f:Complexion_TanOnepieceDark_F01": {
 "adult": false,
@@ -6740,7 +6888,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "f:Complexion_TanOnepiece_F01": {
 "adult": false,
@@ -6752,7 +6905,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "f:Complexion_TanSleeve34_F01": {
 "adult": false,
@@ -6764,7 +6922,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "f:Complexion_TanTankDark_F01": {
 "adult": false,
@@ -6776,7 +6939,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "f:Complexion_TanTankLight_F01": {
 "adult": false,
@@ -6788,7 +6956,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "f:Complexion_TanTank_F01": {
 "adult": false,
@@ -6800,7 +6973,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "f:Complexion_TanTshirtDark_F01": {
 "adult": false,
@@ -6812,7 +6990,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "f:Complexion_TanTshirtLight_F01": {
 "adult": false,
@@ -6824,7 +7007,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "f:Complexion_TanTshirt_F01": {
 "adult": false,
@@ -6836,7 +7024,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "f:Complexion_TattooAceSpades_F01": {
 "adult": false,
@@ -8116,6 +8309,7 @@
 },
 "f:Complexion_VaricoseHeavy_F01": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "skin",
 "lore": "fits",
@@ -8128,6 +8322,7 @@
 },
 "f:Complexion_Varicose_F01": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "skin",
 "lore": "fits",
@@ -13977,6 +14172,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "dirt smears on hands",
 "pack": "INVB_OverlayFramework_Tattoo_Invictusblade.esp",
 "quality": "ok",
@@ -14060,6 +14256,7 @@
 "emblem": null,
 "kind": "wound",
 "lore": "fits",
+"nasty": true,
 "note": "scattered tiny nail damage specks",
 "pack": "INVB_OverlayFramework_Tattoo_Invictusblade.esp",
 "quality": "poor",
@@ -20365,9 +20562,11 @@
 },
 "f:Pimples_01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "scattered pimples",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -20379,9 +20578,11 @@
 },
 "f:Pimples_02": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "scattered pimples",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -20407,6 +20608,7 @@
 },
 "f:Pimples_04": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
@@ -20435,9 +20637,11 @@
 },
 "f:Pimples_06": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "scattered pimples",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -20449,9 +20653,11 @@
 },
 "f:Pimples_07": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "scattered pimples",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -20477,9 +20683,11 @@
 },
 "f:Pimples_09": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "scattered pimples",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -20491,9 +20699,11 @@
 },
 "f:Pimples_10": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "few large blemishes",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -24723,6 +24933,7 @@
 "emblem": null,
 "kind": "wound",
 "lore": "fits",
+"nasty": true,
 "note": "long bloody scar",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -24863,6 +25074,7 @@
 "emblem": null,
 "kind": "wound",
 "lore": "fits",
+"nasty": true,
 "note": "claw slash marks",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -24877,6 +25089,7 @@
 "emblem": null,
 "kind": "wound",
 "lore": "fits",
+"nasty": true,
 "note": "blotches and claw marks",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -25009,6 +25222,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "body skin texture pores; grime",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -25023,6 +25237,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "red marks and fine veins; grime",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -25065,6 +25280,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "mottled body skin; grime",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -25079,6 +25295,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "body skin texture pores; grime",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -25121,6 +25338,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "body skin texture pores; grime",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -25135,6 +25353,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "blurry dark blotches; grime",
 "pack": "porcOverlays.esl",
 "quality": "poor",
@@ -25177,6 +25396,7 @@
 "emblem": null,
 "kind": "skin",
 "lore": "fits",
+"nasty": true,
 "note": "noisy grunge skin",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -25205,6 +25425,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "body skin texture pores; grime",
 "pack": "porcOverlays.esl",
 "quality": "ok",
@@ -27488,9 +27709,11 @@
 },
 "m:Complexion_AcneBackLight_M01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "acne, back",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27500,9 +27723,11 @@
 },
 "m:Complexion_AcneBack_M01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "acne, back",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27512,9 +27737,11 @@
 },
 "m:Complexion_AcneButtocks_M01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "acne, buttocks",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27524,9 +27751,11 @@
 },
 "m:Complexion_AcneChest_M01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "acne, chest",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27536,9 +27765,11 @@
 },
 "m:Complexion_AcneShoulders_M01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "acne, shoulders",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27548,6 +27779,7 @@
 },
 "m:Complexion_AgeSpotsHeavy_M01": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "skin",
 "lore": "fits",
@@ -27560,6 +27792,7 @@
 },
 "m:Complexion_AgeSpots_M01": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "skin",
 "lore": "fits",
@@ -27572,6 +27805,7 @@
 },
 "m:Complexion_AgeSpots_M02": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "skin",
 "lore": "fits",
@@ -27765,6 +27999,7 @@
 "emblem": null,
 "kind": "blood",
 "lore": "fits",
+"nasty": true,
 "note": "dried blood, drips, spatter",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27777,6 +28012,7 @@
 "emblem": null,
 "kind": "blood",
 "lore": "fits",
+"nasty": true,
 "note": "dried blood, drips, spatter",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27789,6 +28025,7 @@
 "emblem": null,
 "kind": "blood",
 "lore": "fits",
+"nasty": true,
 "note": "dried blood, drips, spatter",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27801,6 +28038,7 @@
 "emblem": "disciples",
 "kind": "blood",
 "lore": "fits",
+"nasty": true,
 "note": "bloody handprints on the chest and a thigh",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27813,6 +28051,7 @@
 "emblem": "disciples",
 "kind": "blood",
 "lore": "fits",
+"nasty": true,
 "note": "bloody handprints on the chest and belly",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27825,6 +28064,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "fresh bruises",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27837,6 +28077,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "fresh bruises",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27849,6 +28090,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "fresh bruises",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27861,6 +28103,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "fading yellow bruises",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27873,6 +28116,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "fading yellow bruises",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -27942,6 +28186,7 @@
 },
 "m:Complexion_CherryAngiomas_M01": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "mole",
 "lore": "fits",
@@ -27954,6 +28199,7 @@
 },
 "m:Complexion_CherryAngiomas_M02": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "mole",
 "lore": "fits",
@@ -28251,6 +28497,7 @@
 "emblem": null,
 "kind": "burn",
 "lore": "fits",
+"nasty": true,
 "note": "fresh cigarette burns",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -28265,6 +28512,7 @@
 "emblem": null,
 "kind": "burn",
 "lore": "fits",
+"nasty": true,
 "note": "fresh cigarette burns",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -28279,6 +28527,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "a collar's chafe around the neck",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -29106,7 +29355,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_FlushChest_M01": {
 "adult": false,
@@ -29118,7 +29371,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_FlushChest_M02": {
 "adult": false,
@@ -29130,7 +29387,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_FrecklesArms_M01": {
 "adult": false,
@@ -29142,7 +29403,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_FrecklesDark_M01": {
 "adult": false,
@@ -29154,7 +29419,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_FrecklesDense_M01": {
 "adult": false,
@@ -29166,7 +29435,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_FrecklesEverywhere_M01": {
 "adult": false,
@@ -29178,7 +29451,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_FrecklesFaint_M01": {
 "adult": false,
@@ -29190,7 +29467,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_FrecklesGinger_M01": {
 "adult": false,
@@ -29202,7 +29483,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_FrecklesShoulders_M01": {
 "adult": false,
@@ -29214,7 +29499,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_Freckles_M01": {
 "adult": false,
@@ -29226,7 +29515,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_Freckles_M02": {
 "adult": false,
@@ -29238,7 +29531,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_GoosebumpsAll_M01": {
 "adult": false,
@@ -29269,6 +29566,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "heavy grime",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -29281,6 +29579,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "heavy grime",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -29293,6 +29592,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "light ground-in dirt",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -29305,6 +29605,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "light ground-in dirt",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -29317,6 +29618,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "finger bruises around the upper arms",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -29329,6 +29631,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "finger bruises around the upper arms",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -29341,6 +29644,7 @@
 "emblem": null,
 "kind": "bruise",
 "lore": "fits",
+"nasty": true,
 "note": "finger bruises on the hips, held from behind",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -29519,6 +29823,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "fresh whip welts",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -29533,6 +29838,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "fresh whip welts",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -29894,13 +30200,18 @@
 "lower_back"
 ],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"olive",
+"dark"
+]
 },
 "m:Complexion_Mud_M01": {
 "adult": false,
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "mud on the legs",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -29913,6 +30224,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "mud on the legs",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -30154,9 +30466,11 @@
 },
 "m:Complexion_Pimples_M01": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "pimples",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -30166,9 +30480,11 @@
 },
 "m:Complexion_Pimples_M02": {
 "adult": false,
+"age": "young",
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
+"nasty": true,
 "note": "pimples",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -30550,6 +30866,7 @@
 "emblem": "atom",
 "kind": "burn",
 "lore": "fits",
+"nasty": true,
 "note": "radiation sores",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -30562,6 +30879,7 @@
 "emblem": "atom",
 "kind": "burn",
 "lore": "fits",
+"nasty": true,
 "note": "radiation sores",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -30574,6 +30892,7 @@
 "emblem": "disciples",
 "kind": "wound",
 "lore": "fits",
+"nasty": true,
 "note": "the Disciples' ritual cuts, fresh",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -30610,6 +30929,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "rope marks around the ankles",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -30622,6 +30942,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "old rope marks on the wrists",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -30634,6 +30955,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "rope marks around the wrists",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -30646,6 +30968,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "rope marks around the wrists",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -30814,6 +31137,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "shackle chafe on the ankles",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -30826,6 +31150,7 @@
 "emblem": null,
 "kind": "marks",
 "lore": "fits",
+"nasty": true,
 "note": "shackle chafe on the wrists",
 "pack": "Complexion.esp",
 "quality": "ok",
@@ -31007,6 +31332,7 @@
 },
 "m:Complexion_SunSpotsHeavy_M01": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "freckles",
 "lore": "fits",
@@ -31015,7 +31341,11 @@
 "quality": "ok",
 "regions": [],
 "size": "medium",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_SunSpots_M01": {
 "adult": false,
@@ -31027,7 +31357,11 @@
 "quality": "ok",
 "regions": [],
 "size": "small",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_SunburnMild_M01": {
 "adult": false,
@@ -31039,7 +31373,11 @@
 "quality": "ok",
 "regions": [],
 "size": "large",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_SunburnSevere_M01": {
 "adult": false,
@@ -31051,7 +31389,11 @@
 "quality": "ok",
 "regions": [],
 "size": "large",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_Sunburn_M01": {
 "adult": false,
@@ -31063,7 +31405,11 @@
 "quality": "ok",
 "regions": [],
 "size": "large",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_Sunburn_M02": {
 "adult": false,
@@ -31075,7 +31421,11 @@
 "quality": "ok",
 "regions": [],
 "size": "large",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light"
+]
 },
 "m:Complexion_SurgeryAppendix_M01": {
 "adult": false,
@@ -31123,7 +31473,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "m:Complexion_TanShorts_M01": {
 "adult": false,
@@ -31135,7 +31490,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "m:Complexion_TanSleeve34_M01": {
 "adult": false,
@@ -31147,7 +31507,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "m:Complexion_TanTankDark_M01": {
 "adult": false,
@@ -31159,7 +31524,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "m:Complexion_TanTankLight_M01": {
 "adult": false,
@@ -31171,7 +31541,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "m:Complexion_TanTank_M01": {
 "adult": false,
@@ -31183,7 +31558,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "m:Complexion_TanTshirtDark_M01": {
 "adult": false,
@@ -31195,7 +31575,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "m:Complexion_TanTshirtLight_M01": {
 "adult": false,
@@ -31207,7 +31592,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "m:Complexion_TanTshirt_M01": {
 "adult": false,
@@ -31219,7 +31609,12 @@
 "quality": "ok",
 "regions": [],
 "size": "full",
-"style": []
+"style": [],
+"tones": [
+"pale",
+"light",
+"olive"
+]
 },
 "m:Complexion_TattooAceSpades_M01": {
 "adult": false,
@@ -32301,6 +32696,7 @@
 },
 "m:Complexion_VaricoseHeavy_M01": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "skin",
 "lore": "fits",
@@ -32313,6 +32709,7 @@
 },
 "m:Complexion_Varicose_M01": {
 "adult": false,
+"age": "old",
 "emblem": null,
 "kind": "skin",
 "lore": "fits",
@@ -36611,6 +37008,7 @@
 "emblem": null,
 "kind": "dirt",
 "lore": "fits",
+"nasty": true,
 "note": "Grime on hands and fingers",
 "pack": "INVB_OverlayFramework_Tattoo_Invictusblade_M.esp",
 "quality": "ok",

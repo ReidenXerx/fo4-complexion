@@ -182,6 +182,12 @@ namespace CX
 			out.emblems = Strings(g.at("emblems"));
 			out.sizes = Strings(g.at("sizes"));
 			out.hair = g.at("hair").get<std::string>();
+			out.squalor = g.value("squalor", j.value("squalor_default", 30));
+			if (g.contains("universal")) {
+				for (const auto& [k, v] : g.at("universal").items()) {
+					out.universal[k] = v.get<int>();
+				}
+			}
 			if (!p.hair.contains(out.hair)) {
 				throw std::runtime_error(std::format("group {}: no hair style {}", name, out.hair));
 			}
@@ -228,6 +234,15 @@ namespace CX
 			if (t.contains("hair") && t["hair"].is_string()) {
 				x.hair = t["hair"].get<std::string>();
 			}
+			x.nasty = t.value("nasty", false);
+			if (t.contains("age") && t["age"].is_string()) {
+				x.age = t["age"].get<std::string>();
+			}
+			if (t.contains("tones") && t["tones"].is_array()) {
+				for (const auto& s : t["tones"]) {
+					x.tones.push_back(s.get<std::string>());
+				}
+			}
 			out.push_back(std::move(x));
 		}
 		return out;
@@ -243,42 +258,81 @@ namespace CX
 		return a_t.adult || std::ranges::find(a_t.style, "degrading") != a_t.style.end() || std::ranges::find(a_t.style, "sexual") != a_t.style.end();
 	}
 
+	namespace
+	{
+		// Steps 0 and 0b of tools/compose.py: the hair family (rolled when unknown), then one squalor roll.
+		struct Person
+		{
+			const std::vector<std::string>* accepted{ nullptr };
+			bool                            squalid{ false };
+			bool                            old{ false };
+			std::string                     tone;
+		};
+
+		Person Resolve(const Profiles& a_profiles, const Group& a_group, Rng& a_rng, std::string_view a_hair, std::string_view a_tone)
+		{
+			Person      p;
+			std::string family(a_hair);
+			if (const auto& hc = a_profiles.hairColours; hc.present) {
+				auto it = hc.accept.find(family);
+				if (it == hc.accept.end()) {
+					auto roll = a_rng.Percent();
+					family = hc.unknown.back().first;
+					for (const auto& [fam, w] : hc.unknown) {
+						if (roll < w) {
+							family = fam;
+							break;
+						}
+						roll -= w;
+					}
+					it = hc.accept.find(family);
+				}
+				if (it != hc.accept.end()) {
+					p.accepted = &it->second;
+				}
+			}
+			p.squalid = a_rng.Percent() < a_group.squalor;
+			p.old = a_hair == "grey";
+			p.tone = std::string(a_tone);
+			return p;
+		}
+
+		bool Fits(const Person& a_p, const Template& a_t)
+		{
+			if (a_p.accepted && (a_t.kind == "pubic_hair" || a_t.kind == "body_hair") && !Has(*a_p.accepted, a_t.hair)) {
+				return false;  // another colour than theirs, or a colour nobody could tell
+			}
+			if (a_t.nasty && !a_p.squalid) {
+				return false;
+			}
+			if (a_t.age == (a_p.old ? "young" : "old")) {
+				return false;
+			}
+			return a_p.tone.empty() || a_t.tones.empty() || Has(a_t.tones, a_p.tone);
+		}
+	}
+
+	bool Suits(const Profiles& a_profiles, const Group& a_group, std::uint64_t a_seed, std::string_view a_hair, std::string_view a_tone,
+		const Template& a_t)
+	{
+		Rng rng(a_seed);
+		return Fits(Resolve(a_profiles, a_group, rng, a_hair, a_tone), a_t);
+	}
+
 	std::vector<Pick> Compose(const Profiles& a_profiles, const std::vector<Template>& a_catalog, bool a_female, const Group& a_group,
-		std::uint64_t a_seed, bool a_adultAllowed, std::string_view a_persona, std::string_view a_hair)
+		std::uint64_t a_seed, bool a_adultAllowed, std::string_view a_persona, std::string_view a_hair, std::string_view a_tone)
 	{
 		if (a_group.untouched) {
 			return {};
 		}
 		Rng rng(a_seed);
-		// 0. one hair family per person: the head hair's, else rolled once (tools/compose.py step 0).
-		const std::vector<std::string>* accepted = nullptr;
-		if (const auto& hc = a_profiles.hairColours; hc.present) {
-			auto family = hc.accept.find(std::string(a_hair));
-			if (family == hc.accept.end()) {
-				auto        roll = rng.Percent();
-				std::string pick = hc.unknown.back().first;
-				for (const auto& [fam, w] : hc.unknown) {
-					if (roll < w) {
-						pick = fam;
-						break;
-					}
-					roll -= w;
-				}
-				family = hc.accept.find(pick);
-			}
-			if (family != hc.accept.end()) {
-				accepted = &family->second;
-			}
-		}
+		// 0 and 0b. who they are: one hair family (C-20), rough living, age, skin tone (C-21).
+		const auto                   person = Resolve(a_profiles, a_group, rng, a_hair, a_tone);
 		std::vector<const Template*> mine;
 		for (const auto& t : a_catalog) {
-			if (t.female != a_female) {
-				continue;
+			if (t.female == a_female && Fits(person, t)) {
+				mine.push_back(&t);
 			}
-			if (accepted && (t.kind == "pubic_hair" || t.kind == "body_hair") && !Has(*accepted, t.hair)) {
-				continue;  // another colour than theirs, or a colour nobody could tell
-			}
-			mine.push_back(&t);
 		}
 		std::vector<Pick>     picks;
 		std::set<std::string> usedRegions;
@@ -303,7 +357,8 @@ namespace CX
 				break;  // the universal layer stops at the cap as well
 			}
 			const auto roll = rng.Percent();
-			if (roll >= u.percent) {
+			const auto scale = a_group.universal.find(u.kind);
+			if (roll >= u.percent * (scale != a_group.universal.end() ? scale->second : 100) / 100) {
 				continue;
 			}
 			std::vector<const Template*> cands;

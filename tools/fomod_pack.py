@@ -35,7 +35,7 @@ FEATURES = [
     ('Who they are decides', 'groups.jpg',
      'Every NPC gets skin overlays the first time you meet them, and keeps them, chosen for who they are: raiders '
      'inked, scarred and grimy; settlers mostly plain; the Brotherhood clean but for a scar and its own mark; the '
-     'Institute almost untouched. Twelve faction groups and everyone else, each with its own odds and styles.'),
+     'Institute almost untouched; Diamond City and Covenant clean, drifters and scavengers grimy. Twenty-two groups by faction and place, each with its own odds and styles.'),
     ('One look, not a pile', 'composition.jpg',
      'Never more than six overlays on anyone, one style per person, never three of a kind, no two tattoos on one '
      'spot, and a faction emblem only on its own people. Lore-breaking and poor pieces are never handed out.'),

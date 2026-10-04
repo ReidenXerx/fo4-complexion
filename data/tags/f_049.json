@@ -10,7 +10,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "long bloody scar"
+  "note": "long bloody scar",
+  "nasty": true
  },
  "f:Scars_07": {
   "kind": "scar",
@@ -140,7 +141,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "claw slash marks"
+  "note": "claw slash marks",
+  "nasty": true
  },
  "f:Scars_17": {
   "kind": "wound",
@@ -153,7 +155,8 @@
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "blotches and claw marks"
+  "note": "blotches and claw marks",
+  "nasty": true
  },
  "f:Scars_18": {
   "kind": "scar",
