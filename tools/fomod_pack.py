@@ -68,7 +68,7 @@ SETUP = ('Your setup',
          'F4SE: check this yourself -- runs every DLL mod (f4se.silverlock.org).\n'
          'Runtime Database: check this yourself -- finds the game\'s functions on old-gen, next-gen and Anniversary (Nexus 108394).\n'
          'MCM: check this yourself -- the switches and the buttons.\n'
-         'Body: CBBE for women (any BodySlide preset); the vanilla male body or BodyTalk for men. The vanilla female body is not supported: marks land in the wrong places.\n'
+         'Body: CBBE or CBBE 3BBB for women (any BodySlide preset); the vanilla male body or BodyTalk for men. The vanilla female body is not supported: marks land in the wrong places.\n'
          'LooksMenu overlay packs: optional -- Complexion paints its own, and hands out the packs you have alongside.\n'
          'Random Overlay Framework: keep it for its tattoo packs -- with RobCo Patcher, Complexion switches its handing-out off; or uninstall it. Then MCM > Complexion > Clear every overlay, once.\n'
          'Complexion checks the rest in game and says what is missing.')
@@ -78,7 +78,7 @@ AAF_NOTE = ('AAF is not active',
 # rectangles and outlines, most likely on the vanilla female body).
 CBBE_NOTE = ('CBBE is not active',
              'Complexion\'s overlays for women are made for CBBE\'s body: on the vanilla female body they land in the wrong '
-             'places (stray rectangles and outlines). Install CBBE, any BodySlide preset. Men need the vanilla male body '
+             'places (stray rectangles and outlines). Install CBBE or CBBE 3BBB, any BodySlide preset. Men need the vanilla male body '
              'or BodyTalk.')
 # C-11: shown only while ROF's plugin is active. Its tattoo packs (Invictusblade's) need that plugin, so it stays;
 # Complexion's RobCo Patcher ini switches ROF's handing-out off -- which needs RobCo Patcher.
