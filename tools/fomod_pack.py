@@ -68,11 +68,18 @@ SETUP = ('Your setup',
          'F4SE: check this yourself -- runs every DLL mod (f4se.silverlock.org).\n'
          'Runtime Database: check this yourself -- finds the game\'s functions on old-gen, next-gen and Anniversary (Nexus 108394).\n'
          'MCM: check this yourself -- the switches and the buttons.\n'
+         'Body: CBBE for women (any BodySlide preset); the vanilla male body or BodyTalk for men. The vanilla female body is not supported: marks land in the wrong places.\n'
          'LooksMenu overlay packs: optional -- Complexion paints its own, and hands out the packs you have alongside.\n'
          'Random Overlay Framework: keep it for its tattoo packs -- with RobCo Patcher, Complexion switches its handing-out off; or uninstall it. Then MCM > Complexion > Clear every overlay, once.\n'
          'Complexion checks the rest in game and says what is missing.')
 AAF_NOTE = ('AAF is not active',
             'Without AAF there are no AAF scenes to wait for; everything works.')
+# Shown when CBBE's plugin is not active: women's overlays are drawn on CBBE's UV map (owner, 10-04: a player saw
+# rectangles and outlines, most likely on the vanilla female body).
+CBBE_NOTE = ('CBBE is not active',
+             'Complexion\'s overlays for women are made for CBBE\'s body: on the vanilla female body they land in the wrong '
+             'places (stray rectangles and outlines). Install CBBE, any BodySlide preset. Men need the vanilla male body '
+             'or BodyTalk.')
 # C-11: shown only while ROF's plugin is active. Its tattoo packs (Invictusblade's) need that plugin, so it stays;
 # Complexion's RobCo Patcher ini switches ROF's handing-out off -- which needs RobCo Patcher.
 ROF_NOTE = ('Random Overlay Framework is active',
@@ -112,6 +119,13 @@ def module_config(entries):
     </installStep>'''
     pages = [page('Checking your setup', 'Requirements', option(SETUP[0], SETUP[1], flag='setup'))]
     pages += [page(n, n, option(n, d, img)) for n, img, d in FEATURES]
+    pages.append(page('Note: CBBE', 'Read this', option(CBBE_NOTE[0], CBBE_NOTE[1], flag='note_cbbe'), '''
+      <visible>
+        <dependencies operator="Or">
+          <fileDependency file="CBBE.esp" state="Missing"/>
+          <fileDependency file="CBBE.esp" state="Inactive"/>
+        </dependencies>
+      </visible>'''))
     pages.append(page('Note: Random Overlay Framework', 'Read this', option(ROF_NOTE[0], ROF_NOTE[1], flag='note_rof'), '''
       <visible>
         <fileDependency file="INVB_OverlayFramework.esp" state="Active"/>

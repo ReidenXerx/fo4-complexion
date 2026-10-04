@@ -41,6 +41,13 @@ a time. Other packs' overlays show by name, without a picture.
 Fallout 4 1.10.163 (old-gen), 1.10.984 (next-gen) or 1.11.x (Anniversary), F4SE, Runtime Database, LooksMenu,
 MCM. LooksMenu overlay packs are optional: Complexion paints its own.
 
+**Supported bodies.** Overlays are drawn on a body's UV map, so they line up only on the body they were made for:
+- **women: CBBE**, any BodySlide preset (the shape changes, the UV map does not);
+- **men: the vanilla male body or BodyTalk** (one UV map).
+
+The vanilla female body is NOT supported. Its UV map differs from CBBE's, so marks land in the wrong places
+(stray rectangles and outlines).
+
 ## Moving from Random Overlay Framework
 
 Keep it if you use its tattoo packs (Invictusblade's need its plugin): with RobCo Patcher installed, Complexion
