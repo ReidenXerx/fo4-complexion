@@ -1,6 +1,6 @@
 {
   "name": "complexion",
-  "version-string": "0.1.0",
+  "version-string": "0.1.1",
   "description": "Complexion: curated LooksMenu overlays for Fallout 4's NPCs (the F4SE plugin)",
   "supports": "windows & x64",
   "dependencies": [

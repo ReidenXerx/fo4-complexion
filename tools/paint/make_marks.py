@@ -56,8 +56,12 @@ BGEM_HEAD = bytes.fromhex(
     '4247454d020000000300000000000000000000000000803f0000803f0000803f01040000000100000000010101010000000000000000'
     '000000000000803f00')
 BGEM_MID = bytes.fromhex('01000000000100000000')
+# The base colour undoes BC1's neutral: 0.5 cannot be stored in 5-6-5 bits and lands on (132, 130, 132)/255, which
+# multiplied the whole body by ~1.035 / 1.02 / 1.035 per overlay -- brighter and pinker than the face (a player's
+# report, 2026-10-04). 255 / (2 x 132) and 255 / (2 x 130) make the stored neutral exactly 1.
+BASE_COLOUR = (255 / 264, 255 / 260, 255 / 264)
 BGEM_TAIL = bytes.fromhex(
-    '0100000000' '000000000000' '0000803f0000803f0000803f' + struct.pack('<f', SCALE).hex() +
+    '0100000000' '000000000000' + struct.pack('<fff', *BASE_COLOUR).hex() + struct.pack('<f', SCALE).hex() +
     '00000000000000000000000000000000' '00000000' '00' '00000000')
 assert len(BGEM_HEAD) == 63 and len(BGEM_TAIL) == 52
 

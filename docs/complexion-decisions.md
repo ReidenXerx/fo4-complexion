@@ -123,6 +123,11 @@ is exactly neutral grey. A mark darkens (grime, bruises, blood, moles, hair) or 
 it, lit and shadowed with it, on any skin tone. Textures are BC1 (no alpha needed). Shared note:
 fo4-overlay-bgem-multiply.
 
+**0.1.1 (a player's report, 2026-10-04):** BC1 cannot store 0.5. The neutral lands on (132, 130, 132)/255 (5-6-5
+bits), so every overlay multiplied the WHOLE body by about 1.035 / 1.02 / 1.035. Six of them made the body about 20%
+brighter and pinker than the face, which is another mesh. The materials' base colour is now (255/264, 255/260,
+255/264), so the stored neutral multiplies by exactly 1.
+
 ## C-13: Complexion paints its own realism layer and drawn tattoos (owner, 2026-10-03)
 
 To cut players' dependence on LoversLab packs, Complexion paints its own:
