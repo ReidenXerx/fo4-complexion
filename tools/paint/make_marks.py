@@ -56,10 +56,11 @@ BGEM_HEAD = bytes.fromhex(
     '4247454d020000000300000000000000000000000000803f0000803f0000803f01040000000100000000010101010000000000000000'
     '000000000000803f00')
 BGEM_MID = bytes.fromhex('01000000000100000000')
-# The base colour undoes BC1's neutral: 0.5 cannot be stored in 5-6-5 bits and lands on (132, 130, 132)/255, which
-# multiplied the whole body by ~1.035 / 1.02 / 1.035 per overlay -- brighter and pinker than the face (a player's
-# report, 2026-10-04). 255 / (2 x 132) and 255 / (2 x 130) make the stored neutral exactly 1.
-BASE_COLOUR = (255 / 264, 255 / 260, 255 / 264)
+# Textures are BC7: BC1's 5-6-5 colours cannot hold the neutral grey. 0.1.0 stored it as (132, 130, 132)/255 and
+# brightened the whole body ~3.5% per overlay; 0.1.1's base colour fixed the clean skin, but the faint soft edge of
+# every mark (1-4 levels off neutral) still decoded to 126/129, a 2-5% patch around each mole, pimple and hair (a
+# player's report, 2026-10-04). BC7 holds 128 exactly (patch error 0.1-0.3%, measured); 128 x 2 x 255/256 = 1.
+BASE_COLOUR = (255 / 256, 255 / 256, 255 / 256)
 BGEM_TAIL = bytes.fromhex(
     '0100000000' '000000000000' + struct.pack('<fff', *BASE_COLOUR).hex() + struct.pack('<f', SCALE).hex() +
     '00000000000000000000000000000000' '00000000' '00' '00000000')
@@ -607,8 +608,8 @@ def bleed(img, covered, steps=16):
 
 
 def encode(tool, png, tex_dir, tid):
-    """The PNG to BC1 with mipmaps, named as the material names it."""
-    r = subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'BC1_UNORM', '-m', '0', '-o', str(tex_dir), str(png)],
+    """The PNG to BC7 with mipmaps, named as the material names it (BC7: see BASE_COLOUR)."""
+    r = subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'BC7_UNORM', '-bcmax', '-m', '0', '-o', str(tex_dir), str(png)],
                        capture_output=True, text=True)
     made = next((f for f in tex_dir.iterdir() if f.name.lower() == f'{tid}_d.dds'.lower()), None)
     if r.returncode or not made:

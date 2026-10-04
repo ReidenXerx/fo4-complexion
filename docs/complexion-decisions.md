@@ -128,6 +128,13 @@ bits), so every overlay multiplied the WHOLE body by about 1.035 / 1.02 / 1.035.
 brighter and pinker than the face, which is another mesh. The materials' base colour is now (255/264, 255/260,
 255/264), so the stored neutral multiplies by exactly 1.
 
+**0.1.2 (the same player, after 0.1.1):** a patch remained around every mole, pimple and hair. Each mark's faint
+soft edge (1-4 levels off neutral, up to ~20 texels wide) decoded to 126/129 in BC1 blocks, 2-5% darker than the
+clean skin once 0.1.1's correction applied. The textures are now **BC7**, which holds 128 exactly. The base colour
+is 255/256, and the worst 8x8-texel patch error is measured at 0.1-0.3% (it was 5%). tools/paint/check_encoding.py
+decodes every shipped texture against its painting and fails above 1%. Twice the video memory of BC1, still far
+below the 4K packs Complexion replaces.
+
 ## C-13: Complexion paints its own realism layer and drawn tattoos (owner, 2026-10-03)
 
 To cut players' dependence on LoversLab packs, Complexion paints its own:

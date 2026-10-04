@@ -54,6 +54,9 @@ if ($newest.LastWriteTime -gt $dll.LastWriteTime) { throw "Complexion.dll is old
 $swf = Get-Item (Join-Path $root 'build\interface\ComplexionMenu.swf') -ErrorAction SilentlyContinue
 $as = Get-ChildItem (Join-Path $root 'interface\src') -Filter *.as | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 if (-not $swf -or $as.LastWriteTime -gt $swf.LastWriteTime) { throw "ComplexionMenu.swf is missing or older than $($as.Name): run scripts\build-interface.ps1" }
+# Every overlay texture decoded against its painting: no patch around a mark, untouched skin exactly x1 (0.1.2).
+& python (Join-Path $root 'tools\paint\check_encoding.py')
+if ($LASTEXITCODE) { throw 'an overlay texture is off its painting: see tools\paint\check_encoding.py' }
 $thumbs = Get-Content (Join-Path $root 'data\F4SE\Plugins\Complexion\thumbs.json') -Raw | ConvertFrom-Json
 foreach ($sex in 'Female', 'Male') {
     if (-not (Test-Path (Join-Path $root "data\Textures\Complexion\Thumbs$($sex)_$($thumbs.build)_0.dds"))) {
