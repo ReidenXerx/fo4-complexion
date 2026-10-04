@@ -43,10 +43,18 @@ FEATURES = [
      '59 named characters have a look of their own, from their stories: Cait scarred from the Combat Zone, Piper '
      'all but plain, Danse under the Brotherhood\'s mark, Fahrenheit inked.'),
     ('Its own marks', 'marks.jpg',
-     'Bruises, grime, dried blood, whip welts and spank marks, painted for the CBBE and male bodies; moles, scars '
-     'and pubic hair for men, whom most packs forget.'),
+     'Complexion paints 699 overlays of its own for the CBBE and male bodies: a realism layer (areolas, moles, '
+     'freckles, birthmarks, stretch marks, body and pubic hair, tan lines, scars of every kind), traditional flash '
+     'tattoos, bruises, grime and blood. Each fades out before the neck and wrist seams.'),
+    ('Choose by hand', 'window.jpg',
+     'Aim at anyone, or no one for yourself, and press the window\'s hotkey (set it in MCM > Complexion). They stand '
+     'still, undressed, and the window lists every overlay that fits them by category, with a search: Complexion\'s '
+     'own with pictures, every pack\'s by name. A click puts one on, live, and the camera goes to where it sits. '
+     'Random rolls a look, Apply keeps it, Cancel puts back what they had, clothes included. It is how the player '
+     'gets overlays: the player is never given a random look.'),
     ('Your packs, read the way LooksMenu reads them', 'packs.jpg',
-     'Complexion ships no other author\'s overlays: it hands out the ones you installed. About 1,900 templates of '
+     'Packs are optional. Complexion ships no other author\'s overlays, but hands out the ones you installed '
+     'alongside its own. About 1,900 templates of '
      '16 popular packs are tagged from their pictures; a pack it does not know is left alone.'),
     ('Cheap, and kind to other mods', 'cheap.jpg',
      'One decision per NPC, one rebuild, ever: no cloak, no waits, no faction scans in Papyrus. Overlays other mods '
@@ -60,7 +68,7 @@ SETUP = ('Your setup',
          'F4SE: check this yourself -- runs every DLL mod (f4se.silverlock.org).\n'
          'Runtime Database: check this yourself -- finds the game\'s functions on old-gen, next-gen and Anniversary (Nexus 108394).\n'
          'MCM: check this yourself -- the switches and the buttons.\n'
-         'LooksMenu overlay packs: check this yourself -- tattoos, skin detail, hair; Complexion hands out the ones you have.\n'
+         'LooksMenu overlay packs: optional -- Complexion paints its own, and hands out the packs you have alongside.\n'
          'Random Overlay Framework: uninstall it -- both would hand out overlays. Then MCM > Complexion > Clear every overlay, once.\n'
          'Complexion checks the rest in game and says what is missing.')
 AAF_NOTE = ('AAF is not active',

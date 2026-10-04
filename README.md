@@ -39,7 +39,7 @@ a time. Other packs' overlays show by name, without a picture.
 ## Requirements
 
 Fallout 4 1.10.163 (old-gen), 1.10.984 (next-gen) or 1.11.x (Anniversary), F4SE, Runtime Database, LooksMenu,
-MCM, and LooksMenu overlay packs.
+MCM. LooksMenu overlay packs are optional: Complexion paints its own.
 
 ## Moving from Random Overlay Framework
 
