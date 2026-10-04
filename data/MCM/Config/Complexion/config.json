@@ -51,8 +51,8 @@
           "text": "Open the window on the NPC I aimed at",
           "help": "Opens the overlay window on whoever was in your sights in the half minute before you opened this menu, when you close it.",
           "action": {
-            "type": "CallFunction",
-            "form": "Complexion.esp|800",
+            "type": "CallGlobalFunction",
+            "script": "Complexion:API",
             "function": "MenuOpenWindow",
             "params": []
           }
@@ -62,8 +62,8 @@
           "text": "Open the window on me",
           "help": "Opens the overlay window on you, when you close this menu. Complexion never gives you a random look: this is how you choose yours.",
           "action": {
-            "type": "CallFunction",
-            "form": "Complexion.esp|800",
+            "type": "CallGlobalFunction",
+            "script": "Complexion:API",
             "function": "MenuOpenWindowMe",
             "params": []
           }

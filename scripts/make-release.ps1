@@ -31,6 +31,7 @@ $files = [ordered]@{
     'Scripts\Complexion\Bridge.pex'          = 'build\papyrus\Complexion\Bridge.pex'
     'Scripts\Complexion\DLL.pex'             = 'build\papyrus\Complexion\DLL.pex'
     'Scripts\Complexion\Persona.pex'              = 'build\papyrus\Complexion\Persona.pex'
+    'Scripts\Complexion\API.pex'              = 'build\papyrus\Complexion\API.pex'
     'Complexion.esp'                         = 'data\Complexion.esp'
     'MCM\Config\Complexion\config.json'      = 'data\MCM\Config\Complexion\config.json'
     'MCM\Config\Complexion\settings.ini'     = 'data\MCM\Config\Complexion\settings.ini'

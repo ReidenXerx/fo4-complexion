@@ -5,8 +5,8 @@
       "id": "complexion_window",
       "desc": "Complexion: open the overlay window on the NPC in your sights, or on you",
       "action": {
-        "type": "CallFunction",
-        "form": "Complexion.esp|800",
+        "type": "CallGlobalFunction",
+        "script": "Complexion:API",
         "function": "OpenWindow",
         "params": []
       }
