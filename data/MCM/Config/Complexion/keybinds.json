@@ -2,7 +2,7 @@
   "modName": "Complexion",
   "keybinds": [
     {
-      "id": "window",
+      "id": "complexion_window",
       "desc": "Complexion: open the overlay window on the NPC in your sights, or on you",
       "action": {
         "type": "CallFunction",

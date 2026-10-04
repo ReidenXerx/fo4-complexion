@@ -42,7 +42,7 @@
         },
         {
           "type": "hotkey",
-          "id": "window",
+          "id": "complexion_window",
           "text": "Open the window on the NPC in your sights, or on you",
           "help": "Opens the overlay window on the NPC you aim at (or aimed at in the last seconds), or on you. Pressed again while it is open, it closes it as Cancel."
         },
