@@ -209,8 +209,9 @@ def main():
                                  ('gunners', False, 'Gunner')):
         seed = best_seed(looks, group, female, 3)
         tiles.append((label, pair(looks, group, female, seed, 460)))
-    top = ', '.join(f'{k.replace("_", " ")} {n}' for k, n in sorted(kinds.items(), key=lambda x: -x[1])[:6])
-    card('Your packs, read as LooksMenu reads them', f'{len(looks.catalog)} usable templates tagged from their pictures: {top}.',
+    # Kinds, no counts: numbers in a picture go stale with every release (the owner's rule, 10-04).
+    top = ', '.join(k.replace('_', ' ') for k, n in sorted(kinds.items(), key=lambda x: -x[1])[:6])
+    card('Your packs, read as LooksMenu reads them', f'Every template tagged from its picture: {top}.',
          tiles, out / 'packs.jpg', cols=2)
 
     # cheap: the measured comparison, as a text card
