@@ -44,8 +44,11 @@ def main():
         tiles.append((label, pic.resize((300, 300), Image.LANCZOS)))
     total = len(cells)
     spots = len(index.get('focus', {}))
-    card('Choose by hand', f'Aim, press the hotkey, click: {total} of Complexion\'s own with pictures, every pack\'s by '
-         f'name, live on them. A pick takes the camera to it ({spots} measured spots).',
+    # No counts in the picture: they change with every overlay release, and the page text carries them (the
+    # owner's rule, 10-04; the 699 baked here went stale at 0.1.6).
+    del total, spots
+    card('Choose by hand', 'Aim, press the hotkey, click: Complexion\'s own with pictures, every pack\'s by name, '
+         'live on them. A pick takes the camera to where the mark sits.',
          tiles, ROOT / 'docs' / 'img' / 'window.jpg', cols=6)
 
 
