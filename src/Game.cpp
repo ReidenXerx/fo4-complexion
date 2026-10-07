@@ -699,6 +699,19 @@ namespace CX::Game
 		return a_actor ? HairFamily(a_actor->GetNPC()) : std::string{};
 	}
 
+	float DistanceToPlayer(std::uint32_t a_ref)
+	{
+		auto* actor = ActorFor(a_ref);
+		auto* player = RE::PlayerCharacter::GetSingleton();
+		if (!actor || !player || !Has3D(actor)) {
+			return -1.0F;
+		}
+		const auto  a = actor->GetPosition();
+		const auto  p = player->GetPosition();
+		const float dx = a.x - p.x, dy = a.y - p.y, dz = a.z - p.z;
+		return std::sqrt(dx * dx + dy * dy + dz * dz);
+	}
+
 	std::string ToneOfActor(RE::Actor* a_actor)
 	{
 		return a_actor ? ToneOf(a_actor->GetNPC()) : std::string{};

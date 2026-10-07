@@ -60,8 +60,13 @@ namespace CX
 		// work when what was decided has not been confirmed on them.
 		void Seen(const Facts& a_facts);
 
-		// The bridge's side. NextOrder hands out one order at a time per actor; 0 when there is none.
-		[[nodiscard]] std::uint32_t        NextOrder();
+		// The bridge's side. NextOrder hands out one order at a time per actor; 0 when there is none. With a
+		// distance (game units from the player; negative = no longer loaded), the NEAREST waiting actor within
+		// kReach goes first, farther ones wait until the player comes closer and unloaded ones are dropped (seen
+		// again, they queue again): a crowd that loads at once is dressed from the player outwards, not all at
+		// once (a player's hitching in downtown Boston, 0.1.5). Without one, first come first served (the tests).
+		static constexpr float             kReach = 3000.0F;
+		[[nodiscard]] std::uint32_t        NextOrder(const std::function<float(std::uint32_t)>& a_distance = {});
 		[[nodiscard]] std::optional<Order> GetOrder(std::uint32_t a_id) const;
 		// Every entry landed: the record is confirmed. a_landed false: the bridge rebuilt once and it still
 		// did not land; the record stays unconfirmed and the next sighting tries again.

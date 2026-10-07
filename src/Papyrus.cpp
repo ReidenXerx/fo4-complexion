@@ -91,7 +91,9 @@ namespace CX::Papyrus
 
 		// ---- orders (data only) ----
 
-		std::int32_t NextOrder(std::monostate) { return static_cast<std::int32_t>(D().NextOrder()); }
+		// The nearest waiting actor first, farther ones when the player comes near (Director::kReach): main thread,
+		// it reads where they are.
+		std::int32_t NextOrder(std::monostate) { return static_cast<std::int32_t>(D().NextOrder(Game::DistanceToPlayer)); }
 
 		std::int32_t OrderActor(std::monostate, std::int32_t a_id)
 		{
@@ -236,7 +238,7 @@ namespace CX::Papyrus
 		Bind(a_vm, "ResetAll"sv, ResetAll, main);  // arms the sweep: main-thread state
 		Bind(a_vm, "Unapply"sv, Unapply, main);
 		Bind(a_vm, "Pump"sv, Pump, main);
-		Bind(a_vm, "NextOrder"sv, NextOrder, fast);
+		Bind(a_vm, "NextOrder"sv, NextOrder, main);
 		Bind(a_vm, "OrderActor"sv, OrderActor, fast);
 		Bind(a_vm, "OrderFemale"sv, OrderFemale, fast);
 		Bind(a_vm, "OrderCount"sv, OrderCount, fast);

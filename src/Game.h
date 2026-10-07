@@ -40,6 +40,8 @@ namespace CX::Game
 	[[nodiscard]] std::string NameOf(RE::Actor* a_actor);
 	// Their head hair's colour family (profiles.json hair_colours), "" when not one of the game's colours.
 	[[nodiscard]] std::string HairOf(RE::Actor* a_actor);
+	// Main thread: how far a reference is from the player, in game units; negative when it is not a loaded actor.
+	[[nodiscard]] float DistanceToPlayer(std::uint32_t a_ref);
 	// Their skin tone: pale, light, olive, dark; "" when not read (C-21).
 	[[nodiscard]] std::string ToneOfActor(RE::Actor* a_actor);
 	// Main thread: what the game shows of them now, told to the director (as their 3D loading would).

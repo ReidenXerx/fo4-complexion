@@ -351,6 +351,30 @@ namespace
 				"the hair family survives a v4 co-save");
 		}
 
+		// 0.1.5: the nearest waiting actor first, the far ones when the player comes near, the unloaded dropped.
+		{
+			CX::Director q;
+			q.SetData(a_profiles, a_catalog);
+			std::map<std::uint32_t, float> where{ { 0xA1, 2500.0F }, { 0xA2, 400.0F }, { 0xA3, 9000.0F }, { 0xA4, -1.0F } };
+			for (const auto& [ref, _] : where) {
+				q.Seen(CX::Facts{ ref, ref + 0x100, true, "raiders", "Crowd", "", "brown", "light" });
+			}
+			const auto dist = [&](std::uint32_t a_ref) { return where.at(a_ref); };
+			const auto first = q.NextOrder(dist);
+			Check(first && q.GetOrder(first)->ref == 0xA2, "the nearest goes first");
+			const auto second = q.NextOrder(dist);
+			Check(second && q.GetOrder(second)->ref == 0xA1, "then the next nearest within reach");
+			Check(q.NextOrder(dist) == 0, "the far one waits; the unloaded one is dropped");
+			where[0xA3] = 1000.0F;
+			const auto third = q.NextOrder(dist);
+			Check(third && q.GetOrder(third)->ref == 0xA3, "the far one goes when the player comes near");
+			where[0xA4] = 500.0F;
+			Check(q.NextOrder(dist) == 0, "the dropped one waits to be seen again");
+			q.Seen(CX::Facts{ 0xA4, 0xA4 + 0x100, true, "raiders", "Crowd", "", "brown", "light" });
+			const auto fourth = q.NextOrder(dist);
+			Check(fourth && q.GetOrder(fourth)->ref == 0xA4, "seen again, it is ordered");
+		}
+
 		// Reset: forgotten, and rolled with a new salt.
 		const auto salt = d.Salt();
 		d.ResetAll();

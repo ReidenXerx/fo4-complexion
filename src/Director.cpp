@@ -206,21 +206,44 @@ namespace CX
 		_queue.push_back(a_facts.ref);
 	}
 
-	std::uint32_t Director::NextOrder()
+	std::uint32_t Director::NextOrder(const std::function<float(std::uint32_t)>& a_distance)
 	{
 		std::scoped_lock l{ _lock };
-		while (!_queue.empty()) {
-			const auto ref = _queue.front();
-			_queue.pop_front();
-			const auto it = _records.find(ref);
-			if (it == _records.end() || it->second.applied || it->second.picks.empty()) {
-				continue;
+		// What no longer needs an order leaves the queue first.
+		std::erase_if(_queue, [&](std::uint32_t a_ref) {
+			const auto it = _records.find(a_ref);
+			return it == _records.end() || it->second.applied || it->second.picks.empty();
+		});
+		std::size_t pick = _queue.size();
+		if (!a_distance) {
+			pick = _queue.empty() ? _queue.size() : 0;
+		} else {
+			// One distance per waiting actor: the unloaded leave, the nearest within reach goes.
+			std::vector<std::pair<std::uint32_t, float>> dist;
+			for (const auto ref : _queue) {
+				dist.emplace_back(ref, a_distance(ref));
 			}
-			const auto id = _nextId++;
-			_inflight.emplace(id, Order{ id, ref, it->second.female, it->second.picks });
-			return id;
+			std::erase_if(_queue, [&](std::uint32_t a_ref) {
+				return std::ranges::find_if(dist, [&](const auto& n) { return n.first == a_ref && n.second < 0.0F; }) != dist.end();
+			});
+			float best = kReach;
+			for (std::size_t i = 0; i < _queue.size(); ++i) {
+				const auto n = std::ranges::find(dist, _queue[i], &std::pair<std::uint32_t, float>::first);
+				if (n != dist.end() && n->second <= best) {
+					best = n->second;
+					pick = i;
+				}
+			}
 		}
-		return 0;
+		if (pick >= _queue.size()) {
+			return 0;  // nobody near enough yet
+		}
+		const auto ref = _queue[pick];
+		_queue.erase(_queue.begin() + static_cast<std::ptrdiff_t>(pick));
+		const auto& r = _records.at(ref);
+		const auto  id = _nextId++;
+		_inflight.emplace(id, Order{ id, ref, r.female, r.picks });
+		return id;
 	}
 
 	std::optional<Order> Director::GetOrder(std::uint32_t a_id) const

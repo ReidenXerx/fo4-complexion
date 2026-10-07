@@ -10,8 +10,10 @@ Scriptname Complexion:Bridge extends Quest
 Int Property Protocol = 2 AutoReadOnly  ; 2: the overlay window (C-19)
 Int Property kPollTimer = 1 AutoReadOnly
 Float Property PollSeconds = 4.0 AutoReadOnly
-Float Property BusyPollSeconds = 0.5 AutoReadOnly
-Int Property OrdersPerPoll = 6 AutoReadOnly
+Float Property BusyPollSeconds = 1.0 AutoReadOnly
+; Two looks a second, the nearest first (the plugin's NextOrder): a crowd loading at once (downtown Boston) was
+; dressed 12 a second, every one a LooksMenu rebuild and new textures -- hitching (a player's report, 0.1.5).
+Int Property OrdersPerPoll = 2 AutoReadOnly
 Int Property SettingsEvery = 15 AutoReadOnly
 String Property ModName = "Complexion" AutoReadOnly
 
