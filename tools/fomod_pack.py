@@ -43,7 +43,7 @@ FEATURES = [
      '59 named characters have a look of their own, from their stories: Cait scarred from the Combat Zone, Piper '
      'all but plain, Danse under the Brotherhood\'s mark, Fahrenheit inked.'),
     ('Its own marks', 'marks.jpg',
-     'Complexion paints 699 overlays of its own for the CBBE and male bodies: a realism layer (areolas, moles, '
+     'Complexion paints 706 overlays of its own for the CBBE and male bodies: a realism layer (areolas, moles, '
      'freckles, birthmarks, stretch marks, body and pubic hair, tan lines, scars of every kind), traditional flash '
      'tattoos, bruises, grime and blood. Each fades out before the neck and wrist seams.'),
     ('Choose by hand', 'window.jpg',
