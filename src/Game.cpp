@@ -239,6 +239,9 @@ namespace CX::Game
 		};
 		Layout g_layout = Layout::kUnchecked;
 
+		// The head data (hair colour, body tint) read right on this runtime (checked on the player in CheckLayout).
+		bool g_headReadable = true;
+
 		// The game's hair colour records -> their family (profiles.json hair_colours, resolved by tools/make_data.py).
 		std::unordered_map<std::uint32_t, std::string> g_hairFamilies;
 
@@ -260,7 +263,7 @@ namespace CX::Game
 		// game's own records: Cait 0.97 and the default 0.95 pale, Deacon 0.85 light, Amari 0.72 olive, Preston 0.56.
 		std::string ToneOf(RE::TESNPC* a_npc)
 		{
-			if (g_layout != Layout::kGood) {
+			if (g_layout != Layout::kGood || !g_headReadable) {
 				return {};
 			}
 			int depth = 0;
@@ -272,7 +275,9 @@ namespace CX::Game
 					continue;  // no tint on this record: the next one up
 				}
 				const double l = (0.3 * r + 0.59 * g + 0.11 * b) / 255.0;
-				return l >= 0.9 ? "pale" : l >= 0.78 ? "light" : l >= 0.66 ? "olive" : "dark";
+				// Cuts between the game's preset clusters (the reviewer read every HumanRace QNAM: 0.95, 0.87/0.85,
+				// 0.79, 0.74, 0.70, 0.6588, 0.60, 0.57): never on a cluster, so byte rounding cannot flip a face.
+				return l >= 0.9 ? "pale" : l >= 0.78 ? "light" : l >= 0.65 ? "olive" : "dark";
 			}
 			return {};
 		}
@@ -280,7 +285,7 @@ namespace CX::Game
 		// Their family, "" when the colour is not one of the game's (another mod's, a dye) or not read.
 		std::string HairFamily(RE::TESNPC* a_npc)
 		{
-			if (g_layout != Layout::kGood) {
+			if (g_layout != Layout::kGood || !g_headReadable) {
 				return {};
 			}
 			const auto* colour = HairColourOf(a_npc);
@@ -325,8 +330,15 @@ namespace CX::Game
 				is(npc->formRace, RE::ENUM_FORM_ID::kRACE, "TESNPC::formRace", false);
 				is(npc->faceNPC, RE::ENUM_FORM_ID::kNPC_, "TESNPC::faceNPC", true);
 				// The body hair colour (0.1.3): a hair colour record where TESNPC::headRelatedData says, or none.
+				// Not a layout problem for the whole mod: only hair and skin reads go off if it reads wrong.
 				if (const auto* colour = HairColourOf(npc)) {
-					is(colour, RE::ENUM_FORM_ID::kCLFM, "TESNPC::headRelatedData->hairColor", false);
+					const auto type = Events::SafeFormType(colour);
+					g_headReadable = type == std::to_underlying(RE::ENUM_FORM_ID::kCLFM);
+					if (!g_headReadable) {
+						logger::warn("layout: TESNPC::headRelatedData->hairColor reads type {}, not a hair colour: body hair and skin tone "
+									 "go unread (every family and tone allowed)",
+							type);
+					}
 				}
 				for (const auto& f : npc->factions) {
 					if (!is(f.faction, RE::ENUM_FORM_ID::kFACT, "TESNPC::factions", false)) {
@@ -368,6 +380,19 @@ namespace CX::Game
 				run.complete = true;
 			}
 			if (!run.complete && run.problems.empty()) {
+				// Waiting for the player's 3D (the main menu, a load). A long wait after a load is worth a line: until
+				// the check passes nobody is read.
+				static std::int64_t  waitingSince = 0;
+				static bool          said = false;
+				const auto           loaded = g_loadedMs.load();
+				if (loaded != 0 && !said) {
+					if (waitingSince == 0) {
+						waitingSince = NowMs();
+					} else if (NowMs() - waitingSince > 60'000) {
+						said = true;
+						logger::warn("layout: the player has had no 3D for a minute since the load; nobody gets overlays until they do");
+					}
+				}
 				return;
 			}
 			if (run.problems.empty()) {
@@ -423,8 +448,24 @@ namespace CX::Game
 			}
 			// The record's own factions, as Silhouette's faction pools read them (a template's are carried by
 			// the record it builds).
+			// And its traits template's: a record that takes its factions from a template keeps them there (the
+			// reviewer counted ~7% of the human records with groups, e.g. DN136's Institute scientists).
+			const auto inFaction = [&](RE::TESFaction* a_f) {
+				int depth = 0;
+				for (RE::TESForm* n = npc; n && depth < 8; ++depth) {
+					if (!n->Is(RE::ENUM_FORM_ID::kNPC_)) {
+						break;
+					}
+					auto* rec = static_cast<RE::TESNPC*>(n);
+					if (rec->IsInFaction(a_f)) {
+						return true;
+					}
+					n = rec->baseTemplateForm;
+				}
+				return false;
+			};
 			for (const auto& g : g_groups) {
-				if (std::ranges::any_of(g.factions, [&](RE::TESFaction* a_f) { return a_f && npc->IsInFaction(a_f); })) {
+				if (std::ranges::any_of(g.factions, [&](RE::TESFaction* a_f) { return a_f && inFaction(a_f); })) {
 					f.group = g.group;
 					break;
 				}
@@ -703,8 +744,11 @@ namespace CX::Game
 	{
 		auto* actor = ActorFor(a_ref);
 		auto* player = RE::PlayerCharacter::GetSingleton();
-		if (!actor || !player || !Has3D(actor)) {
-			return -1.0F;
+		if (!actor || !player) {
+			return Director::kGone;
+		}
+		if (!Has3D(actor)) {
+			return Director::kNo3D;  // a rebuild in progress, or unloading: a few polls tell which
 		}
 		const auto  a = actor->GetPosition();
 		const auto  p = player->GetPosition();

@@ -61,6 +61,9 @@ if ($LASTEXITCODE) { throw 'an overlay texture is off its painting: see tools\pa
 # shipped tags without the new fields (twice, 2026-10-04).
 & python -c "import json,sys; a=json.load(open(sys.argv[1],encoding='utf-8')); b=json.load(open(sys.argv[2],encoding='utf-8')); sys.exit(0 if a==b else 1)" (Join-Path $root 'build\tags.json') (Join-Path $root 'data\F4SE\Plugins\Complexion\tags.json')
 if ($LASTEXITCODE) { throw 'the shipped tags.json is not the build''s: run python tools\make_data.py after scripts\build-plugin.ps1' }
+# And the shipped profiles.json is data\profiles.json as make_data resolves it (faction ids aside).
+& python -c "import json,sys; a=json.load(open(sys.argv[1],encoding='utf-8')); b=json.load(open(sys.argv[2],encoding='utf-8')); strip=lambda d: {k: v for k, v in d.items() if k != 'factions' and k != 'forms'}; same=lambda x,y: strip(x)==strip(y) and [f[1] for f in x.get('factions',[])]==[f[1] for f in y.get('factions',[])]; ok=all(same(a['groups'][g],b['groups'].get(g,{})) for g in a['groups']) and {k:v for k,v in a.items() if k not in ('groups','hair_colours','characters')}=={k:v for k,v in b.items() if k not in ('groups','hair_colours','characters')} and a['hair_colours']['accept']==b['hair_colours']['accept'] and all(strip(a['characters'][c])==strip(b['characters'].get(c,{})) for c in a['characters']); sys.exit(0 if ok else 1)" (Join-Path $root 'data\profiles.json') (Join-Path $root 'data\F4SE\Plugins\Complexion\profiles.json')
+if ($LASTEXITCODE) { throw 'the shipped profiles.json is not data\profiles.json: run python tools\make_data.py' }
 $thumbs = Get-Content (Join-Path $root 'data\F4SE\Plugins\Complexion\thumbs.json') -Raw | ConvertFrom-Json
 foreach ($sex in 'Female', 'Male') {
     if (-not (Test-Path (Join-Path $root "data\Textures\Complexion\Thumbs$($sex)_$($thumbs.build)_0.dds"))) {

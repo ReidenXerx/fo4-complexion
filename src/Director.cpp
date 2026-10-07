@@ -168,7 +168,23 @@ namespace CX
 			Log(std::format("{} ({:08X}, {}, {}): {}", a_facts.name, a_facts.ref, a_facts.female ? "female" : "male", r.group,
 				r.picks.empty() ? "nothing" : list));
 			it = _records.emplace(a_facts.ref, std::move(r)).first;
-		} else if (!it->second.checked && !a_facts.tone.empty()) {  // only on facts really read (tone always is)
+		} else if (it->second.group == "captives" && !a_facts.group.empty() && a_facts.group != "captives" && !it->second.manual) {
+			// Freed (no longer in a captive faction): the rope, shackles and brands of captivity were their look as a
+			// captive; decided again, once, for who they are now (the reviewer's freed-captive case, 0.1.6).
+			auto&       r = it->second;
+			const auto* group = _profiles.Find(a_facts.group);
+			if (group) {
+				auto again = Compose(_profiles, _catalog, r.female, *group, SeedFor(a_facts.ref, r.base), _adult, r.persona,
+					r.hair.empty() ? a_facts.hair : r.hair, r.tone.empty() ? a_facts.tone : r.tone);
+				r.group = group->name;
+				r.checked = true;
+				if (!again.empty() || !r.picks.empty()) {
+					r.picks = std::move(again);
+					r.applied = false;
+				}
+				Log(std::format("{} ({:08X}): no longer a captive, now {}: {} overlay(s)", a_facts.name, a_facts.ref, r.group, r.picks.size()));
+			}
+		} else if (!it->second.checked) {  // facts are read only after the layout check passed (Game::See)
 			// A look decided before today's rules (an older co-save): kept, unless one of its marks is one they would
 			// not get now -- another hair colour than theirs (C-20), a nasty mark on someone who does not live rough,
 			// acne on the old, freckles on dark skin (C-21) -- then decided again, once. A look chosen by hand stays.
@@ -177,7 +193,9 @@ namespace CX
 			if (!a_facts.hair.empty()) {
 				r.hair = a_facts.hair;
 			}
-			r.tone = a_facts.tone;
+			if (!a_facts.tone.empty()) {
+				r.tone = a_facts.tone;
+			}
 			if (!r.manual && Misfits(r, SeedFor(a_facts.ref, r.base))) {
 				// An empty look would queue nothing and leave the old one on them: kept then (it cannot happen while
 				// every family has pubic hair to give, but the bridge only rebuilds for a look that has entries).
@@ -204,6 +222,7 @@ namespace CX
 			}
 		}
 		_queue.push_back(a_facts.ref);
+		_onlyFar = false;  // someone new: the quick poll looks at them
 	}
 
 	std::uint32_t Director::NextOrder(const std::function<float(std::uint32_t)>& a_distance)
@@ -218,23 +237,33 @@ namespace CX
 		if (!a_distance) {
 			pick = _queue.empty() ? _queue.size() : 0;
 		} else {
-			// One distance per waiting actor: the unloaded leave, the nearest within reach goes.
+			// One distance per waiting actor: the gone leave, a missing 3D counts a miss, the nearest within reach goes.
 			std::vector<std::pair<std::uint32_t, float>> dist;
 			for (const auto ref : _queue) {
 				dist.emplace_back(ref, a_distance(ref));
 			}
 			std::erase_if(_queue, [&](std::uint32_t a_ref) {
-				return std::ranges::find_if(dist, [&](const auto& n) { return n.first == a_ref && n.second < 0.0F; }) != dist.end();
+				const auto n = std::ranges::find(dist, a_ref, &std::pair<std::uint32_t, float>::first);
+				if (n == dist.end() || n->second >= 0.0F) {
+					_misses.erase(a_ref);
+					return false;
+				}
+				if (n->second == kNo3D && ++_misses[a_ref] < kMisses) {
+					return false;  // no 3D this moment: kept, and not picked
+				}
+				_misses.erase(a_ref);
+				return true;  // gone, or without 3D too long: queued again when seen again
 			});
 			float best = kReach;
 			for (std::size_t i = 0; i < _queue.size(); ++i) {
 				const auto n = std::ranges::find(dist, _queue[i], &std::pair<std::uint32_t, float>::first);
-				if (n != dist.end() && n->second <= best) {
+				if (n != dist.end() && n->second >= 0.0F && n->second <= best) {
 					best = n->second;
 					pick = i;
 				}
 			}
 		}
+		_onlyFar = pick >= _queue.size() && !_queue.empty();
 		if (pick >= _queue.size()) {
 			return 0;  // nobody near enough yet
 		}
@@ -385,7 +414,9 @@ namespace CX
 	std::size_t Director::PendingCount() const
 	{
 		std::scoped_lock l{ _lock };
-		return _queue.size() + _inflight.size();
+		// Actors waiting out of reach do not keep the bridge on its quick poll (once a second, for as long as they
+		// stand there): the 4 s poll asks again.
+		return (_onlyFar ? 0 : _queue.size()) + _inflight.size();
 	}
 
 	std::optional<Record> Director::RecordFor(std::uint32_t a_ref) const

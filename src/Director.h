@@ -66,6 +66,11 @@ namespace CX
 		// again, they queue again): a crowd that loads at once is dressed from the player outwards, not all at
 		// once (a player's hitching in downtown Boston, 0.1.5). Without one, first come first served (the tests).
 		static constexpr float             kReach = 3000.0F;
+		// What the distance says besides a distance: the actor is gone (dropped at once), or has no 3D this moment
+		// (an outfit or AAF rebuild): dropped after kMisses polls in a row, kept until then.
+		static constexpr float             kGone = -1.0F;
+		static constexpr float             kNo3D = -2.0F;
+		static constexpr int               kMisses = 3;
 		[[nodiscard]] std::uint32_t        NextOrder(const std::function<float(std::uint32_t)>& a_distance = {});
 		[[nodiscard]] std::optional<Order> GetOrder(std::uint32_t a_id) const;
 		// Every entry landed: the record is confirmed. a_landed false: the bridge rebuilt once and it still
@@ -145,6 +150,8 @@ namespace CX
 		std::uint64_t                                      _salt{ 0x436F6D706C786E31ull };
 		std::unordered_map<std::uint32_t, Record>          _records;
 		std::deque<std::uint32_t>                          _queue;     // refs waiting for an order
+		std::unordered_map<std::uint32_t, int>             _misses;    // refs whose 3D was missing, polls in a row
+		bool                                               _onlyFar{ false };  // the last NextOrder found only actors out of reach
 		std::unordered_map<std::uint32_t, Order>           _inflight;  // order id -> order
 		std::uint32_t                                      _nextId{ 1 };
 		std::vector<std::string>                           _log;

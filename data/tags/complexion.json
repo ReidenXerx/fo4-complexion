@@ -8436,8 +8436,7 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "acne, back",
-  "nasty": true,
+  "note": "light acne, back",
   "age": "young"
  },
  "m:Complexion_AcneBackLight_M01": {
@@ -8449,8 +8448,7 @@
   "kind": "acne",
   "regions": [],
   "size": "small",
-  "note": "acne, back",
-  "nasty": true,
+  "note": "light acne, back",
   "age": "young"
  },
  "f:Complexion_PubicNaturalGinger_F01": {
@@ -9594,5 +9592,97 @@
   ],
   "size": "tiny",
   "note": "large dark nipples"
+ },
+ "f:Complexion_PubicTrimmedGrey_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "note": "trimmed pubic hair, grey",
+  "hair": "grey"
+ },
+ "f:Complexion_PubicBikiniGrey_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "note": "bikini pubic hair, grey",
+  "hair": "grey"
+ },
+ "f:Complexion_UnderarmGreyMore_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "body_hair",
+  "regions": [],
+  "size": "tiny",
+  "note": "unshaved underarms, grey",
+  "hair": "grey"
+ },
+ "f:Complexion_TrailFemaleGrey_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "body_hair",
+  "regions": [],
+  "size": "tiny",
+  "note": "a faint grey line of hair below the navel",
+  "hair": "grey"
+ },
+ "m:Complexion_PubicTrimGrey_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "pubic_hair",
+  "regions": [
+   "pubic"
+  ],
+  "size": "small",
+  "note": "trimmed pubic hair, grey",
+  "hair": "grey"
+ },
+ "m:Complexion_ChestLightGrey_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "body_hair",
+  "regions": [
+   "chest"
+  ],
+  "size": "medium",
+  "note": "light chest hair, grey",
+  "hair": "grey"
+ },
+ "m:Complexion_LimbHairGrey_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "body_hair",
+  "regions": [],
+  "size": "medium",
+  "note": "arm and leg hair, grey",
+  "hair": "grey"
  }
 }

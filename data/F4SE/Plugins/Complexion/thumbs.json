@@ -1,5 +1,5 @@
 {
-"build": "df0f7fb2",
+"build": "7f541ea0",
 "cell": 128,
 "cols": 32,
 "cells": {
@@ -1435,6 +1435,22 @@
 0,
 357
 ],
+"f:Complexion_PubicTrimmedGrey_F01": [
+0,
+358
+],
+"f:Complexion_PubicBikiniGrey_F01": [
+0,
+359
+],
+"f:Complexion_UnderarmGreyMore_F01": [
+0,
+360
+],
+"f:Complexion_TrailFemaleGrey_F01": [
+0,
+361
+],
 "m:Complexion_BruiseFresh_M01": [
 0,
 0
@@ -2798,6 +2814,18 @@
 "m:Complexion_NipplesDarkLarge_M01": [
 0,
 340
+],
+"m:Complexion_PubicTrimGrey_M01": [
+0,
+341
+],
+"m:Complexion_ChestLightGrey_M01": [
+0,
+342
+],
+"m:Complexion_LimbHairGrey_M01": [
+0,
+343
 ]
 },
 "focus": {
@@ -6011,6 +6039,46 @@
 0.1168,
 0
 ],
+"f:Complexion_PubicTrimmedGrey_F01": [
+0.5974,
+-0.0002,
+0.0546,
+-0.002,
+0.913,
+-0.409,
+0.0166,
+0
+],
+"f:Complexion_PubicBikiniGrey_F01": [
+0.6016,
+0.0,
+0.0558,
+-0.0,
+0.928,
+-0.373,
+0.0191,
+0
+],
+"f:Complexion_UnderarmGreyMore_F01": [
+0.8943,
+0.0004,
+0.0082,
+0.007,
+0.918,
+-0.396,
+0.095,
+1
+],
+"f:Complexion_TrailFemaleGrey_F01": [
+0.6237,
+0.0002,
+0.0637,
+0.002,
+0.978,
+-0.207,
+0.0078,
+0
+],
 "m:Complexion_BruiseFresh_M01": [
 0.7373,
 -0.0355,
@@ -8989,6 +9057,26 @@
 0.991,
 -0.131,
 0.0757,
+0
+],
+"m:Complexion_PubicTrimGrey_M01": [
+0.5806,
+-0.0005,
+0.0641,
+-0.025,
+0.968,
+-0.248,
+0.0317,
+0
+],
+"m:Complexion_ChestLightGrey_M01": [
+0.8553,
+0.0002,
+0.082,
+0.0,
+0.979,
+0.203,
+0.036,
 0
 ]
 }

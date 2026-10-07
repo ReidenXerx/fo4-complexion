@@ -670,7 +670,7 @@
    ],
    "hair": "any",
    "adult": 0,
-   "squalor": 70
+   "squalor": 50
   },
   "institute": {
    "factions": [
@@ -1581,7 +1581,7 @@
    "hair": "any",
    "adult": 0,
    "why": "hard survivor: scars and dirt",
-   "squalor": 20
+   "squalor": 60
   },
   "Fahrenheit": {
    "forms": [
@@ -1820,7 +1820,7 @@
    "hair": "any",
    "adult": 0,
    "why": "sour shopkeeper: plain",
-   "squalor": 20
+   "squalor": 5
   },
   "Doctor Amari": {
    "forms": [
@@ -1879,7 +1879,7 @@
    "hair": "any",
    "adult": 0,
    "why": "diner owner: kitchen grime",
-   "squalor": 20
+   "squalor": 50
   },
   "Ellie Perkins": {
    "forms": [
@@ -1910,7 +1910,7 @@
    "hair": "trim",
    "adult": 0,
    "why": "a secretary: plain",
-   "squalor": 20
+   "squalor": 5
   },
   "Cricket": {
    "forms": [
@@ -1974,7 +1974,7 @@
    "hair": "any",
    "adult": 0,
    "why": "caravan trader: road dirt",
-   "squalor": 20
+   "squalor": 50
   },
   "Captain Avery": {
    "forms": [
@@ -2037,7 +2037,7 @@
    "hair": "trim",
    "adult": 0,
    "why": "Acadia's synth: clean",
-   "squalor": 20
+   "squalor": 0
   },
   "Ivy": {
    "forms": [
@@ -2143,7 +2143,7 @@
    "hair": "any",
    "adult": 0,
    "why": "the grubby salon gossip",
-   "squalor": 20
+   "squalor": 60
   },
   "Becky Fallon": {
    "forms": [
@@ -2878,7 +2878,7 @@
    "hair": "trim",
    "adult": 0,
    "why": "the doctor: clean",
-   "squalor": 20
+   "squalor": 0
   },
   "Abbot": {
    "forms": [
@@ -2907,7 +2907,7 @@
    "hair": "any",
    "adult": 0,
    "why": "one of the oldest citizens",
-   "squalor": 20
+   "squalor": 10
   },
   "Sheffield": {
    "forms": [
@@ -2971,7 +2971,7 @@
    "hair": "trim",
    "adult": 0,
    "why": "the rich man: clean",
-   "squalor": 20
+   "squalor": 0
   },
   "Finn": {
    "forms": [
@@ -3173,7 +3173,7 @@
    "hair": "any",
    "adult": 0,
    "why": "the hotel handyman",
-   "squalor": 20
+   "squalor": 60
   }
  },
  "personas": {

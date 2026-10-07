@@ -94,6 +94,7 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona=
     hc = profiles.get('hair_colours')
     accepted = None
     if hc:
+        assert all(f in hc['accept'] for f, _ in hc['unknown']), 'hair_colours: unknown rolls a family accept does not list'
         if hair not in hc['accept']:
             roll, hair = rng.percent(), hc['unknown'][-1][0]
             for fam, w in hc['unknown']:
@@ -300,6 +301,15 @@ def main():
                             picks = compose(profiles, catalog, female, group, seed, adult, persona, hair, tone)
                             # Tab-separated: group names ("npc:Piper Wright") and template ids have spaces.
                             print(f'{group}\t{"f" if female else "m"}\t{seed}\t{int(adult)}\t{persona}\t{hair}\t{tone}\t' +
+                                  ','.join(f'{p["key"]}@{p["priority"]}' for p in picks))
+        for group in group_names(profiles)[:3] + [profiles['default']]:
+            for female in (True, False):
+                for s in range(30):
+                    seed = (s * 0xD1B54A32D192ED03 + 777) & MASK
+                    for hair in HAIR_DUMP + ('purple',):
+                        for tone in TONE_DUMP:
+                            picks = compose(profiles, catalog, female, group, seed, True, '', hair, tone)
+                            print(f'{group}\t{"f" if female else "m"}\t{seed}\t1\t\t{hair}\t{tone}\t' +
                                   ','.join(f'{p["key"]}@{p["priority"]}' for p in picks))
         return
     if a.simulate:

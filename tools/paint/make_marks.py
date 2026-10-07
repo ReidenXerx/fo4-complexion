@@ -463,7 +463,7 @@ for zone in ('hips', 'belly', 'breasts', 'thighs', 'buttocks', 'shoulders'):
             dict(R, kind='skin', regions=[], size='small', note=f'{"fresh" if fresh else "old"} stretch marks, {zone}'), 1)
 for zone, amount in (('back', 0.7), ('chest', 0.5), ('buttocks', 0.5), ('shoulders', 0.6), ('back', 0.25)):
     add(f'Acne{zone.title()}{"Light" if amount < 0.4 else ""}', BOTH, 'skin.acne', (zone, amount), 2048,
-        dict(R, kind='acne', regions=[], size='small', note=f'acne, {zone}'), 1)
+        dict(R, kind='acne', regions=[], size='small', note=f'{"light " if amount < 0.4 else ""}acne, {zone}'), 1)
 # pubic hair: more colours and styles
 for colour in ('ginger', 'lightbrown', 'darkbrown', 'grey'):
     add(f'PubicNatural{colour.title()}', F, 'pubic_female', ('natural', colour), 2048, dict(R, kind='pubic_hair', regions=['pubic'], size='large', note=f'natural pubic hair, {colour}'), 1)
@@ -508,6 +508,14 @@ for tone in ('pink', 'rose', 'brown', 'dark'):
     for label, size in (('Small', 0.6), ('Large', 1.15)):
         add(f'Nipples{tone.title()}{label}', M, 'nipples', (tone, False, size), 2048,
             dict(R, kind='nipple', regions=['chest'], size='tiny', note=f'{label.lower()} {tone} nipples'), 1)
+# 0.1.6: grey hair had one pubic template for women and no body hair (the review): the old get their own range.
+add('PubicTrimmedGrey', F, 'pubic_female', ('trimmed', 'grey'), 2048, dict(R, kind='pubic_hair', regions=['pubic'], size='small', note='trimmed pubic hair, grey'), 1)
+add('PubicBikiniGrey', F, 'skin.pubic_female', ('bikini', 'grey'), 2048, dict(R, kind='pubic_hair', regions=['pubic'], size='small', note='bikini pubic hair, grey'), 1)
+add('UnderarmGreyMore', F, 'underarm_hair', ('grey',), 2048, dict(R, kind='body_hair', regions=[], size='tiny', note='unshaved underarms, grey'), 1)
+add('TrailFemaleGrey', F, 'skin.female_trail', ('grey',), 2048, dict(R, kind='body_hair', regions=[], size='tiny', note='a faint grey line of hair below the navel'), 1)
+add('PubicTrimGrey', M, 'pubic_hair', ('trim', 2048, HAIR_RGB['grey']), 2048, dict(R, kind='pubic_hair', regions=['pubic'], size='small', note='trimmed pubic hair, grey'), 1)
+add('ChestLightGrey', M, 'skin.chest_hair', ('light', 'grey'), 2048, dict(R, kind='body_hair', regions=['chest'], size='medium', note='light chest hair, grey'), 1)
+add('LimbHairGrey', M, 'skin.limb_hair', ('grey', 0.7), 2048, dict(R, kind='body_hair', regions=[], size='medium', note='arm and leg hair, grey'), 1)
 
 
 def design(spec, rng):

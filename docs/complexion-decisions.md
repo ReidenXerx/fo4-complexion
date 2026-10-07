@@ -299,6 +299,21 @@ margins, not its elite ("DC citizens ... kinda elite of Commonwealth"). In profi
 - **Reads wait for the layout check.** Nobody is read before the layout check passes, so hair and skin are never
   read as unknown.
 
+**0.1.5–0.1.6 (a player's hitching report; a Sonnet microscope pass):**
+- **Crowds are dressed from the player outwards.** The nearest waiting actor goes first, at two a second; those
+  beyond 3000 units wait until the player comes near; the bridge falls back to its slow poll while only far ones
+  wait. An actor without 3D for a moment (a rebuild) is a miss, and is dropped only after three in a row.
+- **A freed captive is decided again** as who they are now: the chains come off.
+- **Factions are also read up the traits template chain** (baseTemplateForm), where about 7% of the grouped human
+  records keep theirs.
+- **Head reads fail alone.** A hair colour that does not read as one turns off only hair and skin reads, not the
+  mod.
+- **Skin-tone cuts sit between the game's preset clusters.** The olive/dark cut is 0.65, not 0.66 (on a 0.6588
+  cluster).
+- **Grey hair has its own range.** Seven grey templates (women had one pubic template and no body hair). Light
+  acne is ordinary skin, not a nasty mark.
+- **make-release also checks the shipped profiles.json.** The parity dump also covers every hair × tone pair.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

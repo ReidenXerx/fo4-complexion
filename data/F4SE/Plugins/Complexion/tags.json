@@ -3093,8 +3093,7 @@
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
-"nasty": true,
-"note": "acne, back",
+"note": "light acne, back",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -5830,6 +5829,21 @@
 "size": "small",
 "style": []
 },
+"f:Complexion_PubicBikiniGrey_F01": {
+"adult": false,
+"emblem": null,
+"hair": "grey",
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "bikini pubic hair, grey",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
 "f:Complexion_PubicBushyBlack_F01": {
 "adult": false,
 "emblem": null,
@@ -6167,6 +6181,21 @@
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair, brown",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
+"f:Complexion_PubicTrimmedGrey_F01": {
+"adult": false,
+"emblem": null,
+"hair": "grey",
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "trimmed pubic hair, grey",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -8201,6 +8230,19 @@
 "size": "tiny",
 "style": []
 },
+"f:Complexion_TrailFemaleGrey_F01": {
+"adult": false,
+"emblem": null,
+"hair": "grey",
+"kind": "body_hair",
+"lore": "fits",
+"note": "a faint grey line of hair below the navel",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
 "f:Complexion_TrailFemale_F01": {
 "adult": false,
 "emblem": null,
@@ -8273,6 +8315,19 @@
 "kind": "body_hair",
 "lore": "fits",
 "note": "unshaved underarms, ginger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "tiny",
+"style": []
+},
+"f:Complexion_UnderarmGreyMore_F01": {
+"adult": false,
+"emblem": null,
+"hair": "grey",
+"kind": "body_hair",
+"lore": "fits",
+"note": "unshaved underarms, grey",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -27713,8 +27768,7 @@
 "emblem": null,
 "kind": "acne",
 "lore": "fits",
-"nasty": true,
-"note": "acne, back",
+"note": "light acne, back",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [],
@@ -28412,6 +28466,21 @@
 "kind": "body_hair",
 "lore": "fits",
 "note": "light chest hair, ginger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"chest"
+],
+"size": "medium",
+"style": []
+},
+"m:Complexion_ChestLightGrey_M01": {
+"adult": false,
+"emblem": null,
+"hair": "grey",
+"kind": "body_hair",
+"lore": "fits",
+"note": "light chest hair, grey",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -29940,6 +30009,19 @@
 "size": "medium",
 "style": []
 },
+"m:Complexion_LimbHairGrey_M01": {
+"adult": false,
+"emblem": null,
+"hair": "grey",
+"kind": "body_hair",
+"lore": "fits",
+"note": "arm and leg hair, grey",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [],
+"size": "medium",
+"style": []
+},
 "m:Complexion_MarkerCumRag_M01": {
 "adult": true,
 "emblem": null,
@@ -30823,6 +30905,21 @@
 "kind": "pubic_hair",
 "lore": "fits",
 "note": "trimmed pubic hair, ginger",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"pubic"
+],
+"size": "small",
+"style": []
+},
+"m:Complexion_PubicTrimGrey_M01": {
+"adult": false,
+"emblem": null,
+"hair": "grey",
+"kind": "pubic_hair",
+"lore": "fits",
+"note": "trimmed pubic hair, grey",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [

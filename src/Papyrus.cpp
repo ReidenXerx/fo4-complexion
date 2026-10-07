@@ -254,7 +254,7 @@ namespace CX::Papyrus
 		Bind(a_vm, "CameraRestore"sv, CameraRestore, main);
 		Bind(a_vm, "CameraFocus"sv, CameraFocus, main);
 		Bind(a_vm, "CameraStep"sv, CameraStep, main);
-		Bind(a_vm, "WindowBegin"sv, WindowBegin, fast);
+		Bind(a_vm, "WindowBegin"sv, WindowBegin, main);  // it reads the actor's record
 		Bind(a_vm, "WindowEnd"sv, WindowEnd, fast);
 		Bind(a_vm, "WindowBuild"sv, WindowBuild, fast);
 		Bind(a_vm, "WindowPage"sv, WindowPage, fast);

@@ -110,6 +110,11 @@ namespace CX
 			if (p.hairColours.unknown.empty()) {
 				throw std::runtime_error("hair_colours: no unknown roll");
 			}
+			for (const auto& [fam, w] : p.hairColours.unknown) {
+				if (!p.hairColours.accept.contains(fam)) {
+					throw std::runtime_error(std::format("hair_colours: unknown rolls {}, which accept does not list", fam));
+				}
+			}
 			if (hc.contains("forms")) {
 				for (const auto& f : hc.at("forms")) {
 					p.hairColours.forms.push_back({ f.at(0).get<std::string>(), f.at(1).get<std::string>(),
@@ -292,7 +297,7 @@ namespace CX
 				}
 			}
 			p.squalid = a_rng.Percent() < a_group.squalor;
-			p.old = a_hair == "grey";
+			p.old = family == "grey";  // the resolved family (tools/compose.py tests the same)
 			p.tone = std::string(a_tone);
 			return p;
 		}

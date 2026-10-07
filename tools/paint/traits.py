@@ -35,7 +35,7 @@ def of(tag):
     kind, note = tag.get('kind', ''), (tag.get('note') or '').lower()
     out = {}
     if kind in NASTY_KINDS or (kind in ('bruise', 'acne', 'burn', 'skin', 'marks') and any(n in note for n in NASTY_NOTES)):
-        if 'faint speckled' not in note:  # a few faint pimples are just skin
+        if 'faint speckled' not in note and 'light acne' not in note:  # a few pimples are just skin
             out['nasty'] = True
     if kind == 'acne' or any(n in note for n in YOUNG_NOTES):
         if 'faint speckled' not in note:

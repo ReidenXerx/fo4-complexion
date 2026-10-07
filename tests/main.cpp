@@ -337,8 +337,6 @@ namespace
 			CX::Director h;
 			h.SetData(a_profiles, a_catalog);
 			Check(h.Load(v3, {}), "a v3 co-save loads");
-			h.Seen(CX::Facts{ 0x7001, 0x8000 + 0x7001, true, "raiders", "Clash", "", "" });
-			Check(h.RecordFor(0x7001)->picks.front().key == ginger->key, "facts not read yet (no tone): an old look is left as it is");
 			h.Seen(CX::Facts{ 0x7001, 0x8000 + 0x7001, true, "raiders", "Clash", "", "black", "light" });
 			const auto clash = h.RecordFor(0x7001);
 			Check(!clash->applied && std::ranges::none_of(clash->picks, [&](const CX::Pick& p) { return p.key == ginger->key; }),
@@ -349,6 +347,41 @@ namespace
 			k.SetData(a_profiles, a_catalog);
 			Check(k.Load(h.Save(), {}) && k.RecordFor(0x7001)->hair == "black" && k.RecordFor(0x7001)->tone == "light" && k.RecordFor(0x7001)->checked,
 				"the hair family survives a v4 co-save");
+		}
+
+		// 0.1.6: a freed captive's look is decided again for who they are now; a missing 3D is a miss, not a drop.
+		{
+			CX::Director c;
+			c.SetData(a_profiles, a_catalog);
+			c.Seen(CX::Facts{ 0xC1, 0xC1 + 0x100, true, "captives", "Captive", "", "brown", "light" });
+			const auto held = c.RecordFor(0xC1)->picks;
+			c.Seen(CX::Facts{ 0xC1, 0xC1 + 0x100, true, "farmers", "Freed", "", "brown", "light" });
+			Check(c.RecordFor(0xC1)->group == "farmers" && !c.RecordFor(0xC1)->applied, "a freed captive is decided again as who they are now");
+			c.Seen(CX::Facts{ 0xC2, 0xC2 + 0x100, true, "raiders", "Rebuilt", "", "brown", "light" });
+			float d2 = CX::Director::kNo3D;
+			const auto dist = [&](std::uint32_t a_ref) { return a_ref == 0xC2 ? d2 : CX::Director::kGone; };
+			Check(c.NextOrder(dist) == 0 && c.NextOrder(dist) == 0, "no 3D for a moment: not picked");
+			d2 = 100.0F;
+			const auto o = c.NextOrder(dist);
+			Check(o && c.GetOrder(o)->ref == 0xC2, "3D back within the misses: still queued, ordered");
+			CX::Director f;
+			f.SetData(a_profiles, a_catalog);
+			f.Seen(CX::Facts{ 0xC3, 0xC3 + 0x100, true, "raiders", "Far", "", "brown", "light" });
+			Check(f.NextOrder([](std::uint32_t) { return 5000.0F; }) == 0 && f.PendingCount() == 0,
+				"only far actors waiting: the bridge goes back to its slow poll");
+		}
+
+		// Every pick suits the person by the rules decided before any pick (Suits, used on old saves).
+		for (std::uint64_t seed = 1; seed < 200; ++seed) {
+			for (const auto* hair : { "", "grey", "ginger", "black" }) {
+				for (const auto* tone : { "", "pale", "dark" }) {
+					const auto& g = a_profiles.groups[seed % a_profiles.groups.size()];
+					for (const auto& p : CX::Compose(a_profiles, a_catalog, seed % 2 == 0, g, seed * 31337, true, {}, hair, tone)) {
+						const auto t = std::ranges::find(a_catalog, p.key, &CX::Template::key);
+						Check(CX::Suits(a_profiles, g, seed * 31337, hair, tone, *t), std::format("{} suits who it was picked for", p.key));
+					}
+				}
+			}
 		}
 
 		// 0.1.5: the nearest waiting actor first, the far ones when the player comes near, the unloaded dropped.
