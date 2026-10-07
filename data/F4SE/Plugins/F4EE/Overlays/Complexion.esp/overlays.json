@@ -8611,7 +8611,7 @@
  },
  {
   "id": "Complexion_AcneBackLight_F01",
-  "name": "Complexion - acne, back",
+  "name": "Complexion - light acne, back",
   "slots": [
    {
     "slot": 3,
@@ -8625,7 +8625,7 @@
  },
  {
   "id": "Complexion_AcneBackLight_M01",
-  "name": "Complexion - acne, back",
+  "name": "Complexion - light acne, back",
   "slots": [
    {
     "slot": 3,
@@ -9778,6 +9778,104 @@
    {
     "slot": 3,
     "material": "overlays\\Complexion\\Complexion_NipplesDarkLarge_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_PubicTrimmedGrey_F01",
+  "name": "Complexion - trimmed pubic hair, grey",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicTrimmedGrey_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicBikiniGrey_F01",
+  "name": "Complexion - bikini pubic hair, grey",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicBikiniGrey_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_UnderarmGreyMore_F01",
+  "name": "Complexion - unshaved underarms, grey",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_UnderarmGreyMore_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_TrailFemaleGrey_F01",
+  "name": "Complexion - a faint grey line of hair below the navel",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_TrailFemaleGrey_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_PubicTrimGrey_M01",
+  "name": "Complexion - trimmed pubic hair, grey",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_PubicTrimGrey_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_ChestLightGrey_M01",
+  "name": "Complexion - light chest hair, grey",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_ChestLightGrey_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_LimbHairGrey_M01",
+  "name": "Complexion - arm and leg hair, grey",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_LimbHairGrey_M01.bgem"
    }
   ],
   "playable": true,
