@@ -49,6 +49,8 @@ MCM. LooksMenu overlay packs are optional: Complexion paints its own.
 The vanilla female body is NOT supported. Its UV map differs from CBBE's, so marks land in the wrong places
 (stray rectangles and outlines).
 
+**Incompatible:** upscaling plugins (DLSS, FSR, XeSS upscalers) corrupt skin overlays with artifacts.
+
 ## Moving from Random Overlay Framework
 
 Keep it if you use its tattoo packs (Invictusblade's need its plugin): with RobCo Patcher installed, Complexion
