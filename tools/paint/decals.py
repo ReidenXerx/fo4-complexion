@@ -46,6 +46,8 @@ def anchor(m, spot, side=0):
         'belly': (torso, 0.0, L['belly'], 1, (0, 0, 1)),
         'upper_back': (torso, 0.0, L['upper_back'], -1, (0, 0, 1)),
         'lower_back': (torso, 0.0, L['lower_back'], -1, (0, 0, 1)),
+        # the small of the back, above the buttocks: a wide piece centred on lower_back sat on them (alasdairn, 10-09)
+        'waist_back': (torso, 0.0, L['lower_back'] + 0.06, -1, (0, 0, 1)),
         'neck_back': (torso, 0.0, L['neck'], -1, (0, 0, 1)),
         'shoulder': (torso | arm, side * shoulder_x, L['shoulder'], 0, (0, 0, 1)),
         'upper_arm': (arm, side * 0.45 * reach, None, 0, (0, 0, 1)),

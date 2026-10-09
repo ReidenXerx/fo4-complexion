@@ -193,22 +193,6 @@ def heart_banner(text='MOM', colour=RED):
     return a.done()
 
 
-def swallow(back=BLUE):
-    a = Art()
-    body = [(0.18, 0.46), (0.30, 0.40), (0.45, 0.42), (0.58, 0.46), (0.70, 0.56), (0.92, 0.70), (0.80, 0.70), (0.86, 0.80),
-            (0.68, 0.66), (0.50, 0.60), (0.34, 0.56), (0.22, 0.52)]
-    a.shape(body, back, width=0.022)
-    a.shape([(0.30, 0.41), (0.36, 0.48), (0.30, 0.54), (0.22, 0.51)], RED, width=0.016)          # the throat
-    a.shape([(0.36, 0.56), (0.52, 0.60), (0.56, 0.52), (0.42, 0.50)], BONE, width=0.014)          # the belly
-    wing = [(0.42, 0.44), (0.55, 0.20), (0.78, 0.10), (0.64, 0.26), (0.70, 0.24), (0.60, 0.36), (0.66, 0.36), (0.56, 0.46)]
-    a.shape(wing, back, width=0.022)
-    for y in (0.24, 0.31):
-        a.line([(0.52, y + 0.08), (0.64, y)], width=0.009)
-    a.circle(0.235, 0.465, 0.015, INK, line=None)
-    a.shape([(0.18, 0.46), (0.11, 0.48), (0.19, 0.50)], INK, width=0.01)
-    return a.done()
-
-
 def anchor(rope=YELLOW):
     a = Art(0.8, 1.0)
     a.circle(0.40, 0.14, 0.06, None, width=0.028)
@@ -353,16 +337,6 @@ def eye():
     return a.done()
 
 
-def flames():
-    a = Art(1.0, 0.8)
-    for k, (x, h, c) in enumerate(((0.2, 0.45, RED), (0.38, 0.62, ORANGE), (0.56, 0.70, RED), (0.74, 0.52, ORANGE), (0.88, 0.34, RED))):
-        tip = (x + 0.06, 0.75 - h)
-        a.shape(bez((x - 0.10, 0.75), (x - 0.12, 0.75 - h * 0.5), tip, n=16) + bez(tip, (x + 0.06, 0.75 - h * 0.35), (x + 0.10, 0.75), n=16)[1:],
-                c, width=0.018)
-        a.shape(bez((x - 0.04, 0.75), (x - 0.05, 0.75 - h * 0.35), (x + 0.03, 0.75 - h * 0.55), n=10) + [(x + 0.04, 0.75)], YELLOW, line=None)
-    return a.done()
-
-
 def wolf():
     """A geometric wolf's head, facing out: ears, the brow, the long snout, built from facets."""
     a = Art()
@@ -377,24 +351,6 @@ def wolf():
     for x in (0.40, 0.60):
         a.shape([(x - 0.05, 0.44), (x + 0.05, 0.46 if x < 0.5 else 0.42), (x, 0.48)], YELLOW, width=0.012)
     a.shape([(0.45, 0.84), (0.55, 0.84), (0.5, 0.90)], INK, line=None)
-    return a.done()
-
-
-def eagle(head=BONE):
-    a = Art(1.0, 0.8)
-    for s in (1, -1):
-        feathers = []
-        for k in range(6):
-            x = 0.5 + s * (0.12 + k * 0.065)
-            y = 0.30 - k * 0.025
-            feathers.append([(0.5 + s * 0.08, 0.40), (x, y - 0.08), (x + s * 0.05, y + 0.20 + k * 0.03)])
-        for f in feathers[::-1]:
-            a.shape(f, BROWN, width=0.014)
-    a.shape([(0.42, 0.34), (0.58, 0.34), (0.60, 0.62), (0.5, 0.74), (0.40, 0.62)], BROWN, width=0.02)   # the body
-    a.shape([(0.44, 0.74), (0.56, 0.74), (0.58, 0.82), (0.42, 0.82)], BONE, width=0.014)                 # the tail
-    a.shape(ring(0.5, 0.26, 0.08, 0.09), head, width=0.02)
-    a.shape([(0.55, 0.25), (0.64, 0.28), (0.56, 0.31)], YELLOW, width=0.012)
-    a.circle(0.52, 0.24, 0.012, INK, line=None)
     return a.done()
 
 
@@ -445,17 +401,6 @@ def butterfly(wing=BLUE):
     a.ellipse(0.5, 0.55, 0.025, 0.17, INK, line=None)
     a.line(bez((0.5, 0.39), (0.47, 0.30), (0.42, 0.26)), width=0.01)
     a.line(bez((0.5, 0.39), (0.53, 0.30), (0.58, 0.26)), width=0.01)
-    return a.done()
-
-
-def revolver():
-    a = Art(1.0, 0.7)
-    a.shape([(0.10, 0.20), (0.70, 0.20), (0.70, 0.30), (0.10, 0.30)], GREY, width=0.02)        # the barrel
-    a.shape([(0.55, 0.18), (0.80, 0.18), (0.82, 0.40), (0.55, 0.42)], GREY, width=0.02)        # the frame
-    a.circle(0.62, 0.32, 0.08, GREY, width=0.018)                                               # the cylinder
-    a.shape([(0.74, 0.36), (0.86, 0.38), (0.94, 0.62), (0.80, 0.66), (0.72, 0.44)], BROWN, width=0.02)  # the grip
-    a.line(ring(0.66, 0.46, 0.06, 0.05, 0.2, np.pi, 12), width=0.014)                           # the trigger guard
-    a.shape([(0.78, 0.14), (0.84, 0.10), (0.84, 0.20)], GREY, width=0.012)                      # the hammer
     return a.done()
 
 
@@ -519,6 +464,197 @@ def pinup(colour=RED):
     a.circle(0.30, 0.12, 0.06, INK, line=None)                     # the head
     a.shape(bez((0.26, 0.10), (0.14, 0.18), (0.18, 0.34)) + [(0.24, 0.24), (0.30, 0.08)], INK, line=None)   # the hair
     a.shape([(0.26, 0.60), (0.40, 0.66), (0.36, 0.62), (0.30, 0.58)], colour, line=None)   # a red shoe/accent
+    return a.done()
+
+
+# ---- redrawn for alasdairn's review, 2026-10-09: an eagle that is an eagle, fire that is fire, a Colt Python,
+#      a real swallow (the first versions were "a 4th grader in MS Paint", "triangles, not fire")
+
+DARK_BROWN, LIGHT_BROWN = (78, 44, 22), (156, 104, 56)
+DEEP_RED, DEEP_BLUE, STEEL, STEEL_DARK, WOOD, WOOD_DARK = (120, 16, 20), (22, 44, 98), (120, 128, 138), (70, 76, 86), (118, 66, 30), (78, 40, 18)
+
+
+def whip(a, seq, side_pts, colour=INK, n=14, length=0.03, width=0.004):
+    """Whip shading: short tapering strokes from a line (seq) towards side_pts' direction."""
+    for k in range(n):
+        t = k / max(n - 1, 1)
+        i = min(int(t * (len(seq) - 1)), len(seq) - 1)
+        x, y = seq[i]
+        dx, dy = side_pts
+        L = length * (0.6 + 0.4 * np.sin(t * np.pi))
+        a.line([(x, y), (x + dx * L, y + dy * L)], colour, width=width)
+
+
+def feather(a, base, ang, length, width, fill, shade=None, quill=True):
+    dx, dy = np.cos(ang), np.sin(ang)
+    nx, ny = -dy, dx
+    tip = (base[0] + dx * length, base[1] + dy * length)
+    s1 = bez(base, (base[0] + dx * length * 0.45 + nx * width, base[1] + dy * length * 0.45 + ny * width), tip, n=16)
+    s2 = bez(tip, (base[0] + dx * length * 0.45 - nx * width, base[1] + dy * length * 0.45 - ny * width), base, n=16)
+    a.shape(s1 + s2[1:], fill, width=0.009)
+    if shade:  # the inner half darker
+        a.shape(bez(base, (base[0] + dx * length * 0.45 + nx * width * 0.9, base[1] + dy * length * 0.45 + ny * width * 0.9), tip, n=12)
+                + [(base[0] + dx * length * 0.6, base[1] + dy * length * 0.6)], shade, line=None)
+    if quill:
+        a.line([base, (base[0] + dx * length * 0.85, base[1] + dy * length * 0.85)], INK, width=0.005)
+
+
+def eagle(head=BONE):
+    """A traditional flash eagle, wings spread and raised: layered primaries and secondaries with quills and a
+    shaded half, scalloped coverts on a lit wing band, a feathered body, a white head with a hooked beak and a hard
+    brow, a fanned white tail, talons gripping."""
+    a = Art(1.0, 0.8)
+    for s in (1, -1):
+        arm = bez((0.5 + s * 0.06, 0.36), (0.5 + s * 0.17, 0.17), (0.5 + s * 0.28, 0.11), (0.5 + s * 0.37, 0.07), n=40)
+        for k in range(7):
+            t = 0.46 + k * 0.08
+            bx, by = arm[min(int(t * 39), 39)]
+            _f = 0.12 + k * 0.12
+            feather(a, (bx, by + 0.02), np.pi / 2 - s * _f, 0.25 - k * 0.006, 0.050, DARK_BROWN, (50, 26, 12))
+        for k in range(6):
+            t = 0.10 + k * 0.07
+            bx, by = arm[int(t * 39)]
+            feather(a, (bx, by + 0.02), np.pi / 2 - s * (0.03 + k * 0.03), 0.20 - k * 0.008, 0.044, BROWN, DARK_BROWN)
+        band = arm + [(x, y + 0.075 + 0.05 * (1 - i / 39)) for i, (x, y) in enumerate(arm)][::-1]
+        a.shape(band, LIGHT_BROWN, width=0.014)
+        for row, off in ((0, 0.035), (1, 0.075)):
+            for i in range(3 + row * 2, 38, 5):
+                x, y = arm[i]
+                a.line(bez((x - 0.022, y + off), (x, y + off + 0.028), (x + 0.022, y + off), n=10), INK, width=0.007)
+        whip(a, arm[2:38], (0, 1), n=16, length=0.022, width=0.004)
+    for k, ang in enumerate(np.linspace(np.pi / 2 - 0.5, np.pi / 2 + 0.5, 5)):
+        feather(a, (0.5, 0.58), ang, 0.21 - abs(k - 2) * 0.02, 0.042, BONE, (210, 200, 176))
+    body = bez((0.5, 0.30), (0.62, 0.36), (0.60, 0.58), (0.5, 0.66), n=30) + bez((0.5, 0.66), (0.40, 0.58), (0.38, 0.36), (0.5, 0.30), n=30)[1:]
+    a.shape(body, BROWN, width=0.020)
+    a.shape(bez((0.5, 0.31), (0.57, 0.37), (0.56, 0.57), (0.5, 0.65), n=20) + [(0.5, 0.31)], DARK_BROWN, line=None)
+    for y in (0.40, 0.46, 0.52, 0.58):
+        for x in (0.455, 0.50, 0.545):
+            if abs(x - 0.5) < 0.07 - (y - 0.40) * 0.25:
+                a.line(bez((x - 0.02, y), (x, y + 0.024), (x + 0.02, y), n=8), INK, width=0.006)
+    for s in (1, -1):
+        a.shape([(0.5 + s * 0.025, 0.60), (0.5 + s * 0.055, 0.60), (0.5 + s * 0.06, 0.67), (0.5 + s * 0.025, 0.67)], YELLOW, width=0.010)
+        for k in range(3):
+            x0 = 0.5 + s * (0.022 + k * 0.016)
+            a.line(bez((x0, 0.67), (x0 + s * 0.006, 0.70), (x0 + s * 0.012, 0.705), n=6), INK, width=0.010)
+    a.shape(bez((0.44, 0.31), (0.42, 0.20), (0.52, 0.16), (0.58, 0.21), n=24) + bez((0.58, 0.21), (0.60, 0.25), (0.57, 0.30), (0.52, 0.32), n=16)[1:],
+            head, width=0.018)
+    for k in range(4):  # head feathers at the neck
+        x = 0.455 + k * 0.025
+        a.line(bez((x, 0.30), (x + 0.008, 0.315), (x + 0.016, 0.30), n=6), (170, 160, 140), width=0.006)
+    beak = bez((0.575, 0.205), (0.64, 0.20), (0.668, 0.235), (0.64, 0.262), n=14) + [(0.62, 0.245), (0.585, 0.25)]
+    a.shape(beak, YELLOW, width=0.012)
+    a.line([(0.585, 0.228), (0.63, 0.232)], INK, width=0.006)
+    a.circle(0.545, 0.215, 0.012, (196, 120, 30), width=0.008)
+    a.circle(0.548, 0.215, 0.006, INK, line=None)
+    a.line([(0.522, 0.196), (0.572, 0.204)], INK, width=0.011)
+    return a.done()
+
+
+def _tongue(x0, base, height, width, phase, amp, curl=0.0, n=40):
+    """One flame tongue: a wavy centre line rising from the base, its width tapering to a point, the tip curling."""
+    t = np.linspace(0, 1, n)
+    cx = x0 + amp * np.sin(phase + t * 3.0) * t + curl * t ** 3
+    cy = base - t * height
+    w = width * (1 - t) ** 0.75 * (1 + 0.18 * np.sin(t * 8 + phase))
+    dx, dy = np.gradient(cx), np.gradient(cy)
+    nrm = np.hypot(dx, dy) + 1e-9
+    nx, ny = -dy / nrm, dx / nrm
+    left = [(cx[i] + nx[i] * w[i], cy[i] + ny[i] * w[i]) for i in range(n)]
+    right = [(cx[i] - nx[i] * w[i], cy[i] - ny[i] * w[i]) for i in range(n)]
+    return left + right[::-1]
+
+
+def flames():
+    """Traditional tattoo fire: wavy tongues licking up from one body of flame and curling over at their tips, red
+    outside, orange within, a yellow heart -- not triangles."""
+    a = Art(1.0, 0.8)
+    base = 0.74
+    spec = [(0.16, 0.36, 0.09, 0.4, 0.03, -0.05), (0.30, 0.56, 0.10, 2.2, 0.05, 0.06), (0.47, 0.66, 0.11, 4.0, 0.06, -0.07),
+            (0.63, 0.54, 0.10, 1.1, 0.05, 0.07), (0.78, 0.44, 0.09, 3.1, 0.04, -0.05), (0.89, 0.28, 0.07, 5.0, 0.03, 0.04)]
+    body = bez((0.06, base), (0.08, base - 0.10), (0.20, base - 0.12), n=8) + [(0.80, base - 0.12)] + bez((0.80, base - 0.12), (0.92, base - 0.10), (0.94, base), n=8)[1:] + bez((0.94, base), (0.50, base + 0.05), (0.06, base), n=16)[1:]
+    a.shape(body, RED, width=0.018)
+    for x, h, w, ph, amp, curl in spec:
+        a.shape(_tongue(x, base - 0.04, h, w, ph, amp, curl), RED, width=0.016)
+    a.shape(body, RED, line=None)
+    for x, h, w, ph, amp, curl in spec:
+        a.shape(_tongue(x, base - 0.02, h * 0.68, w * 0.62, ph + 0.4, amp * 0.8, curl * 0.6), ORANGE, line=None)
+    a.shape(bez((0.12, base), (0.30, base - 0.08), (0.50, base - 0.09), (0.88, base), n=20) + bez((0.88, base), (0.50, base + 0.02), (0.12, base), n=10)[1:], ORANGE, line=None)
+    for x, h, w, ph, amp, curl in spec[1:-1]:
+        a.shape(_tongue(x, base, h * 0.38, w * 0.38, ph + 0.8, amp * 0.6, curl * 0.3), YELLOW, line=None)
+    return a.done()
+
+
+def revolver():
+    """A Colt Python in profile: the ventilated rib on the six-inch barrel, the full-length ejector shroud beneath
+    it, the front sight ramp, a fluted cylinder, the frame and the hammer spur, the trigger in its guard, a
+    checkered walnut grip with its medallion."""
+    a = Art(1.0, 0.62)
+    # barrel with the vent rib (slots) and the ejector shroud
+    a.shape([(0.06, 0.20), (0.56, 0.20), (0.56, 0.37), (0.10, 0.37), (0.06, 0.34)], STEEL, width=0.016)
+    a.shape([(0.06, 0.20), (0.56, 0.20), (0.56, 0.255), (0.06, 0.255)], STEEL_DARK, width=0.010)    # the rib
+    for k in range(7):
+        x = 0.12 + k * 0.06
+        a.shape([(x, 0.21), (x + 0.03, 0.21), (x + 0.03, 0.245), (x, 0.245)], INK, line=None)      # rib vents
+    a.shape([(0.06, 0.17), (0.11, 0.17), (0.12, 0.20), (0.06, 0.20)], STEEL_DARK, width=0.010)      # front sight ramp
+    a.line([(0.10, 0.31), (0.55, 0.31)], STEEL_DARK, width=0.008)                                   # shroud line
+    a.circle(0.085, 0.29, 0.012, INK, line=None)                                                     # the muzzle
+    # frame
+    frame = [(0.55, 0.18), (0.80, 0.18), (0.84, 0.24), (0.82, 0.42), (0.74, 0.44), (0.66, 0.44), (0.55, 0.40)]
+    a.shape(frame, STEEL, width=0.018)
+    # cylinder with flutes
+    a.shape([(0.58, 0.215), (0.71, 0.215), (0.715, 0.385), (0.58, 0.385)], STEEL, width=0.014)
+    for y in (0.245, 0.29, 0.335):
+        a.shape([(0.595, y), (0.695, y), (0.695, y + 0.022), (0.595, y + 0.022)], STEEL_DARK, line=None)
+    # rear sight and hammer spur
+    a.shape([(0.76, 0.18), (0.80, 0.18), (0.80, 0.16), (0.77, 0.16)], STEEL_DARK, width=0.008)
+    a.shape([(0.795, 0.20), (0.815, 0.135), (0.85, 0.105), (0.895, 0.10), (0.885, 0.125), (0.85, 0.15), (0.83, 0.215)], STEEL_DARK, width=0.010)
+    # trigger guard and trigger
+    a.line(bez((0.66, 0.44), (0.66, 0.54), (0.76, 0.55), (0.78, 0.45), n=18), INK, width=0.016)
+    a.shape(bez((0.725, 0.43), (0.715, 0.49), (0.70, 0.515), n=8) + [(0.715, 0.515), (0.735, 0.44)], STEEL_DARK, width=0.008)
+    # the grip: walnut, checkered, a medallion
+    grip = [(0.78, 0.40), (0.84, 0.30), (0.90, 0.33), (0.96, 0.56), (0.92, 0.60), (0.82, 0.60), (0.78, 0.50)]
+    a.shape(grip, WOOD, width=0.018)
+    hatch = Image.new('RGBA', a.im.size, (0, 0, 0, 0))
+    hd = ImageDraw.Draw(hatch)
+    for k in range(-6, 14):
+        x = 0.78 + k * 0.016
+        hd.line([a.p(x, 0.30), a.p(x + 0.12, 0.62)], fill=WOOD_DARK + (255,), width=int(0.004 * S))
+        hd.line([a.p(x + 0.12, 0.30), a.p(x, 0.62)], fill=WOOD_DARK + (255,), width=int(0.004 * S))
+    mask = Image.new('L', a.im.size, 0)
+    ImageDraw.Draw(mask).polygon(a.pts([(0.80, 0.42), (0.845, 0.33), (0.89, 0.355), (0.94, 0.55), (0.91, 0.58), (0.83, 0.58), (0.80, 0.50)]), fill=255)
+    hatch.putalpha(Image.fromarray(np.minimum(np.asarray(hatch.getchannel('A')), np.asarray(mask))))
+    a.im.alpha_composite(hatch)
+    a.circle(0.87, 0.36, 0.015, (196, 160, 70), width=0.006)
+    # light on the barrel
+    a.line([(0.14, 0.275), (0.50, 0.275)], (190, 196, 204), width=0.008)
+    return a.done()
+
+
+def swallow(back=BLUE):
+    """A traditional swallow in flight: the long forked tail, swept pointed wings with banded flight feathers, a
+    deep blue back and crown, the red throat, a cream belly, a bright eye."""
+    a = Art()
+    # far wing (behind), then tail, body, near wing
+    far = bez((0.46, 0.44), (0.56, 0.26), (0.74, 0.14), (0.92, 0.10), n=20) + bez((0.92, 0.10), (0.78, 0.24), (0.64, 0.36), (0.54, 0.46), n=20)[1:]
+    a.shape(far, DEEP_BLUE, width=0.018)
+    for s, (tx, ty) in ((0, (0.92, 0.80)), (1, (0.82, 0.88))):     # the fork
+        a.shape(bez((0.62, 0.58), (0.74, 0.66), (tx - 0.04, ty - 0.04), (tx, ty), n=14) + bez((tx, ty), (tx - 0.10, ty - 0.10), (0.66, 0.66), (0.58, 0.62), n=14)[1:],
+                back, width=0.016)
+    body = bez((0.16, 0.46), (0.26, 0.36), (0.46, 0.38), (0.62, 0.54), n=24) + bez((0.62, 0.54), (0.66, 0.62), (0.50, 0.62), (0.30, 0.58), n=16)[1:] + bez((0.30, 0.58), (0.20, 0.55), (0.16, 0.50), n=8)[1:]
+    a.shape(body, back, width=0.020)
+    a.shape(bez((0.30, 0.58), (0.44, 0.62), (0.58, 0.60), n=14) + bez((0.58, 0.60), (0.50, 0.52), (0.34, 0.50), n=12)[1:], BONE, width=0.012)   # belly
+    a.shape(bez((0.18, 0.48), (0.24, 0.43), (0.31, 0.45), n=10) + bez((0.31, 0.45), (0.33, 0.52), (0.30, 0.58), n=10)[1:] + [(0.20, 0.53)], RED, width=0.012)  # throat
+    a.shape([(0.16, 0.465), (0.09, 0.48), (0.16, 0.495)], INK, width=0.008)                     # the beak
+    a.circle(0.225, 0.455, 0.016, BONE, width=0.006)
+    a.circle(0.228, 0.455, 0.008, INK, line=None)
+    near = bez((0.40, 0.44), (0.50, 0.22), (0.66, 0.08), (0.86, 0.02), n=22) + bez((0.86, 0.02), (0.70, 0.18), (0.58, 0.34), (0.50, 0.48), n=22)[1:]
+    a.shape(near, back, width=0.020)
+    for k in range(5):                                         # banded flight feathers
+        t = 0.35 + k * 0.13
+        p0 = bez((0.40, 0.44), (0.50, 0.22), (0.66, 0.08), (0.86, 0.02), n=40)[int(t * 39)]
+        p1 = bez((0.50, 0.48), (0.58, 0.34), (0.70, 0.18), (0.86, 0.02), n=40)[int(t * 39)]
+        a.line([p0, p1], INK, width=0.007)
+    a.shape(bez((0.42, 0.42), (0.50, 0.26), (0.62, 0.16), n=12) + bez((0.62, 0.16), (0.56, 0.30), (0.48, 0.44), n=12)[1:], DEEP_BLUE, line=None)  # shade
     return a.done()
 
 

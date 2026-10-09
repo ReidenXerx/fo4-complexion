@@ -223,23 +223,44 @@ def scars(m, rng, count=(1, 3), length=(3.5, 8.0), width=(0.25, 0.45), stitched=
 
 
 def keloid(m, rng, zone='chest'):
-    """A keloid: a raised, glossy, rope-like scar overgrowing its wound -- darker pink-brown, lumpy edges, a lighter
-    crest."""
+    """A keloid: a raised, glossy, lumpy scar that overgrew its wound -- curved, swelling into nodules along its
+    length, with a few claw-like runners off its edges; pink-brown, lit on one side and shadowed on the other so
+    it reads raised. (The first one was a straight even band: "a straight line with magic marker", alasdairn,
+    2026-10-09.)"""
     P = Painter(m)
     rgb, alpha = blank(m)
     w = _zone(P, m, zone)
     (c, n), = P.pick_points(rng, w > 0, 1, w)
     t = _unit(np.cross(n, rng.normal(size=3)))
-    half, width = rng.uniform(1.5, 3.5), rng.uniform(0.35, 0.6)
+    b = _unit(np.cross(n, t))
+    half, width = rng.uniform(1.6, 3.2), rng.uniform(0.40, 0.55)
+    bend = rng.uniform(-0.6, 0.6)
     d = P.p - c
     along = d @ t
-    across = np.linalg.norm(d - along[..., None] * t - (d @ n)[..., None] * n, axis=-1)
-    lumpy = width * (0.75 + 0.6 * fbm(P.p, 1.5, int(rng.integers(1 << 30)), 3))
-    face = np.clip((P.n @ n - 0.3) * 3, 0, 1)
-    body = np.clip((lumpy - across) / 0.12, 0, 1) * np.clip(1 - (np.abs(along) / half) ** 4, 0, 1) * face * P.cov
-    crest = np.exp(-(across / (width * 0.35)) ** 2) * body
-    over(rgb, alpha, (0.58, 0.30, 0.28), np.clip(body * 0.75, 0, 0.75))
-    over(rgb, alpha, (0.80, 0.52, 0.48), np.clip(crest * 0.5, 0, 0.5))
+    side = d @ b - bend * (along / half) ** 2          # across, from a curved centre line
+    u = np.clip(along / half, -1.5, 1.5)
+    seed = int(rng.integers(1 << 30))
+    # width swells into nodules and narrows between them; rounded ends
+    nod = 0.7 + 0.45 * np.sin(u * rng.uniform(4.0, 6.5) + rng.uniform(0, 6.3)) ** 2 + 0.35 * fbm(P.p, 2.2, seed, 2)
+    wid = width * nod * np.clip(1 - u ** 2, 0, 1) ** 0.35
+    ragged = 0.06 * fbm(P.p, 5.0, seed + 1, 2)
+    face = np.clip((P.n @ n - 0.3) * 3, 0, 1) * P.cov
+    body = np.clip((wid + ragged - np.abs(side)) / 0.07, 0, 1) * (np.abs(u) < 1.0) * face
+    # claw-like runners: short tapering spurs off the edges
+    for _ in range(int(rng.integers(2, 5))):
+        at = rng.uniform(-0.7, 0.7) * half
+        sgn = rng.choice((-1.0, 1.0))
+        length = width * rng.uniform(0.8, 1.6)
+        lean = rng.uniform(-0.6, 0.6)
+        out = sgn * side - width * 0.6
+        spur_w = width * 0.32 * np.clip(1 - out / length, 0, 1)
+        spur = np.clip((spur_w - np.abs(along - at - lean * np.clip(out, 0, None))) / 0.05, 0, 1) * (out > -0.2) * (out < length) * face
+        body = np.maximum(body, spur * 0.85)
+    lit = np.exp(-((side + wid * 0.35) / (wid * 0.30 + 1e-6)) ** 2) * body       # the crest, on the lit side
+    shade = np.clip((side - wid * 0.25) / (wid * 0.5 + 1e-6), 0, 1) * body        # the far edge, in shadow
+    over(rgb, alpha, (0.60, 0.33, 0.31), np.clip(body * 0.72, 0, 0.72))
+    over(rgb, alpha, (0.40, 0.20, 0.20), np.clip(shade * 0.35, 0, 0.35))
+    over(rgb, alpha, (0.88, 0.64, 0.60), np.clip(lit * 0.45, 0, 0.45))
     return rgb, alpha
 
 
@@ -385,6 +406,25 @@ def acne(m, rng, zone='back', amount=0.5):
     red = np.zeros(m.covered.shape)
     head = np.zeros(m.covered.shape)
     old = np.zeros(m.covered.shape)
+    if amount < 0.4:
+        # Light acne: a couple dozen small, soft, flat-red bumps on the upper back and shoulders, hardly a whitehead.
+        # (The light set used the full recipe at a lower count: ~100 ringed spots down to the buttocks -- "light
+        # acne ain't light", alasdairn, 2026-10-09.)
+        L = landmarks(m)
+        w = w * np.clip((P.h - L['navel']) / 0.10, 0, 1)
+        for c, n in P.pick_points(rng, w > 0, int(20 + 48 * amount), w):
+            r = rng.uniform(0.08, 0.16)
+            roll = rng.random()
+            if roll < 0.15:
+                P.blob_into(old, c, n, r * 0.8, gain=1.0, cap=0.28)
+                continue
+            P.blob_into(red, c, n, r, gain=1.1, cap=0.40)
+            if roll > 0.92:
+                P.blob_into(head, c, n, r * 0.22, gain=1.0, cap=0.22)
+        over(rgb, alpha, (0.52, 0.32, 0.28), old)
+        over(rgb, alpha, (0.82, 0.42, 0.40), red)
+        over(rgb, alpha, (0.90, 0.80, 0.70), head)
+        return rgb, alpha
     for c, n in P.pick_points(rng, w > 0, int(40 + 220 * amount), w):
         r = rng.uniform(0.1, 0.26)
         roll = rng.random()

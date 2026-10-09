@@ -128,7 +128,7 @@ for colour in ('brown', 'black'):
     add(f'LimbHair{colour.title()}', M, 'body_hair_male', ('limbs', colour), 2048, dict(ROUGH, kind='body_hair', regions=[], size='medium', note=f'arm and leg hair, {colour}'), 1)
 
 # ---- C-13: drawn tattoos -- (name, design, spot, side, width, ink, crude, size, style, emblem, adult, note)
-SPOT_REGION = {'chest': 'chest', 'belly': 'belly', 'upper_back': 'back', 'lower_back': 'lower_back', 'neck_back': 'neck',
+SPOT_REGION = {'chest': 'chest', 'belly': 'belly', 'upper_back': 'back', 'lower_back': 'lower_back', 'waist_back': 'lower_back', 'neck_back': 'neck',
                'shoulder': 'shoulders', 'thigh': None, 'thigh_back': None, 'calf': None, 'hip': 'pelvis', 'butt': 'butt'}
 TATTOOS = [
     ('NoMercy', ('word', 'No Mercy', 'blackletter', 0.0), 'chest', 0, 12, 'fresh', 0.0, 'medium', ['script', 'crude'], 'raiders', False, '"No Mercy" across the chest'),
@@ -151,7 +151,7 @@ TATTOOS = [
     ('Owned', ('word', 'OWNED', 'pirate', 0.0), 'thigh_back', -1, 7, 'fresh', 0.3, 'small', ['script', 'degrading', 'crude'], None, True, '"OWNED" on the back of the thigh'),
     ('MandalaBack', ('mandala',), 'upper_back', 0, 12, 'fresh', 0.0, 'large', ['geometric'], None, False, 'a mandala between the shoulders'),
     ('MandalaThigh', ('mandala',), 'thigh', 1, 8, 'fresh', 0.0, 'medium', ['geometric', 'floral'], None, False, 'a mandala on the thigh'),
-    ('TribalLowerBack', ('tribal',), 'lower_back', 0, 16, 'fresh', 0.0, 'medium', ['tribal'], None, False, 'a tribal piece on the lower back'),
+    ('TribalLowerBack', ('tribal',), 'waist_back', 0, 16, 'fresh', 0.0, 'medium', ['tribal'], None, False, 'a tribal piece on the lower back'),
     ('TribalShoulder', ('tribal',), 'shoulder', -1, 10, 'fresh', 0.0, 'medium', ['tribal'], None, False, 'a tribal piece on the shoulder'),
     ('TribalChest', ('tribal',), 'chest', 0, 14, 'fresh', 0.0, 'medium', ['tribal'], None, False, 'a tribal piece across the chest'),
     ('BarcodeNeck', ('barcode',), 'neck_back', 0, 5, 'fresh', 0.0, 'tiny', ['geometric'], None, False, 'a barcode on the neck'),
@@ -161,8 +161,10 @@ TATTOOS = [
     ('AtomChest', ('emblem', 'atom'), 'chest', 0, 9, 'faded', 0.2, 'medium', ['emblem', 'religious'], 'atom', False, 'the Atom on the chest'),
     ('VaultTecArm', ('emblem', 'vault_tec'), 'forearm', -1, 5, 'fresh', 0.0, 'small', ['emblem'], 'vault_tec', False, 'the Vault-Tec gear on the forearm'),
     ('VaultTecUpperArm', ('emblem', 'vault_tec'), 'upper_arm', 1, 6, 'faded', 0.0, 'small', ['emblem'], 'vault_tec', False, 'the Vault-Tec gear on the upper arm'),
-    ('BoSBack', ('emblem', 'bos'), 'upper_back', 0, 12, 'fresh', 0.0, 'large', ['emblem', 'military'], 'bos', False, 'the Brotherhood on the back'),
-    ('BoSArm', ('emblem', 'bos'), 'upper_arm', -1, 6, 'fresh', 0.0, 'small', ['emblem', 'military'], 'bos', False, 'the Brotherhood on the upper arm'),
+    # Not the Brotherhood's sign (alasdairn, 10-09: "nothing like a Brotherhood of Steel symbol"): a winged sword in a
+    # ring, no faction emblem; the ids stay, so saved looks keep them.
+    ('BoSBack', ('emblem', 'bos'), 'upper_back', 0, 12, 'fresh', 0.0, 'large', ['military', 'geometric'], None, False, 'a winged sword in a ring on the back'),
+    ('BoSArm', ('emblem', 'bos'), 'upper_arm', -1, 6, 'fresh', 0.0, 'small', ['military', 'geometric'], None, False, 'a winged sword in a ring on the upper arm'),
     ('MinutemenShoulder', ('emblem', 'minutemen'), 'shoulder', 1, 6, 'fresh', 0.0, 'small', ['emblem', 'military'], 'minutemen', False, 'the Minutemen star on the shoulder'),
     ('MinutemenChest', ('emblem', 'minutemen'), 'chest', -1, 6, 'faded', 0.0, 'small', ['emblem', 'military'], 'minutemen', False, 'the Minutemen star on the chest'),
     ('RailroadWrist', ('emblem', 'railroad'), 'forearm', 1, 3, 'faded', 0.0, 'tiny', ['emblem', 'geometric'], 'railroad', False, 'a tiny Railroad lantern'),

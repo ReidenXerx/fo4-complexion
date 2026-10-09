@@ -2236,14 +2236,14 @@
   ],
   "size": "large",
   "style": [
-   "emblem",
-   "military"
+   "military",
+   "geometric"
   ],
-  "emblem": "bos",
+  "emblem": null,
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "the Brotherhood on the back"
+  "note": "a winged sword in a ring on the back"
  },
  "m:Complexion_TattooBoSBack_M01": {
   "kind": "tattoo",
@@ -2252,14 +2252,14 @@
   ],
   "size": "large",
   "style": [
-   "emblem",
-   "military"
+   "military",
+   "geometric"
   ],
-  "emblem": "bos",
+  "emblem": null,
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "the Brotherhood on the back"
+  "note": "a winged sword in a ring on the back"
  },
  "f:Complexion_TattooBoSArm_F01": {
   "kind": "tattoo",
@@ -2268,14 +2268,14 @@
   ],
   "size": "small",
   "style": [
-   "emblem",
-   "military"
+   "military",
+   "geometric"
   ],
-  "emblem": "bos",
+  "emblem": null,
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "the Brotherhood on the upper arm"
+  "note": "a winged sword in a ring on the upper arm"
  },
  "m:Complexion_TattooBoSArm_M01": {
   "kind": "tattoo",
@@ -2284,14 +2284,14 @@
   ],
   "size": "small",
   "style": [
-   "emblem",
-   "military"
+   "military",
+   "geometric"
   ],
-  "emblem": "bos",
+  "emblem": null,
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "the Brotherhood on the upper arm"
+  "note": "a winged sword in a ring on the upper arm"
  },
  "f:Complexion_TattooMinutemenShoulder_F01": {
   "kind": "tattoo",
