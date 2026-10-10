@@ -185,8 +185,12 @@ def goosebumps(m, rng, zone='arms'):
 # ---------------------------------------------------------------- scars
 
 
-def _scar_line(P, a_pale, a_rim, c, n, t, half, width, stitched=False):
+def _scar_line(P, a_pale, a_rim, c, n, t, half, width, stitched=False, dots=None):
     t = _unit(t - n * (t @ n))
+    if stitched and dots is not None:   # a healed stitched incision (real.stitch_dots), no cross-bars
+        import real
+        width = width * 0.4
+        real.stitch_dots(P, dots, c, n, t, half, width / 0.4)
     d = P.p - c
     along = d @ t
     across = np.linalg.norm(d - along[..., None] * t - (d @ n)[..., None] * n, axis=-1)
@@ -194,13 +198,15 @@ def _scar_line(P, a_pale, a_rim, c, n, t, half, width, stitched=False):
     taper = np.clip(1 - (np.abs(along) / half) ** 2, 0, 1)
     np.maximum(a_pale, np.exp(-(across / width) ** 2) * taper * face * P.cov, out=a_pale)
     np.maximum(a_rim, np.exp(-(across / (width * 2.2)) ** 2) * taper * face * P.cov, out=a_rim)
-    if stitched:
+    if stitched and dots is None:
         side = _unit(np.cross(n, t))
         for s in np.linspace(-half * 0.8, half * 0.8, max(int(half * 1.3), 3)):
             q = c + t * s
             dq = P.p - q
             st = np.abs(dq @ t)
-            mark = np.exp(-(st / 0.14) ** 2) * (np.abs(dq @ side) < width * 3.5) * face * P.cov
+            rag = fbm(P.p, 4.0, int(abs(s * 1000)) % 100000, 2)                 # rough and blown out (10-10)
+            mark = np.exp(-(st / (0.22 * (0.7 + 0.6 * rag))) ** 2) * (np.abs(dq @ side) < width * 4.5 * (0.75 + 0.5 * rag))
+            mark = mark * (0.55 + 0.6 * fbm(P.p, 7.0, 7, 2)) * face * P.cov
             np.maximum(a_pale, mark * 0.75, out=a_pale)
 
 
@@ -211,9 +217,13 @@ def scars(m, rng, count=(1, 3), length=(3.5, 8.0), width=(0.25, 0.45), stitched=
     w = _zone(P, m, zone)
     pale = np.zeros(m.covered.shape)
     rim = np.zeros(m.covered.shape)
+    dots = np.zeros(m.covered.shape) if stitched else None
     for c, n in P.pick_points(rng, w > 0, int(rng.integers(count[0], count[1] + 1)), w):
-        _scar_line(P, pale, rim, c, n, np.cross(n, rng.normal(size=3)), rng.uniform(*length), rng.uniform(*width), stitched)
+        _scar_line(P, pale, rim, c, n, np.cross(n, rng.normal(size=3)), rng.uniform(*length), rng.uniform(*width), stitched, dots)
     import real
+    if stitched:   # healed after the stitches came out (alasdairn's reference, 10-10)
+        real.stitch_shade(P, rgb, alpha, pale, rim, dots, rng)
+        return rgb, alpha
     real.scar_shade(rgb, alpha, pale, rim, 'old_pr', opacity=0.7)   # alasdairn's pick for every healed scar set, 10-10
     return rgb, alpha
 

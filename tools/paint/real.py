@@ -10,6 +10,8 @@ striations fading along it; thick blood darker than thin, the rim darker still w
 So these are painted as 2D stamps at high resolution (crisp shapes are cheap in 2D) and projected on the body at a
 point, with image-down = world-down so drips run the way gravity runs (flash.project_rgba_at).
 """
+import os
+
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 from scipy import ndimage
@@ -636,6 +638,8 @@ def scar_shade(rgb, alpha, a_pale, a_rim=None, age='old', opacity=1.0):
     over(rgb, alpha, rim_c, np.clip(rim * 0.65 * (0.8 + 0.3 * fine), 0, 0.7) * k)
     over(rgb, alpha, colour, np.clip(core * 0.85, 0, 0.88) * k)
     over(rgb, alpha, np.asarray(rim_c) * 0.9, np.clip(-relief * 0.6, 0, 0.5) * k)
+    if age == 'old_pr':   # a dark overlay on the scar only (alasdairn's pick, 10-10)
+        over(rgb, alpha, (0.34, 0.14, 0.16), np.clip(core * 0.32, 0, 0.32) * k)
     if age == 'welt':   # glossy: a wet sheen along the top of the welt
         over(rgb, alpha, (0.90, 0.82, 0.80), np.clip(relief * 0.8, 0, 0.45) * core * k)
     elif age != 'fresh':
@@ -1004,6 +1008,59 @@ def laser_burn(m, rng):
     over(rgb, alpha, (0.38, 0.24, 0.16), np.clip(np.clip(browns * band * 1.4, 0, 1) * 0.55, 0, 0.55) * P.cov)
     over(rgb, alpha, np.array((0.12, 0.09, 0.08)) * flake[..., None], np.clip(char * 0.75, 0, 0.78) * P.cov)
     return rgb, alpha
+
+
+# ---------------------------------------------------------------- healed stitches
+# alasdairn (10-10) sent a reference of how stitches heal (an iStock image: looked at, never copied). Once they are
+# out, what stays is a thin incision line, pink-red, a little irregular, with a soft pink band round it, and a row
+# of small round puncture marks in pairs either side where each stitch went in -- no cross-bars.
+
+def stitch_dots(P, dots, c, n, t, half, width):
+    """Adds the puncture marks of one stitched incision to dots: pairs either side of the line along its length."""
+    tu = t - n * (t @ n)
+    tu = tu / (np.linalg.norm(tu) or 1)
+    side = np.cross(n, tu)
+    side = side / (np.linalg.norm(side) or 1)
+    spacing = 0.55 + 0.25 * min(width / 0.35, 1.5)
+    off = max(width * 2.2, 0.5)
+    seed = int(abs(c[0] * 997 + c[2] * 131)) % 100000
+    jit = np.random.default_rng(seed)
+    for s in np.arange(-half * 0.85, half * 0.85 + 1e-6, spacing):
+        for sgn in (1, -1):
+            q = c + tu * (s + jit.normal(0, 0.04)) + side * sgn * off * jit.uniform(0.9, 1.1)
+            r = jit.uniform(0.13, 0.18)
+            idx = P.near(q, 3.0)
+            if not len(idx):
+                continue
+            pts = P.p.reshape(-1, 3)[idx]
+            near_k = np.argmin(((pts - q) ** 2).sum(-1))
+            if ((pts[near_k] - q) ** 2).sum() > 4.0:
+                continue
+            q = pts[near_k]                                   # onto the skin: a straight line leaves a curved body
+            nq = P.n.reshape(-1, 3)[idx][near_k]
+            d = np.sqrt(((pts - q) ** 2).sum(-1))
+            v = np.clip((r - d) / (r * 0.4), 0, 1) * (P.n.reshape(-1, 3)[idx] @ nq > 0.4)
+            flat = dots.reshape(-1)
+            flat[idx] = np.maximum(flat[idx], v)
+
+
+def stitch_shade(P, rgb, alpha, line, halo, dots, rng):
+    """A healed stitched incision: soft pink band, thin irregular pink-red line darkened a touch (the dark overlay
+    alasdairn chose for scars), dark-pink puncture marks with a softer ring."""
+    seed = int(rng.integers(1 << 30))
+    fine = fbm(P.p, 9.0, seed, 2)
+    wob = fbm(P.p, 3.0, seed + 1, 3)
+    soft = ndimage.gaussian_filter(line, 5.0)
+    soft = soft / max(soft.max(), 1e-6)
+    band = np.clip(np.maximum(soft * 1.3, ndimage.gaussian_filter(dots, 3.0) * 1.5), 0, 1)   # the soft pink round it all
+    # older and faded (alasdairn, 10-10): darker, duller colours, the band and punctures faded back toward skin
+    over(rgb, alpha, (0.70, 0.50, 0.46), np.clip(band * 0.18 * (0.8 + 0.3 * fine), 0, 0.18) * P.cov)   # a bit more faded (10-10)
+    core = np.clip((line * (0.6 + 0.8 * wob) - 0.35) * 5, 0, 1)
+    over(rgb, alpha, np.array((0.52, 0.30, 0.29)) * (0.92 + 0.12 * fine[..., None]), np.clip(core * 0.55, 0, 0.58) * P.cov)
+    over(rgb, alpha, (0.32, 0.17, 0.17), np.clip(core * 0.22, 0, 0.22) * P.cov)
+    ring = np.clip(ndimage.gaussian_filter(dots, 1.2) * 1.6, 0, 1)
+    over(rgb, alpha, (0.64, 0.44, 0.40), np.clip(ring * 0.14, 0, 0.14) * P.cov)
+    over(rgb, alpha, (0.48, 0.28, 0.27), np.clip(dots * 0.36, 0, 0.36) * P.cov)
 
 
 if __name__ == '__main__':

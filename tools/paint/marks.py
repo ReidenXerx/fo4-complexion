@@ -372,6 +372,7 @@ def scars(m, rng, count=(1, 3), stitched=False):
         + np.where(P.reg('leg') & (P.h > 0.2), 0.5, 0.0)
     a_pale = np.zeros(m.covered.shape)
     a_rim = np.zeros(m.covered.shape)
+    dots = None
     for c, n in P.pick_points(rng, weight > 0, int(rng.integers(count[0], count[1] + 1)), weight):
         # A direction in the surface's tangent plane.
         t = np.cross(n, rng.normal(size=3))
@@ -383,20 +384,20 @@ def scars(m, rng, count=(1, 3), stitched=False):
         across = np.linalg.norm(d - along[..., None] * t - (d @ n)[..., None] * n, axis=-1)
         facing = np.clip((P.n @ n - 0.3) * 3, 0, 1)
         taper = np.clip(1 - (np.abs(along) / half) ** 2, 0, 1)
-        line = np.exp(-(across / width) ** 2) * taper * facing * P.cov
-        rim = np.exp(-(across / (width * 2.2)) ** 2) * taper * facing * P.cov
+        line_w = width * 0.4 if stitched else width   # a stitched incision heals thin (alasdairn's reference, 10-10)
+        line = np.exp(-(across / line_w) ** 2) * taper * facing * P.cov
+        rim = np.exp(-(across / (line_w * 2.2)) ** 2) * taper * facing * P.cov
         a_pale = np.maximum(a_pale, line)
         a_rim = np.maximum(a_rim, rim)
         if stitched:
-            side = np.cross(n, t)
-            for s in np.linspace(-half * 0.8, half * 0.8, int(half * 1.2)):
-                q = c + t * s
-                dq = P.p - q
-                sa = dq @ side
-                st = np.abs(dq @ t)
-                stitch = np.exp(-(st / 0.14) ** 2) * (np.abs(sa) < width * 3.5) * facing * P.cov
-                a_pale = np.maximum(a_pale, stitch * 0.8)
+            import real
+            if dots is None:
+                dots = np.zeros(m.covered.shape)
+            real.stitch_dots(P, dots, c, n, t, half, width)
     import real
+    if dots is not None:
+        real.stitch_shade(P, rgb, alpha, a_pale, a_rim, dots, rng)
+        return rgb, alpha
     real.scar_shade(rgb, alpha, a_pale, a_rim, 'old_pr', opacity=0.7)   # alasdairn's pick, 10-10: purple-red at 70%
     return rgb, alpha
 
