@@ -115,7 +115,7 @@ def render(views, tex, side, scale, crop, keep):
     size = tex.shape[0]
     col = np.clip((U * size).astype(int), 0, size - 1)
     row = np.clip((Vv * size).astype(int), 0, size - 1)
-    img = np.full(U.shape + (3,), 0.16)
+    img = np.full(U.shape + (3,), 0.16, np.float32)   # float32: close-ups of the whole body ran out of memory
     factor = tex[row[mask], col[mask]] * 2.0
     img[mask] = np.clip(SKIN * factor, 0, 1) * shade[mask][:, None]
     return Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8))

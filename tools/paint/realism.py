@@ -124,21 +124,38 @@ def stretch_marks(m, rng):
     return rgb, alpha
 
 
-def pimples(m, rng, amount=0.5):
-    """Pimples and their red bases, clustered on the back, shoulders, chest and buttocks."""
+def soft_bumps(m, rng, where, amount):
+    """Acne as alasdairn approved it for the light set (2026-10-09): small, soft, flat-red bumps, a few faded dark
+    marks of old ones, hardly a whitehead -- never the ringed discs of the first recipe ("light acne ain't light").
+    amount 0..1 sets how many and how big; the look stays the same."""
     P = Painter(m)
     rgb, alpha = blank(m)
-    where = np.where(P.reg('torso') & (P.h > 0.5), 1.0, 0.0) * P.cov
     red = np.zeros(m.covered.shape)
     head = np.zeros(m.covered.shape)
-    for c, n in P.pick_points(rng, where > 0, int(40 + 160 * amount), where):
-        r = rng.uniform(0.12, 0.28)
-        P.blob_into(red, c, n, r, gain=1.3, cap=0.55)
-        if rng.random() < 0.4:
-            P.blob_into(head, c, n, r * 0.3, gain=1.2, cap=0.5)
-    over(rgb, alpha, (0.78, 0.30, 0.28), red)
-    over(rgb, alpha, (0.92, 0.85, 0.70), head)
+    old = np.zeros(m.covered.shape)
+    count = int(20 + 48 * amount) if amount < 0.4 else int(20 + 120 * amount)
+    big = 0.16 + (0.0 if amount < 0.4 else 0.06 * amount)
+    cap = 0.40 if amount < 0.4 else min(0.40 + 0.12 * amount, 0.50)
+    for c, n in P.pick_points(rng, where > 0, count, where):
+        r = rng.uniform(0.08, big)
+        roll = rng.random()
+        if roll < 0.15:
+            P.blob_into(old, c, n, r * 0.8, gain=1.0, cap=0.28)
+            continue
+        P.blob_into(red, c, n, r, gain=1.1, cap=cap)
+        if roll > (0.92 if amount < 0.4 else 0.88):
+            P.blob_into(head, c, n, r * 0.22, gain=1.0, cap=0.22)
+    over(rgb, alpha, (0.52, 0.32, 0.28), old)
+    over(rgb, alpha, (0.82, 0.42, 0.40), red)
+    over(rgb, alpha, (0.90, 0.80, 0.70), head)
     return rgb, alpha
+
+
+def pimples(m, rng, amount=0.5):
+    """Pimples on the back, shoulders, chest and buttocks, as soft bumps (soft_bumps)."""
+    P = Painter(m)
+    where = np.where(P.reg('torso') & (P.h > 0.5), 1.0, 0.0) * P.cov
+    return soft_bumps(m, rng, where, amount)
 
 
 AREOLA = {'pink': (0.84, 0.50, 0.49), 'rose': (0.70, 0.38, 0.37), 'brown': (0.54, 0.35, 0.27),

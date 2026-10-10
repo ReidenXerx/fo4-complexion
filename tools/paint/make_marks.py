@@ -33,6 +33,7 @@ import hair  # noqa: E402
 import hands  # noqa: E402
 import life  # noqa: E402
 import marks  # noqa: E402
+import real  # noqa: E402
 import realism  # noqa: E402
 import seams  # noqa: E402
 import skin  # noqa: E402
@@ -79,14 +80,14 @@ def add(prefix, sexes, painter, args, size, tags, count):
 
 
 ROUGH = dict(style=[], emblem=None, lore='fits', adult=False, quality='ok')
-add('BruiseFresh', ('female', 'male'), 'bruises', ((2, 4), 'fresh'), 1024, dict(ROUGH, kind='bruise', regions=[], size='small', note='fresh bruises'), 3)
-add('BruiseOld', ('female', 'male'), 'bruises', ((2, 4), 'old'), 1024, dict(ROUGH, kind='bruise', regions=[], size='small', note='fading yellow bruises'), 2)
-add('GrimeLight', ('female', 'male'), 'grime', (0.35,), 1024, dict(ROUGH, kind='dirt', regions=[], size='medium', note='light ground-in dirt'), 2)
-add('GrimeHeavy', ('female', 'male'), 'grime', (0.85,), 1024, dict(ROUGH, kind='dirt', regions=[], size='medium', note='heavy grime'), 2)
-add('Blood', ('female', 'male'), 'dried_blood', (), 1024, dict(ROUGH, kind='blood', regions=[], size='medium', note='dried blood, drips, spatter'), 3)
+add('BruiseFresh', ('female', 'male'), 'bruises', ((2, 4), 'fresh'), 2048, dict(ROUGH, kind='bruise', regions=[], size='small', note='fresh bruises'), 3)
+add('BruiseOld', ('female', 'male'), 'bruises', ((2, 4), 'old'), 2048, dict(ROUGH, kind='bruise', regions=[], size='small', note='fading yellow bruises'), 2)
+add('GrimeLight', ('female', 'male'), 'grime', (0.35,), 2048, dict(ROUGH, kind='dirt', regions=[], size='medium', note='light ground-in dirt'), 2)
+add('GrimeHeavy', ('female', 'male'), 'grime', (0.85,), 2048, dict(ROUGH, kind='dirt', regions=[], size='medium', note='heavy grime'), 2)
+add('Blood', ('female', 'male'), 'dried_blood', (), 2048, dict(ROUGH, kind='blood', regions=[], size='medium', note='dried blood, drips, spatter'), 3)
 add('LashesFresh', ('female', 'male'), 'lashes', ((4, 8), False), 2048, dict(ROUGH, kind='marks', regions=['back'], size='large', note='fresh whip welts'), 2)
 add('LashesHealed', ('female', 'male'), 'lashes', ((4, 8), True), 2048, dict(ROUGH, kind='scar', regions=['back'], size='large', note='healed whip scars'), 1)
-add('Spank', ('female', 'male'), 'spank', (), 1024, dict(ROUGH, kind='marks', regions=['butt'], size='medium', note='reddened buttocks, handprints'), 2)
+add('Spank', ('female', 'male'), 'spank', (), 2048, dict(ROUGH, kind='marks', regions=['butt'], size='medium', note='reddened buttocks, handprints'), 2)
 add('Moles', ('male',), 'moles', ((15, 40),), 2048, dict(ROUGH, kind='mole', regions=[], size='tiny', note='moles'), 3)
 add('Scar', ('male',), 'scars', ((2, 4), False), 2048, dict(ROUGH, kind='scar', regions=[], size='small', note='healed scars'), 2)
 add('ScarStitched', ('male',), 'scars', ((1, 2), True), 2048, dict(ROUGH, kind='scar', regions=[], size='small', note='stitched scars'), 2)
@@ -182,6 +183,12 @@ for name, spec, spot, side, width, ink, crude, size, style, emblem, adult, note 
         region = [SPOT_REGION[spot]]
     tag = dict(kind='tattoo', regions=region, size=size, style=style, emblem=emblem, lore='fits', adult=adult,
                quality='ok', note=note)
+    if name == 'TribalLowerBack':
+        # The men's own draw came out a mask-like blob (alasdairn, 10-09: redo it); the women's was approved, so the
+        # men wear the same design, replayed from her seed (1000 + her index, 142). Indices unchanged: F then M.
+        add(f'Tattoo{name}', ('female',), 'decal', (spec, spot, side, width, ink, crude), 2048, tag, 1)
+        add(f'Tattoo{name}', ('male',), 'decal', (('tribal', 1142), spot, side, width, ink, crude), 2048, tag, 1)
+        continue
     add(f'Tattoo{name}', BOTH, 'decal', (spec, spot, side, width, ink, crude), 2048, tag, 1)
 
 # ---- C-14 (owner, 2026-10-03): lewd marks for NPCs whose Rapport persona is vulgar -- crude, explicit, around the
@@ -288,8 +295,8 @@ add('TanTshirt', BOTH, 'tan_lines', ('tshirt',), 1024, dict(ROUGH, kind='tan', r
 add('TanTank', BOTH, 'tan_lines', ('tank',), 1024, dict(ROUGH, kind='tan', regions=[], size='full', note='tank-top tan lines'), 1)
 add('TanBikini', F, 'tan_lines', ('bikini',), 1024, dict(ROUGH, kind='tan', regions=[], size='full', note='bikini tan lines'), 1)
 add('TanShorts', M, 'tan_lines', ('shorts',), 1024, dict(ROUGH, kind='tan', regions=[], size='full', note='a tan with shorts lines'), 1)
-add('Sunburn', BOTH, 'sunburn', (), 1024, dict(ROUGH, kind='tan', regions=[], size='large', note='sunburn, peeling'), 2)
-add('Mud', BOTH, 'mud', (0.6,), 1024, dict(ROUGH, kind='dirt', regions=[], size='medium', note='mud on the legs'), 2)
+add('Sunburn', BOTH, 'sunburn', (), 2048, dict(ROUGH, kind='tan', regions=[], size='large', note='sunburn, peeling'), 2)
+add('Mud', BOTH, 'mud', (0.6,), 2048, dict(ROUGH, kind='dirt', regions=[], size='medium', note='mud on the legs'), 2)
 add('AgeSpots', BOTH, 'age_spots', (), 2048, dict(ROUGH, kind='skin', regions=[], size='small', note='age spots'), 2)
 add('Varicose', BOTH, 'varicose', (), 2048, dict(ROUGH, kind='skin', regions=[], size='small', note='varicose and spider veins'), 1)
 add('Cellulite', F, 'cellulite', (), 1024, dict(ROUGH, kind='skin', regions=[], size='medium', note='cellulite'), 2)
@@ -365,26 +372,27 @@ FLASH = [
     ('Cherries', 'cherries', (), 'hip', 1, 4.0, False, 0.0, 'small', ['pinup', 'cartoon']),
     ('Eye', 'eye', (), 'upper_back', 0, 7.0, False, 0.0, 'medium', ['religious', 'geometric']),
     ('Flames', 'flames', (), 'calf', -1, 7.0, False, 0.0, 'small', ['tribal', 'crude']),
-    ('FlamesArm', 'flames', (), 'forearm', 1, 6.0, False, 0.0, 'small', ['tribal']),
+    ('FlamesArm', 'flames', (True,), 'forearm', 1, 6.0, False, 0.0, 'small', ['tribal']),   # flipped: rising to the elbow
     ('Wolf', 'wolf', (), 'upper_arm', -1, 5.5, False, 0.0, 'small', ['animal', 'geometric']),
     ('WolfBack', 'wolf', (), 'upper_back', 0, 10.0, False, 0.0, 'medium', ['animal', 'geometric']),
-    ('Eagle', 'eagle', (), 'chest', 0, 11.0, False, 0.0, 'medium', ['animal', 'military']),
-    ('EagleBack', 'eagle', (), 'upper_back', 0, 14.0, True, 0.0, 'large', ['animal', 'military']),
+    ('Eagle', 'eagle', (), 'chest', 0, 22.0, False, 0.0, 'medium', ['animal', 'military']),
+    ('EagleBack', 'eagle', (), 'upper_back', 0, 24.0, False, 0.0, 'large', ['animal', 'military']),  # across the shoulders, as alasdairn's reference
     ('Koi', 'koi', (), 'thigh', 1, 7.0, False, 0.0, 'medium', ['animal', 'floral']),
     ('KoiCalf', 'koi', ((170, 28, 32),), 'calf', -1, 5.0, False, 0.0, 'small', ['animal']),
     ('Butterfly', 'butterfly', (), 'lower_back', 0, 6.0, False, 0.0, 'small', ['animal', 'floral']),
     ('ButterflyHip', 'butterfly', ((96, 46, 130),), 'hip', 1, 4.0, False, 0.0, 'small', ['animal', 'floral']),
-    ('Revolver', 'revolver', (), 'hip', -1, 6.0, False, 0.2, 'small', ['military', 'crude']),
+    ('Revolver', 'revolver', (), 'hip', -1, 12.0, False, 0.0, 'small', ['military', 'crude']),
     ('Grenade', 'grenade', (), 'forearm', -1, 3.5, False, 0.0, 'tiny', ['military']),
     ('Tombstone', 'tombstone', (), 'calf', 1, 4.5, True, 0.0, 'small', ['skull', 'script']),
     ('EightBall', 'eight_ball', (), 'forearm', 1, 3.5, False, 0.0, 'tiny', ['gambling', 'cartoon']),
     ('Compass', 'compass', (), 'forearm', -1, 4.5, False, 0.0, 'small', ['geometric']),
     ('CompassBack', 'compass', (), 'upper_back', 0, 9.0, True, 0.0, 'medium', ['geometric']),
 ]
+DETAILED = {'eagle', 'swallow', 'swallow_pair', 'revolver', 'flames'}  # fine linework: 4096 (owner, 2026-10-09)
 for name, motif, margs, spot, side, width, faded, crude, size, style in FLASH:
     region = (['arm_r'] if side > 0 else ['arm_l']) if spot in ('forearm', 'upper_arm') else \
         ((['leg_r'] if side > 0 else ['leg_l']) if spot in ('thigh', 'calf') else [SPOT_REGION[spot]])
-    add(f'Flash{name}', BOTH, 'flash', (motif, margs, spot, side, width, faded, crude), 2048,
+    add(f'Flash{name}', BOTH, 'flash', (motif, margs, spot, side, width, faded, crude), 4096 if motif in DETAILED else 2048,
         dict(kind='tattoo', regions=region, size=size, style=style, emblem=None, lore='fits', adult=False, quality='ok',
              note=f'flash: {motif.replace("_", " ")}'), 1)
 
@@ -411,19 +419,19 @@ MOLE_VARIANTS = [  # name, args (count, size, tone, zone, clusters, raised), not
     ('MolesRaisedDark', ((8, 18), (0.12, 0.24), 'dark', 'upper', 0, True), 'dark raised moles, upper body'),
 ]
 for name, args, note in MOLE_VARIANTS:
-    add(name, F, 'skin.moles', args, 2048, dict(R, kind='mole', regions=[], size='tiny', note=note), 2)
-    add(name, M, 'skin.moles', args, 2048, dict(R, kind='mole', regions=[], size='tiny', note=note), 1)
-add('CherryAngiomas', BOTH, 'skin.cherry_angiomas', (), 2048, dict(R, kind='mole', regions=[], size='tiny', note='tiny red cherry angiomas'), 2)
+    add(name, F, 'moles_zoned', args, 2048, dict(R, kind='mole', regions=[], size='tiny', note=note), 2)
+    add(name, M, 'moles_zoned', args, 2048, dict(R, kind='mole', regions=[], size='tiny', note=note), 1)
+add('CherryAngiomas', BOTH, 'cherry_angiomas', (), 2048, dict(R, kind='mole', regions=[], size='tiny', note='tiny red cherry angiomas'), 2)
 add('SunSpots', BOTH, 'skin.sun_spots', (0.5,), 2048, dict(R, kind='freckles', regions=[], size='small', note='sun spots on the shoulders'), 1)
 add('SunSpotsHeavy', BOTH, 'skin.sun_spots', (1.0,), 2048, dict(R, kind='freckles', regions=[], size='medium', note='heavy sun spots'), 1)
-add('PortWine', BOTH, 'skin.port_wine', (3.5,), 2048, dict(R, kind='birthmark', regions=[], size='medium', note='a port-wine stain'), 2)
-add('PortWineLarge', BOTH, 'skin.port_wine', (6.0,), 2048, dict(R, kind='birthmark', regions=[], size='large', note='a large port-wine stain'), 1)
+add('PortWine', BOTH, 'port_wine', (3.5,), 2048, dict(R, kind='birthmark', regions=[], size='medium', note='a port-wine stain'), 2)
+add('PortWineLarge', BOTH, 'port_wine', (6.0,), 2048, dict(R, kind='birthmark', regions=[], size='large', note='a large port-wine stain'), 1)
 add('CafeAuLait', BOTH, 'skin.cafe_au_lait', ((2, 5),), 2048, dict(R, kind='birthmark', regions=[], size='small', note='cafe-au-lait spots'), 2)
 add('MongolianSpot', BOTH, 'skin.mongolian_spot', (), 2048, dict(R, kind='birthmark', regions=['lower_back'], size='medium', note='a slate-blue birthmark low on the back'), 1)
 add('LineaNigra', F, 'skin.linea_nigra', (0.30,), 2048, dict(R, kind='skin', regions=[], size='small', note='a faint pregnancy line'), 1)
 add('LineaNigraDark', F, 'skin.linea_nigra', (0.5,), 2048, dict(R, kind='skin', regions=[], size='small', note='a dark pregnancy line'), 1)
-add('FlushChest', BOTH, 'skin.flush', ('chest',), 1024, dict(R, kind='skin', regions=[], size='medium', note='blotchy redness on the chest'), 2)
-add('FlushButtocks', BOTH, 'skin.flush', ('buttocks',), 1024, dict(R, kind='skin', regions=[], size='medium', note='blotchy redness on the buttocks'), 1)
+add('FlushChest', BOTH, 'flush', ('chest',), 2048, dict(R, kind='skin', regions=[], size='medium', note='blotchy redness on the chest'), 2)
+add('FlushButtocks', BOTH, 'flush', ('buttocks',), 2048, dict(R, kind='skin', regions=[], size='medium', note='blotchy redness on the buttocks'), 1)
 add('KeratosisArms', BOTH, 'skin.flush', ('arms',), 2048, dict(R, kind='skin', regions=[], size='small', note='rough red bumps on the upper arms'), 1)
 add('Goosebumps', BOTH, 'skin.goosebumps', ('arms',), 2048, dict(R, kind='skin', regions=[], size='medium', note='goosebumps on the arms'), 1)
 add('GoosebumpsAll', BOTH, 'skin.goosebumps', ('arms_legs',), 2048, dict(R, kind='skin', regions=[], size='large', note='goosebumps on arms and legs'), 1)
@@ -500,8 +508,8 @@ for cut, strengths, sexes in (('tshirt', (0.2, 0.45), BOTH), ('sleeve34', (0.32,
     for k, st in enumerate(strengths):
         add(f'Tan{cut.title()}{"Light" if st < 0.3 else ("Dark" if st > 0.4 else "")}', sexes, 'tan_lines', (cut, st), 1024,
             dict(R, kind='tan', regions=[], size='full', note=f'{cut} tan lines'), 1)
-add('SunburnMild', BOTH, 'sunburn', (0.55, False), 1024, dict(R, kind='tan', regions=[], size='large', note='mild sunburn'), 1)
-add('SunburnSevere', BOTH, 'sunburn', (1.4, True), 1024, dict(R, kind='tan', regions=[], size='large', note='severe sunburn, peeling'), 1)
+add('SunburnMild', BOTH, 'sunburn', (0.55, False), 2048, dict(R, kind='tan', regions=[], size='large', note='mild sunburn'), 1)
+add('SunburnSevere', BOTH, 'sunburn', (1.4, True), 2048, dict(R, kind='tan', regions=[], size='large', note='severe sunburn, peeling'), 1)
 # the rest, heavier and lighter
 add('AgeSpotsHeavy', BOTH, 'skin.sun_spots', (1.3,), 2048, dict(R, kind='skin', regions=[], size='medium', note='heavy age spots'), 1)
 add('VaricoseHeavy', BOTH, 'varicose', (), 2048, dict(R, kind='skin', regions=[], size='small', note='varicose veins'), 1)
@@ -540,6 +548,8 @@ def design(spec, rng):
         return decals.arrow_word(text, font, direction)
     if kind == 'tally':
         return decals.tally(rest[0])
+    if kind == 'tribal' and rest:
+        return decals.tribal(np.random.default_rng(rest[0]))  # a design replayed from another template's seed
     return {'mandala': decals.mandala, 'tribal': decals.tribal, 'barcode': decals.barcode}.get(kind, None)(rng) \
         if kind != 'dots' else decals.prison_dots()
 
@@ -560,7 +570,7 @@ def paint(painter, m, rng, args):
         return life.scar_decal(m, rng, design(spec, rng), spot, side, width)
     if painter.startswith('skin.'):
         return getattr(skin, painter[5:])(m, rng, *args)
-    for module in (marks, realism, life, hands):
+    for module in (real, marks, realism, life, hands):   # real first: its painters replace the old ones (10-09)
         if hasattr(module, painter):
             return getattr(module, painter)(m, rng, *args)
     raise SystemExit(f'no painter {painter}')
@@ -650,7 +660,7 @@ def bgem(diffuse, normal):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--data', type=pathlib.Path, default=DATA)
-    ap.add_argument('--only', default='')
+    ap.add_argument('--only', default='', help='paint only templates starting with one of these (comma-separated)')
     ap.add_argument('--missing', action='store_true', help='paint only templates with no texture yet')
     ap.add_argument('--shard', default='', help='k/N: paint only every Nth template from the k-th (run N at once)')
     ap.add_argument('--rebleed', action='store_true', help='apply bleed() to the finished PNGs and re-encode (no repaint)')
@@ -666,7 +676,7 @@ def main():
     if a.rebleed:
         for tid, sex, painter, args, size, tag in MARKS:
             png = work / f'{tid}_d.png'
-            if a.only and not tid.startswith(a.only):
+            if a.only and not tid.startswith(tuple(a.only.split(','))):
                 continue
             if not png.exists():
                 print(f'  {tid}: no PNG, repaint it')
@@ -692,7 +702,7 @@ def main():
             tag = dict(tag, hair=hair.family(painter, args))  # one colour per person: the composer matches it
         tag = dict(tag, **traits.of(tag))  # nasty / age / tones (tools/paint/traits.py)
         tags[('f:' if female else 'm:') + tid] = tag
-        if a.only and not tid.startswith(a.only):
+        if a.only and not tid.startswith(tuple(a.only.split(','))):
             continue
         if a.shard and n % int(a.shard.split('/')[1]) != int(a.shard.split('/')[0]):
             continue

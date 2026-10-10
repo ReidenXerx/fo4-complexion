@@ -79,9 +79,10 @@ def scar_line(P, a_pale, a_rim, c, n, t, half, width, stitched=False):
             np.maximum(a_pale, st * 0.7, out=a_pale)
 
 
-def paint_scars(rgb, alpha, a_pale, a_rim, pale=(0.94, 0.72, 0.68), rim=(0.55, 0.24, 0.24)):
-    over(rgb, alpha, rim, np.clip(a_rim * 0.6, 0, 0.5))
-    over(rgb, alpha, pale, np.clip(a_pale * 0.9, 0, 0.8))
+def paint_scars(rgb, alpha, a_pale, a_rim, age='old', opacity=1.0):
+    """Shaded by real.scar_shade (crisp uneven edge, texture, relief, darker rims; alasdairn 10-09)."""
+    import real
+    real.scar_shade(rgb, alpha, a_pale, a_rim, age, opacity)
 
 
 # ---------------------------------------------------------------- captives and rough life
@@ -389,11 +390,7 @@ def ritual_cuts(m, rng, fresh=False):
         for k in range(count):
             q = c + along * (k - (count - 1) / 2) * rng.uniform(0.5, 0.7)
             scar_line(P, pale, rim, q, n, t + along * rng.uniform(-0.15, 0.15), rng.uniform(1.0, 1.8), 0.13)
-    if fresh:
-        over(rgb, alpha, (0.75, 0.25, 0.25), np.clip(rim * 0.6, 0, 0.6))
-        over(rgb, alpha, (0.45, 0.06, 0.08), np.clip(pale * 0.85, 0, 0.85))
-    else:
-        paint_scars(rgb, alpha, pale, rim)
+    paint_scars(rgb, alpha, pale, rim, 'fresh' if fresh else 'old')
     return rgb, alpha
 
 
@@ -730,7 +727,7 @@ def surgery_scar(m, rng, which='appendix'):
         side = 1 if rng.random() < 0.5 else -1
         c, n = spot(P, P.reg('leg'), side * 0.42 * tw, 0.27, 0.5)
         scar_line(P, pale, rim, c, n, np.array((0.0, 0.0, 1.0)), 3.2, 0.22, stitched=rng.random() < 0.5)
-    paint_scars(rgb, alpha, pale, rim)
+    paint_scars(rgb, alpha, pale, rim, 'old_pr', 0.7)   # alasdairn's pick, 10-10
     return rgb, alpha
 
 

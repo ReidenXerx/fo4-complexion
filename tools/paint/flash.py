@@ -12,7 +12,9 @@ Motifs are drawn at 2x and scaled down for clean edges. Coordinates are in a 0..
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
+import cc0art
 import decals
+import realink
 from marks import Painter, blank, fbm
 
 INK = (22, 22, 26)
@@ -661,7 +663,8 @@ def swallow(back=BLUE):
 def swallow_pair():
     """Two swallows facing each other over a banner: the sailor's classic."""
     a = Art(1.0, 0.7)
-    sw = swallow().resize((int(a.W * 0.5), int(a.W * 0.5)))
+    sw = realink.swallow_trad()
+    sw = sw.resize((int(a.W * 0.5), int(a.W * 0.5 * sw.height / sw.width)))
     a.im.alpha_composite(sw, (int(a.W * 0.0), 0))
     a.im.alpha_composite(sw.transpose(Image.FLIP_LEFT_RIGHT), (int(a.W * 0.5), 0))
     return a.done()
@@ -669,10 +672,12 @@ def swallow_pair():
 
 MOTIFS = {
     'rose': rose, 'skull': skull, 'skull_bones': skull_bones, 'dagger': dagger, 'heart_banner': heart_banner,
-    'swallow': swallow, 'swallow_pair': swallow_pair, 'anchor': anchor, 'snake': snake, 'web': web, 'spider': spider,
+    'swallow': lambda *_: cc0art.swallow(), 'swallow_pair': cc0art.swallow_pair, 'anchor': anchor, 'snake': snake, 'web': web, 'spider': spider,
     'nautical_star': nautical_star, 'lightning': lightning, 'mushroom_cloud': mushroom_cloud, 'radiation': radiation,
-    'nuka_cap': nuka_cap, 'cherries': cherries, 'eye': eye, 'flames': flames, 'wolf': wolf, 'eagle': eagle, 'koi': koi,
-    'butterfly': butterfly, 'revolver': revolver, 'grenade': grenade, 'tombstone': tombstone, 'eight_ball': eight_ball,
+    'nuka_cap': nuka_cap, 'cherries': cherries, 'eye': eye, 'wolf': wolf, 'koi': koi,
+    'butterfly': butterfly, 'grenade': grenade, 'tombstone': tombstone, 'eight_ball': eight_ball,
+    # alasdairn's references (2026-10-09): black-and-grey realism and an airbrushed fire, from tools/paint/realink.py
+    'eagle': cc0art.eagle, 'flames': realink.fire_real, 'revolver': cc0art.revolver,   # real CC0 art (cc0art.py); no CC0 fire exists
     'compass': compass,
 }
 
@@ -683,9 +688,16 @@ MOTIFS = {
 def project_rgba(m, design, spot, side=0, width=6.0, rotate=0.0, alpha=0.92, crude=0.0, seed=0, faded=False):
     """A colour design (RGBA) flat on the skin around a spot (decals.anchor), width game units across. Returns
     (rgb, alpha) for make_marks. faded: older ink, colours greyed and blurred a touch."""
+    c, n, up = decals.anchor(m, spot, side)
+    return project_rgba_at(m, design, c, n, up, width, rotate, alpha, crude, seed, faded)
+
+
+def project_rgba_at(m, design, c, n, up=(0.0, 0.0, 1.0), width=6.0, rotate=0.0, alpha=0.92, crude=0.0, seed=0, faded=False):
+    """project_rgba at any body point c (normal n): image-up along up (world up by default, so a drip painted
+    running down the image runs down the body)."""
     P = Painter(m)
     rgb, a_out = blank(m)
-    c, n, up = decals.anchor(m, spot, side)
+    up = np.asarray(up, np.float64)
     up = up - n * (up @ n)
     if np.linalg.norm(up) < 1e-3:
         up = np.array((0.0, 0.0, 1.0)) - n * n[2]
@@ -707,6 +719,16 @@ def project_rgba(m, design, spot, side=0, width=6.0, rotate=0.0, alpha=0.92, cru
     v = 0.5 - pts @ up / hgt
     depth = np.abs(pts @ n)
     ok = (u >= 0) & (u < 1) & (v >= 0) & (v < 1) & (nrm @ n > 0.25) & (depth < max(width, hgt) * 0.5)
+    if design.info.get('prefilter') and ok.any():
+        # A detailed design (realink) point-sampled into the few texels it covers turns to noise: shrink it first,
+        # alpha premultiplied, to the texels across it (twice that left engraving hatch beating into stripes).
+        across = np.sqrt(ok.sum() * img.shape[1] / img.shape[0])
+        if across < img.shape[1]:
+            pm = np.concatenate([img[..., :3] * img[..., 3:], img[..., 3:]], -1)
+            small = Image.fromarray(np.uint8(np.clip(pm * 255 + 0.5, 0, 255)), 'RGBA')
+            small = small.resize((max(int(across), 8), max(int(across * img.shape[0] / img.shape[1]), 8)), Image.LANCZOS)
+            pm = np.asarray(small, dtype=np.float64) / 255.0
+            img = np.concatenate([pm[..., :3] / np.maximum(pm[..., 3:], 1e-3), pm[..., 3:]], -1).clip(0, 1)
     xi = np.clip((u[ok] * img.shape[1]).astype(int), 0, img.shape[1] - 1)
     yi = np.clip((v[ok] * img.shape[0]).astype(int), 0, img.shape[0] - 1)
     col = np.zeros((len(idx), 3))

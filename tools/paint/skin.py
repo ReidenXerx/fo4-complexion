@@ -8,7 +8,7 @@ gives many genuinely different templates: counts, sizes, tones, zones, ages.
 import numpy as np
 
 from marks import Painter, blank, fbm, landmarks, over
-from realism import HAIR, chest_density, hair
+from realism import HAIR, chest_density, hair, soft_bumps
 
 HAIR.update({'ginger': (0.42, 0.18, 0.07), 'lightbrown': (0.34, 0.24, 0.15), 'darkbrown': (0.12, 0.08, 0.05)})
 
@@ -200,7 +200,7 @@ def _scar_line(P, a_pale, a_rim, c, n, t, half, width, stitched=False):
             q = c + t * s
             dq = P.p - q
             st = np.abs(dq @ t)
-            mark = np.exp(-(st / 0.08) ** 2) * (np.abs(dq @ side) < width * 3.5) * face * P.cov
+            mark = np.exp(-(st / 0.14) ** 2) * (np.abs(dq @ side) < width * 3.5) * face * P.cov
             np.maximum(a_pale, mark * 0.75, out=a_pale)
 
 
@@ -213,12 +213,8 @@ def scars(m, rng, count=(1, 3), length=(3.5, 8.0), width=(0.25, 0.45), stitched=
     rim = np.zeros(m.covered.shape)
     for c, n in P.pick_points(rng, w > 0, int(rng.integers(count[0], count[1] + 1)), w):
         _scar_line(P, pale, rim, c, n, np.cross(n, rng.normal(size=3)), rng.uniform(*length), rng.uniform(*width), stitched)
-    if age == 'newer':
-        over(rgb, alpha, (0.70, 0.30, 0.30), np.clip(rim * 0.55, 0, 0.5))
-        over(rgb, alpha, (0.90, 0.52, 0.52), np.clip(pale * 0.85, 0, 0.8))
-    else:
-        over(rgb, alpha, (0.55, 0.24, 0.24), np.clip(rim * 0.5, 0, 0.45))
-        over(rgb, alpha, (0.94, 0.74, 0.70), np.clip(pale * 0.9, 0, 0.8))
+    import real
+    real.scar_shade(rgb, alpha, pale, rim, 'old_pr', opacity=0.7)   # alasdairn's pick for every healed scar set, 10-10
     return rgb, alpha
 
 
@@ -312,8 +308,8 @@ def bite_scar(m, rng, kind='dog'):
             r = (0.16 if k in (0, teeth - 1) else 0.09) if kind == 'dog' else 0.08
             P.blob_into(pale, q, n, r, gain=2.2, cap=0.85)
             P.blob_into(rim, q, n, r * 1.9, gain=1.4, cap=0.6)
-    over(rgb, alpha, (0.58, 0.32, 0.30), np.clip(rim * 0.45, 0, 0.45))
-    over(rgb, alpha, (0.94, 0.76, 0.72), np.clip(pale * 0.85, 0, 0.8))
+    import real
+    real.scar_shade(rgb, alpha, pale, rim, 'old')
     return rgb, alpha
 
 
@@ -398,46 +394,14 @@ def stretch(m, rng, zone='hips', fresh=False, amount=0.7):
 
 
 def acne(m, rng, zone='back', amount=0.5):
-    """Acne by zone (back, chest, buttocks, shoulders): red bumps, some with white heads, a few dark marks of old
-    ones."""
+    """Acne by zone (back, chest, buttocks, shoulders), every amount as soft bumps (realism.soft_bumps): alasdairn
+    approved the light set's look and asked for it on all of them (2026-10-09). The light set keeps to the upper
+    back."""
     P = Painter(m)
-    rgb, alpha = blank(m)
     w = _zone(P, m, zone)
-    red = np.zeros(m.covered.shape)
-    head = np.zeros(m.covered.shape)
-    old = np.zeros(m.covered.shape)
     if amount < 0.4:
-        # Light acne: a couple dozen small, soft, flat-red bumps on the upper back and shoulders, hardly a whitehead.
-        # (The light set used the full recipe at a lower count: ~100 ringed spots down to the buttocks -- "light
-        # acne ain't light", alasdairn, 2026-10-09.)
-        L = landmarks(m)
-        w = w * np.clip((P.h - L['navel']) / 0.10, 0, 1)
-        for c, n in P.pick_points(rng, w > 0, int(20 + 48 * amount), w):
-            r = rng.uniform(0.08, 0.16)
-            roll = rng.random()
-            if roll < 0.15:
-                P.blob_into(old, c, n, r * 0.8, gain=1.0, cap=0.28)
-                continue
-            P.blob_into(red, c, n, r, gain=1.1, cap=0.40)
-            if roll > 0.92:
-                P.blob_into(head, c, n, r * 0.22, gain=1.0, cap=0.22)
-        over(rgb, alpha, (0.52, 0.32, 0.28), old)
-        over(rgb, alpha, (0.82, 0.42, 0.40), red)
-        over(rgb, alpha, (0.90, 0.80, 0.70), head)
-        return rgb, alpha
-    for c, n in P.pick_points(rng, w > 0, int(40 + 220 * amount), w):
-        r = rng.uniform(0.1, 0.26)
-        roll = rng.random()
-        if roll < 0.2:
-            P.blob_into(old, c, n, r * 0.8, gain=1.2, cap=0.4)
-            continue
-        P.blob_into(red, c, n, r, gain=1.3, cap=0.55)
-        if roll > 0.65:
-            P.blob_into(head, c, n, r * 0.3, gain=1.2, cap=0.5)
-    over(rgb, alpha, (0.52, 0.30, 0.25), old)
-    over(rgb, alpha, (0.78, 0.30, 0.28), red)
-    over(rgb, alpha, (0.92, 0.85, 0.70), head)
-    return rgb, alpha
+        w = w * np.clip((P.h - landmarks(m)['navel']) / 0.10, 0, 1)
+    return soft_bumps(m, rng, w, amount)
 
 
 def pubic_female(m, rng, style='bushy', colour='brown', size=2048):

@@ -41,21 +41,28 @@ def seam_vertices(m):
     return m._seams
 
 
-def seam_fade(m):
-    """Per texel 0..1: 0 at a seam, 1 from FADE_START + FADE_WIDTH away (smoothstep)."""
-    if hasattr(m, '_seam_fade'):
-        return m._seam_fade
-    S = seam_vertices(m)
+def seam_fade(m, start=FADE_START, width=FADE_WIDTH):
+    """Per texel 0..1: 0 at a seam, 1 from start + width away (smoothstep). Marks covering large areas (grime)
+    take a wider fade: the head and hands next to them are clean, so a dirty neck reads as a seam however soft its
+    last 4 cm are (alasdairn, 2026-10-09)."""
+    key = (start, width)
+    cache = m.__dict__.setdefault('_seam_fades', {})
+    if key in cache:
+        return cache[key]
+    if not hasattr(m, '_seam_dist'):
+        S = seam_vertices(m)
+        idx = np.flatnonzero(m.covered)
+        P = m.position.reshape(-1, 3)[idx]
+        best = np.empty(len(idx))
+        for k in range(0, len(P), 65536):  # in chunks of texels: all at once is gigabytes at 2048
+            q = P[k:k + 65536]
+            best[k:k + 65536] = np.sqrt(((q[:, None, :] - S[None, :, :]) ** 2).sum(-1)).min(axis=1)
+        m._seam_dist = (idx, best)
+    idx, best = m._seam_dist
     out = np.ones(m.covered.shape)
-    idx = np.flatnonzero(m.covered)
-    P = m.position.reshape(-1, 3)[idx]
-    best = np.empty(len(idx))
-    for k in range(0, len(P), 65536):  # in chunks of texels: all at once is gigabytes at 2048
-        q = P[k:k + 65536]
-        best[k:k + 65536] = np.sqrt(((q[:, None, :] - S[None, :, :]) ** 2).sum(-1)).min(axis=1)
-    t = np.clip((best - FADE_START) / FADE_WIDTH, 0, 1)
+    t = np.clip((best - start) / width, 0, 1)
     out.reshape(-1)[idx] = t * t * (3 - 2 * t)
-    m._seam_fade = out
+    cache[key] = out
     return out
 
 

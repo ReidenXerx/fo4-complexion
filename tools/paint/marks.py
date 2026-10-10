@@ -7,6 +7,8 @@ the texture. Units are the game's (about 1.43 cm each); the body faces +y, z is 
 Each painter returns (rgb HxWx3 in 0..1, alpha HxW in 0..1) for one template. A painter takes a numpy Generator,
 so every template is reproducible from its seed.
 """
+import os
+
 import numpy as np
 
 from body import REGIONS
@@ -392,10 +394,10 @@ def scars(m, rng, count=(1, 3), stitched=False):
                 dq = P.p - q
                 sa = dq @ side
                 st = np.abs(dq @ t)
-                stitch = np.exp(-(st / 0.08) ** 2) * (np.abs(sa) < width * 3.5) * facing * P.cov
+                stitch = np.exp(-(st / 0.14) ** 2) * (np.abs(sa) < width * 3.5) * facing * P.cov
                 a_pale = np.maximum(a_pale, stitch * 0.8)
-    over(rgb, alpha, (0.55, 0.24, 0.24), np.clip(a_rim * 0.6, 0, 0.5))
-    over(rgb, alpha, (0.94, 0.72, 0.68), np.clip(a_pale * 0.9, 0, 0.8))
+    import real
+    real.scar_shade(rgb, alpha, a_pale, a_rim, 'old_pr', opacity=0.7)   # alasdairn's pick, 10-10: purple-red at 70%
     return rgb, alpha
 
 

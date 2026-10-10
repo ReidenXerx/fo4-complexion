@@ -9,6 +9,7 @@ texture is the painted multiplier (build/marks/<id>_d.png), which the shipped BC
 (tools/paint/check_encoding.py).
 """
 import json
+import os
 import pathlib
 import sys
 
@@ -21,6 +22,7 @@ from collage import FULL, Views, render  # noqa: E402
 
 ROOT = HERE.parent.parent
 CLOSE = 48.0  # pixels per game unit for the close-up
+MARKS = pathlib.Path(os.environ.get('COMPLEXION_MARKS', ROOT / 'build' / 'marks'))   # the painted multipliers (a variant folder to compare)
 BG, INK = (24, 24, 28), (236, 226, 200)
 
 
@@ -37,8 +39,8 @@ def closeup(views, tex, blank):
     """The side where the mark is, at CLOSE scale, cropped to where it changes the skin (padded)."""
     best = None
     for side in ('front', 'back'):
-        img = np.asarray(render(views, tex, side, CLOSE, None, 1.0)).astype(int)
-        base = np.asarray(render(views, blank, side, CLOSE, None, 1.0)).astype(int)
+        img = np.asarray(render(views, tex, side, CLOSE, None, 1.0)).astype(np.int16)
+        base = np.asarray(render(views, blank, side, CLOSE, None, 1.0)).astype(np.int16)
         diff = np.abs(img - base).max(-1) > 6
         if best is None or diff.sum() > best[0]:
             best = (diff.sum(), side, img, diff)
@@ -50,24 +52,62 @@ def closeup(views, tex, blank):
     y0, y1 = max(ys.min() - pad, 0), min(ys.max() + pad, img.shape[0])
     x0, x1 = max(xs.min() - pad, 0), min(xs.max() + pad, img.shape[1])
     crop = Image.fromarray(img[y0:y1, x0:x1].astype(np.uint8))
+    if crop.width <= 700 and crop.height <= 820:
+        return crop, side
+    # A wide mark (freckles, grime, body hair) shrunk to fit shows nothing: the overview, and beside it a window at
+    # full close-up scale where the mark is densest.
     crop.thumbnail((700, 820))
-    return crop, side
+    k = 16
+    h, w = diff.shape[0] // k, diff.shape[1] // k
+    dens = diff[:h * k, :w * k].reshape(h, k, w, k).mean((1, 3))
+    wy, wx = 820 // k, 700 // k
+    c = np.cumsum(np.cumsum(np.pad(dens, ((1, 0), (1, 0))), 0), 1)
+    win = c[wy:, wx:] - c[:-wy, wx:] - c[wy:, :-wx] + c[:-wy, :-wx]
+    by, bx = np.unravel_index(np.argmax(win), win.shape)
+    detail = Image.fromarray(img[by * k:by * k + 820, bx * k:bx * k + 700].astype(np.uint8))
+    both = Image.new('RGB', (crop.width + 12 + detail.width, max(crop.height, detail.height)), BG)
+    both.paste(crop, (0, 0))
+    both.paste(detail, (crop.width + 12, 0))
+    return both, side
+
+
+def wide(views, tex, blank):
+    """Would the close-up of this mark be shrunk to fit (closeup)? Measured at FULL scale, which is cheap."""
+    for side in ('front', 'back'):
+        img = np.asarray(render(views, tex, side, FULL, None, 1.0)).astype(int)
+        base = np.asarray(render(views, blank, side, FULL, None, 1.0)).astype(int)
+        ys, xs = np.nonzero(np.abs(img - base).max(-1) > 6)
+        if len(ys) and ((ys.max() - ys.min()) * CLOSE / FULL + 120 > 820 or (xs.max() - xs.min()) * CLOSE / FULL + 120 > 700):
+            return True
+    return False
 
 
 def main():
-    out = pathlib.Path(sys.argv[1])
+    only_wide = '--wide-only' in sys.argv
+    args = [a for a in sys.argv[1:] if a != '--wide-only']
+    out = pathlib.Path(args[0])
     out.mkdir(parents=True, exist_ok=True)
     tags = json.loads((ROOT / 'data' / 'tags' / 'complexion.json').read_text(encoding='utf-8'))
     views = {}
-    for base in sys.argv[2:]:
+    for base in args[1:]:
+        if only_wide:
+            first = sorted((MARKS).glob(f'{base}_[FM]0*_d.png'))
+            if not first:
+                continue
+            sex = 'female' if first[0].stem.split('_')[-2].startswith('F') else 'male'
+            if sex not in views:
+                views[sex] = Views(sex)
+            tex = np.asarray(Image.open(first[0]).convert('RGB'), dtype=np.float64) / 255.0
+            if not wide(views[sex], tex, np.full((64, 64, 3), 0.5)):
+                continue
         rows = []
         for sex, suffix in (('female', 'F'), ('male', 'M')):
-            ids = sorted(p.stem[:-2] for p in (ROOT / 'build' / 'marks').glob(f'{base}_{suffix}0*_d.png'))
+            ids = sorted(p.stem[:-2] for p in (MARKS).glob(f'{base}_{suffix}0*_d.png'))
             for tid in ids:
                 if sex not in views:
                     views[sex] = Views(sex)
                 v = views[sex]
-                tex = np.asarray(Image.open(ROOT / 'build' / 'marks' / f'{tid}_d.png').convert('RGB'), dtype=np.float64) / 255.0
+                tex = np.asarray(Image.open(MARKS / f'{tid}_d.png').convert('RGB'), dtype=np.float64) / 255.0
                 blank = np.full((64, 64, 3), 0.5)
                 close, side = closeup(v, tex, blank)
                 front = render(v, tex, 'front', FULL, None, 1.0)
