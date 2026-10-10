@@ -30,7 +30,9 @@ def main():
     tex = mm.ROOT / 'data' / 'Textures' / 'Overlays' / 'Complexion'
     worst = []
     bad = 0
-    for tid, *_ in mm.MARKS:
+    for tid, *rest in mm.MARKS:
+        if rest[-1].get('retired'):
+            continue
         png = mm.ROOT / 'build' / 'marks' / f'{tid}_d.png'
         p = np.asarray(Image.open(png).convert('RGB'), dtype=np.float64)
         d = np.asarray(Image.open(tex / f'{tid}_d.dds').convert('RGB'), dtype=np.float64)

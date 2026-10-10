@@ -314,6 +314,26 @@ margins, not its elite ("DC citizens ... kinda elite of Commonwealth"). In profi
   acne is ordinary skin, not a nasty mark.
 - **make-release also checks the shipped profiles.json.** The parity dump also covers every hair × tone pair.
 
+## C-22: A reviewer approves every changed overlay; the damage marks look real (owner + alasdairn, 2026-10-09/10)
+
+The owner's rule: before a fix release, every changed overlay is shown to alasdairn as an offline render
+(tools/paint/approval.py) and ships only after he approves it. He then reviewed the whole pack
+(tools/paint/review_pack.py). His bar: "not perfect, just not like someone drew blood with a crayola marker"
+-- crisp, uneven edges and real texture, never soft airbrushed blobs or glows.
+
+- **Flash art from real tattoo art.** The eagle, swallow and revolver come from CC0 / public-domain flash and
+  engravings (tools/paint/cc0art.py; sources and licences in tools/paint/art/SOURCES.md), at 4096. Two rounds
+  drawn from primitives were rejected as "shapes, not lines and shading".
+- **Damage marks rebuilt (tools/paint/real.py)**, at 2048 where they were 1024:
+  - blood: splatter, drips and smears as crisp stamps projected with image-down = world-down;
+  - grime and mud: grain, the body's folds (measured on the mesh), and a wide fade before the neck and wrists;
+  - bruises, bites, redness, sunburn, port-wine, moles, chafes, burns and sores.
+- **Scars follow the radiation sores he passed:** a lesion cut out of noise, a darker rim, patchy tones.
+  - Healed scars: purple-red, more red than pink, a dark overlay on the scar only, at 70% opacity.
+  - Stitched scars: after his healing reference (looked at, not copied), a faded line with paired punctures.
+- **The collar chafe is retired** (owner, 2026-10-10). Its row stays in make_marks so every later template keeps
+  its seed; a `retired` tag keeps it out of the overlays, the tags, painting and the checks.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

@@ -3028,34 +3028,6 @@
   "note": "shackle chafe on the wrists",
   "nasty": true
  },
- "f:Complexion_Collar_F01": {
-  "style": [
-   "degrading"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": true,
-  "quality": "ok",
-  "kind": "marks",
-  "regions": [],
-  "size": "small",
-  "note": "a collar's chafe around the neck",
-  "nasty": true
- },
- "m:Complexion_Collar_M01": {
-  "style": [
-   "degrading"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": true,
-  "quality": "ok",
-  "kind": "marks",
-  "regions": [],
-  "size": "small",
-  "note": "a collar's chafe around the neck",
-  "nasty": true
- },
  "f:Complexion_GripArms_F01": {
   "style": [],
   "emblem": null,

@@ -3619,21 +3619,6 @@
 "degrading"
 ]
 },
-"f:Complexion_Collar_F01": {
-"adult": true,
-"emblem": null,
-"kind": "marks",
-"lore": "fits",
-"nasty": true,
-"note": "a collar's chafe around the neck",
-"pack": "Complexion.esp",
-"quality": "ok",
-"regions": [],
-"size": "small",
-"style": [
-"degrading"
-]
-},
 "f:Complexion_FlashAnchorCalf_F01": {
 "adult": false,
 "emblem": null,
@@ -7226,10 +7211,10 @@
 },
 "f:Complexion_TattooBoSArm_F01": {
 "adult": false,
-"emblem": "bos",
+"emblem": null,
 "kind": "tattoo",
 "lore": "fits",
-"note": "the Brotherhood on the upper arm",
+"note": "a winged sword in a ring on the upper arm",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -7237,16 +7222,16 @@
 ],
 "size": "small",
 "style": [
-"emblem",
-"military"
+"military",
+"geometric"
 ]
 },
 "f:Complexion_TattooBoSBack_F01": {
 "adult": false,
-"emblem": "bos",
+"emblem": null,
 "kind": "tattoo",
 "lore": "fits",
-"note": "the Brotherhood on the back",
+"note": "a winged sword in a ring on the back",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -7254,8 +7239,8 @@
 ],
 "size": "large",
 "style": [
-"emblem",
-"military"
+"military",
+"geometric"
 ]
 },
 "f:Complexion_TattooDice_F01": {
@@ -28591,21 +28576,6 @@
 "degrading"
 ]
 },
-"m:Complexion_Collar_M01": {
-"adult": true,
-"emblem": null,
-"kind": "marks",
-"lore": "fits",
-"nasty": true,
-"note": "a collar's chafe around the neck",
-"pack": "Complexion.esp",
-"quality": "ok",
-"regions": [],
-"size": "small",
-"style": [
-"degrading"
-]
-},
 "m:Complexion_FlashAnchorCalf_M01": {
 "adult": false,
 "emblem": null,
@@ -31879,10 +31849,10 @@
 },
 "m:Complexion_TattooBoSArm_M01": {
 "adult": false,
-"emblem": "bos",
+"emblem": null,
 "kind": "tattoo",
 "lore": "fits",
-"note": "the Brotherhood on the upper arm",
+"note": "a winged sword in a ring on the upper arm",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -31890,16 +31860,16 @@
 ],
 "size": "small",
 "style": [
-"emblem",
-"military"
+"military",
+"geometric"
 ]
 },
 "m:Complexion_TattooBoSBack_M01": {
 "adult": false,
-"emblem": "bos",
+"emblem": null,
 "kind": "tattoo",
 "lore": "fits",
-"note": "the Brotherhood on the back",
+"note": "a winged sword in a ring on the back",
 "pack": "Complexion.esp",
 "quality": "ok",
 "regions": [
@@ -31907,8 +31877,8 @@
 ],
 "size": "large",
 "style": [
-"emblem",
-"military"
+"military",
+"geometric"
 ]
 },
 "m:Complexion_TattooDice_M01": {

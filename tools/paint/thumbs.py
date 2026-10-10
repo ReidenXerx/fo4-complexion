@@ -125,6 +125,8 @@ def main():
     out_tex.mkdir(parents=True, exist_ok=True)
     order = {'female': [], 'male': []}
     for tid, sex, painter, args, size, tag in mm.MARKS:
+        if tag.get('retired'):
+            continue
         order[sex].append((tid, painter in mm.HAND_PAINTERS))
     # The layout is in the build too: the 2048 atlases of the same templates had the same name and were read with
     # the new cell maths until deployed over (microscope, 10-04).

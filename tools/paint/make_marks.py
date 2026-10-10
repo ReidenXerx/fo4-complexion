@@ -234,7 +234,8 @@ add('RopeWristsHealed', BOTH, 'bindings', ('wrists', False), 2048, dict(ROUGH, k
 add('RopeAnkles', BOTH, 'bindings', ('ankles', True), 2048, dict(ROUGH, kind='marks', regions=[], size='small', note='rope marks around the ankles'), 1)
 add('ShackleAnkles', BOTH, 'shackles', ('ankles',), 2048, dict(ROUGH, kind='marks', regions=[], size='small', note='shackle chafe on the ankles'), 1)
 add('ShackleWrists', BOTH, 'shackles', ('wrists',), 2048, dict(ROUGH, kind='marks', regions=[], size='small', note='shackle chafe on the wrists'), 1)
-add('Collar', BOTH, 'collar', (), 2048, dict(ADULT, kind='marks', regions=[], size='small', style=['degrading'], note="a collar's chafe around the neck"), 1)
+# Retired 2026-10-10 (owner, on alasdairn's review): the row stays so every later template keeps its index and seed
+add('Collar', BOTH, 'collar', (), 2048, dict(ADULT, kind='marks', regions=[], size='small', style=['degrading'], note="a collar's chafe around the neck", retired=True), 1)
 add('GripArms', BOTH, 'grip_bruises', ('arms',), 2048, dict(ROUGH, kind='bruise', regions=[], size='small', note='finger bruises around the upper arms'), 2)
 add('GripHips', BOTH, 'grip_bruises', ('hips',), 2048, dict(ADULT, kind='bruise', regions=[], size='small', style=['sexual', 'lewd'], note='finger bruises on the hips, held from behind'), 1)
 add('CigBurns', BOTH, 'cigarette_burns', (False,), 2048, dict(ROUGH, kind='burn', regions=[], size='tiny', style=['degrading'], note='fresh cigarette burns'), 2)
@@ -675,6 +676,8 @@ def main():
     maps = {}
     if a.rebleed:
         for tid, sex, painter, args, size, tag in MARKS:
+            if tag.get('retired'):
+                continue
             png = work / f'{tid}_d.png'
             if a.only and not tid.startswith(tuple(a.only.split(','))):
                 continue
@@ -692,6 +695,8 @@ def main():
         return
     entries, tags = [], {}
     for n, (tid, sex, painter, args, size, tag) in enumerate(MARKS):
+        if tag.get('retired'):
+            continue  # not shipped, not tagged, not painted -- n still counts it, so seeds stay put
         female = sex == 'female'
         on_hands = painter in HAND_PAINTERS
         # The body is LooksMenu slot 3, the hands slot 4 (as the packs' nails, LMNSOverlays f_nails_1).

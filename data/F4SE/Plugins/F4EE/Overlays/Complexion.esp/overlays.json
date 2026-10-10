@@ -2982,34 +2982,6 @@
   "gender": 0
  },
  {
-  "id": "Complexion_Collar_F01",
-  "name": "Complexion - a collar's chafe around the neck",
-  "slots": [
-   {
-    "slot": 3,
-    "material": "overlays\\Complexion\\Complexion_Collar_F01.bgem"
-   }
-  ],
-  "playable": true,
-  "transformable": true,
-  "sort": 0,
-  "gender": 1
- },
- {
-  "id": "Complexion_Collar_M01",
-  "name": "Complexion - a collar's chafe around the neck",
-  "slots": [
-   {
-    "slot": 3,
-    "material": "overlays\\Complexion\\Complexion_Collar_M01.bgem"
-   }
-  ],
-  "playable": true,
-  "transformable": true,
-  "sort": 0,
-  "gender": 0
- },
- {
   "id": "Complexion_GripArms_F01",
   "name": "Complexion - finger bruises around the upper arms",
   "slots": [
