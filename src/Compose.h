@@ -20,6 +20,7 @@ namespace CX
 		std::string              note;    // what it shows, in words (the tag's note): the overlay window's label
 		std::string              hair;    // pubic_hair / body_hair: its colour family (tools/paint/hair.py); "" = unknown
 		bool                     nasty{ false };  // grime, blood, open wounds, pustules...: only for people living rough (C-21)
+		bool                     fine{ false };   // fine detailed tattoo work: only for people who do NOT live rough (C-23)
 		std::string              age;             // "young" (never on the old), "old" (only on the old), "" = any
 		std::vector<std::string> tones;           // the skin tones it suits; empty = any (tools/paint/traits.py)
 	};

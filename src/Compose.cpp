@@ -240,6 +240,7 @@ namespace CX
 				x.hair = t["hair"].get<std::string>();
 			}
 			x.nasty = t.value("nasty", false);
+			x.fine = t.value("fine", false);
 			if (t.contains("age") && t["age"].is_string()) {
 				x.age = t["age"].get<std::string>();
 			}
@@ -309,6 +310,9 @@ namespace CX
 			}
 			if (a_t.nasty && !a_p.squalid) {
 				return false;
+			}
+			if (a_t.fine && a_p.squalid) {
+				return false;  // studio work is for the well-off; raiders and drifters wear homemade ink (C-23)
 			}
 			if (a_t.age == (a_p.old ? "young" : "old")) {
 				return false;

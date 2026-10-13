@@ -334,6 +334,27 @@ The owner's rule: before a fix release, every changed overlay is shown to alasda
 - **The collar chafe is retired** (owner, 2026-10-10). Its row stays in make_marks so every later template keeps
   its seed; a `retired` tag keeps it out of the overlays, the tags, painting and the checks.
 
+## C-23: Fine tattoo work goes to the well-off, by group (alasdairn, 2026-10-14)
+
+An artist (Vex) is reworking and adding tattoos. Detailed studio pieces should not turn up on raiders and
+drifters, whose ink is homemade. alasdairn chose "by group" over a player-only tag. A player-only tag was not needed
+anyway: Complexion never decides for the player, and the window offers every template to the player.
+
+- A tag `fine: true` marks studio work. Both composers hand it out only to a person whose squalor roll says they do
+  NOT live rough. That is the same roll `nasty` uses, the other way round, so no extra random draw is taken and
+  existing picks are unchanged.
+  - Measured with every tattoo marked fine: raiders keep any tattoo 11% of the time, Vault 81 37%, Diamond City 22%.
+  - Parity holds with the branch exercised (51,840 lines, 0 mismatches).
+- `fine` is set by hand: on a make_marks row (`dict(..., fine=True)`), or in a pack's tag file. traits.py never
+  infers it, because a note cannot tell how finely a piece is drawn.
+- Looks already decided are kept (C-4). Records from co-save v5 on are not re-checked (Director: `checked =
+  version >= 5`). So a raider who already wears a template that is later reworked in place and marked fine keeps
+  it. New fine templates have no wearers yet, so nothing is missed for them. To clear fine pieces off rough
+  people in existing saves, bump the co-save version: every record is then re-checked once through `Misfits` →
+  `Suits` → `Fits`, the way v5 did for nasty marks.
+- Artist work is previewed only (tools/paint/artist_art.py renders it into its own folder). It enters the build
+  when the artist calls it final AND alasdairn approves it.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

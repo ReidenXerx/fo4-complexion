@@ -8,7 +8,7 @@ This is the REFERENCE implementation. The plugin's C++ composer must give the sa
        walked through "unknown"; from then on a pubic_hair or body_hair template is a candidate only when its
        tagged hair is one the family accepts (one colour per person, owner 2026-10-04)
     0b. squalor (C-21): one percent roll against the group's squalor -- only a person who lives rough gets a nasty
-       template; and the person's age (old = grey hair) and skin tone keep templates that do not suit them out
+       template, and only one who does not gets a fine (studio) tattoo; and the person's age (old = grey hair) and skin tone keep templates that do not suit them out
     1. the universal layer: for each entry of the sex, in file order, a percent roll; on success one template of
        that kind (pubic hair limited to the group's hair sizes)
     2. the feature count: a percent roll walked through the group's count table, cut to the cap
@@ -111,6 +111,8 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona=
         if accepted is not None and t['kind'] in HAIR_KINDS and t.get('hair') not in accepted:
             return False
         if t.get('nasty') and not squalid:
+            return False
+        if t.get('fine') and squalid:   # studio work is for the well-off (C-23)
             return False
         if t.get('age') == ('young' if old else 'old'):
             return False
@@ -248,15 +250,17 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona=
 def simulate(profiles, catalog, rolls):
     bad = 0
     nasty = {t['key'] for t in catalog if t.get('nasty')}
+    fine = {t['key'] for t in catalog if t.get('fine')}
     for group in group_names(profiles):
         for female in (True, False):
             counts, kinds, sizes = collections.Counter(), collections.Counter(), collections.Counter()
-            rough = 0
+            rough = studio = 0
             violations = collections.Counter()
             for s in range(rolls):
                 picks = compose(profiles, catalog, female, group, (hash(group) & 0xFFFF) << 32 | s)
                 counts[len(picks)] += 1
                 rough += any(p['key'] in nasty for p in picks)
+                studio += any(p['key'] in fine for p in picks)
                 for p in picks:
                     kinds[p['kind']] += 1
                 if len(picks) > profiles['cap']:
@@ -265,7 +269,7 @@ def simulate(profiles, catalog, rolls):
                     violations['duplicate'] += 1
             dist = ' '.join(f'{k}:{counts[k] * 100 // rolls}%' for k in sorted(counts))
             top = ', '.join(f'{k} {v / rolls:.2f}' for k, v in kinds.most_common(6))
-            print(f'{group:11} {"F" if female else "M"}  nasty {rough * 100 // rolls:3}%  overlays {dist:44} per NPC: {top}')
+            print(f'{group:11} {"F" if female else "M"}  nasty {rough * 100 // rolls:3}%  fine {studio * 100 // rolls:3}%  overlays {dist:44} per NPC: {top}')
             for v, c in violations.items():
                 print(f'   VIOLATION {v}: {c}')
                 bad += c
