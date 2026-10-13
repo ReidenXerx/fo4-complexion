@@ -34,6 +34,10 @@ def main():
     # the limb's axis: the main direction of the skin around the mark
     w, v = np.linalg.eigh(np.cov((P - P.mean(0)).T))
     axis = v[:, -1]
+    # point the axis up the limb, towards the body (an arm: towards x = 0; a leg: up), as artist_flat wraps a design
+    toward = np.array((-np.sign(c[0]), 0.0, 0.0)) if abs(axis[0]) > abs(axis[2]) else np.array((0.0, 0.0, 1.0))
+    if axis @ toward < 0:
+        axis = -axis
     q = P - P.mean(0)
     along = q @ axis
     rad = q - np.outer(along, axis)
@@ -50,7 +54,7 @@ def main():
     cut = edges[np.argmin(np.convolve(np.r_[hist, hist[:3]], np.ones(4), 'valid')[:72]) + 2]
     ang = (ang - cut) % (2 * np.pi)
     x = (ang * r * PX).astype(int)
-    y = ((along - along.min()) * PX).astype(int)
+    y = ((along.max() - along) * PX).astype(int)   # image-up = up the limb; x runs round it as seen from outside
     W, H = x.max() + 1, y.max() + 1
     acc = np.zeros((H, W, 3))
     cnt = np.zeros((H, W))
@@ -64,7 +68,7 @@ def main():
     idx = ndimage.distance_transform_edt(holes, return_distances=False, return_indices=True)
     d = ndimage.distance_transform_edt(holes)
     img = np.where((d <= 3)[..., None], img[idx[0], idx[1]], img)
-    Image.fromarray((img * 255).astype(np.uint8)).transpose(Image.FLIP_TOP_BOTTOM).save(out, quality=92)
+    Image.fromarray((img * 255).astype(np.uint8)).save(out, quality=92)
     print(out, f'{W}x{H}px, limb radius {r:.1f} units')
 
 

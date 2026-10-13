@@ -53,13 +53,23 @@ def convert(png, out):
     off = float((alpha[~m.covered] > 0.05).mean()) * 100
     if off > 0.5:
         print(f'  {png.name}: {off:.1f}% of the off-body area has ink -- it will not show (check the UV layout)')
+    save(out, tid, m, rgb, alpha, painter)
+    return tid
+
+
+def save(out, tid, m, rgb, alpha, painter=''):
+    """colour + alpha on the UV map -> the finished multiplier in <out>/marks, as make_marks finishes a painted mark."""
     if painter not in mm.SEAM_EXEMPT:
         alpha = alpha * seams.seam_fade(m)
     rgb = mm.dilate(rgb, alpha, m.covered)
     img = mm.bleed(mm.multiplier(rgb, alpha), m.covered)
     (out / 'marks').mkdir(parents=True, exist_ok=True)
     img.save(out / 'marks' / f'{tid}_d.png')
-    return tid
+
+
+def render(out, bases):
+    env = dict(os.environ, COMPLEXION_MARKS=str(out / 'marks'))
+    subprocess.run([sys.executable, str(HERE / 'approval.py'), str(out), *bases], env=env, check=True)
 
 
 def main():
@@ -70,8 +80,7 @@ def main():
         base = tid.rsplit('_', 1)[0]
         if base not in bases:
             bases.append(base)
-    env = dict(os.environ, COMPLEXION_MARKS=str(out / 'marks'))
-    subprocess.run([sys.executable, str(HERE / 'approval.py'), str(out), *bases], env=env, check=True)
+    render(out, bases)
 
 
 if __name__ == '__main__':
