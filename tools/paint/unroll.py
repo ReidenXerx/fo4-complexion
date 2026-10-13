@@ -31,19 +31,29 @@ def main():
     c = m.position[ink].mean(axis=0)
     near = m.covered & (np.linalg.norm(m.position - c, axis=-1) < radius)
     P = m.position[near]
-    # the limb's axis: the main direction of the skin around the mark
-    w, v = np.linalg.eigh(np.cov((P - P.mean(0)).T))
-    axis = v[:, -1]
-    # point the axis up the limb, towards the body (an arm: towards x = 0; a leg: up), as artist_flat wraps a design
-    toward = np.array((-np.sign(c[0]), 0.0, 0.0)) if abs(axis[0]) > abs(axis[2]) else np.array((0.0, 0.0, 1.0))
-    if axis @ toward < 0:
-        axis = -axis
-    q = P - P.mean(0)
-    along = q @ axis
-    rad = q - np.outer(along, axis)
-    centre = rad.mean(0)   # the limb's centre line passes near the mean of a ring of skin
-    rad = rad - centre
-    e1 = v[:, 0] - axis * (v[:, 0] @ axis)
+    # the limb's axis and centre line from its bones (artist_flat.LIMB_BONES), the segment nearest the mark; the
+    # main direction of a patch of skin is not the limb's on a thick upper arm or thigh
+    import artist_flat
+    best = None
+    for place, (pb, db) in artist_flat.LIMB_BONES.items():
+        for lr in ('L', 'R'):
+            prox, dist = artist_flat.bone_centre(sex, lr + pb), artist_flat.bone_centre(sex, lr + db)
+            ax = (prox - dist) / np.linalg.norm(prox - dist)
+            t = np.clip((c - dist) @ ax, 0, np.linalg.norm(prox - dist))
+            d = np.linalg.norm(c - (dist + ax * t))
+            if best is None or d < best[0]:
+                best = (d, ax, dist)
+    _, axis, dist = best
+    Q = m.position[near]
+    rad = (Q - dist) - np.outer((Q - dist) @ axis, axis)
+    rlen = np.linalg.norm(rad, axis=-1)
+    keep = rlen < np.median(rlen[np.linalg.norm(Q - c, axis=-1) < 3.0]) * 1.6   # this limb's skin, not the chest's
+    idx = np.flatnonzero(near)[keep]
+    near = np.zeros_like(near)
+    near.reshape(-1)[idx] = True
+    P, rad = Q[keep], rad[keep]
+    along = (P - c) @ axis
+    e1 = np.cross(axis, (0.0, 0.0, 1.0)) if abs(axis[2]) < 0.9 else np.cross(axis, (1.0, 0.0, 0.0))
     e1 /= np.linalg.norm(e1)
     e2 = np.cross(axis, e1)
     ang = np.arctan2(rad @ e2, rad @ e1)

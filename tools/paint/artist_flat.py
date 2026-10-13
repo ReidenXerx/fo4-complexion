@@ -14,6 +14,10 @@ own bones -- in the rest pose that is mostly towards the body and a little back)
 (towards the body's middle), outer, up, down. --shift-cm moves it along the limb (+ towards the body);
 --from-wrist-cm / --from-ankle-cm put its lower edge that far from the end of the limb instead. Sizes are in centimetres on the body (1 game unit =
 1.4287 cm). Placement words come from decals.anchor.
+
+KNOWN BAD (10-14): the INSIDE of the upper arm, by the armpit, still comes out fragmented and smeared, as unroll.py
+shows it there too. Forearms, the outside of the upper arm and the torso are checked with a grid; check any new
+spot the same way (build/vex/test_grid.png) before trusting it.
 """
 import argparse
 import pathlib
@@ -63,29 +67,61 @@ def palm_normal(sex, side):
     return p / np.linalg.norm(p)
 
 
+# The bones whose skin centres give each limb's line, near end first (names without the L/R).
+LIMB_BONES = {'upper_arm': ('Arm_UpperTwist1_skin', 'Arm_ForeArm1_skin'), 'forearm': ('Arm_ForeArm1_skin', 'Arm_ForeArm3_skin'),
+              'thigh': ('Leg_Thigh_skin', 'Leg_Calf_skin'), 'thigh_back': ('Leg_Thigh_skin', 'Leg_Calf_skin'),
+              'calf': ('Leg_Calf_skin', 'Leg_Calf_Low_skin')}
+_BONES = {}
+
+
+def bone_centre(sex, bone):
+    """The mean bind-pose position of the body vertices a bone moves most."""
+    if sex not in _BONES:
+        import body
+        name, shape = body.BODIES[sex]
+        p, _, _, bones = body.read_shape(pathlib.Path(mm.DATA) / body.ASSETS / f'{name}.nif', shape)
+        _BONES[sex] = (p, np.array(bones))
+    p, bones = _BONES[sex]
+    return p[bones == bone].mean(0)
+
+
 def wrap(m, design, place, side, face, height, width, rotate, shift, flip, from_end=None):
     """rgb, alpha on the UV map: the design wrapped round a limb."""
     c, n, _ = decals.anchor(m, place, side)
     pos = m.position
     reg = 'arm' if 'arm' in place else 'leg'
     P = decals.Painter(m)
-    limb = m.covered & P.reg(reg) & ((pos[..., 0] * side > 0) if side else True)
-    near = limb & (np.linalg.norm(pos - c, axis=-1) < 6.0)
-    Q = pos[near]
-    w, v = np.linalg.eigh(np.cov((Q - Q.mean(0)).T))
-    axis = v[:, -1]
-    toward_body = np.array((-side, 0.0, 0.0)) if reg == 'arm' else np.array((0.0, 0.0, 1.0))
-    if axis @ toward_body < 0:
-        axis = -axis
+    # The limb's direction and centre line from its own bones (the centres of the skin each bone moves), not from
+    # the shape of the skin nearby: near the armpit that leans towards the chest and squashed a piece (10-14).
+    prox, dist = (bone_centre(m.sex, f'{"L" if side < 0 else "R"}{b}') for b in LIMB_BONES[place])
+    axis = prox - dist
+    axis /= np.linalg.norm(axis)
+
+    def on_line(p):
+        return dist + np.multiply.outer((p - dist) @ axis, axis)
+    radial = np.linalg.norm(pos - on_line(pos), axis=-1)
+    r_est = float(np.median(radial[m.covered & P.reg(reg) & (np.linalg.norm(pos - c, axis=-1) < 4.0)]))
+    limb = m.covered & P.reg(reg) & ((pos[..., 0] * side > 0) if side else True) & (radial < r_est * 1.8)
     if from_end is not None:   # the lower edge from_end above the wrist / ankle: the limb's far end along the axis
         far = ((pos[limb & (np.linalg.norm(pos - c, axis=-1) < 25.0)] - c) @ axis).min()
         shift = far + from_end + height / 2
     c = c + axis * shift
-    # the limb's centre at that point: the mean of a thin ring of skin round it
+    # The centre from a thin ring of skin round the limb at c: the bones' skin centres sit off the limb's middle
+    # (the upper arm's by ~2 cm towards the outside, which squashed an inner-arm piece). Twice, each time keeping
+    # only skin near the ring's own radius, so the chest by the armpit does not pull it.
     along_all = (pos - c) @ axis
-    ring = limb & (np.abs(along_all) < 0.4) & (np.linalg.norm(pos - c, axis=-1) < 8.0)
-    centre = pos[ring].mean(0)
-    centre = centre - axis * ((centre - c) @ axis)
+    ring = limb & (np.abs(along_all) < 0.4)
+    centre = on_line(c)
+    for _ in range(2):
+        rp = pos[ring] - centre
+        rp = rp - np.outer(rp @ axis, axis)
+        rl = np.linalg.norm(rp, axis=-1)
+        sel = rl < np.median(rl) * 1.5
+        centre = centre + rp[sel].mean(0)
+        rr = np.linalg.norm((pos - centre) - np.multiply.outer((pos - centre) @ axis, axis), axis=-1)
+        ring = ring & (rr < np.median(rr[ring]) * 1.5)
+    limb = limb & (np.linalg.norm((pos - centre) - np.multiply.outer((pos - centre) @ axis, axis), axis=-1)
+                   < np.median(rr[ring]) * 1.6)
     if face:
         want = np.array(FACES.get(face, (0, 0, 0)), np.float64)
         if face in ('palm', 'back_of_hand'):
