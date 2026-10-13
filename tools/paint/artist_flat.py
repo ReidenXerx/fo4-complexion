@@ -9,8 +9,10 @@ On a limb (upper_arm, forearm, thigh, thigh_back, calf) the design is WRAPPED ro
 its width round it, measured on the skin, so it does not stretch towards the sides as a flat projection would. The
 top of the design points up the limb, towards the body. Elsewhere it is projected flat, image-up = world-up.
 
---face turns a limb piece round the limb: front, back, inner (towards the body's middle), outer, up, down.
---shift-cm moves it along the limb (+ towards the body). Sizes are in centimetres on the body (1 game unit =
+--face turns a limb piece round the limb: palm (the inside of the forearm: the way the palm faces, from the hand's
+own bones -- in the rest pose that is mostly towards the body and a little back), back_of_hand, front, back, inner
+(towards the body's middle), outer, up, down. --shift-cm moves it along the limb (+ towards the body);
+--from-wrist-cm / --from-ankle-cm put its lower edge that far from the end of the limb instead. Sizes are in centimetres on the body (1 game unit =
 1.4287 cm). Placement words come from decals.anchor.
 """
 import argparse
@@ -44,7 +46,24 @@ def premultiplied_resize(img, w, h):
     return out
 
 
-def wrap(m, design, place, side, face, height, width, rotate, shift, flip):
+def palm_normal(sex, side):
+    """The way the palm faces, from the hand bones: fingers x thumb (left hand), thumb x fingers (right)."""
+    import hands
+    h = hands.HandMap(mm.DATA, sex, 256)
+    arm = 'LArm' if side < 0 else 'RArm'
+
+    def centre(name):
+        return np.asarray(hands._bone_vertices(h, f'{arm}_{name}')).reshape(-1, 3).mean(0)
+    base = centre('Hand')
+    f = centre('Finger33') - base
+    f /= np.linalg.norm(f)
+    t = centre('Finger13') - base
+    t -= f * (t @ f)
+    p = np.cross(f, t) if side < 0 else np.cross(t, f)
+    return p / np.linalg.norm(p)
+
+
+def wrap(m, design, place, side, face, height, width, rotate, shift, flip, from_end=None):
     """rgb, alpha on the UV map: the design wrapped round a limb."""
     c, n, _ = decals.anchor(m, place, side)
     pos = m.position
@@ -58,6 +77,9 @@ def wrap(m, design, place, side, face, height, width, rotate, shift, flip):
     toward_body = np.array((-side, 0.0, 0.0)) if reg == 'arm' else np.array((0.0, 0.0, 1.0))
     if axis @ toward_body < 0:
         axis = -axis
+    if from_end is not None:   # the lower edge from_end above the wrist / ankle: the limb's far end along the axis
+        far = ((pos[limb & (np.linalg.norm(pos - c, axis=-1) < 25.0)] - c) @ axis).min()
+        shift = far + from_end + height / 2
     c = c + axis * shift
     # the limb's centre at that point: the mean of a thin ring of skin round it
     along_all = (pos - c) @ axis
@@ -66,7 +88,9 @@ def wrap(m, design, place, side, face, height, width, rotate, shift, flip):
     centre = centre - axis * ((centre - c) @ axis)
     if face:
         want = np.array(FACES.get(face, (0, 0, 0)), np.float64)
-        if face == 'inner':
+        if face in ('palm', 'back_of_hand'):
+            want = palm_normal(m.sex, side) * (1 if face == 'palm' else -1)
+        elif face == 'inner':
             want = np.array((-side, 0.0, 0.0))
         elif face == 'outer':
             want = np.array((side, 0.0, 0.0))
@@ -117,11 +141,13 @@ def main():
     ap.add_argument('--width-cm', type=float, default=0.0)
     ap.add_argument('--rotate', type=float, default=0.0, help='degrees, clockwise as seen on the skin')
     ap.add_argument('--shift-cm', type=float, default=0.0)
+    ap.add_argument('--from-wrist-cm', '--from-ankle-cm', dest='from_end', type=float, default=None)
+    ap.add_argument('--size', type=int, default=4096, help='texture size of a NEW template (detailed pieces: 4096)')
     ap.add_argument('--flip', action='store_true', help='mirror the design (for the other side of a pair)')
     a = ap.parse_args()
     row = next((r for r in mm.MARKS if r[0] == a.id), None)
     sex = row[1] if row else ('female' if a.id.split('_')[-1].startswith('F') else 'male')
-    size = row[4] if row else 2048
+    size = row[4] if row else a.size
     m = UVMap(mm.DATA, sex, size)
     design = Image.open(a.png).convert('RGBA')
     box = design.getbbox()
@@ -133,7 +159,8 @@ def main():
     if a.place in LIMBS:
         if not side:
             sys.exit('a limb piece needs --side left or right')
-        rgb, alpha = wrap(m, design, a.place, side, a.face, height, width, np.radians(a.rotate), a.shift_cm / CM, a.flip)
+        rgb, alpha = wrap(m, design, a.place, side, a.face, height, width, np.radians(a.rotate), a.shift_cm / CM, a.flip,
+                          None if a.from_end is None else a.from_end / CM)
     else:
         c, n, up = decals.anchor(m, a.place, side)
         design.info['prefilter'] = True

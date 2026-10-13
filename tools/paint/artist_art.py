@@ -57,10 +57,15 @@ def convert(png, out):
     return tid
 
 
-def save(out, tid, m, rgb, alpha, painter=''):
+# A tattoo ends where its artist ends it: it only needs the hard edge at the head / hands seam softened, not the
+# ~4 cm fade that grime and freckles take (a 6 cm anchor 2.5 cm above the wrist lost its lower half to that, 10-14).
+TATTOO_FADE = (0.3, 0.5)   # game units: gone within 0.3 of the seam, full from 0.8 (about 1.1 cm)
+
+
+def save(out, tid, m, rgb, alpha, painter='', fade=TATTOO_FADE):
     """colour + alpha on the UV map -> the finished multiplier in <out>/marks, as make_marks finishes a painted mark."""
     if painter not in mm.SEAM_EXEMPT:
-        alpha = alpha * seams.seam_fade(m)
+        alpha = alpha * seams.seam_fade(m, *fade)
     rgb = mm.dilate(rgb, alpha, m.covered)
     img = mm.bleed(mm.multiplier(rgb, alpha), m.covered)
     (out / 'marks').mkdir(parents=True, exist_ok=True)
