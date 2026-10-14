@@ -528,6 +528,13 @@ add('PubicTrimGrey', M, 'pubic_hair', ('trim', 2048, HAIR_RGB['grey']), 2048, di
 add('ChestLightGrey', M, 'skin.chest_hair', ('light', 'grey'), 2048, dict(R, kind='body_hair', regions=['chest'], size='medium', note='light chest hair, grey'), 1)
 add('LimbHairGrey', M, 'skin.limb_hair', ('grey', 0.7), 2048, dict(R, kind='body_hair', regions=[], size='medium', note='arm and leg hair, grey'), 1)
 
+# ---- 2026-10-14: tattoos by contributing artists (credits: tools/paint/art/contrib/CREDITS.md). Each is placed as its
+# approved preview was (tools/paint/artist_flat.py). fine = studio work: only for people who do not live rough (C-23).
+# Appended last: earlier seeds stay put.
+add('VexAnchorRedHeart', F, 'artist', ('vex_anchor_red_heart.png', 'forearm', 1, 'palm', 8.0, 2.0), 4096,
+    dict(kind='tattoo', regions=['arm_r'], size='small', style=['military', 'pinup'], emblem=None, lore='fits', adult=False,
+         quality='ok', fine=True, note='anchor with a red heart, inner wrist (by Vex)'), 1)
+
 
 def design(spec, rng):
     kind, *rest = spec
@@ -569,6 +576,11 @@ def paint(painter, m, rng, args):
     if painter == 'scar_decal':
         spec, spot, side, width = args
         return life.scar_decal(m, rng, design(spec, rng), spot, side, width)
+    if painter == 'artist':   # a contributed design (tools/paint/art/contrib, CREDITS.md), placed as its preview was
+        import artist_flat
+        file, place, side, face, height_cm, from_end_cm = args
+        return artist_flat.place_design(m, HERE / 'art' / 'contrib' / file, place, side, face, height_cm,
+                                        from_end_cm=from_end_cm)
     if painter.startswith('skin.'):
         return getattr(skin, painter[5:])(m, rng, *args)
     for module in (real, marks, realism, life, hands):   # real first: its painters replace the old ones (10-09)
@@ -720,7 +732,8 @@ def main():
         rng = np.random.default_rng(1000 + n)
         rgb, alpha = paint(painter, m, rng, args)
         if not on_hands and painter not in SEAM_EXEMPT:
-            alpha = alpha * seams.seam_fade(m)  # no hard line against the head or hands (owner, 10-03)
+            # no hard line against the head or hands (owner, 10-03); an artist's piece only at its very edge
+            alpha = alpha * (seams.seam_fade(m, *seams.TATTOO_FADE) if painter == 'artist' else seams.seam_fade(m))
         rgb = dilate(rgb, alpha, m.covered)
         img = bleed(multiplier(rgb, alpha), m.covered)
         png = work / f'{tid}_d.png'

@@ -8397,6 +8397,24 @@
 "size": "small",
 "style": []
 },
+"f:Complexion_VexAnchorRedHeart_F01": {
+"adult": false,
+"emblem": null,
+"fine": true,
+"kind": "tattoo",
+"lore": "fits",
+"note": "anchor with a red heart, inner wrist (by Vex)",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"arm_r"
+],
+"size": "small",
+"style": [
+"military",
+"pinup"
+]
+},
 "f:DNX_Back_AngelWings1": {
 "adult": false,
 "emblem": null,

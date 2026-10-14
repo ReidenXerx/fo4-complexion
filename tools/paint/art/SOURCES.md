@@ -1,7 +1,8 @@
 # Art sources
 
 Every image here is free to reuse, change and ship: CC0 or public domain. tools/paint/cc0art.py turns these into
-tattoo overlays. Nothing under another licence goes in this folder.
+tattoo overlays. Nothing under another licence goes in this folder, except contrib/: art that artists gave
+to Complexion, credited and licensed in contrib/CREDITS.md.
 
 | File | What it is | Source | Licence |
 | --- | --- | --- | --- |

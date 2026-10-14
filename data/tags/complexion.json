@@ -9656,5 +9656,22 @@
   "size": "medium",
   "note": "arm and leg hair, grey",
   "hair": "grey"
+ },
+ "f:Complexion_VexAnchorRedHeart_F01": {
+  "kind": "tattoo",
+  "regions": [
+   "arm_r"
+  ],
+  "size": "small",
+  "style": [
+   "military",
+   "pinup"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "fine": true,
+  "note": "anchor with a red heart, inner wrist (by Vex)"
  }
 }

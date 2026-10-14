@@ -18,6 +18,9 @@ import numpy as np
 
 FADE_START = 0.3   # game units from the seam: fully faded closer than this
 FADE_WIDTH = 2.7   # ... and fully there from FADE_START + FADE_WIDTH on (about 4 cm)
+# An artist's tattoo ends where the artist ends it: only its hard edge at the seam is softened (about 1.1 cm). The
+# 4 cm fade above ate the lower half of a 6 cm anchor 2.5 cm above the wrist (2026-10-14).
+TATTOO_FADE = (0.3, 0.5)
 
 
 def seam_vertices(m):

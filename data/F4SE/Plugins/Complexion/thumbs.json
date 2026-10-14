@@ -1,5 +1,5 @@
 {
-"build": "79dc2c90",
+"build": "25b6622f",
 "cell": 128,
 "cols": 32,
 "cells": {
@@ -1446,6 +1446,10 @@
 "f:Complexion_TrailFemaleGrey_F01": [
 0,
 360
+],
+"f:Complexion_VexAnchorRedHeart_F01": [
+0,
+361
 ],
 "m:Complexion_BruiseFresh_M01": [
 0,
@@ -6070,6 +6074,16 @@
 -0.207,
 0.0078,
 0
+],
+"f:Complexion_VexAnchorRedHeart_F01": [
+0.7447,
+0.2934,
+0.0372,
+-0.49,
+-0.085,
+-0.867,
+0.012,
+1
 ],
 "m:Complexion_BruiseFresh_M02": [
 0.6086,

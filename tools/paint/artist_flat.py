@@ -165,6 +165,27 @@ def wrap(m, design, place, side, face, height, width, rotate, shift, flip, from_
     return rgb, alpha
 
 
+def place_design(m, png, place, side, face='', height_cm=6.0, width_cm=0.0, rotate_deg=0.0, shift_cm=0.0, flip=False,
+                 from_end_cm=None):
+    """rgb, alpha on the UV map: a flat design at a named place (make_marks' 'artist' painter calls this, so a
+    contributed piece is rebuilt from its own file exactly as its preview was)."""
+    design = Image.open(png).convert('RGBA')
+    box = design.getbbox()
+    if box:
+        design = design.crop(box)   # the size given is the design's, not its canvas's
+    height = height_cm / CM
+    width = width_cm / CM if width_cm else height * design.width / design.height
+    if place in LIMBS:
+        if not side:
+            raise ValueError('a limb piece needs a side')
+        return wrap(m, design, place, side, face, height, width, np.radians(rotate_deg), shift_cm / CM, flip,
+                    None if from_end_cm is None else from_end_cm / CM)
+    c, n, up = decals.anchor(m, place, side)
+    design.info['prefilter'] = True
+    return flash.project_rgba_at(m, design.transpose(Image.FLIP_LEFT_RIGHT) if flip else design, c, n,
+                                 width=width, rotate=np.radians(rotate_deg), alpha=1.0)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('out', type=pathlib.Path)
@@ -185,23 +206,9 @@ def main():
     sex = row[1] if row else ('female' if a.id.split('_')[-1].startswith('F') else 'male')
     size = row[4] if row else a.size
     m = UVMap(mm.DATA, sex, size)
-    design = Image.open(a.png).convert('RGBA')
-    box = design.getbbox()
-    if box:
-        design = design.crop(box)   # the size given is the design's, not its canvas's
-    height = a.height_cm / CM
-    width = a.width_cm / CM if a.width_cm else height * design.width / design.height
     side = {'left': -1, 'right': 1, 'middle': 0}[a.side]
-    if a.place in LIMBS:
-        if not side:
-            sys.exit('a limb piece needs --side left or right')
-        rgb, alpha = wrap(m, design, a.place, side, a.face, height, width, np.radians(a.rotate), a.shift_cm / CM, a.flip,
-                          None if a.from_end is None else a.from_end / CM)
-    else:
-        c, n, up = decals.anchor(m, a.place, side)
-        design.info['prefilter'] = True
-        rgb, alpha = flash.project_rgba_at(m, design.transpose(Image.FLIP_LEFT_RIGHT) if a.flip else design, c, n,
-                                           width=width, rotate=np.radians(a.rotate), alpha=1.0)
+    rgb, alpha = place_design(m, a.png, a.place, side, a.face, a.height_cm, a.width_cm, a.rotate, a.shift_cm, a.flip,
+                              a.from_end)
     artist_art.save(a.out, a.id, m, rgb, alpha, row[2] if row else '')
     artist_art.render(a.out, [a.id.rsplit('_', 1)[0]])
 
