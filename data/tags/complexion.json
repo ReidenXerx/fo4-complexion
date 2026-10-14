@@ -5585,18 +5585,20 @@
  },
  "f:Complexion_FlashAnchor_F01": {
   "kind": "tattoo",
-  "regions": [
-   "arm_l"
-  ],
   "size": "small",
   "style": [
-   "military"
+   "military",
+   "pinup"
   ],
   "emblem": null,
   "lore": "fits",
   "adult": false,
   "quality": "ok",
-  "note": "flash: anchor"
+  "fine": true,
+  "regions": [
+   "arm_r"
+  ],
+  "note": "flash: anchor with a red heart (by Vex)"
  },
  "m:Complexion_FlashAnchor_M01": {
   "kind": "tattoo",
@@ -9657,11 +9659,8 @@
   "note": "arm and leg hair, grey",
   "hair": "grey"
  },
- "f:Complexion_VexAnchorRedHeart_F01": {
+ "f:Complexion_VexAnchorThighLeft_F01": {
   "kind": "tattoo",
-  "regions": [
-   "arm_r"
-  ],
   "size": "small",
   "style": [
    "military",
@@ -9672,6 +9671,60 @@
   "adult": false,
   "quality": "ok",
   "fine": true,
-  "note": "anchor with a red heart, inner wrist (by Vex)"
+  "regions": [
+   "leg_l"
+  ],
+  "note": "anchor with a red heart, left outer thigh (by Vex)"
+ },
+ "m:Complexion_VexAnchorThighLeft_M01": {
+  "kind": "tattoo",
+  "size": "small",
+  "style": [
+   "military",
+   "pinup"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "fine": true,
+  "regions": [
+   "leg_l"
+  ],
+  "note": "anchor with a red heart, left outer thigh (by Vex)"
+ },
+ "f:Complexion_VexAnchorThighRight_F01": {
+  "kind": "tattoo",
+  "size": "small",
+  "style": [
+   "military",
+   "pinup"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "fine": true,
+  "regions": [
+   "leg_r"
+  ],
+  "note": "anchor with a red heart, right outer thigh (by Vex)"
+ },
+ "m:Complexion_VexAnchorThighRight_M01": {
+  "kind": "tattoo",
+  "size": "small",
+  "style": [
+   "military",
+   "pinup"
+  ],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "fine": true,
+  "regions": [
+   "leg_r"
+  ],
+  "note": "anchor with a red heart, right outer thigh (by Vex)"
  }
 }

@@ -7,4 +7,6 @@ preview was placed.
 
 | File | Template | Artist | Source | Placement |
 | --- | --- | --- | --- | --- |
-| vex_anchor_red_heart.png | Complexion_VexAnchorRedHeart_F01 | Vex (callofthewild) | own drawing (2026-10-14) | right inner wrist, 8 cm tall, lower edge 2 cm above the wrist, foot towards the hand; female |
+| vex_anchor_red_heart.png | Complexion_FlashAnchor_F01 (replaces the women's flash anchor) | Vex (callofthewild) | own drawing (2026-10-14) | right inner wrist, 8 cm tall, lower edge 2 cm above the wrist, foot towards the hand; female |
+| vex_anchor_red_heart.png | Complexion_VexAnchorThighLeft_F01 / _M01 | Vex (callofthewild) | own drawing (2026-10-14) | left outer thigh, 10 cm tall, centred between the crotch and the knee; women and men |
+| vex_anchor_red_heart.png | Complexion_VexAnchorThighRight_F01 / _M01 | Vex (callofthewild) | own drawing (2026-10-14) | right outer thigh, 10 cm tall, centred between the crotch and the knee; women and men |

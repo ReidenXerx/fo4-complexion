@@ -1,5 +1,5 @@
 {
-"build": "25b6622f",
+"build": "8747953e",
 "cell": 128,
 "cols": 32,
 "cells": {
@@ -1447,9 +1447,13 @@
 0,
 360
 ],
-"f:Complexion_VexAnchorRedHeart_F01": [
+"f:Complexion_VexAnchorThighLeft_F01": [
 0,
 361
+],
+"f:Complexion_VexAnchorThighRight_F01": [
+0,
+362
 ],
 "m:Complexion_BruiseFresh_M01": [
 0,
@@ -2822,6 +2826,14 @@
 "m:Complexion_LimbHairGrey_M01": [
 0,
 342
+],
+"m:Complexion_VexAnchorThighLeft_M01": [
+0,
+343
+],
+"m:Complexion_VexAnchorThighRight_M01": [
+0,
+344
 ]
 },
 "focus": {
@@ -4666,13 +4678,13 @@
 0
 ],
 "f:Complexion_FlashAnchor_F01": [
-0.7913,
--0.2382,
-0.0135,
-0.653,
-0.742,
--0.149,
-0.0126,
+0.7447,
+0.2934,
+0.0372,
+-0.49,
+-0.085,
+-0.867,
+0.012,
 1
 ],
 "f:Complexion_FlashAnchorCalf_F01": [
@@ -6075,15 +6087,25 @@
 0.0078,
 0
 ],
-"f:Complexion_VexAnchorRedHeart_F01": [
-0.7447,
-0.2934,
-0.0372,
--0.49,
--0.085,
--0.867,
-0.012,
-1
+"f:Complexion_VexAnchorThighLeft_F01": [
+0.4663,
+-0.1218,
+-0.003,
+-0.996,
+0.011,
+-0.084,
+0.0156,
+0
+],
+"f:Complexion_VexAnchorThighRight_F01": [
+0.4646,
+0.1214,
+0.0015,
+0.991,
+0.094,
+-0.096,
+0.0155,
+0
 ],
 "m:Complexion_BruiseFresh_M02": [
 0.6086,
@@ -9093,6 +9115,26 @@
 0.979,
 0.203,
 0.036,
+0
+],
+"m:Complexion_VexAnchorThighLeft_M01": [
+0.4485,
+-0.1296,
+0.0008,
+-0.992,
+-0.129,
+-0.006,
+0.0154,
+0
+],
+"m:Complexion_VexAnchorThighRight_M01": [
+0.4485,
+0.1297,
+0.0011,
+0.993,
+-0.121,
+-0.006,
+0.0154,
 0
 ]
 }

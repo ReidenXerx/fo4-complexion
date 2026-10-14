@@ -531,9 +531,31 @@ add('LimbHairGrey', M, 'skin.limb_hair', ('grey', 0.7), 2048, dict(R, kind='body
 # ---- 2026-10-14: tattoos by contributing artists (credits: tools/paint/art/contrib/CREDITS.md). Each is placed as its
 # approved preview was (tools/paint/artist_flat.py). fine = studio work: only for people who do not live rough (C-23).
 # Appended last: earlier seeds stay put.
+VEX = dict(kind='tattoo', size='small', style=['military', 'pinup'], emblem=None, lore='fits', adult=False, quality='ok',
+           fine=True)
+# First added as a new template; Vex meant it to REPLACE the women's flash anchor, which it now does in place (below).
+# Never released, so retired: its row stays only so the rows after it keep their seeds.
 add('VexAnchorRedHeart', F, 'artist', ('vex_anchor_red_heart.png', 'forearm', 1, 'palm', 8.0, 2.0), 4096,
-    dict(kind='tattoo', regions=['arm_r'], size='small', style=['military', 'pinup'], emblem=None, lore='fits', adult=False,
-         quality='ok', fine=True, note='anchor with a red heart, inner wrist (by Vex)'), 1)
+    dict(VEX, regions=['arm_r'], note='anchor with a red heart, inner wrist (by Vex)', retired=True), 1)
+# Outer thighs, 10 cm, centred between the crotch and the knee (the thigh spot sits 1.8 cm / 2.6 cm low on the women's
+# and men's bodies, measured 10-14). Separate left and right options, both sexes.
+for side, label in ((-1, 'Left'), (1, 'Right')):
+    for sexes, shift in ((F, 1.8), (M, 2.6)):
+        add(f'VexAnchorThigh{label}', sexes, 'artist', ('vex_anchor_red_heart.png', 'thigh', side, 'outer', 10.0, None, shift),
+            4096, dict(VEX, regions=['leg_l' if side < 0 else 'leg_r'],
+                       note=f'anchor with a red heart, {label.lower()} outer thigh (by Vex)'), 1)
+
+
+def replace_row(tid, painter, args, size, tag):
+    """A template drawn anew in place: same id, same row (so the same seed), so the NPCs who already wear it show the
+    new one rather than losing it."""
+    i = next(k for k, r in enumerate(MARKS) if r[0] == tid)
+    MARKS[i] = (tid, MARKS[i][1], painter, args, size, tag)
+
+
+# Vex (10-14): his red-heart anchor REPLACES the women's flash anchor (inner right wrist, 8 cm, 2 cm above the wrist).
+replace_row('Complexion_FlashAnchor_F01', 'artist', ('vex_anchor_red_heart.png', 'forearm', 1, 'palm', 8.0, 2.0), 4096,
+            dict(VEX, regions=['arm_r'], note='flash: anchor with a red heart (by Vex)'))
 
 
 def design(spec, rng):
@@ -578,9 +600,9 @@ def paint(painter, m, rng, args):
         return life.scar_decal(m, rng, design(spec, rng), spot, side, width)
     if painter == 'artist':   # a contributed design (tools/paint/art/contrib, CREDITS.md), placed as its preview was
         import artist_flat
-        file, place, side, face, height_cm, from_end_cm = args
+        file, place, side, face, height_cm, from_end_cm, *rest = args
         return artist_flat.place_design(m, HERE / 'art' / 'contrib' / file, place, side, face, height_cm,
-                                        from_end_cm=from_end_cm)
+                                        from_end_cm=from_end_cm, shift_cm=rest[0] if rest else 0.0)
     if painter.startswith('skin.'):
         return getattr(skin, painter[5:])(m, rng, *args)
     for module in (real, marks, realism, life, hands):   # real first: its painters replace the old ones (10-09)
