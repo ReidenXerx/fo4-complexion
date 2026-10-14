@@ -43,13 +43,7 @@ def convert(png, out):
     if im.size != (size, size):
         print(f'  {png.name}: {im.size[0]}px, scaled to the template\'s {size}px')
         im = im.resize((size, size), Image.LANCZOS)
-    if im.mode in ('RGBA', 'LA', 'PA') or 'transparency' in im.info:
-        px = np.asarray(im.convert('RGBA'), dtype=np.float64) / 255.0
-        rgb, alpha = px[..., :3], px[..., 3]
-    else:   # already multiply grey: back to colour + alpha over the painters' skin, as make_marks paints
-        f = np.asarray(im.convert('RGB'), dtype=np.float64) / 255.0 / mm.NEUTRAL
-        alpha = np.clip(1 - f, 0, 1).max(-1)
-        rgb = np.clip(mm.SKIN * (1 + (f - 1) / np.maximum(alpha, 1e-4)[..., None]), 0, 1)
+    rgb, alpha = ink_of(im)
     off = float((alpha[~m.covered] > 0.05).mean()) * 100
     if off > 0.5:
         print(f'  {png.name}: {off:.1f}% of the off-body area has ink -- it will not show (check the UV layout)')
@@ -57,12 +51,24 @@ def convert(png, out):
     return tid
 
 
+def ink_of(im):
+    """colour, alpha of a UV-laid PNG: ink on transparency, or (no transparency) already the multiply grey."""
+    if im.mode in ('RGBA', 'LA', 'PA') or 'transparency' in im.info:
+        px = np.asarray(im.convert('RGBA'), dtype=np.float64) / 255.0
+        return px[..., :3], px[..., 3]
+    # already multiply grey: back to colour + alpha over the painters' skin, as make_marks paints
+    f = np.asarray(im.convert('RGB'), dtype=np.float64) / 255.0 / mm.NEUTRAL
+    alpha = np.clip(1 - f, 0, 1).max(-1)
+    return np.clip(mm.SKIN * (1 + (f - 1) / np.maximum(alpha, 1e-4)[..., None]), 0, 1), alpha
+
+
 TATTOO_FADE = seams.TATTOO_FADE   # an artist's piece: only its hard edge at the seam softened
 
 
 def save(out, tid, m, rgb, alpha, painter='', fade=TATTOO_FADE):
-    """colour + alpha on the UV map -> the finished multiplier in <out>/marks, as make_marks finishes a painted mark."""
-    if painter not in mm.SEAM_EXEMPT:
+    """colour + alpha on the UV map -> the finished multiplier in <out>/marks, as make_marks finishes a painted mark.
+    fade=None: the caller faded it already (the hands: their seam is their own, artist_hands.wrist_fade)."""
+    if fade and painter not in mm.SEAM_EXEMPT:
         alpha = alpha * seams.seam_fade(m, *fade)
     rgb = mm.dilate(rgb, alpha, m.covered)
     img = mm.bleed(mm.multiplier(rgb, alpha), m.covered)
