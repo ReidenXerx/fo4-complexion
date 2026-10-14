@@ -166,7 +166,7 @@ def wrap(m, design, place, side, face, height, width, rotate, shift, flip, from_
 
 
 def place_design(m, png, place, side, face='', height_cm=6.0, width_cm=0.0, rotate_deg=0.0, shift_cm=0.0, flip=False,
-                 from_end_cm=None):
+                 from_end_cm=None, across_cm=0.0):
     """rgb, alpha on the UV map: a flat design at a named place (make_marks' 'artist' painter calls this, so a
     contributed piece is rebuilt from its own file exactly as its preview was)."""
     design = Image.open(png).convert('RGBA')
@@ -181,6 +181,11 @@ def place_design(m, png, place, side, face='', height_cm=6.0, width_cm=0.0, rota
         return wrap(m, design, place, side, face, height, width, np.radians(rotate_deg), shift_cm / CM, flip,
                     None if from_end_cm is None else from_end_cm / CM)
     c, n, up = decals.anchor(m, place, side)
+    if shift_cm or across_cm:   # up (+) / down the body, out (+) / in from the middle: the nearest skin facing the same way
+        target = c + np.asarray(up, np.float64) * (shift_cm / CM) + np.array((side, 0.0, 0.0)) * (across_cm / CM)
+        ok = m.covered & (m.normal @ n > 0.5)
+        k = np.argmin(np.where(ok, np.linalg.norm(m.position - target, axis=-1), np.inf))
+        c, n = m.position.reshape(-1, 3)[k], m.normal.reshape(-1, 3)[k]
     design.info['prefilter'] = True
     return flash.project_rgba_at(m, design.transpose(Image.FLIP_LEFT_RIGHT) if flip else design, c, n,
                                  width=width, rotate=np.radians(rotate_deg), alpha=1.0)
@@ -198,6 +203,7 @@ def main():
     ap.add_argument('--width-cm', type=float, default=0.0)
     ap.add_argument('--rotate', type=float, default=0.0, help='degrees, clockwise as seen on the skin')
     ap.add_argument('--shift-cm', type=float, default=0.0)
+    ap.add_argument('--across-cm', type=float, default=0.0, help='torso places: outwards (+) from the middle')
     ap.add_argument('--from-wrist-cm', '--from-ankle-cm', dest='from_end', type=float, default=None)
     ap.add_argument('--size', type=int, default=4096, help='texture size of a NEW template (detailed pieces: 4096)')
     ap.add_argument('--flip', action='store_true', help='mirror the design (for the other side of a pair)')
@@ -208,7 +214,7 @@ def main():
     m = UVMap(mm.DATA, sex, size)
     side = {'left': -1, 'right': 1, 'middle': 0}[a.side]
     rgb, alpha = place_design(m, a.png, a.place, side, a.face, a.height_cm, a.width_cm, a.rotate, a.shift_cm, a.flip,
-                              a.from_end)
+                              a.from_end, a.across_cm)
     artist_art.save(a.out, a.id, m, rgb, alpha, row[2] if row else '')
     artist_art.render(a.out, [a.id.rsplit('_', 1)[0]])
 

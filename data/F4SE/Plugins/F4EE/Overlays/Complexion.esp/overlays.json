@@ -5587,7 +5587,7 @@
  },
  {
   "id": "Complexion_FlashAnchor_F01",
-  "name": "Complexion - flash: anchor with a red heart (by Vex)",
+  "name": "Complexion - (Right Wrist)(Female) Anchor&Heart",
   "slots": [
    {
     "slot": 3,
@@ -9857,7 +9857,7 @@
  },
  {
   "id": "Complexion_VexAnchorThighLeft_F01",
-  "name": "Complexion - anchor with a red heart, left outer thigh (by Vex)",
+  "name": "Complexion - (Left Thigh)(Female) Anchor&Heart",
   "slots": [
    {
     "slot": 3,
@@ -9871,7 +9871,7 @@
  },
  {
   "id": "Complexion_VexAnchorThighLeft_M01",
-  "name": "Complexion - anchor with a red heart, left outer thigh (by Vex)",
+  "name": "Complexion - (Left Thigh)(Male) Anchor&Heart",
   "slots": [
    {
     "slot": 3,
@@ -9885,7 +9885,7 @@
  },
  {
   "id": "Complexion_VexAnchorThighRight_F01",
-  "name": "Complexion - anchor with a red heart, right outer thigh (by Vex)",
+  "name": "Complexion - (Right Thigh)(Female) Anchor&Heart",
   "slots": [
    {
     "slot": 3,
@@ -9899,7 +9899,7 @@
  },
  {
   "id": "Complexion_VexAnchorThighRight_M01",
-  "name": "Complexion - anchor with a red heart, right outer thigh (by Vex)",
+  "name": "Complexion - (Right Thigh)(Male) Anchor&Heart",
   "slots": [
    {
     "slot": 3,

@@ -557,6 +557,17 @@ def replace_row(tid, painter, args, size, tag):
 replace_row('Complexion_FlashAnchor_F01', 'artist', ('vex_anchor_red_heart.png', 'forearm', 1, 'palm', 8.0, 2.0), 4096,
             dict(VEX, regions=['arm_r'], note='flash: anchor with a red heart (by Vex)'))
 
+# Names shown in LooksMenu's list and Complexion's window ("Complexion - <name>"), where the artist gave one; every other
+# template shows its note. Display only: saves keep the id, and the tags (so the composers) never see these.
+# Vex's format (10-14): "(Location)(Sex) Design".
+NAMES = {
+    'Complexion_FlashAnchor_F01': '(Right Wrist)(Female) Anchor&Heart',
+    'Complexion_VexAnchorThighLeft_F01': '(Left Thigh)(Female) Anchor&Heart',
+    'Complexion_VexAnchorThighLeft_M01': '(Left Thigh)(Male) Anchor&Heart',
+    'Complexion_VexAnchorThighRight_F01': '(Right Thigh)(Female) Anchor&Heart',
+    'Complexion_VexAnchorThighRight_M01': '(Right Thigh)(Male) Anchor&Heart',
+}
+
 
 def design(spec, rng):
     kind, *rest = spec
@@ -734,7 +745,7 @@ def main():
         female = sex == 'female'
         on_hands = painter in HAND_PAINTERS
         # The body is LooksMenu slot 3, the hands slot 4 (as the packs' nails, LMNSOverlays f_nails_1).
-        entries.append({'id': tid, 'name': f'Complexion - {tag["note"]}',
+        entries.append({'id': tid, 'name': f'Complexion - {NAMES.get(tid, tag["note"])}',
                         'slots': [{'slot': 4 if on_hands else 3, 'material': f'overlays\\Complexion\\{tid}.bgem'}],
                         'playable': True, 'transformable': not on_hands, 'sort': 0, 'gender': 1 if female else 0})
         if tag['kind'] in hair.HAIR_KINDS:
