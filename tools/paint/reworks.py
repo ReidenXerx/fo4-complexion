@@ -26,6 +26,7 @@ import artist_art  # noqa: E402
 import artist_flat  # noqa: E402
 import artist_hands  # noqa: E402
 import decals  # noqa: E402
+import seams  # noqa: E402
 import flash  # noqa: E402
 import hands  # noqa: E402
 import make_marks as mm  # noqa: E402
@@ -407,6 +408,41 @@ def _(m):
 @piece('Complexion_AtomScar_M01', 'moved up the back as close to the neck as it goes unfaded, same size', size=2048)
 def _(m):
     return atomscar_back(m)
+
+
+def tile_fill(m, tid, tile_png, tile_cm, blur=24.0, full=85, reach=0.55, opacity=0.85):
+    """A seamless hair tile (art/contrib) as the fill of an existing mark: inside that mark's coverage (its painting at
+    its own size, blurred over a few strands, full from the `full` percentile of its density), laid flat from behind
+    with its strands down the back, tile_cm a repeat, shrunk once to about one tile pixel per texel. Strands, not a
+    mat: a strand shows where its darkness clears a threshold the density lowers, so even the densest part keeps skin
+    between strands (reach = how far down the darkness scale full density goes) and the edges thin out gradually
+    (alasdairn 10-15: the solid fill with a ragged edge read as "a partially waxed Bigfoot")."""
+    n = INDEX[tid]
+    row = mm.MARKS[n]
+    m0 = UVMap(mm.DATA, m.sex, row[4])
+    _, a0 = mm.paint(row[2], m0, np.random.default_rng(1000 + n), row[3])
+    a0 = a0 * seams.seam_fade(m0)                    # the old texture's own neck/wrist fade
+    old = np.asarray(Image.fromarray((np.clip(a0, 0, 1) * 255).astype(np.uint8)).resize(m.covered.shape[::-1],
+                     Image.BILINEAR), dtype=np.float64) / 255.0 * m.covered
+    env = ndimage.gaussian_filter(old, m.covered.shape[0] / 2048 * blur)
+    env = np.clip(env / np.percentile(env[env > 0.02], full), 0, 1) * m.covered
+    P = m.position
+    span = tile_cm / CM
+    back = env > 0.5
+    dx = np.linalg.norm(np.diff(P, axis=1), axis=-1)[back[:, 1:] & back[:, :-1]]
+    T = int(round(span / np.median(dx[dx > 0])))
+    tile = np.asarray(Image.open(HERE / 'art' / 'contrib' / tile_png).convert('RGB').resize((T, T), Image.LANCZOS),
+                      dtype=np.float64) / 255.0
+    rgb = tile[(((-P[..., 2] / span) % 1.0) * (T - 1)).astype(int), (((P[..., 0] / span) % 1.0) * (T - 1)).astype(int)]
+    lum = rgb.mean(-1)
+    lo, hi = np.percentile(lum[back], [5, 95])
+    dark = np.clip((hi - lum) / (hi - lo), 0, 1)
+    return rgb, np.clip((dark - 1 + env * reach) * 4, 0, 1) * opacity * m.covered
+
+
+@piece('Complexion_BackHairBlackHeavy_M01', "Vex's hair tile, thinned: strands with skin between, fading out gradually (4096)")
+def _(m):
+    return tile_fill(m, 'Complexion_BackHairBlackHeavy_M01', 'vex_thick_body_hair.jpg', 16.0)
 
 
 @both('Complexion_TattooHope', 'on the side of the hip (not the buttock), bolder lines')
