@@ -370,6 +370,12 @@ def _(m):
                      (('word', '111', 'pirate', 0.0), 'neck_back', 0, 3, 'faded', 0.7))
 
 
+@both('Complexion_TattooLucky', 'the upper-back version: lighter ink, bigger (8 cm, men 9 cm)')
+def _(m):
+    return decal_row(m, 'Complexion_TattooLucky_' + ('F01' if m.sex == 'female' else 'M01'),
+                     (('lucky',), 'chest', -1, 8 if m.sex == 'female' else 9, 'faded', 0.0))
+
+
 @both('Complexion_TattooHope', 'on the side of the hip (not the buttock), bolder lines')
 def _(m):
     c, n = side_at(m, h_up(m, landmarks(m)['crotch'], 9.0), 1)
@@ -480,7 +486,7 @@ def _(m):
     return limb(m, snake_eyes(), 'upper_arm', -1, 'outer', 6.5)
 
 
-@piece('Complexion_TattooDollar_F01', 'moved to the middle of the pelvis')
+@both('Complexion_TattooDollar', 'moved to the middle of the pelvis')
 def _(m):
     return flat(m, _rgba(decals.dollar()), *pelvis(m), 5 * CM)
 
