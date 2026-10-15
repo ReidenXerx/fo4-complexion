@@ -233,3 +233,5 @@ Complexion_VexAnchorThighRight_F01,Complexion - (Right Thigh)(Female) Anchor&Hea
 Complexion_VexAnchorThighRight_M01,Complexion - (Right Thigh)(Male) Anchor&Heart,(Right Thigh)(Male) Anchor&Heart,
 Complexion_AtomScar_F01,Complexion - the Atom cut into the chest,(Upper Back)(Female) Atom Branding,"per-overlay request 10-15: moved up the back as close to the neck as it goes unfaded, 25% smaller (reworks.py)"
 Complexion_AtomScar_M01,Complexion - the Atom cut into the chest,(Upper Back)(Male) Atom Branding,"per-overlay request 10-15: moved to the same upper-back spot as the women's, as close to the neck as it goes unfaded, size unchanged (reworks.py)"
+Complexion_BackHairBlack_M01,"Complexion - back hair, black",(Back)(Male) Black Back Hair light,"per-overlay request 10-15: Vex's hair tile, thinned (reworks.py)"
+Complexion_BackHairBlackHeavy_M01,"Complexion - back hair, black",(Back)(Male) Black Back Hair,"per-overlay request 10-15: Vex's hair tile, 20% thicker than the light one (reworks.py)"

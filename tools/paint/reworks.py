@@ -440,6 +440,11 @@ def tile_fill(m, tid, tile_png, tile_cm, blur=24.0, full=85, reach=0.55, opacity
     return rgb, np.clip((dark - 1 + env * reach) * 4, 0, 1) * opacity * m.covered
 
 
+@piece('Complexion_BackHairBlack_M01', "Vex's hair tile, the thinned version (as previewed for the heavy one) (4096)")
+def _(m):   # Vex 10-15: the thinned preview replaces the light back hair, inside the heavy one's coverage as he saw it
+    return tile_fill(m, 'Complexion_BackHairBlackHeavy_M01', 'vex_thick_body_hair.jpg', 16.0)
+
+
 @piece('Complexion_BackHairBlackHeavy_M01', "Vex's hair tile, thinned: strands with skin between, fading out gradually (4096)")
 def _(m):
     return tile_fill(m, 'Complexion_BackHairBlackHeavy_M01', 'vex_thick_body_hair.jpg', 16.0, reach=0.62)   # Vex: 20% thicker (ink +20%)
