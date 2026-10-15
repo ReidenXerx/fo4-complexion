@@ -387,16 +387,24 @@ def decal_row_at(m, tid, args, c, n, painter='decal'):
         decals.anchor = real
 
 
-ATOMSCAR_UP_CM = 10.5  # above the upper_back landmark: the highest the whole scar stays clear of the neck fade
+# cm above the upper_back landmark: the highest the whole scar stays clear of the neck fade (every inked texel >= 3.0
+# units from the seam, measured by scratchpad atomscar_search.py); the width in game units (the men's unchanged)
+ATOMSCAR = {'female': (10.5, 6), 'male': (9.5, 8)}
 
 
 def atomscar_back(m, up_cm=None):
-    h = h_up(m, landmarks(m)['upper_back'], ATOMSCAR_UP_CM if up_cm is None else up_cm)
-    return decal_row_at(m, 'Complexion_AtomScar_F01', (('emblem', 'atom'), 'upper_back', 0, 6),
-                        *front_at(m, h, 0.0, -1), 'scar_decal')
+    up, width = ATOMSCAR[m.sex]
+    h = h_up(m, landmarks(m)['upper_back'], up if up_cm is None else up_cm)
+    tid = 'Complexion_AtomScar_' + ('F01' if m.sex == 'female' else 'M01')
+    return decal_row_at(m, tid, (('emblem', 'atom'), 'upper_back', 0, width), *front_at(m, h, 0.0, -1), 'scar_decal')
 
 
 @piece('Complexion_AtomScar_F01', 'moved up the back as close to the neck as it goes unfaded, 25% smaller', size=2048)
+def _(m):
+    return atomscar_back(m)
+
+
+@piece('Complexion_AtomScar_M01', 'moved up the back as close to the neck as it goes unfaded, same size', size=2048)
 def _(m):
     return atomscar_back(m)
 
