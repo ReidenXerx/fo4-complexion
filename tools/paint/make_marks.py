@@ -569,6 +569,29 @@ NAMES = {
 }
 
 
+def _vex_list():
+    """Vex's edit of every tattoo's name (10-15, art/contrib/vex_names.csv): a name in his format; a blank name =
+    REMOVED (kept installed so saved looks still find it, but not playable and untagged, so neither LooksMenu's list,
+    Complexion's window nor the composers offer it); a note = a rework (tools/paint/reworks.py), whose new name
+    waits until its redrawn piece is in the build, so a name never describes a place the texture is not."""
+    import csv
+    names, removed = {}, set()
+    with open(HERE / 'art' / 'contrib' / 'vex_names.csv', encoding='utf-8-sig', newline='') as f:
+        rows = csv.reader(f)
+        next(rows)
+        for tid, _, name, *note in rows:
+            note = (note[0] if note else '').strip()
+            if not name.strip():
+                removed.add(tid)
+            elif not note or note.startswith('going to be replaced'):
+                names[tid] = name.strip()
+    return names, removed
+
+
+VEX_NAMES, REMOVED = _vex_list()
+NAMES = {**VEX_NAMES, **NAMES}
+
+
 def design(spec, rng):
     kind, *rest = spec
     if kind == 'vault':
@@ -747,11 +770,12 @@ def main():
         # The body is LooksMenu slot 3, the hands slot 4 (as the packs' nails, LMNSOverlays f_nails_1).
         entries.append({'id': tid, 'name': f'Complexion - {NAMES.get(tid, tag["note"])}',
                         'slots': [{'slot': 4 if on_hands else 3, 'material': f'overlays\\Complexion\\{tid}.bgem'}],
-                        'playable': True, 'transformable': not on_hands, 'sort': 0, 'gender': 1 if female else 0})
+                        'playable': tid not in REMOVED, 'transformable': not on_hands, 'sort': 0, 'gender': 1 if female else 0})
         if tag['kind'] in hair.HAIR_KINDS:
             tag = dict(tag, hair=hair.family(painter, args))  # one colour per person: the composer matches it
         tag = dict(tag, **traits.of(tag))  # nasty / age / tones (tools/paint/traits.py)
-        tags[('f:' if female else 'm:') + tid] = tag
+        if tid not in REMOVED:  # a removed one is still painted and installed (saved looks keep it), never offered
+            tags[('f:' if female else 'm:') + tid] = tag
         if a.only and not tid.startswith(tuple(a.only.split(','))):
             continue
         if a.shard and n % int(a.shard.split('/')[1]) != int(a.shard.split('/')[0]):

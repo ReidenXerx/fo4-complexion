@@ -16,7 +16,8 @@ from marks import Painter, blank, fbm, landmarks, over
 FONTS = pathlib.Path(__file__).resolve().parent / 'fonts'
 FONT = {'blackletter': 'UnifrakturMaguntia-Book.ttf', 'pirate': 'PirataOne-Regular.ttf', 'western': 'Rye-Regular.ttf',
         'script': 'GreatVibes-Regular.ttf', 'stencil': 'StardosStencil-Bold.ttf',
-        'marker': 'PermanentMarker-Regular.ttf'}  # Permanent Marker: Apache 2.0 (fonts/LICENSE-Apache-2.0.txt)
+        'marker': 'PermanentMarker-Regular.ttf',  # Permanent Marker: Apache 2.0 (fonts/LICENSE-Apache-2.0.txt)
+        'block': 'Anton-Regular.ttf'}  # Anton (OFL): solid block capitals, no stencil gaps (Vex, 10-15)
 INK = {'fresh': (0.10, 0.12, 0.13), 'faded': (0.24, 0.30, 0.38), 'red': (0.45, 0.10, 0.10),
        'marker': (0.06, 0.06, 0.09), 'marker_red': (0.55, 0.05, 0.08), 'marker_blue': (0.10, 0.14, 0.42)}
 

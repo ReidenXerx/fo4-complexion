@@ -1411,38 +1411,6 @@
   "quality": "ok",
   "note": "\"Wasteland\" across the back"
  },
- "f:Complexion_TattooRaiderWord_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "lower_back"
-  ],
-  "size": "medium",
-  "style": [
-   "script",
-   "crude"
-  ],
-  "emblem": "raiders",
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "\"Raider\" on the lower back"
- },
- "m:Complexion_TattooRaiderWord_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "lower_back"
-  ],
-  "size": "medium",
-  "style": [
-   "script",
-   "crude"
-  ],
-  "emblem": "raiders",
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "\"Raider\" on the lower back"
- },
  "f:Complexion_TattooLove_F01": {
   "kind": "tattoo",
   "regions": [
@@ -1633,70 +1601,6 @@
   "quality": "ok",
   "note": "\"Faith\" on the lower back"
  },
- "f:Complexion_TattooForever_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "leg_l"
-  ],
-  "size": "small",
-  "style": [
-   "script",
-   "floral"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "\"Forever\" on the thigh"
- },
- "m:Complexion_TattooForever_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "leg_l"
-  ],
-  "size": "small",
-  "style": [
-   "script",
-   "floral"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "\"Forever\" on the thigh"
- },
- "f:Complexion_TattooSteel_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_r"
-  ],
-  "size": "small",
-  "style": [
-   "script",
-   "military"
-  ],
-  "emblem": "bos",
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "\"STEEL\" on the upper arm"
- },
- "m:Complexion_TattooSteel_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_r"
-  ],
-  "size": "small",
-  "style": [
-   "script",
-   "military"
-  ],
-  "emblem": "bos",
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "\"STEEL\" on the upper arm"
- },
  "f:Complexion_TattooAtomPraised_F01": {
   "kind": "tattoo",
   "regions": [
@@ -1795,40 +1699,6 @@
   "quality": "ok",
   "note": "\"PROPERTY\" on the lower back"
  },
- "f:Complexion_TattooSold_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "butt"
-  ],
-  "size": "small",
-  "style": [
-   "script",
-   "degrading",
-   "crude"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": true,
-  "quality": "ok",
-  "note": "\"SOLD\" on a buttock"
- },
- "m:Complexion_TattooSold_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "butt"
-  ],
-  "size": "small",
-  "style": [
-   "script",
-   "degrading",
-   "crude"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": true,
-  "quality": "ok",
-  "note": "\"SOLD\" on a buttock"
- },
  "f:Complexion_TattooOwned_F01": {
   "kind": "tattoo",
   "regions": [
@@ -1925,96 +1795,6 @@
   "quality": "ok",
   "note": "a mandala on the thigh"
  },
- "f:Complexion_TattooTribalLowerBack_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "lower_back"
-  ],
-  "size": "medium",
-  "style": [
-   "tribal"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "a tribal piece on the lower back"
- },
- "m:Complexion_TattooTribalLowerBack_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "lower_back"
-  ],
-  "size": "medium",
-  "style": [
-   "tribal"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "a tribal piece on the lower back"
- },
- "f:Complexion_TattooTribalShoulder_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "shoulders"
-  ],
-  "size": "medium",
-  "style": [
-   "tribal"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "a tribal piece on the shoulder"
- },
- "m:Complexion_TattooTribalShoulder_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "shoulders"
-  ],
-  "size": "medium",
-  "style": [
-   "tribal"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "a tribal piece on the shoulder"
- },
- "f:Complexion_TattooTribalChest_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "chest"
-  ],
-  "size": "medium",
-  "style": [
-   "tribal"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "a tribal piece across the chest"
- },
- "m:Complexion_TattooTribalChest_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "chest"
-  ],
-  "size": "medium",
-  "style": [
-   "tribal"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "a tribal piece across the chest"
- },
  "f:Complexion_TattooBarcodeNeck_F01": {
   "kind": "tattoo",
   "regions": [
@@ -2074,36 +1854,6 @@
   "adult": false,
   "quality": "ok",
   "note": "a barcode on the forearm"
- },
- "f:Complexion_TattooPrisonDots_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_l"
-  ],
-  "size": "tiny",
-  "style": [
-   "crude"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "five prison dots"
- },
- "m:Complexion_TattooPrisonDots_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_l"
-  ],
-  "size": "tiny",
-  "style": [
-   "crude"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "five prison dots"
  },
  "f:Complexion_TattooAtomShoulder_F01": {
   "kind": "tattoo",
@@ -2198,36 +1948,6 @@
   "adult": false,
   "quality": "ok",
   "note": "the Vault-Tec gear on the forearm"
- },
- "f:Complexion_TattooVaultTecUpperArm_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_r"
-  ],
-  "size": "small",
-  "style": [
-   "emblem"
-  ],
-  "emblem": "vault_tec",
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "the Vault-Tec gear on the upper arm"
- },
- "m:Complexion_TattooVaultTecUpperArm_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_r"
-  ],
-  "size": "small",
-  "style": [
-   "emblem"
-  ],
-  "emblem": "vault_tec",
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "the Vault-Tec gear on the upper arm"
  },
  "f:Complexion_TattooBoSBack_F01": {
   "kind": "tattoo",
@@ -2490,38 +2210,6 @@
   "adult": false,
   "quality": "ok",
   "note": "the Gunners crosshair on the shoulder"
- },
- "f:Complexion_TattooGunnersArm_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_r"
-  ],
-  "size": "small",
-  "style": [
-   "emblem",
-   "military"
-  ],
-  "emblem": "gunners",
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "the Gunners crosshair on the forearm"
- },
- "m:Complexion_TattooGunnersArm_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_r"
-  ],
-  "size": "small",
-  "style": [
-   "emblem",
-   "military"
-  ],
-  "emblem": "gunners",
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "the Gunners crosshair on the forearm"
  },
  "f:Complexion_TattooLewdEntry_F01": {
   "kind": "tattoo",
@@ -2815,40 +2503,6 @@
   "adult": true,
   "quality": "ok",
   "note": "\"WHORE\" on a buttock"
- },
- "f:Complexion_TattooLewdTipJar_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "butt"
-  ],
-  "size": "small",
-  "style": [
-   "lewd",
-   "sexual",
-   "script"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": true,
-  "quality": "ok",
-  "note": "\"TIP JAR\" over the arse"
- },
- "m:Complexion_TattooLewdTipJar_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "butt"
-  ],
-  "size": "small",
-  "style": [
-   "lewd",
-   "sexual",
-   "script"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": true,
-  "quality": "ok",
-  "note": "\"TIP JAR\" over the arse"
  },
  "f:Complexion_TattooLewdTally_F01": {
   "kind": "tattoo",
@@ -4028,38 +3682,6 @@
   "quality": "ok",
   "note": "a kill tally on the forearm"
  },
- "f:Complexion_TattooGunnersTallyArm_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_l"
-  ],
-  "size": "small",
-  "style": [
-   "military",
-   "crude"
-  ],
-  "emblem": "gunners",
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "a long kill tally on the upper arm"
- },
- "m:Complexion_TattooGunnersTallyArm_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_l"
-  ],
-  "size": "small",
-  "style": [
-   "military",
-   "crude"
-  ],
-  "emblem": "gunners",
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "a long kill tally on the upper arm"
- },
  "f:Complexion_TattooAceSpades_F01": {
   "kind": "tattoo",
   "regions": [
@@ -4243,38 +3865,6 @@
   "adult": false,
   "quality": "ok",
   "note": "Vault 81 in the gear"
- },
- "f:Complexion_TattooVault81Word_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_l"
-  ],
-  "size": "small",
-  "style": [
-   "script",
-   "emblem"
-  ],
-  "emblem": "vault_tec",
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "\"VAULT 81\" on the forearm"
- },
- "m:Complexion_TattooVault81Word_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_l"
-  ],
-  "size": "small",
-  "style": [
-   "script",
-   "emblem"
-  ],
-  "emblem": "vault_tec",
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "\"VAULT 81\" on the forearm"
  },
  "f:Complexion_TanTshirt_F01": {
   "style": [],
@@ -5335,68 +4925,6 @@
   "quality": "ok",
   "note": "flash: skull"
  },
- "f:Complexion_FlashDagger_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_r"
-  ],
-  "size": "small",
-  "style": [
-   "crude",
-   "military"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: dagger"
- },
- "m:Complexion_FlashDagger_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_r"
-  ],
-  "size": "small",
-  "style": [
-   "crude",
-   "military"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: dagger"
- },
- "f:Complexion_FlashDaggerCalf_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "leg_l"
-  ],
-  "size": "small",
-  "style": [
-   "crude"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: dagger"
- },
- "m:Complexion_FlashDaggerCalf_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "leg_l"
-  ],
-  "size": "small",
-  "style": [
-   "crude"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: dagger"
- },
  "f:Complexion_FlashHeartMom_F01": {
   "kind": "tattoo",
   "regions": [
@@ -5600,51 +5128,6 @@
   ],
   "note": "flash: anchor with a red heart (by Vex)"
  },
- "m:Complexion_FlashAnchor_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_l"
-  ],
-  "size": "small",
-  "style": [
-   "military"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: anchor"
- },
- "f:Complexion_FlashAnchorCalf_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "leg_l"
-  ],
-  "size": "small",
-  "style": [
-   "military"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: anchor"
- },
- "m:Complexion_FlashAnchorCalf_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "leg_l"
-  ],
-  "size": "small",
-  "style": [
-   "military"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: anchor"
- },
  "f:Complexion_FlashSnake_F01": {
   "kind": "tattoo",
   "regions": [
@@ -5704,130 +5187,6 @@
   "adult": false,
   "quality": "ok",
   "note": "flash: snake"
- },
- "f:Complexion_FlashWeb_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_r"
-  ],
-  "size": "small",
-  "style": [
-   "crude"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: web"
- },
- "m:Complexion_FlashWeb_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_r"
-  ],
-  "size": "small",
-  "style": [
-   "crude"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: web"
- },
- "f:Complexion_FlashWebShoulder_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "shoulders"
-  ],
-  "size": "small",
-  "style": [
-   "crude",
-   "geometric"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: web"
- },
- "m:Complexion_FlashWebShoulder_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "shoulders"
-  ],
-  "size": "small",
-  "style": [
-   "crude",
-   "geometric"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: web"
- },
- "f:Complexion_FlashSpider_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "neck"
-  ],
-  "size": "tiny",
-  "style": [
-   "animal",
-   "crude"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: spider"
- },
- "m:Complexion_FlashSpider_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "neck"
-  ],
-  "size": "tiny",
-  "style": [
-   "animal",
-   "crude"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: spider"
- },
- "f:Complexion_FlashSpiderArm_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_l"
-  ],
-  "size": "tiny",
-  "style": [
-   "animal"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: spider"
- },
- "m:Complexion_FlashSpiderArm_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_l"
-  ],
-  "size": "tiny",
-  "style": [
-   "animal"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: spider"
  },
  "f:Complexion_FlashNauticalStar_F01": {
   "kind": "tattoo",
@@ -6172,70 +5531,6 @@
   "adult": false,
   "quality": "ok",
   "note": "flash: flames"
- },
- "f:Complexion_FlashWolf_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_l"
-  ],
-  "size": "small",
-  "style": [
-   "animal",
-   "geometric"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: wolf"
- },
- "m:Complexion_FlashWolf_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "arm_l"
-  ],
-  "size": "small",
-  "style": [
-   "animal",
-   "geometric"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: wolf"
- },
- "f:Complexion_FlashWolfBack_F01": {
-  "kind": "tattoo",
-  "regions": [
-   "back"
-  ],
-  "size": "medium",
-  "style": [
-   "animal",
-   "geometric"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: wolf"
- },
- "m:Complexion_FlashWolfBack_M01": {
-  "kind": "tattoo",
-  "regions": [
-   "back"
-  ],
-  "size": "medium",
-  "style": [
-   "animal",
-   "geometric"
-  ],
-  "emblem": null,
-  "lore": "fits",
-  "adult": false,
-  "quality": "ok",
-  "note": "flash: wolf"
  },
  "f:Complexion_FlashEagle_F01": {
   "kind": "tattoo",

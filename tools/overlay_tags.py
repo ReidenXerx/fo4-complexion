@@ -47,7 +47,11 @@ def main():
     own = ROOT / 'data' / 'F4SE' / 'Plugins' / 'F4EE' / 'Overlays' / 'Complexion.esp' / 'overlays.json'
     if own.exists():
         for e in json.loads(own.read_text(encoding='utf-8')):
-            wanted.setdefault(('f:' if e['gender'] >= 1 else 'm:') + e['id'], {'pack': 'Complexion.esp'})
+            key = ('f:' if e['gender'] >= 1 else 'm:') + e['id']
+            if e.get('playable', True):
+                wanted.setdefault(key, {'pack': 'Complexion.esp'})
+            else:   # removed (make_marks REMOVED): installed for saved looks, never handed out -- the file that ships wins
+                wanted.pop(key, None)
     tags, errors = {}, []
     for f in sorted(TAGS.glob('*.json')):
         for k, v in json.loads(f.read_text(encoding='utf-8')).items():

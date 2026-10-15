@@ -1,0 +1,233 @@
+﻿internal id (do not change),name shown now,proposed name (edit this),notes
+Complexion_TattooNoMercy_F01,"Complexion - ""No Mercy"" across the chest","(Abdomen)(Female) ""No Mercy""","more readable font, mid between breast and stomach."
+Complexion_TattooNoMercy_M01,"Complexion - ""No Mercy"" across the chest","(Abdomen)(Male) ""No Mercy""","more readable font, mid between breast and stomach."
+Complexion_TattooRust_F01,"Complexion - ""RUST"" on the forearm","(Right Hand)(Female) ""RUST""","one letter on top of each finger fitting between the Proximal and middle Phalanges, positioned to be readable by other people. Change font to full letters without gaping. Copy to new tattoo for left hand as separate option."
+Complexion_TattooRust_M01,"Complexion - ""RUST"" on the forearm","(Right Hand)(Male) ""RUST""","one letter on top of each finger fitting between the Proximal and middle Phalanges, positioned to be readable by other people. Change font to full letters without gaping. Copy to new tattoo for left hand as separate option."
+Complexion_TattooKill_F01,"Complexion - ""KILL"" on the forearm","(Left Hand)(Female) ""KILL""","one letter on top of each finger fitting between the Proximal and middle Phalanges, positioned to be readable by other people. Copy to new tattoo for left hand as separate option."
+Complexion_TattooKill_M01,"Complexion - ""KILL"" on the forearm","(Left Hand)(Male) ""KILL""","one letter on top of each finger fitting between the Proximal and middle Phalanges, positioned to be readable by other people. Copy to new tattoo for left hand as separate option."
+Complexion_TattooWasteland_F01,"Complexion - ""Wasteland"" across the back","(Abdomen)(Female) ""Wasteland""",font needs to be easier to read. The current font the W looks more like a B. Bridging the wording 15%.
+Complexion_TattooWasteland_M01,"Complexion - ""Wasteland"" across the back","(Abdomen)(Male) ""Wasteland""",font needs to be easier to read. The current font the W looks more like a B. Bridging the wording 15%.
+Complexion_TattooRaiderWord_F01,"Complexion - ""Raider"" on the lower back",,
+Complexion_TattooRaiderWord_M01,"Complexion - ""Raider"" on the lower back",,
+Complexion_TattooLove_F01,"Complexion - prison ""LOVE""","(Left Hand)(Female) ""LOVE""","one letter on top of each finger fitting between the Proximal and middle Phalanges, positioned to be readable by other people. Change font to full letters without gaping. Copy to new tattoo for right hand as separate option."
+Complexion_TattooLove_M01,"Complexion - prison ""LOVE""","(Left Hand)(Male) ""LOVE""","one letter on top of each finger fitting between the Proximal and middle Phalanges, positioned to be readable by other people. Change font to full letters without gaping. Copy to new tattoo for right hand as separate option."
+Complexion_TattooHate_F01,"Complexion - prison ""HATE""","(Right Hand)(Female) ""HATE""","one letter on top of each finger fitting between the Proximal and middle Phalanges, positioned to be readable by other people. Change font to full letters without gaping. Copy to new tattoo for left hand as separate option."
+Complexion_TattooHate_M01,"Complexion - prison ""HATE""","(Right Hand)(Male) ""HATE""","one letter on top of each finger fitting between the Proximal and middle Phalanges, positioned to be readable by other people. Change font to full letters without gaping. Copy to new tattoo for left hand as separate option."
+Complexion_TattooMom_F01,"Complexion - ""Mom"" on the upper arm","(Right Upper Arm)(Female) ""Mom""",word need to look straight in the relaxed pose arms by side. Currently angles from mid bicep to arm pit. Which looks off on body. 
+Complexion_TattooMom_M01,"Complexion - ""Mom"" on the upper arm","(Right Upper Arm)(Male) ""Mom""",needs to be moves to full side mid shoulder not front of shoulder. 
+Complexion_TattooThirteen_F01,"Complexion - ""13"" on the neck","(Back of Neck)(Female) ""13""",copy but change number to 111 as new option
+Complexion_TattooThirteen_M01,"Complexion - ""13"" on the neck","(Back of Neck)(Male) ""13""",copy but change number to 111 as new option
+Complexion_TattooHope_F01,"Complexion - ""Hope"" on the hip","(Right Hip)(Female) ""Hope""",placed on side hip not butt check. Make lines bolder
+Complexion_TattooHope_M01,"Complexion - ""Hope"" on the hip","(Right Hip)(Male) ""Hope""",placed on side hip not butt check. Make lines bolder
+Complexion_TattooFaith_F01,"Complexion - ""Faith"" on the lower back","(Right Forearm)(Female) ""Faith""",placed on inner forearm readable sideways by player spanning the full forearm.
+Complexion_TattooFaith_M01,"Complexion - ""Faith"" on the lower back","(Right Forearm)(Male) ""Faith""",placed on inner forearm readable sideways by player spanning the full forearm.
+Complexion_TattooForever_F01,"Complexion - ""Forever"" on the thigh",,
+Complexion_TattooForever_M01,"Complexion - ""Forever"" on the thigh",,
+Complexion_TattooSteel_F01,"Complexion - ""STEEL"" on the upper arm",,
+Complexion_TattooSteel_M01,"Complexion - ""STEEL"" on the upper arm",,
+Complexion_TattooAtomPraised_F01,"Complexion - ""Atom Be Praised"" across the back","(Abdomen)(Female) ""Atom Be Praised""",font needs to be easier to read. The current font the A looks more like a U. Bridging the wording 15%.
+Complexion_TattooAtomPraised_M01,"Complexion - ""Atom Be Praised"" across the back","(Abdomen)(Male) ""Atom Be Praised""",font needs to be easier to read. The current font the A looks more like a U. Bridging the wording 15%.
+Complexion_TattooMinutemenWord_F01,"Complexion - ""Minutemen"" on the upper arm","(Upper Back)(Female) ""Minutemen""",shoulder to shoulder with slight arc in middle towards neck.
+Complexion_TattooMinutemenWord_M01,"Complexion - ""Minutemen"" on the upper arm","(Upper Back)(Male) ""Minutemen""",shoulder to shoulder with slight arc in middle towards neck.
+Complexion_TattooProperty_F01,"Complexion - ""PROPERTY"" on the lower back","(Lower Back)(Female) ""PROPERTY""",tramp stamp location.
+Complexion_TattooProperty_M01,"Complexion - ""PROPERTY"" on the lower back","(Lower Back)(Male) ""PROPERTY""",tramp stamp location.
+Complexion_TattooSold_F01,"Complexion - ""SOLD"" on a buttock",,
+Complexion_TattooSold_M01,"Complexion - ""SOLD"" on a buttock",,
+Complexion_TattooOwned_F01,"Complexion - ""OWNED"" on the back of the thigh","(Lower Back)(Female) ""OWNED""",tramp stamp location. Font cleaner edges.
+Complexion_TattooOwned_M01,"Complexion - ""OWNED"" on the back of the thigh","(Lower Back)(Male) ""OWNED""",tramp stamp location. Font cleaner edges.
+Complexion_TattooMandalaBack_F01,Complexion - a mandala between the shoulders,(Upper Back)(Female) Mandala,going to be replaced with new complete versions
+Complexion_TattooMandalaBack_M01,Complexion - a mandala between the shoulders,(Upper Back)(Male) Mandala,going to be replaced with new complete versions
+Complexion_TattooMandalaThigh_F01,Complexion - a mandala on the thigh,(Right Thigh)(Female) Mandala,going to be replaced with new complete versions
+Complexion_TattooMandalaThigh_M01,Complexion - a mandala on the thigh,(Right Thigh)(Male) Mandala,going to be replaced with new complete versions
+Complexion_TattooTribalLowerBack_F01,Complexion - a tribal piece on the lower back,,
+Complexion_TattooTribalLowerBack_M01,Complexion - a tribal piece on the lower back,,
+Complexion_TattooTribalShoulder_F01,Complexion - a tribal piece on the shoulder,,
+Complexion_TattooTribalShoulder_M01,Complexion - a tribal piece on the shoulder,,
+Complexion_TattooTribalChest_F01,Complexion - a tribal piece across the chest,,
+Complexion_TattooTribalChest_M01,Complexion - a tribal piece across the chest,,
+Complexion_TattooBarcodeNeck_F01,Complexion - a barcode on the neck,(Back of Neck)(Female) Barcode,going to be replaced with new complete versions
+Complexion_TattooBarcodeNeck_M01,Complexion - a barcode on the neck,(Back of Neck)(Male) Barcode,going to be replaced with new complete versions
+Complexion_TattooBarcodeArm_F01,Complexion - a barcode on the forearm,(Right Forearm)(Female) Barcode,going to be replaced with new complete versions
+Complexion_TattooBarcodeArm_M01,Complexion - a barcode on the forearm,(Right Forearm)(Male) Barcode,going to be replaced with new complete versions
+Complexion_TattooPrisonDots_F01,Complexion - five prison dots,,
+Complexion_TattooPrisonDots_M01,Complexion - five prison dots,,
+Complexion_TattooAtomShoulder_F01,Complexion - the Atom on the shoulder,(Right Breast)(Female) Atom Symbol,place on body nibble in the crease of lower two rings
+Complexion_TattooAtomShoulder_M01,Complexion - the Atom on the shoulder,(Right Breast)(Male) Atom Symbol,place on body nibble in the crease of lower two rings
+Complexion_TattooAtomChest_F01,Complexion - the Atom on the chest,(Belly)(Female) Atom Symbol,place center dot on belly button.
+Complexion_TattooAtomChest_M01,Complexion - the Atom on the chest,(Belly)(Male) Atom Symbol,place center dot on belly button.
+Complexion_TattooVaultTecArm_F01,Complexion - the Vault-Tec gear on the forearm,(Left Forearm)(Female) Vault-Tec Gear,placement more centered on forearm
+Complexion_TattooVaultTecArm_M01,Complexion - the Vault-Tec gear on the forearm,(Left Forearm)(Male) Vault-Tec Gear,placement more centered on forearm
+Complexion_TattooVaultTecUpperArm_F01,Complexion - the Vault-Tec gear on the upper arm,,
+Complexion_TattooVaultTecUpperArm_M01,Complexion - the Vault-Tec gear on the upper arm,,
+Complexion_TattooBoSBack_F01,Complexion - a winged sword in a ring on the back,(Upper Back)(Female) BoS Winged Sword,
+Complexion_TattooBoSBack_M01,Complexion - a winged sword in a ring on the back,(Upper Back)(Male) BoS Winged Sword,
+Complexion_TattooBoSArm_F01,Complexion - a winged sword in a ring on the upper arm,(Left Shoulder)(Female) BoS Winged Sword,top point towards neck bottom pointing towards elbow. Decrease side by about 5%
+Complexion_TattooBoSArm_M01,Complexion - a winged sword in a ring on the upper arm,(Left Shoulder)(Male) BoS Winged Sword,top point towards neck bottom pointing towards elbow. Decrease side by about 5%
+Complexion_TattooMinutemenShoulder_F01,Complexion - the Minutemen star on the shoulder,(Right Breast)(Female) Minutemen Star,center around nibble.
+Complexion_TattooMinutemenShoulder_M01,Complexion - the Minutemen star on the shoulder,(Right Breast)(Male) Minutemen Star,center around nibble.
+Complexion_TattooMinutemenChest_F01,Complexion - the Minutemen star on the chest,(Left Breast)(Female) Minutemen Star,center around nibble.
+Complexion_TattooMinutemenChest_M01,Complexion - the Minutemen star on the chest,(Left Breast)(Male) Minutemen Star,center around nibble.
+Complexion_TattooRailroadWrist_F01,Complexion - a tiny Railroad lantern,(Right Forearm)(Female) Railroad Lantern,center of inner forearm with head of lantern pointing to wrist. Double size keeping the quality.
+Complexion_TattooRailroadWrist_M01,Complexion - a tiny Railroad lantern,(Right Forearm)(Male) Railroad Lantern,center of inner forearm with head of lantern pointing to wrist. Double size keeping the quality.
+Complexion_TattooRaiderSkullChest_F01,Complexion - a crude raider skull on the chest,(Right Chest)(Female) Raider Skull,going to be replaced with new complete versions
+Complexion_TattooRaiderSkullChest_M01,Complexion - a crude raider skull on the chest,(Right Chest)(Male) Raider Skull,going to be replaced with new complete versions
+Complexion_TattooRaiderSkullBack_F01,Complexion - a raider skull on the back,(Upper Back)(Female) Raider Skull,going to be replaced with new complete versions
+Complexion_TattooRaiderSkullBack_M01,Complexion - a raider skull on the back,(Upper Back)(Male) Raider Skull,going to be replaced with new complete versions
+Complexion_TattooGunnersShoulder_F01,Complexion - the Gunners crosshair on the shoulder,(Left Chest)(Female) Gunners Crosshair,place begin top of left breast
+Complexion_TattooGunnersShoulder_M01,Complexion - the Gunners crosshair on the shoulder,(Left Chest)(Male) Gunners Crosshair,place inside left pectoral
+Complexion_TattooGunnersArm_F01,Complexion - the Gunners crosshair on the forearm,,
+Complexion_TattooGunnersArm_M01,Complexion - the Gunners crosshair on the forearm,,
+Complexion_TattooLewdEntry_F01,"Complexion - ""ENTRY"" and an arrow down to her cunt","(Pubic)(Female) ""ENTRY"" & Arrow",font changed to none stencil look. Then copy as additional options for tramp stamp lower back locations for both male and female where arrow points to beginning of ass crack.
+Complexion_TattooLewdInsertHere_F01,"Complexion - ""INSERT HERE"" and an arrow down","(Pubic)(Female) ""INSERT HERE"" & Arrow",font cleaner edges of letters. Then copy as additional options for tramp stamp lower back locations for both male and female where arrow points to beginning of ass crack.
+Complexion_TattooLewdCumHere_F01,"Complexion - ""CUM HERE"" and an arrow down","(Pubic)(Female) ""CUM HERE"" & Arrow",completely new readable font with clean edges. Then copy as additional options for tramp stamp lower back locations for both male and female where arrow points to beginning of ass crack.
+Complexion_TattooLewdOpen247_F01,"Complexion - ""OPEN 24/7"" over her cunt","(Pubic)(Female) ""OPEN 24/7"" & Arrow",font changed to none stencil look and making black not current. Then copy as additional options for tramp stamp lower back locations for both male and female where arrow points to beginning of ass crack.
+Complexion_TattooLewdBackDoor_F01,"Complexion - a ""Back Door"" tramp stamp, arrow down to her arse","(Tailbone)(Female) ""Back Door"" & Arrow",tramp stamp lower back locations for both male and female where arrow points to beginning of ass crack. Clean up pixelization of letters
+Complexion_TattooLewdSpreadMe_F01,"Complexion - ""SPREAD ME"" on a buttock","(Butt)(Female) ""SPREAD ME""",taking the word spread on left cheek and the word me on right cheek more centered lower cheek. Make as option for male as well.
+Complexion_TattooLewdRideMe_F01,"Complexion - ""RIDE ME"" on the inner thigh","(Pelvis)(Female) ""RIDE ME""",font changed to none stencil look. Then copy made for male. Centered. 
+Complexion_TattooLewdFuckMe_F01,"Complexion - ""FUCK ME"" and an arrow up the inner thigh","(Tailbone)(Female) ""FUCK ME"" & Arrow",font changed to none stencil look. Then copy made for male. Centered with Fuck Me above arrow that points to start of ass crack.
+Complexion_TattooLewdSuck_M01,"Complexion - ""SUCK"" and an arrow down to his cock","(Pubic)(Male) ""SUCK"" & Arrow",font changed to none stencil look adding the word it. Remove arrow completely and center wording. 
+Complexion_TattooLewdCumDump_M01,"Complexion - ""CUM DUMP"" over his arse","(Tailbone)(Male) ""CUM DUMP"" & Arrow",raising so the arrows tip points to the beginning of ass crack. Coping for female option. Making font pelvis version for female only where arrow points to slightly above clit. 
+Complexion_TattooLewdBitch_M01,"Complexion - ""BITCH"" on a buttock","(Right Butt)(Male) ""BITCH""",going to be replaced with new complete versions and locations
+Complexion_TattooLewdFreeUse_F01,"Complexion - ""FREE USE"" and an arrow down","(Pubic)(Female) ""FREE USE"" & Arrow",font changed to none stencil look.
+Complexion_TattooLewdFreeUse_M01,"Complexion - ""FREE USE"" and an arrow down","(Pubic)(Male) ""FREE USE"" & Arrow",font changed to none stencil look remove arrow.
+Complexion_TattooLewdSlut_F01,"Complexion - ""SLUT"" on a buttock","(Tailbone)(Female) ""SLUT""",font changed to none stencil look. Location changed to tramp stamp position.
+Complexion_TattooLewdSlut_M01,"Complexion - ""SLUT"" on a buttock","(Tailbone)(Male) ""SLUT""",font changed to none stencil look. Location changed to tramp stamp position.
+Complexion_TattooLewdWhore_F01,"Complexion - ""WHORE"" on a buttock","(Left Butt)(Female) ""WHORE""",going to be replaced with new complete versions and locations
+Complexion_TattooLewdWhore_M01,"Complexion - ""WHORE"" on a buttock","(Left Butt)(Male) ""WHORE""",going to be replaced with new complete versions and locations
+Complexion_TattooLewdTipJar_F01,"Complexion - ""TIP JAR"" over the arse",,
+Complexion_TattooLewdTipJar_M01,"Complexion - ""TIP JAR"" over the arse",,
+Complexion_TattooLewdTally_F01,Complexion - tally marks: seventeen so far,(Tailbone)(Female) Tally Marks,remove rough edges of lines. Center tramp stamp.
+Complexion_TattooLewdTally_M01,Complexion - tally marks: seventeen so far,(Tailbone)(Male) Tally Marks,remove rough edges of lines. Center tramp stamp.
+Complexion_TattooGunnersTally_F01,Complexion - a kill tally on the forearm,(Right Forearm)(Female) Kill Tally,running sideways inner forearm from wrist to elbow. remove rough edges of lines.
+Complexion_TattooGunnersTally_M01,Complexion - a kill tally on the forearm,(Right Forearm)(Male) Kill Tally,running sideways inner forearm from wrist to elbow. remove rough edges of lines.
+Complexion_TattooGunnersTallyArm_F01,Complexion - a long kill tally on the upper arm,,
+Complexion_TattooGunnersTallyArm_M01,Complexion - a long kill tally on the upper arm,,
+Complexion_TattooAceSpades_F01,Complexion - the ace of spades,(Pelvis)(Female) Ace of Spades,place on left pelvic hip bone angled at 40 degrees with base of the card pointing towards pelvis.
+Complexion_TattooAceSpades_M01,Complexion - the ace of spades,(Pelvis)(Male) Ace of Spades,place on left pelvic hip bone angled at 40 degrees with base of the card pointing towards pelvis.
+Complexion_TattooDice_F01,Complexion - a pair of dice,(Left Upper Arm)(Female) Dice,make the dice snake eyes (double 1’s)
+Complexion_TattooDice_M01,Complexion - a pair of dice,(Left Upper Arm)(Male) Dice,"make the dice snake eyes (double 1’s), move away from armpit closer to outer arm."
+Complexion_TattooLucky_F01,"Complexion - a horseshoe, LUCKY",(Left Chest)(Female) Lucky Horseshoe,needs to use the upper back version of this image.
+Complexion_TattooLucky_M01,"Complexion - a horseshoe, LUCKY",(Left Chest)(Male) Lucky Horseshoe,needs to use the upper back version of this image.
+Complexion_TattooLuckyBack_F01,Complexion - a big LUCKY horseshoe on the back,(Upper Back)(Female) Lucky Horseshoe,
+Complexion_TattooLuckyBack_M01,Complexion - a big LUCKY horseshoe on the back,(Upper Back)(Male) Lucky Horseshoe,
+Complexion_TattooDollar_F01,Complexion - a dollar sign in stars,(Pelvis)(Female) Dollar & Stars,centered
+Complexion_TattooDollar_M01,Complexion - a dollar sign in stars,(Cock)(Male) Dollar & Stars,wrapped around erect cock centered at top of erect cock. 
+Complexion_TattooVault81_F01,Complexion - Vault 81 in the gear,(Right Upper Arm)(Female) Vault 81 Gear,
+Complexion_TattooVault81_M01,Complexion - Vault 81 in the gear,(Right Upper Arm)(Male) Vault 81 Gear,drop location by 2cm
+Complexion_TattooVault81Word_F01,"Complexion - ""VAULT 81"" on the forearm",,
+Complexion_TattooVault81Word_M01,"Complexion - ""VAULT 81"" on the forearm",,
+Complexion_TattooArmbandBarbed_F01,Complexion - a barbed-wire armband,(Right Upper Arm)(Female) Barbed Wire Band,going to be replaced with new complete versions and locations
+Complexion_TattooArmbandBarbed_M01,Complexion - a barbed-wire armband,(Right Upper Arm)(Male) Barbed Wire Band,going to be replaced with new complete versions and locations
+Complexion_TattooArmbandTribal_F01,Complexion - a tribal armband,(Left Upper Arm)(Female) Tribal Armband,going to be replaced with new complete versions and locations
+Complexion_TattooArmbandTribal_M01,Complexion - a tribal armband,(Left Upper Arm)(Male) Tribal Armband,going to be replaced with new complete versions and locations
+Complexion_TattooArmbandKnots_F01,Complexion - a knotwork band on the forearm,(Right Forearm)(Female) Knotwork Band,going to be replaced with new complete versions and locations
+Complexion_TattooArmbandKnots_M01,Complexion - a knotwork band on the forearm,(Right Forearm)(Male) Knotwork Band,going to be replaced with new complete versions and locations
+Complexion_TattooAnkleChain_F01,Complexion - a chain round the ankle,(Left Ankle)(Female) Chain Anklet,going to be replaced with new complete versions and locations
+Complexion_TattooAnkleChain_M01,Complexion - a chain round the ankle,(Left Ankle)(Male) Chain Anklet,going to be replaced with new complete versions and locations
+Complexion_TattooThighGarter_F01,Complexion - a lace garter round the thigh,(Right Thigh)(Female) Lace Garter,going to be replaced with new complete versions and locations
+Complexion_TattooSleeveTribal_F01,Complexion - a tribal sleeve on the forearm,(Left Forearm)(Female) Tribal Sleeve,going to be replaced with new complete versions and locations
+Complexion_TattooSleeveTribal_M01,Complexion - a tribal sleeve on the forearm,(Left Forearm)(Male) Tribal Sleeve,going to be replaced with new complete versions and locations
+Complexion_TattooSleeveCalf_F01,Complexion - a tribal sleeve on the calf,(Right Calf)(Female) Tribal Sleeve,going to be replaced with new complete versions and locations
+Complexion_TattooSleeveCalf_M01,Complexion - a tribal sleeve on the calf,(Right Calf)(Male) Tribal Sleeve,going to be replaced with new complete versions and locations
+Complexion_FlashRose_F01,Complexion - flash: rose,(Right Forearm)(Female) Rose,
+Complexion_FlashRose_M01,Complexion - flash: rose,(Right Forearm)(Male) Rose,
+Complexion_FlashRoseChest_F01,Complexion - flash: rose,(Left Chest)(Female) Rose,
+Complexion_FlashRoseChest_M01,Complexion - flash: rose,(Left Chest)(Male) Rose,
+Complexion_FlashRoseThigh_F01,Complexion - flash: rose,(Right Thigh)(Female) Rose,
+Complexion_FlashRoseThigh_M01,Complexion - flash: rose,(Right Thigh)(Male) Rose,
+Complexion_FlashRoseYellow_F01,Complexion - flash: rose,(Left Shoulder)(Female) Yellow Rose,
+Complexion_FlashRoseYellow_M01,Complexion - flash: rose,(Left Shoulder)(Male) Yellow Rose,
+Complexion_FlashSkull_F01,Complexion - flash: skull,(Left Forearm)(Female) Skull,going to be replaced with new complete versions and locations
+Complexion_FlashSkull_M01,Complexion - flash: skull,(Left Forearm)(Male) Skull,going to be replaced with new complete versions and locations
+Complexion_FlashSkullBack_F01,Complexion - flash: skull,(Upper Back)(Female) Skull,going to be replaced with new complete versions and locations
+Complexion_FlashSkullBack_M01,Complexion - flash: skull,(Upper Back)(Male) Skull,going to be replaced with new complete versions and locations
+Complexion_FlashSkullBones_F01,Complexion - flash: skull bones,(Chest)(Female) Skull & Crossbones,going to be replaced with new complete versions and locations
+Complexion_FlashSkullBones_M01,Complexion - flash: skull bones,(Chest)(Male) Skull & Crossbones,going to be replaced with new complete versions and locations
+Complexion_FlashSkullCalf_F01,Complexion - flash: skull,(Right Calf)(Female) Red Skull,going to be replaced with new complete versions and locations
+Complexion_FlashSkullCalf_M01,Complexion - flash: skull,(Right Calf)(Male) Red Skull,going to be replaced with new complete versions and locations
+Complexion_FlashDagger_F01,Complexion - flash: dagger,,
+Complexion_FlashDagger_M01,Complexion - flash: dagger,,
+Complexion_FlashDaggerCalf_F01,Complexion - flash: dagger,,
+Complexion_FlashDaggerCalf_M01,Complexion - flash: dagger,,
+Complexion_FlashHeartMom_F01,Complexion - flash: heart banner,"(Right Upper Arm)(Female) Heart ""MOM""",
+Complexion_FlashHeartMom_M01,Complexion - flash: heart banner,"(Right Upper Arm)(Male) Heart ""MOM""",centered on middle outer shoulder.
+Complexion_FlashHeartTrueLove_F01,Complexion - flash: heart banner,"(Right Chest)(Female) Heart ""TRUE LOVE""",wording need to be made clearer to read with no pixeliation. 
+Complexion_FlashHeartTrueLove_M01,Complexion - flash: heart banner,"(Right Chest)(Male) Heart ""TRUE LOVE""",wording need to be made clearer to read with no pixeliation. 
+Complexion_FlashHeartNuka_F01,Complexion - flash: heart banner,"(Left Hip)(Female) Heart ""NUKA""",wording need to be made clearer to read with no pixeliation. 
+Complexion_FlashHeartNuka_M01,Complexion - flash: heart banner,"(Left Hip)(Male) Heart ""NUKA""",wording need to be made clearer to read with no pixeliation. 
+Complexion_FlashSwallowPair_F01,Complexion - flash: swallow pair,(Chest)(Female) Swallow Pair,
+Complexion_FlashSwallowPair_M01,Complexion - flash: swallow pair,(Chest)(Male) Swallow Pair,lower by 1 cm
+Complexion_FlashSwallow_F01,Complexion - flash: swallow,(Left Hip)(Female) Swallow,bird facing into body
+Complexion_FlashSwallow_M01,Complexion - flash: swallow,(Left Hip)(Male) Swallow,bird facing into body
+Complexion_FlashSwallowNeck_F01,Complexion - flash: swallow,(Back of Neck)(Female) Red Swallow,
+Complexion_FlashSwallowNeck_M01,Complexion - flash: swallow,(Back of Neck)(Male) Red Swallow,
+Complexion_FlashAnchor_F01,Complexion - (Right Wrist)(Female) Anchor&Heart,(Right Wrist)(Female) Anchor&Heart,
+Complexion_FlashAnchor_M01,Complexion - flash: anchor,,
+Complexion_FlashAnchorCalf_F01,Complexion - flash: anchor,,
+Complexion_FlashAnchorCalf_M01,Complexion - flash: anchor,,
+Complexion_FlashSnake_F01,Complexion - flash: snake,(Right Forearm)(Female) Snake,going to be replaced with new complete versions and locations
+Complexion_FlashSnake_M01,Complexion - flash: snake,(Right Forearm)(Male) Snake,going to be replaced with new complete versions and locations
+Complexion_FlashSnakeThigh_F01,Complexion - flash: snake,(Left Thigh)(Female) Blue Snake,going to be replaced with new complete versions and locations
+Complexion_FlashSnakeThigh_M01,Complexion - flash: snake,(Left Thigh)(Male) Blue Snake,going to be replaced with new complete versions and locations
+Complexion_FlashWeb_F01,Complexion - flash: web,,
+Complexion_FlashWeb_M01,Complexion - flash: web,,
+Complexion_FlashWebShoulder_F01,Complexion - flash: web,,
+Complexion_FlashWebShoulder_M01,Complexion - flash: web,,
+Complexion_FlashSpider_F01,Complexion - flash: spider,,
+Complexion_FlashSpider_M01,Complexion - flash: spider,,
+Complexion_FlashSpiderArm_F01,Complexion - flash: spider,,
+Complexion_FlashSpiderArm_M01,Complexion - flash: spider,,
+Complexion_FlashNauticalStar_F01,Complexion - flash: nautical star,(Right Wrist)(Female) Nautical Star,center inside wrist top point to hand. 
+Complexion_FlashNauticalStar_M01,Complexion - flash: nautical star,(Right Wrist)(Male) Nautical Star,center inside wrist top point to hand. 10% size increase
+Complexion_FlashNauticalStarHip_F01,Complexion - flash: nautical star,(Left Hip)(Female) Blue Nautical Star,change the blue to red. Move location to front left hip.
+Complexion_FlashNauticalStarHip_M01,Complexion - flash: nautical star,(Left Hip)(Male) Blue Nautical Star,change the blue to red. Move location to front left hip.
+Complexion_FlashLightning_F01,Complexion - flash: lightning,(Left Forearm)(Female) Lightning,20% size decrease
+Complexion_FlashLightning_M01,Complexion - flash: lightning,(Left Forearm)(Male) Lightning,going to be replaced with new complete versions and locations
+Complexion_FlashMushroomCloud_F01,Complexion - flash: mushroom cloud,(Upper Back)(Female) Mushroom Cloud,going to be replaced with new complete versions and locations
+Complexion_FlashMushroomCloud_M01,Complexion - flash: mushroom cloud,(Upper Back)(Male) Mushroom Cloud,going to be replaced with new complete versions and locations
+Complexion_FlashMushroomCloudArm_F01,Complexion - flash: mushroom cloud,(Left Upper Arm)(Female) Mushroom Cloud,going to be replaced with new complete versions and locations
+Complexion_FlashMushroomCloudArm_M01,Complexion - flash: mushroom cloud,(Left Upper Arm)(Male) Mushroom Cloud,going to be replaced with new complete versions and locations
+Complexion_FlashRadiation_F01,Complexion - flash: radiation,(Left Shoulder)(Female) Radiation,move closer to chest away from arm pit
+Complexion_FlashRadiation_M01,Complexion - flash: radiation,(Left Shoulder)(Male) Radiation,
+Complexion_FlashNukaCap_F01,Complexion - flash: nuka cap,(Right Forearm)(Female) Nuka Cap,going to be replaced with new complete versions and locations
+Complexion_FlashNukaCap_M01,Complexion - flash: nuka cap,(Right Forearm)(Male) Nuka Cap,going to be replaced with new complete versions and locations
+Complexion_FlashCherries_F01,Complexion - flash: cherries,(Right Hip)(Female) Cherries,
+Complexion_FlashCherries_M01,Complexion - flash: cherries,(Right Hip)(Male) Cherries,Raise 0.5 cm
+Complexion_FlashEye_F01,Complexion - flash: eye,(Upper Back)(Female) Eye,going to be replaced with new complete versions and locations
+Complexion_FlashEye_M01,Complexion - flash: eye,(Upper Back)(Male) Eye,going to be replaced with new complete versions and locations
+Complexion_FlashFlames_F01,Complexion - flash: flames,(Left Calf)(Female) Flames,going to be replaced with new complete versions and locations
+Complexion_FlashFlames_M01,Complexion - flash: flames,(Left Calf)(Male) Flames,going to be replaced with new complete versions and locations
+Complexion_FlashFlamesArm_F01,Complexion - flash: flames,(Right Forearm)(Female) Flames,going to be replaced with new complete versions and locations
+Complexion_FlashFlamesArm_M01,Complexion - flash: flames,(Right Forearm)(Male) Flames,going to be replaced with new complete versions and locations
+Complexion_FlashWolf_F01,Complexion - flash: wolf,,
+Complexion_FlashWolf_M01,Complexion - flash: wolf,,
+Complexion_FlashWolfBack_F01,Complexion - flash: wolf,,
+Complexion_FlashWolfBack_M01,Complexion - flash: wolf,,
+Complexion_FlashEagle_F01,Complexion - flash: eagle,(Chest)(Female) Eagle,decrease size 25% lower 1cm 
+Complexion_FlashEagle_M01,Complexion - flash: eagle,(Chest)(Male) Eagle,lower by 1 cm
+Complexion_FlashEagleBack_F01,Complexion - flash: eagle,(Upper Back)(Female) Eagle,decrease size 10% keep centered.
+Complexion_FlashEagleBack_M01,Complexion - flash: eagle,(Upper Back)(Male) Eagle,rotate left wing down below right wing matching females version angle.
+Complexion_FlashKoi_F01,Complexion - flash: koi,(Right Thigh)(Female) Koi,going to be replaced with new complete versions and locations
+Complexion_FlashKoi_M01,Complexion - flash: koi,(Right Thigh)(Male) Koi,going to be replaced with new complete versions and locations
+Complexion_FlashKoiCalf_F01,Complexion - flash: koi,(Left Calf)(Female) Red Koi,going to be replaced with new complete versions and locations
+Complexion_FlashKoiCalf_M01,Complexion - flash: koi,(Left Calf)(Male) Red Koi,going to be replaced with new complete versions and locations
+Complexion_FlashButterfly_F01,Complexion - flash: butterfly,(Lower Back)(Female) Butterfly,going to be replaced with new complete versions and locations
+Complexion_FlashButterfly_M01,Complexion - flash: butterfly,(Lower Back)(Male) Butterfly,going to be replaced with new complete versions and locations
+Complexion_FlashButterflyHip_F01,Complexion - flash: butterfly,(Right Hip)(Female) Purple Butterfly,going to be replaced with new complete versions and locations
+Complexion_FlashButterflyHip_M01,Complexion - flash: butterfly,(Right Hip)(Male) Purple Butterfly,going to be replaced with new complete versions and locations
+Complexion_FlashRevolver_F01,Complexion - flash: revolver,(Left Hip)(Female) Revolver,invert vertically
+Complexion_FlashRevolver_M01,Complexion - flash: revolver,(Left Hip)(Male) Revolver,invert vertically
+Complexion_FlashGrenade_F01,Complexion - flash: grenade,(Left Forearm)(Female) Grenade,going to be replaced with new complete versions and locations
+Complexion_FlashGrenade_M01,Complexion - flash: grenade,(Left Forearm)(Male) Grenade,going to be replaced with new complete versions and locations
+Complexion_FlashTombstone_F01,Complexion - flash: tombstone,(Right Calf)(Female) Tombstone,going to be replaced with new complete versions and locations
+Complexion_FlashTombstone_M01,Complexion - flash: tombstone,(Right Calf)(Male) Tombstone,going to be replaced with new complete versions and locations
+Complexion_FlashEightBall_F01,Complexion - flash: eight ball,(Right Forearm)(Female) Eight Ball,
+Complexion_FlashEightBall_M01,Complexion - flash: eight ball,(Right Forearm)(Male) Eight Ball,
+Complexion_FlashCompass_F01,Complexion - flash: compass,(Left Forearm)(Female) Compass,
+Complexion_FlashCompass_M01,Complexion - flash: compass,(Left Forearm)(Male) Compass,
+Complexion_FlashCompassBack_F01,Complexion - flash: compass,(Upper Back)(Female) Compass,going to be replaced with new complete versions and locations
+Complexion_FlashCompassBack_M01,Complexion - flash: compass,(Upper Back)(Male) Compass,going to be replaced with new complete versions and locations
+Complexion_VexAnchorThighLeft_F01,Complexion - (Left Thigh)(Female) Anchor&Heart,(Left Thigh)(Female) Anchor&Heart,
+Complexion_VexAnchorThighLeft_M01,Complexion - (Left Thigh)(Male) Anchor&Heart,(Left Thigh)(Male) Anchor&Heart,
+Complexion_VexAnchorThighRight_F01,Complexion - (Right Thigh)(Female) Anchor&Heart,(Right Thigh)(Female) Anchor&Heart,
+Complexion_VexAnchorThighRight_M01,Complexion - (Right Thigh)(Male) Anchor&Heart,(Right Thigh)(Male) Anchor&Heart,

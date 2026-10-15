@@ -183,7 +183,7 @@ def dagger(handle=RED):
     return a.done()
 
 
-def heart_banner(text='MOM', colour=RED):
+def heart_banner(text='MOM', colour=RED, font='western', px=600):
     a = Art(1.0, 0.85)
     a.shape(heart_pts(0.5, 0.40, 0.33), colour, width=0.026)
     a.line(ring(0.42, 0.30, 0.08, 0.06, np.pi * 1.1, np.pi * 1.6, 12), colour=BONE, width=0.022)  # highlight
@@ -191,8 +191,8 @@ def heart_banner(text='MOM', colour=RED):
     a.shape([(0.0, 0.44), (0.10, 0.44), (0.10, 0.60), (0.0, 0.60), (0.04, 0.52)], YELLOW, width=0.016)
     a.shape([(1.0, 0.44), (0.90, 0.44), (0.90, 0.60), (1.0, 0.60), (0.96, 0.52)], YELLOW, width=0.016)
     a.shape(band, BONE, width=0.018)
-    a.text(text, 0.5, 0.475, 0.10 if len(text) < 6 else 0.07)
-    return a.done()
+    a.text(text, 0.5, 0.475, 0.10 if len(text) < 6 else 0.07, font=font)
+    return a.done(px)
 
 
 def anchor(rope=YELLOW):

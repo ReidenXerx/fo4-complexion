@@ -1548,7 +1548,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooRaiderWord_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -1562,7 +1562,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooRaiderWord_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -1744,7 +1744,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooForever_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -1758,7 +1758,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooForever_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -1772,7 +1772,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooSteel_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -1786,7 +1786,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooSteel_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -1884,7 +1884,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooSold_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -1898,7 +1898,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooSold_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -1933,7 +1933,7 @@
  },
  {
   "id": "Complexion_TattooMandalaBack_F01",
-  "name": "Complexion - a mandala between the shoulders",
+  "name": "Complexion - (Upper Back)(Female) Mandala",
   "slots": [
    {
     "slot": 3,
@@ -1947,7 +1947,7 @@
  },
  {
   "id": "Complexion_TattooMandalaBack_M01",
-  "name": "Complexion - a mandala between the shoulders",
+  "name": "Complexion - (Upper Back)(Male) Mandala",
   "slots": [
    {
     "slot": 3,
@@ -1961,7 +1961,7 @@
  },
  {
   "id": "Complexion_TattooMandalaThigh_F01",
-  "name": "Complexion - a mandala on the thigh",
+  "name": "Complexion - (Right Thigh)(Female) Mandala",
   "slots": [
    {
     "slot": 3,
@@ -1975,7 +1975,7 @@
  },
  {
   "id": "Complexion_TattooMandalaThigh_M01",
-  "name": "Complexion - a mandala on the thigh",
+  "name": "Complexion - (Right Thigh)(Male) Mandala",
   "slots": [
    {
     "slot": 3,
@@ -1996,7 +1996,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooTribalLowerBack_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -2010,7 +2010,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooTribalLowerBack_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -2024,7 +2024,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooTribalShoulder_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -2038,7 +2038,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooTribalShoulder_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -2052,7 +2052,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooTribalChest_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -2066,14 +2066,14 @@
     "material": "overlays\\Complexion\\Complexion_TattooTribalChest_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
  },
  {
   "id": "Complexion_TattooBarcodeNeck_F01",
-  "name": "Complexion - a barcode on the neck",
+  "name": "Complexion - (Back of Neck)(Female) Barcode",
   "slots": [
    {
     "slot": 3,
@@ -2087,7 +2087,7 @@
  },
  {
   "id": "Complexion_TattooBarcodeNeck_M01",
-  "name": "Complexion - a barcode on the neck",
+  "name": "Complexion - (Back of Neck)(Male) Barcode",
   "slots": [
    {
     "slot": 3,
@@ -2101,7 +2101,7 @@
  },
  {
   "id": "Complexion_TattooBarcodeArm_F01",
-  "name": "Complexion - a barcode on the forearm",
+  "name": "Complexion - (Right Forearm)(Female) Barcode",
   "slots": [
    {
     "slot": 3,
@@ -2115,7 +2115,7 @@
  },
  {
   "id": "Complexion_TattooBarcodeArm_M01",
-  "name": "Complexion - a barcode on the forearm",
+  "name": "Complexion - (Right Forearm)(Male) Barcode",
   "slots": [
    {
     "slot": 3,
@@ -2136,7 +2136,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooPrisonDots_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -2150,7 +2150,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooPrisonDots_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -2248,7 +2248,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooVaultTecUpperArm_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -2262,14 +2262,14 @@
     "material": "overlays\\Complexion\\Complexion_TattooVaultTecUpperArm_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
  },
  {
   "id": "Complexion_TattooBoSBack_F01",
-  "name": "Complexion - a winged sword in a ring on the back",
+  "name": "Complexion - (Upper Back)(Female) BoS Winged Sword",
   "slots": [
    {
     "slot": 3,
@@ -2283,7 +2283,7 @@
  },
  {
   "id": "Complexion_TattooBoSBack_M01",
-  "name": "Complexion - a winged sword in a ring on the back",
+  "name": "Complexion - (Upper Back)(Male) BoS Winged Sword",
   "slots": [
    {
     "slot": 3,
@@ -2409,7 +2409,7 @@
  },
  {
   "id": "Complexion_TattooRaiderSkullChest_F01",
-  "name": "Complexion - a crude raider skull on the chest",
+  "name": "Complexion - (Right Chest)(Female) Raider Skull",
   "slots": [
    {
     "slot": 3,
@@ -2423,7 +2423,7 @@
  },
  {
   "id": "Complexion_TattooRaiderSkullChest_M01",
-  "name": "Complexion - a crude raider skull on the chest",
+  "name": "Complexion - (Right Chest)(Male) Raider Skull",
   "slots": [
    {
     "slot": 3,
@@ -2437,7 +2437,7 @@
  },
  {
   "id": "Complexion_TattooRaiderSkullBack_F01",
-  "name": "Complexion - a raider skull on the back",
+  "name": "Complexion - (Upper Back)(Female) Raider Skull",
   "slots": [
    {
     "slot": 3,
@@ -2451,7 +2451,7 @@
  },
  {
   "id": "Complexion_TattooRaiderSkullBack_M01",
-  "name": "Complexion - a raider skull on the back",
+  "name": "Complexion - (Upper Back)(Male) Raider Skull",
   "slots": [
    {
     "slot": 3,
@@ -2500,7 +2500,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooGunnersArm_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -2514,7 +2514,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooGunnersArm_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -2661,7 +2661,7 @@
  },
  {
   "id": "Complexion_TattooLewdBitch_M01",
-  "name": "Complexion - \"BITCH\" on a buttock",
+  "name": "Complexion - (Right Butt)(Male) \"BITCH\"",
   "slots": [
    {
     "slot": 3,
@@ -2731,7 +2731,7 @@
  },
  {
   "id": "Complexion_TattooLewdWhore_F01",
-  "name": "Complexion - \"WHORE\" on a buttock",
+  "name": "Complexion - (Left Butt)(Female) \"WHORE\"",
   "slots": [
    {
     "slot": 3,
@@ -2745,7 +2745,7 @@
  },
  {
   "id": "Complexion_TattooLewdWhore_M01",
-  "name": "Complexion - \"WHORE\" on a buttock",
+  "name": "Complexion - (Left Butt)(Male) \"WHORE\"",
   "slots": [
    {
     "slot": 3,
@@ -2766,7 +2766,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooLewdTipJar_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -2780,7 +2780,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooLewdTipJar_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -4082,7 +4082,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooGunnersTallyArm_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -4096,7 +4096,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooGunnersTallyArm_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -4187,7 +4187,7 @@
  },
  {
   "id": "Complexion_TattooLuckyBack_F01",
-  "name": "Complexion - a big LUCKY horseshoe on the back",
+  "name": "Complexion - (Upper Back)(Female) Lucky Horseshoe",
   "slots": [
    {
     "slot": 3,
@@ -4201,7 +4201,7 @@
  },
  {
   "id": "Complexion_TattooLuckyBack_M01",
-  "name": "Complexion - a big LUCKY horseshoe on the back",
+  "name": "Complexion - (Upper Back)(Male) Lucky Horseshoe",
   "slots": [
    {
     "slot": 3,
@@ -4243,7 +4243,7 @@
  },
  {
   "id": "Complexion_TattooVault81_F01",
-  "name": "Complexion - Vault 81 in the gear",
+  "name": "Complexion - (Right Upper Arm)(Female) Vault 81 Gear",
   "slots": [
    {
     "slot": 3,
@@ -4278,7 +4278,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooVault81Word_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -4292,7 +4292,7 @@
     "material": "overlays\\Complexion\\Complexion_TattooVault81Word_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -4831,7 +4831,7 @@
  },
  {
   "id": "Complexion_TattooArmbandBarbed_F01",
-  "name": "Complexion - a barbed-wire armband",
+  "name": "Complexion - (Right Upper Arm)(Female) Barbed Wire Band",
   "slots": [
    {
     "slot": 3,
@@ -4845,7 +4845,7 @@
  },
  {
   "id": "Complexion_TattooArmbandBarbed_M01",
-  "name": "Complexion - a barbed-wire armband",
+  "name": "Complexion - (Right Upper Arm)(Male) Barbed Wire Band",
   "slots": [
    {
     "slot": 3,
@@ -4859,7 +4859,7 @@
  },
  {
   "id": "Complexion_TattooArmbandTribal_F01",
-  "name": "Complexion - a tribal armband",
+  "name": "Complexion - (Left Upper Arm)(Female) Tribal Armband",
   "slots": [
    {
     "slot": 3,
@@ -4873,7 +4873,7 @@
  },
  {
   "id": "Complexion_TattooArmbandTribal_M01",
-  "name": "Complexion - a tribal armband",
+  "name": "Complexion - (Left Upper Arm)(Male) Tribal Armband",
   "slots": [
    {
     "slot": 3,
@@ -4887,7 +4887,7 @@
  },
  {
   "id": "Complexion_TattooArmbandKnots_F01",
-  "name": "Complexion - a knotwork band on the forearm",
+  "name": "Complexion - (Right Forearm)(Female) Knotwork Band",
   "slots": [
    {
     "slot": 3,
@@ -4901,7 +4901,7 @@
  },
  {
   "id": "Complexion_TattooArmbandKnots_M01",
-  "name": "Complexion - a knotwork band on the forearm",
+  "name": "Complexion - (Right Forearm)(Male) Knotwork Band",
   "slots": [
    {
     "slot": 3,
@@ -4915,7 +4915,7 @@
  },
  {
   "id": "Complexion_TattooAnkleChain_F01",
-  "name": "Complexion - a chain round the ankle",
+  "name": "Complexion - (Left Ankle)(Female) Chain Anklet",
   "slots": [
    {
     "slot": 3,
@@ -4929,7 +4929,7 @@
  },
  {
   "id": "Complexion_TattooAnkleChain_M01",
-  "name": "Complexion - a chain round the ankle",
+  "name": "Complexion - (Left Ankle)(Male) Chain Anklet",
   "slots": [
    {
     "slot": 3,
@@ -4943,7 +4943,7 @@
  },
  {
   "id": "Complexion_TattooThighGarter_F01",
-  "name": "Complexion - a lace garter round the thigh",
+  "name": "Complexion - (Right Thigh)(Female) Lace Garter",
   "slots": [
    {
     "slot": 3,
@@ -4957,7 +4957,7 @@
  },
  {
   "id": "Complexion_TattooSleeveTribal_F01",
-  "name": "Complexion - a tribal sleeve on the forearm",
+  "name": "Complexion - (Left Forearm)(Female) Tribal Sleeve",
   "slots": [
    {
     "slot": 3,
@@ -4971,7 +4971,7 @@
  },
  {
   "id": "Complexion_TattooSleeveTribal_M01",
-  "name": "Complexion - a tribal sleeve on the forearm",
+  "name": "Complexion - (Left Forearm)(Male) Tribal Sleeve",
   "slots": [
    {
     "slot": 3,
@@ -4985,7 +4985,7 @@
  },
  {
   "id": "Complexion_TattooSleeveCalf_F01",
-  "name": "Complexion - a tribal sleeve on the calf",
+  "name": "Complexion - (Right Calf)(Female) Tribal Sleeve",
   "slots": [
    {
     "slot": 3,
@@ -4999,7 +4999,7 @@
  },
  {
   "id": "Complexion_TattooSleeveCalf_M01",
-  "name": "Complexion - a tribal sleeve on the calf",
+  "name": "Complexion - (Right Calf)(Male) Tribal Sleeve",
   "slots": [
    {
     "slot": 3,
@@ -5139,7 +5139,7 @@
  },
  {
   "id": "Complexion_FlashRose_F01",
-  "name": "Complexion - flash: rose",
+  "name": "Complexion - (Right Forearm)(Female) Rose",
   "slots": [
    {
     "slot": 3,
@@ -5153,7 +5153,7 @@
  },
  {
   "id": "Complexion_FlashRose_M01",
-  "name": "Complexion - flash: rose",
+  "name": "Complexion - (Right Forearm)(Male) Rose",
   "slots": [
    {
     "slot": 3,
@@ -5167,7 +5167,7 @@
  },
  {
   "id": "Complexion_FlashRoseChest_F01",
-  "name": "Complexion - flash: rose",
+  "name": "Complexion - (Left Chest)(Female) Rose",
   "slots": [
    {
     "slot": 3,
@@ -5181,7 +5181,7 @@
  },
  {
   "id": "Complexion_FlashRoseChest_M01",
-  "name": "Complexion - flash: rose",
+  "name": "Complexion - (Left Chest)(Male) Rose",
   "slots": [
    {
     "slot": 3,
@@ -5195,7 +5195,7 @@
  },
  {
   "id": "Complexion_FlashRoseThigh_F01",
-  "name": "Complexion - flash: rose",
+  "name": "Complexion - (Right Thigh)(Female) Rose",
   "slots": [
    {
     "slot": 3,
@@ -5209,7 +5209,7 @@
  },
  {
   "id": "Complexion_FlashRoseThigh_M01",
-  "name": "Complexion - flash: rose",
+  "name": "Complexion - (Right Thigh)(Male) Rose",
   "slots": [
    {
     "slot": 3,
@@ -5223,7 +5223,7 @@
  },
  {
   "id": "Complexion_FlashRoseYellow_F01",
-  "name": "Complexion - flash: rose",
+  "name": "Complexion - (Left Shoulder)(Female) Yellow Rose",
   "slots": [
    {
     "slot": 3,
@@ -5237,7 +5237,7 @@
  },
  {
   "id": "Complexion_FlashRoseYellow_M01",
-  "name": "Complexion - flash: rose",
+  "name": "Complexion - (Left Shoulder)(Male) Yellow Rose",
   "slots": [
    {
     "slot": 3,
@@ -5251,7 +5251,7 @@
  },
  {
   "id": "Complexion_FlashSkull_F01",
-  "name": "Complexion - flash: skull",
+  "name": "Complexion - (Left Forearm)(Female) Skull",
   "slots": [
    {
     "slot": 3,
@@ -5265,7 +5265,7 @@
  },
  {
   "id": "Complexion_FlashSkull_M01",
-  "name": "Complexion - flash: skull",
+  "name": "Complexion - (Left Forearm)(Male) Skull",
   "slots": [
    {
     "slot": 3,
@@ -5279,7 +5279,7 @@
  },
  {
   "id": "Complexion_FlashSkullBack_F01",
-  "name": "Complexion - flash: skull",
+  "name": "Complexion - (Upper Back)(Female) Skull",
   "slots": [
    {
     "slot": 3,
@@ -5293,7 +5293,7 @@
  },
  {
   "id": "Complexion_FlashSkullBack_M01",
-  "name": "Complexion - flash: skull",
+  "name": "Complexion - (Upper Back)(Male) Skull",
   "slots": [
    {
     "slot": 3,
@@ -5307,7 +5307,7 @@
  },
  {
   "id": "Complexion_FlashSkullBones_F01",
-  "name": "Complexion - flash: skull bones",
+  "name": "Complexion - (Chest)(Female) Skull & Crossbones",
   "slots": [
    {
     "slot": 3,
@@ -5321,7 +5321,7 @@
  },
  {
   "id": "Complexion_FlashSkullBones_M01",
-  "name": "Complexion - flash: skull bones",
+  "name": "Complexion - (Chest)(Male) Skull & Crossbones",
   "slots": [
    {
     "slot": 3,
@@ -5335,7 +5335,7 @@
  },
  {
   "id": "Complexion_FlashSkullCalf_F01",
-  "name": "Complexion - flash: skull",
+  "name": "Complexion - (Right Calf)(Female) Red Skull",
   "slots": [
    {
     "slot": 3,
@@ -5349,7 +5349,7 @@
  },
  {
   "id": "Complexion_FlashSkullCalf_M01",
-  "name": "Complexion - flash: skull",
+  "name": "Complexion - (Right Calf)(Male) Red Skull",
   "slots": [
    {
     "slot": 3,
@@ -5370,7 +5370,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashDagger_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -5384,7 +5384,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashDagger_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -5398,7 +5398,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashDaggerCalf_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -5412,14 +5412,14 @@
     "material": "overlays\\Complexion\\Complexion_FlashDaggerCalf_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
  },
  {
   "id": "Complexion_FlashHeartMom_F01",
-  "name": "Complexion - flash: heart banner",
+  "name": "Complexion - (Right Upper Arm)(Female) Heart \"MOM\"",
   "slots": [
    {
     "slot": 3,
@@ -5503,7 +5503,7 @@
  },
  {
   "id": "Complexion_FlashSwallowPair_F01",
-  "name": "Complexion - flash: swallow pair",
+  "name": "Complexion - (Chest)(Female) Swallow Pair",
   "slots": [
    {
     "slot": 3,
@@ -5559,7 +5559,7 @@
  },
  {
   "id": "Complexion_FlashSwallowNeck_F01",
-  "name": "Complexion - flash: swallow",
+  "name": "Complexion - (Back of Neck)(Female) Red Swallow",
   "slots": [
    {
     "slot": 3,
@@ -5573,7 +5573,7 @@
  },
  {
   "id": "Complexion_FlashSwallowNeck_M01",
-  "name": "Complexion - flash: swallow",
+  "name": "Complexion - (Back of Neck)(Male) Red Swallow",
   "slots": [
    {
     "slot": 3,
@@ -5608,7 +5608,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashAnchor_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -5622,7 +5622,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashAnchorCalf_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -5636,14 +5636,14 @@
     "material": "overlays\\Complexion\\Complexion_FlashAnchorCalf_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
  },
  {
   "id": "Complexion_FlashSnake_F01",
-  "name": "Complexion - flash: snake",
+  "name": "Complexion - (Right Forearm)(Female) Snake",
   "slots": [
    {
     "slot": 3,
@@ -5657,7 +5657,7 @@
  },
  {
   "id": "Complexion_FlashSnake_M01",
-  "name": "Complexion - flash: snake",
+  "name": "Complexion - (Right Forearm)(Male) Snake",
   "slots": [
    {
     "slot": 3,
@@ -5671,7 +5671,7 @@
  },
  {
   "id": "Complexion_FlashSnakeThigh_F01",
-  "name": "Complexion - flash: snake",
+  "name": "Complexion - (Left Thigh)(Female) Blue Snake",
   "slots": [
    {
     "slot": 3,
@@ -5685,7 +5685,7 @@
  },
  {
   "id": "Complexion_FlashSnakeThigh_M01",
-  "name": "Complexion - flash: snake",
+  "name": "Complexion - (Left Thigh)(Male) Blue Snake",
   "slots": [
    {
     "slot": 3,
@@ -5706,7 +5706,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashWeb_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -5720,7 +5720,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashWeb_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -5734,7 +5734,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashWebShoulder_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -5748,7 +5748,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashWebShoulder_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -5762,7 +5762,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashSpider_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -5776,7 +5776,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashSpider_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -5790,7 +5790,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashSpiderArm_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -5804,7 +5804,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashSpiderArm_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -5881,7 +5881,7 @@
  },
  {
   "id": "Complexion_FlashLightning_M01",
-  "name": "Complexion - flash: lightning",
+  "name": "Complexion - (Left Forearm)(Male) Lightning",
   "slots": [
    {
     "slot": 3,
@@ -5895,7 +5895,7 @@
  },
  {
   "id": "Complexion_FlashMushroomCloud_F01",
-  "name": "Complexion - flash: mushroom cloud",
+  "name": "Complexion - (Upper Back)(Female) Mushroom Cloud",
   "slots": [
    {
     "slot": 3,
@@ -5909,7 +5909,7 @@
  },
  {
   "id": "Complexion_FlashMushroomCloud_M01",
-  "name": "Complexion - flash: mushroom cloud",
+  "name": "Complexion - (Upper Back)(Male) Mushroom Cloud",
   "slots": [
    {
     "slot": 3,
@@ -5923,7 +5923,7 @@
  },
  {
   "id": "Complexion_FlashMushroomCloudArm_F01",
-  "name": "Complexion - flash: mushroom cloud",
+  "name": "Complexion - (Left Upper Arm)(Female) Mushroom Cloud",
   "slots": [
    {
     "slot": 3,
@@ -5937,7 +5937,7 @@
  },
  {
   "id": "Complexion_FlashMushroomCloudArm_M01",
-  "name": "Complexion - flash: mushroom cloud",
+  "name": "Complexion - (Left Upper Arm)(Male) Mushroom Cloud",
   "slots": [
    {
     "slot": 3,
@@ -5965,7 +5965,7 @@
  },
  {
   "id": "Complexion_FlashRadiation_M01",
-  "name": "Complexion - flash: radiation",
+  "name": "Complexion - (Left Shoulder)(Male) Radiation",
   "slots": [
    {
     "slot": 3,
@@ -5979,7 +5979,7 @@
  },
  {
   "id": "Complexion_FlashNukaCap_F01",
-  "name": "Complexion - flash: nuka cap",
+  "name": "Complexion - (Right Forearm)(Female) Nuka Cap",
   "slots": [
    {
     "slot": 3,
@@ -5993,7 +5993,7 @@
  },
  {
   "id": "Complexion_FlashNukaCap_M01",
-  "name": "Complexion - flash: nuka cap",
+  "name": "Complexion - (Right Forearm)(Male) Nuka Cap",
   "slots": [
    {
     "slot": 3,
@@ -6007,7 +6007,7 @@
  },
  {
   "id": "Complexion_FlashCherries_F01",
-  "name": "Complexion - flash: cherries",
+  "name": "Complexion - (Right Hip)(Female) Cherries",
   "slots": [
    {
     "slot": 3,
@@ -6035,7 +6035,7 @@
  },
  {
   "id": "Complexion_FlashEye_F01",
-  "name": "Complexion - flash: eye",
+  "name": "Complexion - (Upper Back)(Female) Eye",
   "slots": [
    {
     "slot": 3,
@@ -6049,7 +6049,7 @@
  },
  {
   "id": "Complexion_FlashEye_M01",
-  "name": "Complexion - flash: eye",
+  "name": "Complexion - (Upper Back)(Male) Eye",
   "slots": [
    {
     "slot": 3,
@@ -6063,7 +6063,7 @@
  },
  {
   "id": "Complexion_FlashFlames_F01",
-  "name": "Complexion - flash: flames",
+  "name": "Complexion - (Left Calf)(Female) Flames",
   "slots": [
    {
     "slot": 3,
@@ -6077,7 +6077,7 @@
  },
  {
   "id": "Complexion_FlashFlames_M01",
-  "name": "Complexion - flash: flames",
+  "name": "Complexion - (Left Calf)(Male) Flames",
   "slots": [
    {
     "slot": 3,
@@ -6091,7 +6091,7 @@
  },
  {
   "id": "Complexion_FlashFlamesArm_F01",
-  "name": "Complexion - flash: flames",
+  "name": "Complexion - (Right Forearm)(Female) Flames",
   "slots": [
    {
     "slot": 3,
@@ -6105,7 +6105,7 @@
  },
  {
   "id": "Complexion_FlashFlamesArm_M01",
-  "name": "Complexion - flash: flames",
+  "name": "Complexion - (Right Forearm)(Male) Flames",
   "slots": [
    {
     "slot": 3,
@@ -6126,7 +6126,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashWolf_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -6140,7 +6140,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashWolf_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -6154,7 +6154,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashWolfBack_F01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 1
@@ -6168,7 +6168,7 @@
     "material": "overlays\\Complexion\\Complexion_FlashWolfBack_M01.bgem"
    }
   ],
-  "playable": true,
+  "playable": false,
   "transformable": true,
   "sort": 0,
   "gender": 0
@@ -6231,7 +6231,7 @@
  },
  {
   "id": "Complexion_FlashKoi_F01",
-  "name": "Complexion - flash: koi",
+  "name": "Complexion - (Right Thigh)(Female) Koi",
   "slots": [
    {
     "slot": 3,
@@ -6245,7 +6245,7 @@
  },
  {
   "id": "Complexion_FlashKoi_M01",
-  "name": "Complexion - flash: koi",
+  "name": "Complexion - (Right Thigh)(Male) Koi",
   "slots": [
    {
     "slot": 3,
@@ -6259,7 +6259,7 @@
  },
  {
   "id": "Complexion_FlashKoiCalf_F01",
-  "name": "Complexion - flash: koi",
+  "name": "Complexion - (Left Calf)(Female) Red Koi",
   "slots": [
    {
     "slot": 3,
@@ -6273,7 +6273,7 @@
  },
  {
   "id": "Complexion_FlashKoiCalf_M01",
-  "name": "Complexion - flash: koi",
+  "name": "Complexion - (Left Calf)(Male) Red Koi",
   "slots": [
    {
     "slot": 3,
@@ -6287,7 +6287,7 @@
  },
  {
   "id": "Complexion_FlashButterfly_F01",
-  "name": "Complexion - flash: butterfly",
+  "name": "Complexion - (Lower Back)(Female) Butterfly",
   "slots": [
    {
     "slot": 3,
@@ -6301,7 +6301,7 @@
  },
  {
   "id": "Complexion_FlashButterfly_M01",
-  "name": "Complexion - flash: butterfly",
+  "name": "Complexion - (Lower Back)(Male) Butterfly",
   "slots": [
    {
     "slot": 3,
@@ -6315,7 +6315,7 @@
  },
  {
   "id": "Complexion_FlashButterflyHip_F01",
-  "name": "Complexion - flash: butterfly",
+  "name": "Complexion - (Right Hip)(Female) Purple Butterfly",
   "slots": [
    {
     "slot": 3,
@@ -6329,7 +6329,7 @@
  },
  {
   "id": "Complexion_FlashButterflyHip_M01",
-  "name": "Complexion - flash: butterfly",
+  "name": "Complexion - (Right Hip)(Male) Purple Butterfly",
   "slots": [
    {
     "slot": 3,
@@ -6371,7 +6371,7 @@
  },
  {
   "id": "Complexion_FlashGrenade_F01",
-  "name": "Complexion - flash: grenade",
+  "name": "Complexion - (Left Forearm)(Female) Grenade",
   "slots": [
    {
     "slot": 3,
@@ -6385,7 +6385,7 @@
  },
  {
   "id": "Complexion_FlashGrenade_M01",
-  "name": "Complexion - flash: grenade",
+  "name": "Complexion - (Left Forearm)(Male) Grenade",
   "slots": [
    {
     "slot": 3,
@@ -6399,7 +6399,7 @@
  },
  {
   "id": "Complexion_FlashTombstone_F01",
-  "name": "Complexion - flash: tombstone",
+  "name": "Complexion - (Right Calf)(Female) Tombstone",
   "slots": [
    {
     "slot": 3,
@@ -6413,7 +6413,7 @@
  },
  {
   "id": "Complexion_FlashTombstone_M01",
-  "name": "Complexion - flash: tombstone",
+  "name": "Complexion - (Right Calf)(Male) Tombstone",
   "slots": [
    {
     "slot": 3,
@@ -6427,7 +6427,7 @@
  },
  {
   "id": "Complexion_FlashEightBall_F01",
-  "name": "Complexion - flash: eight ball",
+  "name": "Complexion - (Right Forearm)(Female) Eight Ball",
   "slots": [
    {
     "slot": 3,
@@ -6441,7 +6441,7 @@
  },
  {
   "id": "Complexion_FlashEightBall_M01",
-  "name": "Complexion - flash: eight ball",
+  "name": "Complexion - (Right Forearm)(Male) Eight Ball",
   "slots": [
    {
     "slot": 3,
@@ -6455,7 +6455,7 @@
  },
  {
   "id": "Complexion_FlashCompass_F01",
-  "name": "Complexion - flash: compass",
+  "name": "Complexion - (Left Forearm)(Female) Compass",
   "slots": [
    {
     "slot": 3,
@@ -6469,7 +6469,7 @@
  },
  {
   "id": "Complexion_FlashCompass_M01",
-  "name": "Complexion - flash: compass",
+  "name": "Complexion - (Left Forearm)(Male) Compass",
   "slots": [
    {
     "slot": 3,
@@ -6483,7 +6483,7 @@
  },
  {
   "id": "Complexion_FlashCompassBack_F01",
-  "name": "Complexion - flash: compass",
+  "name": "Complexion - (Upper Back)(Female) Compass",
   "slots": [
    {
     "slot": 3,
@@ -6497,7 +6497,7 @@
  },
  {
   "id": "Complexion_FlashCompassBack_M01",
-  "name": "Complexion - flash: compass",
+  "name": "Complexion - (Upper Back)(Male) Compass",
   "slots": [
    {
     "slot": 3,
