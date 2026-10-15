@@ -377,9 +377,28 @@ def _(m):
 
 
 # --- Vex's per-overlay requests (10-15 on: one texture + its changes -> a render; the zip after his OK)
-@piece('Complexion_AtomScar_F01', 'moved to the upper back between the shoulder blades, 25% smaller', size=2048)
+def decal_row_at(m, tid, args, c, n, painter='decal'):
+    """decal_row with its spot moved to (c, n): the painters only take named spots, so the anchor answers c, n."""
+    real = decals.anchor
+    decals.anchor = lambda m_, spot, side=0: (c, n, np.array((0.0, 0.0, 1.0)))
+    try:
+        return decal_row(m, tid, args, painter)
+    finally:
+        decals.anchor = real
+
+
+ATOMSCAR_UP_CM = 10.5  # above the upper_back landmark: the highest the whole scar stays clear of the neck fade
+
+
+def atomscar_back(m, up_cm=None):
+    h = h_up(m, landmarks(m)['upper_back'], ATOMSCAR_UP_CM if up_cm is None else up_cm)
+    return decal_row_at(m, 'Complexion_AtomScar_F01', (('emblem', 'atom'), 'upper_back', 0, 6),
+                        *front_at(m, h, 0.0, -1), 'scar_decal')
+
+
+@piece('Complexion_AtomScar_F01', 'moved up the back as close to the neck as it goes unfaded, 25% smaller', size=2048)
 def _(m):
-    return decal_row(m, 'Complexion_AtomScar_F01', (('emblem', 'atom'), 'upper_back', 0, 6), 'scar_decal')
+    return atomscar_back(m)
 
 
 @both('Complexion_TattooHope', 'on the side of the hip (not the buttock), bolder lines')
