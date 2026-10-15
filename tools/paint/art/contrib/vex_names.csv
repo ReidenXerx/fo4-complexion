@@ -235,3 +235,7 @@ Complexion_AtomScar_F01,Complexion - the Atom cut into the chest,(Upper Back)(Fe
 Complexion_AtomScar_M01,Complexion - the Atom cut into the chest,(Upper Back)(Male) Atom Branding,"per-overlay request 10-15: moved to the same upper-back spot as the women's, as close to the neck as it goes unfaded, size unchanged (reworks.py)"
 Complexion_BackHairBlack_M01,"Complexion - back hair, black",(Back)(Male) Black Back Hair light,"per-overlay request 10-15: Vex's hair tile, thinned (reworks.py)"
 Complexion_BackHairBlackHeavy_M01,"Complexion - back hair, black",(Back)(Male) Black Back Hair,"per-overlay request 10-15: Vex's hair tile, 20% thicker than the light one (reworks.py)"
+Complexion_BackHairBrownLight_M01,"Complexion - back hair, brown",(Back)(Male) Brown Back Hair light,"per-overlay request 10-15: Vex's hair tile in brown, light (reworks.py)"
+Complexion_BackHairBrown_M01,"Complexion - back hair, brown",(Back)(Male) Brown Back Hair,"per-overlay request 10-15: Vex's hair tile in brown, heavy (reworks.py)"
+Complexion_BackHairGreyLight_M01,"Complexion - back hair, grey",(Back)(Male) Grey Back Hair light,"per-overlay request 10-15: Vex's hair tile in grey, light (reworks.py)"
+Complexion_BackHairGreyHeavy_M01,(new),(Back)(Male) Grey Back Hair,"per-overlay request 10-15: NEW id, Vex's hair tile in grey, heavy (reworks.py)"
