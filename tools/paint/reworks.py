@@ -708,9 +708,20 @@ def render(out, only=(), sex='', resume=False, sheets=True):
         artist_art.render(out, bases)
 
 
-def shown_name(tid):
-    row = mm.MARKS[INDEX[tid]]
-    return f'Complexion - {mm.NAMES.get(tid, row[5]["note"])}'
+LIVE = '5c0a729'   # the 0.1.7 release: the names testers' LooksMenu shows today
+
+
+def live_names():
+    """(id, gender) -> name, as the released overlays.json has them."""
+    import json
+    raw = subprocess.run(['git', 'show', f'{LIVE}:data/F4SE/Plugins/F4EE/Overlays/Complexion.esp/overlays.json'],
+                         cwd=HERE, capture_output=True, check=True).stdout
+    return {(e['id'], e['gender']): e['name'] for e in json.loads(raw)}
+
+
+def shown_name(tid, names):
+    female = mm.MARKS[INDEX[tid]][1] == 'female'
+    return f'{names[(tid, 1 if female else 0)]} ({"women" if female else "men"})'
 
 
 def multiply(a, b):
@@ -731,31 +742,39 @@ def test_mods(out, dest):
     id; a NEW one borrows a template Vex removed (same sex); the knuckles borrow nail templates. The men have two nail
     templates, so their mirrored copies come in a second mod over the first."""
     marks = out / 'marks'
-    removed = {s: [t for t in sorted(mm.REMOVED) if t.endswith(f'_{s}01')] for s in 'FM'}
+    names = live_names()
+    # borrow only removed templates whose name in LooksMenu is the only one of its kind, so a tester can find it
+    count = {}
+    for (t, g), nm in names.items():
+        count[(nm, g)] = count.get((nm, g), 0) + 1
+    removed = {s: [t for t in sorted(mm.REMOVED) if t.endswith(f'_{s}01')
+                   and count[(names[(t, 1 if s == 'F' else 0)], 1 if s == 'F' else 0)] == 1] for s in 'FM'}
     nails = {s: [r[0] for r in mm.MARKS if r[2] == 'nails' and r[0].endswith(f'_{s}01') and not r[5].get('retired')] for s in 'FM'}
     mods = {1: {}, 2: {}}          # mod -> {borrowed or own id: png or Image}
-    lines = {1: [], 2: []}
+    lines = {1: [], 2: []}  # (the knuckles never need a third)
     for tid in sorted(PIECES):
         if PIECES[tid]['hands'] or not (marks / f'{tid}_d.png').exists():
             continue
         if tid in INDEX and not mm.MARKS[INDEX[tid]][5].get('retired'):
             mods[1][tid] = marks / f'{tid}_d.png'
-            lines[1].append(f'{shown_name(tid)}  ->  {PIECES[tid]["what"]}')
+            g = 1 if tid.endswith('_F01') else 0
+            twins = count[(names[(tid, g)], g)]
+            lines[1].append(f'{shown_name(tid, names)}  ->  {PIECES[tid]["what"]}'
+                            + (f'   [{twins} entries have this name: one of them shows the new version]' if twins > 1 else ''))
         else:
             s = tid[-3]
             slot = removed[s].pop(0)
             mods[1][slot] = marks / f'{tid}_d.png'
-            lines[1].append(f'{shown_name(slot)}  ->  NEW {tid}: {PIECES[tid]["what"]}')
+            lines[1].append(f'{shown_name(slot, names)}  ->  NEW {tid}: {PIECES[tid]["what"]}')
     for s in 'FM':
-        free = list(nails[s])
+        free, mod = list(nails[s]), 1
         for k, (left, right) in enumerate(HAND_PAIRS):
-            mod = 1 if free else 2
-            if not free:
-                free = list(nails[s])
+            if not free:   # out of nail templates: the rest go in a second mod, over the same ones
+                free, mod = list(nails[s]), mod + 1
             slot = free.pop(0)
             img = multiply(marks / f'{left}_{s}01_d.png', marks / f'{right}_{s}01_d.png')
             mods[mod][slot] = img
-            lines[mod].append(f'{shown_name(slot)}  ->  hands: {left.split("Tattoo")[1]} (left hand) + '
+            lines[mod].append(f'{shown_name(slot, names)}  ->  hands: {left.split("Tattoo")[1]} (left hand) + '
                               f'{right.split("Tattoo")[1]} (right hand), {"women" if s == "F" else "men"}')
     dest.mkdir(parents=True, exist_ok=True)
     made = []
