@@ -442,7 +442,7 @@ def tile_fill(m, tid, tile_png, tile_cm, blur=24.0, full=85, reach=0.55, opacity
 
 @piece('Complexion_BackHairBlackHeavy_M01', "Vex's hair tile, thinned: strands with skin between, fading out gradually (4096)")
 def _(m):
-    return tile_fill(m, 'Complexion_BackHairBlackHeavy_M01', 'vex_thick_body_hair.jpg', 16.0)
+    return tile_fill(m, 'Complexion_BackHairBlackHeavy_M01', 'vex_thick_body_hair.jpg', 16.0, reach=0.62)   # Vex: 20% thicker (ink +20%)
 
 
 @both('Complexion_TattooHope', 'on the side of the hip (not the buttock), bolder lines')
