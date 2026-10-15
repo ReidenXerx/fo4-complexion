@@ -275,9 +275,9 @@ def flash_at(m, tid, design=None, width=None, move=None, rotate=None, at=None, u
                                  rot if rotate is None else rotate, 0.92, crude, seed, faded)
 
 
-def decal_row(m, tid, args):
+def decal_row(m, tid, args, painter='decal'):
     """make_marks' own decal painter with this row's seed (an unchanged look; a copy with new words)."""
-    return mm.paint('decal', m, np.random.default_rng(1000 + INDEX[tid]), args)
+    return mm.paint(painter, m, np.random.default_rng(1000 + INDEX[tid]), args)
 
 
 # ---------------------------------------------------------------- the pieces
@@ -374,6 +374,12 @@ def _(m):
 def _(m):
     return decal_row(m, 'Complexion_TattooLucky_' + ('F01' if m.sex == 'female' else 'M01'),
                      (('lucky',), 'chest', -1, 8 if m.sex == 'female' else 9, 'faded', 0.0))
+
+
+# --- Vex's per-overlay requests (10-15 on: one texture + its changes -> a render; the zip after his OK)
+@piece('Complexion_AtomScar_F01', 'moved to the upper back between the shoulder blades, 25% smaller', size=2048)
+def _(m):
+    return decal_row(m, 'Complexion_AtomScar_F01', (('emblem', 'atom'), 'upper_back', 0, 6), 'scar_decal')
 
 
 @both('Complexion_TattooHope', 'on the side of the hip (not the buttock), bolder lines')
