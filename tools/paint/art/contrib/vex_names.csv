@@ -231,3 +231,4 @@ Complexion_VexAnchorThighLeft_F01,Complexion - (Left Thigh)(Female) Anchor&Heart
 Complexion_VexAnchorThighLeft_M01,Complexion - (Left Thigh)(Male) Anchor&Heart,(Left Thigh)(Male) Anchor&Heart,
 Complexion_VexAnchorThighRight_F01,Complexion - (Right Thigh)(Female) Anchor&Heart,(Right Thigh)(Female) Anchor&Heart,
 Complexion_VexAnchorThighRight_M01,Complexion - (Right Thigh)(Male) Anchor&Heart,(Right Thigh)(Male) Anchor&Heart,
+Complexion_AtomScar_F01,Complexion - the Atom cut into the chest,(Upper Back)(Female) Atom Branding,"per-overlay request 10-15: moved up the back as close to the neck as it goes unfaded, 25% smaller (reworks.py)"
