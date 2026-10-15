@@ -410,7 +410,7 @@ def _(m):
     return atomscar_back(m)
 
 
-def tile_fill(m, tid, tile_png, tile_cm, blur=24.0, full=85, reach=0.55, opacity=0.85):
+def tile_fill(m, tid, tile_png, tile_cm, blur=24.0, full=85, reach=0.55, opacity=0.85, tint=None):
     """A seamless hair tile (art/contrib) as the fill of an existing mark: inside that mark's coverage (its painting at
     its own size, blurred over a few strands, full from the `full` percentile of its density), laid flat from behind
     with its strands down the back, tile_cm a repeat, shrunk once to about one tile pixel per texel. Strands, not a
@@ -434,10 +434,32 @@ def tile_fill(m, tid, tile_png, tile_cm, blur=24.0, full=85, reach=0.55, opacity
     tile = np.asarray(Image.open(HERE / 'art' / 'contrib' / tile_png).convert('RGB').resize((T, T), Image.LANCZOS),
                       dtype=np.float64) / 255.0
     rgb = tile[(((-P[..., 2] / span) % 1.0) * (T - 1)).astype(int), (((P[..., 0] / span) % 1.0) * (T - 1)).astype(int)]
+    if tint is not None:   # the tile recoloured: its mean on the back becomes tint, each strand keeps its variation
+        rgb = np.clip(rgb * (np.asarray(tint) / rgb[back].mean(0)), 0, 1)
     lum = rgb.mean(-1)
     lo, hi = np.percentile(lum[back], [5, 95])
     dark = np.clip((hi - lum) / (hi - lo), 0, 1)
     return rgb, np.clip((dark - 1 + env * reach) * 4, 0, 1) * opacity * m.covered
+
+
+# Vex 10-15: the same light/heavy hair in the other colours. The tile as he made it is the black; the brown takes the
+# step the tile took from the old black ink (x2.7 on its mean), from the old brown ink; the grey keeps the old grey ink's
+# tone (x2.7 would be near white, which a multiply overlay cannot show on skin).
+HAIR_TINT = {'brown': tuple(np.array((0.20, 0.13, 0.08)) * 2.7), 'grey': (0.45, 0.43, 0.42)}
+HAIR_REACH = {'light': 0.55, 'heavy': 0.62}
+
+
+def hair_piece(tid, colour, weight):
+    @piece(tid, f"Vex's hair tile, {weight}, {colour} (4096)")
+    def _(m):
+        return tile_fill(m, 'Complexion_BackHairBlackHeavy_M01', 'vex_thick_body_hair.jpg', 16.0,
+                         reach=HAIR_REACH[weight], tint=HAIR_TINT[colour])
+
+
+hair_piece('Complexion_BackHairBrownLight_M01', 'brown', 'light')
+hair_piece('Complexion_BackHairBrown_M01', 'brown', 'heavy')
+hair_piece('Complexion_BackHairGreyLight_M01', 'grey', 'light')
+hair_piece('Complexion_BackHairGreyHeavy_M01', 'grey', 'heavy')   # NEW id (no heavy grey existed)
 
 
 @piece('Complexion_BackHairBlack_M01', "Vex's hair tile, the thinned version (as previewed for the heavy one) (4096)")
