@@ -248,3 +248,13 @@ Complexion_BiteShoulder_F01,Complexion - a bite mark on the shoulder,(Shoulder)(
 Complexion_BiteShoulder_M01,Complexion - a bite mark on the shoulder,(Shoulder)(Male) Bite Mark,"per-overlay request 10-17: the tooth-dent dots removed, the bruise kept (reworks.py)"
 Complexion_BiteThigh_F01,Complexion - bite marks on the inner thigh and a buttock,(Butt)(Female) Bite Mark,"per-overlay request 10-17: dots removed; the stray dots-only ring on the outer left thigh made a bruise (option C, reworks.py)"
 Complexion_BiteThigh_M01,Complexion - bite marks on the inner thigh and a buttock,(Butt)(Male) Bite Mark,"per-overlay request 10-17: dots removed; the stray dots-only ring on the outer right thigh made a bruise (option C, reworks.py)"
+Complexion_Blood_F01,"Complexion - dried blood, drips, spatter",(Ribs & Shoulder)(Female) Blood Splatter,per-overlay request 10-17: 15% fainter (reworks.FADES)
+Complexion_Blood_F02,"Complexion - dried blood, drips, spatter",(Upper Back)(Female) Blood Splatter,per-overlay request 10-17: 15% fainter (reworks.FADES)
+Complexion_Blood_F03,"Complexion - dried blood, drips, spatter",(Back)(Female) Blood Splatter,per-overlay request 10-17: 15% fainter (reworks.FADES)
+Complexion_Blood_M01,"Complexion - dried blood, drips, spatter",(Lower Back)(Male) Blood Splatter,per-overlay request 10-17: 15% fainter (reworks.FADES)
+Complexion_Blood_M02,"Complexion - dried blood, drips, spatter",(Waist & Arm)(Male) Blood Splatter,per-overlay request 10-17: 15% fainter (reworks.FADES)
+Complexion_Blood_M03,"Complexion - dried blood, drips, spatter",(Waist)(Male) Blood Splatter,per-overlay request 10-17: 15% fainter (reworks.FADES)
+Complexion_BloodyHands_F01,Complexion - bloody handprints on the chest and belly,(Chest & Belly)(Female) Bloody Handprints,per-overlay request 10-17: 15% fainter (reworks.FADES)
+Complexion_BloodyHands_M01,Complexion - bloody handprints on the chest and belly,(Chest & Belly)(Male) Bloody Handprints,per-overlay request 10-17: 15% fainter (reworks.FADES)
+Complexion_BloodyHandsThigh_F01,Complexion - bloody handprints on the chest and a thigh,(Chest & Thigh)(Female) Bloody Handprints,per-overlay request 10-17: 15% fainter (reworks.FADES)
+Complexion_BloodyHandsThigh_M01,Complexion - bloody handprints on the chest and a thigh,(Chest & Thigh)(Male) Bloody Handprints,per-overlay request 10-17: 15% fainter (reworks.FADES)
