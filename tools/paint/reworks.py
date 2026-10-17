@@ -515,6 +515,39 @@ for _tid in ('Complexion_Birthmark_F01', 'Complexion_Birthmark_F02', 'Complexion
     birthmark_piece(_tid)
 
 
+def bites_no_dents(m, tid):
+    """real.bites as the row paints it (same seed, same spots, same suction bruise), without the tooth dents: the
+    crisp dark-red crescents and their swollen rims, the deep-red dots circling each mark (Vex 10-17)."""
+    import life
+    import real
+    n_ = INDEX[tid]
+    places = mm.MARKS[n_][3][0]
+    rng = np.random.default_rng(1000 + n_)
+    P = Painter(m)
+    rgb, alpha = real.blank(m)
+    dent = np.zeros(m.covered.shape)
+    bruise = np.zeros(m.covered.shape)
+    tw = life.torso_width(P)
+    L = landmarks(m)
+    for place in places:
+        side = 1 if rng.random() < 0.5 else -1
+        if place == 'breast':
+            tip = L['nipples'][side]
+            c, n = life.spot(P, P.reg('torso'), tip[0] - side * 2.5, L['nipple'] + 0.03, 0.4)
+        elif place == 'neck':
+            c, n = life.spot(P, P.reg('torso', 'head'), side * 0.3 * tw, L['top'] - 0.035, 0.0)
+        else:
+            raise ValueError(place)
+        life._bite(P, dent, bruise, c, n, rng, rng.uniform(0.9, 1.1))
+    real.contusion(P, rgb, alpha, np.clip(bruise * 1.3, 0, 1), rng, 'fresh', 0.5)
+    return rgb, alpha * seams.seam_fade(m)   # the row's own neck fade (the neck bite sits near it)
+
+
+@piece('Complexion_BiteBreast_F01', 'the deep-red tooth-dent dots round both marks removed, the bruise kept', size=2048)
+def _(m):
+    return bites_no_dents(m, 'Complexion_BiteBreast_F01')
+
+
 @both('Complexion_TattooHope', 'on the side of the hip (not the buttock), bolder lines')
 def _(m):
     c, n = side_at(m, h_up(m, landmarks(m)['crotch'], 9.0), 1)
