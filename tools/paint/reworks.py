@@ -515,9 +515,10 @@ for _tid in ('Complexion_Birthmark_F01', 'Complexion_Birthmark_F02', 'Complexion
     birthmark_piece(_tid)
 
 
-def bites_no_dents(m, tid):
+def bites_no_dents(m, tid, keep=()):
     """real.bites as the row paints it (same seed, same spots, same suction bruise), without the tooth dents: the
-    crisp dark-red crescents and their swollen rims, the deep-red dots circling each mark (Vex 10-17)."""
+    crisp dark-red crescents and their swollen rims, the deep-red dots circling each mark (Vex 10-17). keep: places
+    whose dents stay as they were (the inner thigh's bite has no bruise under it, so without its dents it is gone)."""
     import life
     import real
     n_ = INDEX[tid]
@@ -526,7 +527,9 @@ def bites_no_dents(m, tid):
     P = Painter(m)
     rgb, alpha = real.blank(m)
     dent = np.zeros(m.covered.shape)
+    kept = np.zeros(m.covered.shape)
     bruise = np.zeros(m.covered.shape)
+    ch = life.crotch_h(P)
     tw = life.torso_width(P)
     L = landmarks(m)
     for place in places:
@@ -534,18 +537,33 @@ def bites_no_dents(m, tid):
         if place == 'breast':
             tip = L['nipples'][side]
             c, n = life.spot(P, P.reg('torso'), tip[0] - side * 2.5, L['nipple'] + 0.03, 0.4)
+        elif place == 'inner_thigh':
+            c, n, _ = decals.anchor(m, 'inner_thigh', side)
+        elif place == 'butt':
+            c, n = life.spot(P, P.reg('torso', 'leg'), side * 0.45 * tw, ch + 0.06, -0.4)
         elif place == 'neck':
             c, n = life.spot(P, P.reg('torso', 'head'), side * 0.3 * tw, L['top'] - 0.035, 0.0)
         else:
-            raise ValueError(place)
-        life._bite(P, dent, bruise, c, n, rng, rng.uniform(0.9, 1.1))
+            c, n, _ = decals.anchor(m, 'shoulder', side)
+        life._bite(P, kept if place in keep else dent, bruise, c, n, rng, rng.uniform(0.9, 1.1))
     real.contusion(P, rgb, alpha, np.clip(bruise * 1.3, 0, 1), rng, 'fresh', 0.5)
+    seed = int(rng.integers(1 << 30))
+    if keep:   # real.bites' own dent shading, on the kept places only
+        crisp = np.clip((kept - 0.35) * 4, 0, 1) * (0.75 + 0.35 * real.fbm(P.p, 10.0, seed, 2))
+        real.over(rgb, alpha, (0.52, 0.13, 0.14), np.clip(crisp * 0.75, 0, 0.75) * P.cov)
+        real.over(rgb, alpha, (0.62, 0.20, 0.26), np.clip((kept - crisp) * 0.6, 0, 0.5) * P.cov)
     return rgb, alpha * seams.seam_fade(m)   # the row's own neck fade (the neck bite sits near it)
 
 
-@piece('Complexion_BiteBreast_F01', 'the deep-red tooth-dent dots round both marks removed, the bruise kept', size=2048)
-def _(m):
-    return bites_no_dents(m, 'Complexion_BiteBreast_F01')
+def no_dents_piece(tid):
+    @piece(tid, 'the deep-red tooth-dent dots round the marks removed, the bruise kept', size=2048)
+    def _(m):
+        return bites_no_dents(m, tid)
+
+
+for _tid in ('Complexion_BiteBreast_F01', 'Complexion_BiteShoulder_F01', 'Complexion_BiteShoulder_M01',
+             'Complexion_BiteThigh_F01', 'Complexion_BiteThigh_M01'):   # Vex 10-17
+    no_dents_piece(_tid)
 
 
 @both('Complexion_TattooHope', 'on the side of the hip (not the buttock), bolder lines')
