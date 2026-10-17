@@ -582,6 +582,18 @@ for _tid in ('Complexion_BiteThigh_F01', 'Complexion_BiteThigh_M01'):   # Vex 10
     no_dents_piece(_tid, strays=True)
 
 
+# Vex 10-17: every blood texture 15% fainter. Not a repaint: the finished texture (make_marks' own painting of the
+# row) has its multiply pulled 15% of the way back to neutral, so the marks keep every shape and colour and are only
+# lighter on the skin. Intake: after make_marks paints these rows, fade_texture on their _d.png.
+FADES = {r[0]: 0.85 for r in mm.MARKS if r[0].startswith('Complexion_Blood')}
+
+
+def fade_texture(png, k):
+    """The multiply texture png (make_marks' RGB _d.png) with its strength scaled by k (1 = as is, 0 = no mark)."""
+    f = np.asarray(Image.open(png).convert('RGB'), dtype=np.float64) / 255.0
+    return Image.fromarray(np.clip(np.round((mm.NEUTRAL + k * (f - mm.NEUTRAL)) * 255.0), 0, 255).astype(np.uint8))
+
+
 @both('Complexion_TattooHope', 'on the side of the hip (not the buttock), bolder lines')
 def _(m):
     c, n = side_at(m, h_up(m, landmarks(m)['crotch'], 9.0), 1)
