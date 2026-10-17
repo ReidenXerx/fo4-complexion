@@ -239,3 +239,5 @@ Complexion_BackHairBrownLight_M01,"Complexion - back hair, brown",(Back)(Male) B
 Complexion_BackHairBrown_M01,"Complexion - back hair, brown",(Back)(Male) Brown Back Hair,"per-overlay request 10-15: Vex's hair tile in brown, heavy (reworks.py)"
 Complexion_BackHairGreyLight_M01,"Complexion - back hair, grey",(Back)(Male) Grey Back Hair light,"per-overlay request 10-15: Vex's hair tile in grey, light (reworks.py)"
 Complexion_BackHairGreyHeavy_M01,(new),(Back)(Male) Grey Back Hair,"per-overlay request 10-15: NEW id, Vex's hair tile in grey, heavy (reworks.py)"
+Complexion_Birthmark_F01,Complexion - a birthmark,(Leg)(Female) Birthmark,"per-overlay request 10-17: Vex's birthmark art at the old spot (reworks.py)"
+Complexion_Birthmark_F02,Complexion - a birthmark,(Back)(Female) Birthmark,"per-overlay request 10-17: Vex's birthmark art at the old spot (reworks.py)"
