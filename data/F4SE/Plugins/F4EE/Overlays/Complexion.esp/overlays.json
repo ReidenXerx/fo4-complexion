@@ -253,7 +253,7 @@
  },
  {
   "id": "Complexion_Blood_F01",
-  "name": "Complexion - dried blood, drips, spatter",
+  "name": "Complexion - (Ribs & Shoulder)(Female) Blood Splatter",
   "slots": [
    {
     "slot": 3,
@@ -267,7 +267,7 @@
  },
  {
   "id": "Complexion_Blood_F02",
-  "name": "Complexion - dried blood, drips, spatter",
+  "name": "Complexion - (Upper Back)(Female) Blood Splatter",
   "slots": [
    {
     "slot": 3,
@@ -281,7 +281,7 @@
  },
  {
   "id": "Complexion_Blood_F03",
-  "name": "Complexion - dried blood, drips, spatter",
+  "name": "Complexion - (Back)(Female) Blood Splatter",
   "slots": [
    {
     "slot": 3,
@@ -295,7 +295,7 @@
  },
  {
   "id": "Complexion_Blood_M01",
-  "name": "Complexion - dried blood, drips, spatter",
+  "name": "Complexion - (Lower Back)(Male) Blood Splatter",
   "slots": [
    {
     "slot": 3,
@@ -309,7 +309,7 @@
  },
  {
   "id": "Complexion_Blood_M02",
-  "name": "Complexion - dried blood, drips, spatter",
+  "name": "Complexion - (Waist & Arm)(Male) Blood Splatter",
   "slots": [
    {
     "slot": 3,
@@ -323,7 +323,7 @@
  },
  {
   "id": "Complexion_Blood_M03",
-  "name": "Complexion - dried blood, drips, spatter",
+  "name": "Complexion - (Waist)(Male) Blood Splatter",
   "slots": [
    {
     "slot": 3,
@@ -827,7 +827,7 @@
  },
  {
   "id": "Complexion_Birthmark_F01",
-  "name": "Complexion - a birthmark",
+  "name": "Complexion - (Leg)(Female) Birthmark",
   "slots": [
    {
     "slot": 3,
@@ -841,7 +841,7 @@
  },
  {
   "id": "Complexion_Birthmark_F02",
-  "name": "Complexion - a birthmark",
+  "name": "Complexion - (Back)(Female) Birthmark",
   "slots": [
    {
     "slot": 3,
@@ -855,7 +855,7 @@
  },
  {
   "id": "Complexion_Birthmark_M01",
-  "name": "Complexion - a birthmark",
+  "name": "Complexion - (Pelvis)(Male) Birthmark",
   "slots": [
    {
     "slot": 3,
@@ -869,7 +869,7 @@
  },
  {
   "id": "Complexion_Birthmark_M02",
-  "name": "Complexion - a birthmark",
+  "name": "Complexion - (Wrist)(Male) Birthmark",
   "slots": [
    {
     "slot": 3,
@@ -3151,7 +3151,7 @@
  },
  {
   "id": "Complexion_BiteShoulder_F01",
-  "name": "Complexion - a bite mark on the shoulder",
+  "name": "Complexion - (Shoulder)(Female) Bite Mark",
   "slots": [
    {
     "slot": 3,
@@ -3165,7 +3165,7 @@
  },
  {
   "id": "Complexion_BiteShoulder_M01",
-  "name": "Complexion - a bite mark on the shoulder",
+  "name": "Complexion - (Shoulder)(Male) Bite Mark",
   "slots": [
    {
     "slot": 3,
@@ -3179,7 +3179,7 @@
  },
  {
   "id": "Complexion_BiteBreast_F01",
-  "name": "Complexion - bite marks on a breast and the neck",
+  "name": "Complexion - (Chest)(Female) Bite Marks",
   "slots": [
    {
     "slot": 3,
@@ -3193,7 +3193,7 @@
  },
  {
   "id": "Complexion_BiteThigh_F01",
-  "name": "Complexion - bite marks on the inner thigh and a buttock",
+  "name": "Complexion - (Butt)(Female) Bite Mark",
   "slots": [
    {
     "slot": 3,
@@ -3207,7 +3207,7 @@
  },
  {
   "id": "Complexion_BiteThigh_M01",
-  "name": "Complexion - bite marks on the inner thigh and a buttock",
+  "name": "Complexion - (Butt)(Male) Bite Mark",
   "slots": [
    {
     "slot": 3,
@@ -3627,7 +3627,7 @@
  },
  {
   "id": "Complexion_BloodyHands_F01",
-  "name": "Complexion - bloody handprints on the chest and belly",
+  "name": "Complexion - (Chest & Belly)(Female) Bloody Handprints",
   "slots": [
    {
     "slot": 3,
@@ -3641,7 +3641,7 @@
  },
  {
   "id": "Complexion_BloodyHands_M01",
-  "name": "Complexion - bloody handprints on the chest and belly",
+  "name": "Complexion - (Chest & Belly)(Male) Bloody Handprints",
   "slots": [
    {
     "slot": 3,
@@ -3655,7 +3655,7 @@
  },
  {
   "id": "Complexion_BloodyHandsThigh_F01",
-  "name": "Complexion - bloody handprints on the chest and a thigh",
+  "name": "Complexion - (Chest & Thigh)(Female) Bloody Handprints",
   "slots": [
    {
     "slot": 3,
@@ -3669,7 +3669,7 @@
  },
  {
   "id": "Complexion_BloodyHandsThigh_M01",
-  "name": "Complexion - bloody handprints on the chest and a thigh",
+  "name": "Complexion - (Chest & Thigh)(Male) Bloody Handprints",
   "slots": [
    {
     "slot": 3,
@@ -3739,7 +3739,7 @@
  },
  {
   "id": "Complexion_AtomScar_F01",
-  "name": "Complexion - the Atom cut into the chest",
+  "name": "Complexion - (Upper Back)(Female) Atom Branding",
   "slots": [
    {
     "slot": 3,
@@ -3753,7 +3753,7 @@
  },
  {
   "id": "Complexion_AtomScar_M01",
-  "name": "Complexion - the Atom cut into the chest",
+  "name": "Complexion - (Upper Back)(Male) Atom Branding",
   "slots": [
    {
     "slot": 3,
@@ -4705,7 +4705,7 @@
  },
  {
   "id": "Complexion_BackHairBrown_M01",
-  "name": "Complexion - back hair, brown",
+  "name": "Complexion - (Back)(Male) Brown Back Hair",
   "slots": [
    {
     "slot": 3,
@@ -4747,7 +4747,7 @@
  },
  {
   "id": "Complexion_BackHairBlack_M01",
-  "name": "Complexion - back hair, black",
+  "name": "Complexion - (Back)(Male) Black Back Hair light",
   "slots": [
    {
     "slot": 3,
@@ -9185,7 +9185,7 @@
  },
  {
   "id": "Complexion_BackHairBrownLight_M01",
-  "name": "Complexion - back hair, brown",
+  "name": "Complexion - (Back)(Male) Brown Back Hair light",
   "slots": [
    {
     "slot": 3,
@@ -9199,7 +9199,7 @@
  },
  {
   "id": "Complexion_BackHairBlackHeavy_M01",
-  "name": "Complexion - back hair, black",
+  "name": "Complexion - (Back)(Male) Black Back Hair",
   "slots": [
    {
     "slot": 3,
@@ -9213,7 +9213,7 @@
  },
  {
   "id": "Complexion_BackHairGreyLight_M01",
-  "name": "Complexion - back hair, grey",
+  "name": "Complexion - (Back)(Male) Grey Back Hair light",
   "slots": [
    {
     "slot": 3,
@@ -9904,6 +9904,20 @@
    {
     "slot": 3,
     "material": "overlays\\Complexion\\Complexion_VexAnchorThighRight_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_BackHairGreyHeavy_M01",
+  "name": "Complexion - (Back)(Male) Grey Back Hair",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_BackHairGreyHeavy_M01.bgem"
    }
   ],
   "playable": true,

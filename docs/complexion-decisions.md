@@ -355,6 +355,18 @@ anyway: Complexion never decides for the player, and the window offers every tem
 - Artist work is previewed only (tools/paint/artist_art.py renders it into its own folder). It enters the build
   when the artist calls it final AND alasdairn approves it.
 
+## C-24: Vex's confirmed reworks enter the build (alasdairn, 2026-10-17)
+
+alasdairn: "any confirmed complexion changes are good to ship". A rework is confirmed when Vex OKs its render; only
+then is its row written to tools/paint/art/contrib/vex_names.csv, with a note starting "per-overlay request".
+
+- make_marks reads those rows as REWORKED. Each one is painted by its tools/paint/reworks.py piece and finished as its
+  approved render was: the tattoo seam fade, then the multiply. A FADES entry is applied to the finished texture
+  instead. Each rework also takes Vex's name. The ids, rows and seeds are unchanged, so saved looks show the new art.
+- The one new template, BackHairGreyHeavy_M01, is appended last and tagged like the light grey back hair.
+- The other reworks from 10-15 (rw15) keep their old art and names until Vex confirms each one.
+- Checked: every reworked texture in build/marks matches its approved render texel for texel.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

@@ -9021,5 +9021,19 @@
    "leg_r"
   ],
   "note": "anchor with a red heart, right outer thigh (by Vex)"
+ },
+ "m:Complexion_BackHairGreyHeavy_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "fits",
+  "adult": false,
+  "quality": "ok",
+  "kind": "body_hair",
+  "regions": [
+   "back"
+  ],
+  "size": "large",
+  "note": "back hair, grey",
+  "hair": "grey"
  }
 }

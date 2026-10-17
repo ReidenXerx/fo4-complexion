@@ -544,6 +544,9 @@ for side, label in ((-1, 'Left'), (1, 'Right')):
         add(f'VexAnchorThigh{label}', sexes, 'artist', ('vex_anchor_red_heart.png', 'thigh', side, 'outer', 10.0, None, shift),
             4096, dict(VEX, regions=['leg_l' if side < 0 else 'leg_r'],
                        note=f'anchor with a red heart, {label.lower()} outer thigh (by Vex)'), 1)
+# 2026-10-17: Vex's heavy grey back hair, the one NEW template among his per-overlay reworks (painted by
+# reworks.PIECES, below); tagged as the light grey one. Appended last: earlier seeds stay put.
+add('BackHairGreyHeavy', M, 'skin.back_hair', ('grey', 1.0), 2048, dict(R, kind='body_hair', regions=['back'], size='large', note='back hair, grey'), 1)
 
 
 def replace_row(tid, painter, args, size, tag):
@@ -573,9 +576,12 @@ def _vex_list():
     """Vex's edit of every tattoo's name (10-15, art/contrib/vex_names.csv): a name in his format; a blank name =
     REMOVED (kept installed so saved looks still find it, but not playable and untagged, so neither LooksMenu's list,
     Complexion's window nor the composers offer it); a note = a rework (tools/paint/reworks.py), whose new name
-    waits until its redrawn piece is in the build, so a name never describes a place the texture is not."""
+    waits until its redrawn piece is in the build, so a name never describes a place the texture is not.
+    A "per-overlay request" row is written only once Vex has OKed that piece's render (and alasdairn cleared his
+    confirmed changes to ship, 10-17): those are REWORKED -- painted by reworks.PIECES / faded by reworks.FADES -- and
+    take their new name."""
     import csv
-    names, removed = {}, set()
+    names, removed, reworked = {}, set(), set()
     with open(HERE / 'art' / 'contrib' / 'vex_names.csv', encoding='utf-8-sig', newline='') as f:
         rows = csv.reader(f)
         next(rows)
@@ -585,10 +591,13 @@ def _vex_list():
                 removed.add(tid)
             elif not note or note.startswith('going to be replaced'):
                 names[tid] = name.strip()
-    return names, removed
+            elif note.startswith('per-overlay request'):
+                names[tid] = name.strip()
+                reworked.add(tid)
+    return names, removed, reworked
 
 
-VEX_NAMES, REMOVED = _vex_list()
+VEX_NAMES, REMOVED, REWORKED = _vex_list()
 NAMES = {**VEX_NAMES, **NAMES}
 
 
@@ -782,19 +791,32 @@ def main():
             continue
         if a.missing and (tex_dir / f'{tid}_d.dds').exists():
             continue
+        piece = None
+        if tid in REWORKED:
+            import reworks   # here, not at the top: reworks imports this module
+            piece = reworks.PIECES.get(tid)
+            if piece:
+                size = piece['size']
         key = (sex, size, on_hands)
         if key not in maps:
             maps[key] = hands.HandMap(a.data, sex, size) if on_hands else UVMap(a.data, sex, size)
         m = maps[key]
-        rng = np.random.default_rng(1000 + n)
-        rgb, alpha = paint(painter, m, rng, args)
-        if not on_hands and painter not in SEAM_EXEMPT:
-            # no hard line against the head or hands (owner, 10-03); an artist's piece only at its very edge
-            alpha = alpha * (seams.seam_fade(m, *seams.TATTOO_FADE) if painter == 'artist' else seams.seam_fade(m))
+        if piece:   # Vex's confirmed rework, finished exactly as its approved render was (reworks.render, artist_art.save)
+            rgb, alpha = piece['fn'](m)
+            if not piece['hands']:
+                alpha = alpha * seams.seam_fade(m, *seams.TATTOO_FADE)
+        else:
+            rng = np.random.default_rng(1000 + n)
+            rgb, alpha = paint(painter, m, rng, args)
+            if not on_hands and painter not in SEAM_EXEMPT:
+                # no hard line against the head or hands (owner, 10-03); an artist's piece only at its very edge
+                alpha = alpha * (seams.seam_fade(m, *seams.TATTOO_FADE) if painter == 'artist' else seams.seam_fade(m))
         rgb = dilate(rgb, alpha, m.covered)
         img = bleed(multiplier(rgb, alpha), m.covered)
         png = work / f'{tid}_d.png'
         img.save(png)
+        if tid in REWORKED and tid in reworks.FADES:   # Vex 10-17: the finished texture pulled toward neutral
+            reworks.fade_texture(png, reworks.FADES[tid]).save(png)
         encode(tool, png, tex_dir, tid)
         (mat_dir / f'{tid}.bgem').write_bytes(bgem(f'overlays/Complexion/{tid}_d.dds', (hands.NORMAL if on_hands else NORMAL)[sex]))
         print(f'  {tid}: {painter}{args} {size}px, {float((alpha > 0.05).mean()) * 100:.1f}% of the map')
