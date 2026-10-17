@@ -472,6 +472,49 @@ def _(m):
     return tile_fill(m, 'Complexion_BackHairBlackHeavy_M01', 'vex_thick_body_hair.jpg', 16.0, reach=0.62)   # Vex: 20% thicker (ink +20%)
 
 
+def vex_birthmark(m, tid):
+    """Vex's birthmark art (art/contrib, 10-17) where the old painted one is: realism.birthmark's own spot (the row's
+    seed, drawn on the row's 2048 map), as wide across as the old one's ink, turned by the row's seed so the four
+    textures are not one stamp."""
+    n_ = INDEX[tid]
+    P = Painter(m)
+    c, n = P.pick_points(np.random.default_rng(1000 + n_), P.reg('torso', 'arm', 'leg') & (P.h > 0.2), 1)[0]
+    _, a0 = mm.paint('birthmark', m, np.random.default_rng(1000 + n_), ())
+    up = np.array((0.0, 0.0, 1.0)) - n * n[2]
+    right = np.cross(up / np.linalg.norm(up), n)
+    across = (m.position[a0 > 0.1] - c) @ right
+    width_cm = float(np.ptp(np.percentile(across, [2, 98]))) * CM
+    turn = float(np.random.default_rng(1000 + n_).uniform(0, 360))
+    png = HERE / 'art' / 'contrib' / 'vex_birthmark.png'
+    if tid in BIRTHMARK_WRAP:
+        place, side, face, from_wrist = BIRTHMARK_WRAP[tid]
+        art = Image.open(png).convert('RGBA')
+        art = art.crop(art.getbbox())
+        cm_per_px = width_cm / art.width
+        art = art.rotate(-turn, Image.BICUBIC, expand=True)   # turned first, so from_wrist holds for its real extent
+        art = art.crop(art.getbbox())
+        buf = io.BytesIO()
+        art.save(buf, 'PNG')
+        return artist_flat.place_design(m, buf, place, side, face, art.height * cm_per_px, from_end_cm=from_wrist)
+    return flat(m, Image.open(png).convert('RGBA'), c, n, width_cm, turn)
+
+
+# M02's old spot is on the inner right wrist, its edge on the mesh's end: a flat 7 cm stamp there ran off the arm and
+# broke up round the thin forearm, so it wraps round the forearm (inner face), its lower edge 2.5 cm above the wrist (the wrist's
+# cut slants: at 1.5 cm the inner side still came within the tattoo fade)
+BIRTHMARK_WRAP = {'Complexion_Birthmark_M02': ('forearm', 1, 'inner', 2.5)}
+
+
+def birthmark_piece(tid):
+    @piece(tid, "Vex's birthmark art, at the old birthmark's spot and size", size=2048)
+    def _(m):
+        return vex_birthmark(m, tid)
+
+
+for _tid in ('Complexion_Birthmark_F01', 'Complexion_Birthmark_F02', 'Complexion_Birthmark_M01', 'Complexion_Birthmark_M02'):
+    birthmark_piece(_tid)
+
+
 @both('Complexion_TattooHope', 'on the side of the hip (not the buttock), bolder lines')
 def _(m):
     c, n = side_at(m, h_up(m, landmarks(m)['crotch'], 9.0), 1)
