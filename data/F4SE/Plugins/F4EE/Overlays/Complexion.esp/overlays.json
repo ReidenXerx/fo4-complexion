@@ -3907,7 +3907,7 @@
  },
  {
   "id": "Complexion_BurnScar_F01",
-  "name": "Complexion - an old burn scar",
+  "name": "Complexion - (Leg)(Female) Burn Scar",
   "slots": [
    {
     "slot": 3,
@@ -3921,7 +3921,7 @@
  },
  {
   "id": "Complexion_BurnScar_M01",
-  "name": "Complexion - an old burn scar",
+  "name": "Complexion - (Arm)(Male) Burn Scar",
   "slots": [
    {
     "slot": 3,
