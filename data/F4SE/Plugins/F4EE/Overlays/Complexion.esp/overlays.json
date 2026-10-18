@@ -7169,7 +7169,7 @@
  },
  {
   "id": "Complexion_CafeAuLait_F01",
-  "name": "Complexion - cafe-au-lait spots",
+  "name": "Complexion - (Chest)(Female) CafeAuLait",
   "slots": [
    {
     "slot": 3,
@@ -7183,7 +7183,7 @@
  },
  {
   "id": "Complexion_CafeAuLait_F02",
-  "name": "Complexion - cafe-au-lait spots",
+  "name": "Complexion - (Back)(Female) CafeAuLait",
   "slots": [
    {
     "slot": 3,
@@ -7197,7 +7197,7 @@
  },
  {
   "id": "Complexion_CafeAuLait_M01",
-  "name": "Complexion - cafe-au-lait spots",
+  "name": "Complexion - (Stomach)(Male) CafeAuLait",
   "slots": [
    {
     "slot": 3,
@@ -7211,7 +7211,7 @@
  },
  {
   "id": "Complexion_CafeAuLait_M02",
-  "name": "Complexion - cafe-au-lait spots",
+  "name": "Complexion - (Thigh)(Male) CafeAuLait",
   "slots": [
    {
     "slot": 3,
