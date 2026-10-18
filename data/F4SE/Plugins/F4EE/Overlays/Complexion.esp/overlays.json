@@ -8975,7 +8975,7 @@
  },
  {
   "id": "Complexion_ChestSternumBrown_M01",
-  "name": "Complexion - sternum chest hair, brown",
+  "name": "Complexion - (Chest)(Male) Brown Sternum Hair",
   "slots": [
    {
     "slot": 3,
@@ -8989,7 +8989,7 @@
  },
  {
   "id": "Complexion_ChestSternumBlack_M01",
-  "name": "Complexion - sternum chest hair, black",
+  "name": "Complexion - (Chest)(Male) Black Sternum Hair",
   "slots": [
    {
     "slot": 3,
@@ -9003,7 +9003,7 @@
  },
  {
   "id": "Complexion_ChestSternumGinger_M01",
-  "name": "Complexion - sternum chest hair, ginger",
+  "name": "Complexion - (Chest)(Male) Ginger Sternum Hair",
   "slots": [
    {
     "slot": 3,
@@ -9017,7 +9017,7 @@
  },
  {
   "id": "Complexion_ChestSternumBlond_M01",
-  "name": "Complexion - sternum chest hair, blond",
+  "name": "Complexion - (Chest)(Male) Blond Sternum Hair",
   "slots": [
    {
     "slot": 3,
