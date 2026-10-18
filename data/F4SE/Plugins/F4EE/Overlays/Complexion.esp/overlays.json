@@ -1359,7 +1359,7 @@
  },
  {
   "id": "Complexion_ChestHairBrown_M01",
-  "name": "Complexion - chest hair, brown",
+  "name": "Complexion - (Chest)(Male) Brown Chest Hair",
   "slots": [
    {
     "slot": 3,
@@ -1373,7 +1373,7 @@
  },
  {
   "id": "Complexion_ChestHairBlack_M01",
-  "name": "Complexion - chest hair, black",
+  "name": "Complexion - (Chest)(Male) Black Chest Hair",
   "slots": [
    {
     "slot": 3,
@@ -1387,7 +1387,7 @@
  },
  {
   "id": "Complexion_ChestHairGrey_M01",
-  "name": "Complexion - chest hair, grey",
+  "name": "Complexion - (Chest)(Male) Grey Chest Hair",
   "slots": [
    {
     "slot": 3,
@@ -8919,7 +8919,7 @@
  },
  {
   "id": "Complexion_ChestLightBrown_M01",
-  "name": "Complexion - light chest hair, brown",
+  "name": "Complexion - (Chest)(Male) Brown Chest Hair -",
   "slots": [
    {
     "slot": 3,
@@ -8933,7 +8933,7 @@
  },
  {
   "id": "Complexion_ChestLightBlack_M01",
-  "name": "Complexion - light chest hair, black",
+  "name": "Complexion - (Chest)(Male) Black Chest Hair -",
   "slots": [
    {
     "slot": 3,
@@ -8947,7 +8947,7 @@
  },
  {
   "id": "Complexion_ChestLightGinger_M01",
-  "name": "Complexion - light chest hair, ginger",
+  "name": "Complexion - (Chest)(Male) Ginger Chest Hair -",
   "slots": [
    {
     "slot": 3,
@@ -8961,7 +8961,7 @@
  },
  {
   "id": "Complexion_ChestLightBlond_M01",
-  "name": "Complexion - light chest hair, blond",
+  "name": "Complexion - (Chest)(Male) Blond Chest Hair -",
   "slots": [
    {
     "slot": 3,
@@ -9031,7 +9031,7 @@
  },
  {
   "id": "Complexion_ChestHeavyBrown_M01",
-  "name": "Complexion - heavy chest hair, brown",
+  "name": "Complexion - (Chest)(Male) Brown Chest Hair +",
   "slots": [
    {
     "slot": 3,
@@ -9045,7 +9045,7 @@
  },
  {
   "id": "Complexion_ChestHeavyBlack_M01",
-  "name": "Complexion - heavy chest hair, black",
+  "name": "Complexion - (Chest)(Male) Black Chest Hair +",
   "slots": [
    {
     "slot": 3,
@@ -9059,7 +9059,7 @@
  },
  {
   "id": "Complexion_ChestHeavyGinger_M01",
-  "name": "Complexion - heavy chest hair, ginger",
+  "name": "Complexion - (Chest)(Male) Ginger Chest Hair +",
   "slots": [
    {
     "slot": 3,
@@ -9073,7 +9073,7 @@
  },
  {
   "id": "Complexion_ChestHeavyBlond_M01",
-  "name": "Complexion - heavy chest hair, blond",
+  "name": "Complexion - (Chest)(Male) Blond Chest Hair +",
   "slots": [
    {
     "slot": 3,
@@ -9087,7 +9087,7 @@
  },
  {
   "id": "Complexion_ChestFullGinger_M01",
-  "name": "Complexion - full chest hair, ginger",
+  "name": "Complexion - (Chest)(Male) Ginger Chest Hair",
   "slots": [
    {
     "slot": 3,
@@ -9101,7 +9101,7 @@
  },
  {
   "id": "Complexion_ChestFullBlond_M01",
-  "name": "Complexion - full chest hair, blond",
+  "name": "Complexion - (Chest)(Male) Blond Chest Hair",
   "slots": [
    {
     "slot": 3,
@@ -9115,7 +9115,7 @@
  },
  {
   "id": "Complexion_ChestFullDarkbrown_M01",
-  "name": "Complexion - full chest hair, darkbrown",
+  "name": "Complexion - (Chest)(Male) Dark Brown Chest Hair",
   "slots": [
    {
     "slot": 3,
@@ -9829,7 +9829,7 @@
  },
  {
   "id": "Complexion_ChestLightGrey_M01",
-  "name": "Complexion - light chest hair, grey",
+  "name": "Complexion - (Chest)(Male) Grey Chest Hair -",
   "slots": [
    {
     "slot": 3,
