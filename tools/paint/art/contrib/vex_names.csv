@@ -258,3 +258,9 @@ Complexion_BloodyHands_F01,Complexion - bloody handprints on the chest and belly
 Complexion_BloodyHands_M01,Complexion - bloody handprints on the chest and belly,(Chest & Belly)(Male) Bloody Handprints,per-overlay request 10-17: 15% fainter (reworks.FADES)
 Complexion_BloodyHandsThigh_F01,Complexion - bloody handprints on the chest and a thigh,(Chest & Thigh)(Female) Bloody Handprints,per-overlay request 10-17: 15% fainter (reworks.FADES)
 Complexion_BloodyHandsThigh_M01,Complexion - bloody handprints on the chest and a thigh,(Chest & Thigh)(Male) Bloody Handprints,per-overlay request 10-17: 15% fainter (reworks.FADES)
+Complexion_BruiseFresh_F01,Complexion - fresh bruises,(Body)(Female) Body Bruises,
+Complexion_BruiseFresh_F02,Complexion - fresh bruises,(Body)(Female) Body Bruises alt,
+Complexion_BruiseFresh_F03,Complexion - fresh bruises,(Body)(Female) Body Bruises alt2,
+Complexion_BruiseFresh_M01,Complexion - fresh bruises,(Body)(Male) Body Bruises,
+Complexion_BruiseFresh_M02,Complexion - fresh bruises,(Body)(Male) Body Bruises alt,
+Complexion_BruiseFresh_M03,Complexion - fresh bruises,(Body)(Male) Body Bruises alt2,

@@ -1,7 +1,7 @@
 [
  {
   "id": "Complexion_BruiseFresh_F01",
-  "name": "Complexion - fresh bruises",
+  "name": "Complexion - (Body)(Female) Body Bruises",
   "slots": [
    {
     "slot": 3,
@@ -15,7 +15,7 @@
  },
  {
   "id": "Complexion_BruiseFresh_F02",
-  "name": "Complexion - fresh bruises",
+  "name": "Complexion - (Body)(Female) Body Bruises alt",
   "slots": [
    {
     "slot": 3,
@@ -29,7 +29,7 @@
  },
  {
   "id": "Complexion_BruiseFresh_F03",
-  "name": "Complexion - fresh bruises",
+  "name": "Complexion - (Body)(Female) Body Bruises alt2",
   "slots": [
    {
     "slot": 3,
@@ -43,7 +43,7 @@
  },
  {
   "id": "Complexion_BruiseFresh_M01",
-  "name": "Complexion - fresh bruises",
+  "name": "Complexion - (Body)(Male) Body Bruises",
   "slots": [
    {
     "slot": 3,
@@ -57,7 +57,7 @@
  },
  {
   "id": "Complexion_BruiseFresh_M02",
-  "name": "Complexion - fresh bruises",
+  "name": "Complexion - (Body)(Male) Body Bruises alt",
   "slots": [
    {
     "slot": 3,
@@ -71,7 +71,7 @@
  },
  {
   "id": "Complexion_BruiseFresh_M03",
-  "name": "Complexion - fresh bruises",
+  "name": "Complexion - (Body)(Male) Body Bruises alt2",
   "slots": [
    {
     "slot": 3,
