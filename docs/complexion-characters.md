@@ -133,6 +133,7 @@ A mod character is matched only while their plugin is loaded. Ghouls, children a
 | Clint | base game | the Gunners crosshair on the shoulder; a kill tally on the forearm; one long scar; healed bullet wounds | the Gunner boss who took Quincy |
 | Cog | DLCCoast.esm | stitched scars | an Acadia synth who fixes things |
 | Daniel Finch | base game | tank-top tan lines; mud on the legs | Finch Farm's steady son |
+| Danny Sullivan | base game | "Mom" on the upper arm; healed bullet wounds | Diamond City's earnest gate guard |
 | Dean Volkert | base game | fine skin texture; thin pale scars | Institute Facilities |
 | Doc Crocker | base game | a smallpox vaccination scar; old cigarette burn scars | Diamond City's surgeon |
 | Doctor Carrington | base game | a tiny Railroad lantern; fine skin texture | the Railroad's doctor |
@@ -155,6 +156,7 @@ A mod character is matched only while their plugin is loaded. Ghouls, children a
 | Jack Cabot | base game | fine skin texture; a smallpox vaccination scar | a scientist the serum kept |
 | Jackson | DLCRobot.esm | healed bullet wounds; light ground-in dirt; scars on the arms | caravan guard who lost his caravan |
 | Jacob Forsythe | base game | Vault 81 in the gear; fine skin texture | Vault 81 resident |
+| Jacob Orden | base game | fine skin texture; tshirt tan lines | Covenant: a spotless town's spotless man |
 | Jake Finch | base game | (Right Chest)(Male) Raider Skull; fresh bruises; light ground-in dirt | the farm boy who ran with raiders |
 | John | base game | thin pale scars; "Mom" on the upper arm | deaf in one ear from the war |
 | Jun Long | base game | light ground-in dirt; thin pale scars | grieving survivor |

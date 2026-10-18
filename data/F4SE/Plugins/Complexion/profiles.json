@@ -9796,6 +9796,84 @@
     "acne": 0,
     "birthmark": 0
    }
+  },
+  "Jacob Orden": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "JacobOrden",
+     237523
+    ]
+   ],
+   "why": "Covenant: a spotless town's spotless man",
+   "fixed": [
+    "Complexion_PoresFine_M01",
+    "Complexion_TanTshirtLight_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Danny Sullivan": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DannySullivan",
+     102591
+    ]
+   ],
+   "why": "Diamond City's earnest gate guard",
+   "fixed": [
+    "Complexion_TattooMom_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   }
  },
  "personas": {
