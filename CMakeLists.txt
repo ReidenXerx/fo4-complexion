@@ -15,6 +15,12 @@ project(
 
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL" CACHE STRING "")
 
+# Optimised for size, with Control Flow Guard and CET: 0.1.9 built /O2 scored 5/75 on VirusTotal's ML engines
+# (Evo-gen, Cynet), CFG alone 1/75, /O1 0/75 (Publisher-bud, 2026-10-19). Every target, CommonLibF4 included.
+set(CMAKE_CXX_FLAGS "/DWIN32 /D_WINDOWS /EHsc /guard:cf" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_RELEASE "/O1 /Ob1 /DNDEBUG" CACHE STRING "" FORCE)
+set(CMAKE_SHARED_LINKER_FLAGS "/machine:x64 /guard:cf /CETCOMPAT" CACHE STRING "" FORCE)
+
 # One build for OG 1.10.163, NG 1.10.984 and AE 1.11.x through Runtime Database (CommonLibF4RD), as Silhouette
 # (S-75). OFF builds the OG-only plugin on alandtse's CommonLibF4.
 option(COMPLEXION_RUNTIME_DATABASE "Build on CommonLibF4RD for OG, NG and AE" ON)
