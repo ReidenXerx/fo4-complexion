@@ -462,6 +462,29 @@ hair_piece('Complexion_BackHairGreyLight_M01', 'grey', 'light')
 hair_piece('Complexion_BackHairGreyHeavy_M01', 'grey', 'heavy')   # NEW id (no heavy grey existed)
 
 
+# Vex 10-18: the chest hair in the back hair's texture, each in its own pattern (its coverage) and colour. The tints
+# follow the back hair's: black is the tile as he made it, brown its brown, grey its grey; dark brown takes the same x2.7
+# step from its old ink; blond and ginger keep their old ink (x2.7 would be near white, which a multiply cannot show).
+CHEST_TINT = {'black': None, 'brown': HAIR_TINT['brown'], 'grey': HAIR_TINT['grey'],
+              'darkbrown': tuple(np.array((0.12, 0.08, 0.05)) * 2.7), 'blond': (0.55, 0.42, 0.26), 'ginger': (0.42, 0.18, 0.07)}
+CHEST_REACH = {'Light': 0.55, 'Hair': 0.58, 'Full': 0.58, 'Sternum': 0.58, 'Heavy': 0.62}
+
+
+def chest_piece(weight, colour):
+    tid = f'Complexion_Chest{weight}{colour.title()}_M01'
+
+    @piece(tid, f"Vex's hair tile in its own chest pattern, {weight.lower()}, {colour} (4096)")
+    def _(m):
+        return tile_fill(m, tid, 'vex_thick_body_hair.jpg', 16.0, reach=CHEST_REACH[weight], tint=CHEST_TINT[colour])
+
+
+for _w, _cs in (('Full', ('blond', 'darkbrown', 'ginger')), ('Hair', ('black', 'brown', 'grey')),
+                ('Heavy', ('black', 'blond', 'brown', 'ginger')), ('Light', ('black', 'blond', 'brown', 'ginger', 'grey')),
+                ('Sternum', ('black', 'blond', 'brown', 'ginger'))):   # Vex 10-18: the sternum ones too
+    for _c in _cs:
+        chest_piece(_w, _c)
+
+
 @piece('Complexion_BackHairBlack_M01', "Vex's hair tile, the thinned version (as previewed for the heavy one) (4096)")
 def _(m):   # Vex 10-15: the thinned preview replaces the light back hair, inside the heavy one's coverage as he saw it
     return tile_fill(m, 'Complexion_BackHairBlackHeavy_M01', 'vex_thick_body_hair.jpg', 16.0)
