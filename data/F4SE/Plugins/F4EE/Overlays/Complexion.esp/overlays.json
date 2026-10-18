@@ -4579,7 +4579,7 @@
  },
  {
   "id": "Complexion_Cellulite_F01",
-  "name": "Complexion - cellulite",
+  "name": "Complexion - (Lower Body)(Female) Rashing",
   "slots": [
    {
     "slot": 3,
@@ -4593,7 +4593,7 @@
  },
  {
   "id": "Complexion_Cellulite_F02",
-  "name": "Complexion - cellulite",
+  "name": "Complexion - (Lower Body)(Female) Rashing alt",
   "slots": [
    {
     "slot": 3,
@@ -9619,7 +9619,7 @@
  },
  {
   "id": "Complexion_CelluliteMore_F01",
-  "name": "Complexion - cellulite",
+  "name": "Complexion - (Lower Body)(Female) Rashing +",
   "slots": [
    {
     "slot": 3,
@@ -9633,7 +9633,7 @@
  },
  {
   "id": "Complexion_CelluliteMore_F02",
-  "name": "Complexion - cellulite",
+  "name": "Complexion - (Lower Body)(Female) Rashing alt +",
   "slots": [
    {
     "slot": 3,

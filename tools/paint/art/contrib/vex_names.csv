@@ -274,3 +274,7 @@ Complexion_CafeAuLait_F01,Complexion - cafe-au-lait spots,(Chest)(Female) CafeAu
 Complexion_CafeAuLait_F02,Complexion - cafe-au-lait spots,(Back)(Female) CafeAuLait,
 Complexion_CafeAuLait_M01,Complexion - cafe-au-lait spots,(Stomach)(Male) CafeAuLait,
 Complexion_CafeAuLait_M02,Complexion - cafe-au-lait spots,(Thigh)(Male) CafeAuLait,
+Complexion_CelluliteMore_F01,Complexion - cellulite,(Lower Body)(Female) Rashing +,
+Complexion_CelluliteMore_F02,Complexion - cellulite,(Lower Body)(Female) Rashing alt +,
+Complexion_Cellulite_F01,Complexion - cellulite,(Lower Body)(Female) Rashing,
+Complexion_Cellulite_F02,Complexion - cellulite,(Lower Body)(Female) Rashing alt,
