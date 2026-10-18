@@ -60,7 +60,10 @@ set(SOURCES
 	"src/main.cpp"
 )
 
-add_library("${PROJECT_NAME}" SHARED ${SOURCES})
+# The DLL says what it is (a version resource): 0.1.9 without one scored 5/75 on VirusTotal ML engines (Evo-gen),
+# as VATS Bullets did until it had one.
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc.in" "${CMAKE_CURRENT_BINARY_DIR}/version.rc" @ONLY)
+add_library("${PROJECT_NAME}" SHARED ${SOURCES} "${CMAKE_CURRENT_BINARY_DIR}/version.rc")
 
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_23)
 
