@@ -57,11 +57,19 @@ def main():
             if fam not in hc['accept']:
                 errors.append(f'hair_colours: {edid} -> {fam}, a family "accept" does not list')
             hc['forms'].append([hit[0], edid, hit[1], fam])
+    tags = json.loads((ROOT / 'build' / 'tags.json').read_text(encoding='utf-8'))
+    # C-25: a signature look names templates by id; one that is not tagged and usable would silently never be worn.
+    usable = {k[2:] for k, t in tags.items() if t.get('quality') == 'ok' and t.get('lore') != 'breaks'}
+    for name, c in profiles.get('characters', {}).items():
+        for tid in c.get('fixed', []):
+            if tid not in usable:
+                errors.append(f'character {name}: fixed {tid} is not a tagged, usable template')
+        if len(c.get('fixed', [])) > profiles['cap']:
+            errors.append(f'character {name}: more fixed templates than the cap ({profiles["cap"]})')
     if errors:
         sys.exit('\n'.join(errors))
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / 'profiles.json').write_text(json.dumps(profiles, indent=1), encoding='utf-8', newline='\n')
-    tags = json.loads((ROOT / 'build' / 'tags.json').read_text(encoding='utf-8'))
     (OUT / 'tags.json').write_text(json.dumps(tags, indent=0, sort_keys=True), encoding='utf-8', newline='\n')
     print(f'profiles: {len(profiles["groups"])} groups, '
           f'{sum(len(g["factions"]) for g in profiles["groups"].values())} factions resolved; tags: {len(tags)} -> {OUT}')

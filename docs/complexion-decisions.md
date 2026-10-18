@@ -367,6 +367,30 @@ then is its row written to tools/paint/art/contrib/vex_names.csv, with a note st
 - The other reworks from 10-15 (rw15) keep their old art and names until Vex confirms each one.
 - Checked: every reworked texture in build/marks matches its approved render texel for texel.
 
+## C-25: Named characters wear a signature look of their own (owner, 2026-10-18)
+
+The owner, after Anatomy dressed dozens of named NPCs in outfits matching their vibes: "make unique overlays setups
+for them", women and men. C-10's characters had odds of their own, but their look was still a roll, different every
+playthrough (the seed carries the save's salt). Now a character in data/profiles.json "characters" can list `fixed`
+template ids: the same marks on them in every game, chosen from their story and outfit (Cait's cage scars and tribal
+sleeve, Kellogg's career of wounds, Nuka-World's superfan with a Nuka cap, a Gunner boss with the crosshair and a kill
+tally).
+
+- Both composers take the fixed templates first (step 0c), in file order, before anything rolls, so the cap cannot
+  crowd them out; no roll is drawn, so every group without `fixed` rolls exactly as before (parity). One that is not
+  loaded, is the other sex's, or does not suit the person by C-20/C-21 (hair, age, skin tone, rough living) is left
+  out, and adult ones need adult content allowed.
+- A signature character rolls no features (count 0) and none of the universal layer's freckles, skin, acne or
+  birthmarks; their pubic and body hair, moles and nipples still follow their body. Squalor is set so their pieces fit:
+  100 when one is a nasty mark, 0 when one is fine studio work.
+- Existing saves: a named character decided before this (under a faction's odds, or without one of their signature
+  marks) is decided again, once, when next seen; a look chosen by hand in the window stays.
+- New characters: the named women of Anatomy's outfit list (fo4-refit data/esl_named_npcs.json) and more, plus the
+  named men of the base game and DLCs; each record was read from its plugin (sex, HumanRace). Children, ghouls and
+  other races get nothing, as before. Mod characters match only while their plugin is loaded.
+- Only existing, approved templates are used; new signature art (the draft's ink-stained fingers, needle marks) would
+  go through the render and approval route of C-22.
+
 ## C-4: Rules carried over from Silhouette (2026-10-02)
 
 - One decision per NPC, made once and kept; nothing re-rolls on load.

@@ -9,6 +9,7 @@ This is the REFERENCE implementation. The plugin's C++ composer must give the sa
        tagged hair is one the family accepts (one colour per person, owner 2026-10-04)
     0b. squalor (C-21): one percent roll against the group's squalor -- only a person who lives rough gets a nasty
        template, and only one who does not gets a fine (studio) tattoo; and the person's age (old = grey hair) and skin tone keep templates that do not suit them out
+    0c. a named character's "fixed" templates (C-25), in file order, each one that suits them; no roll
     1. the universal layer: for each entry of the sex, in file order, a percent roll; on success one template of
        that kind (pubic hair limited to the group's hair sizes)
     2. the feature count: a percent roll walked through the group's count table, cut to the cap
@@ -128,6 +129,16 @@ def compose(profiles, catalog, female, group, seed, adult_allowed=True, persona=
             used_regions.update(t['regions'] or [])
         if t['size'] in ('large', 'full'):
             large = True
+
+    # 0c. a named character's signature look (C-25): their "fixed" templates, in file order, before anything rolls.
+    #     One that is not loaded here, is the other sex's, or does not suit them (hair, age, tone, rough living)
+    #     is left out; adult ones only while adult content is allowed. No roll is drawn, so seeds keep their order.
+    for tid in g.get('fixed', []):
+        if len(picks) >= profiles['cap']:
+            break
+        t = next((t for t in mine if t['id'] == tid), None)
+        if t and (adult_allowed or not adultish(t)) and not any(p['key'] == t['key'] for p in picks):
+            take(t, t['kind'])
 
     # 1. universal
     for u in profiles['universal']['female' if female else 'male']:

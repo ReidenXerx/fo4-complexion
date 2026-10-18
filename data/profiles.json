@@ -1263,8 +1263,8 @@
     ]
    ],
    "count": [
-    70,
-    30,
+    100,
+    0,
     0,
     0,
     0
@@ -1284,7 +1284,18 @@
    "hair": "any",
    "adult": 0,
    "why": "a reporter: a small inked word at most",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_FrecklesFaint_F01",
+    "Complexion_NailsBlackChipped_F01",
+    "Complexion_Vaccination_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Cait": {
    "forms": [
@@ -1295,11 +1306,11 @@
     ]
    ],
    "count": [
+    100,
     0,
-    10,
-    40,
-    40,
-    10
+    0,
+    0,
+    0
    ],
    "kinds": {
     "tattoo": 40,
@@ -1322,7 +1333,19 @@
    "hair": "wild",
    "adult": 0,
    "why": "Combat Zone cage fighter: scarred, bruised, crude ink",
-   "squalor": 80
+   "squalor": 100,
+   "fixed": [
+    "Complexion_ScarArms_F01",
+    "Complexion_BruiseOld_F01",
+    "Complexion_TattooSleeveTribal_F01",
+    "Complexion_CigBurnsHealed_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Curie": {
    "forms": [
@@ -1367,8 +1390,8 @@
     ]
    ],
    "count": [
-    40,
-    60,
+    100,
+    0,
     0,
     0,
     0
@@ -1388,7 +1411,18 @@
    "hair": "trim",
    "adult": 0,
    "why": "lounge singer: one small pretty piece",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_FlashRose_F01",
+    "Complexion_NailsRed_F01",
+    "Complexion_FlashSwallowNeck_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Desdemona": {
    "forms": [
@@ -1399,8 +1433,8 @@
     ]
    ],
    "count": [
-    80,
-    20,
+    100,
+    0,
     0,
     0,
     0
@@ -1409,7 +1443,9 @@
     "scar": 100
    },
    "styles": [],
-   "emblems": [],
+   "emblems": [
+    "railroad"
+   ],
    "sizes": [
     "tiny",
     "small"
@@ -1417,7 +1453,17 @@
    "hair": "any",
    "adult": 0,
    "why": "severe Railroad leader: an old scar",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_ScarThin_F01",
+    "Complexion_TattooRailroadWrist_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Glory": {
    "forms": [
@@ -1428,10 +1474,10 @@
     ]
    ],
    "count": [
+    100,
     0,
-    30,
-    50,
-    20,
+    0,
+    0,
     0
    ],
    "kinds": {
@@ -1453,7 +1499,19 @@
    "hair": "any",
    "adult": 0,
    "why": "the Railroad's heavy: scars and the lantern mark",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_ScarArms_F01",
+    "Complexion_BulletScars_F01",
+    "Complexion_TattooRailroadWrist_F01",
+    "Complexion_TattooArmbandBarbed_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Haylen": {
    "forms": [
@@ -1464,8 +1522,8 @@
     ]
    ],
    "count": [
-    90,
-    10,
+    100,
+    0,
     0,
     0,
     0
@@ -1486,7 +1544,17 @@
    "hair": "trim",
    "adult": 0,
    "why": "a scribe: clean",
-   "squalor": 5
+   "squalor": 5,
+   "fixed": [
+    "Complexion_Vaccination_F01",
+    "Complexion_FrecklesShoulders_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Madison Li": {
    "forms": [
@@ -1515,7 +1583,17 @@
    "hair": "any",
    "adult": 0,
    "why": "a scientist: clean",
-   "squalor": 0
+   "squalor": 0,
+   "fixed": [
+    "Complexion_Veins_F01",
+    "Complexion_VaccinationTwo_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Mama Murphy": {
    "forms": [
@@ -1526,10 +1604,10 @@
     ]
    ],
    "count": [
+    100,
     0,
-    40,
-    50,
-    10,
+    0,
+    0,
     0
    ],
    "kinds": {
@@ -1550,7 +1628,19 @@
    "hair": "any",
    "adult": 0,
    "why": "old chem-worn seer: grime, old ink",
-   "squalor": 40
+   "squalor": 100,
+   "fixed": [
+    "Complexion_GrimeLight_F01",
+    "Complexion_TattooFaith_F01",
+    "Complexion_AgeSpotsHeavy_F01",
+    "Complexion_Veins_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Marcy Long": {
    "forms": [
@@ -1561,9 +1651,9 @@
     ]
    ],
    "count": [
-    20,
-    50,
-    30,
+    100,
+    0,
+    0,
     0,
     0
    ],
@@ -1581,7 +1671,18 @@
    "hair": "any",
    "adult": 0,
    "why": "hard survivor: scars and dirt",
-   "squalor": 60
+   "squalor": 100,
+   "fixed": [
+    "Complexion_ScarNewer_F01",
+    "Complexion_GrimeLight_F01",
+    "Complexion_StretchBellyOld_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Fahrenheit": {
    "forms": [
@@ -1592,11 +1693,11 @@
     ]
    ],
    "count": [
+    100,
     0,
     0,
-    30,
-    50,
-    20
+    0,
+    0
    ],
    "kinds": {
     "tattoo": 60,
@@ -1607,7 +1708,9 @@
     "skull",
     "crude"
    ],
-   "emblems": [],
+   "emblems": [
+    "raiders"
+   ],
    "sizes": [
     "tiny",
     "small",
@@ -1618,7 +1721,19 @@
    "hair": "wild",
    "adult": 0,
    "why": "Hancock's bodyguard: inked and scarred",
-   "squalor": 60
+   "squalor": 60,
+   "fixed": [
+    "Complexion_FlashFlamesArm_F01",
+    "Complexion_ScarArms_F01",
+    "Complexion_TattooNoMercy_F01",
+    "Complexion_BulletScars_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Irma": {
    "forms": [
@@ -1629,8 +1744,8 @@
     ]
    ],
    "count": [
-    30,
-    70,
+    100,
+    0,
     0,
     0,
     0
@@ -1650,7 +1765,18 @@
    "hair": "trim",
    "adult": 0,
    "why": "faded glamour: one pretty piece",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_FlashButterflyHip_F01",
+    "Complexion_NailsPurple_F01",
+    "Complexion_StretchHipsOld_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Mags Black": {
    "forms": [
@@ -1661,9 +1787,9 @@
     ]
    ],
    "count": [
-    10,
-    60,
-    30,
+    100,
+    0,
+    0,
     0,
     0
    ],
@@ -1686,7 +1812,18 @@
    "hair": "trim",
    "adult": 0,
    "why": "the Operators' boss: styled ink, painted nails",
-   "squalor": 70
+   "squalor": 70,
+   "fixed": [
+    "Complexion_TattooAceSpades_F01",
+    "Complexion_TattooDice_F01",
+    "Complexion_NailsBlack_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Nisha": {
    "forms": [
@@ -1697,11 +1834,11 @@
     ]
    ],
    "count": [
+    100,
     0,
     0,
-    30,
-    40,
-    30
+    0,
+    0
    ],
    "kinds": {
     "tattoo": 35,
@@ -1713,7 +1850,9 @@
     "script",
     "crude"
    ],
-   "emblems": [],
+   "emblems": [
+    "disciples"
+   ],
    "sizes": [
     "tiny",
     "small",
@@ -1724,7 +1863,19 @@
    "hair": "wild",
    "adult": 0,
    "why": "the Disciples' leader: knives leave marks",
-   "squalor": 70
+   "squalor": 100,
+   "fixed": [
+    "Complexion_RitualCuts_F01",
+    "Complexion_RitualCutsFresh_F01",
+    "Complexion_TattooKill_F01",
+    "Complexion_BloodyHandsThigh_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Kasumi Nakano": {
    "forms": [
@@ -1735,8 +1886,8 @@
     ]
    ],
    "count": [
-    60,
-    40,
+    100,
+    0,
     0,
     0,
     0
@@ -1756,7 +1907,17 @@
    "hair": "any",
    "adult": 0,
    "why": "a young runaway: one small rebel tattoo",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_FlashSwallow_F01",
+    "Complexion_TattooAnkleChain_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Ronnie Shaw": {
    "forms": [
@@ -1767,9 +1928,9 @@
     ]
    ],
    "count": [
+    100,
     0,
-    40,
-    60,
+    0,
     0,
     0
    ],
@@ -1791,7 +1952,19 @@
    "hair": "any",
    "adult": 0,
    "why": "old Minutemen veteran: scars, the old emblem",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_TattooMinutemenShoulder_F01",
+    "Complexion_ScarLegs_F01",
+    "Complexion_SunSpots_F01",
+    "Complexion_BulletScars_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Myrna": {
    "forms": [
@@ -1802,8 +1975,8 @@
     ]
    ],
    "count": [
-    80,
-    20,
+    100,
+    0,
     0,
     0,
     0
@@ -1820,7 +1993,17 @@
    "hair": "any",
    "adult": 0,
    "why": "sour shopkeeper: plain",
-   "squalor": 5
+   "squalor": 5,
+   "fixed": [
+    "Complexion_Veins_F01",
+    "Complexion_PoresCoarse_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Doctor Amari": {
    "forms": [
@@ -1849,7 +2032,17 @@
    "hair": "any",
    "adult": 0,
    "why": "a neuroscientist: clean",
-   "squalor": 5
+   "squalor": 5,
+   "fixed": [
+    "Complexion_Vaccination_F01",
+    "Complexion_PoresFine_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Trudy": {
    "forms": [
@@ -1860,8 +2053,8 @@
     ]
    ],
    "count": [
-    50,
-    50,
+    100,
+    0,
     0,
     0,
     0
@@ -1879,7 +2072,18 @@
    "hair": "any",
    "adult": 0,
    "why": "diner owner: kitchen grime",
-   "squalor": 50
+   "squalor": 100,
+   "fixed": [
+    "Complexion_GrimeLight_F01",
+    "Complexion_Varicose_F01",
+    "Complexion_CigBurnsHealed_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Ellie Perkins": {
    "forms": [
@@ -1890,8 +2094,8 @@
     ]
    ],
    "count": [
-    90,
-    10,
+    100,
+    0,
     0,
     0,
     0
@@ -1910,7 +2114,17 @@
    "hair": "trim",
    "adult": 0,
    "why": "a secretary: plain",
-   "squalor": 5
+   "squalor": 5,
+   "fixed": [
+    "Complexion_NailsPink_F01",
+    "Complexion_FrecklesFaint_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Cricket": {
    "forms": [
@@ -1921,10 +2135,10 @@
     ]
    ],
    "count": [
+    100,
     0,
-    30,
-    50,
-    20,
+    0,
+    0,
     0
    ],
    "kinds": {
@@ -1944,7 +2158,19 @@
    "hair": "any",
    "adult": 0,
    "why": "arms dealer: tough, scarred, inked",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_TattooDollar_F01",
+    "Complexion_ScarArms_F01",
+    "Complexion_BulletScars_F01",
+    "Complexion_FlashGrenade_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Carla": {
    "forms": [
@@ -1955,9 +2181,9 @@
     ]
    ],
    "count": [
-    20,
-    50,
-    30,
+    100,
+    0,
+    0,
     0,
     0
    ],
@@ -1974,7 +2200,18 @@
    "hair": "any",
    "adult": 0,
    "why": "caravan trader: road dirt",
-   "squalor": 50
+   "squalor": 100,
+   "fixed": [
+    "Complexion_TanTshirtDark_F01",
+    "Complexion_GrimeLight_F01",
+    "Complexion_SunSpots_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Captain Avery": {
    "forms": [
@@ -1985,9 +2222,9 @@
     ]
    ],
    "count": [
-    30,
-    50,
-    20,
+    100,
+    0,
+    0,
     0,
     0
    ],
@@ -2008,7 +2245,19 @@
    "hair": "any",
    "adult": 0,
    "why": "Far Harbor's leader: a fisherwoman's scars",
-   "squalor": 20
+   "squalor": 0,
+   "fixed": [
+    "Complexion_VexAnchorThighRight_F01",
+    "Complexion_ScarArms_F01",
+    "Complexion_TanTshirt_F01",
+    "Complexion_FlashNauticalStar_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Aster": {
    "forms": [
@@ -2060,8 +2309,8 @@
     ]
    ],
    "count": [
-    80,
-    20,
+    100,
+    0,
     0,
     0,
     0
@@ -2081,7 +2330,17 @@
    "hair": "trim",
    "adult": 0,
    "why": "the mayor's secretary: polished",
-   "squalor": 5
+   "squalor": 5,
+   "fixed": [
+    "Complexion_NailsRed_F01",
+    "Complexion_TattooThighGarter_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Polly": {
    "forms": [
@@ -2092,8 +2351,8 @@
     ]
    ],
    "count": [
-    60,
-    40,
+    100,
+    0,
     0,
     0,
     0
@@ -2113,7 +2372,16 @@
    "hair": "any",
    "adult": 0,
    "why": "the butcher who writes poems: a small secret",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_TattooHope_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Cathy": {
    "forms": [
@@ -2124,8 +2392,8 @@
     ]
    ],
    "count": [
-    40,
-    60,
+    100,
+    0,
     0,
     0,
     0
@@ -2143,7 +2411,17 @@
    "hair": "any",
    "adult": 0,
    "why": "the grubby salon gossip",
-   "squalor": 60
+   "squalor": 100,
+   "fixed": [
+    "Complexion_GrimeLight_F01",
+    "Complexion_NailsRedChipped_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Becky Fallon": {
    "forms": [
@@ -2154,8 +2432,8 @@
     ]
    ],
    "count": [
-    60,
-    40,
+    100,
+    0,
     0,
     0,
     0
@@ -2173,7 +2451,18 @@
    "hair": "any",
    "adult": 0,
    "why": "worn shopkeeper",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_AgeSpots_F01",
+    "Complexion_NailsRedChipped_F01",
+    "Complexion_Varicose_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Scarlett": {
    "forms": [
@@ -2184,8 +2473,8 @@
     ]
    ],
    "count": [
-    50,
-    50,
+    100,
+    0,
     0,
     0,
     0
@@ -2205,7 +2494,17 @@
    "hair": "any",
    "adult": 0,
    "why": "Dugout waitress: a cheap tattoo",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_FlashCherries_F01",
+    "Complexion_NailsRed_F01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Preston Garvey": {
    "forms": [
@@ -2216,8 +2515,8 @@
     ]
    ],
    "count": [
-    30,
-    70,
+    100,
+    0,
     0,
     0,
     0
@@ -2226,7 +2525,9 @@
     "scar": 100
    },
    "styles": [],
-   "emblems": [],
+   "emblems": [
+    "minutemen"
+   ],
    "sizes": [
     "tiny",
     "small"
@@ -2234,7 +2535,18 @@
    "hair": "any",
    "adult": 0,
    "why": "earnest Minuteman: a scar from Quincy",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_BurnScar_M01",
+    "Complexion_TattooMinutemenWord_M01",
+    "Complexion_ScarArms_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Paladin Danse": {
    "forms": [
@@ -2245,9 +2557,9 @@
     ]
    ],
    "count": [
+    100,
     0,
-    40,
-    60,
+    0,
     0,
     0
    ],
@@ -2269,7 +2581,18 @@
    "hair": "trim",
    "adult": 0,
    "why": "Brotherhood paladin: scars and the emblem",
-   "squalor": 5
+   "squalor": 5,
+   "fixed": [
+    "Complexion_TattooBoSArm_M01",
+    "Complexion_ScarLong_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Robert MacCready": {
    "forms": [
@@ -2280,9 +2603,9 @@
     ]
    ],
    "count": [
-    10,
-    50,
-    40,
+    100,
+    0,
+    0,
     0,
     0
    ],
@@ -2303,7 +2626,18 @@
    "hair": "any",
    "adult": 0,
    "why": "young merc, ex-Gunner: grime, a cheap skull",
-   "squalor": 40
+   "squalor": 100,
+   "fixed": [
+    "Complexion_GrimeLight_M01",
+    "Complexion_FlashSkull_M01",
+    "Complexion_ScarThin_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Deacon": {
    "forms": [
@@ -2343,9 +2677,9 @@
     ]
    ],
    "count": [
+    100,
     0,
-    30,
-    70,
+    0,
     0,
     0
    ],
@@ -2362,7 +2696,18 @@
    "hair": "trim",
    "adult": 0,
    "why": "the young Elder: battle scars",
-   "squalor": 0
+   "squalor": 0,
+   "fixed": [
+    "Complexion_TattooBoSBack_M01",
+    "Complexion_ScarArms_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "X6-88": {
    "forms": [
@@ -2402,10 +2747,10 @@
     ]
    ],
    "count": [
+    100,
     0,
-    30,
-    50,
-    20,
+    0,
+    0,
     0
    ],
    "kinds": {
@@ -2428,7 +2773,20 @@
    "hair": "any",
    "adult": 0,
    "why": "old hunter: sailor ink, scars",
-   "squalor": 50
+   "squalor": 0,
+   "fixed": [
+    "Complexion_FlashNauticalStar_M01",
+    "Complexion_FlashSwallowPair_M01",
+    "Complexion_ScarArms_M01",
+    "Complexion_SunSpotsHeavy_M01",
+    "Complexion_VexAnchorThighRight_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Porter Gage": {
    "forms": [
@@ -2439,11 +2797,11 @@
     ]
    ],
    "count": [
+    100,
     0,
-    10,
-    40,
-    40,
-    10
+    0,
+    0,
+    0
    ],
    "kinds": {
     "tattoo": 50,
@@ -2468,7 +2826,19 @@
    "hair": "wild",
    "adult": 0,
    "why": "raider lieutenant",
-   "squalor": 70
+   "squalor": 100,
+   "fixed": [
+    "Complexion_TattooRaiderSkullChest_M01",
+    "Complexion_ScarStitched_M01",
+    "Complexion_GrimeHeavy_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Sturges": {
    "forms": [
@@ -2479,9 +2849,9 @@
     ]
    ],
    "count": [
-    30,
-    50,
-    20,
+    100,
+    0,
+    0,
     0,
     0
    ],
@@ -2498,7 +2868,19 @@
    "hair": "any",
    "adult": 0,
    "why": "mechanic: grease",
-   "squalor": 30
+   "squalor": 100,
+   "fixed": [
+    "Complexion_GrimeLight_M01",
+    "Complexion_BurnScar_M01",
+    "Complexion_NailsDirty_M01",
+    "Complexion_TanTshirt_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Kellogg": {
    "forms": [
@@ -2514,10 +2896,10 @@
     ]
    ],
    "count": [
+    100,
     0,
-    20,
-    50,
-    30,
+    0,
+    0,
     0
    ],
    "kinds": {
@@ -2537,7 +2919,20 @@
    "hair": "trim",
    "adult": 0,
    "why": "mercenary: a career of scars",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_BulletScars_M01",
+    "Complexion_ScarLong_M01",
+    "Complexion_Shrapnel_M01",
+    "Complexion_LaserBurn_M01",
+    "Complexion_SurgerySternum_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Travis Miles": {
    "forms": [
@@ -2566,7 +2961,18 @@
    "hair": "any",
    "adult": 0,
    "why": "nervous DJ: an indoor body",
-   "squalor": 5
+   "squalor": 100,
+   "fixed": [
+    "Complexion_Pimples_M01",
+    "Complexion_PoresCoarse_M01",
+    "Complexion_AcneBackLight_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Mayor McDonough": {
    "forms": [
@@ -2595,7 +3001,16 @@
    "hair": "trim",
    "adult": 0,
    "why": "a polished politician (a synth)",
-   "squalor": 0
+   "squalor": 0,
+   "fixed": [
+    "Complexion_PoresFine_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Vadim Bobrov": {
    "forms": [
@@ -2606,10 +3021,10 @@
     ]
    ],
    "count": [
+    100,
     0,
-    40,
-    40,
-    20,
+    0,
+    0,
     0
    ],
    "kinds": {
@@ -2629,7 +3044,18 @@
    "hair": "any",
    "adult": 0,
    "why": "barkeep: old prison-style ink",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_TattooThirteen_M01",
+    "Complexion_TattooHate_M01",
+    "Complexion_TattooLove_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Moe Cronin": {
    "forms": [
@@ -2640,8 +3066,8 @@
     ]
    ],
    "count": [
-    40,
-    60,
+    100,
+    0,
     0,
     0,
     0
@@ -2661,7 +3087,18 @@
    "hair": "any",
    "adult": 0,
    "why": "Swatters' owner: a ball player's scars",
-   "squalor": 20
+   "squalor": 100,
+   "fixed": [
+    "Complexion_SurgeryKnee_M01",
+    "Complexion_BruiseOld_M01",
+    "Complexion_TanTshirt_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Father": {
    "forms": [
@@ -2706,10 +3143,10 @@
     ]
    ],
    "count": [
+    100,
     0,
-    30,
-    50,
-    20,
+    0,
+    0,
     0
    ],
    "kinds": {
@@ -2726,7 +3163,19 @@
    "hair": "wild",
    "adult": 0,
    "why": "hermit survivor: dirt and old wounds",
-   "squalor": 40
+   "squalor": 100,
+   "fixed": [
+    "Complexion_GrimeHeavy_M01",
+    "Complexion_ScarNewer_M01",
+    "Complexion_BulletScars_M01",
+    "Complexion_Mud_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Tinker Tom": {
    "forms": [
@@ -2737,8 +3186,8 @@
     ]
    ],
    "count": [
-    40,
-    60,
+    100,
+    0,
     0,
     0,
     0
@@ -2750,7 +3199,9 @@
    "styles": [
     "geometric"
    ],
-   "emblems": [],
+   "emblems": [
+    "railroad"
+   ],
    "sizes": [
     "tiny",
     "small"
@@ -2758,7 +3209,19 @@
    "hair": "any",
    "adult": 0,
    "why": "paranoid tinkerer: grease",
-   "squalor": 40
+   "squalor": 100,
+   "fixed": [
+    "Complexion_CigBurnsHealed_M01",
+    "Complexion_GrimeLight_M01",
+    "Complexion_NailsDirty_M01",
+    "Complexion_TattooRailroadWrist_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "John": {
    "forms": [
@@ -2769,8 +3232,8 @@
     ]
    ],
    "count": [
-    80,
-    20,
+    100,
+    0,
     0,
     0,
     0
@@ -2787,7 +3250,17 @@
    "hair": "any",
    "adult": 0,
    "why": "deaf in one ear from the war",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_ScarThin_M01",
+    "Complexion_TattooMom_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Arturo Rodriguez": {
    "forms": [
@@ -2798,8 +3271,8 @@
     ]
    ],
    "count": [
-    40,
-    60,
+    100,
+    0,
     0,
     0,
     0
@@ -2817,7 +3290,18 @@
    "hair": "any",
    "adult": 0,
    "why": "gunsmith: burns and grease",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_BurnScar_M01",
+    "Complexion_NailsDirty_M01",
+    "Complexion_LaserBurn_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Solomon": {
    "forms": [
@@ -2828,8 +3312,8 @@
     ]
    ],
    "count": [
-    50,
-    50,
+    100,
+    0,
     0,
     0,
     0
@@ -2849,7 +3333,18 @@
    "hair": "any",
    "adult": 0,
    "why": "chem seller, slightly stoned",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_Pores_M01",
+    "Complexion_Veins_M01",
+    "Complexion_FlashMushroomCloudArm_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Doctor Sun": {
    "forms": [
@@ -2878,7 +3373,17 @@
    "hair": "trim",
    "adult": 0,
    "why": "the doctor: clean",
-   "squalor": 0
+   "squalor": 0,
+   "fixed": [
+    "Complexion_PoresFine_M01",
+    "Complexion_Vaccination_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Abbot": {
    "forms": [
@@ -2889,8 +3394,8 @@
     ]
    ],
    "count": [
-    60,
-    40,
+    100,
+    0,
     0,
     0,
     0
@@ -2907,7 +3412,17 @@
    "hair": "any",
    "adult": 0,
    "why": "one of the oldest citizens",
-   "squalor": 10
+   "squalor": 10,
+   "fixed": [
+    "Complexion_AgeSpotsHeavy_M01",
+    "Complexion_Varicose_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Sheffield": {
    "forms": [
@@ -2918,9 +3433,9 @@
     ]
    ],
    "count": [
+    100,
     0,
-    40,
-    60,
+    0,
     0,
     0
    ],
@@ -2937,7 +3452,19 @@
    "hair": "wild",
    "adult": 0,
    "why": "a beggar: grime",
-   "squalor": 75
+   "squalor": 100,
+   "fixed": [
+    "Complexion_GrimeHeavy_M01",
+    "Complexion_Mud_M01",
+    "Complexion_NailsDirty_M01",
+    "Complexion_BruiseOld_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Malcolm Latimer": {
    "forms": [
@@ -2971,7 +3498,16 @@
    "hair": "trim",
    "adult": 0,
    "why": "the rich man: clean",
-   "squalor": 0
+   "squalor": 0,
+   "fixed": [
+    "Complexion_PoresFine_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Finn": {
    "forms": [
@@ -2982,10 +3518,10 @@
     ]
    ],
    "count": [
+    100,
     0,
-    40,
-    40,
-    20,
+    0,
+    0,
     0
    ],
    "kinds": {
@@ -3006,7 +3542,19 @@
    "hair": "any",
    "adult": 0,
    "why": "Goodneighbor's insurance man: thug ink",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_TattooArmbandBarbed_M01",
+    "Complexion_FlashSkull_M01",
+    "Complexion_TattooKill_M01",
+    "Complexion_ScarStitched_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Wayne Delancy": {
    "forms": [
@@ -3017,10 +3565,10 @@
     ]
    ],
    "count": [
+    100,
     0,
-    30,
-    50,
-    20,
+    0,
+    0,
     0
    ],
    "kinds": {
@@ -3040,7 +3588,18 @@
    "hair": "any",
    "adult": 0,
    "why": "a hitman",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_TattooAceSpades_M01",
+    "Complexion_ScarLong_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Parker Quinn": {
    "forms": [
@@ -3051,8 +3610,8 @@
     ]
    ],
    "count": [
-    70,
-    30,
+    100,
+    0,
     0,
     0,
     0
@@ -3072,7 +3631,17 @@
    "hair": "trim",
    "adult": 0,
    "why": "a con man: all show",
-   "squalor": 20
+   "squalor": 20,
+   "fixed": [
+    "Complexion_TattooDice_M01",
+    "Complexion_FlashEightBall_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Winlock": {
    "forms": [
@@ -3083,9 +3652,9 @@
     ]
    ],
    "count": [
+    100,
     0,
-    40,
-    60,
+    0,
     0,
     0
    ],
@@ -3108,7 +3677,18 @@
    "hair": "any",
    "adult": 0,
    "why": "a Gunner",
-   "squalor": 60
+   "squalor": 60,
+   "fixed": [
+    "Complexion_TattooGunnersShoulder_M01",
+    "Complexion_TattooGunnersTally_M01",
+    "Complexion_ScarArms_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Barnes": {
    "forms": [
@@ -3119,9 +3699,9 @@
     ]
    ],
    "count": [
+    100,
     0,
-    40,
-    60,
+    0,
     0,
     0
    ],
@@ -3144,7 +3724,19 @@
    "hair": "any",
    "adult": 0,
    "why": "a Gunner",
-   "squalor": 60
+   "squalor": 100,
+   "fixed": [
+    "Complexion_TattooGunnersShoulder_M01",
+    "Complexion_BulletScars_M01",
+    "Complexion_GrimeLight_M01",
+    "Complexion_ScarStitched_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   },
   "Rufus Rubins": {
    "forms": [
@@ -3155,8 +3747,8 @@
     ]
    ],
    "count": [
-    60,
-    40,
+    100,
+    0,
     0,
     0,
     0
@@ -3173,7 +3765,5843 @@
    "hair": "any",
    "adult": 0,
    "why": "the hotel handyman",
-   "squalor": 60
+   "squalor": 100,
+   "fixed": [
+    "Complexion_GrimeLight_M01",
+    "Complexion_NailsDirty_M01"
+   ],
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Emogene Cabot": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "EmogeneCabotOld",
+     294590
+    ],
+    [
+     "Fallout4.esm",
+     "EmogeneCabotYoung",
+     1704084
+    ]
+   ],
+   "why": "three centuries of vanity: painted nails, a rose on the thigh",
+   "fixed": [
+    "Complexion_NailsPurple_F01",
+    "Complexion_FlashRoseThigh_F01",
+    "Complexion_StretchBreastsOld_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Wilhelmina Cabot": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "WilhelminaCabot",
+     294591
+    ]
+   ],
+   "why": "the serum kept her alive, not young",
+   "fixed": [
+    "Complexion_Veins_F01",
+    "Complexion_PoresCoarse_F01",
+    "Complexion_NailsRed_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Lizzie Wyath": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04LizzieWyath",
+     69201
+    ]
+   ],
+   "why": "the Operators' gambler: eight ball and red nails",
+   "fixed": [
+    "Complexion_FlashEightBall_F01",
+    "Complexion_NailsRed_F01",
+    "Complexion_HickeyNeck_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Lauren Plummer": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04LaurenPlummer",
+     117622
+    ]
+   ],
+   "why": "Cappy's Cafe: a sunny yellow rose",
+   "fixed": [
+    "Complexion_FlashRoseYellow_F01",
+    "Complexion_NailsPink_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Roxy": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DN054AtomCat_Roxy",
+     1139959
+    ]
+   ],
+   "why": "Atom Cats greaser: grease and a lightning bolt",
+   "fixed": [
+    "Complexion_NailsBlackChipped_F01",
+    "Complexion_FlashLightning_F01",
+    "Complexion_GrimeLight_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Rowdy": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DN054Rowdy",
+     121686
+    ]
+   ],
+   "why": "Atom Cats brawler: flames and barbed wire",
+   "fixed": [
+    "Complexion_FlashFlames_F01",
+    "Complexion_TattooArmbandBarbed_F01",
+    "Complexion_GrimeLight_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Alana Secord": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "AlanaSecord",
+     386404
+    ]
+   ],
+   "why": "Institute department head: pale, never outdoors",
+   "fixed": [
+    "Complexion_Veins_F01",
+    "Complexion_PoresFine_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Rosalind Orman": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "RosalindOrman",
+     386402
+    ]
+   ],
+   "why": "Institute director: fine skin, age showing",
+   "fixed": [
+    "Complexion_PoresFine_F01",
+    "Complexion_Veins_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Allie Filmore": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "AllieFilmore",
+     386391
+    ]
+   ],
+   "why": "Institute robotics, Nathan's mother",
+   "fixed": [
+    "Complexion_StretchBellyOld_F01",
+    "Complexion_PoresFine_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Kessler": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Kessler",
+     104796
+    ]
+   ],
+   "why": "Bunker Hill's boss: an old fighter's scars",
+   "fixed": [
+    "Complexion_ScarLong_F01",
+    "Complexion_BulletScars_F01",
+    "Complexion_TanTshirt_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Kay": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Kay",
+     104826
+    ]
+   ],
+   "why": "Bunker Hill trader: road dust and a tank-top tan",
+   "fixed": [
+    "Complexion_GrimeLight_F01",
+    "Complexion_TanTank_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Deb": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Deb",
+     104824
+    ]
+   ],
+   "why": "Bunker Hill trader, a mother",
+   "fixed": [
+    "Complexion_StretchBellyOld_F01",
+    "Complexion_TanTshirtLight_F01",
+    "Complexion_StretchThighsOld_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Rachel": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Rachel",
+     174115
+    ]
+   ],
+   "why": "Vault 81's cook: the vault on her arm",
+   "fixed": [
+    "Complexion_TattooVault81_F01",
+    "Complexion_Vaccination_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Tina De Luca": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "V81_TinaDeLuca",
+     174122
+    ]
+   ],
+   "why": "Vault 81 resident: a young vault girl",
+   "fixed": [
+    "Complexion_FrecklesFaint_F01",
+    "Complexion_TattooVaultTecArm_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Katherine Pinn": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "V81_KatherinePinn",
+     174119
+    ]
+   ],
+   "why": "Vault 81 resident",
+   "fixed": [
+    "Complexion_Cellulite_F01",
+    "Complexion_VaccinationTwo_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Alexis Combes": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "V81_AlexisCombes",
+     174105
+    ]
+   ],
+   "why": "Vault 81 security, a mother",
+   "fixed": [
+    "Complexion_StretchBellyOld_F01",
+    "Complexion_TattooVault81_F01",
+    "Complexion_ScarThin_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Dr. Penske": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "V81_PriscillaPenske",
+     174117
+    ]
+   ],
+   "why": "Vault 81's doctor: clean",
+   "fixed": [
+    "Complexion_VaccinationTwo_F01",
+    "Complexion_PoresFine_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Gwen McNamara": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "V81_GwenMcNamara",
+     174131
+    ]
+   ],
+   "why": "Vault 81's Overseer",
+   "fixed": [
+    "Complexion_TattooVaultTecArm_F01",
+    "Complexion_ScarThin_F01",
+    "Complexion_Vaccination_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Penny Fitzgerald": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "MS17PennyFitzgerald",
+     341986
+    ]
+   ],
+   "why": "Covenant: spotless, a birthmark she cannot test away",
+   "fixed": [
+    "Complexion_NailsPink_F01",
+    "Complexion_Birthmark_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Tessa": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DN109_QuincyGunnerBossTessa",
+     1730458
+    ]
+   ],
+   "why": "Gunner boss of Quincy: the crosshair and a kill tally",
+   "fixed": [
+    "Complexion_TattooGunnersShoulder_F01",
+    "Complexion_TattooGunnersTally_F01",
+    "Complexion_BulletScars_F01",
+    "Complexion_ScarLong_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "gunners"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Captain Bridget": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DN061_LvlGunnerBoss",
+     335505
+    ]
+   ],
+   "why": "Gunner captain: stitched and shrapnel-torn",
+   "fixed": [
+    "Complexion_TattooGunnersShoulder_F01",
+    "Complexion_ScarStitched_F01",
+    "Complexion_Shrapnel_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "gunners"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Proctor Ingram": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSProctorIngram",
+     410293
+    ]
+   ],
+   "why": "the Brotherhood's mechanic: grease, old injuries",
+   "fixed": [
+    "Complexion_TattooBoSArm_F01",
+    "Complexion_ScarLegs_F01",
+    "Complexion_GrimeLight_F01",
+    "Complexion_NailsDirty_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Scribe Neriah": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSScribeNeriah",
+     410297
+    ]
+   ],
+   "why": "Brotherhood scribe",
+   "fixed": [
+    "Complexion_TattooBoSArm_F01",
+    "Complexion_Vaccination_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Knight Lucia": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSKnightLucia",
+     730864
+    ]
+   ],
+   "why": "Brotherhood knight",
+   "fixed": [
+    "Complexion_TattooBoSArm_F01",
+    "Complexion_BulletScars_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Ann Codman": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "AnnCodman",
+     12046
+    ]
+   ],
+   "why": "Diamond City's upper stands: polished",
+   "fixed": [
+    "Complexion_NailsRed_F01",
+    "Complexion_PoresFine_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "June Warwick": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "JuneWarwick",
+     258614
+    ]
+   ],
+   "why": "a farmer at Warwick Homestead",
+   "fixed": [
+    "Complexion_TanTshirt_F01",
+    "Complexion_GrimeLight_F01",
+    "Complexion_Mud_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Dixie": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04Dixie",
+     42214
+    ]
+   ],
+   "why": "a Disciple: blood and a skull",
+   "fixed": [
+    "Complexion_RitualCuts_F02",
+    "Complexion_FlashSkullBones_F01",
+    "Complexion_Blood_F02"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "disciples"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Sierra Petrovita": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04SierraPetrovita",
+     80451
+    ]
+   ],
+   "why": "the Nuka-Cola superfan",
+   "fixed": [
+    "Complexion_FlashNukaCap_F01",
+    "Complexion_FlashHeartNuka_F01",
+    "Complexion_NailsRed_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Shelbie Chase": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04ShelbieChase",
+     117620
+    ]
+   ],
+   "why": "Nuka-Town's cherry girl",
+   "fixed": [
+    "Complexion_FlashCherries_F01",
+    "Complexion_KissRed_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Mackenzie Bridgeman": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04MackenzieBridgeman",
+     117605
+    ]
+   ],
+   "why": "Red Rocket style: a lightning bolt and a star",
+   "fixed": [
+    "Complexion_FlashLightning_F01",
+    "Complexion_FlashNauticalStarHip_F01",
+    "Complexion_NailsRedChipped_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Rei Nakano": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03MrsNakano",
+     8717
+    ]
+   ],
+   "why": "Kasumi's mother",
+   "fixed": [
+    "Complexion_StretchBellyOld_F01",
+    "Complexion_Veins_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Cassie Dalton": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03CassieDalton",
+     23701
+    ]
+   ],
+   "why": "Far Harbor weapons trader: hard work, old scars",
+   "fixed": [
+    "Complexion_TanTshirt_F01",
+    "Complexion_ScarArms_F01",
+    "Complexion_GrimeLight_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Sandra Lee": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03SandraLee",
+     23699
+    ]
+   ],
+   "why": "Far Harbor: a koi on the calf",
+   "fixed": [
+    "Complexion_FlashKoiCalf_F01",
+    "Complexion_NailsPurple_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Debby": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03FarHarborLastPlankF01Waitress",
+     23746
+    ]
+   ],
+   "why": "the Last Plank's waitress",
+   "fixed": [
+    "Complexion_FlashHeartTrueLove_F01",
+    "Complexion_NailsRedChipped_F01",
+    "Complexion_CigBurnsHealed_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Miranda": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03Miranda",
+     17979
+    ]
+   ],
+   "why": "an Acadia synth: a barcode she kept",
+   "fixed": [
+    "Complexion_TattooBarcodeArm_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Jule": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03Jule",
+     17986
+    ]
+   ],
+   "why": "an Acadia synth: the barcode on her neck",
+   "fixed": [
+    "Complexion_TattooBarcodeNeck_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Chase": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03Chase",
+     17978
+    ]
+   ],
+   "why": "Acadia's guard",
+   "fixed": [
+    "Complexion_ScarLong_F01",
+    "Complexion_BulletScars_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "The Archemist": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03CoA_Archemist",
+     17515
+    ]
+   ],
+   "why": "Children of Atom: praise on her back",
+   "fixed": [
+    "Complexion_TattooAtomPraised_F01",
+    "Complexion_RadSores_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Isabel Cruz": {
+   "forms": [
+    [
+     "DLCRobot.esm",
+     "DLC01Mechanist",
+     2226
+    ]
+   ],
+   "why": "the Mechanist: a workshop's burns and grease",
+   "fixed": [
+    "Complexion_NailsDirty_F01",
+    "Complexion_GrimeLight_F01",
+    "Complexion_BurnScar_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Lola": {
+   "forms": [
+    [
+     "3DNPC_FO4.esp",
+     "f3DNPC_Prostitute01F",
+     7838
+    ]
+   ],
+   "why": "a brothel worker: a rose and a tally",
+   "fixed": [
+    "Complexion_FlashRoseThigh_F01",
+    "Complexion_KissRed_F01",
+    "Complexion_NailsRed_F01",
+    "Complexion_TattooLewdTally_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Cherry": {
+   "forms": [
+    [
+     "3DNPC_FO4.esp",
+     "f3DNPC_Prostitute02F",
+     7839
+    ]
+   ],
+   "why": "a brothel worker named for her cherries",
+   "fixed": [
+    "Complexion_FlashCherries_F01",
+    "Complexion_HickeyNeck_F01",
+    "Complexion_NailsPink_F01",
+    "Complexion_TattooThighGarter_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Lana Lafferty": {
+   "forms": [
+    [
+     "3DNPC_FO4.esp",
+     "f3DNPC_Karaoke_LanaLafferty",
+     38673
+    ]
+   ],
+   "why": "karaoke singer: a rose over the heart",
+   "fixed": [
+    "Complexion_FlashRoseChest_F01",
+    "Complexion_NailsPurple_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Sonja": {
+   "forms": [
+    [
+     "3DNPC_FO4.esp",
+     "f3DNPC_Karaoke_SadSinger",
+     42800
+    ]
+   ],
+   "why": "the sad singer: a swallow, old burns",
+   "fixed": [
+    "Complexion_FlashSwallowNeck_F01",
+    "Complexion_CigBurnsHealed_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Maisie": {
+   "forms": [
+    [
+     "3DNPC_FO4.esp",
+     "f3DNPC_Maisie",
+     11259
+    ]
+   ],
+   "why": "freckled and marked from birth",
+   "fixed": [
+    "Complexion_CafeAuLait_F01",
+    "Complexion_Birthmark_F02"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Penelope": {
+   "forms": [
+    [
+     "3DNPC_FO4.esp",
+     "f3DNPC_Penelope",
+     22441
+    ]
+   ],
+   "why": "a secretary with a butterfly she hides",
+   "fixed": [
+    "Complexion_NailsPink_F01",
+    "Complexion_FlashButterfly_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Switch": {
+   "forms": [
+    [
+     "3DNPC_FO4.esp",
+     "f3DNPC_RaiderSwitch",
+     20562
+    ]
+   ],
+   "why": "a raider in furs",
+   "fixed": [
+    "Complexion_TattooRaiderSkullChest_F01",
+    "Complexion_GrimeHeavy_F01",
+    "Complexion_ScarStitched_F01",
+    "Complexion_BruiseFresh_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "raiders"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Spitball": {
+   "forms": [
+    [
+     "3DNPC_FO4.esp",
+     "f3DNPC_RaiderSpitball",
+     10716
+    ]
+   ],
+   "why": "a raider: rust and mud",
+   "fixed": [
+    "Complexion_TattooRust_F01",
+    "Complexion_Mud_F01",
+    "Complexion_ScarArms_F01",
+    "Complexion_BulletScars_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Rabbit": {
+   "forms": [
+    [
+     "3DNPC_FO4.esp",
+     "f3DNPC_JetFueled_Rabbit",
+     22032
+    ]
+   ],
+   "why": "a Jet-fuelled bar worker",
+   "fixed": [
+    "Complexion_Veins_F01",
+    "Complexion_NailsBlackChipped_F01",
+    "Complexion_FlashEye_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Harley Evans": {
+   "forms": [
+    [
+     "SouthOfTheSea.esm",
+     "00sots_000Swamps_Harley",
+     390313
+    ]
+   ],
+   "why": "swamp settler: mud and a snake",
+   "fixed": [
+    "Complexion_Mud_F01",
+    "Complexion_TanTank_F01",
+    "Complexion_FlashSnakeThigh_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Doctor Kane": {
+   "forms": [
+    [
+     "AmericaRising2.esm",
+     "AR_EnclaveDoctorKane",
+     5387
+    ]
+   ],
+   "why": "the Enclave's doctor",
+   "fixed": [
+    "Complexion_VaccinationTwo_F01",
+    "Complexion_ScarThin_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Quartermaster Barratt": {
+   "forms": [
+    [
+     "AmericaRising2.esm",
+     "AR_EnclaveVendorQuartermasterBarratt",
+     4879
+    ]
+   ],
+   "why": "Enclave quartermaster: the eagle",
+   "fixed": [
+    "Complexion_FlashEagle_F01",
+    "Complexion_BulletScars_F01",
+    "Complexion_TanTshirt_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Dr. Christine Stennett": {
+   "forms": [
+    [
+     "Vault4.esp",
+     "Vlt04Stennett",
+     441197
+    ]
+   ],
+   "why": "Vault 4's dark nurse",
+   "fixed": [
+    "Complexion_NailsBlack_F01",
+    "Complexion_TattooVaultTecArm_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Paula McKenzie": {
+   "forms": [
+    [
+     "Vault4.esp",
+     "Vlt04McKenzie",
+     284278
+    ]
+   ],
+   "why": "Vault 4 resident",
+   "fixed": [
+    "Complexion_FrecklesShoulders_F01",
+    "Complexion_StretchHipsOld_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Susan Janeway": {
+   "forms": [
+    [
+     "Vault4.esp",
+     "Vlt04Janeway",
+     464691
+    ]
+   ],
+   "why": "Vault 4 resident",
+   "fixed": [
+    "Complexion_Vaccination_F01",
+    "Complexion_Birthmark_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Kate Armstrong": {
+   "forms": [
+    [
+     "Vault4.esp",
+     "Vlt04MS20KateArmstrong",
+     480604
+    ]
+   ],
+   "why": "Vault 4 resident: a compass for leaving",
+   "fixed": [
+    "Complexion_FlashCompass_F01",
+    "Complexion_ScarArms_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "June Waters": {
+   "forms": [
+    [
+     "Vault4.esp",
+     "Vlt04Waters",
+     98337
+    ]
+   ],
+   "why": "Vault 4's maid",
+   "fixed": [
+    "Complexion_NailsPink_F01",
+    "Complexion_Cellulite_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Nadine": {
+   "forms": [
+    [
+     "CWPointLookoutFO4.esm",
+     "00DCDLC04Nadine",
+     34587
+    ]
+   ],
+   "why": "Point Lookout: swamp mud and scarred legs",
+   "fixed": [
+    "Complexion_Mud_F01",
+    "Complexion_ScarLegs_F01",
+    "Complexion_TanTank_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Marguerite": {
+   "forms": [
+    [
+     "CWPointLookoutFO4.esm",
+     "00DCDLC04FF03Marguerite",
+     36668
+    ]
+   ],
+   "why": "Point Lookout: a snake",
+   "fixed": [
+    "Complexion_GrimeLight_F01",
+    "Complexion_FlashSnake_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Panada": {
+   "forms": [
+    [
+     "CWPointLookoutFO4.esm",
+     "00DCDLC04Panada",
+     34566
+    ]
+   ],
+   "why": "Point Lookout: sun and mud",
+   "fixed": [
+    "Complexion_Mud_F02",
+    "Complexion_SunSpots_F01",
+    "Complexion_TanTshirt_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Marcella": {
+   "forms": [
+    [
+     "CWPointLookoutFO4.esm",
+     "00DCDLC04FF02Marcella",
+     81356
+    ]
+   ],
+   "why": "Point Lookout: a beach tan and a koi",
+   "fixed": [
+    "Complexion_TanBikini_F01",
+    "Complexion_FlashKoiCalf_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Lisa": {
+   "forms": [
+    [
+     "GoodneighborExpanded.esp",
+     "Goodneighbor_Lisa",
+     5184325
+    ]
+   ],
+   "why": "Goodneighbor club girl",
+   "fixed": [
+    "Complexion_FlashSwallowNeck_F01",
+    "Complexion_NailsBlack_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Sasha": {
+   "forms": [
+    [
+     "GoodneighborExpanded.esp",
+     "Goodneighbor_H_Sasha",
+     7990885
+    ]
+   ],
+   "why": "a Goodneighbor working girl",
+   "fixed": [
+    "Complexion_HickeyThigh_F01",
+    "Complexion_TattooLewdBackDoor_F01",
+    "Complexion_NailsRed_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Nikki": {
+   "forms": [
+    [
+     "GoodneighborExpanded.esp",
+     "Goodneighbor_H_Niki",
+     7990887
+    ]
+   ],
+   "why": "a Goodneighbor working girl in a bikini",
+   "fixed": [
+    "Complexion_TanBikiniDark_F01",
+    "Complexion_FlashButterflyHip_F01",
+    "Complexion_KissPink_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Pest Tilly": {
+   "forms": [
+    [
+     "LobotomitePack.esm",
+     "LBT_NPC_Lobotomite_Horsemen_PestTilly",
+     29471
+    ]
+   ],
+   "why": "a Lobotomite horseman: Pestilence",
+   "fixed": [
+    "Complexion_GrimeHeavy_F01",
+    "Complexion_RadSores_F01",
+    "Complexion_Blood_F01",
+    "Complexion_ScarStitched_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Stingbreath": {
+   "forms": [
+    [
+     "UniqueRaiderPatrols2.esp",
+     "Breathless_LvlRaiderBoss_Female_Stingbreath",
+     2248
+    ]
+   ],
+   "why": "toxic raider boss",
+   "fixed": [
+    "Complexion_RadSores_F02",
+    "Complexion_GrimeHeavy_F01",
+    "Complexion_TattooRaiderSkullBack_F01",
+    "Complexion_Shrapnel_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "atom",
+    "raiders"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "White Widow": {
+   "forms": [
+    [
+     "UniqueRaiderPatrols2.esp",
+     "Duskspider_LvlRaiderBoss_Female_Whitewidow",
+     2263
+    ]
+   ],
+   "why": "raider boss: black nails, blood",
+   "fixed": [
+    "Complexion_FlashSkullBack_F01",
+    "Complexion_NailsBlack_F01",
+    "Complexion_ScarLong_F01",
+    "Complexion_Blood_F03"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Kelly Canhead": {
+   "forms": [
+    [
+     "UniqueRaiderPatrols2.esp",
+     "Grillroast_LvlRaiderBoss_Female_KellyCanhead",
+     2271
+    ]
+   ],
+   "why": "raider boss: grenades and HATE",
+   "fixed": [
+    "Complexion_FlashGrenade_F01",
+    "Complexion_BulletScars_F01",
+    "Complexion_GrimeLight_F01",
+    "Complexion_TattooHate_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Confessor Campbell": {
+   "forms": [
+    [
+     "MFC2024_EndAlz_ShadyMotives.esm",
+     "VP24_Actor_Campbell",
+     4019
+    ]
+   ],
+   "why": "a confessor: faith and the eye",
+   "fixed": [
+    "Complexion_TattooFaith_F01",
+    "Complexion_FlashEye_F01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Yefim Bobrov": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "YefimBobrov",
+     12030
+    ]
+   ],
+   "why": "Vadim's soberer brother",
+   "fixed": [
+    "Complexion_TattooArmbandKnots_M01",
+    "Complexion_ScarThin_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Proctor Quinlan": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSProctorQuinlan",
+     410294
+    ]
+   ],
+   "why": "the Brotherhood's old archivist",
+   "fixed": [
+    "Complexion_TattooBoSArm_M01",
+    "Complexion_Veins_M01",
+    "Complexion_PoresFine_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Proctor Teagan": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSProctorTeagan",
+     410292
+    ]
+   ],
+   "why": "Brotherhood quartermaster",
+   "fixed": [
+    "Complexion_TattooBoSArm_M01",
+    "Complexion_ScarArms_M01",
+    "Complexion_TanTshirt_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Knight-Captain Cade": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSKnightCaptainCade",
+     410291
+    ]
+   ],
+   "why": "the Prydwen's medic: stitched by his own hand",
+   "fixed": [
+    "Complexion_TattooBoSArm_M01",
+    "Complexion_ScarStitched_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Lancer-Captain Kells": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSLancerCaptainKells",
+     410290
+    ]
+   ],
+   "why": "the Brotherhood's officer: the sword on his back",
+   "fixed": [
+    "Complexion_TattooBoSBack_M01",
+    "Complexion_BulletScars_M01",
+    "Complexion_BurnScar_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Knight Rhys": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSKnightRhys",
+     384576
+    ]
+   ],
+   "why": "zealous Brotherhood knight",
+   "fixed": [
+    "Complexion_TattooBoSArm_M01",
+    "Complexion_ScarNewer_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Drummer Boy": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DrummerBoy",
+     424142
+    ]
+   ],
+   "why": "the Railroad's young runner",
+   "fixed": [
+    "Complexion_TattooRailroadWrist_M01",
+    "Complexion_FrecklesFaint_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "railroad"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "High Rise": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "HighRise",
+     511352
+    ]
+   ],
+   "why": "Railroad heavy: scars and the lantern",
+   "fixed": [
+    "Complexion_TattooRailroadWrist_M01",
+    "Complexion_ScarArms_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "railroad"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Doctor Carrington": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DoctorCarrington",
+     285389
+    ]
+   ],
+   "why": "the Railroad's doctor",
+   "fixed": [
+    "Complexion_TattooRailroadWrist_M01",
+    "Complexion_PoresFine_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "railroad"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Jack Cabot": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "JackCabot",
+     294583
+    ],
+    [
+     "Fallout4.esm",
+     "JackCabotOld",
+     105459
+    ]
+   ],
+   "why": "a scientist the serum kept",
+   "fixed": [
+    "Complexion_PoresFine_M01",
+    "Complexion_Vaccination_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Lorenzo Cabot": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "LorenzoCabot",
+     294597
+    ]
+   ],
+   "why": "chained in Parsons for two centuries",
+   "fixed": [
+    "Complexion_ShackleWrists_M01",
+    "Complexion_ShackleAnkles_M01",
+    "Complexion_GrimeHeavy_M01",
+    "Complexion_LashesHealed_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Marowski": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Marowski",
+     141026
+    ]
+   ],
+   "why": "Goodneighbor's chem boss",
+   "fixed": [
+    "Complexion_TattooDollar_M01",
+    "Complexion_FlashMushroomCloudArm_M01",
+    "Complexion_CigBurnsHealed_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Bullet": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "Bullet",
+     167348
+    ]
+   ],
+   "why": "the Combat Zone raider boss",
+   "fixed": [
+    "Complexion_TattooRaiderSkullBack_M01",
+    "Complexion_ScarStitched_M01",
+    "Complexion_GrimeHeavy_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "raiders"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Skinny Malone": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "MQ104SkinnyMalone",
+     540596
+    ]
+   ],
+   "why": "the Triggermen's boss: a gangster's ink",
+   "fixed": [
+    "Complexion_FlashRevolver_M01",
+    "Complexion_TattooDollar_M01",
+    "Complexion_ScarLong_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Sinjin": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "MS04Sinjin",
+     284413
+    ]
+   ],
+   "why": "a raider boss hunting Kendra: HATE and stitched scars",
+   "fixed": [
+    "Complexion_ScarStitched_M01",
+    "Complexion_TattooHate_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Pickman": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DN101Pickman",
+     306509
+    ]
+   ],
+   "why": "the artist who paints in blood",
+   "fixed": [
+    "Complexion_FlashSkullBones_M01",
+    "Complexion_ScarThin_M01",
+    "Complexion_Blood_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Old Man Stockton": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "OldManStockton",
+     237515
+    ]
+   ],
+   "why": "Bunker Hill's elder, a Railroad friend",
+   "fixed": [
+    "Complexion_AgeSpotsHeavy_M01",
+    "Complexion_TattooRailroadWrist_M01",
+    "Complexion_Varicose_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "railroad"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Honest Dan": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "HonestDan",
+     237509
+    ]
+   ],
+   "why": "a caravan guard on the road",
+   "fixed": [
+    "Complexion_TanTshirtDark_M01",
+    "Complexion_ScarArms_M01",
+    "Complexion_GrimeLight_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Henry Cooke": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "HenryCooke",
+     235997
+    ]
+   ],
+   "why": "Diamond City's smooth poisoner: a snake",
+   "fixed": [
+    "Complexion_FlashSnake_M01",
+    "Complexion_PoresFine_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Jun Long": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "JunLong",
+     106459
+    ]
+   ],
+   "why": "grieving survivor",
+   "fixed": [
+    "Complexion_GrimeLight_M01",
+    "Complexion_ScarThin_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Mister Zwicky": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "MisterZwicky",
+     12022
+    ]
+   ],
+   "why": "Diamond City's old teacher",
+   "fixed": [
+    "Complexion_AgeSpots_M01",
+    "Complexion_Varicose_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Doc Crocker": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DocCrocker",
+     11478
+    ]
+   ],
+   "why": "Diamond City's surgeon",
+   "fixed": [
+    "Complexion_Vaccination_M01",
+    "Complexion_CigBurnsHealed_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Fred Allen": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "FredAllen",
+     141017
+    ]
+   ],
+   "why": "a Goodneighbor Jet addict",
+   "fixed": [
+    "Complexion_Veins_M01",
+    "Complexion_CigBurns_M01",
+    "Complexion_GrimeLight_M01",
+    "Complexion_BruiseOld_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Zeke": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DN054Zeke",
+     296482
+    ]
+   ],
+   "why": "leader of the Atom Cats: grease and lightning",
+   "fixed": [
+    "Complexion_FlashLightning_M01",
+    "Complexion_NailsDirty_M01",
+    "Complexion_GrimeLight_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Bobby De Luca": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "V81_BobbyDeLuca",
+     174121
+    ]
+   ],
+   "why": "Vault 81's chem-hooked gambler",
+   "fixed": [
+    "Complexion_Veins_M01",
+    "Complexion_Pimples_M01",
+    "Complexion_TattooVault81_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Jacob Forsythe": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "V81_JacobForsythe",
+     174113
+    ]
+   ],
+   "why": "Vault 81 resident",
+   "fixed": [
+    "Complexion_TattooVault81_M01",
+    "Complexion_PoresFine_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Horatio": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "V81_Horatio",
+     174107
+    ]
+   ],
+   "why": "Vault 81's handyman",
+   "fixed": [
+    "Complexion_TattooVaultTecArm_M01",
+    "Complexion_NailsDirty_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Justin Ayo": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "JustinAyo",
+     386403
+    ]
+   ],
+   "why": "the Institute's cold enforcer",
+   "fixed": [
+    "Complexion_PoresFine_M01",
+    "Complexion_ScarThin_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Alan Binet": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "AlanBinet",
+     386400
+    ]
+   ],
+   "why": "Institute bioscience head",
+   "fixed": [
+    "Complexion_PoresFine_M01",
+    "Complexion_KeratosisArms_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Max Loken": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "MaxLoken",
+     386399
+    ]
+   ],
+   "why": "Institute facilities",
+   "fixed": [
+    "Complexion_PoresFine_M01",
+    "Complexion_SurgeryKnee_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Clayton Holdren": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "ClaytonHoldren",
+     386396
+    ]
+   ],
+   "why": "Institute synth retention",
+   "fixed": [
+    "Complexion_PoresFine_M01",
+    "Complexion_Vaccination_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Newton Oberly": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "NewtonOberly",
+     386395
+    ]
+   ],
+   "why": "Institute scientist",
+   "fixed": [
+    "Complexion_Veins_M01",
+    "Complexion_PoresCoarse_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Virgil": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "VirgilHuman",
+     1477513
+    ]
+   ],
+   "why": "cured of the FEV: the surgery shows",
+   "fixed": [
+    "Complexion_SurgerySternum_M01",
+    "Complexion_ScarStitched_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Mason": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04Mason",
+     62518
+    ]
+   ],
+   "why": "the Pack's alpha: green paint, a beast's scars",
+   "fixed": [
+    "Complexion_PackPaintGreen_M01",
+    "Complexion_ScarStitched_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "pack"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "William Black": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04WilliamBlack",
+     54253
+    ]
+   ],
+   "why": "Mags' brother, the Operators' muscle",
+   "fixed": [
+    "Complexion_TattooDice_M01",
+    "Complexion_FlashRevolver_M01",
+    "Complexion_ScarThin_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Overboss Colter": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04OverbossColter",
+     42250
+    ]
+   ],
+   "why": "Nuka-World's overboss",
+   "fixed": [
+    "Complexion_TattooRaiderSkullChest_M01",
+    "Complexion_ScarLong_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "raiders"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Savoy": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04Savoy",
+     42215
+    ]
+   ],
+   "why": "a Disciple: blood on his hands",
+   "fixed": [
+    "Complexion_RitualCuts_M01",
+    "Complexion_BloodyHands_M01",
+    "Complexion_TattooKill_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "disciples"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Shank": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04Shank",
+     56287
+    ]
+   ],
+   "why": "Nuka-World's go-between",
+   "fixed": [
+    "Complexion_TattooRust_M01",
+    "Complexion_GrimeLight_M01",
+    "Complexion_ScarArms_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Safari Cito": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04SafariCito",
+     210890
+    ]
+   ],
+   "why": "raised by gorillas",
+   "fixed": [
+    "Complexion_GrimeHeavy_M01",
+    "Complexion_Mud_M01",
+    "Complexion_ScarArms_M01",
+    "Complexion_BruiseOld_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Harvey": {
+   "forms": [
+    [
+     "DLCNukaWorld.esm",
+     "DLC04Harvey",
+     32089
+    ]
+   ],
+   "why": "a Nuka-Town trader",
+   "fixed": [
+    "Complexion_GrimeLight_M01",
+    "Complexion_TanTshirt_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Kenji Nakano": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03MrNakano",
+     8546
+    ]
+   ],
+   "why": "Kasumi's father",
+   "fixed": [
+    "Complexion_AgeSpots_M01",
+    "Complexion_TanTshirtLight_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Allen Lee": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03AllenLee",
+     23705
+    ]
+   ],
+   "why": "the Last Plank's surly barman",
+   "fixed": [
+    "Complexion_ScarLong_M01",
+    "Complexion_TattooHate_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Teddy Wright": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03TeddyWright",
+     23703
+    ]
+   ],
+   "why": "a Far Harbor islander",
+   "fixed": [
+    "Complexion_ScarLegs_M01",
+    "Complexion_FlashKoi_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Brooks": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03Brooks",
+     23707
+    ]
+   ],
+   "why": "Far Harbor",
+   "fixed": [
+    "Complexion_GrimeLight_M01",
+    "Complexion_ScarThin_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Mitch": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03Mitch",
+     23711
+    ]
+   ],
+   "why": "a Far Harbor fisherman",
+   "fixed": [
+    "Complexion_TanShorts_M01",
+    "Complexion_ScarArms_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Cog": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03Cog",
+     17984
+    ]
+   ],
+   "why": "an Acadia synth who fixes things",
+   "fixed": [
+    "Complexion_ScarStitched_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Faraday": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03Faraday",
+     17980
+    ]
+   ],
+   "why": "Acadia's scientist",
+   "fixed": [
+    "Complexion_PoresFine_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "High Confessor Tektus": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03CoA_HighConfessorTektus",
+     17508
+    ]
+   ],
+   "why": "the Children of Atom's High Confessor: the Atom burned in",
+   "fixed": [
+    "Complexion_AtomScar_M01",
+    "Complexion_TattooAtomChest_M01",
+    "Complexion_RadSores_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Brother Devin": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03CoA_BrotherDevin",
+     17519
+    ]
+   ],
+   "why": "a Child of Atom",
+   "fixed": [
+    "Complexion_TattooAtomShoulder_M01",
+    "Complexion_RadSores_M02"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Jackson": {
+   "forms": [
+    [
+     "DLCRobot.esm",
+     "DLC01Caravan_Jackson",
+     65277
+    ]
+   ],
+   "why": "caravan guard who lost his caravan",
+   "fixed": [
+    "Complexion_BulletScars_M01",
+    "Complexion_GrimeLight_M01",
+    "Complexion_ScarArms_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Knight Gavil": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSKnightGavil",
+     730863
+    ]
+   ],
+   "why": "Brotherhood knight",
+   "fixed": [
+    "Complexion_TattooBoSArm_M01",
+    "Complexion_Shrapnel_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Initiate Clarke": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSInitiateClarke",
+     730862
+    ]
+   ],
+   "why": "a Brotherhood recruit, bruised from training",
+   "fixed": [
+    "Complexion_Vaccination_M01",
+    "Complexion_BruiseFresh_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Scribe Faris": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BoSM01_ScribeFaris",
+     728501
+    ]
+   ],
+   "why": "the lost recon squad's scribe",
+   "fixed": [
+    "Complexion_TattooBoSArm_M01",
+    "Complexion_GrimeLight_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Dean Volkert": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DeanVolkert",
+     386398
+    ]
+   ],
+   "why": "Institute Facilities",
+   "fixed": [
+    "Complexion_PoresFine_M01",
+    "Complexion_ScarThin_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Evan Watson": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "EvanWatson",
+     386401
+    ]
+   ],
+   "why": "Institute Synth Retention",
+   "fixed": [
+    "Complexion_PoresFine_M01",
+    "Complexion_Vaccination_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Isaac Karlin": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "IsaacKarlin",
+     386397
+    ]
+   ],
+   "why": "Institute BioScience",
+   "fixed": [
+    "Complexion_PoresFine_M01",
+    "Complexion_SurgeryAppendix_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Calvin Whitaker": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "V81_CalvinWhitaker",
+     1390671
+    ]
+   ],
+   "why": "Vault 81 in a pilot's jacket",
+   "fixed": [
+    "Complexion_TattooVault81_M01",
+    "Complexion_FlashCompass_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Neil Freund": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "V81_NeilFreund",
+     701402
+    ]
+   ],
+   "why": "Vault 81 scavenger",
+   "fixed": [
+    "Complexion_TattooVaultTecArm_M01",
+    "Complexion_ScarArms_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Holt Combes": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "V81_HoltCombes",
+     174127
+    ]
+   ],
+   "why": "Vault 81 security",
+   "fixed": [
+    "Complexion_TattooVault81_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Mark Summerset": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "V81_MarkSummerset",
+     174109
+    ]
+   ],
+   "why": "Vault 81 resident",
+   "fixed": [
+    "Complexion_TattooVaultTecArm_M01",
+    "Complexion_Vaccination_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "vault_tec"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "trim",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Blake Abernathy": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "BlakeAbernathy",
+     439507
+    ]
+   ],
+   "why": "Abernathy Farm: a farmer's tan and dirt",
+   "fixed": [
+    "Complexion_TanTshirt_M01",
+    "Complexion_GrimeLight_M01",
+    "Complexion_NailsDirty_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Roger Warwick": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "RogerWarwick",
+     258620
+    ]
+   ],
+   "why": "Warwick Homestead: mud to the knees",
+   "fixed": [
+    "Complexion_Mud_M01",
+    "Complexion_ScarLegs_M01",
+    "Complexion_NailsDirty_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Abraham Finch": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "AbrahamFinch",
+     258621
+    ]
+   ],
+   "why": "Finch Farm's father",
+   "fixed": [
+    "Complexion_TanTshirt_M01",
+    "Complexion_ScarArms_M01",
+    "Complexion_AgeSpots_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Jake Finch": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "JakeFinch",
+     258605
+    ]
+   ],
+   "why": "the farm boy who ran with raiders",
+   "fixed": [
+    "Complexion_TattooRaiderSkullChest_M01",
+    "Complexion_BruiseFresh_M01",
+    "Complexion_GrimeLight_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "raiders"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Daniel Finch": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DanielFinch",
+     258603
+    ]
+   ],
+   "why": "Finch Farm's steady son",
+   "fixed": [
+    "Complexion_TanTank_M01",
+    "Complexion_Mud_M02"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Lucas Miller": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "LucasMiller",
+     1248120
+    ]
+   ],
+   "why": "caravan trader for the Minutemen",
+   "fixed": [
+    "Complexion_TattooMinutemenShoulder_M01",
+    "Complexion_TanTshirtDark_M01",
+    "Complexion_GrimeLight_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "minutemen"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Clint": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DN109_QuincyGunnerBossClint",
+     1730462
+    ]
+   ],
+   "why": "the Gunner boss who took Quincy",
+   "fixed": [
+    "Complexion_TattooGunnersShoulder_M01",
+    "Complexion_TattooGunnersTally_M01",
+    "Complexion_ScarLong_M01",
+    "Complexion_BulletScars_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "gunners"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Captain Baker": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DN109_QuincyGunnerBossBaker",
+     1730460
+    ]
+   ],
+   "why": "Gunner officer at Quincy",
+   "fixed": [
+    "Complexion_TattooGunnersShoulder_M01",
+    "Complexion_ScarStitched_M01",
+    "Complexion_FlashGrenade_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "gunners"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Bluejay": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "DN054AtomCat_Bluejay",
+     296507
+    ]
+   ],
+   "why": "Atom Cats hipster",
+   "fixed": [
+    "Complexion_FlashNukaCap_M01",
+    "Complexion_NailsBlackChipped_M01",
+    "Complexion_GrimeLight_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "any",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Brother Ward": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "CoABrotherWard",
+     1262191
+    ]
+   ],
+   "why": "Child of Atom in the Crater",
+   "fixed": [
+    "Complexion_TattooAtomShoulder_M01",
+    "Complexion_RadSores_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Brother Ogden": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "CoABrotherOgden",
+     1262189
+    ]
+   ],
+   "why": "Child of Atom in the Crater",
+   "fixed": [
+    "Complexion_TattooAtomChest_M01",
+    "Complexion_RadSores_M02"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Brother Foster": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "CoABrotherFoster",
+     1235788
+    ]
+   ],
+   "why": "Child of Atom in the Crater",
+   "fixed": [
+    "Complexion_FlashRadiation_M01",
+    "Complexion_RadSores_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Brother Griffith": {
+   "forms": [
+    [
+     "Fallout4.esm",
+     "CoABrotherGriffith",
+     1235786
+    ]
+   ],
+   "why": "Child of Atom in the Crater",
+   "fixed": [
+    "Complexion_TattooAtomPraised_M01",
+    "Complexion_RadSores_M02"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Grand Zealot Richter": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03CoA_GrandZealotRichter",
+     17509
+    ]
+   ],
+   "why": "the Nucleus's zealot: the Atom cut in",
+   "fixed": [
+    "Complexion_AtomScar_M01",
+    "Complexion_TattooAtomPraised_M01",
+    "Complexion_ScarLong_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Zealot Ware": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03CoA_ZealotWare",
+     17511
+    ]
+   ],
+   "why": "a Nucleus zealot",
+   "fixed": [
+    "Complexion_TattooAtomChest_M01",
+    "Complexion_FlashRadiation_M01",
+    "Complexion_RadSores_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Brother Kane": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03CoA_BrotherKane",
+     17521
+    ]
+   ],
+   "why": "a Child of Atom",
+   "fixed": [
+    "Complexion_TattooAtomShoulder_M01",
+    "Complexion_FlashMushroomCloudArm_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [
+    "atom"
+   ],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 20,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
+  },
+  "Andre Michaud": {
+   "forms": [
+    [
+     "DLCCoast.esm",
+     "DLC03AndreMichaud",
+     23709
+    ]
+   ],
+   "why": "a Far Harbor lumberjack",
+   "fixed": [
+    "Complexion_TanTshirt_M01",
+    "Complexion_ScarArms_M01",
+    "Complexion_GrimeLight_M01"
+   ],
+   "count": [
+    100,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kinds": {
+    "tattoo": 100
+   },
+   "styles": [],
+   "emblems": [],
+   "sizes": [
+    "tiny",
+    "small"
+   ],
+   "hair": "wild",
+   "adult": 0,
+   "squalor": 100,
+   "universal": {
+    "freckles": 0,
+    "skin": 0,
+    "acne": 0,
+    "birthmark": 0
+   }
   }
  },
  "personas": {

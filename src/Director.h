@@ -176,6 +176,8 @@ namespace CX
 		// A pick that today's rules would not give this person (hair family, rough living, age, skin tone): a record
 		// decided before them (an older co-save) is checked with it.
 		[[nodiscard]] bool Misfits(const Record& a_record, std::uint64_t a_seed) const;
+		// A named character's record without one of their signature marks (C-25), as Compose would give it them now.
+		[[nodiscard]] bool LacksSignature(const Record& a_record, const Group& a_group, std::uint64_t a_seed, const Facts& a_facts) const;
 		[[nodiscard]] std::vector<Pick> Repriority(std::vector<Pick> a_picks) const;
 		[[nodiscard]] std::uint32_t WindowOrder(std::vector<Pick> a_picks);
 	};

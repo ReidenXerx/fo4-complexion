@@ -188,6 +188,7 @@ namespace CX
 			out.sizes = Strings(g.at("sizes"));
 			out.hair = g.at("hair").get<std::string>();
 			out.squalor = g.value("squalor", j.value("squalor_default", 30));
+			out.fixed = Strings(g.value("fixed", nlohmann::ordered_json::array()));
 			if (g.contains("universal")) {
 				for (const auto& [k, v] : g.at("universal").items()) {
 					out.universal[k] = v.get<int>();
@@ -328,6 +329,29 @@ namespace CX
 		return Fits(Resolve(a_profiles, a_group, rng, a_hair, a_tone), a_t);
 	}
 
+	std::vector<std::string> SignatureKeys(const Profiles& a_profiles, const std::vector<Template>& a_catalog, bool a_female,
+		const Group& a_group, std::uint64_t a_seed, bool a_adultAllowed, std::string_view a_hair, std::string_view a_tone)
+	{
+		std::vector<std::string> out;
+		if (a_group.untouched || a_group.fixed.empty()) {
+			return out;
+		}
+		Rng        rng(a_seed);
+		const auto person = Resolve(a_profiles, a_group, rng, a_hair, a_tone);
+		for (const auto& id : a_group.fixed) {
+			if (static_cast<int>(out.size()) >= a_profiles.cap) {
+				break;
+			}
+			const auto it = std::ranges::find_if(a_catalog, [&](const Template& a_t) {
+				return a_t.female == a_female && a_t.id == id && Fits(person, a_t);
+			});
+			if (it != a_catalog.end() && (a_adultAllowed || !Adultish(*it)) && std::ranges::find(out, it->key) == out.end()) {
+				out.push_back(it->key);
+			}
+		}
+		return out;
+	}
+
 	std::vector<Pick> Compose(const Profiles& a_profiles, const std::vector<Template>& a_catalog, bool a_female, const Group& a_group,
 		std::uint64_t a_seed, bool a_adultAllowed, std::string_view a_persona, std::string_view a_hair, std::string_view a_tone)
 	{
@@ -359,6 +383,19 @@ namespace CX
 		const auto picked = [&](const Template& a_t) {
 			return std::ranges::any_of(picks, [&](const Pick& p) { return p.key == a_t.key; });
 		};
+
+		// 0c. a named character's signature look (C-25): their "fixed" templates in file order, before anything rolls.
+		// One not loaded here, of the other sex, or not suiting them (hair, age, tone, rough living) is left out; adult
+		// ones only while adult content is allowed. No roll is drawn.
+		for (const auto& id : a_group.fixed) {
+			if (static_cast<int>(picks.size()) >= a_profiles.cap) {
+				break;
+			}
+			const auto it = std::ranges::find_if(mine, [&](const Template* a_t) { return a_t->id == id; });
+			if (it != mine.end() && (a_adultAllowed || !Adultish(**it)) && !picked(**it)) {
+				take(**it, (*it)->kind);
+			}
+		}
 
 		// 1. universal
 		for (const auto& u : a_female ? a_profiles.female : a_profiles.male) {

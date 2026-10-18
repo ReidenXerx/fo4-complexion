@@ -46,6 +46,7 @@ namespace CX
 		int                                       adult{ 0 };
 		int                                       squalor{ 30 };  // percent of the group living rough (C-21)
 		std::map<std::string, int>                universal;      // kind -> percent of the universal layer's odds
+		std::vector<std::string>                  fixed;          // a named character's signature look: template ids, worn first (C-25)
 	};
 
 	struct Universal
@@ -125,4 +126,9 @@ namespace CX
 	// tone: steps 0 and 0b): a look decided before these rules is checked with it (Director, older co-saves).
 	[[nodiscard]] bool Suits(const Profiles& a_profiles, const Group& a_group, std::uint64_t a_seed, std::string_view a_hair,
 		std::string_view a_tone, const Template& a_t);
+
+	// The keys of a named character's signature look (C-25) as Compose puts it on this person (step 0c): a record
+	// that lacks one of them was decided before the character had it, and is decided again (Director).
+	[[nodiscard]] std::vector<std::string> SignatureKeys(const Profiles& a_profiles, const std::vector<Template>& a_catalog, bool a_female,
+		const Group& a_group, std::uint64_t a_seed, bool a_adultAllowed, std::string_view a_hair, std::string_view a_tone);
 }

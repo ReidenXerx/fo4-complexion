@@ -184,6 +184,22 @@ namespace CX
 				}
 				Log(std::format("{} ({:08X}): no longer a captive, now {}: {} overlay(s)", a_facts.name, a_facts.ref, r.group, r.picks.size()));
 			}
+		} else if (const auto* named = a_facts.group.starts_with("npc:") && !it->second.manual ? _profiles.Find(a_facts.group) : nullptr;
+				   named && (it->second.group != named->name || LacksSignature(it->second, *named, SeedFor(a_facts.ref, it->second.base), a_facts))) {
+			// A named character decided before they had a look of their own (C-25): under a faction's odds, or without
+			// one of their signature marks. Decided again, once, as who they are; a look chosen by hand stays.
+			auto& r = it->second;
+			r.checked = true;
+			if (!a_facts.hair.empty()) {
+				r.hair = a_facts.hair;
+			}
+			if (!a_facts.tone.empty()) {
+				r.tone = a_facts.tone;
+			}
+			r.group = named->name;
+			r.picks = Compose(_profiles, _catalog, r.female, *named, SeedFor(a_facts.ref, r.base), _adult, r.persona, r.hair, r.tone);
+			r.applied = false;
+			Log(std::format("{} ({:08X}): their own look now ({}): {} overlay(s)", a_facts.name, a_facts.ref, r.group, r.picks.size()));
 		} else if (!it->second.checked) {  // facts are read only after the layout check passed (Game::See)
 			// A look decided before today's rules (an older co-save): kept, unless one of its marks is one they would
 			// not get now -- another hair colour than theirs (C-20), a nasty mark on someone who does not live rough,
@@ -664,6 +680,15 @@ namespace CX
 		return std::ranges::any_of(a_record.picks, [&](const Pick& p) {
 			const auto* t = Find(p.key);
 			return t && !Suits(_profiles, *group, a_seed, a_record.hair, a_record.tone, *t);
+		});
+	}
+
+	bool Director::LacksSignature(const Record& a_record, const Group& a_group, std::uint64_t a_seed, const Facts& a_facts) const
+	{
+		const auto keys = SignatureKeys(_profiles, _catalog, a_record.female, a_group, a_seed, _adult,
+			a_facts.hair.empty() ? a_record.hair : a_facts.hair, a_facts.tone.empty() ? a_record.tone : a_facts.tone);
+		return std::ranges::any_of(keys, [&](const std::string& k) {
+			return std::ranges::none_of(a_record.picks, [&](const Pick& p) { return p.key == k; });
 		});
 	}
 
