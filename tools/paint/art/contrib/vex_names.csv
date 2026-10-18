@@ -233,11 +233,11 @@ Complexion_VexAnchorThighRight_F01,Complexion - (Right Thigh)(Female) Anchor&Hea
 Complexion_VexAnchorThighRight_M01,Complexion - (Right Thigh)(Male) Anchor&Heart,(Right Thigh)(Male) Anchor&Heart,
 Complexion_AtomScar_F01,Complexion - the Atom cut into the chest,(Upper Back)(Female) Atom Branding,"per-overlay request 10-15: moved up the back as close to the neck as it goes unfaded, 25% smaller (reworks.py)"
 Complexion_AtomScar_M01,Complexion - the Atom cut into the chest,(Upper Back)(Male) Atom Branding,"per-overlay request 10-15: moved to the same upper-back spot as the women's, as close to the neck as it goes unfaded, size unchanged (reworks.py)"
-Complexion_BackHairBlack_M01,"Complexion - back hair, black",(Back)(Male) Black Back Hair light,"per-overlay request 10-15: Vex's hair tile, thinned (reworks.py)"
+Complexion_BackHairBlack_M01,"Complexion - back hair, black",(Back)(Male) Black Back Hair Light,"per-overlay request 10-15: Vex's hair tile, thinned (reworks.py)"
 Complexion_BackHairBlackHeavy_M01,"Complexion - back hair, black",(Back)(Male) Black Back Hair,"per-overlay request 10-15: Vex's hair tile, 20% thicker than the light one (reworks.py)"
-Complexion_BackHairBrownLight_M01,"Complexion - back hair, brown",(Back)(Male) Brown Back Hair light,"per-overlay request 10-15: Vex's hair tile in brown, light (reworks.py)"
+Complexion_BackHairBrownLight_M01,"Complexion - back hair, brown",(Back)(Male) Brown Back Hair Light,"per-overlay request 10-15: Vex's hair tile in brown, light (reworks.py)"
 Complexion_BackHairBrown_M01,"Complexion - back hair, brown",(Back)(Male) Brown Back Hair,"per-overlay request 10-15: Vex's hair tile in brown, heavy (reworks.py)"
-Complexion_BackHairGreyLight_M01,"Complexion - back hair, grey",(Back)(Male) Grey Back Hair light,"per-overlay request 10-15: Vex's hair tile in grey, light (reworks.py)"
+Complexion_BackHairGreyLight_M01,"Complexion - back hair, grey",(Back)(Male) Grey Back Hair Light,"per-overlay request 10-15: Vex's hair tile in grey, light (reworks.py)"
 Complexion_BackHairGreyHeavy_M01,(new),(Back)(Male) Grey Back Hair,"per-overlay request 10-15: NEW id, Vex's hair tile in grey, heavy (reworks.py)"
 Complexion_Birthmark_F01,Complexion - a birthmark,(Leg)(Female) Birthmark,"per-overlay request 10-17: Vex's birthmark art at the old spot (reworks.py)"
 Complexion_Birthmark_F02,Complexion - a birthmark,(Back)(Female) Birthmark,"per-overlay request 10-17: Vex's birthmark art at the old spot (reworks.py)"
@@ -259,15 +259,15 @@ Complexion_BloodyHands_M01,Complexion - bloody handprints on the chest and belly
 Complexion_BloodyHandsThigh_F01,Complexion - bloody handprints on the chest and a thigh,(Chest & Thigh)(Female) Bloody Handprints,per-overlay request 10-17: 15% fainter (reworks.FADES)
 Complexion_BloodyHandsThigh_M01,Complexion - bloody handprints on the chest and a thigh,(Chest & Thigh)(Male) Bloody Handprints,per-overlay request 10-17: 15% fainter (reworks.FADES)
 Complexion_BruiseFresh_F01,Complexion - fresh bruises,(Body)(Female) Body Bruises,
-Complexion_BruiseFresh_F02,Complexion - fresh bruises,(Body)(Female) Body Bruises alt,
-Complexion_BruiseFresh_F03,Complexion - fresh bruises,(Body)(Female) Body Bruises alt2,
+Complexion_BruiseFresh_F02,Complexion - fresh bruises,(Body)(Female) Body Bruises Alt,
+Complexion_BruiseFresh_F03,Complexion - fresh bruises,(Body)(Female) Body Bruises Alt2,
 Complexion_BruiseFresh_M01,Complexion - fresh bruises,(Body)(Male) Body Bruises,
-Complexion_BruiseFresh_M02,Complexion - fresh bruises,(Body)(Male) Body Bruises alt,
-Complexion_BruiseFresh_M03,Complexion - fresh bruises,(Body)(Male) Body Bruises alt2,
-Complexion_BruiseOld_F01,Complexion - fading yellow bruises,(Body)(Female) Body Bruises old,
-Complexion_BruiseOld_F02,Complexion - fading yellow bruises,(Body)(Female) Body Bruises old alt,
-Complexion_BruiseOld_M01,Complexion - fading yellow bruises,(Body)(Male) Body Bruises old,
-Complexion_BruiseOld_M02,Complexion - fading yellow bruises,(Body)(Male) Body Bruises old alt,
+Complexion_BruiseFresh_M02,Complexion - fresh bruises,(Body)(Male) Body Bruises Alt,
+Complexion_BruiseFresh_M03,Complexion - fresh bruises,(Body)(Male) Body Bruises Alt2,
+Complexion_BruiseOld_F01,Complexion - fading yellow bruises,(Body)(Female) Body Bruises Old,
+Complexion_BruiseOld_F02,Complexion - fading yellow bruises,(Body)(Female) Body Bruises Old Alt,
+Complexion_BruiseOld_M01,Complexion - fading yellow bruises,(Body)(Male) Body Bruises Old,
+Complexion_BruiseOld_M02,Complexion - fading yellow bruises,(Body)(Male) Body Bruises Old Alt,
 Complexion_BurnScar_F01,Complexion - an old burn scar,(Leg)(Female) Burn Scar,
 Complexion_BurnScar_M01,Complexion - an old burn scar,(Arm)(Male) Burn Scar,
 Complexion_CafeAuLait_F01,Complexion - cafe-au-lait spots,(Chest)(Female) CafeAuLait,
@@ -275,9 +275,9 @@ Complexion_CafeAuLait_F02,Complexion - cafe-au-lait spots,(Back)(Female) CafeAuL
 Complexion_CafeAuLait_M01,Complexion - cafe-au-lait spots,(Stomach)(Male) CafeAuLait,
 Complexion_CafeAuLait_M02,Complexion - cafe-au-lait spots,(Thigh)(Male) CafeAuLait,
 Complexion_CelluliteMore_F01,Complexion - cellulite,(Lower Body)(Female) Rashing +,
-Complexion_CelluliteMore_F02,Complexion - cellulite,(Lower Body)(Female) Rashing alt +,
+Complexion_CelluliteMore_F02,Complexion - cellulite,(Lower Body)(Female) Rashing Alt +,
 Complexion_Cellulite_F01,Complexion - cellulite,(Lower Body)(Female) Rashing,
-Complexion_Cellulite_F02,Complexion - cellulite,(Lower Body)(Female) Rashing alt,
+Complexion_Cellulite_F02,Complexion - cellulite,(Lower Body)(Female) Rashing Alt,
 Complexion_CherryAngiomas_F01,Complexion - tiny red cherry angiomas,(Chest)(Female) Cherry Angiomas,
 Complexion_CherryAngiomas_F02,Complexion - tiny red cherry angiomas,(Chest)(Female) Cherry Angiomas Alt,
 Complexion_CherryAngiomas_M01,Complexion - tiny red cherry angiomas,(Back)(Male) Cherry Angiomas,

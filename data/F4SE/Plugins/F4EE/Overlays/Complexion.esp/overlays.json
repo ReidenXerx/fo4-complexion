@@ -15,7 +15,7 @@
  },
  {
   "id": "Complexion_BruiseFresh_F02",
-  "name": "Complexion - (Body)(Female) Body Bruises alt",
+  "name": "Complexion - (Body)(Female) Body Bruises Alt",
   "slots": [
    {
     "slot": 3,
@@ -29,7 +29,7 @@
  },
  {
   "id": "Complexion_BruiseFresh_F03",
-  "name": "Complexion - (Body)(Female) Body Bruises alt2",
+  "name": "Complexion - (Body)(Female) Body Bruises Alt2",
   "slots": [
    {
     "slot": 3,
@@ -57,7 +57,7 @@
  },
  {
   "id": "Complexion_BruiseFresh_M02",
-  "name": "Complexion - (Body)(Male) Body Bruises alt",
+  "name": "Complexion - (Body)(Male) Body Bruises Alt",
   "slots": [
    {
     "slot": 3,
@@ -71,7 +71,7 @@
  },
  {
   "id": "Complexion_BruiseFresh_M03",
-  "name": "Complexion - (Body)(Male) Body Bruises alt2",
+  "name": "Complexion - (Body)(Male) Body Bruises Alt2",
   "slots": [
    {
     "slot": 3,
@@ -85,7 +85,7 @@
  },
  {
   "id": "Complexion_BruiseOld_F01",
-  "name": "Complexion - (Body)(Female) Body Bruises old",
+  "name": "Complexion - (Body)(Female) Body Bruises Old",
   "slots": [
    {
     "slot": 3,
@@ -99,7 +99,7 @@
  },
  {
   "id": "Complexion_BruiseOld_F02",
-  "name": "Complexion - (Body)(Female) Body Bruises old alt",
+  "name": "Complexion - (Body)(Female) Body Bruises Old Alt",
   "slots": [
    {
     "slot": 3,
@@ -113,7 +113,7 @@
  },
  {
   "id": "Complexion_BruiseOld_M01",
-  "name": "Complexion - (Body)(Male) Body Bruises old",
+  "name": "Complexion - (Body)(Male) Body Bruises Old",
   "slots": [
    {
     "slot": 3,
@@ -127,7 +127,7 @@
  },
  {
   "id": "Complexion_BruiseOld_M02",
-  "name": "Complexion - (Body)(Male) Body Bruises old alt",
+  "name": "Complexion - (Body)(Male) Body Bruises Old Alt",
   "slots": [
    {
     "slot": 3,
@@ -4593,7 +4593,7 @@
  },
  {
   "id": "Complexion_Cellulite_F02",
-  "name": "Complexion - (Lower Body)(Female) Rashing alt",
+  "name": "Complexion - (Lower Body)(Female) Rashing Alt",
   "slots": [
    {
     "slot": 3,
@@ -4747,7 +4747,7 @@
  },
  {
   "id": "Complexion_BackHairBlack_M01",
-  "name": "Complexion - (Back)(Male) Black Back Hair light",
+  "name": "Complexion - (Back)(Male) Black Back Hair Light",
   "slots": [
    {
     "slot": 3,
@@ -9185,7 +9185,7 @@
  },
  {
   "id": "Complexion_BackHairBrownLight_M01",
-  "name": "Complexion - (Back)(Male) Brown Back Hair light",
+  "name": "Complexion - (Back)(Male) Brown Back Hair Light",
   "slots": [
    {
     "slot": 3,
@@ -9213,7 +9213,7 @@
  },
  {
   "id": "Complexion_BackHairGreyLight_M01",
-  "name": "Complexion - (Back)(Male) Grey Back Hair light",
+  "name": "Complexion - (Back)(Male) Grey Back Hair Light",
   "slots": [
    {
     "slot": 3,
@@ -9633,7 +9633,7 @@
  },
  {
   "id": "Complexion_CelluliteMore_F02",
-  "name": "Complexion - (Lower Body)(Female) Rashing alt +",
+  "name": "Complexion - (Lower Body)(Female) Rashing Alt +",
   "slots": [
    {
     "slot": 3,
