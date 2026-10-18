@@ -264,3 +264,7 @@ Complexion_BruiseFresh_F03,Complexion - fresh bruises,(Body)(Female) Body Bruise
 Complexion_BruiseFresh_M01,Complexion - fresh bruises,(Body)(Male) Body Bruises,
 Complexion_BruiseFresh_M02,Complexion - fresh bruises,(Body)(Male) Body Bruises alt,
 Complexion_BruiseFresh_M03,Complexion - fresh bruises,(Body)(Male) Body Bruises alt2,
+Complexion_BruiseOld_F01,Complexion - fading yellow bruises,(Body)(Female) Body Bruises old,
+Complexion_BruiseOld_F02,Complexion - fading yellow bruises,(Body)(Female) Body Bruises old alt,
+Complexion_BruiseOld_M01,Complexion - fading yellow bruises,(Body)(Male) Body Bruises old,
+Complexion_BruiseOld_M02,Complexion - fading yellow bruises,(Body)(Male) Body Bruises old alt,

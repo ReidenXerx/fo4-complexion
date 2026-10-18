@@ -85,7 +85,7 @@
  },
  {
   "id": "Complexion_BruiseOld_F01",
-  "name": "Complexion - fading yellow bruises",
+  "name": "Complexion - (Body)(Female) Body Bruises old",
   "slots": [
    {
     "slot": 3,
@@ -99,7 +99,7 @@
  },
  {
   "id": "Complexion_BruiseOld_F02",
-  "name": "Complexion - fading yellow bruises",
+  "name": "Complexion - (Body)(Female) Body Bruises old alt",
   "slots": [
    {
     "slot": 3,
@@ -113,7 +113,7 @@
  },
  {
   "id": "Complexion_BruiseOld_M01",
-  "name": "Complexion - fading yellow bruises",
+  "name": "Complexion - (Body)(Male) Body Bruises old",
   "slots": [
    {
     "slot": 3,
@@ -127,7 +127,7 @@
  },
  {
   "id": "Complexion_BruiseOld_M02",
-  "name": "Complexion - fading yellow bruises",
+  "name": "Complexion - (Body)(Male) Body Bruises old alt",
   "slots": [
    {
     "slot": 3,
