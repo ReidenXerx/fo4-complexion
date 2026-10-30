@@ -52,6 +52,8 @@ Bool Function OrderPersona(Int aiOrder, String asPersona) Native Global
 ; ---- C-19: the overlay window (ported from Silhouette's picker, S-79) ----
 ; The NPC under the crosshair, or aimed at within the last afRecentSeconds; 0 for none.
 Int Function CrosshairActor(Float afRecentSeconds) Native Global
+; The loaded actors near the player (protocol 3): the window holds the companions among them still.
+Int[] Function NearActors() Native Global
 ; The game's free camera framing someone; "" when there, "wait" while it comes on (ask CameraStep again), else why not.
 String Function CameraFrame(Float afX, Float afY, Float afZ, Float afAngle, Float afHeight) Native Global
 String Function CameraRestore() Native Global

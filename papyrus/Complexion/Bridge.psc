@@ -7,7 +7,7 @@ Scriptname Complexion:Bridge extends Quest
  Ours are told from every other mod's by their priority: Complexion's are negative, everyone else's (AAF counts
  from 0) are not. A rebuild keeps every entry that is not ours, with all its data.}
 
-Int Property Protocol = 2 AutoReadOnly  ; 2: the overlay window (C-19)
+Int Property Protocol = 3 AutoReadOnly  ; 2: the overlay window (C-19); 3: NearActors
 Int Property kPollTimer = 1 AutoReadOnly
 Float Property PollSeconds = 4.0 AutoReadOnly
 Float Property BusyPollSeconds = 1.0 AutoReadOnly
@@ -24,6 +24,8 @@ Int Property AAFActorLocked = 0x017CEA AutoReadOnly
 ; NPC record, cannot see them.
 Int Property CaptiveFactionID = 0x03E0C8 AutoReadOnly
 Int Property BoundCaptiveFactionID = 0x058610 AutoReadOnly
+; Whoever travels with the player now (Fallout4.esm), held still while the window is open.
+Int Property CompanionFactionID = 0x023C01 AutoReadOnly
 
 Float _drainStarted = -1.0
 Int _polls = 0
@@ -34,6 +36,7 @@ Keyword _aafBusy
 Keyword _aafLocked
 Faction _captive
 Faction _boundCaptive
+Faction _companions
 
 Event OnQuestInit()
 	RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")
@@ -58,6 +61,7 @@ Function Connect()
 	EndIf
 	_captive = Game.GetFormFromFile(CaptiveFactionID, "Fallout4.esm") as Faction
 	_boundCaptive = Game.GetFormFromFile(BoundCaptiveFactionID, "Fallout4.esm") as Faction
+	_companions = Game.GetFormFromFile(CompanionFactionID, "Fallout4.esm") as Faction
 	_rapport = Game.IsPluginInstalled("Rapport.esp")
 	; By the names plugins register with F4SE, not their file names: MCM is "F4MCM"; LooksMenu "F4EE", or
 	; "Fallout 4 Engine Extender" on AE.
@@ -384,6 +388,7 @@ InputEnableLayer _winInput
 ; The NPC held in place (SetRestrained), and the clothes taken off and from whom: kept in the save, so a save
 ; made while the window was open still lets them go and dresses them at the next load (Connect).
 Int _winHeld = 0
+Int[] _winHeldOthers        ; the companions held while the window is open; the same
 Form[] _winClothes
 Int _winClothesOn = 0
 
@@ -570,6 +575,7 @@ Function WindowLoad(Int aiSession)
 		WindowHold(a, aiSession)
 	Else
 		Game.ForceThirdPerson()  ; the free camera shows the body the third-person view has
+		WindowHold(None, aiSession)
 	EndIf
 	WindowUndress(a, aiSession)
 	WindowFrame(a, aiSession)
@@ -814,27 +820,58 @@ EndFunction
 
 ; Held in place while their skin is chosen: SetRestrained, the game's own "cannot move" -- their AI keeps
 ; running, and they carry on once let go. Nobody is held whose movement the game or another mod may hold.
+; Every other loaded companion is held too: sandboxing, they kept walking into the shot (alasdairn, 10-30;
+; Quartermaster 1.0.6's fix). akActor None (the window on the player): the companions only.
 Function WindowHold(Actor akActor, Int aiSession)
 	WindowRelease()
-	If !WindowLive(aiSession) || !akActor || akActor.IsDead() || akActor.IsInCombat() || akActor.IsInScene() || Busy(akActor)
+	If !WindowLive(aiSession)
 		Return
 	EndIf
-	akActor.SetRestrained(True)
-	_winHeld = akActor.GetFormID()
+	If akActor && WindowHoldOne(akActor)
+		_winHeld = akActor.GetFormID()
+	EndIf
+	If _companions
+		Int[] near = Complexion:DLL.NearActors()
+		Int i = 0
+		While i < near.Length && WindowLive(aiSession)
+			Actor other = Game.GetForm(near[i]) as Actor
+			If other && other != akActor && other.IsInFaction(_companions) && WindowHoldOne(other)
+				_winHeldOthers.Add(near[i])
+			EndIf
+			i += 1
+		EndWhile
+	EndIf
 	If !WindowLive(aiSession)
 		WindowRelease()
 	EndIf
 EndFunction
 
+Bool Function WindowHoldOne(Actor akActor)
+	If akActor.IsDead() || akActor.IsInCombat() || akActor.IsInScene() || Busy(akActor)
+		Return False
+	EndIf
+	akActor.SetRestrained(True)
+	Return True
+EndFunction
+
 Function WindowRelease()
-	If _winHeld == 0
-		Return
+	If _winHeld != 0
+		Actor held = Game.GetForm(_winHeld) as Actor
+		_winHeld = 0
+		If held
+			held.SetRestrained(False)
+		EndIf
 	EndIf
-	Actor held = Game.GetForm(_winHeld) as Actor
-	_winHeld = 0
-	If held
-		held.SetRestrained(False)
+	If !_winHeldOthers
+		_winHeldOthers = new Int[0]
 	EndIf
+	While _winHeldOthers.Length > 0
+		Actor other = Game.GetForm(_winHeldOthers[0]) as Actor
+		_winHeldOthers.Remove(0)
+		If other
+			other.SetRestrained(False)
+		EndIf
+	EndWhile
 EndFunction
 
 ; Undressed while the window shows their skin (the owner, 2026-10-04): every piece of armor and clothing they

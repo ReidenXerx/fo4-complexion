@@ -12,7 +12,8 @@ namespace CX::Papyrus
 
 		// 1: the first bridge (orders of whole looks, Done/Gone, Configure, ResetAll, Unapply, Warning).
 		// 2: the overlay window (C-19): crosshair, camera, the window's session.
-		constexpr std::int32_t kProtocol = 2;
+		// 3: NearActors (the window holds every companion still).
+		constexpr std::int32_t kProtocol = 3;
 
 		using Str = RE::BSFixedString;
 
@@ -154,6 +155,16 @@ namespace CX::Papyrus
 
 		std::int32_t CrosshairActor(std::monostate, float a_recentSeconds) { return static_cast<std::int32_t>(Game::CrosshairActor(a_recentSeconds)); }
 
+		// The loaded actors near the player; the bridge holds the companions among them still while the window is open.
+		std::vector<std::int32_t> NearActors(std::monostate)
+		{
+			std::vector<std::int32_t> out;
+			for (const auto id : Game::NearActors()) {
+				out.push_back(static_cast<std::int32_t>(id));
+			}
+			return out;
+		}
+
 		Str CameraFrame(std::monostate, float a_x, float a_y, float a_z, float a_angle, float a_height)
 		{
 			return Str{ Camera::Frame(a_x, a_y, a_z, a_angle, a_height) };
@@ -250,6 +261,7 @@ namespace CX::Papyrus
 		Bind(a_vm, "OrderRegroup"sv, OrderRegroup, fast);
 		Bind(a_vm, "OrderPersona"sv, OrderPersona, fast);
 		Bind(a_vm, "CrosshairActor"sv, CrosshairActor, main);
+		Bind(a_vm, "NearActors"sv, NearActors, main);  // reads the process lists
 		Bind(a_vm, "CameraFrame"sv, CameraFrame, main);
 		Bind(a_vm, "CameraRestore"sv, CameraRestore, main);
 		Bind(a_vm, "CameraFocus"sv, CameraFocus, main);

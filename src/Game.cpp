@@ -730,6 +730,23 @@ namespace CX::Game
 		return static_cast<RE::Actor*>(form);
 	}
 
+	std::vector<std::uint32_t> NearActors()
+	{
+		std::vector<std::uint32_t> out;
+		const auto lists = RE::ProcessLists::GetSingleton();
+		if (!lists) {
+			return out;
+		}
+		for (const auto& handle : lists->highActorHandles) {
+			const auto ptr = handle.get();
+			auto*      actor = ptr.get();
+			if (actor && Has3D(actor)) {
+				out.push_back(actor->GetFormID());
+			}
+		}
+		return out;
+	}
+
 	std::string NameOf(RE::Actor* a_actor)
 	{
 		return Compat::DisplayName(a_actor);

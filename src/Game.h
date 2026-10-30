@@ -37,6 +37,8 @@ namespace CX::Game
 
 	// Main thread: an actor by form id, or null.
 	[[nodiscard]] RE::Actor*  ActorFor(std::uint32_t a_ref);
+	// Main thread: the actors in high process with their 3D (the window holds the companions among them still).
+	[[nodiscard]] std::vector<std::uint32_t> NearActors();
 	[[nodiscard]] std::string NameOf(RE::Actor* a_actor);
 	// Their head hair's colour family (profiles.json hair_colours), "" when not one of the game's colours.
 	[[nodiscard]] std::string HairOf(RE::Actor* a_actor);
