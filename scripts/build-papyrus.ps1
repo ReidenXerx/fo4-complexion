@@ -25,7 +25,8 @@ param(
     # window shows (C-19). Searched before the base, whose Actor is the decompiled vanilla one. Outside the public
     # repo for the same reason the base is: it is Bethesda's Actor source with F4SE's additions.
     [string] $F4seActor = 'D:\F4CustomMods\PapyrusBase\Source\ComplexionF4SE',
-    [string] $Compiler = 'D:\GOGGames\Fallout 4 GOTY\Papyrus Compiler\PapyrusCompiler.exe'
+    # The Steam Creation Kit's compiler (the GOG install's copy is gone, 11-05).
+    [string] $Compiler = 'D:\F4Tools\Papyrus Compiler\PapyrusCompiler.exe'
 )
 
 $ErrorActionPreference = 'Stop'
