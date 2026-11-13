@@ -37,7 +37,7 @@ import real  # noqa: E402
 import realism  # noqa: E402
 import seams  # noqa: E402
 import skin  # noqa: E402
-import synth  # noqa: E402
+import synthskin  # noqa: E402
 import traits  # noqa: E402
 HAIR_RGB = realism.HAIR  # skin adds ginger, lightbrown, darkbrown
 from body import UVMap  # noqa: E402
@@ -332,7 +332,7 @@ for style, chipped, sexes in (('red', False, F), ('black', False, F), ('purple',
                               ('red', True, F), ('black', True, BOTH), ('dirty', False, BOTH)):
     note = 'dirty nails' if style == 'dirty' else f'{"chipped " if chipped else ""}{style} nails'
     add(f'Nails{style.title()}{"Chipped" if chipped else ""}', sexes, 'nails', (style, chipped), 1024, dict(NAILS, note=note), 1)
-HAND_PAINTERS = {'nails'}
+HAND_PAINTERS = {'nails', 'pack_hands'}
 # Marks that belong AT a seam with the head or hands (seams.py): every other body mark fades out before them.
 SEAM_EXEMPT = {'collar', 'bindings', 'shackles'}
 
@@ -548,13 +548,18 @@ for side, label in ((-1, 'Left'), (1, 'Right')):
 # 2026-10-17: Vex's heavy grey back hair, the one NEW template among his per-overlay reworks (painted by
 # reworks.PIECES, below); tagged as the light grey one. Appended last: earlier seeds stay put.
 add('BackHairGreyHeavy', M, 'skin.back_hair', ('grey', 1.0), 2048, dict(R, kind='body_hair', regions=['back'], size='large', note='back hair, grey'), 1)
-# 2026-11-13 (alasdairn): synthetic skin, a synth's plated shell (tools/paint/synth.py). Selectable only: lore "breaks"
-# keeps it out of every composer and Complexion's window, so it is only ever put on in LooksMenu's own overlay list.
-# The male one fits Ace Male Race too (it wears the vanilla male body mesh). Appended last: earlier seeds stay put.
-# alasdairn REJECTED this painted design (11-13); he is finding free-use synth skin textures to fit instead. Retired:
-# never shipped, the rows stay only so a later synth template appended after them keeps the seeds before it.
+# 2026-11-13 (alasdairn): synthetic skin. A first, painted design was rejected and never shipped: its rows stay,
+# retired, only so the rows after them keep their seeds (appended last: earlier seeds stay put).
 add('SynthSkin', BOTH, 'synth_skin', (), 4096, dict(R, kind='skin', regions=['full_body'], size='full', lore='breaks',
                                                     note='synthetic skin', retired=True), 1)
+# The one he approved (v9): his own synth skin texture pack (painted on our meshes) and his atlas's seams and muscle
+# definition, see-through over the person's own skin (tools/paint/synthskin.py pack_body / pack_hands), worn with the face
+# tints of tools/paint/make_faces.py. Selectable only: lore "breaks" keeps it out of every composer and Complexion's
+# window, so it is only ever put on in LooksMenu's own lists. The male one fits Ace Male Race (the vanilla male body).
+add('SynthShell', BOTH, 'pack_body', (), 4096, dict(R, kind='skin', regions=['full_body'], size='full', lore='breaks',
+                                                note='synthetic shell'), 1)
+add('SynthShellHands', BOTH, 'pack_hands', (), 2048, dict(R, kind='skin', regions=['hand_l', 'hand_r'], size='large',
+                                                           lore='breaks', note='synthetic shell, hands'), 1)
 
 
 def replace_row(tid, painter, args, size, tag):
@@ -577,8 +582,10 @@ NAMES = {
     'Complexion_VexAnchorThighLeft_M01': '(Left Thigh)(Male) Anchor&Heart',
     'Complexion_VexAnchorThighRight_F01': '(Right Thigh)(Female) Anchor&Heart',
     'Complexion_VexAnchorThighRight_M01': '(Right Thigh)(Male) Anchor&Heart',
-    'Complexion_SynthSkin_F01': 'Synthetic Skin',
-    'Complexion_SynthSkin_M01': 'Synthetic Skin',
+    'Complexion_SynthShell_F01': 'Synthetic Skin',
+    'Complexion_SynthShell_M01': 'Synthetic Skin',
+    'Complexion_SynthShellHands_F01': 'Synthetic Skin (Hands)',
+    'Complexion_SynthShellHands_M01': 'Synthetic Skin (Hands)',
 }
 
 
@@ -658,7 +665,7 @@ def paint(painter, m, rng, args):
                                         from_end_cm=from_end_cm, shift_cm=rest[0] if rest else 0.0)
     if painter.startswith('skin.'):
         return getattr(skin, painter[5:])(m, rng, *args)
-    for module in (real, marks, realism, life, hands, synth):   # real first: its painters replace the old ones (10-09)
+    for module in (real, marks, realism, life, hands, synthskin):   # real first: its painters replace the old ones (10-09)
         if hasattr(module, painter):
             return getattr(module, painter)(m, rng, *args)
     raise SystemExit(f'no painter {painter}')

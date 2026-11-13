@@ -9924,5 +9924,61 @@
   "transformable": true,
   "sort": 0,
   "gender": 0
+ },
+ {
+  "id": "Complexion_SynthShell_F01",
+  "name": "Complexion - Synthetic Skin",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthShell_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthShell_M01",
+  "name": "Complexion - Synthetic Skin",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthShell_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SynthShellHands_F01",
+  "name": "Complexion - Synthetic Skin (Hands)",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthShellHands_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthShellHands_M01",
+  "name": "Complexion - Synthetic Skin (Hands)",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthShellHands_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 0
  }
 ]

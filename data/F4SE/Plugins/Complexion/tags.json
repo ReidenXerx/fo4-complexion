@@ -6694,6 +6694,35 @@
 "size": "small",
 "style": []
 },
+"f:Complexion_SynthShellHands_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "breaks",
+"note": "synthetic shell, hands",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"hand_l",
+"hand_r"
+],
+"size": "large",
+"style": []
+},
+"f:Complexion_SynthShell_F01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "breaks",
+"note": "synthetic shell",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"full_body"
+],
+"size": "full",
+"style": []
+},
 "f:Complexion_TanBikiniDark_F01": {
 "adult": false,
 "emblem": null,
@@ -31049,6 +31078,35 @@
 "quality": "ok",
 "regions": [],
 "size": "small",
+"style": []
+},
+"m:Complexion_SynthShellHands_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "breaks",
+"note": "synthetic shell, hands",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"hand_l",
+"hand_r"
+],
+"size": "large",
+"style": []
+},
+"m:Complexion_SynthShell_M01": {
+"adult": false,
+"emblem": null,
+"kind": "skin",
+"lore": "breaks",
+"note": "synthetic shell",
+"pack": "Complexion.esp",
+"quality": "ok",
+"regions": [
+"full_body"
+],
+"size": "full",
 "style": []
 },
 "m:Complexion_TanShortsDark_M01": {

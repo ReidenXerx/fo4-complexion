@@ -9035,5 +9035,59 @@
   "size": "large",
   "note": "back hair, grey",
   "hair": "grey"
+ },
+ "f:Complexion_SynthShell_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic shell"
+ },
+ "m:Complexion_SynthShell_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic shell"
+ },
+ "f:Complexion_SynthShellHands_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic shell, hands"
+ },
+ "m:Complexion_SynthShellHands_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic shell, hands"
  }
 }

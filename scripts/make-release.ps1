@@ -39,7 +39,7 @@ $files = [ordered]@{
     'Interface\ComplexionMenu.swf'            = 'build\interface\ComplexionMenu.swf'
     'F4SE\Plugins\Complexion\thumbs.json'    = 'data\F4SE\Plugins\Complexion\thumbs.json'
 }
-foreach ($tree in 'Textures\Overlays\Complexion', 'Textures\Complexion', 'Materials\Overlays\Complexion', 'F4SE\Plugins\F4EE\Overlays\Complexion.esp', 'F4SE\Plugins\RobCo_Patcher\race') {
+foreach ($tree in 'Textures\Overlays\Complexion', 'Textures\Complexion', 'Materials\Overlays\Complexion', 'F4SE\Plugins\F4EE\Overlays\Complexion.esp', 'F4SE\Plugins\F4EE\Tints\Complexion.esp', 'F4SE\Plugins\RobCo_Patcher\race') {
     Get-ChildItem (Join-Path $root "data\$tree") -File -Recurse | ForEach-Object {
         $files[$_.FullName.Substring((Join-Path $root 'data').Length + 1)] = $_.FullName.Substring($root.Length + 1)
     }

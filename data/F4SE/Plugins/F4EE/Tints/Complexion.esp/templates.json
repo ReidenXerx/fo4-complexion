@@ -1,0 +1,57 @@
+[
+ {
+  "Entries": [
+   {
+    "BlendOp": "Overlay",
+    "FixedCategory": "Complexion Synthetic Skin",
+    "Diffuse": "Complexion\\Face\\SynthSkin_HumanMale.dds",
+    "Flags": [
+     "ChargenDetail"
+    ],
+    "Gender": 0,
+    "Id": 60969,
+    "Name": "Complexion - Synthetic Skin",
+    "Normal": null,
+    "Slot": "FaceDetail",
+    "Specular": null,
+    "Type": "TextureSet"
+   },
+   {
+    "BlendOp": "Overlay",
+    "FixedCategory": "Complexion Synthetic Skin",
+    "Diffuse": "Complexion\\Face\\SynthSkin_HumanFemale.dds",
+    "Flags": [
+     "ChargenDetail"
+    ],
+    "Gender": 1,
+    "Id": 60970,
+    "Name": "Complexion - Synthetic Skin",
+    "Normal": null,
+    "Slot": "FaceDetail",
+    "Specular": null,
+    "Type": "TextureSet"
+   }
+  ],
+  "Race": "HumanRace"
+ },
+ {
+  "Entries": [
+   {
+    "BlendOp": "Overlay",
+    "FixedCategory": "Complexion Synthetic Skin",
+    "Diffuse": "Complexion\\Face\\SynthSkin_AceMale.dds",
+    "Flags": [
+     "ChargenDetail"
+    ],
+    "Gender": 0,
+    "Id": 60971,
+    "Name": "Complexion - Synthetic Skin",
+    "Normal": null,
+    "Slot": "FaceDetail",
+    "Specular": null,
+    "Type": "TextureSet"
+   }
+  ],
+  "Race": "AceHumanRace"
+ }
+]

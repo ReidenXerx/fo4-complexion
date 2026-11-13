@@ -1,14 +1,14 @@
-"""Complexion's face tints: the synthetic skin's face half (alasdairn, 11-13: "All at once", for the vanilla male and
+"""Complexion's face tints: the synthetic skin's face (alasdairn, 11-13: "All at once", for the vanilla male and
 female heads and Ace Male Race's head).
 
     python tools/paint/make_faces.py
 
 Writes, all generated (never edit by hand):
-- data/Textures/Complexion/Face/<name>.dds   BC3 with mipmaps, 1024 (as TCD's face tints): the colour multiplies
-  the face (white = untouched), the alpha is the same seam as coverage
+- data/Textures/Complexion/Face/<name>.dds   BC7 with mipmaps, 1024 (TCD's face tints are 1024): synthskin.pack_face,
+  laid over the face with blend "Overlay" (0.5 grey leaves the face as it is, so it keeps its own colour)
 - data/F4SE/Plugins/F4EE/Tints/Complexion.esp/categories.json, templates.json   LooksMenu's face tints, one
   category of Complexion's own (a reused category name once turned women's faces pale: shared memory
-  looksmenu-tint-json-unique-category-names), a "FaceDetail" texture set per head, blend Multiply
+  looksmenu-tint-json-unique-category-names), a "FaceDetail" texture set per head
 - build/faces/<name>.png   the painted RGBA, for review sheets
 
 A race LooksMenu cannot find is skipped silently (f4ee CharGenInterface.cpp: `if(race)`), so the Ace Male entry is
@@ -25,7 +25,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import face  # noqa: E402
 import make_marks as mm  # noqa: E402
-import synth  # noqa: E402
+import synthskin  # noqa: E402
 
 ROOT = HERE.parent.parent
 SIZE = 1024
@@ -51,11 +51,13 @@ def main():
     templates = {}
     for head, (name, tid, label) in TEXTURES.items():
         m = face.HeadMap(head, SIZE)
-        tex, alpha = synth.synth_face(m)
-        rgba = np.concatenate([tex, alpha[..., None]], axis=-1)
+        rgba = synthskin.pack_face(m)
+        rgb = mm.bleed(Image.fromarray((np.clip(rgba[..., :3], 0, 1) * 255 + 0.5).astype(np.uint8), 'RGB'), m.covered)
+        alpha = rgba[..., 3]
         png = work / f'{name}.png'
-        Image.fromarray((np.clip(rgba, 0, 1) * 255 + 0.5).astype(np.uint8), 'RGBA').save(png)
-        r = mm.subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'BC3_UNORM', '-m', '0', '-o', str(tex_dir), str(png)],
+        a = Image.fromarray((np.clip(alpha, 0, 1) * 255 + 0.5).astype(np.uint8), 'L')
+        Image.merge('RGBA', (*rgb.split(), a)).save(png)
+        r = mm.subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'BC7_UNORM', '-bcmax', '-m', '0', '-o', str(tex_dir), str(png)],
                               capture_output=True, text=True)
         made = next((f for f in tex_dir.iterdir() if f.name.lower() == f'{name}.dds'.lower()), None)
         if r.returncode or not made:
@@ -64,7 +66,7 @@ def main():
             made.rename(tex_dir / f'{name}.dds')
         races.setdefault(m.race, set()).add(m.gender)
         templates.setdefault(m.race, []).append({
-            'BlendOp': 'Multiply', 'FixedCategory': CATEGORY, 'Diffuse': f'Complexion\\Face\\{name}.dds',
+            'BlendOp': 'Overlay', 'FixedCategory': CATEGORY, 'Diffuse': f'Complexion\\Face\\{name}.dds',
             'Flags': ['ChargenDetail'], 'Gender': m.gender, 'Id': tid, 'Name': label, 'Normal': None,
             'Slot': 'FaceDetail', 'Specular': None, 'Type': 'TextureSet'})
         print(f'  {head}: {name}.dds ({m.race}, gender {m.gender}), {float((alpha > 0.05).mean()) * 100:.1f}% of the map')
