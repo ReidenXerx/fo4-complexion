@@ -4,8 +4,9 @@ female heads and Ace Male Race's head).
     python tools/paint/make_faces.py
 
 Writes, all generated (never edit by hand):
-- data/Textures/Complexion/Face/<name>.dds   BC7 with mipmaps, 1024 (TCD's face tints are 1024): synthskin.pack_face,
-  laid over the face with blend "Overlay" (0.5 grey leaves the face as it is, so it keeps its own colour)
+- data/Textures/Complexion/Face/<name>.dds   BC7 with mipmaps, 1024 (TCD's face tints are 1024), two looks per head:
+  SynthSkin_* (synthskin.pack_face, blend "Multiply": the seams darken the face) and SynthPlated_*
+  (synthskin.plated_face, blend "Default": his synthetic surface laid over it)
 - data/F4SE/Plugins/F4EE/Tints/Complexion.esp/categories.json, templates.json   LooksMenu's face tints, one
   category of Complexion's own (a reused category name once turned women's faces pale: shared memory
   looksmenu-tint-json-unique-category-names), a "FaceDetail" texture set per head
@@ -33,11 +34,15 @@ CATEGORY = 'Complexion Synthetic Skin'
 # Tint ids are per race and saved with the character; the game keeps them in 16 bits. Kept clear of the vanilla
 # range and of TCD's (1411..., 14102...).
 CATEGORY_ID = 60968
-TEXTURES = {   # head -> (texture name, tint id, name in LooksMenu)
-    'human_male': ('SynthSkin_HumanMale', 60969, 'Complexion - Synthetic Skin'),
-    'human_female': ('SynthSkin_HumanFemale', 60970, 'Complexion - Synthetic Skin'),
-    'ace_male': ('SynthSkin_AceMale', 60971, 'Complexion - Synthetic Skin'),
-}
+HEADS = ('human_male', 'human_female', 'ace_male')
+HEAD_NAMES = {'human_male': 'HumanMale', 'human_female': 'HumanFemale', 'ace_male': 'AceMale'}
+# Two looks, each a texture per head, picked by hand in the same category:
+# Seams -- his seam lines only, darkening the face (blend Multiply: white leaves it as it is);
+# Plated -- his synthetic surface with darker, wider seams, laid over the face (blend Default).
+VARIANTS = (   # (prefix, painter, blend, first tint id, name in LooksMenu)
+    ('SynthSkin', synthskin.pack_face, 'Multiply', 60969, 'Complexion - Synthetic Skin (Seams)'),
+    ('SynthPlated', synthskin.plated_face, 'Default', 60972, 'Complexion - Synthetic Skin (Plated)'),
+)
 
 
 def main():
@@ -49,27 +54,29 @@ def main():
     tool = mm.texconv()
     races = {}
     templates = {}
-    for head, (name, tid, label) in TEXTURES.items():
-        m = face.HeadMap(head, SIZE)
-        rgba = synthskin.pack_face(m)
-        rgb = mm.bleed(Image.fromarray((np.clip(rgba[..., :3], 0, 1) * 255 + 0.5).astype(np.uint8), 'RGB'), m.covered)
-        alpha = rgba[..., 3]
-        png = work / f'{name}.png'
-        a = Image.fromarray((np.clip(alpha, 0, 1) * 255 + 0.5).astype(np.uint8), 'L')
-        Image.merge('RGBA', (*rgb.split(), a)).save(png)
-        r = mm.subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'BC7_UNORM', '-bcmax', '-m', '0', '-o', str(tex_dir), str(png)],
-                              capture_output=True, text=True)
-        made = next((f for f in tex_dir.iterdir() if f.name.lower() == f'{name}.dds'.lower()), None)
-        if r.returncode or not made:
-            sys.exit(f'texconv failed on {png}: {r.stdout[-300:]} {r.stderr[-300:]}')
-        if made.name != f'{name}.dds':
-            made.rename(tex_dir / f'{name}.dds')
-        races.setdefault(m.race, set()).add(m.gender)
-        templates.setdefault(m.race, []).append({
-            'BlendOp': 'Overlay', 'FixedCategory': CATEGORY, 'Diffuse': f'Complexion\\Face\\{name}.dds',
-            'Flags': ['ChargenDetail'], 'Gender': m.gender, 'Id': tid, 'Name': label, 'Normal': None,
-            'Slot': 'FaceDetail', 'Specular': None, 'Type': 'TextureSet'})
-        print(f'  {head}: {name}.dds ({m.race}, gender {m.gender}), {float((alpha > 0.05).mean()) * 100:.1f}% of the map')
+    for prefix, painter, blend, first_id, label in VARIANTS:
+        for k, head in enumerate(HEADS):
+            name, tid = f'{prefix}_{HEAD_NAMES[head]}', first_id + k
+            m = face.HeadMap(head, SIZE)
+            rgba = painter(m)
+            rgb = mm.bleed(Image.fromarray((np.clip(rgba[..., :3], 0, 1) * 255 + 0.5).astype(np.uint8), 'RGB'), m.covered)
+            alpha = rgba[..., 3]
+            png = work / f'{name}.png'
+            a = Image.fromarray((np.clip(alpha, 0, 1) * 255 + 0.5).astype(np.uint8), 'L')
+            Image.merge('RGBA', (*rgb.split(), a)).save(png)
+            r = mm.subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'BC7_UNORM', '-bcmax', '-m', '0', '-o', str(tex_dir), str(png)],
+                                  capture_output=True, text=True)
+            made = next((f for f in tex_dir.iterdir() if f.name.lower() == f'{name}.dds'.lower()), None)
+            if r.returncode or not made:
+                sys.exit(f'texconv failed on {png}: {r.stdout[-300:]} {r.stderr[-300:]}')
+            if made.name != f'{name}.dds':
+                made.rename(tex_dir / f'{name}.dds')
+            races.setdefault(m.race, set()).add(m.gender)
+            templates.setdefault(m.race, []).append({
+                'BlendOp': blend, 'FixedCategory': CATEGORY, 'Diffuse': f'Complexion\\Face\\{name}.dds',
+                'Flags': ['ChargenDetail'], 'Gender': m.gender, 'Id': tid, 'Name': label, 'Normal': None,
+                'Slot': 'FaceDetail', 'Specular': None, 'Type': 'TextureSet'})
+            print(f'  {head}: {name}.dds ({m.race}, gender {m.gender}, {blend})')
     categories = [{'Entries': [{'Gender': 2, 'Id': CATEGORY_ID, 'Name': CATEGORY, 'Type': 'Category'}], 'Race': race}
                   for race in races]
     tmpl = [{'Entries': entries, 'Race': race} for race, entries in templates.items()]

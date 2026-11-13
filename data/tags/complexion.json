@@ -9089,5 +9089,59 @@
   ],
   "size": "large",
   "note": "synthetic shell, hands"
+ },
+ "f:Complexion_SynthPlated_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic skin, plated"
+ },
+ "m:Complexion_SynthPlated_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic skin, plated"
+ },
+ "f:Complexion_SynthPlatedHands_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic skin, plated hands"
+ },
+ "m:Complexion_SynthPlatedHands_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic skin, plated hands"
  }
 }

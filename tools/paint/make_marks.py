@@ -332,9 +332,12 @@ for style, chipped, sexes in (('red', False, F), ('black', False, F), ('purple',
                               ('red', True, F), ('black', True, BOTH), ('dirty', False, BOTH)):
     note = 'dirty nails' if style == 'dirty' else f'{"chipped " if chipped else ""}{style} nails'
     add(f'Nails{style.title()}{"Chipped" if chipped else ""}', sexes, 'nails', (style, chipped), 1024, dict(NAILS, note=note), 1)
-HAND_PAINTERS = {'nails', 'pack_hands'}
+HAND_PAINTERS = {'nails', 'pack_hands', 'plated_hands'}
 # Marks that belong AT a seam with the head or hands (seams.py): every other body mark fades out before them.
 SEAM_EXEMPT = {'collar', 'bindings', 'shackles'}
+# LIT overlays (synthskin.py's plated variant): a .bgsm, LooksMenu's lighting layer -- its own colour, mostly opaque,
+# with a sheen -- not a multiply. The painter returns (diffuse RGBA, spec: specular + smoothness), not (rgb, alpha).
+LIT_PAINTERS = {'plated_body', 'plated_hands'}
 
 # ---- C-17 (owner, 2026-10-03): our own art tattoos, traditional flash (flash.py), so every faction's tattoo styles
 # have our own art and the LoversLab packs are optional extra variety. Appended last: earlier seeds stay put.
@@ -552,14 +555,20 @@ add('BackHairGreyHeavy', M, 'skin.back_hair', ('grey', 1.0), 2048, dict(R, kind=
 # retired, only so the rows after them keep their seeds (appended last: earlier seeds stay put).
 add('SynthSkin', BOTH, 'synth_skin', (), 4096, dict(R, kind='skin', regions=['full_body'], size='full', lore='breaks',
                                                     note='synthetic skin', retired=True), 1)
-# The one he approved (v9): his own synth skin texture pack (painted on our meshes) and his atlas's seams and muscle
-# definition, see-through over the person's own skin (tools/paint/synthskin.py pack_body / pack_hands), worn with the face
-# tints of tools/paint/make_faces.py. Selectable only: lore "breaks" keeps it out of every composer and Complexion's
+# What he settled on (test v3): his atlas's seam lines, crisp and dark, over the person's own skin with no shading, and
+# a synth's joint lines on the hands (tools/paint/synthskin.py pack_body / pack_hands), worn with the face tints of
+# tools/paint/make_faces.py. Selectable only: lore "breaks" keeps it out of every composer and Complexion's
 # window, so it is only ever put on in LooksMenu's own lists. The male one fits Ace Male Race (the vanilla male body).
 add('SynthShell', BOTH, 'pack_body', (), 4096, dict(R, kind='skin', regions=['full_body'], size='full', lore='breaks',
                                                 note='synthetic shell'), 1)
 add('SynthShellHands', BOTH, 'pack_hands', (), 2048, dict(R, kind='skin', regions=['hand_l', 'hand_r'], size='large',
                                                            lore='breaks', note='synthetic shell, hands'), 1)
+# alasdairn after test v2: his material back on, the lines darkened over it, "as a secondary option": Plated
+# (synthskin.plated_body / plated_hands), a lit overlay. Appended last: earlier seeds stay put.
+add('SynthPlated', BOTH, 'plated_body', (), 4096, dict(R, kind='skin', regions=['full_body'], size='full', lore='breaks',
+                                                   note='synthetic skin, plated'), 1)
+add('SynthPlatedHands', BOTH, 'plated_hands', (), 2048, dict(R, kind='skin', regions=['hand_l', 'hand_r'], size='large',
+                                                             lore='breaks', note='synthetic skin, plated hands'), 1)
 
 
 def replace_row(tid, painter, args, size, tag):
@@ -583,10 +592,14 @@ NAMES = {
     'Complexion_VexAnchorThighRight_F01': '(Right Thigh)(Female) Anchor&Heart',
     'Complexion_VexAnchorThighRight_M01': '(Right Thigh)(Male) Anchor&Heart',
     # each says which body it is for: in LooksMenu's Add list the female and male ones otherwise read the same
-    'Complexion_SynthShell_F01': '(Body)(Female) Synthetic Skin',
-    'Complexion_SynthShell_M01': '(Body)(Male) Synthetic Skin',
-    'Complexion_SynthShellHands_F01': '(Hands)(Female) Synthetic Skin',
-    'Complexion_SynthShellHands_M01': '(Hands)(Male) Synthetic Skin',
+    'Complexion_SynthShell_F01': '(Body)(Female) Synthetic Skin - Seams',
+    'Complexion_SynthShell_M01': '(Body)(Male) Synthetic Skin - Seams',
+    'Complexion_SynthShellHands_F01': '(Hands)(Female) Synthetic Skin - Seams',
+    'Complexion_SynthShellHands_M01': '(Hands)(Male) Synthetic Skin - Seams',
+    'Complexion_SynthPlated_F01': '(Body)(Female) Synthetic Skin - Plated',
+    'Complexion_SynthPlated_M01': '(Body)(Male) Synthetic Skin - Plated',
+    'Complexion_SynthPlatedHands_F01': '(Hands)(Female) Synthetic Skin - Plated',
+    'Complexion_SynthPlatedHands_M01': '(Hands)(Male) Synthetic Skin - Plated',
 }
 
 
@@ -753,6 +766,55 @@ def bgem(diffuse, normal):
     return BGEM_HEAD + s(diffuse) + BGEM_MID + s(normal) + BGEM_TAIL
 
 
+# The plated variant's material: byte for byte the layout of a BGSM overlay the game already draws (LMNSOverlays' nail
+# polish, cbbe_fnails_1.bgsm, read 11-13: version 2, alpha blend 6/7 with alpha test at 128, z write and test, SSR),
+# with three changes in its tail: no rim lighting and no subsurface (a synthetic surface, not skin), white specular.
+BGSM_HEAD = bytes.fromhex(
+    '4247534d020000000300000000000000000000000000803f0000803f0000803f01060000000700000080010101010000000000000000'
+    '000000000000803f00')
+BGSM_TAIL = bytearray.fromhex(
+    '0001cdcccc3dcdcc4c3d01cdcc8c3f010000803fd4d2523febe9693f0000803f0000803f0000a040000080bf000080bf000080bf00'
+    '0080bf000080bf000080bf1f00000074656d706c6174652f536b696e54656d706c6174655f5765742e6267736d0000000000803f00'
+    '00000100010000000000008180003f8180003f8180003f0000010000000000000000000000000000000000000000007380003f00')
+BGSM_TAIL[1] = 0                                     # rim lighting off
+BGSM_TAIL[10] = 0                                    # subsurface lighting off
+BGSM_TAIL[16:28] = struct.pack('<3f', 1.0, 1.0, 1.0)  # specular colour white (the polish's was pink)
+BGSM_TAIL = bytes(BGSM_TAIL)
+assert len(BGSM_HEAD) == 63 and len(BGSM_TAIL) == 304 - 146
+
+
+def bgsm(diffuse, specular):
+    """Textures, in BGSM v2's order: diffuse, normal (none: the mesh's own), smooth/spec, then six unused."""
+    def s(path):
+        raw = path.encode('ascii') + b'\0'
+        return struct.pack('<I', len(raw)) + raw
+    return BGSM_HEAD + s(diffuse) + s('') + s(specular) + s('') * 6 + BGSM_TAIL
+
+
+def paint_lit(painter, m, rng, args, png, tex_dir, tid, tool):
+    """A lit overlay: its diffuse (RGBA, colour bled past the UV islands) to BC7 and its smooth/spec map (specular,
+    smoothness; half size) to BC5, beside the material."""
+    diffuse, spec = paint(painter, m, rng, args)
+    cov = m.covered
+    rgb = bleed(Image.fromarray((np.clip(diffuse[..., :3], 0, 1) * 255 + 0.5).astype(np.uint8), 'RGB'), cov)
+    a = Image.fromarray((np.clip(diffuse[..., 3], 0, 1) * 255 + 0.5).astype(np.uint8), 'L')
+    Image.merge('RGBA', (*rgb.split(), a)).save(png)
+    encode(tool, png, tex_dir, tid)
+    sp = np.zeros(spec.shape[:2] + (3,))
+    sp[..., :2] = spec
+    spimg = bleed(Image.fromarray((np.clip(sp, 0, 1) * 255 + 0.5).astype(np.uint8), 'RGB'), cov)
+    spng = png.with_name(f'{tid}_s.png')
+    spimg.resize((spimg.width // 2, spimg.height // 2), Image.LANCZOS).save(spng)
+    r = subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'BC5_UNORM', '-m', '0', '-o', str(tex_dir), str(spng)],
+                       capture_output=True, text=True)
+    made = next((f for f in tex_dir.iterdir() if f.name.lower() == f'{tid}_s.dds'.lower()), None)
+    if r.returncode or not made:
+        sys.exit(f'texconv failed on {spng}: {r.stdout[-300:]} {r.stderr[-300:]}')
+    if made.name != f'{tid}_s.dds':
+        made.rename(tex_dir / f'{tid}_s.dds')
+    return float((diffuse[..., 3] > 0.5).mean())
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--data', type=pathlib.Path, default=DATA)
@@ -771,7 +833,7 @@ def main():
     maps = {}
     if a.rebleed:
         for tid, sex, painter, args, size, tag in MARKS:
-            if tag.get('retired'):
+            if tag.get('retired') or painter in LIT_PAINTERS:   # a lit one is bled as it is painted
                 continue
             png = work / f'{tid}_d.png'
             if a.only and not tid.startswith(tuple(a.only.split(','))):
@@ -796,7 +858,7 @@ def main():
         on_hands = painter in HAND_PAINTERS
         # The body is LooksMenu slot 3, the hands slot 4 (as the packs' nails, LMNSOverlays f_nails_1).
         entries.append({'id': tid, 'name': f'Complexion - {NAMES.get(tid, tag["note"])}',
-                        'slots': [{'slot': 4 if on_hands else 3, 'material': f'overlays\\Complexion\\{tid}.bgem'}],
+                        'slots': [{'slot': 4 if on_hands else 3, 'material': f'overlays\\Complexion\\{tid}.{"bgsm" if painter in LIT_PAINTERS else "bgem"}'}],
                         'playable': tid not in REMOVED, 'transformable': not on_hands, 'sort': 0, 'gender': 1 if female else 0})
         if tag['kind'] in hair.HAIR_KINDS:
             tag = dict(tag, hair=hair.family(painter, args))  # one colour per person: the composer matches it
@@ -819,6 +881,12 @@ def main():
         if key not in maps:
             maps[key] = hands.HandMap(a.data, sex, size) if on_hands else UVMap(a.data, sex, size)
         m = maps[key]
+        if painter in LIT_PAINTERS:
+            png = work / f'{tid}_d.png'
+            share = paint_lit(painter, m, np.random.default_rng(1000 + n), args, png, tex_dir, tid, tool)
+            (mat_dir / f'{tid}.bgsm').write_bytes(bgsm(f'overlays/Complexion/{tid}_d.dds', f'overlays/Complexion/{tid}_s.dds'))
+            print(f'  {tid}: {painter} (lit) {size}px, {share * 100:.1f}% of the map')
+            continue
         if piece:   # Vex's confirmed rework, finished exactly as its approved render was (reworks.render, artist_art.save)
             rgb, alpha = piece['fn'](m)
             if not piece['hands']:

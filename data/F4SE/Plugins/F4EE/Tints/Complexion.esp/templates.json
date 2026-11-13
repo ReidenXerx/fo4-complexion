@@ -2,7 +2,7 @@
  {
   "Entries": [
    {
-    "BlendOp": "Overlay",
+    "BlendOp": "Multiply",
     "FixedCategory": "Complexion Synthetic Skin",
     "Diffuse": "Complexion\\Face\\SynthSkin_HumanMale.dds",
     "Flags": [
@@ -10,14 +10,14 @@
     ],
     "Gender": 0,
     "Id": 60969,
-    "Name": "Complexion - Synthetic Skin",
+    "Name": "Complexion - Synthetic Skin (Seams)",
     "Normal": null,
     "Slot": "FaceDetail",
     "Specular": null,
     "Type": "TextureSet"
    },
    {
-    "BlendOp": "Overlay",
+    "BlendOp": "Multiply",
     "FixedCategory": "Complexion Synthetic Skin",
     "Diffuse": "Complexion\\Face\\SynthSkin_HumanFemale.dds",
     "Flags": [
@@ -25,7 +25,37 @@
     ],
     "Gender": 1,
     "Id": 60970,
-    "Name": "Complexion - Synthetic Skin",
+    "Name": "Complexion - Synthetic Skin (Seams)",
+    "Normal": null,
+    "Slot": "FaceDetail",
+    "Specular": null,
+    "Type": "TextureSet"
+   },
+   {
+    "BlendOp": "Default",
+    "FixedCategory": "Complexion Synthetic Skin",
+    "Diffuse": "Complexion\\Face\\SynthPlated_HumanMale.dds",
+    "Flags": [
+     "ChargenDetail"
+    ],
+    "Gender": 0,
+    "Id": 60972,
+    "Name": "Complexion - Synthetic Skin (Plated)",
+    "Normal": null,
+    "Slot": "FaceDetail",
+    "Specular": null,
+    "Type": "TextureSet"
+   },
+   {
+    "BlendOp": "Default",
+    "FixedCategory": "Complexion Synthetic Skin",
+    "Diffuse": "Complexion\\Face\\SynthPlated_HumanFemale.dds",
+    "Flags": [
+     "ChargenDetail"
+    ],
+    "Gender": 1,
+    "Id": 60973,
+    "Name": "Complexion - Synthetic Skin (Plated)",
     "Normal": null,
     "Slot": "FaceDetail",
     "Specular": null,
@@ -37,7 +67,7 @@
  {
   "Entries": [
    {
-    "BlendOp": "Overlay",
+    "BlendOp": "Multiply",
     "FixedCategory": "Complexion Synthetic Skin",
     "Diffuse": "Complexion\\Face\\SynthSkin_AceMale.dds",
     "Flags": [
@@ -45,7 +75,22 @@
     ],
     "Gender": 0,
     "Id": 60971,
-    "Name": "Complexion - Synthetic Skin",
+    "Name": "Complexion - Synthetic Skin (Seams)",
+    "Normal": null,
+    "Slot": "FaceDetail",
+    "Specular": null,
+    "Type": "TextureSet"
+   },
+   {
+    "BlendOp": "Default",
+    "FixedCategory": "Complexion Synthetic Skin",
+    "Diffuse": "Complexion\\Face\\SynthPlated_AceMale.dds",
+    "Flags": [
+     "ChargenDetail"
+    ],
+    "Gender": 0,
+    "Id": 60974,
+    "Name": "Complexion - Synthetic Skin (Plated)",
     "Normal": null,
     "Slot": "FaceDetail",
     "Specular": null,

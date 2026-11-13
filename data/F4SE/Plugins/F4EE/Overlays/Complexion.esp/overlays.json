@@ -9927,7 +9927,7 @@
  },
  {
   "id": "Complexion_SynthShell_F01",
-  "name": "Complexion - (Body)(Female) Synthetic Skin",
+  "name": "Complexion - (Body)(Female) Synthetic Skin - Seams",
   "slots": [
    {
     "slot": 3,
@@ -9941,7 +9941,7 @@
  },
  {
   "id": "Complexion_SynthShell_M01",
-  "name": "Complexion - (Body)(Male) Synthetic Skin",
+  "name": "Complexion - (Body)(Male) Synthetic Skin - Seams",
   "slots": [
    {
     "slot": 3,
@@ -9955,7 +9955,7 @@
  },
  {
   "id": "Complexion_SynthShellHands_F01",
-  "name": "Complexion - (Hands)(Female) Synthetic Skin",
+  "name": "Complexion - (Hands)(Female) Synthetic Skin - Seams",
   "slots": [
    {
     "slot": 4,
@@ -9969,11 +9969,67 @@
  },
  {
   "id": "Complexion_SynthShellHands_M01",
-  "name": "Complexion - (Hands)(Male) Synthetic Skin",
+  "name": "Complexion - (Hands)(Male) Synthetic Skin - Seams",
   "slots": [
    {
     "slot": 4,
     "material": "overlays\\Complexion\\Complexion_SynthShellHands_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SynthPlated_F01",
+  "name": "Complexion - (Body)(Female) Synthetic Skin - Plated",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthPlated_F01.bgsm"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthPlated_M01",
+  "name": "Complexion - (Body)(Male) Synthetic Skin - Plated",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthPlated_M01.bgsm"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SynthPlatedHands_F01",
+  "name": "Complexion - (Hands)(Female) Synthetic Skin - Plated",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthPlatedHands_F01.bgsm"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthPlatedHands_M01",
+  "name": "Complexion - (Hands)(Male) Synthetic Skin - Plated",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthPlatedHands_M01.bgsm"
    }
   ],
   "playable": true,
