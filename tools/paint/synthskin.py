@@ -401,9 +401,28 @@ def _line(d_units, half_width):
 # ---------------------------------------------------------------- his atlas, mapped onto our meshes
 
 
+def _own_piece(U, V, k, anchors):
+    """Texels k keep their atlas spot only inside the piece(s) their anchors stand in: the outer side of a leg
+    unrolled past its piece's outline landed in the NEXT piece and drew its knee seams there (v4 in game: a thick
+    'U' on the outer thigh)."""
+    if 'pieces' not in _cache:
+        from scipy import ndimage
+        _skel, inside = _strokes()
+        _cache['pieces'] = ndimage.label(inside > 0)[0]
+    lab = _cache['pieces']
+    h, w = lab.shape
+    own = {int(lab[int(y), int(x)]) for x, y in anchors} - {0}
+    u, v = U[k], V[k]
+    ok = np.isfinite(u)
+    got = np.zeros(len(k), int)
+    got[ok] = lab[np.clip(np.rint(v[ok]).astype(int), 0, h - 1), np.clip(np.rint(u[ok]).astype(int), 0, w - 1)]
+    U[k[~np.isin(got, list(own))]] = np.nan
+
+
 def atlas_uv(m):
     """Per covered texel of a body (body.UVMap): (idx, positions, U, V, S) -- the atlas pixel it takes and the atlas
-    pixels per game unit there; NaN U where no piece is meant to reach (hands, feet, the gaps between pieces)."""
+    pixels per game unit there; NaN U where no piece is meant to reach (hands, feet, the gaps between pieces, another
+    piece than its own)."""
     L = landmarks(m)
     lo, hi = m.bounds
 
@@ -438,6 +457,8 @@ def atlas_uv(m):
     U[back] = (B['cx'] + np.arctan2(x, ymid - y) * r * s)[back]     # from behind: his left is the body's left
     V[back] = (B['top'] + (Z(L['top']) - z) * s)[back]
     S[torso] = s
+    _own_piece(U, V, np.flatnonzero(front), [(F['cx'], F['nip'][1])])
+    _own_piece(U, V, np.flatnonzero(back), [(B['cx'], B['top'] + 40)])
     # the legs: front and back halves round each leg's own centre, crotch to knee as his pieces
     zcr, zk = Z(L['crotch']), Z(0.285)
     leg = R == REGIONS.index('leg')
@@ -457,6 +478,7 @@ def atlas_uv(m):
             U[k] = piece['cx'] + sign * out[sel] * sv
             V[k] = piece['top'] + (zcr - z[k]) * sv
             S[k] = sv
+            _own_piece(U, V, k, [(piece['cx'], (piece['top'] + piece['knee']) / 2)])
     # the arms: his long arm piece, shoulder to wrist, unrolled round the arm from its underside
     arm = R == REGIONS.index('arm')
     for side in (1, -1):
@@ -468,6 +490,8 @@ def atlas_uv(m):
         U[k] = ARM['cx'] + side * ra * (np.abs(tha) - np.pi / 2) * sa
         V[k] = ARM['shoulder'] + (t - limb.tmin) * sa
         S[k] = sa
+        _own_piece(U, V, k, [(ARM['cx'], ARM['shoulder'] + 0.2 * ARM['length']),    # upper arm and forearm (if his
+                             (ARM['cx'], ARM['shoulder'] + 0.8 * ARM['length'])])  # elbow parts them)
     return idx, X, U, V, S
 
 
@@ -484,6 +508,7 @@ def head_uv(m):
     U = H['nose'][0] - (yn - X[:, 1]) * s
     V = H['nose'][1] + (zn - X[:, 2]) * s
     U[np.abs(N[:, 0]) < 0.45] = np.nan
+    _own_piece(U, V, np.arange(len(U)), [(H['nose'][0] - 80, H['nose'][1])])
     return idx, U, V, s
 
 
