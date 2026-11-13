@@ -582,10 +582,11 @@ NAMES = {
     'Complexion_VexAnchorThighLeft_M01': '(Left Thigh)(Male) Anchor&Heart',
     'Complexion_VexAnchorThighRight_F01': '(Right Thigh)(Female) Anchor&Heart',
     'Complexion_VexAnchorThighRight_M01': '(Right Thigh)(Male) Anchor&Heart',
-    'Complexion_SynthShell_F01': 'Synthetic Skin',
-    'Complexion_SynthShell_M01': 'Synthetic Skin',
-    'Complexion_SynthShellHands_F01': 'Synthetic Skin (Hands)',
-    'Complexion_SynthShellHands_M01': 'Synthetic Skin (Hands)',
+    # each says which body it is for: in LooksMenu's Add list the female and male ones otherwise read the same
+    'Complexion_SynthShell_F01': '(Body)(Female) Synthetic Skin',
+    'Complexion_SynthShell_M01': '(Body)(Male) Synthetic Skin',
+    'Complexion_SynthShellHands_F01': '(Hands)(Female) Synthetic Skin',
+    'Complexion_SynthShellHands_M01': '(Hands)(Male) Synthetic Skin',
 }
 
 

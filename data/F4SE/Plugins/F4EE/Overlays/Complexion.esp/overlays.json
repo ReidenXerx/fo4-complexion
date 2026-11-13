@@ -9927,7 +9927,7 @@
  },
  {
   "id": "Complexion_SynthShell_F01",
-  "name": "Complexion - Synthetic Skin",
+  "name": "Complexion - (Body)(Female) Synthetic Skin",
   "slots": [
    {
     "slot": 3,
@@ -9941,7 +9941,7 @@
  },
  {
   "id": "Complexion_SynthShell_M01",
-  "name": "Complexion - Synthetic Skin",
+  "name": "Complexion - (Body)(Male) Synthetic Skin",
   "slots": [
    {
     "slot": 3,
@@ -9955,7 +9955,7 @@
  },
  {
   "id": "Complexion_SynthShellHands_F01",
-  "name": "Complexion - Synthetic Skin (Hands)",
+  "name": "Complexion - (Hands)(Female) Synthetic Skin",
   "slots": [
    {
     "slot": 4,
@@ -9969,7 +9969,7 @@
  },
  {
   "id": "Complexion_SynthShellHands_M01",
-  "name": "Complexion - Synthetic Skin (Hands)",
+  "name": "Complexion - (Hands)(Male) Synthetic Skin",
   "slots": [
    {
     "slot": 4,
