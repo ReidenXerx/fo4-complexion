@@ -7,8 +7,12 @@
 
     Lines only, crisp and dark (his verdict on test v2, in game: "Lost definition in the lines, hands have nothing
     notable, applies a layer of shading over everything else. Remove the shading, darken and sharpen the lines"). His
-    atlas is about 11 pixels to a game unit; sampled straight, its strokes blurred over a 4096 body. So each of his
-    strokes is reduced to its centreline, and every texel draws a hard-edged line by its distance to it, in game units.
+    atlas is about 11 pixels to a game unit; sampled straight, its strokes blurred over a 4096 body, and a pixel
+    centreline drawn as it was made stair-steps and crack spurs (test v3: "I don't want to see each and every pixel",
+    "these lines look nothing like what I gave you"). So his seams are traced as vector polylines -- found as thin
+    dark valleys, followed as a graph, straightened to the runs and corners he drew, then checked by hand piece by
+    piece against his atlas (art/contrib/alasdairn_synth_seams.json: cracks and creases dropped, faint seams added
+    along his own groove) -- and every texel draws an anti-aliased line by its exact distance to them, in game units.
     Everything else multiplies by exactly 1: the person's own skin, its colour and its light, are untouched.
 
     Selectable only (lore "breaks"): body and hands in LooksMenu's overlay list (make_marks rows SynthShell,
@@ -40,19 +44,24 @@ ARM = dict(cx=57.0, shoulder=95.0, length=520.0)   # his long arm piece, shoulde
 HEAD_SIDE = dict(nose=(382, 95), chin=(370, 140))  # the head, seen from its right side
 
 # ---- which of his atlas's dark marks are seams
-DETAIL_SIGMA = 22.0    # atlas px: the broad average a mark is measured against
-LINE_ONLY_SIGMA = 2.5  # atlas px: his seams are thinner than this, his mottling broader
-LINE_FLOOR = 0.035     # a mark darker than its surroundings by this much is a stroke
+DETAIL_SIGMA = 8.0     # atlas px: the local average a mark is measured against
+RIDGE_SCALES = (0.8, 1.2)   # atlas px: his seams are a pixel or two wide
+RIDGE_STRONG = 0.06    # valley strength of a clear seam ...
+RIDGE_WEAK = 0.03    # ... and of a faint stretch running on from one
 LINE_MIN_PX = 30       # atlas px: a stroke shorter than this is a speck, a scratch or a stub, not a seam
-EDGE_PX = 10.0         # atlas px: no line within this of a piece's outline (his outlines cut strokes short)
+EDGE_PX = 4.0          # atlas px: no line this close to a piece's outline (the outline itself reads as a valley)
 
 # ---- how a seam is drawn (game units)
-LINE_W = 0.06          # half-width: about 2.5 mm across (0.035 broke into dots at 2048)
+LINE_W = 0.075         # half-width: 0.15 across, his strokes' width (1.5-2 atlas px at ~11 px a unit)
 LINE_SOFT = 0.025      # its edge: about a texel at 2048, so crisp but not jagged
 LINE_DEPTH = 0.8       # the skin multiplied by 1 - this on the line
-FACE_LINE_W = 0.06     # on the face tint (1024 over a head)
+FACE_LINE_W = 0.075    # on the face tint (1024 over a head)
 HAND_LINE_W = 0.045
-SPUR_PX = 8            # atlas px: twigs this short off a centreline (thinning's leftovers, 4 left ticks) are pruned
+SPUR_PX = 12           # atlas px: twigs this short off a seam (thinning's leftovers, his texture's cracks) are pruned
+SIMPLIFY_PX = 1.0      # atlas px: a traced run may stray this far from the straight line it is drawn as
+CORRIDOR_PX = 4.0      # atlas px: a hand-added seam keeps this close to the line through its waypoints
+ROUTE_STRAIGHT = 12.0  # cost per atlas px off that line (a clear groove costs ~14 a step, bare skin ~30-100)
+SEAMS = HERE / 'art' / 'contrib' / 'alasdairn_synth_seams.json'   # the hand check of the traced seams
 
 UNDERBUST_TOP, UNDERBUST_DEPTH = 1.0, 16.0  # game units above / below the nipples: the band he struck out
 UNDERBUST_FADE = 2.5
@@ -133,27 +142,9 @@ def _thin(mask):
             return img[1:-1, 1:-1].astype(bool)
 
 
-def _prune(skel, n):
-    """Spurs off a centreline: its end pixels peeled n times, then the long lines grown back along themselves, so
-    only twigs no longer than n go."""
-    from scipy import ndimage
-    k = np.ones((3, 3))
-    s = skel.copy()
-    ends_all = []
-    for _ in range(n):
-        nb = ndimage.convolve(s.astype(np.uint8), k, mode='constant') - s
-        ends = s & (nb <= 1)
-        ends_all.append(ends)
-        s = s & ~ends
-    for ends in reversed(ends_all):       # grow back only from what survived (main lines), not into lost twigs
-        grown = ndimage.binary_dilation(s, structure=k) & ends
-        s = s | grown
-    return s
-
-
-def _atlas():
-    """(distance in atlas px from each pixel to the nearest seam centreline, distance inside a piece's outline)."""
-    if 'dist' not in _cache:
+def _strokes():
+    """(his seam strokes as a one-pixel skeleton, distance inside a piece's outline) -- atlas pixels."""
+    if 'skel' not in _cache:
         from PIL import Image
         from scipy import ndimage
         img = np.asarray(Image.open(ATLAS).convert('RGB'), dtype=np.float32) / 255.0
@@ -163,33 +154,239 @@ def _atlas():
         w = valid.astype(np.float32)
         avg = ndimage.gaussian_filter(lum * w, DETAIL_SIGMA) / np.maximum(ndimage.gaussian_filter(w, DETAIL_SIGMA), 1e-3)
         det = np.where(valid, lum / np.maximum(avg, 1e-3), 1.0)
-        hp = np.where(valid, det / np.maximum(ndimage.gaussian_filter(det, LINE_ONLY_SIGMA), 1e-3), 1.0)
-        dark = ((1 - hp) > LINE_FLOOR) & (inside > EDGE_PX)
-        lab, n = ndimage.label(dark, structure=np.ones((3, 3)))
+        # a seam is a thin dark valley: the Hessian's larger eigenvalue large, the smaller near 0 (a crack's pit or
+        # a speck curves both ways); broad shading (his muscles, the creases under the pecs) is too wide to count
+        ridge = np.zeros_like(det)
+        for s in RIDGE_SCALES:
+            hxx = ndimage.gaussian_filter(det, s, order=(0, 2))
+            hyy = ndimage.gaussian_filter(det, s, order=(2, 0))
+            hxy = ndimage.gaussian_filter(det, s, order=(1, 1))
+            tr, dt = hxx + hyy, hxx * hyy - hxy * hxy
+            disc = np.sqrt(np.maximum(tr * tr / 4 - dt, 0))
+            l1, l2 = tr / 2 + disc, tr / 2 - disc
+            ridge = np.maximum(ridge, np.where(l1 > 0, l1 - 2 * np.maximum(l2, 0), 0) * s * s)
+        ridge[inside <= EDGE_PX] = 0
+        # hysteresis: the faint stretch of a seam counts when it runs on from a clear one
+        lab, n = ndimage.label(ridge > RIDGE_WEAK, structure=np.ones((3, 3)))
         keep = np.zeros(n + 1, bool)
+        strong = ndimage.maximum(ridge, lab, np.arange(n + 1)) > RIDGE_STRONG
         for i, sl in enumerate(ndimage.find_objects(lab), 1):
-            if max(sl[0].stop - sl[0].start, sl[1].stop - sl[1].start) >= LINE_MIN_PX:
+            if sl is not None and strong[i] and max(sl[0].stop - sl[0].start, sl[1].stop - sl[1].start) >= LINE_MIN_PX:
                 keep[i] = True
-        skel = _prune(_thin(keep[lab]), SPUR_PX)
-        _cache['dist'] = ndimage.distance_transform_edt(~skel).astype(np.float32)   # (a blurred field lifted the
-        # centreline off 0 by most of a line's width: v3's first draft lost its lines)
+        _cache['skel'] = _thin(keep[lab])
+        _cache['ridge'] = ridge
         _cache['inside'] = inside
-    return _cache['dist'], _cache['inside']
+    return _cache['skel'], _cache['inside']
+
+
+_NB8 = ((-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1))
+# a walk takes a side neighbour before a corner one: at a stair step both are on the line, and the corner jump
+# would leave the side pixel behind as a stray
+_NB8_STRAIGHT_FIRST = ((-1, 0), (0, -1), (0, 1), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1))
+
+
+def _graph(skel):
+    """A skeleton as a graph: (edges, node of each pixel). Nodes are clusters of pixels that are not plain
+    line pixels (ends; junctions, with the pixels round them); each edge is (node a, node b, [(x, y), ...]) from
+    a's centre to b's. A closed loop with no node becomes one edge from a pixel back to itself."""
+    from scipy import ndimage
+    # a pixel's crossing number (runs of neighbours round it), not its neighbour count: thinning leaves a stair
+    # step's corner with three neighbours, and counting those made a node of every step -- a line cut into
+    # pieces short enough for the twig pruning to eat it whole
+    p = np.pad(skel.astype(np.uint8), 1)
+    ring = [p[:-2, 1:-1], p[:-2, 2:], p[1:-1, 2:], p[2:, 2:], p[2:, 1:-1], p[2:, :-2], p[1:-1, :-2], p[:-2, :-2]]
+    cn = sum(((ring[k] == 0) & (ring[(k + 1) % 8] == 1)).astype(np.uint8) for k in range(8))
+    # a junction is a little knot of such pixels; grown by one and taken as ONE node, the runs between its pixels
+    # (which drew as ticks) vanish, and every line into it is carried on to its centre, so corners meet cleanly
+    junction = skel & (cn >= 3)
+    node_px = (ndimage.binary_dilation(junction, structure=np.ones((3, 3))) & skel) | (skel & (cn <= 1))
+    nlab, nn = ndimage.label(node_px, structure=np.ones((3, 3)))
+    centre = np.zeros((nn + 1, 2))
+    if nn:
+        cy, cx = np.asarray(ndimage.center_of_mass(node_px, nlab, np.arange(1, nn + 1))).T
+        centre[1:, 0], centre[1:, 1] = cx, cy
+    h, w = skel.shape
+    seen = np.zeros_like(skel)
+    edges = []
+
+    def walk(y, x, start, prev):
+        """From line pixel (y, x), away from prev, to the next node (its label) or a dead end (0)."""
+        path = [(x, y)]
+        while True:
+            seen[y, x] = True
+            to_node = to_line = None
+            for dy, dx in _NB8_STRAIGHT_FIRST:
+                yy, xx = y + dy, x + dx
+                if (yy, xx) == prev or not (0 <= yy < h and 0 <= xx < w) or not skel[yy, xx]:
+                    continue
+                if nlab[yy, xx]:
+                    if not (nlab[yy, xx] == start and len(path) < 3):   # not straight back into where it began
+                        to_node = (yy, xx)
+                elif not seen[yy, xx] and to_line is None:
+                    to_line = (yy, xx)
+            if to_node is not None:
+                path.append((to_node[1], to_node[0]))
+                return path, int(nlab[to_node])
+            if to_line is None:
+                return path, 0
+            prev, (y, x) = (y, x), to_line
+            path.append((x, y))
+    for y, x in zip(*np.nonzero(node_px)):
+        for dy, dx in _NB8:
+            yy, xx = y + dy, x + dx
+            if 0 <= yy < h and 0 <= xx < w and skel[yy, xx] and not nlab[yy, xx] and not seen[yy, xx]:
+                a = int(nlab[y, x])
+                path, b = walk(yy, xx, a, (y, x))
+                if b:
+                    path[-1] = tuple(centre[b])
+                edges.append((a, b, [tuple(centre[a])] + path))
+    for y, x in zip(*np.nonzero(skel & ~node_px)):    # loops with no node on them
+        if not seen[y, x]:
+            path, _b = walk(y, x, 0, (-9, -9))
+            edges.append((0, 0, path + [path[0]]))
+    return edges
+
+
+def _length(p):
+    a = np.asarray(p, np.float64)
+    return float(np.hypot(*np.diff(a, axis=0).T).sum()) if len(a) > 1 else 0.0
+
+
+def _simplify(p, tol):
+    """Douglas-Peucker: a pixel staircase to the straight runs and corners it stands for."""
+    a = np.asarray(p, np.float64)
+    if len(a) < 3:
+        return a
+    keep = np.zeros(len(a), bool)
+    keep[[0, -1]] = True
+    stack = [(0, len(a) - 1)]
+    while stack:
+        i, j = stack.pop()
+        if j <= i + 1:
+            continue
+        d = a[j] - a[i]
+        n = np.hypot(*d)
+        seg = a[i + 1:j] - a[i]
+        dist = np.abs(seg[:, 0] * d[1] - seg[:, 1] * d[0]) / n if n > 0 else np.hypot(*seg.T)
+        k = int(np.argmax(dist))
+        if dist[k] > tol:
+            keep[i + 1 + k] = True
+            stack += [(i, i + 1 + k), (i + 1 + k, j)]
+    return a[keep]
+
+
+def _route(a, b, ridge):
+    """The pixel path from a to b (atlas px) that keeps to his groove: least cost through the valley strength,
+    within CORRIDOR_PX of the straight line between them."""
+    from scipy.sparse import coo_matrix
+    from scipy.sparse.csgraph import dijkstra
+    a, b = np.asarray(a, float), np.asarray(b, float)
+    m = CORRIDOR_PX + 2
+    x0, y0 = int(np.floor(min(a[0], b[0]) - m)), int(np.floor(min(a[1], b[1]) - m))
+    x1, y1 = int(np.ceil(max(a[0], b[0]) + m)) + 1, int(np.ceil(max(a[1], b[1]) + m)) + 1
+    x0, y0 = max(x0, 0), max(y0, 0)
+    R = ridge[y0:y1, x0:x1]
+    h, w = R.shape
+    yy, xx = np.mgrid[y0:y1, x0:x1]
+    d = b - a
+    L = max(np.hypot(*d), 1e-6)
+    t = np.clip(((xx - a[0]) * d[0] + (yy - a[1]) * d[1]) / L ** 2, 0, 1)
+    off = np.hypot(xx - (a[0] + t * d[0]), yy - (a[1] + t * d[1]))
+    # straight unless his groove pulls it: where his line is faint the texture's cracks would otherwise lead it astray
+    cost = 1.0 / (np.maximum(R, 0) + 0.01) + ROUTE_STRAIGHT * off + np.where(off > CORRIDOR_PX, 1e4, 0)
+    idx = np.arange(h * w).reshape(h, w)
+    rows, cols, wts = [], [], []
+    for dy, dx in ((0, 1), (1, 0), (1, 1), (1, -1)):
+        ys, ye = 0, h - dy
+        xs, xe = max(0, -dx), w - max(0, dx)
+        u = idx[ys:ye, xs:xe]
+        v = idx[ys + dy:ye + dy, xs + dx:xe + dx]
+        c = (cost[ys:ye, xs:xe] + cost[ys + dy:ye + dy, xs + dx:xe + dx]) / 2 * np.hypot(dy, dx)
+        rows.append(u.ravel()); cols.append(v.ravel()); wts.append(c.ravel())
+    G = coo_matrix((np.concatenate(wts), (np.concatenate(rows), np.concatenate(cols))), shape=(h * w, h * w)).tocsr()
+    s = idx[int(round(a[1])) - y0, int(round(a[0])) - x0]
+    e = idx[int(round(b[1])) - y0, int(round(b[0])) - x0]
+    _dist, pred = dijkstra(G, directed=False, indices=s, return_predecessors=True)
+    path = [e]
+    while path[-1] != s and pred[path[-1]] >= 0:
+        path.append(pred[path[-1]])
+    return [(int(k % w) + x0, int(k // w) + y0) for k in reversed(path)]
+
+
+def _layout():
+    import json
+    return json.loads(SEAMS.read_text(encoding='utf-8'))
+
+
+def seam_paths():
+    """His seams as polylines (atlas pixels): the strokes' centrelines traced into a graph, the twigs thinning
+    leaves and the cracks of his texture that touch a seam pruned off, each run straightened to the straight
+    lines and corners he drew; then the hand check (alasdairn_synth_seams.json): marks that are not seams
+    dropped, faint seams the detector missed added, each routed along his own groove."""
+    if 'paths' not in _cache:
+        skel, _inside = _strokes()
+        edges = _graph(skel)
+        def degrees():
+            deg = {0: 1}           # a dead-end walk (node 0) counts as an end
+            for a, b, _p in edges:
+                deg[a] = deg.get(a, 0) + 1
+                deg[b] = deg.get(b, 0) + 1
+            deg[0] = 1
+            return deg
+        best = {}                 # two runs between the same two nodes: a little eye in his stroke; keep the shorter
+        for e in edges:
+            k = (min(e[0], e[1]), max(e[0], e[1]))
+            if k[0] == 0 or k[0] == k[1] or k not in best or _length(e[2]) < _length(best[k][2]):
+                best[k if k[0] and k[0] != k[1] else (id(e),)] = e
+        edges = list(best.values())
+        for _ in range(3):        # twigs: a short edge from a junction to nothing, or a little loop back to it
+            deg = degrees()
+            edges = [(a, b, p) for a, b, p in edges
+                     if not (a != b and min(deg[a], deg[b]) == 1 and max(deg[a], deg[b]) >= 3 and _length(p) < SPUR_PX)
+                     and not (a == b and a != 0 and _length(p) < 2 * SPUR_PX)]
+        deg = degrees()           # and a short stroke on its own: a speck or a scratch
+        edges = [(a, b, p) for a, b, p in edges
+                 if not (a != b and deg[a] == 1 and deg[b] == 1 and _length(p) < LINE_MIN_PX)]
+        lay = _layout()
+
+        def dropped(p):
+            a = np.asarray(p, float)
+            mid = a[len(a) // 2]
+            return any(x0 <= mid[0] <= x1 and y0 <= mid[1] <= y1 for x0, y0, x1, y1 in lay['drop'])
+        paths = [p for _a, _b, p in edges if _length(p) >= 2 and not dropped(p)]
+        for way in lay['add']:
+            run = []
+            for a, b in zip(way[:-1], way[1:]):
+                run += _route(a, b, _cache['ridge'])[1 if run else 0:]
+            paths.append(run)
+        paths += [np.asarray(way, float) for way in lay.get('straight', [])]   # his straight, faint ones, as drawn
+        _cache['paths'] = [_simplify(p, SIMPLIFY_PX) for p in paths]
+    return _cache['paths']
+
+
+def _seam_tree():
+    if 'tree' not in _cache:
+        from scipy.spatial import cKDTree
+        pts = []
+        for p in seam_paths():
+            for a, b in zip(p[:-1], p[1:]):
+                n = max(2, int(np.ceil(np.hypot(*(b - a)) / 0.1)) + 1)
+                pts.append(a + np.linspace(0, 1, n)[:, None] * (b - a))
+        _cache['tree'] = cKDTree(np.concatenate(pts))
+    return _cache['tree']
 
 
 def _seam_distance(U, V):
-    """Per point: distance (atlas px) to his nearest seam centreline; inf off the atlas (NaN U)."""
-    dist, inside = _atlas()
+    """Per point: distance (atlas px, exact to a tenth of a pixel) to his nearest seam; inf off the atlas (NaN U),
+    outside his pieces, or farther than a line could reach."""
+    _skel, inside = _strokes()
     d = np.full(len(U), np.inf)
     ok = np.isfinite(U)
     if ok.any():
-        h, w = dist.shape
+        h, w = inside.shape
         u = np.clip(U[ok], 0, w - 1.001)
         v = np.clip(V[ok], 0, h - 1.001)
-        x0, y0 = np.floor(u).astype(int), np.floor(v).astype(int)
-        fx, fy = u - x0, v - y0
-        a = (dist[y0, x0] * (1 - fx) * (1 - fy) + dist[y0, x0 + 1] * fx * (1 - fy) +
-             dist[y0 + 1, x0] * (1 - fx) * fy + dist[y0 + 1, x0 + 1] * fx * fy)
+        a, _i = _seam_tree().query(np.stack([u, v], axis=1), distance_upper_bound=8.0)
         a[inside[np.rint(v).astype(int), np.rint(u).astype(int)] <= 0] = np.inf   # outside his pieces
         d[ok] = a
     return d
@@ -415,7 +612,7 @@ def _surface(X, N, U, V):
     """His surface per point: the atlas's colour where a piece maps (bilinear), his clean patch elsewhere, the two
     cross-faded over a piece's outline."""
     rgb, patch = _colour()
-    _, inside = _atlas()
+    _, inside = _strokes()
     col = _triplanar(patch, X, N, PATCH_TILE)
     ok = np.isfinite(U)
     if ok.any():
