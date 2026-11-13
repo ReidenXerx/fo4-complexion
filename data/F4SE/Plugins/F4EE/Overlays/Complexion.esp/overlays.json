@@ -9924,33 +9924,5 @@
   "transformable": true,
   "sort": 0,
   "gender": 0
- },
- {
-  "id": "Complexion_SynthSkin_F01",
-  "name": "Complexion - Synthetic Skin",
-  "slots": [
-   {
-    "slot": 3,
-    "material": "overlays\\Complexion\\Complexion_SynthSkin_F01.bgem"
-   }
-  ],
-  "playable": true,
-  "transformable": true,
-  "sort": 0,
-  "gender": 1
- },
- {
-  "id": "Complexion_SynthSkin_M01",
-  "name": "Complexion - Synthetic Skin",
-  "slots": [
-   {
-    "slot": 3,
-    "material": "overlays\\Complexion\\Complexion_SynthSkin_M01.bgem"
-   }
-  ],
-  "playable": true,
-  "transformable": true,
-  "sort": 0,
-  "gender": 0
  }
 ]

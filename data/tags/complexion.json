@@ -9035,31 +9035,5 @@
   "size": "large",
   "note": "back hair, grey",
   "hair": "grey"
- },
- "f:Complexion_SynthSkin_F01": {
-  "style": [],
-  "emblem": null,
-  "lore": "breaks",
-  "adult": false,
-  "quality": "ok",
-  "kind": "skin",
-  "regions": [
-   "full_body"
-  ],
-  "size": "full",
-  "note": "synthetic skin"
- },
- "m:Complexion_SynthSkin_M01": {
-  "style": [],
-  "emblem": null,
-  "lore": "breaks",
-  "adult": false,
-  "quality": "ok",
-  "kind": "skin",
-  "regions": [
-   "full_body"
-  ],
-  "size": "full",
-  "note": "synthetic skin"
  }
 }

@@ -551,8 +551,10 @@ add('BackHairGreyHeavy', M, 'skin.back_hair', ('grey', 1.0), 2048, dict(R, kind=
 # 2026-11-13 (alasdairn): synthetic skin, a synth's plated shell (tools/paint/synth.py). Selectable only: lore "breaks"
 # keeps it out of every composer and Complexion's window, so it is only ever put on in LooksMenu's own overlay list.
 # The male one fits Ace Male Race too (it wears the vanilla male body mesh). Appended last: earlier seeds stay put.
+# alasdairn REJECTED this painted design (11-13); he is finding free-use synth skin textures to fit instead. Retired:
+# never shipped, the rows stay only so a later synth template appended after them keeps the seeds before it.
 add('SynthSkin', BOTH, 'synth_skin', (), 4096, dict(R, kind='skin', regions=['full_body'], size='full', lore='breaks',
-                                                    note='synthetic skin'), 1)
+                                                    note='synthetic skin', retired=True), 1)
 
 
 def replace_row(tid, painter, args, size, tag):
