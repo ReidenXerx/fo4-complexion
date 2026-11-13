@@ -37,6 +37,7 @@ import real  # noqa: E402
 import realism  # noqa: E402
 import seams  # noqa: E402
 import skin  # noqa: E402
+import synth  # noqa: E402
 import traits  # noqa: E402
 HAIR_RGB = realism.HAIR  # skin adds ginger, lightbrown, darkbrown
 from body import UVMap  # noqa: E402
@@ -547,6 +548,11 @@ for side, label in ((-1, 'Left'), (1, 'Right')):
 # 2026-10-17: Vex's heavy grey back hair, the one NEW template among his per-overlay reworks (painted by
 # reworks.PIECES, below); tagged as the light grey one. Appended last: earlier seeds stay put.
 add('BackHairGreyHeavy', M, 'skin.back_hair', ('grey', 1.0), 2048, dict(R, kind='body_hair', regions=['back'], size='large', note='back hair, grey'), 1)
+# 2026-11-13 (alasdairn): synthetic skin, a synth's plated shell (tools/paint/synth.py). Selectable only: lore "breaks"
+# keeps it out of every composer and Complexion's window, so it is only ever put on in LooksMenu's own overlay list.
+# The male one fits Ace Male Race too (it wears the vanilla male body mesh). Appended last: earlier seeds stay put.
+add('SynthSkin', BOTH, 'synth_skin', (), 4096, dict(R, kind='skin', regions=['full_body'], size='full', lore='breaks',
+                                                    note='synthetic skin'), 1)
 
 
 def replace_row(tid, painter, args, size, tag):
@@ -569,6 +575,8 @@ NAMES = {
     'Complexion_VexAnchorThighLeft_M01': '(Left Thigh)(Male) Anchor&Heart',
     'Complexion_VexAnchorThighRight_F01': '(Right Thigh)(Female) Anchor&Heart',
     'Complexion_VexAnchorThighRight_M01': '(Right Thigh)(Male) Anchor&Heart',
+    'Complexion_SynthSkin_F01': 'Synthetic Skin',
+    'Complexion_SynthSkin_M01': 'Synthetic Skin',
 }
 
 
@@ -648,7 +656,7 @@ def paint(painter, m, rng, args):
                                         from_end_cm=from_end_cm, shift_cm=rest[0] if rest else 0.0)
     if painter.startswith('skin.'):
         return getattr(skin, painter[5:])(m, rng, *args)
-    for module in (real, marks, realism, life, hands):   # real first: its painters replace the old ones (10-09)
+    for module in (real, marks, realism, life, hands, synth):   # real first: its painters replace the old ones (10-09)
         if hasattr(module, painter):
             return getattr(module, painter)(m, rng, *args)
     raise SystemExit(f'no painter {painter}')
