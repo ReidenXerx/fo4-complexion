@@ -601,9 +601,8 @@ FACE_BLANK_PX = 9   # at 1024: solid black wider than this on its face texture i
                     # back-of-head mesh replaces), not a line -- drawn, it put black wedges on the neck and crown
 
 
-FACE_BLANK_AREA = 4000   # at 1024: ... except a smaller one lower than the nose tip: there its lines widen along the
-                         # jaw and neck (taken as blank, they left holes of bare skin, Fo4-mcp v14 11-14); measured on
-                         # both heads, the eye corners sit 2.4-3 units above the nose tip, every line end 1.8+ below
+# Kept blank only above the nose tip (minus 1): measured on both heads, the eye corners sit 2.4-3 units above it, every
+# line end 1.8+ below (blanks lower down left holes of bare skin, Fo4-mcp v14 and v20 11-14)
 FACE_BLANK_ABOVE_NOSE = -1.0
 
 
@@ -620,7 +619,7 @@ def _face_lines(m):
             _cache[fk] = face.HeadMap('human_female', m.size)
         f = _cache[fk]
         S = f.size
-        blank_f = _face_blank(f, _tex(FACE, S))
+        blank_f = _no_lines(f, _tex(FACE, S))
         sk = _centreline(_line_mask(FACE, S) & f.covered & ~ndimage.binary_dilation(blank_f, iterations=2))
         cidx = np.flatnonzero(sk)
         if getattr(m, 'head', None) == 'human_female':
@@ -636,29 +635,49 @@ def _face_lines(m):
 
 
 def _face(m):
-    from scipy import ndimage
     T = _on(m, FACE, 'head')
     blank = _face_blank(m, T)
     T = _plates(_face_lines(m), m.covered, 55413 + 7)
-    return T, m.covered & ~ndimage.binary_dilation(blank, iterations=2)
+    return T, m.covered & ~blank
 
 
-def _face_blank(m, T):
-    """Where its face texture T (on head map m) is no face: big solid black, or above the nose."""
+def _solid_black(T):
+    from scipy import ndimage
+    return ndimage.binary_opening(_lum(T[..., :3]) < 0.05, structure=np.ones((FACE_BLANK_PX, FACE_BLANK_PX)))
+
+
+FACE_BLANK_AREA = 4000   # at 1024: a solid black this big, or above the nose, is no line; a smaller one lower down is
+                         # where its lines widen along the jaw and neck (left out, the lines broke there)
+
+
+def _no_lines(m, T):
+    """Its face texture T's solid black that is not a line (on the woman's head map m)."""
     from scipy import ndimage
     import synthskin
-    blank = ndimage.binary_opening(_lum(T[..., :3]) < 0.05, structure=np.ones((FACE_BLANK_PX, FACE_BLANK_PX)))
+    blank = _solid_black(T)
     lab, n = ndimage.label(blank)
     if n:
         idx = np.arange(1, n + 1)
         area = ndimage.sum(np.ones_like(lab), lab, index=idx)
-        z = m.position[..., 2]
-        mz = ndimage.mean(z, lab, index=idx)
+        mz = ndimage.mean(m.position[..., 2], lab, index=idx)
         nose = synthskin.face_landmarks(m)['nose'][2]
-        keep_blank = np.zeros(n + 1, bool)
-        keep_blank[1:] = (area >= FACE_BLANK_AREA * (m.covered.shape[0] / 1024) ** 2) | (mz >= nose + FACE_BLANK_ABOVE_NOSE)
-        blank = keep_blank[lab]
+        keep = np.zeros(n + 1, bool)
+        keep[1:] = (area >= FACE_BLANK_AREA * (m.size / 1024) ** 2) | (mz >= nose + FACE_BLANK_ABOVE_NOSE)
+        blank = keep[lab]
     return blank
+
+
+def _face_blank(m, T):
+    """Where its face texture T (on head map m) is no face: its solid black above the nose (the crown, under the hair).
+    Below the nose everything is drawn: a man's neck reaches lower than the woman's head the texture was made for, and
+    its base fell on her solid black -- left bare, a skin-coloured band ringed his neck (Fo4-mcp v20 11-14; 83% of the
+    texels lower than 11 units under the nose). Per texel: on the ace head one solid black ran from the crown down the
+    back of the neck, and judged whole by its mean height it bared the neck too."""
+    from scipy import ndimage
+    import synthskin
+    high = m.position[..., 2] >= synthskin.face_landmarks(m)['nose'][2] + FACE_BLANK_ABOVE_NOSE
+    # grown 2 texels past its edge, but only up there: in the UV layout the neck's lowest rim sits beside the crown
+    return ndimage.binary_dilation(_solid_black(T) & high, iterations=2) & high
 
 
 def panels_face(m):
@@ -670,11 +689,15 @@ def panels_face(m):
     return out
 
 
+FACE_LINE_DEPTH = 1.0   # a face tint multiplies weaker than the body's overlay: at LINE_DEPTH its lines read brown
+                        # against the body's black (Fo4-mcp v20 11-14)
+
+
 def panel_lines_face(m):
     """Face tint (blend Multiply): its synth face's dark lines only."""
     T, keep = _face(m)
     dark = 1 - np.clip((_lum(T[..., :3]) - LINE_DARK) / (LINE_PLATE - LINE_DARK), 0, 1)
-    f = np.where(keep, 1 - LINE_DEPTH * dark, 1.0)
+    f = np.where(keep, 1 - FACE_LINE_DEPTH * dark, 1.0)
     out = np.ones(m.covered.shape + (4,), np.float32)
     out[..., :3] = f[..., None]
     out[..., 3] = 1.0
