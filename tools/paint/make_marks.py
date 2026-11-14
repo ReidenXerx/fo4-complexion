@@ -850,9 +850,11 @@ assert len(GLOW_TAIL) == len(BGEM_TAIL)
 # normal map, nor with SkinTint off (Fo4-mcp HandProbe/v8 11-14). The outfit template with SkinTint off drew and
 # dimmed with the arm (v8) but stopped drawing on its own after a few seconds, again and again, while .bgem layers on
 # the same hands and the women's lit hands never did (v9 flicker timelapses 11-14). So an effect .bgem with effect
-# lighting on: steady. It dims less than the body at night (alasdairn: "why are the men's hands lighter"; hand/body
-# x1.0 by day, x1.2 at night on the game's hands normal, v7 Plated), so its colour is scaled to centre that.
-HANDS_EFFECT_SCALE = 0.9
+# lighting on: steady (v10, 60 s). But it reads brighter than the body (alasdairn: "why are the men's hands lighter")
+# and barely dims at night: at colour scale 0.9 hand/forearm was x1.37 day / x1.77 night (Plated), x1.47 / x1.76
+# (Panels), Fo4-mcp v10 11-14; the scale acts linearly (v7 at 1.0: x1.56 day). One scale can only split it: the
+# geometric middle of day and night, ~x0.9 by day and ~x1.12 at night.
+HANDS_EFFECT_SCALE = 0.57
 LIT_EFFECT_TAIL = bytearray(GLOW_TAIL)
 LIT_EFFECT_TAIL[6] = 1                                             # effect lighting enabled
 LIT_EFFECT_TAIL[23:27] = struct.pack('<f', HANDS_EFFECT_SCALE)      # base colour scale
