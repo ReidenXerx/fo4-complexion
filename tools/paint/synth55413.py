@@ -546,9 +546,15 @@ def _glow_men(m, table, kind, rgb, a, colour):
     from scipy import ndimage
     S = SAMPLE_SIZE[kind]
     fcov = _female_cov(kind)
-    _, af = _glow_cut({c: _tex(table[c], S) for c in ('blue', 'pink', 'green')}, 'blue', fcov)
+    # the gaps between its skin pieces, whole: not skin (the cut-out keeps only the veins and the near-black, so the
+    # navy between the veins fell out and the bands were traced from scattered veins: dashes, v18 in game 11-14)
+    Tb = _tex(table['blue'], S)
+    r, g, b = Tb[..., 0], Tb[..., 1], Tb[..., 2]
+    lum = _lum(Tb[..., :3])
+    gap = (b >= r) | (lum < 0.15) | (lum > GLOW_WHITE)
+    gap = ndimage.gaussian_filter(gap.astype(np.float32), 1.5) > 0.5
     hkey, holes_f = _female_holes(table, kind)
-    keep = (af > 0.5) & ~ndimage.binary_dilation(holes_f, iterations=2)
+    keep = gap & fcov & ~ndimage.binary_dilation(holes_f, iterations=2)
     if kind == 'body':
         yy, xx = np.mgrid[0:S, 0:S]
         u, v = (xx + 0.5) / S, (yy + 0.5) / S
