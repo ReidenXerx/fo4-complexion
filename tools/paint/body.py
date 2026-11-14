@@ -42,8 +42,9 @@ class _Cursor:
         return s.decode('latin1')
 
 
-def read_shape(path, shape_name):
-    """(positions Nx3, uvs Nx2, triangles Mx3, heaviest bone name per vertex)"""
+def read_shape(path, shape_name, want_skin=False):
+    """(positions Nx3, uvs Nx2, triangles Mx3, heaviest bone name per vertex[, skin transforms]): with want_skin, also
+    {bone name: (rotation 3x3, translation, scale)} -- each bone's skin-to-bone transform from BSSkin::BoneData."""
     b = pathlib.Path(path).read_bytes()
     c = _Cursor(b, b.index(b'\n') + 1)
     version, _endian, _user = c.take('I'), c.take('B'), c.take('I')
@@ -118,6 +119,19 @@ def read_shape(path, shape_name):
             s = struct.unpack_from('<4B', b, at + v * stride + skin_at + 8)
             k = max(range(4), key=lambda j: w[j])
             bones.append(bone_names[s[k]] if s[k] < len(bone_names) else '')
+        if want_skin:
+            skin_tf = {}
+            if skin >= 0 and kinds[skin] == 'BSSkin::Instance':
+                sc = _Cursor(b, offsets[skin])
+                sc.take('i')
+                data = sc.take('i')
+                if data >= 0 and kinds[data] == 'BSSkin::BoneData':
+                    dc = _Cursor(b, offsets[data])
+                    for name in bone_names[:dc.take('I')]:
+                        dc.take('4f')                                   # bounding sphere
+                        rot = np.array(dc.take('9f'), np.float64).reshape(3, 3)
+                        skin_tf[name] = (rot, np.array(dc.take('3f'), np.float64), dc.take('f'))
+            return pos, uv, tris, bones, skin_tf
         return pos, uv, tris, bones
     raise ValueError(f'{path}: no shape {shape_name!r} (it has {found})')
 

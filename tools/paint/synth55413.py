@@ -5,16 +5,15 @@ Nexus 35269) as Complexion overlays -- alasdairn, 2026-11-14: "All three, see if
     our women's UVs exactly (checked by rendering them straight onto our body). Three looks are made from it:
 
     Panels       -- its grey plating with black panel lines, a lit overlay (like synthskin's Plated) over body and
-                   hands, with the pack's own normal maps on women; a face tint from its synth face.
+                   hands; a face tint from its synth face.
     Panel Lines  -- only its dark panel lines (and joints, rivets) multiplied into the character's own skin; a face
                    tint from the same.
-    Glow Lines   -- its human versions' coloured lines (blue, pink, green) and their white plates, as an UNLIT
+    Glow Lines   -- the bands between its skin pieces filled with its glowing network (blue, pink, green), as an UNLIT
                    alpha-blended overlay: unlit, the colours glow, as the pack's lines are meant to.
 
-    Men have no textures in the pack. A male texel takes the colour of the matching point on the woman's body: both
-    bodies set to the same heights (feet, crotch, nipples, neck) and the torso to the same width at each height, then
-    the nearest point of the same region (torso, arm, leg, ...) that faces the same way. Hands: each hand fitted into
-    the other's box. Heads: nose and chin.
+    Its lines are not copied as pixels: their centrelines are taken from its textures, carried as 3D points (onto a man
+    through bodywarp's one warp of her body + hands onto his) and drawn again at one width in world units on whichever
+    mesh they land. Heads: matched by nose and chin.
 
     The pack's files are not in this repository (third-party, permission for Complexion only): SOURCE is the unpacked
     2K archive. tools/paint/art/contrib/CREDITS.md credits them.
@@ -32,9 +31,7 @@ PANELS_ALPHA = 0.96          # its plating over the person's skin: all but a bre
 PANELS_SPEC = (0.40, 0.55)   # specular, smoothness on the plates (a soft sheen; the lines none)
 LINE_DEPTH = 0.85            # Panel Lines: the skin multiplied by 1 - this at the darkest of a line
 LINE_DARK, LINE_PLATE = 0.12, 0.45   # luminance of its lines and of where its plate grey begins (its plates sit ~0.7)
-GLOW_SAT = 0.10              # Glow Lines: a texel that differs between its three colours by this much is a glow line
-GLOW_BLACK, GLOW_WHITE = 0.14, 0.80  # ... and a grey this dark or this light is one of its black lines or white plates
-GLOW_WHITE_LEVEL = 0.72      # its white plates drawn this light: unlit, full white glows like a lamp in the dark
+GLOW_BLACK, GLOW_WHITE = 0.14, 0.80  # Glow Lines: a grey this dark or this light is one of its black lines or plates
 
 _cache = {}
 
@@ -50,16 +47,12 @@ def _need():
 
 
 def _tex(rel, size):
-    """One of the pack's textures as float RGBA at size x size (cached). 'filled:<rel>' is its glow body texture with
-    its openings filled (_filled)."""
+    """One of the pack's textures as float RGBA at size x size (cached)."""
     key = (rel, size)
     if key not in _cache:
         _need()
         from PIL import Image
-        if rel.startswith(FILLED):
-            im = Image.fromarray((np.clip(_filled(rel[len(FILLED):]), 0, 1) * 255 + 0.5).astype(np.uint8), 'RGBA')
-        else:
-            im = Image.open(SOURCE / rel).convert('RGBA')
+        im = Image.open(SOURCE / rel).convert('RGBA')
         if im.size != (size, size):
             im = im.resize((size, size), Image.LANCZOS)
         _cache[key] = np.asarray(im, np.float32) / 255.0
@@ -68,9 +61,7 @@ def _tex(rel, size):
 
 # Glow Lines: its body textures open the knees (and spine) as solid black ovals; cut out as they are, they read in game
 # as holes into nothing with a torn rim (Fo4-mcp v14 11-14). Filled with its own glowing network (the background it
-# draws between its pieces), they read as lit internals. Same patch in all three colourings, so the cut-out still
-# tells the network's lines (they differ by colour) from its dark.
-FILLED = 'filled:'
+# draws between its pieces), they read as lit internals.
 GLOW_HOLE_PX = 25             # at 4096: solid black wider than this is an opening (its lines run ~12 px)
 GLOW_HOLE_SIZE = 4096
 
@@ -87,162 +78,13 @@ def _network_patch():
         y, x = np.unravel_index(int(np.argmax(d)), d.shape)
         r = int(d[y, x])
         _cache['netpatch'] = (y - r, x - r, 2 * r)
-        _cache['netcov'] = cov
     return _cache['netpatch']
 
 
-def _filled(rel):
-    from scipy import ndimage
-    T = _tex(rel, GLOW_HOLE_SIZE).copy()
-    y0, x0, P = _network_patch()
-    cov = _cache['netcov']
-    holes = ndimage.binary_opening((_lum(T[..., :3]) < GLOW_BLACK) & cov,
-                                   structure=np.ones((GLOW_HOLE_PX, GLOW_HOLE_PX), bool))
-    lab, n = ndimage.label(holes)
-
-    def mirror(v):
-        v = v % (2 * P)
-        return np.where(v < P, v, 2 * P - 1 - v)
-    for k, sl in enumerate(ndimage.find_objects(lab), 1):   # each opening centred on the patch's middle (its edges
-        ys, xs = np.nonzero(lab[sl] == k)                    # can fall on the network's dark)
-        cy, cx = ys.mean(), xs.mean()
-        sy = mirror((ys - cy + P / 2).astype(np.int64))
-        sx = mirror((xs - cx + P / 2).astype(np.int64))
-        T[ys + sl[0].start, xs + sl[1].start] = T[y0 + sy, x0 + sx]
-    return T
+# ---------------------------------------------------------------- women's textures onto men's heads
 
 
-# ---------------------------------------------------------------- women's textures onto men (and men's heads)
-
-
-def _body_frame(m):
-    """Per covered texel: (positions in a common frame, region). Heights go piecewise through the landmarks to the
-    female body's; the torso is scaled to the female torso's width at its height; the rest by the height ratio."""
-    from marks import landmarks
-    lo, hi = m.bounds
-    idx = np.flatnonzero(m.covered)
-    X = m.position.reshape(-1, 3)[idx].copy()
-    R = m.region.reshape(-1)[idx]
-    L = landmarks(m)
-    h = (X[:, 2] - lo[2]) / (hi[2] - lo[2])
-    return idx, X, R, h, L
-
-
-def _female_frame():
-    if 'ff' not in _cache:
-        from body import UVMap
-        import make_marks as mm
-        _cache['ff'] = UVMap(mm.DATA, 'female', 2048)
-    return _cache['ff']
-
-
-def _torso_halfwidth(X, R, h, bins):
-    from body import REGIONS
-    t = R == REGIONS.index('torso')
-    out = np.full(len(bins) - 1, np.nan)
-    for k in range(len(bins) - 1):
-        sel = t & (h >= bins[k]) & (h < bins[k + 1])
-        if sel.sum() > 20:
-            out[k] = np.percentile(np.abs(X[sel, 0]), 98)
-    good = np.isfinite(out)
-    c = (bins[:-1] + bins[1:]) / 2
-    return np.interp(c, c[good], out[good])
-
-
-REFINE_K = 8           # neighbours a carried-over texel blends its female UV from
-REFINE_ISLAND_PX = 3   # ... only those this close in the female UVs to the best match (same island, no seam jumps)
-SAMPLE_SIZE = {'body': 4096, 'hands': 2048}   # the women's textures sampled (bilinear) at these sizes for the men
-
-
-def _refine(cand_idx, dist, agree, pick, S):
-    """Female UVs (n x 2, 0..1) for carried-over texels: the best-facing neighbour's UV blended (inverse distance)
-    with its same-island neighbours'. The nearest texel alone (a 2048 map under a 4096 one) drew men's lines as
-    stair steps with ragged edges (in game 11-14, LitFix); blending gives a sub-texel position to sample from."""
-    n = len(pick)
-    cu = np.stack(((cand_idx % S + 0.5) / S, (cand_idx // S + 0.5) / S), -1)          # n x k x 2
-    best = cu[np.arange(n), pick]
-    same = np.abs(cu - best[:, None]).max(-1) <= REFINE_ISLAND_PX / S
-    same &= agree >= agree[np.arange(n), pick][:, None] - 0.3
-    eps = max(float(np.median(dist[:, 0])) * 0.25, 1e-6)
-    w = same / (dist + eps)
-    return (w[..., None] * cu).sum(1) / w.sum(1)[:, None]
-
-
-def _sample(T, uv):
-    """Bilinear sample of T (H x W x C) at UVs (n x 2, 0..1)."""
-    H, W = T.shape[:2]
-    x = np.clip(uv[:, 0] * W - 0.5, 0, W - 1)
-    y = np.clip(uv[:, 1] * H - 0.5, 0, H - 1)
-    x0, y0 = np.floor(x).astype(np.int64), np.floor(y).astype(np.int64)
-    x1, y1 = np.minimum(x0 + 1, W - 1), np.minimum(y0 + 1, H - 1)
-    fx, fy = (x - x0)[:, None], (y - y0)[:, None]
-    return ((T[y0, x0] * (1 - fx) + T[y0, x1] * fx) * (1 - fy)
-            + (T[y1, x0] * (1 - fx) + T[y1, x1] * fx) * fy)
-
-
-def _body_map(m):
-    """Per covered texel of a male body map: its female UV (0..1, NaN where none matches)."""
-    from scipy.spatial import cKDTree
-    from body import REGIONS
-    f = _female_frame()
-    fi, FX, FR, fh, FL = _body_frame(f)
-    mi, MX, MR, mh, ML = _body_frame(m)
-    keys = ('crotch', 'nipple', 'top')
-    hm = np.interp(mh, [0.0] + [ML[k] for k in keys] + [1.0], [0.0] + [FL[k] for k in keys] + [1.0])
-    flo, fhi = f.bounds
-    mlo, mhi = m.bounds
-    s = (fhi[2] - flo[2]) / (mhi[2] - mlo[2])
-    MXn = MX * s
-    MXn[:, 2] = flo[2] + hm * (fhi[2] - flo[2])
-    bins = np.linspace(0, 1, 51)
-    wf = _torso_halfwidth(FX, FR, fh, bins)
-    wm = _torso_halfwidth(MX * s, MR, hm, bins)
-    c = (bins[:-1] + bins[1:]) / 2
-    torso = MR == REGIONS.index('torso')
-    MXn[torso, 0] *= np.interp(hm[torso], c, wf / wm)
-    FN = f.normal.reshape(-1, 3)[fi]
-    MN = m.normal.reshape(-1, 3)[mi]
-    out = np.full((len(mi), 2), np.nan)
-    for r in np.unique(MR):
-        src = np.flatnonzero(FR == r)
-        dst = np.flatnonzero(MR == r)
-        if not len(src) or not len(dst):
-            continue
-        tree = cKDTree(FX[src])
-        for a in range(0, len(dst), 400000):
-            d = dst[a:a + 400000]
-            _dist, nb = tree.query(MXn[d], k=REFINE_K)
-            agree = np.einsum('nkc,nc->nk', FN[src[nb]], MN[d])
-            pick = np.argmax(agree[:, :6] - 0.02 * _dist[:, :6], axis=1)   # the nearest that faces the same way
-            out[d] = _refine(fi[src[nb]], _dist, agree, pick, f.size)
-    return mi, out
-
-
-def _hands_map(m):
-    """Per covered texel of a male hands map: the matching texel of the female hands map at 1024."""
-    from scipy.spatial import cKDTree
-    import hands
-    import make_marks as mm
-    if 'fh' not in _cache:
-        _cache['fh'] = hands.HandMap(mm.DATA, 'female', 1024)
-    f = _cache['fh']
-    fi = np.flatnonzero(f.covered)
-    mi = np.flatnonzero(m.covered)
-    FX, MX = f.position.reshape(-1, 3)[fi], m.position.reshape(-1, 3)[mi]
-    FN, MN = f.normal.reshape(-1, 3)[fi], m.normal.reshape(-1, 3)[mi]
-    out = np.full((len(mi), 2), np.nan)
-    for side in (1, -1):
-        fs, ms = np.flatnonzero(FX[:, 0] * side > 0), np.flatnonzero(MX[:, 0] * side > 0)
-        if not len(fs) or not len(ms):
-            continue
-        flo, fhi = FX[fs].min(0), FX[fs].max(0)
-        mlo, mhi = MX[ms].min(0), MX[ms].max(0)
-        P = flo + (MX[ms] - mlo) / np.maximum(mhi - mlo, 1e-6) * (fhi - flo)
-        _dist, nb = cKDTree(FX[fs]).query(P, k=REFINE_K)
-        agree = np.einsum('nkc,nc->nk', FN[fs[nb]], MN[ms])
-        pick = np.argmax(agree[:, :6] - 0.02 * _dist[:, :6], axis=1)
-        out[ms] = _refine(fi[fs[nb]], _dist, agree, pick, f.size)
-    return mi, out
+SAMPLE_SIZE = {'body': 4096, 'hands': 2048}   # the women's maps its lines are traced at
 
 
 def _head_map(m):
@@ -266,25 +108,19 @@ def _head_map(m):
     return mi, fi[nb[np.arange(len(mi)), pick]], f.size
 
 
-def _on(m, rel, kind):
-    """The pack texture rel as it falls on map m (float RGBA, m.size square): straight for a woman's body or hands
-    and the vanilla female head, carried over from the woman's for everyone else."""
-    female = getattr(m, 'sex', None) == 'female' or getattr(m, 'head', None) == 'human_female'
-    if female:
+def _on(m, rel, kind='head'):
+    """The pack's face texture rel as it falls on head map m (float RGBA, m.size square): straight for the vanilla
+    female head, carried over from it for every other head."""
+    if getattr(m, 'head', None) == 'human_female':
         return _tex(rel, m.size)
     key = (kind, getattr(m, 'sex', None), getattr(m, 'head', None), m.size)
     if key not in _cache:
-        _cache[key] = {'body': _body_map, 'hands': _hands_map}.get(kind, _head_map)(m)
-    got = _cache[key]
-    mi, src = got[0], got[1]
+        _cache[key] = _head_map(m)
+    mi, src, fsize = _cache[key]
     out = np.zeros((m.size * m.size, 4), np.float32)
-    if kind == 'head':
-        T = _tex(rel, got[2]).reshape(-1, 4)
-        ok = src >= 0
-        out[mi[ok]] = T[src[ok]]
-    else:   # body / hands: female UVs, sampled smoothly from the full-size texture
-        ok = np.isfinite(src[:, 0])
-        out[mi[ok]] = _sample(_tex(rel, SAMPLE_SIZE[kind]), src[ok])
+    T = _tex(rel, fsize).reshape(-1, 4)
+    ok = src >= 0
+    out[mi[ok]] = T[src[ok]]
     return out.reshape(m.size, m.size, 4)
 
 
@@ -339,28 +175,201 @@ def _prune(sk, k):
     return s
 
 
-def _female_cov(kind):
-    """The women's body or hands coverage at SAMPLE_SIZE (cached)."""
+def _female_map(kind):
+    """The women's body or hands map at SAMPLE_SIZE (cached)."""
     S = SAMPLE_SIZE[kind]
-    fkey = ('fmap', kind, S)
-    if fkey not in _cache:
+    key = ('fmapobj', kind, S)
+    if key not in _cache:
         import make_marks as mm
         if kind == 'hands':
             import hands
-            _cache[fkey] = hands.HandMap(mm.DATA, 'female', S).covered
+            _cache[key] = hands.HandMap(mm.DATA, 'female', S)
         else:
             from body import UVMap
-            _cache[fkey] = UVMap(mm.DATA, 'female', S).covered
-    return _cache[fkey]
+            _cache[key] = UVMap(mm.DATA, 'female', S)
+    return _cache[key]
 
 
-def _retrace(m, rel, kind, width=RETRACE_W, fmask=None, tag='lines'):
-    """Line coverage (0..1, m.size square) for a man's map m: the centrelines of the women's line mask (fmask, at
-    SAMPLE_SIZE; default: texture rel's dark lines) carried onto his body in 3D, drawn width (world units) wide."""
-    rkey = ('retrace', tag, rel, kind, getattr(m, 'sex', None), m.size)
-    if rkey not in _cache:
-        _cache[rkey] = _retrace_once(m, rel, kind, width, fmask)
-    return _cache[rkey]
+def _female_cov(kind):
+    return _female_map(kind).covered
+
+
+def _frame_pos(m, kind):
+    """Map m's texel positions in its body's frame: a hands map's are moved onto the body (bodywarp.hands_to_body)."""
+    key = ('framepos', kind, getattr(m, 'sex', None), m.size)
+    if key not in _cache:
+        pos = m.position
+        if kind == 'hands':
+            import bodywarp
+            pos = bodywarp.hands_to_body(m.sex)(pos.reshape(-1, 3)).reshape(pos.shape)
+        _cache[key] = pos
+    return _cache[key]
+
+
+MESH = {'body': 0, 'hands': 1}
+
+
+def _carried(tag, masks, sex):
+    """3D points in sex's body frame: the women's texels set in masks ({kind: callable -> mask at SAMPLE_SIZE}),
+    thinned to centrelines unless tag ends in ':fill', carried onto sex through bodywarp (body and hands together)."""
+    key = ('carried', tag, sex)
+    if key not in _cache:
+        import bodywarp
+        P, ends = [], []
+        for kind, mask in masks.items():
+            ck = ('centre', tag, kind)
+            if ck not in _cache:
+                msk = mask() & _female_cov(kind)
+                _cache[ck] = msk if tag.endswith(':fill') else _centreline(msk)
+            sk = _cache[ck]
+            idx = np.flatnonzero(sk)
+            X = bodywarp.carry(_frame_pos(_female_map(kind), kind).reshape(-1, 3)[idx], MESH[kind], sex)
+            P.append(X)
+            if not tag.endswith(':fill'):
+                P.append(_densify(sk, idx, X))
+                ends.append(_seam_ends(sk, idx, X, _female_cov(kind), len(ends)))
+        if ends:
+            P.append(_stitch(ends, np.concatenate(P)))
+        _cache[key] = np.concatenate(P) if P else np.zeros((0, 3))
+    return _cache[key]
+
+
+# Its lines break at its own UV seams: a line drawn on two texture islands ends a little apart on each (the shin line
+# above the ankle, "same on female body", ilhamitaa24 v21 11-14). In 3D the two ends are close and face each other:
+# each end on an island's edge is bridged to the end (or, failing one, the line) it continues into.
+SEAM_PX = 24        # at 4096: a line end this close to its island's edge ends at a seam (the pack stops them 14-19 short)
+STITCH_R = 2.0      # world units: the furthest a seam gap is bridged
+STITCH_CONE = 0.5   # the bridge must leave the end within ~60 degrees of the line's own direction
+
+
+def _seam_ends(sk, idx, X, cov, k):
+    """(positions, outward directions, component ids) of the centreline sk's ends that lie on its island's edge."""
+    from scipy import ndimage
+    S = sk.shape[0]
+    K = np.ones((3, 3), np.uint8)
+    K[1, 1] = 0
+    deg = ndimage.convolve(sk.astype(np.uint8), K, mode='constant')
+    end = sk & (deg == 1)
+    edge = ndimage.binary_dilation(~cov, iterations=max(2, int(round(SEAM_PX * S / 4096))))
+    end &= edge
+    lab, _ = ndimage.label(sk, structure=np.ones((3, 3), bool))
+    at = np.full(sk.size, -1, np.int64)
+    at[idx] = np.arange(len(idx))
+    pos, out, comp = [], [], []
+    r = max(4, int(round(12 * S / 4096)))
+    for e in np.flatnonzero(end.ravel()):
+        y, x = divmod(int(e), S)
+        win = lab[max(0, y - r):y + r + 1, max(0, x - r):x + r + 1] == lab[y, x]
+        wy, wx = np.nonzero(win)
+        nb = at[(wy + max(0, y - r)) * S + wx + max(0, x - r)]
+        back = X[nb[nb >= 0]].mean(0) - X[at[e]]
+        n = np.linalg.norm(back)
+        if n < 1e-6:
+            continue
+        pos.append(X[at[e]]); out.append(-back / n); comp.append(k * 10_000_000 + lab[y, x])
+    if not pos:
+        return np.zeros((0, 3)), np.zeros((0, 3)), np.zeros(0, np.int64), lab, at, X, k
+    return np.array(pos), np.array(out), np.array(comp), lab, at, X, k
+
+
+def _stitch(ends, P_all):
+    """Bridge points across the seam gaps: each seam end joined to the nearest other line's seam end ahead of it within
+    STITCH_R (both facing each other), else to the nearest point of another line ahead of it."""
+    from scipy.spatial import cKDTree
+    E = np.concatenate([e[0] for e in ends])
+    O = np.concatenate([e[1] for e in ends])
+    C = np.concatenate([e[2] for e in ends])
+    if not len(E):
+        return np.zeros((0, 3))
+    # every carried line point with its component, for end-to-line joins
+    LP, LC = [], []
+    for _pos, _out, _comp, lab, at, X, k in ends:
+        idx = np.flatnonzero(at >= 0)
+        LP.append(X[at[idx]]); LC.append(k * 10_000_000 + lab.ravel()[idx])
+    LP, LC = np.concatenate(LP), np.concatenate(LC)
+    ltree = cKDTree(LP)
+    etree = cKDTree(E)
+    used = np.zeros(len(E), bool)
+    bridges = []
+    order = np.argsort([min((np.linalg.norm(E - E[i], axis=1) + (C == C[i]) * 1e9).min(), 1e9) for i in range(len(E))])
+    for i in order:
+        if used[i]:
+            continue
+        best, bd = None, STITCH_R
+        for j in etree.query_ball_point(E[i], STITCH_R):
+            if j == i or used[j] or C[j] == C[i]:
+                continue
+            v = E[j] - E[i]
+            d = np.linalg.norm(v)
+            if d < 1e-6:
+                best, bd = j, 0.0
+                break
+            if v @ O[i] > STITCH_CONE * d and -v @ O[j] > 0 and d < bd:
+                best, bd = j, d
+        if best is not None:
+            used[i] = used[best] = True
+            bridges.append((E[i], E[best]))
+            continue
+        cand = ltree.query_ball_point(E[i], STITCH_R)
+        best, bd = None, STITCH_R
+        for j in cand:
+            if LC[j] == C[i]:
+                continue
+            v = LP[j] - E[i]
+            d = np.linalg.norm(v)
+            if d > 1e-6 and v @ O[i] > STITCH_CONE * d and d < bd:
+                best, bd = j, d
+        if best is not None:
+            used[i] = True
+            bridges.append((E[i], LP[best]))
+    out = []
+    for a, b in bridges:
+        n = max(2, int(np.ceil(np.linalg.norm(b - a) / DENSE_STEP)))
+        t = np.linspace(0, 1, n)[:, None]
+        out.append(a * (1 - t) + b * t)
+    _cache.setdefault('stitch_log', []).append(len(bridges))
+    return np.concatenate(out) if out else np.zeros((0, 3))
+
+
+DENSE_STEP = 0.03   # world units: carried centrelines are filled in to this spacing (the warp stretches them apart)
+
+
+def _densify(sk, idx, X):
+    """Points along each centreline step (8-connected texel pairs) between their carried 3D positions X, at most
+    DENSE_STEP apart: where the warp stretched her texels further apart than a line's half width, his lines beaded."""
+    S = sk.shape[1]
+    at = np.full(sk.size, -1, np.int64)
+    at[idx] = np.arange(len(idx))
+    y, x = np.divmod(idx, S)
+    out = []
+    for dy, dx in ((0, 1), (1, 0), (1, 1), (1, -1)):
+        ny, nx = y + dy, x + dx
+        ok = (ny < sk.shape[0]) & (nx >= 0) & (nx < S)
+        j = np.full(len(idx), -1, np.int64)
+        j[ok] = at[ny[ok] * S + nx[ok]]
+        a = np.flatnonzero(j >= 0)
+        if not len(a):
+            continue
+        A, B = X[a], X[j[a]]
+        n = np.ceil(np.linalg.norm(B - A, axis=1) / DENSE_STEP).astype(np.int64)
+        n = np.minimum(n, 64)   # a step longer than ~2 units is a seam jump, not a line
+        far = np.linalg.norm(B - A, axis=1) > 2.0
+        for k in range(1, int(n.max()) if len(n) else 1):
+            sel = (n > k) & ~far
+            if not sel.any():
+                break
+            t = (k / n[sel])[:, None]
+            out.append(A[sel] * (1 - t) + B[sel] * t)
+    return np.concatenate(out) if out else np.zeros((0, 3))
+
+
+def _retrace(m, kind, tag, masks, width=RETRACE_W):
+    """Line coverage (0..1, m.size square) on map m (body or hands): the women's line centrelines of masks, carried in
+    3D onto m's sex and drawn width (world units) wide -- body and hands lines together, so they meet at the wrist."""
+    key = ('retrace', tag, kind, getattr(m, 'sex', None), m.size)
+    if key not in _cache:
+        _cache[key] = _draw_lines(m, _carried(tag, masks, m.sex), width, _frame_pos(m, kind))
+    return _cache[key]
 
 
 def _line_mask(rel, S):
@@ -369,27 +378,6 @@ def _line_mask(rel, S):
     T = _tex(rel, S)
     dark = 1 - np.clip((_lum(T[..., :3]) - LINE_DARK) / (LINE_PLATE - LINE_DARK), 0, 1)
     return gaussian_filter(dark, 1.5) > 0.5
-
-
-def _retrace_once(m, rel, kind, width, fmask):
-    from scipy.spatial import cKDTree
-    S = SAMPLE_SIZE[kind]
-    if fmask is None:
-        fmask = _line_mask(rel, S)
-    ys, xs = np.nonzero(_centreline(fmask & _female_cov(kind)))
-    fuv = np.stack(((xs + 0.5) / S, (ys + 0.5) / S), -1)
-    if getattr(m, 'sex', None) == 'female':              # her own UVs: every covered texel is its own match
-        mi = np.flatnonzero(m.covered)
-        yy, xx = np.divmod(mi, m.size)
-        src = np.stack(((xx + 0.5) / m.size, (yy + 0.5) / m.size), -1)
-    else:
-        _on(m, rel, kind)                                # builds the man's texel -> women's UV correspondence
-        mi, src = _cache[(kind, getattr(m, 'sex', None), getattr(m, 'head', None), m.size)][:2]
-    ok = np.isfinite(src[:, 0])
-    mi, src = mi[ok], src[ok]
-    d, j = cKDTree(src).query(fuv, distance_upper_bound=RETRACE_MATCH_PX / S)
-    hit = np.isfinite(d)
-    return _draw_lines(m, m.position.reshape(-1, 3)[mi[j[hit]]], width)
 
 
 def _centreline(fmask):
@@ -404,14 +392,23 @@ def _centreline(fmask):
     return sk
 
 
-def _draw_lines(m, P, width):
-    """Coverage (0..1) of map m's texels within width/2 (world units) of the 3D centreline points P."""
+SNAP_MAX = 0.6   # world units: a point this close to a map's surface is laid on it; further ones are another mesh's
+
+
+def _draw_lines(m, P, width, pos=None):
+    """Coverage (0..1) of map m's texels within width/2 (world units) of the 3D centreline points P (texel positions
+    pos, default m.position)."""
     from scipy.ndimage import gaussian_filter
     from scipy.spatial import cKDTree
+    G = m.position if pos is None else pos
     cov = np.flatnonzero(m.covered)
-    X = m.position.reshape(-1, 3)[cov]
+    X = G.reshape(-1, 3)[cov]
+    # each point onto this map's own surface first (its nearest texel): laid on the tangent plane of his nearest (sparse)
+    # vertex, a point on a curved limb sat up to ~0.1 off it -- more than half a line -- and the lines beaded (11-14)
+    sd, sj = cKDTree(X).query(P, distance_upper_bound=SNAP_MAX)
+    near = np.isfinite(sd)
+    P = np.concatenate([X[sj[near]], P[~near]])
     dist, _ = cKDTree(P).query(X, distance_upper_bound=width * 3)
-    G = m.position
     step = np.linalg.norm(G[:, 1:] - G[:, :-1], axis=-1)[m.covered[:, 1:] & m.covered[:, :-1]]
     aa = float(np.median(step))                           # one texel in world units: the edge's soft width
     D = np.full(m.size * m.size, width * 3, np.float32)
@@ -436,9 +433,13 @@ def _plates(line, cov, seed):
 
 # Women retraced too: their pack lines as they come (hand-drawn pixels, ~0.35 wide, scaled down) read "shit, the same
 # as kneecap says" on a female body (ilhamitaa24, #management 11-14) -- the same bar as the men's: thin, even, machined.
+LINES = {'body': lambda: _line_mask(BODY['panels'], SAMPLE_SIZE['body']),
+         'hands': lambda: _line_mask(HANDS['panels'], SAMPLE_SIZE['hands'])}
+
+
 def _men_panels(m, rel, kind):
-    """The pack's panels texture on map m, its lines retraced in 3D (women on their own UVs, men carried over)."""
-    return _plates(_retrace(m, rel, kind), m.covered, 55413 + (kind == 'hands'))
+    """The pack's panels on map m: its plates, its lines retraced in 3D."""
+    return _plates(_retrace(m, kind, 'lines', LINES), m.covered, 55413 + (kind == 'hands'))
 
 
 def _panels(m, rel, kind):
@@ -478,97 +479,60 @@ def panel_lines_hands(m, rng=None):
     return _lines(m, HANDS['panels'], 'hands')
 
 
-def _glow_cut(Ts, colour, cov):
-    """(rgb, alpha) of its cut-out from the three colourings Ts (float RGBA, same grid)."""
-    rgb = Ts[colour][..., :3]
-    spread = np.max(np.stack([np.abs(Ts[a][..., :3] - Ts[b][..., :3]).max(-1)
-                              for a, b in (('blue', 'pink'), ('pink', 'green'), ('green', 'blue'))]), axis=0)
-    lum = _lum(rgb)
-    sat = rgb.max(-1) - rgb.min(-1)
-    coloured = np.clip((spread - GLOW_SAT * 0.5) / (GLOW_SAT * 0.5), 0, 1)
-    black = np.clip((GLOW_BLACK - lum) / (GLOW_BLACK * 0.5), 0, 1) * (sat < 0.12)
-    white = np.clip((lum - GLOW_WHITE) / (1 - GLOW_WHITE), 0, 1) * (sat < 0.12)
-    a = np.maximum(np.maximum(coloured, black), white) * cov
-    return np.where((white > coloured)[..., None], GLOW_WHITE_LEVEL, rgb), a
-
-
-# Men's Glow: its bands between the skin pieces retraced like the Panels lines (one even width, in 3D, across seams);
-# its wide parts (white plates, the filled openings) kept as carried over, edges smoothed. Band texels the carry-over
-# left without glow take the colour of the nearest one that has it (alasdairn's "do it all", v16 11-14).
+# Glow: the bands between its skin pieces, retraced like the Panels lines (one even width, in 3D, across seams) and
+# filled with its own glowing network; its knee (and spine) openings carried as filled shapes; its decals (QR codes,
+# the MK.4 label) left out (carried they smear; ilhamitaa24 "I'd say remove them" for women too, 11-14).
 GLOW_W = 0.22                 # world units: the glow band width
 GLOW_NET_FLOOR = 0.45         # the bands' least glow, as a share of the network's vein colour
-
-
-def _glow(m, table, colour, kind):
-    """Its coloured lines and plates, cut out of its human skin: where its three colourings differ (the coloured
-    lines), or where it is black or white (its black lines, white plates). RGBA; the skin itself is clear."""
-    Ts = {c: _on(m, table[c], kind) for c in ('blue', 'pink', 'green')}
-    rgb, a = _glow_cut(Ts, colour, m.covered)
-    rgb, a = _glow_men(m, table, kind, rgb, a, colour)
-    out = np.zeros(m.covered.shape + (4,), np.float32)
-    out[..., :3] = rgb
-    out[..., 3] = a
-    return out
-
-
-# v17 in game (Fo4-mcp 11-14): the wide parts kept as carried over still read torn and uneven, a white stripe ran down
-# the back of the hand and its groin QR code came out a blue block. So for men everything but the knee openings is
-# retraced: its whole cut-out (bands, white plates) becomes even network bands; the openings are carried (they read
-# right); its decals (QR codes, the MK.4 label) are left out -- carried over they can only smear.
+GLOW_FILL_W = 0.35            # world units: an opening is drawn wherever one of her opening texels lies within half this
+                              # (the warp stretches them apart; at 4 of her texels his knees showed skin stripes)
 GLOW_DECALS = ((0.098, 0.256, 0.03, 0.03), (0.902, 0.256, 0.03, 0.03), (0.5, 0.933, 0.03, 0.03),
                (0.5, 0.75, 0.035, 0.015))   # women's body UV: centre u, v, half width, half height
+GLOW_TABLE = {'body': BODY['blue'], 'hands': HANDS['blue']}
 
 
-def _female_holes(table, kind):
-    """The women's openings (solid black wider than GLOW_HOLE_PX) at SAMPLE_SIZE, as a mask texture the carry-over can
-    sample: registered in the texture cache under 'holes:<kind>'."""
+def _female_holes(kind):
+    """The women's openings (solid black wider than GLOW_HOLE_PX) at SAMPLE_SIZE; none on the hands."""
     from scipy import ndimage
     S = SAMPLE_SIZE[kind]
-    key = 'holes:' + kind
-    if (key, S) not in _cache:
-        raw = table['blue'][len(FILLED):] if table['blue'].startswith(FILLED) else table['blue']
-        T = _tex(raw, S)
-        hw = max(3, int(round(GLOW_HOLE_PX * S / 4096)))
-        H = ndimage.binary_opening((_lum(T[..., :3]) < GLOW_BLACK) & _female_cov(kind), structure=np.ones((hw, hw), bool))
+    key = ('holes', kind, S)
+    if key not in _cache:
         if kind == 'hands':
-            H[:] = False
-        img = np.zeros((S, S, 4), np.float32)
-        img[..., 0] = H
-        img[..., 3] = 1
-        _cache[(key, S)] = img
-    return key, _cache[(key, S)][..., 0] > 0.5
+            H = np.zeros((S, S), bool)
+        else:
+            T = _tex(GLOW_TABLE[kind], S)
+            hw = max(3, int(round(GLOW_HOLE_PX * S / 4096)))
+            H = ndimage.binary_opening((_lum(T[..., :3]) < GLOW_BLACK) & _female_cov(kind), structure=np.ones((hw, hw), bool))
+        _cache[key] = H
+    return _cache[key]
 
 
-def _glow_men(m, table, kind, rgb, a, colour):
+def _glow_bands(kind):
+    """The women's band mask at SAMPLE_SIZE: the gaps between its skin pieces, whole -- not skin (bluer than red, or
+    near black or white); the cut-out of its veins alone traced as dashes (v18 in game 11-14) -- minus the openings
+    and the decals."""
     from scipy import ndimage
     S = SAMPLE_SIZE[kind]
-    fcov = _female_cov(kind)
-    # the gaps between its skin pieces, whole: not skin (the cut-out keeps only the veins and the near-black, so the
-    # navy between the veins fell out and the bands were traced from scattered veins: dashes, v18 in game 11-14)
-    Tb = _tex(table['blue'], S)
-    r, g, b = Tb[..., 0], Tb[..., 1], Tb[..., 2]
-    lum = _lum(Tb[..., :3])
+    T = _tex(GLOW_TABLE[kind], S)
+    r, b = T[..., 0], T[..., 2]
+    lum = _lum(T[..., :3])
     gap = (b >= r) | (lum < 0.15) | (lum > GLOW_WHITE)
     gap = ndimage.gaussian_filter(gap.astype(np.float32), 1.5) > 0.5
-    hkey, holes_f = _female_holes(table, kind)
-    keep = gap & fcov & ~ndimage.binary_dilation(holes_f, iterations=2)
+    keep = gap & ~ndimage.binary_dilation(_female_holes(kind), iterations=2)
     if kind == 'body':
         yy, xx = np.mgrid[0:S, 0:S]
         u, v = (xx + 0.5) / S, (yy + 0.5) / S
         for cu, cv, hu, hv in GLOW_DECALS:
             keep &= ~((np.abs(u - cu) < hu) & (np.abs(v - cv) < hv))
-    band = _retrace(m, table['blue'], kind, width=GLOW_W, fmask=keep, tag='glow')
-    female = getattr(m, 'sex', None) == 'female'
-    if female:   # her own UVs: the openings mask straight, at her size
-        holes = ndimage.zoom(holes_f.astype(np.float32), m.size / S, order=1)
-    else:
-        holes = _on(m, hkey, kind)[..., 0]
-    c = m.covered.astype(np.float32)
-    holes = ndimage.gaussian_filter(holes * c, REDRAW_SIGMA) / np.maximum(ndimage.gaussian_filter(c, REDRAW_SIGMA), 1e-3)
-    t = np.clip((holes - REDRAW_EDGE[0]) / (REDRAW_EDGE[1] - REDRAW_EDGE[0]), 0, 1)
-    holes = t * t * (3 - 2 * t)
-    alpha = np.maximum(band, holes) * m.covered
-    # the bands: its own glowing network (the patch the openings are filled from), in this colouring, at its scale
+    return keep
+
+
+BANDS = {'body': lambda: _glow_bands('body'), 'hands': lambda: _glow_bands('hands')}
+HOLES = {'body': lambda: _female_holes('body')}
+
+
+def _network(m, colour):
+    """(raw, floored) its glowing network patch in this colouring, tiled (mirrored) over map m at its own scale."""
     y0, x0, P = _network_patch()
     T4 = _tex(BODY[colour], GLOW_HOLE_SIZE)
     k = GLOW_HOLE_SIZE / m.size
@@ -584,17 +548,36 @@ def _glow_men(m, table, kind, rgb, a, colour):
     L = _lum(Pt)
     vein = Pt[L >= np.percentile(L, 95)].mean(0)
     hue = (vein - vein.min()) / max(float(vein.max() - vein.min()), 1e-3)   # its pure colour: the vein alone read slate
-    net = np.maximum(net, GLOW_NET_FLOOR * (0.5 * vein + 0.5 * hue))
-    # its decals are left out for women too: both sexes match (ilhamitaa24 "I'd say remove them", #management 11-14)
-    return np.where((holes >= band)[..., None], rgb, net), alpha
+    return net, np.maximum(net, GLOW_NET_FLOOR * (0.5 * vein + 0.5 * hue))
+
+
+def _glow(m, colour, kind):
+    """RGBA: its bands (floored network) and openings (the network as it is: lit internals); the skin itself clear."""
+    from scipy import ndimage
+    band = _retrace(m, kind, 'glow', BANDS, width=GLOW_W)
+    if kind == 'body':
+        f = _female_map('body')
+        step = np.linalg.norm(f.position[:, 1:] - f.position[:, :-1], axis=-1)[f.covered[:, 1:] & f.covered[:, :-1]]
+        holes = _retrace(m, kind, "holes:fill", HOLES, width=max(4 * float(np.median(step)), GLOW_FILL_W))   # filled solid
+        c = m.covered.astype(np.float32)
+        holes = ndimage.gaussian_filter(holes * c, REDRAW_SIGMA) / np.maximum(ndimage.gaussian_filter(c, REDRAW_SIGMA), 1e-3)
+        t = np.clip((holes - REDRAW_EDGE[0]) / (REDRAW_EDGE[1] - REDRAW_EDGE[0]), 0, 1)
+        holes = t * t * (3 - 2 * t) * m.covered
+    else:
+        holes = np.zeros_like(band)
+    raw, net = _network(m, colour)
+    out = np.zeros(m.covered.shape + (4,), np.float32)
+    out[..., :3] = np.where((holes >= band)[..., None], raw, net)
+    out[..., 3] = np.maximum(band, holes) * m.covered
+    return out
 
 
 def glow_body(m, rng, colour):
-    return _glow(m, {c: FILLED + BODY[c] for c in ('blue', 'pink', 'green')}, colour, 'body')
+    return _glow(m, colour, 'body')
 
 
 def glow_hands(m, rng, colour):
-    return _glow(m, HANDS, colour, 'hands')
+    return _glow(m, colour, 'hands')
 
 
 FACE_BLANK_PX = 9   # at 1024: solid black wider than this on its face texture is no face (the part of the UV its own
