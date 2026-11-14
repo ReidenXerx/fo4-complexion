@@ -327,11 +327,121 @@ def _redraw(T, cov, seed):
     return out
 
 
+# Men's lines RETRACED in 3D. Redrawn from the carried-over mask (_redraw) they were still "chunky ... drawn on rather
+# than machined ... misaligned ... disappear randomly" (alasdairn, v16, 11-14): the texel-by-texel carry-over thickens,
+# warps and breaks a line wherever the body match stretches or jumps, and loses it across UV seams. Now the women's
+# own line centrelines (thinned from its clean texture) are carried onto the man's body as 3D points, and every texel
+# of his is drawn by its 3D distance to them at one width in world units: even, crisp, continuous across seams.
+RETRACE_W = 0.16              # world units: the men's line width (the women's pack lines run ~0.35, hand-drawn)
+RETRACE_MATCH_PX = 3          # a centreline point needs a man's texel matched within this many of the women's texels
+RETRACE_SPUR_PX = 10          # centreline twigs shorter than this (women's texels) are thinning noise, not lines
+RETRACE_MIN_PX = 15           # ... and so are pieces this small
+RETRACE_SMOOTH_PX = 1.5       # the distance field blurred this much (texels) before the cut: the centreline's 1-texel
+                              # stair steps no longer show as a jagged edge (averaging the 3D points instead clumped
+                              # them into beads)
+
+
+def _prune(sk, k):
+    """A centreline without its twigs shorter than k: ends eaten back k steps, then only the true ends regrown."""
+    from scipy.ndimage import convolve, binary_dilation
+    K = np.ones((3, 3), np.uint8)
+    K[1, 1] = 0
+    s = sk.copy()
+    for _ in range(k):
+        end = s & (convolve(s.astype(np.uint8), K, mode='constant') == 1)
+        if not end.any():
+            break
+        s &= ~end
+    grow = s & (convolve(s.astype(np.uint8), K, mode='constant') == 1)
+    for _ in range(k):
+        new = binary_dilation(grow, structure=np.ones((3, 3), bool)) & sk & ~s
+        if not new.any():
+            break
+        s |= new
+        grow = new
+    return s
+
+
+def _female_cov(kind):
+    """The women's body or hands coverage at SAMPLE_SIZE (cached)."""
+    S = SAMPLE_SIZE[kind]
+    fkey = ('fmap', kind, S)
+    if fkey not in _cache:
+        import make_marks as mm
+        if kind == 'hands':
+            import hands
+            _cache[fkey] = hands.HandMap(mm.DATA, 'female', S).covered
+        else:
+            from body import UVMap
+            _cache[fkey] = UVMap(mm.DATA, 'female', S).covered
+    return _cache[fkey]
+
+
+def _retrace(m, rel, kind, width=RETRACE_W, fmask=None, tag='lines'):
+    """Line coverage (0..1, m.size square) for a man's map m: the centrelines of the women's line mask (fmask, at
+    SAMPLE_SIZE; default: texture rel's dark lines) carried onto his body in 3D, drawn width (world units) wide."""
+    rkey = ('retrace', tag, rel, kind, getattr(m, 'sex', None), m.size)
+    if rkey not in _cache:
+        _cache[rkey] = _retrace_once(m, rel, kind, width, fmask)
+    return _cache[rkey]
+
+
+def _retrace_once(m, rel, kind, width, fmask):
+    from scipy.ndimage import gaussian_filter, label
+    from scipy.spatial import cKDTree
+    from synthskin import _thin
+    S = SAMPLE_SIZE[kind]
+    fcov = _female_cov(kind)
+    if fmask is None:
+        T = _tex(rel, S)
+        dark = 1 - np.clip((_lum(T[..., :3]) - LINE_DARK) / (LINE_PLATE - LINE_DARK), 0, 1)
+        fmask = gaussian_filter(dark, 1.5) > 0.5
+    sk = _prune(_thin(fmask & fcov), RETRACE_SPUR_PX)
+    lab, n = label(sk, structure=np.ones((3, 3), bool))
+    if n:
+        size = np.bincount(lab.ravel())
+        sk &= size[lab] >= RETRACE_MIN_PX
+    ys, xs = np.nonzero(sk)
+    fuv = np.stack(((xs + 0.5) / S, (ys + 0.5) / S), -1)
+    _on(m, rel, kind)                                    # builds the man's texel -> women's UV correspondence
+    mi, src = _cache[(kind, getattr(m, 'sex', None), getattr(m, 'head', None), m.size)][:2]
+    ok = np.isfinite(src[:, 0])
+    mi, src = mi[ok], src[ok]
+    d, j = cKDTree(src).query(fuv, distance_upper_bound=RETRACE_MATCH_PX / S)
+    hit = np.isfinite(d)
+    P = m.position.reshape(-1, 3)[mi[j[hit]]]
+    cov = np.flatnonzero(m.covered)
+    X = m.position.reshape(-1, 3)[cov]
+    dist, _ = cKDTree(P).query(X, distance_upper_bound=width * 3)
+    G = m.position
+    step = np.linalg.norm(G[:, 1:] - G[:, :-1], axis=-1)[m.covered[:, 1:] & m.covered[:, :-1]]
+    aa = float(np.median(step))                           # one texel in world units: the edge's soft width
+    D = np.full(m.size * m.size, width * 3, np.float32)
+    D[cov] = np.minimum(dist, width * 3)
+    D = D.reshape(m.size, m.size)
+    c = m.covered.astype(np.float32)
+    D = gaussian_filter(D * c, RETRACE_SMOOTH_PX) / np.maximum(gaussian_filter(c, RETRACE_SMOOTH_PX), 1e-3)
+    return np.clip((width / 2 - D) / aa + 0.5, 0, 1) * m.covered
+
+
+def _plates(line, cov, seed):
+    """The women's plate grey with a fresh grain, its line black where line says."""
+    from scipy.ndimage import gaussian_filter
+    g = gaussian_filter(np.random.default_rng(seed).standard_normal(cov.shape).astype(np.float32), PLATE_GRAIN_PX)
+    g *= PLATE_GRAIN / max(float(g.std()), 1e-6)
+    v = (PLATE_GREY + g) * (1 - line) + LINE_BLACK * line
+    out = np.zeros(cov.shape + (4,), np.float32)
+    out[..., :3] = np.clip(v, 0, 1)[..., None]
+    out[..., 3] = cov
+    return out
+
+
 def _men_panels(m, rel, kind):
-    """The pack's panels texture on map m: as it comes for a woman, redrawn for a man."""
-    T = _on(m, rel, kind)
+    """The pack's panels texture on map m: as it comes for a woman, retraced for a man."""
     female = getattr(m, 'sex', None) == 'female'
-    return T if female else _redraw(T, m.covered, 55413 + (kind == 'hands'))
+    if female:
+        return _on(m, rel, kind)
+    return _plates(_retrace(m, rel, kind), m.covered, 55413 + (kind == 'hands'))
 
 
 def _panels(m, rel, kind):
@@ -371,12 +481,9 @@ def panel_lines_hands(m, rng=None):
     return _lines(m, HANDS['panels'], 'hands')
 
 
-def _glow(m, table, colour, kind):
-    """Its coloured lines and plates, cut out of its human skin: where its three colourings differ (the coloured
-    lines), or where it is black or white (its black lines, white plates). RGBA; the skin itself is clear."""
-    Ts = {c: _on(m, table[c], kind) for c in ('blue', 'pink', 'green')}
-    T = Ts[colour]
-    rgb = T[..., :3]
+def _glow_cut(Ts, colour, cov):
+    """(rgb, alpha) of its cut-out from the three colourings Ts (float RGBA, same grid)."""
+    rgb = Ts[colour][..., :3]
     spread = np.max(np.stack([np.abs(Ts[a][..., :3] - Ts[b][..., :3]).max(-1)
                               for a, b in (('blue', 'pink'), ('pink', 'green'), ('green', 'blue'))]), axis=0)
     lum = _lum(rgb)
@@ -384,11 +491,58 @@ def _glow(m, table, colour, kind):
     coloured = np.clip((spread - GLOW_SAT * 0.5) / (GLOW_SAT * 0.5), 0, 1)
     black = np.clip((GLOW_BLACK - lum) / (GLOW_BLACK * 0.5), 0, 1) * (sat < 0.12)
     white = np.clip((lum - GLOW_WHITE) / (1 - GLOW_WHITE), 0, 1) * (sat < 0.12)
-    a = np.maximum(np.maximum(coloured, black), white) * m.covered
+    a = np.maximum(np.maximum(coloured, black), white) * cov
+    return np.where((white > coloured)[..., None], GLOW_WHITE_LEVEL, rgb), a
+
+
+# Men's Glow: its bands between the skin pieces retraced like the Panels lines (one even width, in 3D, across seams);
+# its wide parts (white plates, the filled openings) kept as carried over, edges smoothed. Band texels the carry-over
+# left without glow take the colour of the nearest one that has it (alasdairn's "do it all", v16 11-14).
+GLOW_W = 0.22                 # world units: the men's glow band width
+GLOW_WIDE_PX = 25             # at 4096: cut-out wider than this is a plate or an opening, not a band
+
+
+def _glow(m, table, colour, kind):
+    """Its coloured lines and plates, cut out of its human skin: where its three colourings differ (the coloured
+    lines), or where it is black or white (its black lines, white plates). RGBA; the skin itself is clear."""
+    Ts = {c: _on(m, table[c], kind) for c in ('blue', 'pink', 'green')}
+    rgb, a = _glow_cut(Ts, colour, m.covered)
+    if getattr(m, 'sex', None) != 'female':
+        rgb, a = _glow_men(m, table, kind, rgb, a, colour)
     out = np.zeros(m.covered.shape + (4,), np.float32)
-    out[..., :3] = np.where((white > coloured)[..., None], GLOW_WHITE_LEVEL, rgb)
+    out[..., :3] = rgb
     out[..., 3] = a
     return out
+
+
+def _glow_men(m, table, kind, rgb, a, colour):
+    from scipy import ndimage
+    S = SAMPLE_SIZE[kind]
+    fcov = _female_cov(kind)
+    _, af = _glow_cut({c: _tex(table[c], S) for c in ('blue', 'pink', 'green')}, 'blue', fcov)
+    fw = max(3, int(round(GLOW_WIDE_PX * S / 4096)))
+    on = af > 0.5
+    wide_f = ndimage.binary_opening(on, structure=np.ones((fw, fw), bool))
+    band = _retrace(m, table['blue'], kind, width=GLOW_W, fmask=on & ~wide_f, tag='glow')
+    mw = max(3, int(round(GLOW_WIDE_PX * m.size / 4096)))
+    wide = ndimage.binary_opening(a > 0.5, structure=np.ones((mw, mw), bool)).astype(np.float32)
+    c = m.covered.astype(np.float32)
+    wide = ndimage.gaussian_filter(wide * c, REDRAW_SIGMA) / np.maximum(ndimage.gaussian_filter(c, REDRAW_SIGMA), 1e-3)
+    t = np.clip((wide - REDRAW_EDGE[0]) / (REDRAW_EDGE[1] - REDRAW_EDGE[0]), 0, 1)
+    wide = t * t * (3 - 2 * t)
+    alpha = np.maximum(band, wide) * m.covered
+    # the bands: its own glowing network (the patch the openings are filled from), in this colouring, at its scale
+    y0, x0, P = _network_patch()
+    T4 = _tex(BODY[colour], GLOW_HOLE_SIZE)
+    k = GLOW_HOLE_SIZE / m.size
+
+    def mirror(v):
+        v = v % (2 * P)
+        return np.where(v < P, v, 2 * P - 1 - v)
+    yy, xx = np.mgrid[0:m.size, 0:m.size]
+    net = T4[y0 + mirror((yy * k).astype(np.int64)), x0 + mirror((xx * k).astype(np.int64)), :3]
+    rgb = np.where((wide >= band)[..., None], rgb, net)
+    return rgb, alpha
 
 
 def glow_body(m, rng, colour):
