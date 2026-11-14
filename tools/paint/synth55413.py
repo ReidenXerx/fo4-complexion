@@ -246,8 +246,46 @@ def _lum(rgb):
 # ---------------------------------------------------------------- the painters
 
 
-def _panels(m, rel, kind):
+# Men: the carried-over texture redrawn. Sampled through the body match, the women's plate grain stretched into
+# crumpled facets and the line edges kept notches where the match jumps (in game 11-14, "torn" lines at the shoulders).
+# So only its line mask is kept -- smoothed inside the covered texels, cut with a soft edge -- and drawn again in the
+# women's own colours with a fresh grain at the man's texel scale (FB_1 at 4096 measured 11-14: plates 0.69 grey,
+# grain std 0.047 falling off like white noise blurred 0.8 px; lines 0.002).
+REDRAW_SIGMA = 1.5            # px: line mask smoothing (lines run ~12 px wide at 4096, rivet rings ~4)
+REDRAW_EDGE = (0.38, 0.62)    # the smoothed mask's soft cut
+REDRAW_CLOSE_PX = 5           # gaps a line may have from the match; rivets sit 10+ px from the lines
+PLATE_GREY, PLATE_GRAIN, PLATE_GRAIN_PX = 0.69, 0.047, 0.8
+LINE_BLACK = 0.002
+
+
+def _redraw(T, cov, seed):
+    from scipy.ndimage import gaussian_filter
+    d = 1 - np.clip((_lum(T[..., :3]) - LINE_DARK) / (LINE_PLATE - LINE_DARK), 0, 1)
+    from scipy.ndimage import grey_closing
+    c = cov.astype(np.float32)
+    d = grey_closing(d * c, size=REDRAW_CLOSE_PX)   # rejoins a line the match broke into blobs (gaps < 5 px)
+    d = gaussian_filter(d * c, REDRAW_SIGMA) / np.maximum(gaussian_filter(c, REDRAW_SIGMA), 1e-3)
+    a, b = REDRAW_EDGE
+    t = np.clip((d - a) / (b - a), 0, 1)
+    line = t * t * (3 - 2 * t)
+    g = gaussian_filter(np.random.default_rng(seed).standard_normal(cov.shape).astype(np.float32), PLATE_GRAIN_PX)
+    g *= PLATE_GRAIN / max(float(g.std()), 1e-6)
+    v = (PLATE_GREY + g) * (1 - line) + LINE_BLACK * line
+    out = np.zeros(cov.shape + (4,), np.float32)
+    out[..., :3] = np.clip(v, 0, 1)[..., None]
+    out[..., 3] = c
+    return out
+
+
+def _men_panels(m, rel, kind):
+    """The pack's panels texture on map m: as it comes for a woman, redrawn for a man."""
     T = _on(m, rel, kind)
+    female = getattr(m, 'sex', None) == 'female'
+    return T if female else _redraw(T, m.covered, 55413 + (kind == 'hands'))
+
+
+def _panels(m, rel, kind):
+    T = _men_panels(m, rel, kind)
     cov = m.covered
     D = np.zeros(cov.shape + (4,), np.float32)
     D[..., :3] = T[..., :3]
@@ -269,7 +307,7 @@ def panels_hands(m, rng=None):
 
 def _lines(m, rel, kind):
     from synthskin import _multiply
-    T = _on(m, rel, kind)
+    T = _men_panels(m, rel, kind)
     dark = 1 - np.clip((_lum(T[..., :3]) - LINE_DARK) / (LINE_PLATE - LINE_DARK), 0, 1)
     f = np.where(m.covered, 1 - LINE_DEPTH * dark, 1.0)
     return _multiply(m, f)
