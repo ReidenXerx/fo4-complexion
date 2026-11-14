@@ -499,7 +499,6 @@ def _glow_cut(Ts, colour, cov):
 # its wide parts (white plates, the filled openings) kept as carried over, edges smoothed. Band texels the carry-over
 # left without glow take the colour of the nearest one that has it (alasdairn's "do it all", v16 11-14).
 GLOW_W = 0.22                 # world units: the men's glow band width
-GLOW_WIDE_PX = 25             # at 4096: cut-out wider than this is a plate or an opening, not a band
 
 
 def _glow(m, table, colour, kind):
@@ -515,33 +514,64 @@ def _glow(m, table, colour, kind):
     return out
 
 
+# v17 in game (Fo4-mcp 11-14): the wide parts kept as carried over still read torn and uneven, a white stripe ran down
+# the back of the hand and its groin QR code came out a blue block. So for men everything but the knee openings is
+# retraced: its whole cut-out (bands, white plates) becomes even network bands; the openings are carried (they read
+# right); its decals (QR codes, the MK.4 label) are left out -- carried over they can only smear.
+GLOW_DECALS = ((0.098, 0.256, 0.03, 0.03), (0.902, 0.256, 0.03, 0.03), (0.5, 0.933, 0.03, 0.03),
+               (0.5, 0.75, 0.035, 0.015))   # women's body UV: centre u, v, half width, half height
+
+
+def _female_holes(table, kind):
+    """The women's openings (solid black wider than GLOW_HOLE_PX) at SAMPLE_SIZE, as a mask texture the carry-over can
+    sample: registered in the texture cache under 'holes:<kind>'."""
+    from scipy import ndimage
+    S = SAMPLE_SIZE[kind]
+    key = 'holes:' + kind
+    if (key, S) not in _cache:
+        raw = table['blue'][len(FILLED):] if table['blue'].startswith(FILLED) else table['blue']
+        T = _tex(raw, S)
+        hw = max(3, int(round(GLOW_HOLE_PX * S / 4096)))
+        H = ndimage.binary_opening((_lum(T[..., :3]) < GLOW_BLACK) & _female_cov(kind), structure=np.ones((hw, hw), bool))
+        if kind == 'hands':
+            H[:] = False
+        img = np.zeros((S, S, 4), np.float32)
+        img[..., 0] = H
+        img[..., 3] = 1
+        _cache[(key, S)] = img
+    return key, _cache[(key, S)][..., 0] > 0.5
+
+
 def _glow_men(m, table, kind, rgb, a, colour):
     from scipy import ndimage
     S = SAMPLE_SIZE[kind]
     fcov = _female_cov(kind)
     _, af = _glow_cut({c: _tex(table[c], S) for c in ('blue', 'pink', 'green')}, 'blue', fcov)
-    fw = max(3, int(round(GLOW_WIDE_PX * S / 4096)))
-    on = af > 0.5
-    wide_f = ndimage.binary_opening(on, structure=np.ones((fw, fw), bool))
-    band = _retrace(m, table['blue'], kind, width=GLOW_W, fmask=on & ~wide_f, tag='glow')
-    mw = max(3, int(round(GLOW_WIDE_PX * m.size / 4096)))
-    wide = ndimage.binary_opening(a > 0.5, structure=np.ones((mw, mw), bool)).astype(np.float32)
+    hkey, holes_f = _female_holes(table, kind)
+    keep = (af > 0.5) & ~ndimage.binary_dilation(holes_f, iterations=2)
+    if kind == 'body':
+        yy, xx = np.mgrid[0:S, 0:S]
+        u, v = (xx + 0.5) / S, (yy + 0.5) / S
+        for cu, cv, hu, hv in GLOW_DECALS:
+            keep &= ~((np.abs(u - cu) < hu) & (np.abs(v - cv) < hv))
+    band = _retrace(m, table['blue'], kind, width=GLOW_W, fmask=keep, tag='glow')
+    holes = _on(m, hkey, kind)[..., 0]
     c = m.covered.astype(np.float32)
-    wide = ndimage.gaussian_filter(wide * c, REDRAW_SIGMA) / np.maximum(ndimage.gaussian_filter(c, REDRAW_SIGMA), 1e-3)
-    t = np.clip((wide - REDRAW_EDGE[0]) / (REDRAW_EDGE[1] - REDRAW_EDGE[0]), 0, 1)
-    wide = t * t * (3 - 2 * t)
-    alpha = np.maximum(band, wide) * m.covered
+    holes = ndimage.gaussian_filter(holes * c, REDRAW_SIGMA) / np.maximum(ndimage.gaussian_filter(c, REDRAW_SIGMA), 1e-3)
+    t = np.clip((holes - REDRAW_EDGE[0]) / (REDRAW_EDGE[1] - REDRAW_EDGE[0]), 0, 1)
+    holes = t * t * (3 - 2 * t)
+    alpha = np.maximum(band, holes) * m.covered
     # the bands: its own glowing network (the patch the openings are filled from), in this colouring, at its scale
     y0, x0, P = _network_patch()
     T4 = _tex(BODY[colour], GLOW_HOLE_SIZE)
     k = GLOW_HOLE_SIZE / m.size
 
-    def mirror(v):
-        v = v % (2 * P)
-        return np.where(v < P, v, 2 * P - 1 - v)
+    def mirror(w):
+        w = w % (2 * P)
+        return np.where(w < P, w, 2 * P - 1 - w)
     yy, xx = np.mgrid[0:m.size, 0:m.size]
     net = T4[y0 + mirror((yy * k).astype(np.int64)), x0 + mirror((xx * k).astype(np.int64)), :3]
-    rgb = np.where((wide >= band)[..., None], rgb, net)
+    rgb = np.where((holes >= band)[..., None], rgb, net)
     return rgb, alpha
 
 
