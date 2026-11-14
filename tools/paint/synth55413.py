@@ -51,16 +51,66 @@ def _need():
 
 
 def _tex(rel, size):
-    """One of the pack's textures as float RGBA at size x size (cached)."""
+    """One of the pack's textures as float RGBA at size x size (cached). 'filled:<rel>' is its glow body texture with
+    its openings filled (_filled)."""
     key = (rel, size)
     if key not in _cache:
         _need()
         from PIL import Image
-        im = Image.open(SOURCE / rel).convert('RGBA')
+        if rel.startswith(FILLED):
+            im = Image.fromarray((np.clip(_filled(rel[len(FILLED):]), 0, 1) * 255 + 0.5).astype(np.uint8), 'RGBA')
+        else:
+            im = Image.open(SOURCE / rel).convert('RGBA')
         if im.size != (size, size):
             im = im.resize((size, size), Image.LANCZOS)
         _cache[key] = np.asarray(im, np.float32) / 255.0
     return _cache[key]
+
+
+# Glow Lines: its body textures open the knees (and spine) as solid black ovals; cut out as they are, they read in game
+# as holes into nothing with a torn rim (Fo4-mcp v14 11-14). Filled with its own glowing network (the background it
+# draws between its pieces), they read as lit internals. Same patch in all three colourings, so the cut-out still
+# tells the network's lines (they differ by colour) from its dark.
+FILLED = 'filled:'
+GLOW_HOLE_PX = 25             # at 4096: solid black wider than this is an opening (its lines run ~12 px)
+GLOW_HOLE_SIZE = 4096
+
+
+def _network_patch():
+    """(y0, x0, size) of the largest square of its texture no body piece covers, at GLOW_HOLE_SIZE."""
+    if 'netpatch' not in _cache:
+        from scipy import ndimage
+        from body import UVMap
+        import make_marks as mm
+        cov = UVMap(mm.DATA, 'female', GLOW_HOLE_SIZE).covered
+        free = ndimage.binary_erosion(~cov, iterations=8, border_value=0)
+        d = ndimage.distance_transform_cdt(free, metric='chessboard')
+        y, x = np.unravel_index(int(np.argmax(d)), d.shape)
+        r = int(d[y, x])
+        _cache['netpatch'] = (y - r, x - r, 2 * r)
+        _cache['netcov'] = cov
+    return _cache['netpatch']
+
+
+def _filled(rel):
+    from scipy import ndimage
+    T = _tex(rel, GLOW_HOLE_SIZE).copy()
+    y0, x0, P = _network_patch()
+    cov = _cache['netcov']
+    holes = ndimage.binary_opening((_lum(T[..., :3]) < GLOW_BLACK) & cov,
+                                   structure=np.ones((GLOW_HOLE_PX, GLOW_HOLE_PX), bool))
+    lab, n = ndimage.label(holes)
+
+    def mirror(v):
+        v = v % (2 * P)
+        return np.where(v < P, v, 2 * P - 1 - v)
+    for k, sl in enumerate(ndimage.find_objects(lab), 1):   # each opening centred on the patch's middle (its edges
+        ys, xs = np.nonzero(lab[sl] == k)                    # can fall on the network's dark)
+        cy, cx = ys.mean(), xs.mean()
+        sy = mirror((ys - cy + P / 2).astype(np.int64))
+        sx = mirror((xs - cx + P / 2).astype(np.int64))
+        T[ys + sl[0].start, xs + sl[1].start] = T[y0 + sy, x0 + sx]
+    return T
 
 
 # ---------------------------------------------------------------- women's textures onto men (and men's heads)
@@ -342,7 +392,7 @@ def _glow(m, table, colour, kind):
 
 
 def glow_body(m, rng, colour):
-    return _glow(m, BODY, colour, 'body')
+    return _glow(m, {c: FILLED + BODY[c] for c in ('blue', 'pink', 'green')}, colour, 'body')
 
 
 def glow_hands(m, rng, colour):
@@ -353,10 +403,29 @@ FACE_BLANK_PX = 9   # at 1024: solid black wider than this on its face texture i
                     # back-of-head mesh replaces), not a line -- drawn, it put black wedges on the neck and crown
 
 
+FACE_BLANK_AREA = 4000   # at 1024: ... except a smaller one lower than the nose tip: there its lines widen along the
+                         # jaw and neck (taken as blank, they left holes of bare skin, Fo4-mcp v14 11-14); measured on
+                         # both heads, the eye corners sit 2.4-3 units above the nose tip, every line end 1.8+ below
+FACE_BLANK_ABOVE_NOSE = -1.0
+
+
 def _face(m):
     from scipy import ndimage
+    import synthskin
     T = _on(m, FACE, 'head')
     blank = ndimage.binary_opening(_lum(T[..., :3]) < 0.05, structure=np.ones((FACE_BLANK_PX, FACE_BLANK_PX)))
+    lab, n = ndimage.label(blank)
+    if n:
+        idx = np.arange(1, n + 1)
+        area = ndimage.sum(np.ones_like(lab), lab, index=idx)
+        z = m.position[..., 2]
+        mz = ndimage.mean(z, lab, index=idx)
+        nose = synthskin.face_landmarks(m)['nose'][2]
+        keep_blank = np.zeros(n + 1, bool)
+        keep_blank[1:] = (area >= FACE_BLANK_AREA * (m.covered.shape[0] / 1024) ** 2) | (mz >= nose + FACE_BLANK_ABOVE_NOSE)
+        blank = keep_blank[lab]
+    if getattr(m, 'head', None) != 'human_female':   # carried over: redrawn like the men's body (_redraw)
+        T = _redraw(T, m.covered, 55413 + 7)
     return T, m.covered & ~ndimage.binary_dilation(blank, iterations=2)
 
 
