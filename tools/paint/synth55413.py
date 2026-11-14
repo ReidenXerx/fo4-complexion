@@ -210,12 +210,13 @@ MESH = {'body': 0, 'hands': 1}
 
 
 def _carried(tag, masks, sex):
-    """3D points in sex's body frame: the women's texels set in masks ({kind: callable -> mask at SAMPLE_SIZE}),
-    thinned to centrelines unless tag ends in ':fill', carried onto sex through bodywarp (body and hands together)."""
+    """{kind: 3D points, 'bridges': 3D points} in sex's body frame: the women's texels set in masks ({kind: callable ->
+    mask at SAMPLE_SIZE}), thinned to centrelines unless tag ends in ':fill', carried onto sex through bodywarp; the
+    bridges join line ends across seams (both meshes')."""
     key = ('carried', tag, sex)
     if key not in _cache:
         import bodywarp
-        P, ends = [], []
+        out, ends = {}, []
         for kind, mask in masks.items():
             ck = ('centre', tag, kind)
             if ck not in _cache:
@@ -224,14 +225,37 @@ def _carried(tag, masks, sex):
             sk = _cache[ck]
             idx = np.flatnonzero(sk)
             X = bodywarp.carry(_frame_pos(_female_map(kind), kind).reshape(-1, 3)[idx], MESH[kind], sex)
-            P.append(X)
+            out[kind] = X
             if not tag.endswith(':fill'):
-                P.append(_densify(sk, idx, X))
+                out[kind] = np.concatenate([X, _densify(sk, idx, X)])
                 ends.append(_seam_ends(sk, idx, X, _female_cov(kind), len(ends)))
-        if ends:
-            P.append(_stitch(ends, np.concatenate(P)))
-        _cache[key] = np.concatenate(P) if P else np.zeros((0, 3))
+        out['bridges'] = _stitch(ends, None) if ends else np.zeros((0, 3))
+        if 'body' in out and 'hands' in out:
+            _overlap(out, sex)
+        _cache[key] = out
     return _cache[key]
+
+
+# The pack draws a wrist band on the body right at its edge, and another on the hands right at theirs: across the seam
+# the two ran side by side, a double band (Fo4-mcp v22 11-15, Panels, both sexes). The hands' lines near the body's
+# are drawn onto them: within MERGE_IN all the way, fading out by MERGE_OUT, so the lines leaving the band bend in.
+MERGE_IN, MERGE_OUT = 0.35, 0.8   # world units
+
+
+def _overlap(out, sex):
+    from scipy.spatial import cKDTree
+    B, H = out['body'], out['hands']
+    if not len(B) or not len(H):
+        return
+    d, j = cKDTree(B).query(H, distance_upper_bound=MERGE_OUT)
+    ok = np.isfinite(d)
+    w = np.zeros(len(H))
+    w[ok] = np.clip((MERGE_OUT - d[ok]) / (MERGE_OUT - MERGE_IN), 0, 1)
+    H = H.copy()
+    H[ok] += w[ok, None] * (B[j[ok]] - H[ok])
+    full = w >= 0.999   # merged all the way: on the body's band now, past the hands' edge -- left to the body (on the
+    _cache.setdefault('overlap_log', []).append((int((w > 0).sum()), int(full.sum())))   # hands they snapped back to
+    out['hands'] = H[~full]                                                              # its edge: the double again)
 
 
 # Its lines break at its own UV seams: a line drawn on two texture islands ends a little apart on each (the shin line
@@ -272,7 +296,7 @@ def _seam_ends(sk, idx, X, cov, k):
     return np.array(pos), np.array(out), np.array(comp), lab, at, X, k
 
 
-def _stitch(ends, P_all):
+def _stitch(ends, _unused=None):
     """Bridge points across the seam gaps: each seam end joined to the nearest other line's seam end ahead of it within
     STITCH_R (both facing each other), else to the nearest point of another line ahead of it."""
     from scipy.spatial import cKDTree
@@ -364,11 +388,14 @@ def _densify(sk, idx, X):
 
 
 def _retrace(m, kind, tag, masks, width=RETRACE_W):
-    """Line coverage (0..1, m.size square) on map m (body or hands): the women's line centrelines of masks, carried in
-    3D onto m's sex and drawn width (world units) wide -- body and hands lines together, so they meet at the wrist."""
+    """Line coverage (0..1, m.size square) on map m (body or hands): the women's line centrelines of masks for this
+    mesh, carried in 3D onto m's sex, plus the seam bridges, drawn width (world units) wide. Only its own mesh's lines:
+    with the other mesh's drawn too, the hands' wrist band ran beside the body's -- a double band (Fo4-mcp v22 11-14)."""
     key = ('retrace', tag, kind, getattr(m, 'sex', None), m.size)
     if key not in _cache:
-        _cache[key] = _draw_lines(m, _carried(tag, masks, m.sex), width, _frame_pos(m, kind))
+        got = _carried(tag, masks, m.sex)
+        P = np.concatenate([got.get(kind, np.zeros((0, 3))), got['bridges']])
+        _cache[key] = _draw_lines(m, P, width, _frame_pos(m, kind)) if len(P) else np.zeros(m.covered.shape)
     return _cache[key]
 
 
@@ -566,6 +593,18 @@ def _glow(m, colour, kind):
     else:
         holes = np.zeros_like(band)
     raw, net = _network(m, colour)
+    # each opening its own copy of the patch, centred on it: tiled over the map as one, one knee fell on its dark and
+    # read solid black while the other was all wires (Fo4-mcp v22 11-14, women)
+    y0, x0, Pn = _network_patch()
+    T4 = _tex(BODY[colour], GLOW_HOLE_SIZE)
+    k = GLOW_HOLE_SIZE / m.size
+    lab, n = ndimage.label(holes > 0.02)
+    for c, sl in enumerate(ndimage.find_objects(lab), 1):
+        ys, xs = np.nonzero(lab[sl] == c)
+        ys, xs = ys + sl[0].start, xs + sl[1].start
+        sy = np.clip(((ys - ys.mean()) * k + Pn / 2).astype(np.int64), 0, Pn - 1)
+        sx = np.clip(((xs - xs.mean()) * k + Pn / 2).astype(np.int64), 0, Pn - 1)
+        raw[ys, xs] = T4[y0 + sy, x0 + sx, :3]
     out = np.zeros(m.covered.shape + (4,), np.float32)
     out[..., :3] = np.where((holes >= band)[..., None], raw, net)
     out[..., 3] = np.maximum(band, holes) * m.covered
