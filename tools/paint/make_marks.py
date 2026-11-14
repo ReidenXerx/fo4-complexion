@@ -844,6 +844,29 @@ GLOW_TAIL = bytes.fromhex(
 assert len(GLOW_TAIL) == len(BGEM_TAIL)
 
 
+# Men's lit HANDS overlays (Plated, Panels) as an effect material: LooksMenu clones the hands with their own shader and
+# lays a .bgsm over it, and BodyTalk's male hands carry a Default (type 0) shader with vertex colours, not the
+# skin-tint one the body and the women's hands have (MaleHands.nif read 11-14). A lit .bgsm on them never drew, with
+# the game's, a flat or the pack's normal map (Fo4-mcp HandProbe 11-14), while a .bgem (fresh effect shader) did.
+# So the glow material with effect lighting on and full lighting influence: alpha blended and lit, not glowing.
+LIT_EFFECT_TAIL = bytearray(GLOW_TAIL)
+LIT_EFFECT_TAIL[6] = 1                                             # effect lighting enabled
+LIT_EFFECT_TAIL[11 + 12 + 4 + 16:11 + 12 + 4 + 16 + 4] = struct.pack('<f', 1.0)   # lighting influence
+LIT_EFFECT_TAIL = bytes(LIT_EFFECT_TAIL)
+assert len(LIT_EFFECT_TAIL) == len(GLOW_TAIL)
+
+
+def lit_as_effect(painter, sex):
+    return painter in LIT_PAINTERS and painter in HAND_PAINTERS and sex == 'male'
+
+
+def lit_bgem(diffuse, normal):
+    def s(path):
+        raw = path.encode('ascii') + b'\0'
+        return struct.pack('<I', len(raw)) + raw
+    return GLOW_HEAD + s(diffuse) + BGEM_MID + s(normal) + LIT_EFFECT_TAIL
+
+
 def glow_bgem(diffuse, normal):
     def s(path):
         raw = path.encode('ascii') + b'\0'
@@ -952,7 +975,7 @@ def main():
         on_hands = painter in HAND_PAINTERS
         # The body is LooksMenu slot 3, the hands slot 4 (as the packs' nails, LMNSOverlays f_nails_1).
         entries.append({'id': tid, 'name': f'Complexion - {NAMES.get(tid, tag["note"])}',
-                        'slots': [{'slot': 4 if on_hands else 3, 'material': f'overlays\\Complexion\\{tid}.{"bgsm" if painter in LIT_PAINTERS else "bgem"}'}],
+                        'slots': [{'slot': 4 if on_hands else 3, 'material': f'overlays\\Complexion\\{tid}.{"bgsm" if painter in LIT_PAINTERS and not lit_as_effect(painter, sex) else "bgem"}'}],
                         'playable': tid not in REMOVED, 'transformable': not on_hands, 'sort': 0, 'gender': 1 if female else 0})
         if tag['kind'] in hair.HAIR_KINDS:
             tag = dict(tag, hair=hair.family(painter, args))  # one colour per person: the composer matches it
@@ -984,11 +1007,26 @@ def main():
         if painter in LIT_PAINTERS:
             png = work / f'{tid}_d.png'
             share = paint_lit(painter, m, np.random.default_rng(1000 + n), args, png, tex_dir, tid, tool)
-            normal = ''
+            # never empty: in game (v6, 11-14) a lit HANDS overlay with no normal map did not draw at all (Plated's and
+            # the men's Panels hands), and the men's Panels body drew its black lines brown and bleeding; the women's
+            # Panels, which had the pack's normal map, were right. So the game's own body or hands normal map.
+            normal = (hands.NORMAL if on_hands else NORMAL)[sex]
             if painter.startswith('panels_') and female:   # the pack's own normal map: same UVs as a woman's
                 normal = f'overlays/Complexion/{tid}_n.dds'
                 encode_normal(tool, synth55413.normal_texture('hands' if on_hands else 'body'), tex_dir, tid, size)
-            (mat_dir / f'{tid}.bgsm').write_bytes(bgsm(f'overlays/Complexion/{tid}_d.dds', f'overlays/Complexion/{tid}_s.dds', normal))
+            elif painter.startswith('panels_') and not lit_as_effect(painter, sex):   # a man: bevels from his lines
+                # (not on his hands' effect material: with the bevel map they barely dimmed at night, -2% vs the
+                # arm's -18%, while Plated's hands on the game's hands normal dimmed with the arm; Fo4-mcp v7 11-14)
+                normal = f'overlays/Complexion/{tid}_n.dds'
+                rgb = np.asarray(Image.open(png).convert('RGB'), np.float32) / 255
+                npng = png.with_name(f'{tid}_n.png')
+                Image.fromarray((synth55413.bevel_normal(rgb) * 255 + 0.5).astype(np.uint8), 'RGB').save(npng)
+                encode_normal(tool, npng, tex_dir, tid, size)
+            if lit_as_effect(painter, sex):
+                (mat_dir / f'{tid}.bgem').write_bytes(lit_bgem(f'overlays/Complexion/{tid}_d.dds', normal))
+                (mat_dir / f'{tid}.bgsm').unlink(missing_ok=True)
+            else:
+                (mat_dir / f'{tid}.bgsm').write_bytes(bgsm(f'overlays/Complexion/{tid}_d.dds', f'overlays/Complexion/{tid}_s.dds', normal))
             print(f'  {tid}: {painter} (lit) {size}px, {share * 100:.1f}% of the map')
             continue
         if piece:   # Vex's confirmed rework, finished exactly as its approved render was (reworks.render, artist_art.save)

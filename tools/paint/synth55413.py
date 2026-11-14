@@ -100,8 +100,39 @@ def _torso_halfwidth(X, R, h, bins):
     return np.interp(c, c[good], out[good])
 
 
+REFINE_K = 8           # neighbours a carried-over texel blends its female UV from
+REFINE_ISLAND_PX = 3   # ... only those this close in the female UVs to the best match (same island, no seam jumps)
+SAMPLE_SIZE = {'body': 4096, 'hands': 2048}   # the women's textures sampled (bilinear) at these sizes for the men
+
+
+def _refine(cand_idx, dist, agree, pick, S):
+    """Female UVs (n x 2, 0..1) for carried-over texels: the best-facing neighbour's UV blended (inverse distance)
+    with its same-island neighbours'. The nearest texel alone (a 2048 map under a 4096 one) drew men's lines as
+    stair steps with ragged edges (in game 11-14, LitFix); blending gives a sub-texel position to sample from."""
+    n = len(pick)
+    cu = np.stack(((cand_idx % S + 0.5) / S, (cand_idx // S + 0.5) / S), -1)          # n x k x 2
+    best = cu[np.arange(n), pick]
+    same = np.abs(cu - best[:, None]).max(-1) <= REFINE_ISLAND_PX / S
+    same &= agree >= agree[np.arange(n), pick][:, None] - 0.3
+    eps = max(float(np.median(dist[:, 0])) * 0.25, 1e-6)
+    w = same / (dist + eps)
+    return (w[..., None] * cu).sum(1) / w.sum(1)[:, None]
+
+
+def _sample(T, uv):
+    """Bilinear sample of T (H x W x C) at UVs (n x 2, 0..1)."""
+    H, W = T.shape[:2]
+    x = np.clip(uv[:, 0] * W - 0.5, 0, W - 1)
+    y = np.clip(uv[:, 1] * H - 0.5, 0, H - 1)
+    x0, y0 = np.floor(x).astype(np.int64), np.floor(y).astype(np.int64)
+    x1, y1 = np.minimum(x0 + 1, W - 1), np.minimum(y0 + 1, H - 1)
+    fx, fy = (x - x0)[:, None], (y - y0)[:, None]
+    return ((T[y0, x0] * (1 - fx) + T[y0, x1] * fx) * (1 - fy)
+            + (T[y1, x0] * (1 - fx) + T[y1, x1] * fx) * fy)
+
+
 def _body_map(m):
-    """Per covered texel of a male body map: the flat index of the matching texel of the female map at 2048, or -1."""
+    """Per covered texel of a male body map: its female UV (0..1, NaN where none matches)."""
     from scipy.spatial import cKDTree
     from body import REGIONS
     f = _female_frame()
@@ -122,7 +153,7 @@ def _body_map(m):
     MXn[torso, 0] *= np.interp(hm[torso], c, wf / wm)
     FN = f.normal.reshape(-1, 3)[fi]
     MN = m.normal.reshape(-1, 3)[mi]
-    out = np.full(len(mi), -1, np.int64)
+    out = np.full((len(mi), 2), np.nan)
     for r in np.unique(MR):
         src = np.flatnonzero(FR == r)
         dst = np.flatnonzero(MR == r)
@@ -131,10 +162,10 @@ def _body_map(m):
         tree = cKDTree(FX[src])
         for a in range(0, len(dst), 400000):
             d = dst[a:a + 400000]
-            _dist, nb = tree.query(MXn[d], k=6)
+            _dist, nb = tree.query(MXn[d], k=REFINE_K)
             agree = np.einsum('nkc,nc->nk', FN[src[nb]], MN[d])
-            pick = np.argmax(agree - 0.02 * _dist, axis=1)   # the nearest that faces the same way
-            out[d] = fi[src[nb[np.arange(len(d)), pick]]]
+            pick = np.argmax(agree[:, :6] - 0.02 * _dist[:, :6], axis=1)   # the nearest that faces the same way
+            out[d] = _refine(fi[src[nb]], _dist, agree, pick, f.size)
     return mi, out
 
 
@@ -150,7 +181,7 @@ def _hands_map(m):
     mi = np.flatnonzero(m.covered)
     FX, MX = f.position.reshape(-1, 3)[fi], m.position.reshape(-1, 3)[mi]
     FN, MN = f.normal.reshape(-1, 3)[fi], m.normal.reshape(-1, 3)[mi]
-    out = np.full(len(mi), -1, np.int64)
+    out = np.full((len(mi), 2), np.nan)
     for side in (1, -1):
         fs, ms = np.flatnonzero(FX[:, 0] * side > 0), np.flatnonzero(MX[:, 0] * side > 0)
         if not len(fs) or not len(ms):
@@ -158,10 +189,10 @@ def _hands_map(m):
         flo, fhi = FX[fs].min(0), FX[fs].max(0)
         mlo, mhi = MX[ms].min(0), MX[ms].max(0)
         P = flo + (MX[ms] - mlo) / np.maximum(mhi - mlo, 1e-6) * (fhi - flo)
-        _dist, nb = cKDTree(FX[fs]).query(P, k=6)
+        _dist, nb = cKDTree(FX[fs]).query(P, k=REFINE_K)
         agree = np.einsum('nkc,nc->nk', FN[fs[nb]], MN[ms])
-        pick = np.argmax(agree - 0.02 * _dist, axis=1)
-        out[ms] = fi[fs[nb[np.arange(len(ms)), pick]]]
+        pick = np.argmax(agree[:, :6] - 0.02 * _dist[:, :6], axis=1)
+        out[ms] = _refine(fi[fs[nb]], _dist, agree, pick, f.size)
     return mi, out
 
 
@@ -197,11 +228,14 @@ def _on(m, rel, kind):
         _cache[key] = {'body': _body_map, 'hands': _hands_map}.get(kind, _head_map)(m)
     got = _cache[key]
     mi, src = got[0], got[1]
-    fsize = got[2] if kind == 'head' else (2048 if kind == 'body' else 1024)
-    T = _tex(rel, fsize).reshape(-1, 4)
     out = np.zeros((m.size * m.size, 4), np.float32)
-    ok = src >= 0
-    out[mi[ok]] = T[src[ok]]
+    if kind == 'head':
+        T = _tex(rel, got[2]).reshape(-1, 4)
+        ok = src >= 0
+        out[mi[ok]] = T[src[ok]]
+    else:   # body / hands: female UVs, sampled smoothly from the full-size texture
+        ok = np.isfinite(src[:, 0])
+        out[mi[ok]] = _sample(_tex(rel, SAMPLE_SIZE[kind]), src[ok])
     return out.reshape(m.size, m.size, 4)
 
 
@@ -306,6 +340,23 @@ def panel_lines_face(m):
     out[..., :3] = f[..., None]
     out[..., 3] = 1.0
     return out
+
+
+BEVEL_SIGMA, BEVEL_K = 1.5, -2.4   # per 2048 px: fitted to the women's pack normal (corr .76 on x and y, 11-14)
+
+
+def bevel_normal(rgb):
+    """A tangent-space normal map (RGB 0..1) for a man's Panels: the plates' bevelled edges from its own lines, the way
+    the women's pack normal has them. Men without it (the game's body normal) drew their lines brown and soft (in game
+    11-14, LitFix); the pack normal cannot be carried over (another UV layout, other tangents)."""
+    from scipy.ndimage import gaussian_filter
+    s = rgb.shape[0] / 2048
+    H = gaussian_filter(np.clip((_lum(rgb) - LINE_DARK) / (LINE_PLATE - LINE_DARK), 0, 1), BEVEL_SIGMA * s)
+    gy, gx = np.gradient(H)
+    k = BEVEL_K * s
+    n = np.stack((k * gx, k * gy, np.ones_like(H)), -1)
+    n /= np.linalg.norm(n, axis=-1, keepdims=True)
+    return n * 0.5 + 0.5
 
 
 def normal_texture(kind):
