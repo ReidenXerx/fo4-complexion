@@ -27,7 +27,6 @@ SOURCE = pathlib.Path(r'D:\F4Output\complexion\incoming\55413\x2k\Data\textures\
 BODY = {'panels': 'Body/FB_1.dds', 'blue': 'Body/FB_2.dds', 'pink': 'Body/FB_3.dds', 'green': 'Body/FB_4.dds'}
 HANDS = {'panels': 'Body/FH_1.dds', 'blue': 'Body/FH_2.dds', 'pink': 'Body/FH_3.dds', 'green': 'Body/FH_4.dds'}
 FACE = 'Head/H_D1.dds'                          # the synth face (grey plates, black lines)
-NORMALS = {'body': 'Normals/femalebody_n.dds', 'hands': 'Normals/basefemalehands_n.dds'}
 
 PANELS_ALPHA = 0.96          # its plating over the person's skin: all but a breath of it
 PANELS_SPEC = (0.40, 0.55)   # specular, smoothness on the plates (a soft sheen; the lines none)
@@ -296,38 +295,16 @@ def _lum(rgb):
 # ---------------------------------------------------------------- the painters
 
 
-# Men: the carried-over texture redrawn. Sampled through the body match, the women's plate grain stretched into
-# crumpled facets and the line edges kept notches where the match jumps (in game 11-14, "torn" lines at the shoulders).
-# So only its line mask is kept -- smoothed inside the covered texels, cut with a soft edge -- and drawn again in the
-# women's own colours with a fresh grain at the man's texel scale (FB_1 at 4096 measured 11-14: plates 0.69 grey,
-# grain std 0.047 falling off like white noise blurred 0.8 px; lines 0.002).
-REDRAW_SIGMA = 1.5            # px: line mask smoothing (lines run ~12 px wide at 4096, rivet rings ~4)
+# Plates drawn in the pack's own colours with a fresh grain (FB_1 at 4096 measured 11-14: plates 0.69 grey, grain std
+# 0.047 falling off like white noise blurred 0.8 px; lines 0.002). The knee openings' mask (Glow) is smoothed and cut
+# with a soft edge.
+REDRAW_SIGMA = 1.5            # px: mask smoothing
 REDRAW_EDGE = (0.38, 0.62)    # the smoothed mask's soft cut
-REDRAW_CLOSE_PX = 5           # gaps a line may have from the match; rivets sit 10+ px from the lines
 PLATE_GREY, PLATE_GRAIN, PLATE_GRAIN_PX = 0.69, 0.047, 0.8
 LINE_BLACK = 0.002
 
 
-def _redraw(T, cov, seed):
-    from scipy.ndimage import gaussian_filter
-    d = 1 - np.clip((_lum(T[..., :3]) - LINE_DARK) / (LINE_PLATE - LINE_DARK), 0, 1)
-    from scipy.ndimage import grey_closing
-    c = cov.astype(np.float32)
-    d = grey_closing(d * c, size=REDRAW_CLOSE_PX)   # rejoins a line the match broke into blobs (gaps < 5 px)
-    d = gaussian_filter(d * c, REDRAW_SIGMA) / np.maximum(gaussian_filter(c, REDRAW_SIGMA), 1e-3)
-    a, b = REDRAW_EDGE
-    t = np.clip((d - a) / (b - a), 0, 1)
-    line = t * t * (3 - 2 * t)
-    g = gaussian_filter(np.random.default_rng(seed).standard_normal(cov.shape).astype(np.float32), PLATE_GRAIN_PX)
-    g *= PLATE_GRAIN / max(float(g.std()), 1e-6)
-    v = (PLATE_GREY + g) * (1 - line) + LINE_BLACK * line
-    out = np.zeros(cov.shape + (4,), np.float32)
-    out[..., :3] = np.clip(v, 0, 1)[..., None]
-    out[..., 3] = c
-    return out
-
-
-# Men's lines RETRACED in 3D. Redrawn from the carried-over mask (_redraw) they were still "chunky ... drawn on rather
+# Men's lines RETRACED in 3D. Redrawn from the carried-over mask they were still "chunky ... drawn on rather
 # than machined ... misaligned ... disappear randomly" (alasdairn, v16, 11-14): the texel-by-texel carry-over thickens,
 # warps and breaks a line wherever the body match stretches or jumps, and loses it across UV seams. Now the women's
 # own line centrelines (thinned from its clean texture) are carried onto the man's body as 3D points, and every texel
@@ -386,30 +363,51 @@ def _retrace(m, rel, kind, width=RETRACE_W, fmask=None, tag='lines'):
     return _cache[rkey]
 
 
+def _line_mask(rel, S):
+    """The pack texture rel's dark lines at S, smoothed."""
+    from scipy.ndimage import gaussian_filter
+    T = _tex(rel, S)
+    dark = 1 - np.clip((_lum(T[..., :3]) - LINE_DARK) / (LINE_PLATE - LINE_DARK), 0, 1)
+    return gaussian_filter(dark, 1.5) > 0.5
+
+
 def _retrace_once(m, rel, kind, width, fmask):
-    from scipy.ndimage import gaussian_filter, label
     from scipy.spatial import cKDTree
-    from synthskin import _thin
     S = SAMPLE_SIZE[kind]
-    fcov = _female_cov(kind)
     if fmask is None:
-        T = _tex(rel, S)
-        dark = 1 - np.clip((_lum(T[..., :3]) - LINE_DARK) / (LINE_PLATE - LINE_DARK), 0, 1)
-        fmask = gaussian_filter(dark, 1.5) > 0.5
-    sk = _prune(_thin(fmask & fcov), RETRACE_SPUR_PX)
-    lab, n = label(sk, structure=np.ones((3, 3), bool))
-    if n:
-        size = np.bincount(lab.ravel())
-        sk &= size[lab] >= RETRACE_MIN_PX
-    ys, xs = np.nonzero(sk)
+        fmask = _line_mask(rel, S)
+    ys, xs = np.nonzero(_centreline(fmask & _female_cov(kind)))
     fuv = np.stack(((xs + 0.5) / S, (ys + 0.5) / S), -1)
-    _on(m, rel, kind)                                    # builds the man's texel -> women's UV correspondence
-    mi, src = _cache[(kind, getattr(m, 'sex', None), getattr(m, 'head', None), m.size)][:2]
+    if getattr(m, 'sex', None) == 'female':              # her own UVs: every covered texel is its own match
+        mi = np.flatnonzero(m.covered)
+        yy, xx = np.divmod(mi, m.size)
+        src = np.stack(((xx + 0.5) / m.size, (yy + 0.5) / m.size), -1)
+    else:
+        _on(m, rel, kind)                                # builds the man's texel -> women's UV correspondence
+        mi, src = _cache[(kind, getattr(m, 'sex', None), getattr(m, 'head', None), m.size)][:2]
     ok = np.isfinite(src[:, 0])
     mi, src = mi[ok], src[ok]
     d, j = cKDTree(src).query(fuv, distance_upper_bound=RETRACE_MATCH_PX / S)
     hit = np.isfinite(d)
-    P = m.position.reshape(-1, 3)[mi[j[hit]]]
+    return _draw_lines(m, m.position.reshape(-1, 3)[mi[j[hit]]], width)
+
+
+def _centreline(fmask):
+    """The thinned, pruned centreline of a line mask (no twigs, no crumbs)."""
+    from scipy.ndimage import label
+    from synthskin import _thin
+    sk = _prune(_thin(fmask), RETRACE_SPUR_PX)
+    lab, n = label(sk, structure=np.ones((3, 3), bool))
+    if n:
+        size = np.bincount(lab.ravel())
+        sk &= size[lab] >= RETRACE_MIN_PX
+    return sk
+
+
+def _draw_lines(m, P, width):
+    """Coverage (0..1) of map m's texels within width/2 (world units) of the 3D centreline points P."""
+    from scipy.ndimage import gaussian_filter
+    from scipy.spatial import cKDTree
     cov = np.flatnonzero(m.covered)
     X = m.position.reshape(-1, 3)[cov]
     dist, _ = cKDTree(P).query(X, distance_upper_bound=width * 3)
@@ -436,11 +434,10 @@ def _plates(line, cov, seed):
     return out
 
 
+# Women retraced too: their pack lines as they come (hand-drawn pixels, ~0.35 wide, scaled down) read "shit, the same
+# as kneecap says" on a female body (ilhamitaa24, #management 11-14) -- the same bar as the men's: thin, even, machined.
 def _men_panels(m, rel, kind):
-    """The pack's panels texture on map m: as it comes for a woman, retraced for a man."""
-    female = getattr(m, 'sex', None) == 'female'
-    if female:
-        return _on(m, rel, kind)
+    """The pack's panels texture on map m, its lines retraced in 3D (women on their own UVs, men carried over)."""
     return _plates(_retrace(m, rel, kind), m.covered, 55413 + (kind == 'hands'))
 
 
@@ -498,7 +495,8 @@ def _glow_cut(Ts, colour, cov):
 # Men's Glow: its bands between the skin pieces retraced like the Panels lines (one even width, in 3D, across seams);
 # its wide parts (white plates, the filled openings) kept as carried over, edges smoothed. Band texels the carry-over
 # left without glow take the colour of the nearest one that has it (alasdairn's "do it all", v16 11-14).
-GLOW_W = 0.22                 # world units: the men's glow band width
+GLOW_W = 0.22                 # world units: the glow band width
+GLOW_NET_FLOOR = 0.45         # the bands' least glow, as a share of the network's vein colour
 
 
 def _glow(m, table, colour, kind):
@@ -506,8 +504,7 @@ def _glow(m, table, colour, kind):
     lines), or where it is black or white (its black lines, white plates). RGBA; the skin itself is clear."""
     Ts = {c: _on(m, table[c], kind) for c in ('blue', 'pink', 'green')}
     rgb, a = _glow_cut(Ts, colour, m.covered)
-    if getattr(m, 'sex', None) != 'female':
-        rgb, a = _glow_men(m, table, kind, rgb, a, colour)
+    rgb, a = _glow_men(m, table, kind, rgb, a, colour)
     out = np.zeros(m.covered.shape + (4,), np.float32)
     out[..., :3] = rgb
     out[..., 3] = a
@@ -561,7 +558,11 @@ def _glow_men(m, table, kind, rgb, a, colour):
         for cu, cv, hu, hv in GLOW_DECALS:
             keep &= ~((np.abs(u - cu) < hu) & (np.abs(v - cv) < hv))
     band = _retrace(m, table['blue'], kind, width=GLOW_W, fmask=keep, tag='glow')
-    holes = _on(m, hkey, kind)[..., 0]
+    female = getattr(m, 'sex', None) == 'female'
+    if female:   # her own UVs: the openings mask straight, at her size
+        holes = ndimage.zoom(holes_f.astype(np.float32), m.size / S, order=1)
+    else:
+        holes = _on(m, hkey, kind)[..., 0]
     c = m.covered.astype(np.float32)
     holes = ndimage.gaussian_filter(holes * c, REDRAW_SIGMA) / np.maximum(ndimage.gaussian_filter(c, REDRAW_SIGMA), 1e-3)
     t = np.clip((holes - REDRAW_EDGE[0]) / (REDRAW_EDGE[1] - REDRAW_EDGE[0]), 0, 1)
@@ -577,8 +578,15 @@ def _glow_men(m, table, kind, rgb, a, colour):
         return np.where(w < P, w, 2 * P - 1 - w)
     yy, xx = np.mgrid[0:m.size, 0:m.size]
     net = T4[y0 + mirror((yy * k).astype(np.int64)), x0 + mirror((xx * k).astype(np.int64)), :3]
-    rgb = np.where((holes >= band)[..., None], rgb, net)
-    return rgb, alpha
+    # never black: the patch is mostly dark between its veins (median lum .03-.06), so a band this thin read as a black
+    # line wherever no vein crossed it (men v19, women's preview 11-14). Floored at a share of its own vein colour.
+    Pt = T4[y0:y0 + P, x0:x0 + P, :3]
+    L = _lum(Pt)
+    vein = Pt[L >= np.percentile(L, 95)].mean(0)
+    hue = (vein - vein.min()) / max(float(vein.max() - vein.min()), 1e-3)   # its pure colour: the vein alone read slate
+    net = np.maximum(net, GLOW_NET_FLOOR * (0.5 * vein + 0.5 * hue))
+    # its decals are left out for women too: both sexes match (ilhamitaa24 "I'd say remove them", #management 11-14)
+    return np.where((holes >= band)[..., None], rgb, net), alpha
 
 
 def glow_body(m, rng, colour):
@@ -599,10 +607,46 @@ FACE_BLANK_AREA = 4000   # at 1024: ... except a smaller one lower than the nose
 FACE_BLANK_ABOVE_NOSE = -1.0
 
 
+def _face_lines(m):
+    """Line coverage on head map m: its face's line centrelines (on the vanilla female head, blanks left out) carried
+    in 3D and drawn RETRACE_W wide, like the bodies' (both sexes: its own read uneven and wedged, 11-14)."""
+    key = ('faceline', getattr(m, 'head', None), m.size)
+    if key not in _cache:
+        from scipy import ndimage
+        from scipy.spatial import cKDTree
+        import face
+        fk = ('fhead', m.size)
+        if fk not in _cache:
+            _cache[fk] = face.HeadMap('human_female', m.size)
+        f = _cache[fk]
+        S = f.size
+        blank_f = _face_blank(f, _tex(FACE, S))
+        sk = _centreline(_line_mask(FACE, S) & f.covered & ~ndimage.binary_dilation(blank_f, iterations=2))
+        cidx = np.flatnonzero(sk)
+        if getattr(m, 'head', None) == 'human_female':
+            P = m.position.reshape(-1, 3)[cidx]
+        else:
+            mi, fi, _ = _head_map(m)
+            fy, fx = np.divmod(fi, S)
+            cy, cx = np.divmod(cidx, S)
+            d, j = cKDTree(np.stack((fx, fy), -1)).query(np.stack((cx, cy), -1), distance_upper_bound=RETRACE_MATCH_PX)
+            P = m.position.reshape(-1, 3)[mi[j[np.isfinite(d)]]]
+        _cache[key] = _draw_lines(m, P, RETRACE_W)
+    return _cache[key]
+
+
 def _face(m):
     from scipy import ndimage
-    import synthskin
     T = _on(m, FACE, 'head')
+    blank = _face_blank(m, T)
+    T = _plates(_face_lines(m), m.covered, 55413 + 7)
+    return T, m.covered & ~ndimage.binary_dilation(blank, iterations=2)
+
+
+def _face_blank(m, T):
+    """Where its face texture T (on head map m) is no face: big solid black, or above the nose."""
+    from scipy import ndimage
+    import synthskin
     blank = ndimage.binary_opening(_lum(T[..., :3]) < 0.05, structure=np.ones((FACE_BLANK_PX, FACE_BLANK_PX)))
     lab, n = ndimage.label(blank)
     if n:
@@ -614,9 +658,7 @@ def _face(m):
         keep_blank = np.zeros(n + 1, bool)
         keep_blank[1:] = (area >= FACE_BLANK_AREA * (m.covered.shape[0] / 1024) ** 2) | (mz >= nose + FACE_BLANK_ABOVE_NOSE)
         blank = keep_blank[lab]
-    if getattr(m, 'head', None) != 'human_female':   # carried over: redrawn like the men's body (_redraw)
-        T = _redraw(T, m.covered, 55413 + 7)
-    return T, m.covered & ~ndimage.binary_dilation(blank, iterations=2)
+    return blank
 
 
 def panels_face(m):
@@ -643,7 +685,7 @@ BEVEL_SIGMA, BEVEL_K = 1.5, -2.4   # per 2048 px: fitted to the women's pack nor
 
 
 def bevel_normal(rgb):
-    """A tangent-space normal map (RGB 0..1) for a man's Panels: the plates' bevelled edges from its own lines, the way
+    """A tangent-space normal map (RGB 0..1) for Panels (both sexes): the plates' bevelled edges from its own lines, the way
     the women's pack normal has them. Men without it (the game's body normal) drew their lines brown and soft (in game
     11-14, LitFix); the pack normal cannot be carried over (another UV layout, other tangents)."""
     from scipy.ndimage import gaussian_filter
@@ -654,9 +696,3 @@ def bevel_normal(rgb):
     n = np.stack((k * gx, k * gy, np.ones_like(H)), -1)
     n /= np.linalg.norm(n, axis=-1, keepdims=True)
     return n * 0.5 + 0.5
-
-
-def normal_texture(kind):
-    """The pack's own normal map for a woman's body or hands (same UVs), or None for a man (its normals do not carry
-    over to another UV layout)."""
-    return SOURCE / NORMALS[kind]

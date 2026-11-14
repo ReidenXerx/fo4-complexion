@@ -996,16 +996,16 @@ def main():
             # the men's Panels hands), and the men's Panels body drew its black lines brown and bleeding; the women's
             # Panels, which had the pack's normal map, were right. So the game's own body or hands normal map.
             normal = (hands.NORMAL if on_hands else NORMAL)[sex]
-            if painter.startswith('panels_') and female:   # the pack's own normal map: same UVs as a woman's
-                normal = f'overlays/Complexion/{tid}_n.dds'
-                encode_normal(tool, synth55413.normal_texture('hands' if on_hands else 'body'), tex_dir, tid, size)
-            elif painter.startswith('panels_') and not on_hands:   # a man's body: bevels from his own lines
-                # (his hands keep the game's hands normal: what was proven seamless at the wrist, Fo4-mcp v13 11-14)
+            if painter.startswith('panels_') and not on_hands:   # bevels from its own (retraced) lines, both sexes:
+                # the pack's normal map bevels its old wide hand-drawn lines, off the retraced ones (11-14). Hands keep
+                # the game's hands normal: what was proven seamless at the wrist (Fo4-mcp v13 11-14)
                 normal = f'overlays/Complexion/{tid}_n.dds'
                 rgb = np.asarray(Image.open(png).convert('RGB'), np.float32) / 255
                 npng = png.with_name(f'{tid}_n.png')
                 Image.fromarray((synth55413.bevel_normal(rgb) * 255 + 0.5).astype(np.uint8), 'RGB').save(npng)
                 encode_normal(tool, npng, tex_dir, tid, size)
+            else:
+                (tex_dir / f'{tid}_n.dds').unlink(missing_ok=True)   # the women's Panels hands had the pack's (to 11-14)
             (mat_dir / f'{tid}.bgsm').write_bytes(bgsm(f'overlays/Complexion/{tid}_d.dds', f'overlays/Complexion/{tid}_s.dds', normal))
             (mat_dir / f'{tid}.bgem').unlink(missing_ok=True)   # the men's hands' effect stand-in (v7-v11)
             print(f'  {tid}: {painter} (lit) {size}px, {share * 100:.1f}% of the map')
