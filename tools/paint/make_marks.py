@@ -826,12 +826,12 @@ BGSM_TAIL = bytes(BGSM_TAIL)
 assert len(BGSM_HEAD) == 63 and len(BGSM_TAIL) == 304 - 146
 
 
-def bgsm(diffuse, specular, normal=''):
+def bgsm(diffuse, specular, normal='', outfit=False):
     """Textures, in BGSM v2's order: diffuse, normal (none: the mesh's own), smooth/spec, then six unused."""
     def s(path):
         raw = path.encode('ascii') + b'\0'
         return struct.pack('<I', len(raw)) + raw
-    return BGSM_HEAD + s(diffuse) + s(normal) + s(specular) + s('') * 6 + BGSM_TAIL
+    return BGSM_HEAD + s(diffuse) + s(normal) + s(specular) + s('') * 6 + (OUTFIT_TAIL if outfit else BGSM_TAIL)
 
 
 # The glow material: the multiply BGEM's layout with INVB's alpha blending (SRC_ALPHA / INV_SRC_ALPHA) back -- unlit,
@@ -844,27 +844,24 @@ GLOW_TAIL = bytes.fromhex(
 assert len(GLOW_TAIL) == len(BGEM_TAIL)
 
 
-# Men's lit HANDS overlays (Plated, Panels) as an effect material: LooksMenu clones the hands with their own shader and
-# lays a .bgsm over it, and BodyTalk's male hands carry a Default (type 0) shader with vertex colours, not the
-# skin-tint one the body and the women's hands have (MaleHands.nif read 11-14). A lit .bgsm on them never drew, with
-# the game's, a flat or the pack's normal map (Fo4-mcp HandProbe 11-14), while a .bgem (fresh effect shader) did.
-# So the glow material with effect lighting on and full lighting influence: alpha blended and lit, not glowing.
-LIT_EFFECT_TAIL = bytearray(GLOW_TAIL)
-LIT_EFFECT_TAIL[6] = 1                                             # effect lighting enabled
-LIT_EFFECT_TAIL[11 + 12 + 4 + 16:11 + 12 + 4 + 16 + 4] = struct.pack('<f', 1.0)   # lighting influence
-LIT_EFFECT_TAIL = bytes(LIT_EFFECT_TAIL)
-assert len(LIT_EFFECT_TAIL) == len(GLOW_TAIL)
+# Men's lit HANDS overlays (Plated, Panels): LooksMenu clones the hands with their own shader and lays a .bgsm over
+# it, and BodyTalk's male hands carry a Default (type 0) shader with vertex colours, not the skin-tint one the body
+# and the women's hands have (MaleHands.nif read 11-14). The skin-template .bgsm never drew on them, whatever the
+# normal map, nor with SkinTint off (Fo4-mcp HandProbe/v8 11-14); an effect .bgem drew but kept its light at night
+# (alasdairn: "why are the men's hands lighter"). The outfit template with SkinTint off draws, dims with the arm
+# (-35% vs -32%) and reads as the arm's material (v8). So that tail for them.
+_ROOT_SKIN = b'template/SkinTemplate_Wet.bgsm'
+_r = BGSM_TAIL.index(_ROOT_SKIN) - 4
+_end = _r + 4 + struct.unpack_from('<I', BGSM_TAIL, _r)[0]
+assert BGSM_TAIL[_end + 30:_end + 33] == b'\0\0\1'                  # tree, facegen off; skin tint on
+_root = b'template/OutfitTemplate_Wet.bgsm\0'
+OUTFIT_TAIL = bytearray(BGSM_TAIL[:_r] + struct.pack('<I', len(_root)) + _root + BGSM_TAIL[_end:])
+OUTFIT_TAIL[_r + 4 + len(_root) + 32] = 0                           # skin tint off
+OUTFIT_TAIL = bytes(OUTFIT_TAIL)
 
 
-def lit_as_effect(painter, sex):
+def outfit_lit(painter, sex):
     return painter in LIT_PAINTERS and painter in HAND_PAINTERS and sex == 'male'
-
-
-def lit_bgem(diffuse, normal):
-    def s(path):
-        raw = path.encode('ascii') + b'\0'
-        return struct.pack('<I', len(raw)) + raw
-    return GLOW_HEAD + s(diffuse) + BGEM_MID + s(normal) + LIT_EFFECT_TAIL
 
 
 def glow_bgem(diffuse, normal):
@@ -975,7 +972,7 @@ def main():
         on_hands = painter in HAND_PAINTERS
         # The body is LooksMenu slot 3, the hands slot 4 (as the packs' nails, LMNSOverlays f_nails_1).
         entries.append({'id': tid, 'name': f'Complexion - {NAMES.get(tid, tag["note"])}',
-                        'slots': [{'slot': 4 if on_hands else 3, 'material': f'overlays\\Complexion\\{tid}.{"bgsm" if painter in LIT_PAINTERS and not lit_as_effect(painter, sex) else "bgem"}'}],
+                        'slots': [{'slot': 4 if on_hands else 3, 'material': f'overlays\\Complexion\\{tid}.{"bgsm" if painter in LIT_PAINTERS else "bgem"}'}],
                         'playable': tid not in REMOVED, 'transformable': not on_hands, 'sort': 0, 'gender': 1 if female else 0})
         if tag['kind'] in hair.HAIR_KINDS:
             tag = dict(tag, hair=hair.family(painter, args))  # one colour per person: the composer matches it
@@ -1014,19 +1011,16 @@ def main():
             if painter.startswith('panels_') and female:   # the pack's own normal map: same UVs as a woman's
                 normal = f'overlays/Complexion/{tid}_n.dds'
                 encode_normal(tool, synth55413.normal_texture('hands' if on_hands else 'body'), tex_dir, tid, size)
-            elif painter.startswith('panels_') and not lit_as_effect(painter, sex):   # a man: bevels from his lines
-                # (not on his hands' effect material: with the bevel map they barely dimmed at night, -2% vs the
-                # arm's -18%, while Plated's hands on the game's hands normal dimmed with the arm; Fo4-mcp v7 11-14)
+            elif painter.startswith('panels_') and not outfit_lit(painter, sex):   # a man: bevels from his lines
+                # (not on his hands: the game's hands normal is what was proven there, Fo4-mcp v8 11-14)
                 normal = f'overlays/Complexion/{tid}_n.dds'
                 rgb = np.asarray(Image.open(png).convert('RGB'), np.float32) / 255
                 npng = png.with_name(f'{tid}_n.png')
                 Image.fromarray((synth55413.bevel_normal(rgb) * 255 + 0.5).astype(np.uint8), 'RGB').save(npng)
                 encode_normal(tool, npng, tex_dir, tid, size)
-            if lit_as_effect(painter, sex):
-                (mat_dir / f'{tid}.bgem').write_bytes(lit_bgem(f'overlays/Complexion/{tid}_d.dds', normal))
-                (mat_dir / f'{tid}.bgsm').unlink(missing_ok=True)
-            else:
-                (mat_dir / f'{tid}.bgsm').write_bytes(bgsm(f'overlays/Complexion/{tid}_d.dds', f'overlays/Complexion/{tid}_s.dds', normal))
+            (mat_dir / f'{tid}.bgsm').write_bytes(bgsm(f'overlays/Complexion/{tid}_d.dds', f'overlays/Complexion/{tid}_s.dds',
+                                                       normal, outfit=outfit_lit(painter, sex)))
+            (mat_dir / f'{tid}.bgem').unlink(missing_ok=True)   # the men's hands' effect stand-in of v7
             print(f'  {tid}: {painter} (lit) {size}px, {share * 100:.1f}% of the map')
             continue
         if piece:   # Vex's confirmed rework, finished exactly as its approved render was (reworks.render, artist_art.save)

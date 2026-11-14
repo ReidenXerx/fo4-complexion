@@ -10029,7 +10029,7 @@
   "slots": [
    {
     "slot": 4,
-    "material": "overlays\\Complexion\\Complexion_SynthPlatedHands_M01.bgem"
+    "material": "overlays\\Complexion\\Complexion_SynthPlatedHands_M01.bgsm"
    }
   ],
   "playable": true,
@@ -10085,7 +10085,7 @@
   "slots": [
    {
     "slot": 4,
-    "material": "overlays\\Complexion\\Complexion_SynthPanelsHands_M01.bgem"
+    "material": "overlays\\Complexion\\Complexion_SynthPanelsHands_M01.bgsm"
    }
   ],
   "playable": true,
