@@ -31,7 +31,7 @@ def main():
     worst = []
     bad = 0
     for tid, *rest in mm.MARKS:
-        if rest[-1].get('retired') or rest[1] in mm.LIT_PAINTERS:   # a lit overlay is a colour, not a multiplier
+        if rest[-1].get('retired') or rest[1] in (mm.LIT_PAINTERS | mm.GLOW_PAINTERS):   # a lit overlay is a colour, not a multiplier
             continue
         png = mm.ROOT / 'build' / 'marks' / f'{tid}_d.png'
         p = np.asarray(Image.open(png).convert('RGB'), dtype=np.float64)

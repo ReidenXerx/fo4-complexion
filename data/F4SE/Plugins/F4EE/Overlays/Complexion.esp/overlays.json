@@ -10036,5 +10036,285 @@
   "transformable": false,
   "sort": 0,
   "gender": 0
+ },
+ {
+  "id": "Complexion_SynthPanels_F01",
+  "name": "Complexion - (Body)(Female) Synthetic Skin - Panels",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthPanels_F01.bgsm"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthPanels_M01",
+  "name": "Complexion - (Body)(Male) Synthetic Skin - Panels",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthPanels_M01.bgsm"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SynthPanelsHands_F01",
+  "name": "Complexion - (Hands)(Female) Synthetic Skin - Panels",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthPanelsHands_F01.bgsm"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthPanelsHands_M01",
+  "name": "Complexion - (Hands)(Male) Synthetic Skin - Panels",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthPanelsHands_M01.bgsm"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SynthPanelLines_F01",
+  "name": "Complexion - (Body)(Female) Synthetic Skin - Panel Lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthPanelLines_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthPanelLines_M01",
+  "name": "Complexion - (Body)(Male) Synthetic Skin - Panel Lines",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthPanelLines_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SynthPanelLinesHands_F01",
+  "name": "Complexion - (Hands)(Female) Synthetic Skin - Panel Lines",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthPanelLinesHands_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthPanelLinesHands_M01",
+  "name": "Complexion - (Hands)(Male) Synthetic Skin - Panel Lines",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthPanelLinesHands_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SynthGlowBlue_F01",
+  "name": "Complexion - (Body)(Female) Synthetic Skin - Glow Lines Blue",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthGlowBlue_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthGlowBlue_M01",
+  "name": "Complexion - (Body)(Male) Synthetic Skin - Glow Lines Blue",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthGlowBlue_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SynthGlowBlueHands_F01",
+  "name": "Complexion - (Hands)(Female) Synthetic Skin - Glow Lines Blue",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthGlowBlueHands_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthGlowBlueHands_M01",
+  "name": "Complexion - (Hands)(Male) Synthetic Skin - Glow Lines Blue",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthGlowBlueHands_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SynthGlowPink_F01",
+  "name": "Complexion - (Body)(Female) Synthetic Skin - Glow Lines Pink",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthGlowPink_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthGlowPink_M01",
+  "name": "Complexion - (Body)(Male) Synthetic Skin - Glow Lines Pink",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthGlowPink_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SynthGlowPinkHands_F01",
+  "name": "Complexion - (Hands)(Female) Synthetic Skin - Glow Lines Pink",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthGlowPinkHands_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthGlowPinkHands_M01",
+  "name": "Complexion - (Hands)(Male) Synthetic Skin - Glow Lines Pink",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthGlowPinkHands_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SynthGlowGreen_F01",
+  "name": "Complexion - (Body)(Female) Synthetic Skin - Glow Lines Green",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthGlowGreen_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthGlowGreen_M01",
+  "name": "Complexion - (Body)(Male) Synthetic Skin - Glow Lines Green",
+  "slots": [
+   {
+    "slot": 3,
+    "material": "overlays\\Complexion\\Complexion_SynthGlowGreen_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": true,
+  "sort": 0,
+  "gender": 0
+ },
+ {
+  "id": "Complexion_SynthGlowGreenHands_F01",
+  "name": "Complexion - (Hands)(Female) Synthetic Skin - Glow Lines Green",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthGlowGreenHands_F01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 1
+ },
+ {
+  "id": "Complexion_SynthGlowGreenHands_M01",
+  "name": "Complexion - (Hands)(Male) Synthetic Skin - Glow Lines Green",
+  "slots": [
+   {
+    "slot": 4,
+    "material": "overlays\\Complexion\\Complexion_SynthGlowGreenHands_M01.bgem"
+   }
+  ],
+  "playable": true,
+  "transformable": false,
+  "sort": 0,
+  "gender": 0
  }
 ]

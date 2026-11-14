@@ -9143,5 +9143,275 @@
   ],
   "size": "large",
   "note": "synthetic skin, plated hands"
+ },
+ "f:Complexion_SynthPanels_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic skin, panels"
+ },
+ "m:Complexion_SynthPanels_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic skin, panels"
+ },
+ "f:Complexion_SynthPanelsHands_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic skin, panels, hands"
+ },
+ "m:Complexion_SynthPanelsHands_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic skin, panels, hands"
+ },
+ "f:Complexion_SynthPanelLines_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic skin, panel lines"
+ },
+ "m:Complexion_SynthPanelLines_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic skin, panel lines"
+ },
+ "f:Complexion_SynthPanelLinesHands_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic skin, panel lines, hands"
+ },
+ "m:Complexion_SynthPanelLinesHands_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic skin, panel lines, hands"
+ },
+ "f:Complexion_SynthGlowBlue_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic skin, blue glow lines"
+ },
+ "m:Complexion_SynthGlowBlue_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic skin, blue glow lines"
+ },
+ "f:Complexion_SynthGlowBlueHands_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic skin, blue glow lines, hands"
+ },
+ "m:Complexion_SynthGlowBlueHands_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic skin, blue glow lines, hands"
+ },
+ "f:Complexion_SynthGlowPink_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic skin, pink glow lines"
+ },
+ "m:Complexion_SynthGlowPink_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic skin, pink glow lines"
+ },
+ "f:Complexion_SynthGlowPinkHands_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic skin, pink glow lines, hands"
+ },
+ "m:Complexion_SynthGlowPinkHands_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic skin, pink glow lines, hands"
+ },
+ "f:Complexion_SynthGlowGreen_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic skin, green glow lines"
+ },
+ "m:Complexion_SynthGlowGreen_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "full_body"
+  ],
+  "size": "full",
+  "note": "synthetic skin, green glow lines"
+ },
+ "f:Complexion_SynthGlowGreenHands_F01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic skin, green glow lines, hands"
+ },
+ "m:Complexion_SynthGlowGreenHands_M01": {
+  "style": [],
+  "emblem": null,
+  "lore": "breaks",
+  "adult": false,
+  "quality": "ok",
+  "kind": "skin",
+  "regions": [
+   "hand_l",
+   "hand_r"
+  ],
+  "size": "large",
+  "note": "synthetic skin, green glow lines, hands"
  }
 }

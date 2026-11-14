@@ -60,6 +60,66 @@
     "Slot": "FaceDetail",
     "Specular": null,
     "Type": "TextureSet"
+   },
+   {
+    "BlendOp": "Default",
+    "FixedCategory": "Complexion Synthetic Skin",
+    "Diffuse": "Complexion\\Face\\SynthPanels_HumanMale.dds",
+    "Flags": [
+     "ChargenDetail"
+    ],
+    "Gender": 0,
+    "Id": 60975,
+    "Name": "Complexion - Synthetic Skin (Panels)",
+    "Normal": null,
+    "Slot": "FaceDetail",
+    "Specular": null,
+    "Type": "TextureSet"
+   },
+   {
+    "BlendOp": "Default",
+    "FixedCategory": "Complexion Synthetic Skin",
+    "Diffuse": "Complexion\\Face\\SynthPanels_HumanFemale.dds",
+    "Flags": [
+     "ChargenDetail"
+    ],
+    "Gender": 1,
+    "Id": 60976,
+    "Name": "Complexion - Synthetic Skin (Panels)",
+    "Normal": null,
+    "Slot": "FaceDetail",
+    "Specular": null,
+    "Type": "TextureSet"
+   },
+   {
+    "BlendOp": "Multiply",
+    "FixedCategory": "Complexion Synthetic Skin",
+    "Diffuse": "Complexion\\Face\\SynthPanelLines_HumanMale.dds",
+    "Flags": [
+     "ChargenDetail"
+    ],
+    "Gender": 0,
+    "Id": 60978,
+    "Name": "Complexion - Synthetic Skin (Panel Lines)",
+    "Normal": null,
+    "Slot": "FaceDetail",
+    "Specular": null,
+    "Type": "TextureSet"
+   },
+   {
+    "BlendOp": "Multiply",
+    "FixedCategory": "Complexion Synthetic Skin",
+    "Diffuse": "Complexion\\Face\\SynthPanelLines_HumanFemale.dds",
+    "Flags": [
+     "ChargenDetail"
+    ],
+    "Gender": 1,
+    "Id": 60979,
+    "Name": "Complexion - Synthetic Skin (Panel Lines)",
+    "Normal": null,
+    "Slot": "FaceDetail",
+    "Specular": null,
+    "Type": "TextureSet"
    }
   ],
   "Race": "HumanRace"
@@ -91,6 +151,36 @@
     "Gender": 0,
     "Id": 60974,
     "Name": "Complexion - Synthetic Skin (Plated)",
+    "Normal": null,
+    "Slot": "FaceDetail",
+    "Specular": null,
+    "Type": "TextureSet"
+   },
+   {
+    "BlendOp": "Default",
+    "FixedCategory": "Complexion Synthetic Skin",
+    "Diffuse": "Complexion\\Face\\SynthPanels_AceMale.dds",
+    "Flags": [
+     "ChargenDetail"
+    ],
+    "Gender": 0,
+    "Id": 60977,
+    "Name": "Complexion - Synthetic Skin (Panels)",
+    "Normal": null,
+    "Slot": "FaceDetail",
+    "Specular": null,
+    "Type": "TextureSet"
+   },
+   {
+    "BlendOp": "Multiply",
+    "FixedCategory": "Complexion Synthetic Skin",
+    "Diffuse": "Complexion\\Face\\SynthPanelLines_AceMale.dds",
+    "Flags": [
+     "ChargenDetail"
+    ],
+    "Gender": 0,
+    "Id": 60980,
+    "Name": "Complexion - Synthetic Skin (Panel Lines)",
     "Normal": null,
     "Slot": "FaceDetail",
     "Specular": null,

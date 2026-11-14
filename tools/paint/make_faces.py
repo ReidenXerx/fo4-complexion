@@ -26,6 +26,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import face  # noqa: E402
 import make_marks as mm  # noqa: E402
+import synth55413
 import synthskin  # noqa: E402
 
 ROOT = HERE.parent.parent
@@ -42,6 +43,9 @@ HEAD_NAMES = {'human_male': 'HumanMale', 'human_female': 'HumanFemale', 'ace_mal
 VARIANTS = (   # (prefix, painter, blend, first tint id, name in LooksMenu)
     ('SynthSkin', synthskin.pack_face, 'Multiply', 60969, 'Complexion - Synthetic Skin (Seams)'),
     ('SynthPlated', synthskin.plated_face, 'Default', 60972, 'Complexion - Synthetic Skin (Plated)'),
+    # from Synth Looksmenu Skin Override (Nexus 55413; textures Aaron4412): its synth face, and its lines only
+    ('SynthPanels', synth55413.panels_face, 'Default', 60975, 'Complexion - Synthetic Skin (Panels)'),
+    ('SynthPanelLines', synth55413.panel_lines_face, 'Multiply', 60978, 'Complexion - Synthetic Skin (Panel Lines)'),
 )
 
 

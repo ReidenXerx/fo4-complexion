@@ -37,6 +37,7 @@ import real  # noqa: E402
 import realism  # noqa: E402
 import seams  # noqa: E402
 import skin  # noqa: E402
+import synth55413  # noqa: E402
 import synthskin  # noqa: E402
 import traits  # noqa: E402
 HAIR_RGB = realism.HAIR  # skin adds ginger, lightbrown, darkbrown
@@ -332,12 +333,15 @@ for style, chipped, sexes in (('red', False, F), ('black', False, F), ('purple',
                               ('red', True, F), ('black', True, BOTH), ('dirty', False, BOTH)):
     note = 'dirty nails' if style == 'dirty' else f'{"chipped " if chipped else ""}{style} nails'
     add(f'Nails{style.title()}{"Chipped" if chipped else ""}', sexes, 'nails', (style, chipped), 1024, dict(NAILS, note=note), 1)
-HAND_PAINTERS = {'nails', 'pack_hands', 'plated_hands'}
+HAND_PAINTERS = {'nails', 'pack_hands', 'plated_hands', 'panels_hands', 'panel_lines_hands', 'glow_hands'}
 # Marks that belong AT a seam with the head or hands (seams.py): every other body mark fades out before them.
 SEAM_EXEMPT = {'collar', 'bindings', 'shackles'}
 # LIT overlays (synthskin.py's plated variant): a .bgsm, LooksMenu's lighting layer -- its own colour, mostly opaque,
 # with a sheen -- not a multiply. The painter returns (diffuse RGBA, spec: specular + smoothness), not (rgb, alpha).
-LIT_PAINTERS = {'plated_body', 'plated_hands'}
+LIT_PAINTERS = {'plated_body', 'plated_hands', 'panels_body', 'panels_hands'}
+# GLOW overlays (synth55413's Glow Lines): an UNLIT alpha-blended material (glow_bgem), so their colours glow as the
+# pack's lines are meant to -- the very thing a skin mark must not do. The painter returns RGBA (colour, opacity).
+GLOW_PAINTERS = {'glow_body', 'glow_hands'}
 
 # ---- C-17 (owner, 2026-10-03): our own art tattoos, traditional flash (flash.py), so every faction's tattoo styles
 # have our own art and the LoversLab packs are optional extra variety. Appended last: earlier seeds stay put.
@@ -569,6 +573,25 @@ add('SynthPlated', BOTH, 'plated_body', (), 4096, dict(R, kind='skin', regions=[
                                                    note='synthetic skin, plated'), 1)
 add('SynthPlatedHands', BOTH, 'plated_hands', (), 2048, dict(R, kind='skin', regions=['hand_l', 'hand_r'], size='large',
                                                              lore='breaks', note='synthetic skin, plated hands'), 1)
+# alasdairn 11-14 ("All three, see if you can make a male version too"): three looks from Synth Looksmenu Skin
+# Override (Nexus 55413, patrox5; its textures by Aaron4412, Nexus 35269), tools/paint/synth55413.py: Panels (its
+# plating, lit), Panel Lines (its lines only, multiplied) and Glow Lines in its three colours (unlit). The women's
+# are its own textures; the men's carried over from them. Appended last: earlier seeds stay put.
+add('SynthPanels', BOTH, 'panels_body', (), 4096, dict(R, kind='skin', regions=['full_body'], size='full', lore='breaks',
+                                                   note='synthetic skin, panels'), 1)
+add('SynthPanelsHands', BOTH, 'panels_hands', (), 2048, dict(R, kind='skin', regions=['hand_l', 'hand_r'], size='large',
+                                                             lore='breaks', note='synthetic skin, panels, hands'), 1)
+add('SynthPanelLines', BOTH, 'panel_lines_body', (), 4096, dict(R, kind='skin', regions=['full_body'], size='full',
+                                                             lore='breaks', note='synthetic skin, panel lines'), 1)
+add('SynthPanelLinesHands', BOTH, 'panel_lines_hands', (), 2048, dict(R, kind='skin', regions=['hand_l', 'hand_r'],
+                                                                   size='large', lore='breaks',
+                                                                   note='synthetic skin, panel lines, hands'), 1)
+for _c in ('Blue', 'Pink', 'Green'):
+    add(f'SynthGlow{_c}', BOTH, 'glow_body', (_c.lower(),), 2048, dict(R, kind='skin', regions=['full_body'], size='full',
+                                                                       lore='breaks', note=f'synthetic skin, {_c.lower()} glow lines'), 1)
+    add(f'SynthGlow{_c}Hands', BOTH, 'glow_hands', (_c.lower(),), 1024, dict(R, kind='skin', regions=['hand_l', 'hand_r'],
+                                                                             size='large', lore='breaks',
+                                                                             note=f'synthetic skin, {_c.lower()} glow lines, hands'), 1)
 
 
 def replace_row(tid, painter, args, size, tag):
@@ -600,6 +623,26 @@ NAMES = {
     'Complexion_SynthPlated_M01': '(Body)(Male) Synthetic Skin - Plated',
     'Complexion_SynthPlatedHands_F01': '(Hands)(Female) Synthetic Skin - Plated',
     'Complexion_SynthPlatedHands_M01': '(Hands)(Male) Synthetic Skin - Plated',
+    'Complexion_SynthPanels_F01': '(Body)(Female) Synthetic Skin - Panels',
+    'Complexion_SynthPanels_M01': '(Body)(Male) Synthetic Skin - Panels',
+    'Complexion_SynthPanelsHands_F01': '(Hands)(Female) Synthetic Skin - Panels',
+    'Complexion_SynthPanelsHands_M01': '(Hands)(Male) Synthetic Skin - Panels',
+    'Complexion_SynthPanelLines_F01': '(Body)(Female) Synthetic Skin - Panel Lines',
+    'Complexion_SynthPanelLines_M01': '(Body)(Male) Synthetic Skin - Panel Lines',
+    'Complexion_SynthPanelLinesHands_F01': '(Hands)(Female) Synthetic Skin - Panel Lines',
+    'Complexion_SynthPanelLinesHands_M01': '(Hands)(Male) Synthetic Skin - Panel Lines',
+    'Complexion_SynthGlowBlue_F01': '(Body)(Female) Synthetic Skin - Glow Lines Blue',
+    'Complexion_SynthGlowBlue_M01': '(Body)(Male) Synthetic Skin - Glow Lines Blue',
+    'Complexion_SynthGlowBlueHands_F01': '(Hands)(Female) Synthetic Skin - Glow Lines Blue',
+    'Complexion_SynthGlowBlueHands_M01': '(Hands)(Male) Synthetic Skin - Glow Lines Blue',
+    'Complexion_SynthGlowPink_F01': '(Body)(Female) Synthetic Skin - Glow Lines Pink',
+    'Complexion_SynthGlowPink_M01': '(Body)(Male) Synthetic Skin - Glow Lines Pink',
+    'Complexion_SynthGlowPinkHands_F01': '(Hands)(Female) Synthetic Skin - Glow Lines Pink',
+    'Complexion_SynthGlowPinkHands_M01': '(Hands)(Male) Synthetic Skin - Glow Lines Pink',
+    'Complexion_SynthGlowGreen_F01': '(Body)(Female) Synthetic Skin - Glow Lines Green',
+    'Complexion_SynthGlowGreen_M01': '(Body)(Male) Synthetic Skin - Glow Lines Green',
+    'Complexion_SynthGlowGreenHands_F01': '(Hands)(Female) Synthetic Skin - Glow Lines Green',
+    'Complexion_SynthGlowGreenHands_M01': '(Hands)(Male) Synthetic Skin - Glow Lines Green',
 }
 
 
@@ -679,7 +722,7 @@ def paint(painter, m, rng, args):
                                         from_end_cm=from_end_cm, shift_cm=rest[0] if rest else 0.0)
     if painter.startswith('skin.'):
         return getattr(skin, painter[5:])(m, rng, *args)
-    for module in (real, marks, realism, life, hands, synthskin):   # real first: its painters replace the old ones (10-09)
+    for module in (real, marks, realism, life, hands, synthskin, synth55413):   # real first: its painters replace the old ones (10-09)
         if hasattr(module, painter):
             return getattr(module, painter)(m, rng, *args)
     raise SystemExit(f'no painter {painter}')
@@ -783,12 +826,63 @@ BGSM_TAIL = bytes(BGSM_TAIL)
 assert len(BGSM_HEAD) == 63 and len(BGSM_TAIL) == 304 - 146
 
 
-def bgsm(diffuse, specular):
+def bgsm(diffuse, specular, normal=''):
     """Textures, in BGSM v2's order: diffuse, normal (none: the mesh's own), smooth/spec, then six unused."""
     def s(path):
         raw = path.encode('ascii') + b'\0'
         return struct.pack('<I', len(raw)) + raw
-    return BGSM_HEAD + s(diffuse) + s('') + s(specular) + s('') * 6 + BGSM_TAIL
+    return BGSM_HEAD + s(diffuse) + s(normal) + s(specular) + s('') * 6 + BGSM_TAIL
+
+
+# The glow material: the multiply BGEM's layout with INVB's alpha blending (SRC_ALPHA / INV_SRC_ALPHA) back -- unlit,
+# so its colours glow -- and its colour as painted (base colour 1, scale 1: the multiply's x2 would wash it out).
+GLOW_HEAD = BGEM_HEAD.replace(bytes.fromhex('01040000000100000000'), bytes.fromhex('01060000000700000000'), 1)
+assert GLOW_HEAD != BGEM_HEAD and len(GLOW_HEAD) == len(BGEM_HEAD)
+GLOW_TAIL = bytes.fromhex(
+    '0100000000' '000000000000' + struct.pack('<fff', 1.0, 1.0, 1.0).hex() + struct.pack('<f', 1.0).hex() +
+    '00000000000000000000000000000000' '00000000' '00' '00000000')
+assert len(GLOW_TAIL) == len(BGEM_TAIL)
+
+
+def glow_bgem(diffuse, normal):
+    def s(path):
+        raw = path.encode('ascii') + b'\0'
+        return struct.pack('<I', len(raw)) + raw
+    return GLOW_HEAD + s(diffuse) + BGEM_MID + s(normal) + GLOW_TAIL
+
+
+def encode_normal(tool, src, tex_dir, tid, size):
+    """A normal map (the 55413 pack's, 4096 BC5 for body and hands alike) re-encoded at the overlay's own size as
+    <tid>_n.dds, BC5 as it came."""
+    tmp = tex_dir / f'{tid}_n.dds'
+    import tempfile
+    with tempfile.TemporaryDirectory() as td:
+        # two steps: texconv cannot resize a block-compressed map and rebuild its mips at once ("FAILED [mipmaps]")
+        flat = pathlib.Path(td) / 'flat'
+        flat.mkdir()
+        r = subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'R8G8B8A8_UNORM', '-w', str(size), '-h', str(size),
+                            '-m', '1', '-o', str(flat), str(src)], capture_output=True, text=True)
+        staged = next(flat.iterdir(), None)
+        if r.returncode or not staged:
+            sys.exit(f'texconv failed on {src}: {r.stdout[-300:]} {r.stderr[-300:]}')
+        staged = staged.rename(flat / f'{tid}_n.dds')
+        r = subprocess.run([str(tool), '-nologo', '-y', '-ft', 'dds', '-f', 'BC5_UNORM', '-m', '0', '-o', str(tex_dir),
+                            str(staged)], capture_output=True, text=True)
+    made = next((f for f in tex_dir.iterdir() if f.name.lower() == tmp.name.lower()), None)
+    if r.returncode or not made:
+        sys.exit(f'texconv failed on {src}: {r.stdout[-300:]} {r.stderr[-300:]}')
+    if made.name != tmp.name:
+        made.rename(tmp)
+
+
+def paint_glow(painter, m, rng, args, png, tex_dir, tid, tool):
+    """A glow overlay: its colour bled past the UV islands, its opacity as painted, to BC7."""
+    D = paint(painter, m, rng, args)
+    rgb = bleed(Image.fromarray((np.clip(D[..., :3], 0, 1) * 255 + 0.5).astype(np.uint8), 'RGB'), m.covered)
+    a = Image.fromarray((np.clip(D[..., 3], 0, 1) * 255 + 0.5).astype(np.uint8), 'L')
+    Image.merge('RGBA', (*rgb.split(), a)).save(png)
+    encode(tool, png, tex_dir, tid)
+    return float((D[..., 3] > 0.5).mean())
 
 
 def paint_lit(painter, m, rng, args, png, tex_dir, tid, tool):
@@ -833,7 +927,7 @@ def main():
     maps = {}
     if a.rebleed:
         for tid, sex, painter, args, size, tag in MARKS:
-            if tag.get('retired') or painter in LIT_PAINTERS:   # a lit one is bled as it is painted
+            if tag.get('retired') or painter in LIT_PAINTERS or painter in GLOW_PAINTERS:   # bled as they are painted
                 continue
             png = work / f'{tid}_d.png'
             if a.only and not tid.startswith(tuple(a.only.split(','))):
@@ -881,10 +975,20 @@ def main():
         if key not in maps:
             maps[key] = hands.HandMap(a.data, sex, size) if on_hands else UVMap(a.data, sex, size)
         m = maps[key]
+        if painter in GLOW_PAINTERS:
+            png = work / f'{tid}_d.png'
+            share = paint_glow(painter, m, np.random.default_rng(1000 + n), args, png, tex_dir, tid, tool)
+            (mat_dir / f'{tid}.bgem').write_bytes(glow_bgem(f'overlays/Complexion/{tid}_d.dds', (hands.NORMAL if on_hands else NORMAL)[sex]))
+            print(f'  {tid}: {painter}{args} (glow) {size}px, {share * 100:.1f}% of the map')
+            continue
         if painter in LIT_PAINTERS:
             png = work / f'{tid}_d.png'
             share = paint_lit(painter, m, np.random.default_rng(1000 + n), args, png, tex_dir, tid, tool)
-            (mat_dir / f'{tid}.bgsm').write_bytes(bgsm(f'overlays/Complexion/{tid}_d.dds', f'overlays/Complexion/{tid}_s.dds'))
+            normal = ''
+            if painter.startswith('panels_') and female:   # the pack's own normal map: same UVs as a woman's
+                normal = f'overlays/Complexion/{tid}_n.dds'
+                encode_normal(tool, synth55413.normal_texture('hands' if on_hands else 'body'), tex_dir, tid, size)
+            (mat_dir / f'{tid}.bgsm').write_bytes(bgsm(f'overlays/Complexion/{tid}_d.dds', f'overlays/Complexion/{tid}_s.dds', normal))
             print(f'  {tid}: {painter} (lit) {size}px, {share * 100:.1f}% of the map')
             continue
         if piece:   # Vex's confirmed rework, finished exactly as its approved render was (reworks.render, artist_art.save)
