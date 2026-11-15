@@ -225,6 +225,9 @@ def _carried(tag, masks, sex):
             sk = _cache[ck]
             idx = np.flatnonzero(sk)
             X = bodywarp.carry(_frame_pos(_female_map(kind), kind).reshape(-1, 3)[idx], MESH[kind], sex)
+            if sex == 'male' and kind == 'body':
+                from scipy.ndimage import label
+                X = _to_his_anatomy(X, label(sk, structure=np.ones((3, 3), bool))[0].ravel()[idx])
             out[kind] = X
             if not tag.endswith(':fill'):
                 out[kind] = np.concatenate([X, _densify(sk, idx, X)])
@@ -234,6 +237,71 @@ def _carried(tag, masks, sex):
             _overlap(out, sex)
         _cache[key] = out
     return _cache[key]
+
+
+# Men: his anatomy, not hers ("The layout for men should follow male anatomy", alasdairn v23 11-15). Carried by the
+# warp alone her front layout sat on her landmarks: the arch she draws under her breasts ran across his stomach (0,-26.6
+# down to +-10.8,-32.3) and her abdominal panel began below it. On him the arch is his pec bottoms (measured on his
+# mesh: the crease at -24 on the nipple line, rising to the armpit), the panel his rectus from there to the pubis, the
+# side panels his obliques up under the armpit. A thin-plate spline in (x, z) over his torso's front carries each of
+# her landmarks to his (read off a gridded 3D render of the v23 men's lines, 11-15); navel, groin, collarbones, nipples
+# and the sides stay put; the back is untouched.
+HIS_TORSO = (   # (x, z) where her line lies on him -> (x, z) where his anatomy has it; mirrored for -x
+    ((0.0, -26.6), (0.0, -24.6)),     # arch apex -> his pec bottoms meeting at the sternum
+    ((4.5, -28.5), (4.6, -24.8)),     # arch / abdominal panel junction -> pec bottom, top of his rectus
+    ((8.0, -30.4), (8.5, -24.4)),     # arch under the breast -> his pec bottom crease on the nipple line
+    ((10.8, -32.3), (12.0, -22.8)),   # arch's outer end -> his pec's lower corner at the armpit
+    ((6.9, -39.7), (6.5, -39.7)),     # the panel's side at the navel -> his rectus edge
+)
+HIS_TORSO_FIXED = ((0.0, -39.7), (0.0, -16.3), (5.0, -16.0), (10.0, -14.8), (14.0, -17.0), (8.7, -21.5),
+                   (13.0, -36.0), (12.0, -44.0), (9.0, -48.0), (4.0, -50.0), (0.0, -48.0), (0.0, -54.0), (6.0, -56.0))
+
+
+RIVET_MAX = 1.0   # world units: a line piece smaller than this (a rivet ring) moves whole, so it stays round
+
+
+def _to_his_anatomy(X, comp=None):
+    """Her front torso lines (on his body, Nx3; comp: their centreline piece per point) moved onto his landmarks
+    (HIS_TORSO), laid back on his surface."""
+    from scipy.interpolate import RBFInterpolator
+    from scipy.spatial import cKDTree
+    import bodywarp
+    from body import REGIONS
+    src, dst = [], []
+    for (a, b) in HIS_TORSO:
+        for s in ((1, -1) if a[0] else (1,)):
+            src.append((a[0] * s, a[1])); dst.append((b[0] * s, b[1]))
+    for a in HIS_TORSO_FIXED:
+        for s in ((1, -1) if a[0] else (1,)):
+            src.append((a[0] * s, a[1])); dst.append((a[0] * s, a[1]))
+    src, dst = np.array(src), np.array(dst)
+    f = RBFInterpolator(src, dst - src, kernel='thin_plate_spline', smoothing=0.0)
+    V, N, R, _A, I = bodywarp._mesh('male')
+    body = np.flatnonzero(I == 0)
+    tree = cKDTree(V[body])
+    _d, j = tree.query(X)
+    torso = R[body[j]] == REGIONS.index('torso')
+    w = np.clip((X[:, 1] + 1.0) / 3.0, 0, 1) * torso          # his front (+y), fading out round his sides
+    w *= np.clip((X[:, 2] + 12.0) / -2.0, 0, 1) * np.clip((X[:, 2] + 62.0) / 4.0, 0, 1)   # under the neck, above the thighs
+    sel = np.flatnonzero(w > 0)
+    if not len(sel):
+        return X
+    d = f(X[sel][:, [0, 2]]) * w[sel, None]
+    if comp is not None:   # rivets whole: stretched with the panels they came out as tall ellipses (11-15)
+        c = comp[sel]
+        for k in np.unique(c):
+            m = c == k
+            P = X[sel[m]]
+            if np.ptp(P, axis=0).max() < RIVET_MAX:
+                d[m] = d[m].mean(0)
+    Y = X.copy()
+    Y[sel, 0] += d[:, 0]
+    Y[sel, 2] += d[:, 1]
+    _d, j = tree.query(Y[sel])                                # back onto his surface
+    v, n = V[body[j]], N[body[j]]
+    Y[sel] -= np.einsum('nc,nc->n', Y[sel] - v, n)[:, None] * n
+    _cache.setdefault('anatomy_log', []).append((len(sel), float(np.abs(d).max())))
+    return Y
 
 
 # The pack draws a wrist band on the body right at its edge, and another on the hands right at theirs: across the seam
