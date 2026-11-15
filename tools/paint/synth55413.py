@@ -364,7 +364,14 @@ def _seam_ends(sk, idx, X, cov, k, cut=None):
     K = np.ones((3, 3), np.uint8)
     K[1, 1] = 0
     deg = ndimage.convolve(sk.astype(np.uint8), K, mode='constant')
-    end = sk & (deg == 1)
+    # an end: its neighbours one run of at most two round its ring, all on one side. A tip thinned to a two-texel
+    # clump has two neighbours touching each other: on deg == 1 alone his Glow abdominal sides never closed onto the
+    # pec band (~0.6 short, Fo4-mcp v25 11-15)
+    ring = [(-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1)]
+    pad = np.pad(sk, 1)
+    nb = [pad[1 + dy:1 + dy + S, 1 + dx:1 + dx + sk.shape[1]] for dy, dx in ring]
+    runs = sum((nb[i] & ~nb[i - 1]).astype(np.uint8) for i in range(8))
+    end = sk & ((deg == 1) | ((deg == 2) & (runs == 1)))
     it = max(2, int(round(SEAM_PX * S / 4096)))
     edge = ndimage.binary_dilation(~cov, iterations=it)
     near_cut = ndimage.binary_dilation(cut, iterations=it) if cut is not None else np.zeros_like(sk)
