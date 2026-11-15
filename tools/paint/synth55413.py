@@ -225,13 +225,14 @@ def _carried(tag, masks, sex):
             sk = _cache[ck]
             idx = np.flatnonzero(sk)
             X = bodywarp.carry(_frame_pos(_female_map(kind), kind).reshape(-1, 3)[idx], MESH[kind], sex)
-            if sex == 'male' and kind == 'body':
-                from scipy.ndimage import label
+            if sex == 'male' and kind == 'body':   # lines and the openings on them alike (left behind, the
+                from scipy.ndimage import label   # moved glow band had gaps where its ports were cut out, v24)
                 X = _to_his_anatomy(X, label(sk, structure=np.ones((3, 3), bool))[0].ravel()[idx])
             out[kind] = X
             if not tag.endswith(':fill'):
                 out[kind] = np.concatenate([X, _densify(sk, idx, X)])
-                ends.append(_seam_ends(sk, idx, X, _female_cov(kind), len(ends)))
+                cut = _decal_cut(kind) if tag == 'glow' else None
+                ends.append(_seam_ends(sk, idx, X, _female_cov(kind), len(ends), cut))
         out['bridges'] = _stitch(ends, None) if ends else np.zeros((0, 3))
         if 'body' in out and 'hands' in out:
             _overlap(out, sex)
@@ -247,10 +248,12 @@ def _carried(tag, masks, sex):
 # her landmarks to his (read off a gridded 3D render of the v23 men's lines, 11-15); navel, groin, collarbones, nipples
 # and the sides stay put; the back is untouched.
 HIS_TORSO = (   # (x, z) where her line lies on him -> (x, z) where his anatomy has it; mirrored for -x
-    ((0.0, -26.6), (0.0, -24.6)),     # arch apex -> his pec bottoms meeting at the sternum
-    ((4.5, -28.5), (4.6, -24.8)),     # arch / abdominal panel junction -> pec bottom, top of his rectus
-    ((8.0, -30.4), (8.5, -24.4)),     # arch under the breast -> his pec bottom crease on the nipple line
-    ((10.8, -32.3), (12.0, -22.8)),   # arch's outer end -> his pec's lower corner at the armpit
+    ((0.0, -26.6), (0.0, -23.8)),     # arch apex -> his pec bottoms meeting at the sternum
+    ((4.5, -28.5), (4.6, -23.6)),     # arch / abdominal panel junction -> pec bottom, top of his rectus
+    ((6.5, -29.6), (6.5, -23.4)),     # arch -> his crease rising under the pec
+    ((8.0, -30.4), (8.5, -23.2)),     # arch under the breast -> his pec bottom crease on the nipple line
+    ((10.8, -32.3), (12.2, -21.8)),   # arch's outer end -> his pec's lower corner at the armpit
+    # v24 in game (Fo4-mcp 11-15): ~1 unit low and straight; his crease curves up under each pec
     ((6.9, -39.7), (6.5, -39.7)),     # the panel's side at the navel -> his rectus edge
 )
 HIS_TORSO_FIXED = ((0.0, -39.7), (0.0, -16.3), (5.0, -16.0), (10.0, -14.8), (14.0, -17.0), (8.7, -21.5),
@@ -334,20 +337,42 @@ STITCH_R = 2.0      # world units: the furthest a seam gap is bridged
 STITCH_CONE = 0.5   # the bridge must leave the end within ~60 degrees of the line's own direction
 
 
-def _seam_ends(sk, idx, X, cov, k):
-    """(positions, outward directions, component ids) of the centreline sk's ends that lie on its island's edge."""
+TEE_REACH = 1.0     # world units: any line end this close short of a line ahead of it is joined to it (his abdominal
+                    # panel's sides stopped ~0.8 short of the moved pec line, v24 offline 11-15)
+DECAL_REACH = 4.5   # world units: a band cut by a left-out decal (the MK.4 label on her sternum lies on the band under
+                    # her breasts: on him the pec line came out in dashes, v24) is bridged across its box
+
+
+def _decal_cut(kind):
+    """The decal boxes Glow leaves out of its bands (women's UV, SAMPLE_SIZE)."""
+    S = SAMPLE_SIZE[kind]
+    if kind != 'body':
+        return np.zeros((S, S), bool)
+    yy, xx = np.mgrid[0:S, 0:S]
+    u, v = (xx + 0.5) / S, (yy + 0.5) / S
+    cut = np.zeros((S, S), bool)
+    for cu, cv, hu, hv in GLOW_DECALS:
+        cut |= (np.abs(u - cu) < hu) & (np.abs(v - cv) < hv)
+    return cut
+
+
+def _seam_ends(sk, idx, X, cov, k, cut=None):
+    """(positions, outward directions, component ids, ..., reach) of the centreline sk's ends that lie on its island's
+    edge or on the edge of a box cut out of it (cut)."""
     from scipy import ndimage
     S = sk.shape[0]
     K = np.ones((3, 3), np.uint8)
     K[1, 1] = 0
     deg = ndimage.convolve(sk.astype(np.uint8), K, mode='constant')
     end = sk & (deg == 1)
-    edge = ndimage.binary_dilation(~cov, iterations=max(2, int(round(SEAM_PX * S / 4096))))
-    end &= edge
+    it = max(2, int(round(SEAM_PX * S / 4096)))
+    edge = ndimage.binary_dilation(~cov, iterations=it)
+    near_cut = ndimage.binary_dilation(cut, iterations=it) if cut is not None else np.zeros_like(sk)
+    on_edge = edge | near_cut   # every other end may still close a T-junction a step ahead (TEE_REACH)
     lab, _ = ndimage.label(sk, structure=np.ones((3, 3), bool))
     at = np.full(sk.size, -1, np.int64)
     at[idx] = np.arange(len(idx))
-    pos, out, comp = [], [], []
+    pos, out, comp, reach = [], [], [], []
     r = max(4, int(round(12 * S / 4096)))
     for e in np.flatnonzero(end.ravel()):
         y, x = divmod(int(e), S)
@@ -359,9 +384,10 @@ def _seam_ends(sk, idx, X, cov, k):
         if n < 1e-6:
             continue
         pos.append(X[at[e]]); out.append(-back / n); comp.append(k * 10_000_000 + lab[y, x])
+        reach.append(DECAL_REACH if near_cut[y, x] else STITCH_R if on_edge[y, x] else TEE_REACH)
     if not pos:
-        return np.zeros((0, 3)), np.zeros((0, 3)), np.zeros(0, np.int64), lab, at, X, k
-    return np.array(pos), np.array(out), np.array(comp), lab, at, X, k
+        return np.zeros((0, 3)), np.zeros((0, 3)), np.zeros(0, np.int64), lab, at, X, k, np.zeros(0)
+    return np.array(pos), np.array(out), np.array(comp), lab, at, X, k, np.array(reach)
 
 
 def _stitch(ends, _unused=None):
@@ -371,11 +397,12 @@ def _stitch(ends, _unused=None):
     E = np.concatenate([e[0] for e in ends])
     O = np.concatenate([e[1] for e in ends])
     C = np.concatenate([e[2] for e in ends])
+    RE = np.concatenate([e[7] for e in ends])
     if not len(E):
         return np.zeros((0, 3))
     # every carried line point with its component, for end-to-line joins
     LP, LC = [], []
-    for _pos, _out, _comp, lab, at, X, k in ends:
+    for _pos, _out, _comp, lab, at, X, k, _r in ends:
         idx = np.flatnonzero(at >= 0)
         LP.append(X[at[idx]]); LC.append(k * 10_000_000 + lab.ravel()[idx])
     LP, LC = np.concatenate(LP), np.concatenate(LC)
@@ -387,8 +414,8 @@ def _stitch(ends, _unused=None):
     for i in order:
         if used[i]:
             continue
-        best, bd = None, STITCH_R
-        for j in etree.query_ball_point(E[i], STITCH_R):
+        best, bd = None, RE[i]
+        for j in etree.query_ball_point(E[i], RE[i]):
             if j == i or used[j] or C[j] == C[i]:
                 continue
             v = E[j] - E[i]
@@ -402,8 +429,8 @@ def _stitch(ends, _unused=None):
             used[i] = used[best] = True
             bridges.append((E[i], E[best]))
             continue
-        cand = ltree.query_ball_point(E[i], STITCH_R)
-        best, bd = None, STITCH_R
+        cand = ltree.query_ball_point(E[i], RE[i])
+        best, bd = None, RE[i]
         for j in cand:
             if LC[j] == C[i]:
                 continue
