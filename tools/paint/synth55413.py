@@ -493,7 +493,7 @@ def _retrace(m, kind, tag, masks, width=RETRACE_W):
     """Line coverage (0..1, m.size square) on map m (body or hands): the women's line centrelines of masks for this
     mesh, carried in 3D onto m's sex, plus the seam bridges, drawn width (world units) wide. Only its own mesh's lines:
     with the other mesh's drawn too, the hands' wrist band ran beside the body's -- a double band (Fo4-mcp v22 11-14)."""
-    key = ('retrace', tag, kind, getattr(m, 'sex', None), m.size)
+    key = ('retrace', tag, kind, getattr(m, 'sex', None), m.size, width)
     if key not in _cache:
         got = _carried(tag, masks, m.sex)
         P = np.concatenate([got.get(kind, np.zeros((0, 3))), got['bridges']])
@@ -612,6 +612,9 @@ def panel_lines_hands(m, rng=None):
 # filled with its own glowing network; its knee (and spine) openings carried as filled shapes; its decals (QR codes,
 # the MK.4 label) left out (carried they smear; ilhamitaa24 "I'd say remove them" for women too, 11-14).
 GLOW_W = 0.22                 # world units: the glow band width
+# Glow drawn on the Panel Lines layout (its plates' lines and rivets), not the pack's own sparser glow network: "Why is
+# the male glow lines different from the seam lines?" (alasdairn v26 11-15). The openings (knees, spine) stay its own.
+GLOW_ON_LINES = True
 GLOW_NET_FLOOR = 0.45         # the bands' least glow, as a share of the network's vein colour
 GLOW_FILL_W = 0.35            # world units: an opening is drawn wherever one of her opening texels lies within half this
                               # (the warp stretches them apart; at 4 of her texels his knees showed skin stripes)
@@ -683,7 +686,8 @@ def _network(m, colour):
 def _glow(m, colour, kind):
     """RGBA: its bands (floored network) and openings (the network as it is: lit internals); the skin itself clear."""
     from scipy import ndimage
-    band = _retrace(m, kind, 'glow', BANDS, width=GLOW_W)
+    band = (_retrace(m, kind, 'lines', LINES, width=GLOW_W) if GLOW_ON_LINES
+            else _retrace(m, kind, 'glow', BANDS, width=GLOW_W))
     if kind == 'body':
         f = _female_map('body')
         step = np.linalg.norm(f.position[:, 1:] - f.position[:, :-1], axis=-1)[f.covered[:, 1:] & f.covered[:, :-1]]
