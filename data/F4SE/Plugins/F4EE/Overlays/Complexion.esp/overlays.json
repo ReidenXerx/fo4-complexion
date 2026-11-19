@@ -7911,7 +7911,7 @@
  },
  {
   "id": "Complexion_BiteScarHuman_F01",
-  "name": "Complexion - a healed human bite",
+  "name": "Complexion - (Right Forearm)(Female) Human Bite",
   "slots": [
    {
     "slot": 3,
@@ -7925,7 +7925,7 @@
  },
  {
   "id": "Complexion_BiteScarHuman_M01",
-  "name": "Complexion - a healed human bite",
+  "name": "Complexion - (Right Shoulder)(Male) Human Bite",
   "slots": [
    {
     "slot": 3,

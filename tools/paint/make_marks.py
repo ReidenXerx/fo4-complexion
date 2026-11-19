@@ -614,7 +614,10 @@ for _tid, _args in (
         ('Complexion_BiteScarDog_F01', ('vex_dogbite_f01.png', 'thigh', 1, 'front', 5.0, None)),
         ('Complexion_BiteScarDog_F02', ('vex_dogbite_f02.png', 'forearm', -1, 'front', 3.5, None)),
         ('Complexion_BiteScarDog_M01', ('vex_dogbite_m01.png', 'upper_arm', -1, 'front', 5.5, None)),
-        ('Complexion_BiteScarDog_M02', ('vex_dogbite_m02.png', 'forearm', -1, 'front', 3.85, None))):
+        ('Complexion_BiteScarDog_M02', ('vex_dogbite_m02.png', 'forearm', -1, 'front', 3.85, None)),
+        # human bites on the RIGHT, so one person's dog and human bites never land on each other
+        ('Complexion_BiteScarHuman_F01', ('vex_humanbite_f01.png', 'forearm', 1, 'front', 3.5, None)),
+        ('Complexion_BiteScarHuman_M01', ('vex_humanbite_m01.png', 'upper_arm', 1, 'outer', 3.85, None, 5.0))):
     _row = next(r for r in MARKS if r[0] == _tid)
     replace_row(_tid, 'artist', _args, _row[4], _row[5])
 
@@ -633,6 +636,8 @@ NAMES = {
     'Complexion_BiteScarDog_F02': '(Left Forearm)(Female) Dog Bite',
     'Complexion_BiteScarDog_M01': '(Left Shoulder)(Male) Dog Bite',
     'Complexion_BiteScarDog_M02': '(Left Forearm)(Male) Dog Bite',
+    'Complexion_BiteScarHuman_F01': '(Right Forearm)(Female) Human Bite',
+    'Complexion_BiteScarHuman_M01': '(Right Shoulder)(Male) Human Bite',
     # each says which body it is for: in LooksMenu's Add list the female and male ones otherwise read the same
     'Complexion_SynthShell_F01': '(Body)(Female) Synthetic Skin - Seams',
     'Complexion_SynthShell_M01': '(Body)(Male) Synthetic Skin - Seams',
