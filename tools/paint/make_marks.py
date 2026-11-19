@@ -605,6 +605,19 @@ def replace_row(tid, painter, args, size, tag):
 replace_row('Complexion_FlashAnchor_F01', 'artist', ('vex_anchor_red_heart.png', 'forearm', 1, 'palm', 8.0, 2.0), 4096,
             dict(VEX, regions=['arm_r'], note='flash: anchor with a red heart (by Vex)'))
 
+# Vex (11-19, his own AI workflow): old cigarette burns and dog bites redrawn, placed as their approved previews were
+# (build/vex/cig, build/vex/bite). The men's are 10% larger than the women's (Vex's rule, 11-19). Same ids and rows,
+# tags unchanged, so the NPCs who wear them keep them and the composers pick exactly as before.
+for _tid, _args in (
+        ('Complexion_CigBurnsHealed_F01', ('vex_cigburns_healed_f.png', 'chest', 1, '', 3.5, None)),
+        ('Complexion_CigBurnsHealed_M01', ('vex_cigburns_healed_m.png', 'chest', 1, '', 3.85, None)),
+        ('Complexion_BiteScarDog_F01', ('vex_dogbite_f01.png', 'thigh', 1, 'front', 5.0, None)),
+        ('Complexion_BiteScarDog_F02', ('vex_dogbite_f02.png', 'forearm', -1, 'front', 3.5, None)),
+        ('Complexion_BiteScarDog_M01', ('vex_dogbite_m01.png', 'upper_arm', -1, 'front', 5.5, None)),
+        ('Complexion_BiteScarDog_M02', ('vex_dogbite_m02.png', 'forearm', -1, 'front', 3.85, None))):
+    _row = next(r for r in MARKS if r[0] == _tid)
+    replace_row(_tid, 'artist', _args, _row[4], _row[5])
+
 # Names shown in LooksMenu's list and Complexion's window ("Complexion - <name>"), where the artist gave one; every other
 # template shows its note. Display only: saves keep the id, and the tags (so the composers) never see these.
 # Vex's format (10-14): "(Location)(Sex) Design".
@@ -614,6 +627,12 @@ NAMES = {
     'Complexion_VexAnchorThighLeft_M01': '(Left Thigh)(Male) Anchor&Heart',
     'Complexion_VexAnchorThighRight_F01': '(Right Thigh)(Female) Anchor&Heart',
     'Complexion_VexAnchorThighRight_M01': '(Right Thigh)(Male) Anchor&Heart',
+    'Complexion_CigBurnsHealed_F01': '(Chest)(Female) Old Cig Burn',
+    'Complexion_CigBurnsHealed_M01': '(Chest)(Male) Old Cig Burn',
+    'Complexion_BiteScarDog_F01': '(Right Thigh)(Female) Dog Bite',
+    'Complexion_BiteScarDog_F02': '(Left Forearm)(Female) Dog Bite',
+    'Complexion_BiteScarDog_M01': '(Left Shoulder)(Male) Dog Bite',
+    'Complexion_BiteScarDog_M02': '(Left Forearm)(Male) Dog Bite',
     # each says which body it is for: in LooksMenu's Add list the female and male ones otherwise read the same
     'Complexion_SynthShell_F01': '(Body)(Female) Synthetic Skin - Seams',
     'Complexion_SynthShell_M01': '(Body)(Male) Synthetic Skin - Seams',

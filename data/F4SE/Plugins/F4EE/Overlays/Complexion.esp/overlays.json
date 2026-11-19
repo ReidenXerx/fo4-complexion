@@ -3123,7 +3123,7 @@
  },
  {
   "id": "Complexion_CigBurnsHealed_F01",
-  "name": "Complexion - old cigarette burn scars",
+  "name": "Complexion - (Chest)(Female) Old Cig Burn",
   "slots": [
    {
     "slot": 3,
@@ -3137,7 +3137,7 @@
  },
  {
   "id": "Complexion_CigBurnsHealed_M01",
-  "name": "Complexion - old cigarette burn scars",
+  "name": "Complexion - (Chest)(Male) Old Cig Burn",
   "slots": [
    {
     "slot": 3,
@@ -7855,7 +7855,7 @@
  },
  {
   "id": "Complexion_BiteScarDog_F01",
-  "name": "Complexion - a healed dog bite",
+  "name": "Complexion - (Right Thigh)(Female) Dog Bite",
   "slots": [
    {
     "slot": 3,
@@ -7869,7 +7869,7 @@
  },
  {
   "id": "Complexion_BiteScarDog_F02",
-  "name": "Complexion - a healed dog bite",
+  "name": "Complexion - (Left Forearm)(Female) Dog Bite",
   "slots": [
    {
     "slot": 3,
@@ -7883,7 +7883,7 @@
  },
  {
   "id": "Complexion_BiteScarDog_M01",
-  "name": "Complexion - a healed dog bite",
+  "name": "Complexion - (Left Shoulder)(Male) Dog Bite",
   "slots": [
    {
     "slot": 3,
@@ -7897,7 +7897,7 @@
  },
  {
   "id": "Complexion_BiteScarDog_M02",
-  "name": "Complexion - a healed dog bite",
+  "name": "Complexion - (Left Forearm)(Male) Dog Bite",
   "slots": [
    {
     "slot": 3,
